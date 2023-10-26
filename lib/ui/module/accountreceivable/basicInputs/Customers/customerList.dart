@@ -1,0 +1,456 @@
+import 'dart:async';
+import 'dart:core';
+
+import 'package:flutter/material.dart';
+
+//import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:fourlinkmobileapp/cubit/app_cubit.dart';
+import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
+
+//import 'package:fourlinkmobileapp/models/products.dart';
+import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
+
+//import '../../../../../cubit/app_states.dart';
+import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
+import '../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
+import 'addCustomerDataWidget.dart';
+import 'detailCustomerWidget.dart';
+import 'editCustomerDataWidget.dart';
+
+CustomerApiService _apiService = new CustomerApiService();
+//Get Customer List
+
+class CustomerListPage extends StatefulWidget {
+  const CustomerListPage({Key? key}) : super(key: key);
+
+  @override
+  _CustomerListPageState createState() => _CustomerListPageState();
+}
+
+class _CustomerListPageState extends State<CustomerListPage> {
+  bool isLoading = true;
+  List<Customer> _customers = [];
+  List<Customer> _founded = [];
+
+  // List<Customer>? ss = await res;
+
+  // List<Customer> _customers = [
+  //   Customer(id: 1,customerNameAra :'test',customerNameEng :'test' )
+  //   // User('Kayley Dwyer', '@kayley', 'https://images.unsplash.com/photo-1503467913725-8484b65b0715?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=cf7f82093012c4789841f570933f88e3', false),
+  //   // User('Kathleen Mcdonough', '@kathleen', 'https://images.unsplash.com/photo-1507081323647-4d250478b919?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b717a6d0469694bbe6400e6bfe45a1da', false),
+  //   // User('Kathleen Dyer', '@kathleen', 'https://images.unsplash.com/photo-1502980426475-b83966705988?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=ddcb7ec744fc63472f2d9e19362aa387', false),
+  //   // User('Mikayla Marquez', '@mikayla', 'https://images.unsplash.com/photo-1541710430735-5fca14c95b00?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ', false),
+  //   // User('Kiersten Lange', '@kiersten', 'https://images.unsplash.com/photo-1542534759-05f6c34a9e63?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ', false),
+  //   // User('Carys Metz', '@metz', 'https://images.unsplash.com/photo-1516239482977-b550ba7253f2?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ', false),
+  //   // User('Ignacio Schmidt', '@schmidt', 'https://images.unsplash.com/photo-1542973748-658653fb3d12?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ', false),
+  //   // User('Clyde Lucas', '@clyde', 'https://images.unsplash.com/photo-1569443693539-175ea9f007e8?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ', false),
+  //   // User('Mikayla Marquez', '@mikayla', 'https://images.unsplash.com/photo-1541710430735-5fca14c95b00?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ', false)
+  // ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    getData();
+    super.initState();
+    AppCubit.get(context).CheckConnection();
+    // Timer(Duration(seconds: 30), () { // <-- Delay here
+    //   setState(() {
+    //     if(_customers.isEmpty){
+    //       isLoading = false;
+    //     }
+    //     // <-- Code run after delay
+    //   });
+    // });
+
+    setState(() {
+      _founded = _customers;
+    });
+  }
+
+  void getData() async {
+    Future<List<Customer>?> futureCustomer =
+        _apiService.getCustomers().catchError((Error) {
+      print('Error${Error}');
+      AppCubit.get(context).EmitErrorState();
+    });
+    print('xxxx1');
+    _customers = (await futureCustomer)!;
+    print('xxxx2');
+    print('xxxx2 len ' + _customers.length.toString());
+    if (_customers != null) {
+      setState(() {
+        print('xxxx');
+        _founded = _customers;
+        String search = '';
+      });
+    }
+  }
+
+  onSearch(String search) {
+    if (search.isEmpty) {
+      getData();
+    }
+
+    setState(() {
+      _customers = _founded
+          .where((Customer) =>
+              Customer.customerNameAra!.toLowerCase().contains(search))
+          .toList();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    setState(() {});
+    return Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+          //Color.fromRGBO(240, 242, 246,1), // Main Color
+          title: Container(
+            height: 38,
+            child: TextField(
+              onChanged: (value) => onSearch(value),
+              decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding: const EdgeInsets.all(0),
+                  prefixIcon: Icon(
+                    Icons.search,
+                    color: Colors.grey.shade500,
+                  ),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(50),
+                      borderSide: BorderSide.none),
+                  hintStyle: const TextStyle(
+                      fontSize: 14,
+                      color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
+                      ),
+                  hintText: "searchCustomer".tr()),
+            ),
+          ),
+        ),
+        body: Build_customers(),
+        floatingActionButton: FloatingActionButton(
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(90.0))),
+          backgroundColor: Colors.transparent,
+          onPressed: () {
+            _navigateToAddScreen(context);
+          },
+          tooltip: 'Increment',
+          child: Container(
+            // alignment: Alignment.center,s
+            decoration: BoxDecoration(
+              color: FitnessAppTheme.nearlyDarkBlue,
+              gradient: LinearGradient(colors: [
+                FitnessAppTheme.nearlyDarkBlue,
+                HexColor('#6A88E5'),
+              ], begin: Alignment.topLeft, end: Alignment.bottomRight),
+              shape: BoxShape.circle,
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.4),
+                    offset: const Offset(2.0, 14.0),
+                    blurRadius: 16.0),
+              ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                splashColor: Colors.white.withOpacity(0.1),
+                highlightColor: Colors.transparent,
+                focusColor: Colors.transparent,
+                onTap: () {
+                  // widget.addClick;
+                  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSalesInvoiceHDataWidget()));
+                  _navigateToAddScreen(context);
+                },
+                child: const Icon(
+                  Icons.add,
+                  color: FitnessAppTheme.white,
+                  size: 46,
+                ),
+              ),
+            ),
+          ),
+        ));
+  }
+
+  customerComponent({required Customer customer}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(children: [
+            Container(
+                width: 60,
+                height: 60,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Image.asset('assets/fitness_app/clients.png'),
+                )),
+            const SizedBox(width: 10),
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(customer.customerNameAra!,
+                  style: const TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w500)),
+              //SizedBox(height: 5,),
+              //Text(customer.customerNameEng!, style: TextStyle(color: Colors.grey[500])),
+            ])
+          ]),
+          GestureDetector(
+            onTap: () {
+              setState(() {
+                // user.isFollowedByMe = !user.isFollowedByMe;
+              });
+            },
+            // child: AnimatedContainer(
+            //     height: 35,
+            //     width: 110,
+            //     duration: Duration(milliseconds: 300),
+            //     decoration: BoxDecoration(
+            //         color: user.isFollowedByMe ? Colors.blue[700] : Color(0xffffff),
+            //         borderRadius: BorderRadius.circular(5),
+            //         border: Border.all(color: user.isFollowedByMe ? Colors.transparent : Colors.grey.shade700,)
+            //     ),
+            //     child: Center(
+            //         child: Text(user.isFollowedByMe ? 'Unfollow' : 'Follow', style: TextStyle(color: user.isFollowedByMe ? Colors.white : Colors.white))
+            //     )
+            // ),
+          )
+        ],
+      ),
+    );
+  }
+
+  _deleteItem(BuildContext context, int? id) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Are you sure?'),
+        content: const Text('This action will permanently delete this data'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (result == null || !result) {
+      return;
+    }
+
+    print('lahoiiiiiiiiiiiiii');
+    var res =
+        _apiService.deleteCustomer(context, id).then((value) => getData());
+  }
+
+  _navigateToAddScreen(BuildContext context) async {
+    // final result = await Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => AddCustomerDataWidget()),
+    // ).then((value) =>  );
+
+    Navigator.of(context)
+        .push(MaterialPageRoute(
+      builder: (context) => AddCustomerDataWidget(),
+    ))
+        .then((value) {
+      getData();
+    });
+  }
+
+  _navigateToEditScreen(BuildContext context, Customer customer) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EditCustomerDataWidget(customer)),
+    ).then((value) => getData());
+  }
+
+  Widget Build_customers() {
+    print('state:${State}');
+    if (_customers.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (AppCubit.get(context).Conection == false) {
+      return const Center(child: Text('no internet connection'));
+    } else {
+      return Container(
+        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
+        color: const Color.fromRGBO(240, 242, 246, 1), // Main Color
+        child: ListView.builder(
+            itemCount: _customers == null ? 0 : _customers.length,
+            itemBuilder: (BuildContext context, int index) {
+              return Card(
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              DetailCustomerWidget(_customers[index])),
+                    );
+                  },
+                  child: ListTile(
+                    leading: Image.asset('assets/fitness_app/clients.png'),
+                    title: Text('code'.tr() + " : " + _customers[index].customerCode.toString(),
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        )),
+                    subtitle: Column(
+                      children: <Widget>[
+                        Container(
+                            height: 20,
+                            color: Colors.white30,
+                            child: Row(
+                              children: [
+                                Text('arabicName'.tr() + " : " + _customers[index].customerNameAra.toString()),
+                              ],
+                            )),
+                        Container(
+                            height: 20,
+                            color: Colors.white30,
+                            child: Row(
+                              children: [
+                                Text('englishName'.tr() + " : " + _customers[index].customerNameEng.toString()),
+                              ],
+                            )),
+                        const SizedBox(width: 5),
+                        Container(
+                            child: Row(
+                          children: <Widget>[
+                            Center(
+                                child: ElevatedButton.icon(
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                                size: 20.0,
+                                weight: 10,
+                              ),
+                              label: Text('edit'.tr(),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                  )),
+                              onPressed: () {
+                                _navigateToEditScreen(context, _customers[index]);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  padding: const EdgeInsets.all(7),
+                                  backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
+                                  foregroundColor: Colors.black,
+                                  elevation: 0,
+                                  side: const BorderSide(width: 1,
+                                      color: Color.fromRGBO(0, 136, 134, 1))),
+                            )),
+                            const SizedBox(width: 5),
+                            Center(
+                                child: ElevatedButton.icon(
+                              icon: const Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                                size: 20.0,
+                                weight: 10,
+                              ),
+                              label: Text('delete'.tr(),
+                                  style: const TextStyle(color: Colors.white)),
+                              onPressed: () {
+                                _deleteItem(context, _customers[index].id);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  padding: const EdgeInsets.all(7),
+                                  backgroundColor:
+                                      const Color.fromRGBO(144, 16, 46, 1),
+                                  foregroundColor: Colors.black,
+                                  elevation: 0,
+                                  side: const BorderSide(
+                                      width: 1,
+                                      color: Color.fromRGBO(144, 16, 46, 1))),
+                            )),
+                            const SizedBox(width: 5),
+                            Center(
+                                child: ElevatedButton.icon(
+                              icon: const Icon(
+                                Icons.print,
+                                color: Colors.white,
+                                size: 20.0,
+                                weight: 10,
+                              ),
+                              label: Text('print'.tr(),
+                                  style: const TextStyle(color: Colors.white)),
+                              onPressed: () {
+                                //_navigateToPrintScreen(context,_customers[index]);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  padding: const EdgeInsets.all(7),
+                                  backgroundColor: Colors.black87,
+                                  foregroundColor: Colors.black,
+                                  elevation: 0,
+                                  side: const BorderSide(
+                                      width: 1, color: Colors.black87)),
+                            )
+                            ),
+
+                            // Container(
+                            //     child: Row(
+                            //       children: <Widget>[
+                            //         ElevatedButton(
+                            //           style: ButtonStyle(
+                            //               backgroundColor: MaterialStateProperty.all(Colors.blue),
+                            //               padding:
+                            //               MaterialStateProperty.all(const EdgeInsets.all(10)),
+                            //               textStyle: MaterialStateProperty.all(
+                            //                   const TextStyle(fontSize: 14, color: Colors.white))),
+                            //           child: Text('edit'.tr()),
+                            //           onPressed: () {
+                            //             _navigateToEditScreen(context,_customers[index]);
+                            //
+                            //           },
+                            //         ),
+                            //         SizedBox(width: 10),
+                            //         ElevatedButton(
+                            //           style: ButtonStyle(
+                            //               backgroundColor: MaterialStateProperty.all(Colors.redAccent),
+                            //               padding:
+                            //               MaterialStateProperty.all(const EdgeInsets.all(10)),
+                            //               textStyle: MaterialStateProperty.all(
+                            //                   const TextStyle(fontSize: 14, color: Colors.white))),
+                            //           child: Text('delete'.tr()),
+                            //           onPressed: () {
+                            //             _deleteItem(context,_customers[index].id);
+                            //
+                            //
+                            //           },
+                            //         ),
+                          ],
+                        ))
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            }),
+      );
+    }
+  }
+}
