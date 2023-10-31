@@ -48,7 +48,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
     // TODO: implement initState
     print('okkkkkkkkkkk');
     AppCubit.get(context).CheckConnection();
-    Timer(Duration(seconds: 30), () { // <-- Delay here
+    Timer(const Duration(seconds: 30), () { // <-- Delay here
       setState(() {
         if(_salesInvoices.isEmpty){
           isLoading = false;
@@ -79,13 +79,11 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Color.fromRGBO(240, 242, 246,1), // Main Color
+          backgroundColor: const Color.fromRGBO(240, 242, 246,1), // Main Color
           //
           title: Container(
             //height: 80,
-            child:
-
-            Column(
+            child: Column(
               crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
               children: [
                 //Align(child: Text('serial'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
@@ -178,10 +176,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
       if(isAllowAdd)
       {
-
-        Navigator.of(context)
-            .push(MaterialPageRoute(
-          builder: (context) => AddSalesInvoiceHDataWidget(),
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSalesInvoiceHDataWidget(),
         ))
             .then((value) {
           getData();

@@ -35,7 +35,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
             parent: widget.animationController!,
-            curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
+            curve: const Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
     addAllListData();
 
     scrollController.addListener(() {
@@ -78,8 +78,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
         subTxt: 'details'.tr(),
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController!,
-            curve:
-                Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
+            curve: const Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController!,
       ),
     );
@@ -88,8 +87,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
       BasicInputsWorkoutView(
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController!,
-            curve:
-                Interval((1 / count) * 2, 1.0, curve: Curves.fastOutSlowIn))),
+            curve: const Interval((1 / count) * 2, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController!,
       ),
     );
@@ -97,8 +95,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
       BasicInputsRunningView(
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController!,
-            curve:
-                Interval((1 / count) * 3, 1.0, curve: Curves.fastOutSlowIn))),
+            curve: const Interval((1 / count) * 3, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController!,
       ),
     );
@@ -115,8 +112,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
         subTxt: 'more'.tr(),
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController!,
-            curve:
-                Interval((1 / count) * 4, 1.0, curve: Curves.fastOutSlowIn))),
+            curve: const Interval((1 / count) * 4, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController!,
       ),
     );
@@ -126,8 +122,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
         mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
             CurvedAnimation(
                 parent: widget.animationController!,
-                curve: Interval((1 / count) * 5, 1.0,
-                    curve: Curves.fastOutSlowIn))),
+                curve: const Interval((1 / count) * 5, 1.0, curve: Curves.fastOutSlowIn))),
         mainScreenAnimationController: widget.animationController!,
       ),
     );
@@ -169,8 +164,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
             controller: scrollController,
             padding: EdgeInsets.only(
               top: AppBar().preferredSize.height +
-                  MediaQuery.of(context).padding.top +
-                  24,
+                  MediaQuery.of(context).padding.top + 24,
               bottom: 62 + MediaQuery.of(context).padding.bottom,
             ),
             itemCount: listViews.length,
@@ -229,7 +223,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
                                 color: Colors.transparent, // button color
                                 child: InkWell(
                                   splashColor: Colors.red, // inkwell color
-                                  child: SizedBox(width: 56, height: 56, child: Icon(Icons.menu)),
+                                  child: const SizedBox(width: 56, height: 56, child: Icon(Icons.menu)),
                                   onTap: () {
                                     Scaffold.of(context).openDrawer();
                                   },
@@ -262,7 +256,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
                                 onTap: () {
                                   print('xxxxxxxxxxx1');
                                 },
-                                child: Center(
+                                child: const Center(
                                   child: Icon(
                                     Icons.keyboard_arrow_left,
                                     color: FitnessAppTheme.grey,
@@ -286,7 +280,6 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
                                             firstDate: DateTime(1900),
                                             lastDate: DateTime(2100)
 
-
                                         );
                                         if(newDate!=null){
                                           setState(() {
@@ -299,8 +292,8 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
                                       },
                                       child: Row(
                                         children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 8),
+                                          const Padding(
+                                            padding: EdgeInsets.only(right: 8),
                                             child: Icon(
                                               Icons.calendar_today,
                                               color: FitnessAppTheme.background,
@@ -310,7 +303,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
                                           Text(
                                             "${date.day}-${date.month}",
                                             textAlign: TextAlign.left,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontFamily: FitnessAppTheme.fontName,
                                               fontWeight: FontWeight.normal,
                                               fontSize: 18,
@@ -346,7 +339,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
                                 onTap: () {
                                   print('xxxxxxxxxxx2');
                                 },
-                                child: Center(
+                                child: const Center(
                                   child: Icon(
                                     Icons.keyboard_arrow_right,
                                     color: FitnessAppTheme.grey,

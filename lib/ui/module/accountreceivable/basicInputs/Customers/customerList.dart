@@ -18,7 +18,7 @@ import 'addCustomerDataWidget.dart';
 import 'detailCustomerWidget.dart';
 import 'editCustomerDataWidget.dart';
 
-CustomerApiService _apiService = new CustomerApiService();
+CustomerApiService _apiService = CustomerApiService();
 //Get Customer List
 
 class CustomerListPage extends StatefulWidget {
@@ -109,7 +109,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
           elevation: 0,
           backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
           //Color.fromRGBO(240, 242, 246,1), // Main Color
-          title: Container(
+          title: SizedBox(
             height: 38,
             child: TextField(
               onChanged: (value) => onSearch(value),

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
-import 'package:fourlinkmobileapp/screens/new_invoice_screen/new_business_details/new_business_details.dart';
-import 'package:fourlinkmobileapp/ui/module/accountPayable/vendors/vendorlist.dart';
-import 'package:fourlinkmobileapp/ui/module/accountReceivable/basicInputs/salesman/old/salesmanlist.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/salesOrderList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/salesInvoiceList.dart';
 import 'package:fourlinkmobileapp/ui/module/cash/transactions/CashReceive/cashReceiveList.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
-import '../../../screens/modules/accountreceivable/salesportion/salesportion.dart';
 import '../../../theme/fitness_app_theme.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
@@ -68,17 +64,21 @@ class _TransactionsAreaListViewState extends State<TransactionsAreaListView>
         return FadeTransition(
           opacity: widget.mainScreenAnimation!,
           child: Transform(
-            transform: Matrix4.translationValues(
-                0.0, 30 * (1.0 - widget.mainScreenAnimation!.value), 0.0),
+            transform: Matrix4.translationValues(0.0, 30 * (1.0 - widget.mainScreenAnimation!.value), 0.0),
             child: AspectRatio(
               aspectRatio: 1.0,
               child: Padding(
                 padding: const EdgeInsets.only(left: 8.0, right: 8),
                 child: GridView(
-                  padding: const EdgeInsets.only(
-                      left: 16, right: 16, top: 16, bottom: 16),
+                  padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 16),
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 24.0,
+                    crossAxisSpacing: 24.0,
+                    childAspectRatio: 1.0,
+                  ),
                   children: List<Widget>.generate(
                     areaListData.length,
                     (int index) {
@@ -99,12 +99,6 @@ class _TransactionsAreaListViewState extends State<TransactionsAreaListView>
                         animationController: animationController!,
                       );
                     },
-                  ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 24.0,
-                    crossAxisSpacing: 24.0,
-                    childAspectRatio: 1.0,
                   ),
                 ),
               ),
@@ -171,11 +165,7 @@ class AreaView extends StatelessWidget {
                       if(isAllowView)
                       {
                         print('Have Permission - Sales Invoice 1');
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    SalesInvoiceHListPage()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const SalesInvoiceHListPage()));
                       }
                       else
                       {
@@ -188,11 +178,7 @@ class AreaView extends StatelessWidget {
                       bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                       if(isAllowView)
                       {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    SalesOfferHListPage()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const SalesOfferHListPage()));
                       }
                       else
                       {
@@ -205,11 +191,7 @@ class AreaView extends StatelessWidget {
                       bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                       if(isAllowView)
                       {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    SalesOrderHListPage()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const SalesOrderHListPage()));
                       }
                       else
                       {
@@ -222,11 +204,7 @@ class AreaView extends StatelessWidget {
                       bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                       if(isAllowView)
                       {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    CashReceiveListPage()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const CashReceiveListPage()));
                       }
                       else
                       {
@@ -240,11 +218,7 @@ class AreaView extends StatelessWidget {
                       bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                       if(isAllowView)
                       {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    SalesOrderHListPage()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const SalesOrderHListPage()));
                       }
                       else
                       {
