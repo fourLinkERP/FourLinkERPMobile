@@ -9,7 +9,7 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../widgets/navigationDrawer/navigationDrawer.dart';
 
 import '../../theme/fitness_app_theme.dart';
-//import '../../widgets/ui_view/area_list_view.dart';
+import '../../widgets/ui_view/area_list_view.dart';
 
 class BasicInputsScreen extends StatefulWidget {
   const BasicInputsScreen({Key? key, this.animationController}) : super(key: key);

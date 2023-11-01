@@ -43,55 +43,24 @@ class _DetailCustomerWidgetState extends State<DetailCustomerWidget> {
                         //EdgeInsets.fromLTRB(0, 20, 0, 20)
                         child: Column(
                           children: <Widget>[
-                            Text(
-                                'code'.tr() +
-                                    ': ' +
-                                    widget.customers.customerCode.toString(),
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
+                            Text('code'.tr() + ': ' + widget.customers.customerCode.toString(),
+                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                             const SizedBox(height: 15.0),
-                            Text(
-                                'arabicName'.tr() +
-                                    ': ' +
-                                    widget.customers.customerNameEng.toString(),
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
+                            Text('arabicName'.tr() + ': ' + widget.customers.customerNameEng.toString(),
+                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                             const SizedBox(height: 15.0),
-                            Text(
-                                'englishName'.tr() +
-                                    ': ' +
-                                    widget.customers.customerNameAra.toString(),
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
+                            Text('${'englishName'.tr()}: ${widget.customers.customerNameAra}',
+                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                             const SizedBox(height: 15.0),
-                            Text(
-                                'taxIdentificationNumber'.tr() +
-                                    ': ' +
-                                    widget.customers.taxIdentificationNumber
-                                        .toString(),
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
+                            Text('taxIdentificationNumber'.tr() + ': ' + widget.customers.taxIdentificationNumber.toString(),
+                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                             //Colors.black.withOpacity(0.8)
                             const SizedBox(height: 15.0),
-                            Text(
-                                'address'.tr() +
-                                    ': ' +
-                                    widget.customers.address.toString(),
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
+                            Text('address'.tr() + ': ' + widget.customers.address.toString(),
+                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                             const SizedBox(height: 15.0),
-                            Text(
-                                'phone'.tr() +
-                                    ': ' +
-                                    widget.customers.address.toString(),
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold)),
+                            Text('phone'.tr() + ': ' + widget.customers.address.toString(),
+                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                           ],
                         ),
                       ),

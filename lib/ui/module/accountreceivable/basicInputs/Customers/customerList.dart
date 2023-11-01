@@ -1,17 +1,10 @@
 import 'dart:async';
 import 'dart:core';
-
 import 'package:flutter/material.dart';
-
-//import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fourlinkmobileapp/cubit/app_cubit.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
-
-//import 'package:fourlinkmobileapp/models/products.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-
-//import '../../../../../cubit/app_states.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'addCustomerDataWidget.dart';
@@ -96,8 +89,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
     setState(() {
       _customers = _founded
           .where((Customer) =>
-              Customer.customerNameAra!.toLowerCase().contains(search))
-          .toList();
+              Customer.customerNameAra!.toLowerCase().contains(search)).toList();
     });
   }
 
@@ -262,9 +254,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
     //   MaterialPageRoute(builder: (context) => AddCustomerDataWidget()),
     // ).then((value) =>  );
 
-    Navigator.of(context)
-        .push(MaterialPageRoute(
-      builder: (context) => AddCustomerDataWidget(),
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddCustomerDataWidget(),
     ))
         .then((value) {
       getData();

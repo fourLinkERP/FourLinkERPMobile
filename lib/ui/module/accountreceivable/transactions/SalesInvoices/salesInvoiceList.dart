@@ -57,13 +57,8 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       });
     });
 
-
-
-
     getData();
     super.initState();
-
-
     setState(() {
       _founded = _salesInvoices!;
     });
@@ -75,11 +70,10 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       getData();
     });
 
-
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: const Color.fromRGBO(240, 242, 246,1), // Main Color
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
           //
           title: Container(
             //height: 80,
@@ -123,6 +117,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
           backgroundColor:  Colors.transparent,
 
           child: Container(
+
             // alignment: Alignment.center,s
             decoration: BoxDecoration(
               color: FitnessAppTheme.nearlyDarkBlue,
@@ -154,7 +149,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSalesInvoiceHDataWidget()));
                   _navigateToAddScreen(context);
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.add,
                   color: FitnessAppTheme.white,
                   size: 46,
@@ -238,7 +233,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             double price =( _salesInvoicesD[i].price != null) ? _salesInvoicesD[i].price : 0;
 
 
-            InvoiceItem _invoiceItem=new InvoiceItem
+            InvoiceItem _invoiceItem= InvoiceItem
               (description: _salesInvoicesD[i].itemName.toString(),
                 date: date, quantity: qty  , vat: vat  ,
                 unitPrice: price );
@@ -276,11 +271,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       {
         FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
       }
-
-
-
-
-
     }
 
   //#endregion
@@ -330,17 +320,17 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
 
     Widget BuildsalesInvoices(){
       if(State is AppErrorState){
-        return Center(child: Text('no data'));
+        return const Center(child: Text('no data'));
       }
       if(AppCubit.get(context).Conection==false){
-        return Center(child: Text('no internet connection'));
+        return const Center(child: Text('no internet connection'));
 
       }
       else if(_salesInvoices.isEmpty&&AppCubit.get(context).Conection==true){
-        return Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       }else{
         return Container(
-          color: Color.fromRGBO(240, 242, 246,1),// Main Color
+          color: const Color.fromRGBO(240, 242, 246,1),// Main Color
 
           child: ListView.builder(
               itemCount: _salesInvoices == null ? 0 : _salesInvoices.length,
@@ -358,15 +348,16 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                       },
                       child: ListTile(
                         leading: Image.asset('assets/fitness_app/salesCart.png'),
-                        title: Text(
-                            'serial'.tr() + " : " + _salesInvoices[index].salesInvoicesSerial.toString()),
+                        title: Text('serial'.tr() + " : " + _salesInvoices[index].salesInvoicesSerial.toString()),
                         subtitle: Column(
                           crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                           children: <Widget>[
-                            Container(height: 20, color: Colors.white30, child: Row(
+                            Container(
+                                height: 20,
+                                color: Colors.white30,
+                                child: Row(
                               children: [
-                                Text(
-                                    'date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString())))  ,
+                                Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString())))  ,
 
                               ],
 
@@ -374,35 +365,34 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                             Container(height: 20, color: Colors.white30, child: Row(
                               children: [
 
-                                Text(
-                                    'customer'.tr() + " : " + _salesInvoices[index].customerName.toString()),
+                                Text('customer'.tr() + " : " + _salesInvoices[index].customerName.toString()),
 
 
                               ],
 
                             )),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                             Container(
                                 child: Row(
                                   children: <Widget>[
                                 Center(
                                 child: ElevatedButton.icon(
-                                  icon: Icon(
+                                  icon: const Icon(
                                   Icons.edit,
-                                    color: Color.fromRGBO(0, 136, 134, 1),
+                                    color: Colors.white,
                                   size: 20.0,
                                     weight: 10,
                                 ),
-                              label: Text('edit'.tr(),style:TextStyle(color: Color.fromRGBO(0, 136, 134, 1)) ),
+                              label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
                               onPressed: () {
                                 _navigateToEditScreen(context,_salesInvoices[index]);
                               },
                               style: ElevatedButton.styleFrom(
-                                shape: new RoundedRectangleBorder(
-                                  borderRadius: new BorderRadius.circular(5),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
                                 ),
-                                padding: EdgeInsets.all(7),
-                                backgroundColor: Colors.white,
+                                padding: const EdgeInsets.all(7),
+                                backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
                                 foregroundColor: Colors.black,
                                   elevation: 0,
                                   side: const BorderSide(
@@ -411,25 +401,25 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                                   )
                               ),
                             )),
-                            SizedBox(width: 5),
+                            const SizedBox(width: 5),
                               Center(
                                   child: ElevatedButton.icon(
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.delete,
-                                      color: Color.fromRGBO(144, 16, 46, 1),
+                                      color: Colors.white,
                                       size: 20.0,
                                       weight: 10,
                                     ),
-                                    label: Text('delete'.tr(),style:TextStyle(color: Color.fromRGBO(144, 16, 46, 1)) ),
+                                    label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                     onPressed: () {
                                       _deleteItem(context,_salesInvoices[index].id);
                                     },
                                     style: ElevatedButton.styleFrom(
-                                        shape: new RoundedRectangleBorder(
-                                          borderRadius: new BorderRadius.circular(5),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(5),
                                         ),
-                                        padding: EdgeInsets.all(7),
-                                        backgroundColor: Colors.white,
+                                        padding: const EdgeInsets.all(7),
+                                        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
                                         foregroundColor: Colors.black,
                                         elevation: 0,
                                         side: const BorderSide(
@@ -438,25 +428,25 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                                         )
                                     ),
                                   )),
-                                    SizedBox(width: 5),
+                                    const SizedBox(width: 5),
                                     Center(
                                         child: ElevatedButton.icon(
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.print,
-                                            color: Colors.black87,
+                                            color: Colors.white,
                                             size: 20.0,
                                             weight: 10,
                                           ),
-                                          label: Text('print'.tr(),style:TextStyle(color: Colors.black87) ),
+                                          label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                           onPressed: () {
                                             _navigateToPrintScreen(context,_salesInvoices[index]);
                                           },
                                           style: ElevatedButton.styleFrom(
-                                              shape: new RoundedRectangleBorder(
-                                                borderRadius: new BorderRadius.circular(5),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(5),
                                               ),
-                                              padding: EdgeInsets.all(7),
-                                              backgroundColor: Colors.white,
+                                              padding: const EdgeInsets.all(7),
+                                              backgroundColor: Colors.black87,
                                               foregroundColor: Colors.black,
                                               elevation: 0,
                                               side: const BorderSide(

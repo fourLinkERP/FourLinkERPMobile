@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/editSalesInvoiceDataWidget.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceH.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/accountReceivable/transactions/SalesInvoices/salesInvoiceHApiService.dart';
@@ -17,25 +16,26 @@ class DetailSalesInvoiceHWidget extends StatefulWidget {
 class _DetailSalesInvoiceHWidgetState extends State<DetailSalesInvoiceHWidget> {
   _DetailSalesInvoiceHWidgetState();
 
-  SalesInvoiceHApiService api =new SalesInvoiceHApiService();
+  SalesInvoiceHApiService api = SalesInvoiceHApiService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Details'),
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+        title: const Text('Details'),
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(20.0),
+          padding: const EdgeInsets.only( top: 70.0, left: 10.0, right: 20.0, bottom: 0.0),
           child: Card(
               child: Container(
-                  padding: EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(10.0),
                   width: 440,
                   child: Column(
                     children: <Widget>[
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         child: Column(
                           children: <Widget>[
                             Text('code'.tr() + ':' + widget.salesInvoiceH.customerCode.toString()  , style: TextStyle(color: Colors.black.withOpacity(0.8))),
@@ -44,7 +44,7 @@ class _DetailSalesInvoiceHWidgetState extends State<DetailSalesInvoiceHWidget> {
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         child: Column(
                           children: <Widget>[
                             Text('serial'.tr() + ':' + widget.salesInvoiceH.salesInvoicesSerial.toString()  , style: TextStyle(color: Colors.black.withOpacity(0.8))),
@@ -102,7 +102,7 @@ class _DetailSalesInvoiceHWidgetState extends State<DetailSalesInvoiceHWidget> {
                       //   ),
                       // ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         child: Column(
                           children: <Widget>[
                             TextButton(
@@ -110,7 +110,7 @@ class _DetailSalesInvoiceHWidgetState extends State<DetailSalesInvoiceHWidget> {
                               onPressed: () {
                                 _navigateToEditScreen(context, widget.salesInvoiceH);
                               },
-                              child: Text('Edit', style: TextStyle(color: Colors.white)),
+                              child: const Text('Edit', style: TextStyle(color: Colors.white)),
                              // color: Colors.blue,
                             ),
                             TextButton  (
@@ -118,7 +118,7 @@ class _DetailSalesInvoiceHWidgetState extends State<DetailSalesInvoiceHWidget> {
                               onPressed: () {
                                 _confirmDialog();
                               },
-                              child: Text('Delete', style: TextStyle(color: Colors.white)),
+                              child: const Text('Delete', style: TextStyle(color: Colors.white)),
                               //color: Colors.blue,
                             )
                           ],
@@ -146,8 +146,8 @@ class _DetailSalesInvoiceHWidgetState extends State<DetailSalesInvoiceHWidget> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Warning!'),
-          content: SingleChildScrollView(
+          title: const Text('Warning!'),
+          content: const SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
                 Text('Are you sure want delete this item?'),
@@ -156,7 +156,7 @@ class _DetailSalesInvoiceHWidgetState extends State<DetailSalesInvoiceHWidget> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Yes'),
+              child: const Text('Yes'),
               onPressed: () {
                 //api.deleteCase(widget.cases.id);
                 Navigator.popUntil(context, ModalRoute.withName(Navigator.defaultRouteName));

@@ -41,7 +41,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
             parent: widget.animationController!,
-            curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
+            curve: const Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
     addAllListData();
 
     scrollController.addListener(() {
@@ -170,9 +170,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
           return ListView.builder(
             controller: scrollController,
             padding: EdgeInsets.only(
-              top: AppBar().preferredSize.height +
-                  MediaQuery.of(context).padding.top +
-                  24,
+              top: AppBar().preferredSize.height + MediaQuery.of(context).padding.top + 24,
               bottom: 62 + MediaQuery.of(context).padding.bottom,
             ),
             itemCount: listViews.length,
@@ -196,8 +194,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
             return FadeTransition(
               opacity: topBarAnimation!,
               child: Transform(
-                transform: Matrix4.translationValues(
-                    0.0, 30 * (1.0 - topBarAnimation!.value), 0.0),
+                transform: Matrix4.translationValues(0.0, 30 * (1.0 - topBarAnimation!.value), 0.0),
                 child: Container(
                   decoration: BoxDecoration(
                     color: FitnessAppTheme.white.withOpacity(topBarOpacity),
@@ -206,8 +203,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
                     ),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
-                          color: FitnessAppTheme.grey
-                              .withOpacity(0.4 * topBarOpacity),
+                          color: FitnessAppTheme.grey.withOpacity(0.4 * topBarOpacity),
                           offset: const Offset(1.1, 1.1),
                           blurRadius: 10.0),
                     ],
@@ -231,7 +227,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
                                 color: Colors.transparent, // button color
                                 child: InkWell(
                                   splashColor: Colors.red, // inkwell color
-                                  child: SizedBox(width: 56, height: 56, child: Icon(Icons.menu)),
+                                  child: const SizedBox(width: 56, height: 56, child: Icon(Icons.menu)),
                                   onTap: () {
                                     Scaffold.of(context).openDrawer();
                                   },
@@ -249,7 +245,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
                                     fontWeight: FontWeight.w700,
                                     fontSize: 11 + 5 - 5 * topBarOpacity,
                                     letterSpacing: 1.2,
-                                    color: Color.fromRGBO(144, 16, 46, 1),
+                                    color: const Color.fromRGBO(144, 16, 46, 1),
                                   ),
                                 ),
                               ),
@@ -264,13 +260,11 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
                                 onTap: () {
                                   print('xxxxxxxxxxx');
                                   setState(() {
-                                    date.add(Duration(days: 5));
-
-
+                                    date.add(const Duration(days: 5));
                                     print(date);
                                   });
                                 },
-                                child: Center(
+                                child: const Center(
                                   child: Icon(
                                     Icons.keyboard_arrow_left,
                                     color: FitnessAppTheme.grey,
@@ -293,22 +287,17 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
                                             initialDate: date,
                                             firstDate: DateTime(1900),
                                             lastDate: DateTime(2100)
-
-
                                         );
                                         if(newDate!=null){
                                           setState(() {
                                             date=newDate;
                                           });
-
                                         }
-
-
                                       },
                                       child: Row(
                                         children: <Widget>[
-                                          Padding(
-                                            padding: const EdgeInsets.only(right: 8),
+                                          const Padding(
+                                            padding: EdgeInsets.only(right: 8),
                                             child: Icon(
                                               Icons.calendar_today,
                                               color: FitnessAppTheme.grey,
@@ -318,7 +307,7 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
                                           Text(
                                             "${date.day}-${date.month}",
                                             textAlign: TextAlign.left,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontFamily: FitnessAppTheme.fontName,
                                               fontWeight: FontWeight.normal,
                                               fontSize: 18,
@@ -355,11 +344,11 @@ class _BasicInputsScreenState extends State<BasicInputsScreen>
                                 onTap: () {
                                   print('xxxxxxxxxxx2');
                                   setState(() {
-                                    date.add(Duration(days: 2,hours: 21));
+                                    date.add(const Duration(days: 2,hours: 21));
                                     print(date.day);
                                   });
                                 },
-                                child: Center(
+                                child: const Center(
                                   child: Icon(
                                     Icons.keyboard_arrow_right,
                                     color: FitnessAppTheme.grey,
