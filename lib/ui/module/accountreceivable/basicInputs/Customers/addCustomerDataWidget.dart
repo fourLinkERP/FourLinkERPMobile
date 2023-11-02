@@ -152,38 +152,28 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
         centerTitle: true,
         title: Expanded(
           child: Row(
-            crossAxisAlignment:langId==1? CrossAxisAlignment.end
-                :CrossAxisAlignment.start,
+            crossAxisAlignment:langId==1? CrossAxisAlignment.end :CrossAxisAlignment.start,
             children: [
-
-              Image.asset(
-
-                'assets/images/logowhite2.png',
-                scale: 3,
-              ),
+              Image.asset('assets/images/logowhite2.png', scale: 3,),
               const SizedBox(
                 width: 1,
               ),
               Padding(
-                padding:EdgeInsets.only(top: 5),
+                padding:const EdgeInsets.only(top: 5),
                 child: Expanded(
-                  child: Text('add_new_Customers'.tr(),style:
-                  TextStyle(color: Colors.white),),
+                  child: Text('add_new_Customers'.tr(),style: const TextStyle(color: Colors.white),),
                 ),
               )
-
             ],
           ),
         ),
-        backgroundColor: Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
       ),
       body: Form(
         key: _addFormKey,
         child: SingleChildScrollView(
           child: Container(
-
             child: Card(
-
                 child: Container(
                     padding: EdgeInsets.all(10.0),
                     width: 440,
@@ -236,11 +226,11 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Column(crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
 
                             children: <Widget>[
-                              Align(child: Text('englishName'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
+                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('englishName'.tr()) ),
                               TextFormField(
                                 controller: _customerNameEngController,
                                 decoration: const InputDecoration(

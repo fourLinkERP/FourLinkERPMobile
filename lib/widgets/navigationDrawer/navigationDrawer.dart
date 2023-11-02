@@ -9,6 +9,7 @@ import 'package:fourlinkmobileapp/screens/business/basicinputs.dart';
 import 'package:fourlinkmobileapp/ui/home/home_screen.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../theme/app_theme.dart';
+import '../../ui/module/requests/ReqistsList.dart';
 import 'createDrawerBodyItem.dart';
 import 'createDrawerHeader.dart';
 
@@ -42,21 +43,14 @@ class _navigationDrawerState extends State<navigationDrawer> {
             icon: Icons.file_copy,
             text: 'basicInputs'.tr(),
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) =>  MainBasicInputs()),
-              );
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainBasicInputs()),);
             }
-
           ),
           createDrawerBodyItem(
             icon: Icons.record_voice_over_sharp,
             text: 'transactions'.tr(),
             onTap: () =>{
-            Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) =>  MainTransactions()),
-            )
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainTransactions()),)
             }
                 //Navigator.pushReplacementNamed(context, pageRoutes.transaction),
           ),
@@ -64,12 +58,8 @@ class _navigationDrawerState extends State<navigationDrawer> {
             icon: Icons.book,
             text: 'reports'.tr(),
             onTap: () =>{
-            Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) =>  MainReports()),
-            )
-            }
-                //Navigator.pushReplacementNamed(context, pageRoutes.report),
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainReports()),)
+            } //Navigator.pushReplacementNamed(context, pageRoutes.report),
           ),
           createDrawerBodyItem(
             icon: Icons.card_travel,
@@ -78,12 +68,12 @@ class _navigationDrawerState extends State<navigationDrawer> {
                 Navigator.pushReplacementNamed(context, pageRoutes.profile),
           ),
 
- /*         createDrawerBodyItem(
-            icon: Icons.event_note,
-            text: 'Events',
+          createDrawerBodyItem(
+            icon: Icons.content_paste_go,
+            text: 'Requests',
             onTap: () =>
-                Navigator.pushReplacementNamed(context, pageRoutes.event),
-          ),*/
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>  Requests()),)
+          ),
           Divider(),
           createDrawerBodyItem(
             icon: Icons.notifications_active,

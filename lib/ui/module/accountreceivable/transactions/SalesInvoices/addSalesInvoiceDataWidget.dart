@@ -255,15 +255,7 @@ class _AddSalesInvoiceHDataWidgetState
       body: Form(
 
         key: _addFormKey,
-        child: isLoading == true ?
-        Container(
-             color: Colors.black.withOpacity(0.5),
-               // Colors.black.withOpacity(0.5),
-             child: const Center(
-               child: CircularProgressIndicator(),
-    ),
-    )
-    : SingleChildScrollView(
+        child: SingleChildScrollView(
           child: Container(
             padding: const EdgeInsets.all(0.0),
             child: Card(

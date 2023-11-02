@@ -29,28 +29,29 @@ class _DetailSalesInvoiceHWidgetState extends State<DetailSalesInvoiceHWidget> {
         child: Container(
           padding: const EdgeInsets.only( top: 70.0, left: 10.0, right: 20.0, bottom: 0.0),
           child: Card(
+              color: Colors.white,
+              elevation: 30.0,
               child: Container(
-                  padding: const EdgeInsets.all(10.0),
-                  width: 440,
+                  padding: const EdgeInsets.only(top: 20.0, left: 0.0, bottom: 0.0),
+                  width: 400,
+                  height: 355,
                   child: Column(
                     children: <Widget>[
                       Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        margin: const EdgeInsets.only(left: 0.0, top: 42.0),
                         child: Column(
                           children: <Widget>[
-                            Text('code'.tr() + ':' + widget.salesInvoiceH.customerCode.toString()  , style: TextStyle(color: Colors.black.withOpacity(0.8))),
+                            Text('code'.tr() + ':' + widget.salesInvoiceH.customerCode.toString() ,
+                                style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black.withOpacity(0.8))),
+                            const SizedBox(height: 15.0),
+                            Text('serial'.tr() + ':' + widget.salesInvoiceH.salesInvoicesSerial.toString()  ,
+                                style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black.withOpacity(0.8))),
+
 
                           ],
                         ),
                       ),
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        child: Column(
-                          children: <Widget>[
-                            Text('serial'.tr() + ':' + widget.salesInvoiceH.salesInvoicesSerial.toString()  , style: TextStyle(color: Colors.black.withOpacity(0.8))),
-                          ],
-                        ),
-                      ),
+                      const SizedBox(height: 25.0),
                       // Container(
                       //   margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
                       //   child: Column(
@@ -102,25 +103,59 @@ class _DetailSalesInvoiceHWidgetState extends State<DetailSalesInvoiceHWidget> {
                       //   ),
                       // ),
                       Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        child: Column(
+                        margin: const EdgeInsets.fromLTRB(40, 15, 0, 10),
+                        child: Row(
                           children: <Widget>[
-                            TextButton(
-                              //splashColor: Colors.red,
-                              onPressed: () {
-                                _navigateToEditScreen(context, widget.salesInvoiceH);
-                              },
-                              child: const Text('Edit', style: TextStyle(color: Colors.white)),
-                             // color: Colors.blue,
+                            Container(
+                              height: 55,
+                              width: 115,
+                              child: ElevatedButton.icon(
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                  size: 22.0,
+
+                                ),
+                                label: const Text('Edit', style: TextStyle(color: Colors.white, fontSize: 18.0)),
+                                onPressed: () {
+                                  _navigateToEditScreen(context, widget.salesInvoiceH);
+                                },
+                            style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                ),
+                             ),
+                           ),
                             ),
-                            TextButton  (
-                              //clipBehavior: Colors.red,
-                              onPressed: () {
-                                _confirmDialog();
-                              },
-                              child: const Text('Delete', style: TextStyle(color: Colors.white)),
-                              //color: Colors.blue,
+                            const SizedBox(width: 45),
+                            Container(
+                              height: 55,
+                              width: 115,
+                              child: ElevatedButton.icon(
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                  size: 22.0,
+                                ),
+                                label: Text('delete'.tr(),
+                                    style: const TextStyle(color: Colors.white, fontSize: 16.0)),
+                                onPressed: () {
+                                  _confirmDialog();
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(210, 10, 46, 1)),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             )
+                            //_confirmDialog();
                           ],
                         ),
                       ),

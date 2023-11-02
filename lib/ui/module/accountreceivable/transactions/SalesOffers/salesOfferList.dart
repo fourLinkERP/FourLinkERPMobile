@@ -20,8 +20,8 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
 
-SalesOfferHApiService _apiService=new SalesOfferHApiService();
-SalesOfferDApiService _apiDService=new SalesOfferDApiService();
+SalesOfferHApiService _apiService= SalesOfferHApiService();
+SalesOfferDApiService _apiDService= SalesOfferDApiService();
 //Get SalesOfferH List
 
 class SalesOfferHListPage extends StatefulWidget {
@@ -93,7 +93,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Color.fromRGBO(240, 242, 246,1), // Main Color
+          backgroundColor: const Color.fromRGBO(240, 242, 246,1), // Main Color
           title: Container(
             height: 38,
             child: TextField(
@@ -101,13 +101,13 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: EdgeInsets.all(0),
+                  contentPadding: const EdgeInsets.all(0),
                   prefixIcon: Icon(Icons.search, color: Colors.grey.shade500,),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
                       borderSide: BorderSide.none
                   ),
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                       fontSize: 14,
                       color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
                   ),
@@ -156,7 +156,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSalesInvoiceHDataWidget()));
                   _navigateToAddScreen(context);
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.add,
                   color: FitnessAppTheme.white,
                   size: 46,
@@ -170,8 +170,8 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
 
   customerComponent({required SalesOfferH customer}) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20),
-      padding: EdgeInsets.only(top: 10, bottom: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -185,11 +185,11 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                       child: Image.asset('assets/images/quotion.png'),
                     )
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Column(
                     crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                     children: [
-                      Text(customer.customerCode!, style: TextStyle(
+                      Text(customer.customerCode!, style: const TextStyle(
                           color: Colors.white, fontWeight: FontWeight.w500)),
                       //SizedBox(height: 5,),
                       //Text(customer.customerNameEng!, style: TextStyle(color: Colors.grey[500])),
