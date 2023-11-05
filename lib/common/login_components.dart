@@ -6,7 +6,7 @@ Widget defaultFormField({
   bool isPassword = false,
   String? Function(String?)? validate,
   required String label,
-  required IconData prefix,
+  IconData? prefix,
   required Color colors,
   IconData? suffix,
   VoidCallback? suffixPressed,

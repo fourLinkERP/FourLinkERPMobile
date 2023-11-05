@@ -1721,8 +1721,7 @@ class _AddSalesInvoiceHDataWidgetState
 
 
     //Customers
-    Future<List<Customer>> futureCustomer = _customerApiService.getCustomers()
-        .then((data) {
+    Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
       //print(customers.length.toString());
       //getCustomerData();
