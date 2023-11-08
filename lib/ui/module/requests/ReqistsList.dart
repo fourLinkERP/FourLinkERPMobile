@@ -17,34 +17,22 @@ class _RequestsState extends State<Requests> {
     return DefaultTabController(
       length: 3,
       child: Scaffold(
-        appBar:AppBar(
+        appBar: AppBar(
           centerTitle: true,
-          title: Expanded(
-            child: Row(
-              crossAxisAlignment:langId==1? CrossAxisAlignment.end :CrossAxisAlignment.start,
-              children: [
-                Image.asset('assets/images/logowhite2.png', scale: 3,),
-                const SizedBox(
-                  width: 1,
-                ),
-                Padding(
-                  padding:const EdgeInsets.only(top: 5),
-                  child: Expanded(
-                    child: Text('Requests'.tr(),style: const TextStyle(color: Colors.white),),
-                  ),
-                )
-              ],
-            ),
-          ),
-          bottom: const TabBar(
+          title:ListTile(
+                leading: Image.asset('assets/images/logowhite2.png', scale: 3),
+                title: Text('Requests'.tr(),
+                  style: const TextStyle(color: Colors.white),),
+              ),
+          bottom: TabBar(
             indicatorColor: Colors.white,
             tabs: [
-              Tab(child: Text("New Request",style: TextStyle(color:Colors.white ),),),
-              Tab(child: Text("My Requests",style: TextStyle(color:Colors.white )),),
-              Tab(child: Text("My Duties",style: TextStyle(color:Colors.white )),),
+              Tab(child: Text("New Request".tr(),style: const TextStyle(color:Colors.white ),),),
+              Tab(child: Text("My Requests".tr(),style: const TextStyle(color:Colors.white )),),
+              Tab(child: Text("My Duties".tr(),style: const TextStyle(color:Colors.white )),),
             ],
           ),
-          backgroundColor: const Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
         ),
         body: const TabBarView(
           children: [

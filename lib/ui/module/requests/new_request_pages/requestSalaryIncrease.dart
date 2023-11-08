@@ -14,24 +14,12 @@ class _RequestSalaryState extends State<RequestSalary> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Expanded(
-          child: Row(
-            crossAxisAlignment: langId == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-            children: [
-              Image.asset('assets/images/logowhite2.png', scale: 3,),
-              const SizedBox(
-                width: 1,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: Expanded(
-                  child: Text('Request Salary Increase'.tr(),
-                    style: const TextStyle(color: Colors.white),),
-                ),
-              )
-            ],
-          ),
-        ),
+        title: ListTile(
+              leading: Image.asset('assets/images/logowhite2.png', scale: 3),
+              title: Text('Request Salary Increase'.tr(),
+                style: const TextStyle(color: Colors.white),),
+            ),
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
       ),
 
     );

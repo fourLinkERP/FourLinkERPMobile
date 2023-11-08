@@ -6,7 +6,7 @@ class MyDuties extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: ListView(
-        children:[
+        children:const [
           Text('New Duuties  Page', style: TextStyle(color: Colors.black),)
         ]
       )

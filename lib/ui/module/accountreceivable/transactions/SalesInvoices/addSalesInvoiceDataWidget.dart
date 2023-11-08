@@ -203,7 +203,7 @@ class _AddSalesInvoiceHDataWidgetState
           saveInvoice(context);
         },
         child: Container(
-          // alignment: Alignment.center,s
+          // alignment: Alignment.center
           decoration: BoxDecoration(
             color: FitnessAppTheme.nearlyDarkBlue,
             gradient: LinearGradient(
@@ -236,7 +236,6 @@ class _AddSalesInvoiceHDataWidgetState
         centerTitle: true,
         title: Row(crossAxisAlignment: langId == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-
             Image.asset('assets/images/logowhite2.png', scale: 3,),
             const SizedBox(
               width: 1,
@@ -247,7 +246,6 @@ class _AddSalesInvoiceHDataWidgetState
               child: Text('sales_invoice'.tr(),
                 style: const TextStyle(color: Colors.white),),
             )
-
           ],
         ),
         backgroundColor: const Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE

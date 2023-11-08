@@ -3,7 +3,6 @@ import 'package:fourlinkmobileapp/models/dashboard/dashboard_slider_data.dart';
 import 'package:fourlinkmobileapp/ui/general/GlPage.dart';
 import 'package:fourlinkmobileapp/ui/general/InventoryPage.dart';
 
-import '../../../main.dart';
 import '../../theme/fitness_app_theme.dart';
 import '../../helpers/hex_decimal.dart';
 import '../../ui/general/PurchasePage.dart';
@@ -159,7 +158,7 @@ class MealsView extends StatelessWidget {
                               Text(
                                 dashboardSliderListData!.titleTxt,
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontFamily: FitnessAppTheme.fontName,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
@@ -177,7 +176,7 @@ class MealsView extends StatelessWidget {
                                     children: <Widget>[
                                       Text(
                                         dashboardSliderListData!.meals!.join('\n'),
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontFamily: FitnessAppTheme.fontName,
                                           fontWeight: FontWeight.w500,
                                           fontSize: 10,
@@ -197,7 +196,7 @@ class MealsView extends StatelessWidget {
                                         Text(
                                           dashboardSliderListData!.kacl.toString(),
                                           textAlign: TextAlign.center,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontFamily: FitnessAppTheme.fontName,
                                             fontWeight: FontWeight.w500,
                                             fontSize: 24,
@@ -230,7 +229,7 @@ class MealsView extends StatelessWidget {
                                           BoxShadow(
                                               color: FitnessAppTheme.nearlyBlack
                                                   .withOpacity(0.4),
-                                              offset: Offset(8.0, 8.0),
+                                              offset: const Offset(8.0, 8.0),
                                               blurRadius: 8.0),
                                         ],
                                       ),

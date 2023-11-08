@@ -1,6 +1,5 @@
 import'package:flutter/material.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/additionalRequest.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/requestAdvance.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/requestSalaryIncrease.dart';
@@ -59,7 +58,7 @@ class NewRequest extends StatelessWidget {
             onPressed: () {
               Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestSalary()));
             },
-            child: Text('Request a salary increase'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
+            child: Text('Request salary increase'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
           ),
           const SizedBox(height: 30),
           ElevatedButton(

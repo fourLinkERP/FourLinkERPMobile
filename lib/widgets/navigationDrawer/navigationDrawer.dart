@@ -70,20 +70,20 @@ class _navigationDrawerState extends State<navigationDrawer> {
 
           createDrawerBodyItem(
             icon: Icons.content_paste_go,
-            text: 'Requests',
+            text: 'Requests'.tr(),
             onTap: () =>
                 Navigator.push(context, MaterialPageRoute(builder: (context) =>  Requests()),)
           ),
           Divider(),
           createDrawerBodyItem(
             icon: Icons.notifications_active,
-            text: 'Notifications',
+            text: 'Notifications'.tr(),
             onTap: () =>
                 Navigator.pushReplacementNamed(context, pageRoutes.notification),
           ),
           createDrawerBodyItem(
             icon: Icons.contact_phone,
-            text: 'Contact Info',
+            text: 'Contact Info'.tr(),
             onTap: () =>
                 Navigator.pushReplacementNamed(context, pageRoutes.contact),
           ),
@@ -118,19 +118,11 @@ class _navigationDrawerState extends State<navigationDrawer> {
                                 HomeScreen())),
 
                 );
-
-
-
               }
               else    {
-
                 currentLanguage='en';
                 langId=2;
-
                 print('english applied');
-
-
-
                 print(langId.toString());
                 translator.setNewLanguage(context,newLanguage:currentLanguage,restart: false, remember: true).then((value) =>
                     Navigator.pushReplacement(
@@ -138,7 +130,6 @@ class _navigationDrawerState extends State<navigationDrawer> {
                         MaterialPageRoute(
                             builder: (context) =>
                                 HomeScreen())),
-
                 );
               }
             },
