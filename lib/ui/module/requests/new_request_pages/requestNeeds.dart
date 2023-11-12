@@ -3,26 +3,25 @@ import 'package:fourlinkmobileapp/common/login_components.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-class AdditionalRequest extends StatefulWidget {
-  const AdditionalRequest({Key? key}) : super(key: key);
+class RequestNeeds extends StatefulWidget {
+  const RequestNeeds({Key? key}) : super(key: key);
 
   @override
-  State<AdditionalRequest> createState() => _AdditionalRequestState();
+  State<RequestNeeds> createState() => _RequestNeedsState();
 }
 
-class _AdditionalRequestState extends State<AdditionalRequest> {
+class _RequestNeedsState extends State<RequestNeeds> {
 
-  String _dropdownValue_job = 'Employee 1';
+  String? vacationDate;
+  String _dropdownValue_request = 'Section 1';
   String _dropdownValue_cost = 'cost 1';
-  String _dropdownValue_cost1 = 'cost 1';
-  String _dropdownValue_cost2 = 'cost 1';
 
-  final itemsJob = [
-    'Employee 1',
-    'Employee 2',
-    'Employee 3',
-    'Employee 4',
-    'Employee 5',
+  final _items_request_section = [
+    'Section 1',
+    'Section 2',
+    'Section 3',
+    'Section 4',
+    'Section 5',
   ];
   final _items_cost = [
     'cost 1',
@@ -32,17 +31,12 @@ class _AdditionalRequestState extends State<AdditionalRequest> {
     'cost 5',
   ];
 
-  String? vacationDate;
-  String? hiringDate;
-  String? lastAdvanceDate;
-  String? countingDate;
-
   final _dateController = TextEditingController();
   final _fileController = TextEditingController();
-  final _yearController = TextEditingController();
-  final _monthController = TextEditingController();
+  final _exportController = TextEditingController();
   final _messageController = TextEditingController();
-  final _hoursController = TextEditingController();
+  final _subjectController = TextEditingController();
+  final _requiredController = TextEditingController();
   final _reasonController = TextEditingController();
 
 
@@ -53,12 +47,12 @@ class _AdditionalRequestState extends State<AdditionalRequest> {
         centerTitle: true,
         title: ListTile(
           leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-          title: Text('Additional Request'.tr(),
+          title: Text('Request Needs'.tr(),
             style: const TextStyle(color: Colors.white),),
         ),
         backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
       ),
-      body:Column(
+      body: Column(
         children:[
           const SizedBox(height:20),
           Expanded(
@@ -114,47 +108,61 @@ class _AdditionalRequestState extends State<AdditionalRequest> {
                 ),
                 const SizedBox(height: 12),
                 ListTile(
-                  leading: Text("Year: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  leading: Text("Export number: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   title: SizedBox(
                     width: 220,
                     height: 45,
                     child: defaultFormField(
-                      controller: _yearController,
-                      label: 'Enter year'.tr(),
+                      controller: _exportController,
+                      label: 'Enter export Number'.tr(),
                       type: TextInputType.number,
                       colors: Colors.blueGrey,
                       //prefix: null,
                       validate: (String? value) {
                         if (value!.isEmpty) {
-                          return 'Year must be non empty';
+                          return 'export number must be non empty';
                         }
                         return null;
                       },
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 12,),
                 ListTile(
-                  leading: Text("Month: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                  title: SizedBox(
+                  leading: Text("Request section: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  trailing: Container(
                     width: 220,
-                    height: 45,
-                    child: defaultFormField(
-                      controller: _monthController,
-                      label: 'Enter month'.tr(),
-                      type: TextInputType.number,
-                      colors: Colors.blueGrey,
-                      //prefix: null,
-                      validate: (String? value) {
-                        if (value!.isEmpty) {
-                          return 'Month must be non empty';
-                        }
-                        return null;
-                      },
+                    height: 55,
+                    decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: DropdownButton(
+                        items: _items_request_section.map((String item) {
+                          return DropdownMenuItem(
+                            value: item,
+                            child: Text(item),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue){
+                          setState(() {
+                            _dropdownValue_request = newValue!;
+                          });
+                        },
+                        value: _dropdownValue_request,
+                        borderRadius: BorderRadius.circular(10),
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        // iconSize: 20,
+                        style: const TextStyle(
+                          //fontSize: 15,
+                          color: Colors.black,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 12,),
                 ListTile(
                   leading: Text("message: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   trailing: SizedBox(
@@ -201,81 +209,9 @@ class _AdditionalRequestState extends State<AdditionalRequest> {
                         value: _dropdownValue_cost,
                         borderRadius: BorderRadius.circular(10),
                         icon: const Icon(Icons.keyboard_arrow_down),
+                        // iconSize: 20,
                         style: const TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  margin: const EdgeInsets.only(bottom: 12),
-                  padding: const EdgeInsets.all(10),
-                  height: 50,
-                  color: Colors.pink[50],
-                  child: Text('The Employees'.tr(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20 ),),
-
-                ),
-                ListTile(
-                  leading: Text("Costs: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                  trailing: Container(
-                    width: 220,
-                    height: 55,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: DropdownButton(
-                        items: _items_cost.map((String item) {
-                          return DropdownMenuItem(
-                            value: item,
-                            child: Text(item),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue){
-                          setState(() {
-                            _dropdownValue_cost1 = newValue!;
-                          });
-                        },
-                        value: _dropdownValue_cost1,
-                        borderRadius: BorderRadius.circular(10),
-                        icon: const Icon(Icons.keyboard_arrow_down),
-                        style: const TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                ListTile(
-                  leading: Text("Employee: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                  trailing: Container(
-                    width: 220,
-                    height: 55,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: DropdownButton(
-                        items: itemsJob.map((String item) {
-                          return DropdownMenuItem(
-                            value: item,
-                            child: Text(item),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue){
-                          setState(() {
-                            _dropdownValue_job = newValue!;
-                          });
-                        },
-                        value: _dropdownValue_job,
-                        borderRadius: BorderRadius.circular(10),
-                        icon: const Icon(Icons.keyboard_arrow_down),
-                        style: const TextStyle(
+                          //fontSize: 15,
                           color: Colors.black,
                         ),
                       ),
@@ -284,59 +220,47 @@ class _AdditionalRequestState extends State<AdditionalRequest> {
                 ),
                 const SizedBox(height: 12,),
                 ListTile(
-                  leading: Text("Cost: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                  trailing: Container(
+                  leading: Text("The subject: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  trailing: SizedBox(
                     width: 220,
                     height: 55,
-                    decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: Center(
-                      child: DropdownButton(
-                        items: _items_cost.map((String item) {
-                          return DropdownMenuItem(
-                            value: item,
-                            child: Text(item),
-                          );
-                        }).toList(),
-                        onChanged: (String? newValue){
-                          setState(() {
-                            _dropdownValue_cost2 = newValue!;
-                          });
-                        },
-                        value: _dropdownValue_cost2,
-                        borderRadius: BorderRadius.circular(10),
-                        icon: const Icon(Icons.keyboard_arrow_down),
-                        style: const TextStyle(
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                ListTile(
-                  leading: Text("Number of hours: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                  title: SizedBox(
-                    width: 220,
-                    height: 45,
                     child: defaultFormField(
-                      controller: _hoursController,
-                      label: 'Enter'.tr(),
-                      type: TextInputType.number,
+                      controller: _subjectController,
+                      label: 'subject'.tr(),
+                      type: TextInputType.text,
                       colors: Colors.blueGrey,
                       //prefix: null,
                       validate: (String? value) {
                         if (value!.isEmpty) {
-                          return 'file number must be non empty';
+                          return 'subject must be non empty';
                         }
                         return null;
                       },
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 12,),
+                ListTile(
+                  leading: Text("Required conditions: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  trailing: SizedBox(
+                    width: 220,
+                    height: 55,
+                    child: defaultFormField(
+                      controller: _requiredController,
+                      label: 'Enter'.tr(),
+                      type: TextInputType.text,
+                      colors: Colors.blueGrey,
+                      //prefix: null,
+                      validate: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'conditions must be non empty';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12,),
                 ListTile(
                   leading: Text("The reason: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   trailing: SizedBox(
@@ -357,9 +281,7 @@ class _AdditionalRequestState extends State<AdditionalRequest> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
-
-              ]
+              ],
             )
           ),
           const SizedBox(height: 30,),
@@ -384,7 +306,7 @@ class _AdditionalRequestState extends State<AdditionalRequest> {
           ),
           const SizedBox(height: 30),
         ]
-      ),
+      )
 
     );
   }

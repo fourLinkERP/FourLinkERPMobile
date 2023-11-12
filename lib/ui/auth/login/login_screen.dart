@@ -466,7 +466,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: GestureDetector(
                                   onTap: () async {
 
-                                    startQuickLogin();
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                                    //startQuickLogin();
 
                                   },
                                   child: Text(
@@ -779,10 +780,7 @@ class _LoginScreenState extends State<LoginScreen> {
         setCompanyGeneralEmailSetup();
         print('Yes :');
 
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    HomeScreen()));
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
       }
     }
 

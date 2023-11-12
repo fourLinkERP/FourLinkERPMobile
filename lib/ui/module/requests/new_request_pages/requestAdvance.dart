@@ -15,7 +15,7 @@ class _RequestAdvanceState extends State<RequestAdvance> {
 
   String _dropdownValue_job = 'Employee 1';
 
-  final _items_job = [
+  final itemsJob = [
     'Employee 1',
     'Employee 2',
     'Employee 3',
@@ -40,6 +40,11 @@ class _RequestAdvanceState extends State<RequestAdvance> {
   final _agreedAmountOfAdvanceController = TextEditingController();
   final _countingDateController = TextEditingController();
   final _employeeBalanceController = TextEditingController();
+  final _installmentController = TextEditingController();
+  final _advanceBalanceController = TextEditingController();
+  final _reasonController = TextEditingController();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +124,7 @@ class _RequestAdvanceState extends State<RequestAdvance> {
                     ),
                     child: Center(
                       child: DropdownButton(
-                        items: _items_job.map((String item) {
+                        items: itemsJob.map((String item) {
                           return DropdownMenuItem(
                             value: item,
                             child: Text(item),
@@ -373,12 +378,55 @@ class _RequestAdvanceState extends State<RequestAdvance> {
                     ),
                   ),
                 ),
+
+                const SizedBox(height: 12),
+                ListTile(
+                  leading: Text("Installment value: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  trailing: SizedBox(
+                    width: 220,
+                    height: 45,
+                    child: defaultFormField(
+                      controller: _installmentController,
+                      label: 'value'.tr(),
+                      type: TextInputType.number,
+                      colors: Colors.blueGrey,
+                      //prefix: null,
+                      validate: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'installment value must be non empty';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                ListTile(
+                  leading: Text("Advance balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  trailing: SizedBox(
+                    width: 220,
+                    height: 45,
+                    child: defaultFormField(
+                      controller: _advanceBalanceController,
+                      label: 'value'.tr(),
+                      type: TextInputType.number,
+                      colors: Colors.blueGrey,
+                      //prefix: null,
+                      validate: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'advance balance must be non empty';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 12),
                 ListTile(
                   leading: Text("Employee balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   trailing: SizedBox(
                     width: 220,
-                    height: 55,
+                    height: 45,
                     child: defaultFormField(
                       controller: _employeeBalanceController,
                       label: 'employee balance'.tr(),
@@ -394,6 +442,49 @@ class _RequestAdvanceState extends State<RequestAdvance> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 12),
+                ListTile(
+                  leading: Text("The reason: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  trailing: SizedBox(
+                    width: 220,
+                    height: 55,
+                    child: defaultFormField(
+                      controller: _reasonController,
+                      label: 'Enter'.tr(),
+                      type: TextInputType.text,
+                      colors: Colors.blueGrey,
+                      //prefix: null,
+                      validate: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'reason must be non empty';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                ListTile(
+                  leading: Text("The requester notes: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  trailing: SizedBox(
+                    width: 220,
+                    height: 55,
+                    child: defaultFormField(
+                      controller: _reasonController,
+                      label: 'notes'.tr(),
+                      type: TextInputType.text,
+                      colors: Colors.blueGrey,
+                      //prefix: null,
+                      validate: (String? value) {
+                        if (value!.isEmpty) {
+                          return 'notes must be non empty';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ),
+
 
               ]
             ),

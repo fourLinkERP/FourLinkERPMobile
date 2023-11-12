@@ -172,7 +172,7 @@ class _ItemListPageState extends State<ItemListPage> {
                       child: Image.asset('assets/fitness_app/clients.png' ), //Image.asset('assets/fitness_app/products.png'),
                     )
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(width: 8),
                 Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -328,7 +328,7 @@ class _ItemListPageState extends State<ItemListPage> {
                                           icon: const Icon(
                                             Icons.edit,
                                             color: Colors.white,
-                                            size: 20.0,
+                                            size: 18.0,
                                             weight: 10,
                                           ),
                                           label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),//color: Color.fromRGBO(0, 136, 134, 1)
@@ -349,13 +349,13 @@ class _ItemListPageState extends State<ItemListPage> {
                                               )
                                           ),
                                         )),
-                                    const SizedBox(width: 5),
+                                    const SizedBox(width: 3),
                                     Center(
                                         child: ElevatedButton.icon(
                                           icon: const Icon(
                                             Icons.delete,
                                             color: Colors.white,
-                                            size: 20.0,
+                                            size: 18.0,
                                             weight: 10,
                                           ),
                                           label: Text('delete'.tr(),style: const TextStyle(color: Colors.white) ),
@@ -376,13 +376,13 @@ class _ItemListPageState extends State<ItemListPage> {
                                               )
                                           ),
                                         )),
-                                    const SizedBox(width: 5),
+                                    const SizedBox(width: 3),
                                     Center(
                                         child: ElevatedButton.icon(
                                           icon: const Icon(
                                             Icons.print,
                                             color: Colors.white,
-                                            size: 20.0,
+                                            size: 18.0,
                                             weight: 10,
                                           ),
                                           label: Text('print'.tr(),style:const TextStyle(color: Colors.white) ),

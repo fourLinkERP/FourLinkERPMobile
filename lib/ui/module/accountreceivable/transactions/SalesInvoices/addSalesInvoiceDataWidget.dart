@@ -263,9 +263,7 @@ class _AddSalesInvoiceHDataWidgetState
                     child: Column(
                       crossAxisAlignment: langId == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                       children: <Widget>[
-                        const SizedBox(height: 20),
-                        headLines(number: '01', title: 'invoice_info'.tr()),
-
+                        //const SizedBox(height: 20),
 
                         Form(
                             key: _dropdownTypeFormKey,
@@ -385,8 +383,6 @@ class _AddSalesInvoiceHDataWidgetState
                             ),
                           ],
                         ),
-                        const SizedBox(height: 30),
-                        headLines(number: '02', title: 'customer_info'.tr()),
                         const SizedBox(height: 10),
                         //Align(child: Text('customer'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
 
@@ -461,8 +457,6 @@ class _AddSalesInvoiceHDataWidgetState
                             ],
                           ),
                         ),
-                        const SizedBox(height: 25),
-                        headLines(number: '03', title: 'invoice_details'.tr()),
                         const SizedBox(height: 15),
                         Row(
                           children: [
@@ -471,11 +465,10 @@ class _AddSalesInvoiceHDataWidgetState
                                 child: Row(
                                   children: [
                                     Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Items :".tr(),
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold))),
-                                    const SizedBox(width: 10),
+                                            style: const TextStyle(fontWeight: FontWeight.bold))),
+                                    const SizedBox(width: 5),
                                     SizedBox(
-                                      width: 100,
+                                      width: 85,
                                       child: DropdownSearch<Item>(
                                         selectedItem: itemItem,
                                         popupProps: PopupProps.menu(
@@ -554,9 +547,9 @@ class _AddSalesInvoiceHDataWidgetState
                                   children: [
                                     Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Unit name :".tr(),
                                             style: const TextStyle(fontWeight: FontWeight.bold))),
-                                    const SizedBox(width: 10),
+                                    const SizedBox(width: 5),
                                     SizedBox(
-                                      width: 100,
+                                      width: 85,
                                       child: DropdownSearch<Unit>(
                                         selectedItem: unitItem,
                                         popupProps: PopupProps.menu(

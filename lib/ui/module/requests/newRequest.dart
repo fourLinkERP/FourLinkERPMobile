@@ -4,6 +4,7 @@ import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/additiona
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/requestAdvance.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/requestSalaryIncrease.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/requestVacation.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/requestNeeds.dart';
 class NewRequest extends StatelessWidget {
   const NewRequest({Key? key}) : super(key: key);
 
@@ -77,6 +78,21 @@ class NewRequest extends StatelessWidget {
             child: Text('Additional request'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
           ),
           const SizedBox(height: 30),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              fixedSize: const Size(80, 55),
+              backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+              padding: const EdgeInsets.symmetric(
+                  vertical: 10.0, horizontal: 20.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(80),
+              ),
+            ),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestNeeds()));
+            },
+            child: Text('Request needs'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
+          ),
           
         ],
       ),

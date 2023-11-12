@@ -60,6 +60,7 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
       },
 
         child:Container(
+
           // alignment: Alignment.center,s
           decoration: BoxDecoration(
             color: FitnessAppTheme.nearlyDarkBlue,
@@ -79,7 +80,7 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
                   blurRadius: 16.0),
             ],
           ),
-          child: Material(
+          child: const Material(
             color: Colors.transparent,
             child: Icon(
               Icons.data_saver_on,
@@ -109,35 +110,33 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Text('add_new_Items'.tr(),style:
-                  TextStyle(color: Colors.white),),
+                  const TextStyle(color: Colors.white),),
                 ),
               )
 
             ],
           ),
         ),
-        backgroundColor: Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
       ),
 
       body: Form(
         key: _addFormKey,
         child: SingleChildScrollView(
           child: Container(
+            margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
             // padding: EdgeInsets.all(20.0),
             child: Card(
                 child: Container(
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     width: 440,
                     child: Column(
-
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 5, 0, 0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-
                             children: <Widget>[
-
                               Text('code'.tr()),
                               TextFormField(
                                 controller: _itemCodeController,

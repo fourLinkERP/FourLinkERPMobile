@@ -124,7 +124,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
             ),
           ),
         ),
-        body: Build_customers(),
+        body: SafeArea(child: Build_customers()),
         floatingActionButton: FloatingActionButton(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(90.0))),
@@ -178,7 +178,8 @@ class _CustomerListPageState extends State<CustomerListPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(children: [
+          Row(
+              children: [
             Container(
                 width: 60,
                 height: 60,
@@ -279,7 +280,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
     } else {
       return Container(
         padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
-        color: const Color.fromRGBO(240, 242, 246, 1), // Main Color
+        color: const Color.fromRGBO(240, 242, 246, 1),
         child: ListView.builder(
             itemCount: _customers == null ? 0 : _customers.length,
             itemBuilder: (BuildContext context, int index) {
@@ -301,6 +302,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
                         )),
                     subtitle: Column(
                       children: <Widget>[
+
                         Container(
                             height: 20,
                             color: Colors.white30,
@@ -316,130 +318,135 @@ class _CustomerListPageState extends State<CustomerListPage> {
                               children: [
                                 Text('englishName'.tr() + " : " + _customers[index].customerNameEng.toString()),
                               ],
-                            )),
+                            )
+                        ),
                         const SizedBox(width: 5),
                         Container(
                             child: Row(
-                          children: <Widget>[
-                            Center(
-                                child: ElevatedButton.icon(
-                              icon: const Icon(
-                                Icons.edit,
-                                color: Colors.white,
-                                size: 20.0,
-                                weight: 10,
-                              ),
-                              label: Text('edit'.tr(),
-                                  style: const TextStyle(
+                              children: <Widget>[
+                                Center(
+                                    child: ElevatedButton.icon(
+                                  icon: const Icon(
+                                    Icons.edit,
                                     color: Colors.white,
-                                  )),
-                              onPressed: () {
-                                _navigateToEditScreen(context, _customers[index]);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
+                                    size: 18.0,
+                                    weight: 10,
                                   ),
-                                  padding: const EdgeInsets.all(7),
-                                  backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
-                                  foregroundColor: Colors.black,
-                                  elevation: 0,
-                                  side: const BorderSide(width: 1,
-                                      color: Color.fromRGBO(0, 136, 134, 1))),
-                            )),
-                            const SizedBox(width: 5),
-                            Center(
-                                child: ElevatedButton.icon(
-                              icon: const Icon(
-                                Icons.delete,
-                                color: Colors.white,
-                                size: 20.0,
-                                weight: 10,
-                              ),
-                              label: Text('delete'.tr(),
-                                  style: const TextStyle(color: Colors.white)),
-                              onPressed: () {
-                                _deleteItem(context, _customers[index].id);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
+                                  label: Text('edit'.tr(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                      )),
+                                  onPressed: () {
+                                    _navigateToEditScreen(context, _customers[index]);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      padding: const EdgeInsets.all(7),
+                                      backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
+                                      foregroundColor: Colors.black,
+                                      elevation: 0,
+                                      side: const BorderSide(width: 1,
+                                          color: Color.fromRGBO(0, 136, 134, 1))),
+                                ),
+                                ),
+                                const SizedBox(width: 3),
+                                Center(
+                                    child: ElevatedButton.icon(
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                    size: 20.0,
+                                    weight: 10,
                                   ),
-                                  padding: const EdgeInsets.all(7),
-                                  backgroundColor:
-                                      const Color.fromRGBO(144, 16, 46, 1),
-                                  foregroundColor: Colors.black,
-                                  elevation: 0,
-                                  side: const BorderSide(
-                                      width: 1,
-                                      color: Color.fromRGBO(144, 16, 46, 1))),
-                            )),
-                            const SizedBox(width: 5),
-                            Center(
-                                child: ElevatedButton.icon(
-                              icon: const Icon(
-                                Icons.print,
-                                color: Colors.white,
-                                size: 20.0,
-                                weight: 10,
-                              ),
-                              label: Text('print'.tr(),
-                                  style: const TextStyle(color: Colors.white)),
-                              onPressed: () {
-                                //_navigateToPrintScreen(context,_customers[index]);
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
+                                  label: Text('delete'.tr(),
+                                      style: const TextStyle(color: Colors.white)),
+                                  onPressed: () {
+                                    _deleteItem(context, _customers[index].id);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      padding: const EdgeInsets.all(7),
+                                      backgroundColor:
+                                          const Color.fromRGBO(144, 16, 46, 1),
+                                      foregroundColor: Colors.black,
+                                      elevation: 0,
+                                      side: const BorderSide(
+                                          width: 1,
+                                          color: Color.fromRGBO(144, 16, 46, 1))),
+                                )),
+                                const SizedBox(width: 3),
+                                Center(
+                                    child: ElevatedButton.icon(
+                                  icon: const Icon(
+                                    Icons.print,
+                                    color: Colors.white,
+                                    size: 18.0,
+                                    weight: 10,
                                   ),
-                                  padding: const EdgeInsets.all(7),
-                                  backgroundColor: Colors.black87,
-                                  foregroundColor: Colors.black,
-                                  elevation: 0,
-                                  side: const BorderSide(
-                                      width: 1, color: Colors.black87)),
-                            )
-                            ),
+                                  label: Text('print'.tr(),
+                                      style: const TextStyle(color: Colors.white)),
+                                  onPressed: () {
+                                    //_navigateToPrintScreen(context,_customers[index]);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      padding: const EdgeInsets.all(7),
+                                      backgroundColor: Colors.black87,
+                                      foregroundColor: Colors.black,
+                                      elevation: 0,
+                                      side: const BorderSide(
+                                          width: 1, color: Colors.black87)),
+                                )
+                                ),
 
-                            // Container(
-                            //     child: Row(
-                            //       children: <Widget>[
-                            //         ElevatedButton(
-                            //           style: ButtonStyle(
-                            //               backgroundColor: MaterialStateProperty.all(Colors.blue),
-                            //               padding:
-                            //               MaterialStateProperty.all(const EdgeInsets.all(10)),
-                            //               textStyle: MaterialStateProperty.all(
-                            //                   const TextStyle(fontSize: 14, color: Colors.white))),
-                            //           child: Text('edit'.tr()),
-                            //           onPressed: () {
-                            //             _navigateToEditScreen(context,_customers[index]);
-                            //
-                            //           },
-                            //         ),
-                            //         SizedBox(width: 10),
-                            //         ElevatedButton(
-                            //           style: ButtonStyle(
-                            //               backgroundColor: MaterialStateProperty.all(Colors.redAccent),
-                            //               padding:
-                            //               MaterialStateProperty.all(const EdgeInsets.all(10)),
-                            //               textStyle: MaterialStateProperty.all(
-                            //                   const TextStyle(fontSize: 14, color: Colors.white))),
-                            //           child: Text('delete'.tr()),
-                            //           onPressed: () {
-                            //             _deleteItem(context,_customers[index].id);
-                            //
-                            //
-                            //           },
-                            //         ),
-                          ],
-                        ))
+                                // Container(
+                                //     child: Row(
+                                //       children: <Widget>[
+                                //         ElevatedButton(
+                                //           style: ButtonStyle(
+                                //               backgroundColor: MaterialStateProperty.all(Colors.blue),
+                                //               padding:
+                                //               MaterialStateProperty.all(const EdgeInsets.all(10)),
+                                //               textStyle: MaterialStateProperty.all(
+                                //                   const TextStyle(fontSize: 14, color: Colors.white))),
+                                //           child: Text('edit'.tr()),
+                                //           onPressed: () {
+                                //             _navigateToEditScreen(context,_customers[index]);
+                                //
+                                //           },
+                                //         ),
+                                //         SizedBox(width: 10),
+                                //         ElevatedButton(
+                                //           style: ButtonStyle(
+                                //               backgroundColor: MaterialStateProperty.all(Colors.redAccent),
+                                //               padding:
+                                //               MaterialStateProperty.all(const EdgeInsets.all(10)),
+                                //               textStyle: MaterialStateProperty.all(
+                                //                   const TextStyle(fontSize: 14, color: Colors.white))),
+                                //           child: Text('delete'.tr()),
+                                //           onPressed: () {
+                                //             _deleteItem(context,_customers[index].id);
+                                //
+                                //
+                                //           },
+                                //         ),
+
+              ],
+                            )
+                        )
                       ],
                     ),
                   ),
                 ),
               );
-            }),
+            }
+            ),
       );
     }
   }

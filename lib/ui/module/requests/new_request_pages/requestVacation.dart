@@ -23,6 +23,8 @@ class _RequestVacationState extends State<RequestVacation> {
   String? vacationDate;
   String? fromDate;
   String? toDate;
+  String? vacationReservedDate;
+  String? lastSalaryDate;
 
   final _items_job = [
     'Employee 1',
@@ -64,6 +66,10 @@ class _RequestVacationState extends State<RequestVacation> {
   final _vacationBalanceController = TextEditingController();
   final _allowedBalanceController = TextEditingController();
   final _employeeBalanceController = TextEditingController();
+  final _advanceBalanceController = TextEditingController();
+  final _reasonController = TextEditingController();
+  final _vacationReservedDateController = TextEditingController();
+  final _lastSalaryDateController =  TextEditingController();
 
 
 
@@ -470,6 +476,103 @@ class _RequestVacationState extends State<RequestVacation> {
                           validate: (String? value) {
                             if (value!.isEmpty) {
                               return 'employee balance must be non empty';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      leading: Text("Vacation date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                      trailing: SizedBox(
+                        width: 220,
+                        height: 55,
+                        child: textFormFields(
+                          hintText: 'Select Date'.tr(),
+                          controller: _vacationReservedDateController,
+                          //hintText: "date".tr(),
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1950),
+                                lastDate: DateTime(2050));
+
+                            if (pickedDate != null) {
+                              _vacationReservedDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                            }
+                          },
+                          onSaved: (val) {
+                            vacationReservedDate = val;
+                          },
+                          textInputType: TextInputType.datetime,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    ListTile(
+                      leading: Text("Advance balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                      trailing: SizedBox(
+                        width: 220,
+                        height: 45,
+                        child: defaultFormField(
+                          controller: _advanceBalanceController,
+                          label: 'value'.tr(),
+                          type: TextInputType.number,
+                          colors: Colors.blueGrey,
+                          //prefix: null,
+                          validate: (String? value) {
+                            if (value!.isEmpty) {
+                              return 'advance balance must be non empty';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    ListTile(
+                      leading: Text("Last salary date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                      trailing: SizedBox(
+                        width: 220,
+                        height: 55,
+                        child: textFormFields(
+                          hintText: 'Select Date'.tr(),
+                          controller: _lastSalaryDateController,
+                          //hintText: "date".tr(),
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1950),
+                                lastDate: DateTime(2050));
+
+                            if (pickedDate != null) {
+                              _lastSalaryDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                            }
+                          },
+                          onSaved: (val) {
+                            lastSalaryDate = val;
+                          },
+                          textInputType: TextInputType.datetime,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    ListTile(
+                      leading: Text("The requester notes: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                      trailing: SizedBox(
+                        width: 220,
+                        height: 55,
+                        child: defaultFormField(
+                          controller: _reasonController,
+                          label: 'notes'.tr(),
+                          type: TextInputType.text,
+                          colors: Colors.blueGrey,
+                          //prefix: null,
+                          validate: (String? value) {
+                            if (value!.isEmpty) {
+                              return 'notes must be non empty';
                             }
                             return null;
                           },

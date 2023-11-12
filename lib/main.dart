@@ -2,13 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:fourlinkmobileapp/cubit/app_cubit.dart';
 import 'package:fourlinkmobileapp/cubit/app_states.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import 'package:fourlinkmobileapp/network/cache_helper.dart';
-import 'package:fourlinkmobileapp/ui/module/accountReceivable/basicInputs/customers/editCustomerDataWidget.dart';
-import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesOffers/editSalesOfferDataWidget.dart';
 import 'package:fourlinkmobileapp/ui/module/basicinputs/basicInputsArea.dart';
 import 'package:fourlinkmobileapp/screens/business/reports.dart';
 import 'package:fourlinkmobileapp/screens/business/transactions.dart';
@@ -16,14 +12,12 @@ import 'package:fourlinkmobileapp/ui/contactus/contactus_screen.dart';
 import 'package:fourlinkmobileapp/ui/home/home_screen.dart';
 import 'package:fourlinkmobileapp/ui/splash/splash_screen.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-
 import 'common/globals.dart';
-import 'data/model/modules/module/accountreceivable/transactions/salesOffers/salesOfferH.dart';
 import 'screens/events/eventPage.dart';
 import 'screens/notifications/notificationPage.dart';
 import 'ui/profile/profile_screen.dart';
-import 'models/providers/customer_provider.dart';
 import 'package:fourlinkmobileapp/routes/pageRoute.dart';
+import 'package:device_preview/device_preview.dart';
 
 main() async {
 
@@ -45,7 +39,7 @@ main() async {
 
 
 
-  runApp(LocalizedApp(child: MyApp()));
+  runApp(LocalizedApp(child: DevicePreview(enabled: true, builder:(context)=> MyApp())));
 }
 
 

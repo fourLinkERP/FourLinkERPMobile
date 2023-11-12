@@ -98,7 +98,7 @@ class _SalesManListPageState extends State<SalesManListPage> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Color.fromRGBO(240, 242, 246,1), // Main Color
+          backgroundColor: const Color.fromRGBO(240, 242, 246,1), // Main Color
           title: Container(
             height: 38,
             child: TextField(
@@ -112,7 +112,7 @@ class _SalesManListPageState extends State<SalesManListPage> {
                       borderRadius: BorderRadius.circular(50),
                       borderSide: BorderSide.none
                   ),
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                       fontSize: 14,
                       color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
                   ),
