@@ -39,7 +39,7 @@ main() async {
 
 
 
-  runApp(LocalizedApp(child: DevicePreview(enabled: true, builder:(context)=> MyApp())));
+  runApp(LocalizedApp(child: DevicePreview(enabled: false, builder:(context)=> MyApp())));
 }
 
 

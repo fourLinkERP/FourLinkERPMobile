@@ -93,7 +93,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: const Color.fromRGBO(240, 242, 246,1), // Main Color
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
           title: Container(
             height: 38,
             child: TextField(
@@ -477,22 +477,22 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                                 children: <Widget>[
                                   Center(
                                       child: ElevatedButton.icon(
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.edit,
-                                          color: Color.fromRGBO(0, 136, 134, 1),
+                                          color: Colors.white,
                                           size: 20.0,
                                           weight: 10,
                                         ),
-                                        label: Text('edit'.tr(),style:TextStyle(color: Color.fromRGBO(0, 136, 134, 1)) ),
+                                        label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
                                         onPressed: () {
                                           _navigateToEditScreen(context,_salesOffers[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
-                                            shape: new RoundedRectangleBorder(
-                                              borderRadius: new BorderRadius.circular(5),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(5),
                                             ),
-                                            padding: EdgeInsets.all(7),
-                                            backgroundColor: Colors.white,
+                                            padding: const EdgeInsets.all(7),
+                                            backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
                                             foregroundColor: Colors.black,
                                             elevation: 0,
                                             side: const BorderSide(
@@ -501,25 +501,25 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                                             )
                                         ),
                                       )),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Center(
                                       child: ElevatedButton.icon(
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.delete,
-                                          color: Color.fromRGBO(144, 16, 46, 1),
+                                          color: Colors.white,
                                           size: 20.0,
                                           weight: 10,
                                         ),
-                                        label: Text('delete'.tr(),style:TextStyle(color: Color.fromRGBO(144, 16, 46, 1)) ),
+                                        label: Text('delete'.tr(),style:const TextStyle(color: Colors.white) ),
                                         onPressed: () {
                                           _deleteItem(context,_salesOffers[index].id);
                                         },
                                         style: ElevatedButton.styleFrom(
-                                            shape: new RoundedRectangleBorder(
-                                              borderRadius: new BorderRadius.circular(5),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(5),
                                             ),
-                                            padding: EdgeInsets.all(7),
-                                            backgroundColor: Colors.white,
+                                            padding: const EdgeInsets.all(7),
+                                            backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
                                             foregroundColor: Colors.black,
                                             elevation: 0,
                                             side: const BorderSide(
@@ -528,25 +528,25 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                                             )
                                         ),
                                       )),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Center(
                                       child: ElevatedButton.icon(
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.print,
-                                          color: Colors.black87,
+                                          color: Colors.white,
                                           size: 20.0,
                                           weight: 10,
                                         ),
-                                        label: Text('print'.tr(),style:TextStyle(color: Colors.black87) ),
+                                        label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
                                           _navigateToPrintScreen(context,_salesOffers[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
-                                            shape: new RoundedRectangleBorder(
-                                              borderRadius: new BorderRadius.circular(5),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(5),
                                             ),
-                                            padding: EdgeInsets.all(7),
-                                            backgroundColor: Colors.white,
+                                            padding: const EdgeInsets.all(7),
+                                            backgroundColor: Colors.black87,
                                             foregroundColor: Colors.black,
                                             elevation: 0,
                                             side: const BorderSide(

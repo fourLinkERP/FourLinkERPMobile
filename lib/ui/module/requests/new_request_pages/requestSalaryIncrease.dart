@@ -257,7 +257,7 @@ class _RequestSalaryState extends State<RequestSalary> {
                 ListTile(
                   leading: Text("Last advance date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   trailing: SizedBox(
-                    width: 220,
+                    width: 200,
                     height: 55,
                     child: textFormFields(
                       hintText: 'Select Date'.tr(),
@@ -348,7 +348,7 @@ class _RequestSalaryState extends State<RequestSalary> {
                 ListTile(
                   leading: Text("Advance balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   trailing: SizedBox(
-                    width: 220,
+                    width: 200,
                     height: 45,
                     child: defaultFormField(
                       controller: _advanceBalanceController,
@@ -369,7 +369,7 @@ class _RequestSalaryState extends State<RequestSalary> {
                 ListTile(
                   leading: Text("Employee balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   trailing: SizedBox(
-                    width: 220,
+                    width: 200,
                     height: 45,
                     child: defaultFormField(
                       controller: _employeeBalanceController,

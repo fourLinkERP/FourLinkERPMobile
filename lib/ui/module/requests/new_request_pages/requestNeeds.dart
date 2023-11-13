@@ -243,7 +243,7 @@ class _RequestNeedsState extends State<RequestNeeds> {
                 ListTile(
                   leading: Text("Required conditions: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   trailing: SizedBox(
-                    width: 220,
+                    width: 200,
                     height: 55,
                     child: defaultFormField(
                       controller: _requiredController,

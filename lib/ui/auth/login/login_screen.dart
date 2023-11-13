@@ -25,7 +25,7 @@ import 'package:fourlinkmobileapp/common/login_components.dart';
 
 Login? logenUserData;
 //APIS
-BranchApiService _branchApiService=new BranchApiService();
+BranchApiService _branchApiService= BranchApiService();
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //Variables
   bool isShow = false;
-  String Valuelang = "";
+  String valueLang = "";
 
   String langGroup = "";
 
@@ -255,8 +255,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           branchCode = int.parse(
                                               branchCodeSelectedValue
                                                   .toString());
-                                          print('current Branch Code Is :' +
-                                              branchCode.toString());
+                                          print('current Branch Code Is :' + branchCode.toString());
                                         },
 
                                         filterFn: (instance, filter) {
@@ -465,10 +464,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 alignment: Alignment.center,
                                 child: GestureDetector(
                                   onTap: () async {
-
-                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-                                    //startQuickLogin();
-
+                                    startQuickLogin();
                                   },
                                   child: Text(
                                     '<- الدخول السريع'.tr(),
@@ -531,17 +527,15 @@ class _LoginScreenState extends State<LoginScreen> {
       if (CompanyGeneralSetupData != null) {
         //////////////////////////
         if (CompanyGeneralSetupData.salesInvoicesTypeCode != null &&
-            !CompanyGeneralSetupData.salesInvoicesTypeCode
-                .toString()
-                .isEmpty) {
+            CompanyGeneralSetupData.salesInvoicesTypeCode.toString().isNotEmpty) {
           generalSetupSalesInvoicesTypeCode =
               CompanyGeneralSetupData.salesInvoicesTypeCode.toString();
         }
 
         if (CompanyGeneralSetupData.salesInvoicesReturnTypeCode != null &&
-            !CompanyGeneralSetupData.salesInvoicesReturnTypeCode
+            CompanyGeneralSetupData.salesInvoicesReturnTypeCode
                 .toString()
-                .isEmpty) {
+                .isNotEmpty) {
           generalSetupSalesInvoicesReturnTypeCode =
               CompanyGeneralSetupData.salesInvoicesReturnTypeCode.toString();
         }
@@ -549,33 +543,29 @@ class _LoginScreenState extends State<LoginScreen> {
 
         /////////////////////////
         if (CompanyGeneralSetupData.basicInputsVideoUrl != null &&
-            !CompanyGeneralSetupData.basicInputsVideoUrl
+            CompanyGeneralSetupData.basicInputsVideoUrl
                 .toString()
-                .isEmpty) {
+                .isNotEmpty) {
           basicInputsUrl =
               Uri.parse(CompanyGeneralSetupData.basicInputsVideoUrl.toString());
         }
 
         if (CompanyGeneralSetupData.basicInputsArabicDesc != null &&
-            !CompanyGeneralSetupData.basicInputsArabicDesc
+            CompanyGeneralSetupData.basicInputsArabicDesc
                 .toString()
-                .isEmpty) {
+                .isNotEmpty) {
           basicInputsArabicDesc =
               CompanyGeneralSetupData.basicInputsArabicDesc.toString();
         }
 
         if (CompanyGeneralSetupData.basicInputsEnglishDesc != null &&
-            !CompanyGeneralSetupData.basicInputsEnglishDesc
-                .toString()
-                .isEmpty) {
+            CompanyGeneralSetupData.basicInputsEnglishDesc.toString().isNotEmpty) {
           basicInputsEnglishDesc =
               CompanyGeneralSetupData.basicInputsEnglishDesc.toString();
         }
 
         if (CompanyGeneralSetupData.basicInputsVideoMinutes != null &&
-            !CompanyGeneralSetupData.basicInputsVideoMinutes
-                .toString()
-                .isEmpty) {
+            CompanyGeneralSetupData.basicInputsVideoMinutes.toString().isNotEmpty) {
           basicInputsVideoTime =
               CompanyGeneralSetupData.basicInputsVideoMinutes.toString();
         }
@@ -583,34 +573,26 @@ class _LoginScreenState extends State<LoginScreen> {
 
         ////////////////////////////////
         if (CompanyGeneralSetupData.transactionsVideoUrl != null &&
-            !CompanyGeneralSetupData.transactionsVideoUrl
-                .toString()
-                .isEmpty) {
+            CompanyGeneralSetupData.transactionsVideoUrl.toString().isNotEmpty) {
           transactionsUrl = Uri.parse(
               CompanyGeneralSetupData.transactionsVideoUrl.toString());
         }
 
         if (CompanyGeneralSetupData.transactionsArabicDesc != null &&
-            !CompanyGeneralSetupData.transactionsArabicDesc
-                .toString()
-                .isEmpty) {
+            CompanyGeneralSetupData.transactionsArabicDesc.toString().isNotEmpty) {
           transactionsArabicDesc =
               CompanyGeneralSetupData.transactionsArabicDesc.toString();
         }
 
         if (CompanyGeneralSetupData.transactionsEnglishDesc != null &&
-            !CompanyGeneralSetupData.transactionsEnglishDesc
-                .toString()
-                .isEmpty) {
+            CompanyGeneralSetupData.transactionsEnglishDesc.toString().isNotEmpty) {
           transactionsEnglishDesc =
               CompanyGeneralSetupData.transactionsEnglishDesc.toString();
         }
 
 
         if (CompanyGeneralSetupData.transactionsVideoMinutes != null &&
-            !CompanyGeneralSetupData.transactionsVideoMinutes
-                .toString()
-                .isEmpty) {
+            CompanyGeneralSetupData.transactionsVideoMinutes.toString().isNotEmpty) {
           transactionsVideoTime =
               CompanyGeneralSetupData.transactionsVideoMinutes.toString();
         }
@@ -618,33 +600,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
         /////////////////////////////////
         if (CompanyGeneralSetupData.reportsVideoUrl != null &&
-            !CompanyGeneralSetupData.reportsVideoUrl
-                .toString()
-                .isEmpty) {
+            CompanyGeneralSetupData.reportsVideoUrl.toString().isNotEmpty) {
           reportsUrl =
               Uri.parse(CompanyGeneralSetupData.reportsVideoUrl.toString());
         }
 
         if (CompanyGeneralSetupData.reportsVideoMinutes != null &&
-            !CompanyGeneralSetupData.reportsVideoMinutes
-                .toString()
-                .isEmpty) {
+            CompanyGeneralSetupData.reportsVideoMinutes.toString().isNotEmpty) {
           reportsVideoTime =
               CompanyGeneralSetupData.reportsVideoMinutes.toString();
         }
 
         if (CompanyGeneralSetupData.reportsArabicDesc != null &&
-            !CompanyGeneralSetupData.reportsArabicDesc
-                .toString()
-                .isEmpty) {
+            CompanyGeneralSetupData.reportsArabicDesc.toString().isNotEmpty) {
           reportsArabicDesc =
               CompanyGeneralSetupData.reportsArabicDesc.toString();
         }
 
         if (CompanyGeneralSetupData.reportsEnglishDesc != null &&
-            !CompanyGeneralSetupData.reportsEnglishDesc
-                .toString()
-                .isEmpty) {
+            CompanyGeneralSetupData.reportsEnglishDesc.toString().isNotEmpty) {
           reportsEnglishDesc =
               CompanyGeneralSetupData.reportsEnglishDesc.toString();
         }
@@ -695,13 +669,9 @@ class _LoginScreenState extends State<LoginScreen> {
           _passwordController.text);
 
       //Token
-      if (!log.token!.isEmpty) {
+      if (log.token!.isNotEmpty) {
         token = log.token!;
-        print('tokenz :' + token);
-        print('empCode :' + log.empCode.toString());
-
-        String url = baseUrl
-            .toString(); // Default APi Add By Nasr
+        String url = baseUrl.toString(); // Default APi Add By Nasr
         if (url.isEmpty) {
           String urlString = "http://www.sudokuano.net/api/"; // Default APi Add By Nasr
           baseUrl = Uri.parse(urlString);
@@ -720,24 +690,13 @@ class _LoginScreenState extends State<LoginScreen> {
           setCompanyGeneralSetup();
           setCompanyGeneralEmailSetup();
           print('Yes :');
-
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
         }
-        // else{
-        //   FN_showToast(context,employeeGroupStatus.statusMessage.toString(),Colors.black);
-        //
-        // }
-
       }
     }
     else{
       //Demo
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  HomeScreen()));
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
   }
 
@@ -751,13 +710,12 @@ class _LoginScreenState extends State<LoginScreen> {
         context, _emailController.text,
         _passwordController.text);
     print('TTT To GO 1');
-    if (!log.token!.isEmpty) {
+    if (log.token!.isNotEmpty) {
       print('TTT To GO 2');
       token = log.token!;
       branchCode = 1; // Default Branch Add By Nasr
       print('tokenz :' + token);
-      print(
-          'empCode :' + log.empCode.toString());
+      print('empCode :' + log.empCode.toString());
 
       String url = baseUrl
           .toString(); // Default APi Add By Nasr
@@ -779,7 +737,6 @@ class _LoginScreenState extends State<LoginScreen> {
         setCompanyGeneralSetup();
         setCompanyGeneralEmailSetup();
         print('Yes :');
-
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
       }
     }

@@ -263,7 +263,7 @@ class _RequestAdvanceState extends State<RequestAdvance> {
                 ListTile(
                   leading: Text("Last advance date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   trailing: SizedBox(
-                    width: 220,
+                    width: 200,
                     height: 55,
                     child: textFormFields(
                       hintText: 'Select Date'.tr(),
@@ -354,7 +354,7 @@ class _RequestAdvanceState extends State<RequestAdvance> {
                 ListTile(
                   leading: Text("Start counting date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   trailing: SizedBox(
-                    width: 220,
+                    width: 200,
                     height: 55,
                     child: textFormFields(
                       hintText: 'Select Date'.tr(),
@@ -383,7 +383,7 @@ class _RequestAdvanceState extends State<RequestAdvance> {
                 ListTile(
                   leading: Text("Installment value: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   trailing: SizedBox(
-                    width: 220,
+                    width: 200,
                     height: 45,
                     child: defaultFormField(
                       controller: _installmentController,
@@ -404,7 +404,7 @@ class _RequestAdvanceState extends State<RequestAdvance> {
                 ListTile(
                   leading: Text("Advance balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   trailing: SizedBox(
-                    width: 220,
+                    width: 200,
                     height: 45,
                     child: defaultFormField(
                       controller: _advanceBalanceController,
@@ -425,7 +425,7 @@ class _RequestAdvanceState extends State<RequestAdvance> {
                 ListTile(
                   leading: Text("Employee balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   trailing: SizedBox(
-                    width: 220,
+                    width: 200,
                     height: 45,
                     child: defaultFormField(
                       controller: _employeeBalanceController,
@@ -467,7 +467,7 @@ class _RequestAdvanceState extends State<RequestAdvance> {
                 ListTile(
                   leading: Text("The requester notes: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   trailing: SizedBox(
-                    width: 220,
+                    width: 195,
                     height: 55,
                     child: defaultFormField(
                       controller: _reasonController,

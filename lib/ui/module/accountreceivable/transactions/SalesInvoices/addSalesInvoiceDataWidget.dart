@@ -673,7 +673,7 @@ class _AddSalesInvoiceHDataWidgetState
                         const SizedBox(height: 20),
                         Row(
                           children:[
-                        Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('total :'.tr(),
+                        /*Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('total :'.tr(),
                             style: const TextStyle(fontWeight: FontWeight.bold))),
                         const SizedBox(width: 15),
 
@@ -692,12 +692,12 @@ class _AddSalesInvoiceHDataWidgetState
                             // onChanged: (value) {},
                           ),
                         ),
-                        const SizedBox(width: 25),
+                        const SizedBox(width: 10),*/
                         Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('discount :'.tr(),
                             style: const TextStyle(fontWeight: FontWeight.bold))),
-                            const SizedBox(width: 10),
+                        const SizedBox(width: 5),
                         SizedBox(
-                          width: 100,
+                          width: 85,
                           child: TextFormField(
                             controller: _displayDiscountController,
                             keyboardType: TextInputType.number,
@@ -722,9 +722,9 @@ class _AddSalesInvoiceHDataWidgetState
                         ),
                         ],
                     ),
-                        const SizedBox(height: 20),
+                       // const SizedBox(height: 20),
 
-                        Row(
+                        /*Row(
                           children: [
                             Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('netAfterDiscount :'.tr(),
                                 style: const TextStyle(fontWeight: FontWeight.bold))),
@@ -742,9 +742,9 @@ class _AddSalesInvoiceHDataWidgetState
                             ),
                            ),
                           ],
-                        ),
+                        ),*/
 
-                        const SizedBox(height: 20),
+                       /* const SizedBox(height: 20),
                             Row(
                               children: [
                                 Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('vat :'.tr(),
@@ -768,10 +768,10 @@ class _AddSalesInvoiceHDataWidgetState
                                   ),
                                 ),
                               ],
-                            ),
+                            ),*/
 
-                            const SizedBox(height: 20),
-                            Row(
+                           // const SizedBox(height: 20),
+                           /* Row(
                               children: [
                                 Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('netAfterTax :'.tr(),
                                     style: const TextStyle(fontWeight: FontWeight.bold))),
@@ -785,7 +785,7 @@ class _AddSalesInvoiceHDataWidgetState
                                   ),
                                 ),
                               ],
-                            ),
+                            ),*/
 
                         const SizedBox(height: 20),
                         Row(
@@ -902,9 +902,7 @@ class _AddSalesInvoiceHDataWidgetState
                                     ),
 
                                     DataCell(
-                                        Container(
-                                            width: 30, //SET width
-                                            child: Image.asset('assets/images/delete.png'))
+                                        Container(width: 30, child: Image.asset('assets/images/delete.png'))
                                     ),
                                   ]),
                             ).toList(),
@@ -918,7 +916,7 @@ class _AddSalesInvoiceHDataWidgetState
                                 Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('totalQty'.tr(),
                                     style: const TextStyle(fontWeight: FontWeight.bold))),
                                 SizedBox(
-                                  width: 100,
+                                  width: 80,
                                   child: textFormFields(
                                     controller: _totalQtyController,
                                     // hintText: "totalQty".tr(),
@@ -931,14 +929,14 @@ class _AddSalesInvoiceHDataWidgetState
                                 ),
                               ],
                             ),
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 10),
                             Row(
                               children: [
                                 Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('rowsCount'.tr(),
                                     style: const TextStyle(fontWeight: FontWeight.bold))),
                                 const SizedBox(width: 10),
                                 SizedBox(
-                                  width: 100,
+                                  width: 80,
                                   child: textFormFields(
                                     controller: _rowsCountController,
                                     //hintText: "rowsCount".tr(),
@@ -999,9 +997,9 @@ class _AddSalesInvoiceHDataWidgetState
                               children: [
                                 Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
                                     child: Text('totalValue'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
-                                const SizedBox(width: 10),
+                                const SizedBox(width: 5),
                                 SizedBox(
-                                  width: 80,
+                                  width: 70,
                                   child: textFormFields(
                                     controller: _totalValueController,
                                     //hintText: "totalValue".tr(),
@@ -1020,9 +1018,9 @@ class _AddSalesInvoiceHDataWidgetState
                               children: [
                                 Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
                                     child: Text('totalDiscount'.tr(),style: const TextStyle(fontWeight: FontWeight.bold) )),
-                                const SizedBox(width: 10),
+                                const SizedBox(width: 5),
                                 SizedBox(
-                                  width: 80,
+                                  width: 70,
                                   child: textFormFields(
                                     controller: _totalDiscountController,
                                     enable: false,
@@ -1037,7 +1035,7 @@ class _AddSalesInvoiceHDataWidgetState
                           ],
                         ),
                         const SizedBox(height: 20),
-                        Row(
+                       Row(
                           children: [
                             Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
                                 child: Text('totalAfterDiscount'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
@@ -1055,7 +1053,7 @@ class _AddSalesInvoiceHDataWidgetState
                             ),
                           ],
                         ),
-                        //const SizedBox(height: 20),
+                        const SizedBox(height: 20),
                         Row(
                           children: [
                             Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
@@ -1076,15 +1074,15 @@ class _AddSalesInvoiceHDataWidgetState
                           ],
                         ),
                         const SizedBox(height: 20),
-                        Row(
+                       Row(
                           children: [
                             Row(
                               children: [
                                 Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
                                     child: Text('totalTax'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
-                                const SizedBox(width: 10),
+                                const SizedBox(width: 5),
                                 SizedBox(
-                                  width: 100,
+                                  width: 80,
                                   child: textFormFields(
                                     controller: _totalTaxController,
                                     //hintText: "totalTax".tr(),
@@ -1097,14 +1095,14 @@ class _AddSalesInvoiceHDataWidgetState
                                 ),
                               ],
                             ),
-                            const SizedBox(width: 20),
+                           const SizedBox(width: 10),
                             Row(
                               children: [
                                 Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
                                     child: Text('total'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
                                 const SizedBox(width: 10),
                                 SizedBox(
-                                  width: 100,
+                                  width: 80,
                                   child: textFormFields(
                                     controller: _totalNetController,
                                     //hintText: "total".tr(),

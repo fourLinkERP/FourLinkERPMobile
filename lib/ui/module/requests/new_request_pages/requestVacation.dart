@@ -379,9 +379,10 @@ class _RequestVacationState extends State<RequestVacation> {
                     ),
                     const SizedBox(height: 12,),
                     ListTile(
-                      leading: Text("Requested period: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                      leading: Text("Requested period: ".tr(),
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
                       trailing: SizedBox(
-                        width: 220,
+                        width: 200,
                         height: 55,
                         child: defaultFormField(
                           controller: _requestedPeriodController,
@@ -402,7 +403,7 @@ class _RequestVacationState extends State<RequestVacation> {
                     ListTile(
                       leading: Text("List balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                       trailing: SizedBox(
-                        width: 220,
+                        width: 200,
                         height: 55,
                         child: defaultFormField(
                           controller: _listBalanceController,
@@ -423,7 +424,7 @@ class _RequestVacationState extends State<RequestVacation> {
                     ListTile(
                       leading: Text("Vacations balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                       trailing: SizedBox(
-                        width: 220,
+                        width: 200,
                         height: 55,
                         child: defaultFormField(
                           controller: _vacationBalanceController,
@@ -444,7 +445,7 @@ class _RequestVacationState extends State<RequestVacation> {
                     ListTile(
                       leading: Text("Allowed balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                       trailing: SizedBox(
-                        width: 220,
+                        width: 200,
                         height: 55,
                         child: defaultFormField(
                           controller: _allowedBalanceController,
@@ -465,7 +466,7 @@ class _RequestVacationState extends State<RequestVacation> {
                     ListTile(
                       leading: Text("Employee balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                       trailing: SizedBox(
-                        width: 220,
+                        width: 200,
                         height: 55,
                         child: defaultFormField(
                           controller: _employeeBalanceController,
@@ -482,10 +483,11 @@ class _RequestVacationState extends State<RequestVacation> {
                         ),
                       ),
                     ),
+                    const SizedBox(height: 12),
                     ListTile(
                       leading: Text("Vacation date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                       trailing: SizedBox(
-                        width: 220,
+                        width: 190,
                         height: 55,
                         child: textFormFields(
                           hintText: 'Select Date'.tr(),
@@ -513,7 +515,7 @@ class _RequestVacationState extends State<RequestVacation> {
                     ListTile(
                       leading: Text("Advance balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                       trailing: SizedBox(
-                        width: 220,
+                        width: 200,
                         height: 45,
                         child: defaultFormField(
                           controller: _advanceBalanceController,
@@ -534,7 +536,7 @@ class _RequestVacationState extends State<RequestVacation> {
                     ListTile(
                       leading: Text("Last salary date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                       trailing: SizedBox(
-                        width: 220,
+                        width: 200,
                         height: 55,
                         child: textFormFields(
                           hintText: 'Select Date'.tr(),
@@ -562,7 +564,7 @@ class _RequestVacationState extends State<RequestVacation> {
                     ListTile(
                       leading: Text("The requester notes: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                       trailing: SizedBox(
-                        width: 220,
+                        width: 200,
                         height: 55,
                         child: defaultFormField(
                           controller: _reasonController,
