@@ -39,6 +39,8 @@ class _RequestNeedsState extends State<RequestNeeds> {
   final _requiredController = TextEditingController();
   final _reasonController = TextEditingController();
 
+  DateTime get pickedDate => DateTime.now();
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +63,12 @@ class _RequestNeedsState extends State<RequestNeeds> {
                 ListTile(
                   leading: Text("File number: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                   title: SizedBox(
-                    width: 220,
+                    width: 200,
                     height: 45,
                     child: defaultFormField(
+                      enable: false,
                       controller: _fileController,
-                      label: 'Enter File Number'.tr(),
+                      label: '5'.tr(),
                       type: TextInputType.number,
                       colors: Colors.blueGrey,
                       //prefix: null,
@@ -85,7 +88,8 @@ class _RequestNeedsState extends State<RequestNeeds> {
                     width: 220,
                     height: 55,
                     child: textFormFields(
-                      hintText: 'Select Date'.tr(),
+                      enable: false,
+                      hintText: '${DateFormat('yyyy-MM-dd').format(pickedDate)}',
                       controller: _dateController,
                       //hintText: "date".tr(),
                       onTap: () async {
@@ -98,6 +102,7 @@ class _RequestNeedsState extends State<RequestNeeds> {
                         if (pickedDate != null) {
                           _dateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                         }
+
                       },
                       onSaved: (val) {
                         vacationDate = val;

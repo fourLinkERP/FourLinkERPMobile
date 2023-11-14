@@ -10,12 +10,14 @@ Widget defaultFormField({
   required Color colors,
   IconData? suffix,
   VoidCallback? suffixPressed,
+  bool enable = true,
 
 }) => TextFormField(
   controller: controller,
   keyboardType: type,
   obscureText: isPassword,
   validator: validate,
+  enabled: enable,
 
   decoration: InputDecoration(
     labelText: label,

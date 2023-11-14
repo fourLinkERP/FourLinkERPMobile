@@ -1,6 +1,4 @@
-
-
-  import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/salesOrderList.dart';
@@ -9,9 +7,6 @@ import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/Sales
 import 'package:fourlinkmobileapp/ui/module/cash/transactions/CashReceive/cashReceiveList.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
   import 'package:localize_and_translate/localize_and_translate.dart';
-
-
-
 
 class MainTransactions extends StatelessWidget {
 
@@ -101,11 +96,7 @@ class MainTransactions extends StatelessWidget {
                 if(isAllowView)
                 {
                   print('Have Permission - Sales Invoice 2');
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              SalesInvoiceHListPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SalesInvoiceHListPage()));
                 }
                 else
                 {

@@ -21,6 +21,7 @@ import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesInvoices/Details/addSalesInvoiceDetailsDataWidget.dart';
 import 'package:fourlinkmobileapp/utils/email.dart';
 import 'package:supercharged/supercharged.dart';
+import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/salesInvoiceList.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceH.dart';
 import '../../../../../helpers/toast.dart';
@@ -263,7 +264,6 @@ class _AddSalesInvoiceHDataWidgetState
                     child: Column(
                       crossAxisAlignment: langId == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                       children: <Widget>[
-                        //const SizedBox(height: 20),
 
                         Form(
                             key: _dropdownTypeFormKey,
@@ -360,6 +360,7 @@ class _AddSalesInvoiceHDataWidgetState
                             SizedBox(
                               width: 100,
                               child: textFormFields(
+                                enable: false,
                                 controller: _salesInvoicesDateController,
                                 //hintText: "date".tr(),
                                 onTap: () async {
@@ -370,9 +371,7 @@ class _AddSalesInvoiceHDataWidgetState
                                       lastDate: DateTime(2050));
 
                                   if (pickedDate != null) {
-                                    _salesInvoicesDateController.text =
-                                        DateFormat('yyyy-MM-dd').format(
-                                            pickedDate);
+                                    _salesInvoicesDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                                   }
                                 },
                                 onSaved: (val) {
@@ -384,7 +383,6 @@ class _AddSalesInvoiceHDataWidgetState
                           ],
                         ),
                         const SizedBox(height: 10),
-                        //Align(child: Text('customer'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
 
                         Form(
                           key: _dropdownCustomerFormKey,
@@ -392,7 +390,7 @@ class _AddSalesInvoiceHDataWidgetState
                             //crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
                             children: [
                               const SizedBox(height: 10),
-                              Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Customers :".tr(),
+                              Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Customer: ".tr(),
                                       style: const TextStyle(fontWeight: FontWeight.bold))),
                               const SizedBox(width: 10),
                               SizedBox(
@@ -447,13 +445,6 @@ class _AddSalesInvoiceHDataWidgetState
                               ),
                                 ),
                               ),
-                              // ElevatedButton(
-                              //     onPressed: () {
-                              //       if (_dropdownFormKey.currentState!.validate()) {
-                              //         //valid flow
-                              //       }
-                              //     },
-                              //     child: Text("Submit"))
                             ],
                           ),
                         ),
@@ -464,7 +455,7 @@ class _AddSalesInvoiceHDataWidgetState
                                 key: _dropdownItemFormKey,
                                 child: Row(
                                   children: [
-                                    Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Items :".tr(),
+                                    Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Item: ".tr(),
                                             style: const TextStyle(fontWeight: FontWeight.bold))),
                                     const SizedBox(width: 5),
                                     SizedBox(
@@ -507,15 +498,10 @@ class _AddSalesInvoiceHDataWidgetState
                                           int qty = (_displayQtyController.text != null) ? int.parse(_displayQtyController.text) : 0;
                                           setItemQty(
                                               selectedItemValue.toString(),
-                                              selectedUnitValue.toString(),
-                                              qty);
+                                              selectedUnitValue.toString(), qty);
 
                                           //Cost Price
                                           setItemCostPrice(selectedItemValue.toString(), "1", 0, _salesInvoicesDateController.text);
-                                          // //Tax Value
-                                          // double netBeforeTax = (1==1) ? 0:0;
-                                          // setItemTaxValue(selectedItemValue.toString(),netBeforeTax);
-
                                         },
 
                                         filterFn: (instance, filter) {
@@ -722,71 +708,6 @@ class _AddSalesInvoiceHDataWidgetState
                         ),
                         ],
                     ),
-                       // const SizedBox(height: 20),
-
-                        /*Row(
-                          children: [
-                            Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('netAfterDiscount :'.tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold))),
-                            const SizedBox(width: 10),
-                            SizedBox(
-                              width:200,
-                            child: textFormFields(
-                              enable: false,
-                              controller: _netAfterDiscountController,
-                              //hintText: 'discount'.tr(),
-                              onSaved: (val) {
-                                discount = val;
-                              },
-                              textInputType: TextInputType.number,
-                            ),
-                           ),
-                          ],
-                        ),*/
-
-                       /* const SizedBox(height: 20),
-                            Row(
-                              children: [
-                                Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('vat :'.tr(),
-                                    style: const TextStyle(fontWeight: FontWeight.bold))),
-                                const SizedBox(width: 10),
-                                SizedBox(
-                                  width: 150,
-                                  child: TextFormField(
-                                      controller: _taxController,
-                                      keyboardType: TextInputType.number,
-                                      enabled: false,
-                                      //hintText: 'vat'.tr(),
-                                      onSaved: (val) {
-                                        vat = val;
-                                      },
-                                      //textInputType: TextInputType.number,
-                                      onChanged: (value) {
-                                        calcTotalPriceRow();
-                                      }
-
-                                  ),
-                                ),
-                              ],
-                            ),*/
-
-                           // const SizedBox(height: 20),
-                           /* Row(
-                              children: [
-                                Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('netAfterTax :'.tr(),
-                                    style: const TextStyle(fontWeight: FontWeight.bold))),
-                                const SizedBox(width: 10),
-                                SizedBox(
-                                  width: 150,
-                                  child: TextFormField(
-                                    enabled: false,
-                                    controller: _netAftertaxController,
-
-                                  ),
-                                ),
-                              ],
-                            ),*/
-
                         const SizedBox(height: 20),
                         Row(
                             children: [
@@ -1636,7 +1557,7 @@ class _AddSalesInvoiceHDataWidgetState
     //print To Send
     sendEmail();
 
-    Navigator.pop(context);
+    Navigator.push(context, MaterialPageRoute(builder: (context) => SalesInvoiceHListPage()));
   }
 
 //#endregion

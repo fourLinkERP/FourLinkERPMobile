@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:core';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/cubit/app_states.dart';
@@ -13,8 +12,6 @@ import 'package:fourlinkmobileapp/ui/module/cash/transactions/CashReceive/editCa
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../cubit/app_cubit.dart';
-import '../../../../../service/general/Pdf/pdf_api.dart';
-import '../../../../../service/general/Pdf/pdf_invoice_api.dart';
 import 'addCashReceiveDataWidget.dart';
 import 'detailCashReceiveWidget.dart';
 import 'package:pdf/pdf.dart';
@@ -103,21 +100,21 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Color.fromRGBO(240, 242, 246,1), // Main Color
-          title: Container(
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
+          title: SizedBox(
             height: 38,
             child: TextField(
               onChanged: (value) => onSearch(value),
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: EdgeInsets.all(0),
+                  contentPadding: const EdgeInsets.all(0),
                   prefixIcon: Icon(Icons.search, color: Colors.grey.shade500,),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
                       borderSide: BorderSide.none
                   ),
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                       fontSize: 14,
                       color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
                   ),
@@ -166,7 +163,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
                   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSalesInvoiceHDataWidget()));
                   _navigateToAddScreen(context);
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.add,
                   color: FitnessAppTheme.white,
                   size: 46,
@@ -180,14 +177,14 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
 
   customerComponent({required CashReceive customer}) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20),
-      padding: EdgeInsets.only(top: 10, bottom: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
               children: [
-                Container(
+                SizedBox(
                     width: 60,
                     height: 60,
                     child: ClipRRect(
@@ -195,11 +192,11 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
                       child: Image.asset('assets/images/clients.png'),
                     )
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Column(
                     crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                     children: [
-                      Text(customer.targetCode!, style: TextStyle(
+                      Text(customer.targetCode!, style: const TextStyle(
                           color: Colors.white, fontWeight: FontWeight.w500)),
                       //SizedBox(height: 5,),
                       //Text(customer.customerNameEng!, style: TextStyle(color: Colors.grey[500])),
@@ -437,16 +434,16 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
 
    Widget BuildcashReceives(){
     if(State is AppErrorState){
-      return Center(child: Text('no data'));
+      return const Center(child: Text('no data'));
     }
     if(AppCubit.get(context).Conection==false){
-      return Center(child: Text('no internet connection'));
+      return const Center(child: Text('no internet connection'));
     }
    else if(_cashReceives.isEmpty&&AppCubit.get(context).Conection==true){
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }else{
       return Container(
-        color: Color.fromRGBO(240, 242, 246,1), // Main Color
+        color: const Color.fromRGBO(240, 242, 246,1), // Main Color
         child: ListView.builder(
             itemCount: _cashReceives == null ? 0 : _cashReceives.length,
             itemBuilder: (BuildContext context, int index) {
@@ -463,8 +460,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/sales.png'),
-                      title: Text(
-                          'serial'.tr() + " : " + _cashReceives[index].trxSerial.toString()),
+                      title: Text('serial'.tr() + " : " + _cashReceives[index].trxSerial.toString()),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
@@ -486,28 +482,28 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
                             ],
 
                           )),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           Container(
                               child: Row(
                                 children: <Widget>[
                                   Center(
                                       child: ElevatedButton.icon(
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.edit,
-                                          color: Color.fromRGBO(0, 136, 134, 1),
+                                          color: Colors.white,
                                           size: 20.0,
                                           weight: 10,
                                         ),
-                                        label: Text('edit'.tr(),style:TextStyle(color: Color.fromRGBO(0, 136, 134, 1)) ),
+                                        label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
                                         onPressed: () {
                                           _navigateToEditScreen(context,_cashReceives[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
-                                            shape: new RoundedRectangleBorder(
-                                              borderRadius: new BorderRadius.circular(5),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(5),
                                             ),
-                                            padding: EdgeInsets.all(7),
-                                            backgroundColor: Colors.white,
+                                            padding: const EdgeInsets.all(7),
+                                            backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
                                             foregroundColor: Colors.black,
                                             elevation: 0,
                                             side: const BorderSide(
@@ -516,25 +512,25 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
                                             )
                                         ),
                                       )),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Center(
                                       child: ElevatedButton.icon(
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.delete,
-                                          color: Color.fromRGBO(144, 16, 46, 1),
+                                          color: Colors.white,
                                           size: 20.0,
                                           weight: 10,
                                         ),
-                                        label: Text('delete'.tr(),style:TextStyle(color: Color.fromRGBO(144, 16, 46, 1)) ),
+                                        label: Text('delete'.tr(),style: const TextStyle(color: Colors.white) ),
                                         onPressed: () {
                                           _deleteItem(context,_cashReceives[index].id);
                                         },
                                         style: ElevatedButton.styleFrom(
-                                            shape: new RoundedRectangleBorder(
-                                              borderRadius: new BorderRadius.circular(5),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(5),
                                             ),
-                                            padding: EdgeInsets.all(7),
-                                            backgroundColor: Colors.white,
+                                            padding: const EdgeInsets.all(7),
+                                            backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
                                             foregroundColor: Colors.black,
                                             elevation: 0,
                                             side: const BorderSide(
@@ -543,25 +539,25 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
                                             )
                                         ),
                                       )),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Center(
                                       child: ElevatedButton.icon(
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.print,
-                                          color: Colors.black87,
+                                          color: Colors.white,
                                           size: 20.0,
                                           weight: 10,
                                         ),
-                                        label: Text('print'.tr(),style:TextStyle(color: Colors.black87) ),
+                                        label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
                                           _navigateToPrintScreen(context,_cashReceives[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
-                                            shape: new RoundedRectangleBorder(
-                                              borderRadius: new BorderRadius.circular(5),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(5),
                                             ),
-                                            padding: EdgeInsets.all(7),
-                                            backgroundColor: Colors.white,
+                                            padding: const EdgeInsets.all(7),
+                                            backgroundColor: Colors.black87,
                                             foregroundColor: Colors.black,
                                             elevation: 0,
                                             side: const BorderSide(
@@ -570,8 +566,6 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
                                             )
                                         ),
                                       )),
-
-
                                 ],
                               ))
                           // Container(

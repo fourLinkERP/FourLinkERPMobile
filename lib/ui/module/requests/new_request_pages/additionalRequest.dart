@@ -45,6 +45,7 @@ class _AdditionalRequestState extends State<AdditionalRequest> {
   final _hoursController = TextEditingController();
   final _reasonController = TextEditingController();
 
+  DateTime get pickedDate => DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +71,9 @@ class _AdditionalRequestState extends State<AdditionalRequest> {
                     width: 220,
                     height: 45,
                     child: defaultFormField(
+                      enable: false,
                       controller: _fileController,
-                      label: 'Enter File Number'.tr(),
+                      label: '6'.tr(),
                       type: TextInputType.number,
                       colors: Colors.blueGrey,
                       //prefix: null,
@@ -91,7 +93,8 @@ class _AdditionalRequestState extends State<AdditionalRequest> {
                     width: 220,
                     height: 55,
                     child: textFormFields(
-                      hintText: 'Select Date'.tr(),
+                      enable: false,
+                      hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                       controller: _dateController,
                       //hintText: "date".tr(),
                       onTap: () async {

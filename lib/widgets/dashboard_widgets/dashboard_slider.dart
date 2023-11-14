@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/models/dashboard/dashboard_slider_data.dart';
-import 'package:fourlinkmobileapp/ui/general/GlPage.dart';
-import 'package:fourlinkmobileapp/ui/general/InventoryPage.dart';
-
 import '../../theme/fitness_app_theme.dart';
 import '../../helpers/hex_decimal.dart';
-import '../../ui/general/PurchasePage.dart';
-import '../../ui/general/SalesPage.dart';
+import '../MainTransactions.dart';
  
 
 class DashboardSliderView extends StatefulWidget {
@@ -55,7 +51,7 @@ class _DashboardSliderViewState extends State<DashboardSliderView>
           child: Transform(
             transform: Matrix4.translationValues(
                 0.0, 30 * (1.0 - widget.mainScreenAnimation!.value), 0.0),
-            child: Container(
+            child: SizedBox(
               height: 216,
               width: double.infinity,
               child: ListView.builder(
@@ -238,25 +234,14 @@ class MealsView extends StatelessWidget {
                                         child: InkWell(
                                           onTap: (){
                                             if(index==0){
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(builder: (context) =>  PurchasePage()),
-                                              );
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainTransactions()),);
                                             }else if(index==1){
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(builder: (context) =>  SalesPage()),
-                                              );
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainTransactions()),);
+                                              //Navigator.push(context, MaterialPageRoute(builder: (context) =>  SalesPage()),);
                                             }else if(index==2){
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(builder: (context) =>  InventoryPage()),
-                                              );
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainTransactions()),);
                                             }else if(index==3){
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(builder: (context) =>  GlPage()),
-                                              );
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainTransactions()),);
                                             }
                                           },
                                           child: Icon(

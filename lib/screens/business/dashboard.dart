@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/screens/business/water_view.dart';
-import 'package:fourlinkmobileapp/widgets/MainReports.dart';
 import 'package:fourlinkmobileapp/widgets/dashboard_widgets/dashboard_curvy_top_view.dart';
 import 'package:fourlinkmobileapp/widgets/dashboard_widgets/dashboard_slider.dart';
 import 'package:fourlinkmobileapp/widgets/ui_view/title_view.dart';
@@ -35,7 +34,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
             parent: widget.animationController!,
-            curve: Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
+            curve: const Interval(0, 0.5, curve: Curves.fastOutSlowIn)));
     addAllListData();
 
     scrollController.addListener(() {
@@ -79,7 +78,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController!,
             curve:
-                Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
+                const Interval((1 / count) * 0, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController!,
       ),
     );
@@ -88,7 +87,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController!,
             curve:
-                Interval((1 / count) * 1, 1.0, curve: Curves.fastOutSlowIn))),
+                const Interval((1 / count) * 1, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController!,
       ),
     );
@@ -105,7 +104,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController!,
             curve:
-                Interval((1 / count) * 2, 1.0, curve: Curves.fastOutSlowIn))),
+                const Interval((1 / count) * 2, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController!,
       ),
     );
@@ -115,7 +114,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
             CurvedAnimation(
                 parent: widget.animationController!,
-                curve: Interval((1 / count) * 3, 1.0,
+                curve: const Interval((1 / count) * 3, 1.0,
                     curve: Curves.fastOutSlowIn))),
         mainScreenAnimationController: widget.animationController,
       ),
@@ -129,7 +128,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController!,
             curve:
-                Interval((1 / count) * 4, 1.0, curve: Curves.fastOutSlowIn))),
+                const Interval((1 / count) * 4, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController!,
       ),
     );
@@ -139,7 +138,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController!,
             curve:
-                Interval((1 / count) * 5, 1.0, curve: Curves.fastOutSlowIn))),
+                const Interval((1 / count) * 5, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController!,
       ),
     );
@@ -156,7 +155,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         animation: Tween<double>(begin: 0.0, end: 1.0).animate(CurvedAnimation(
             parent: widget.animationController!,
             curve:
-                Interval((1 / count) * 6, 1.0, curve: Curves.fastOutSlowIn))),
+                const Interval((1 / count) * 6, 1.0, curve: Curves.fastOutSlowIn))),
         animationController: widget.animationController!,
       ),
     );
@@ -166,7 +165,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         mainScreenAnimation: Tween<double>(begin: 0.0, end: 1.0).animate(
             CurvedAnimation(
                 parent: widget.animationController!,
-                curve: Interval((1 / count) * 7, 1.0,
+                curve: const Interval((1 / count) * 7, 1.0,
                     curve: Curves.fastOutSlowIn))),
         mainScreenAnimationController: widget.animationController!,
       ),
@@ -176,7 +175,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
           animation: Tween<double>(begin: 0.0, end: 1.0).animate(
               CurvedAnimation(
                   parent: widget.animationController!,
-                  curve: Interval((1 / count) * 8, 1.0,
+                  curve: const Interval((1 / count) * 8, 1.0,
                       curve: Curves.fastOutSlowIn))),
           animationController: widget.animationController!),
     );
@@ -278,7 +277,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                 color: Colors.transparent, // button color
                                 child: InkWell(
                                   splashColor: Colors.red, // inkwell color
-                                  child: SizedBox(width: 56, height: 56, child: Icon(Icons.menu)),
+                                  child: const SizedBox(width: 56, height: 56, child: Icon(Icons.menu)),
                                   onTap: () {
                                     Scaffold.of(context).openDrawer();
                                   },
@@ -297,7 +296,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                     fontWeight: FontWeight.w700,
                                     fontSize: 11 + 5 - 5 * topBarOpacity,
                                     letterSpacing: 1.2,
-                                    color: Color.fromRGBO(144, 16, 46, 1),
+                                    color: const Color.fromRGBO(144, 16, 46, 1),
                                   ),
                                 ),
                               ),
@@ -310,7 +309,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(32.0)),
                                 onTap: () {},
-                                child: Center(
+                                child: const Center(
                                   child: Icon(
                                     Icons.keyboard_arrow_left,
                                     color: FitnessAppTheme.grey,
@@ -343,8 +342,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                 },
                                 child: Row(
                                   children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 8),
+                                    const Padding(
+                                      padding: EdgeInsets.only(right: 8),
                                       child: Icon(
                                         Icons.calendar_today,
                                         color: FitnessAppTheme.grey,
@@ -374,7 +373,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(32.0)),
                                 onTap: () {},
-                                child: Center(
+                                child: const Center(
                                   child: Icon(
                                     Icons.keyboard_arrow_right,
                                     color: FitnessAppTheme.grey,

@@ -44,7 +44,7 @@ class _RequestAdvanceState extends State<RequestAdvance> {
   final _advanceBalanceController = TextEditingController();
   final _reasonController = TextEditingController();
 
-
+  DateTime get pickedDate => DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -70,8 +70,9 @@ class _RequestAdvanceState extends State<RequestAdvance> {
                     width: 220,
                     height: 45,
                     child: defaultFormField(
+                      enable: false,
                       controller: _fileController,
-                      label: 'Enter File Number'.tr(),
+                      label: '7'.tr(),
                       type: TextInputType.number,
                       colors: Colors.blueGrey,
                       //prefix: null,
@@ -91,7 +92,8 @@ class _RequestAdvanceState extends State<RequestAdvance> {
                     width: 220,
                     height: 55,
                     child: textFormFields(
-                      hintText: 'Select Date'.tr(),
+                      enable: false,
+                      hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                       controller: _dateController,
                       //hintText: "date".tr(),
                       onTap: () async {

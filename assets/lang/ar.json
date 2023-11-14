@@ -438,7 +438,9 @@
     "subject": "موضوع",
     "Enter export Number": "ادخل رقم الصادر",
     "Enter": "ادخل",
-    "Required conditions: ": "البنود المطلوبة: "
+    "Required conditions: ": "البنود المطلوبة: ",
+    "Customer: ": "العميل: ",
+    "Item: ": "الصنف: "
 
 }
 
