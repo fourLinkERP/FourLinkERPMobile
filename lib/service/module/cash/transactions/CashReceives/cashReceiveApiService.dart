@@ -3,7 +3,6 @@ import 'package:fourlinkmobileapp/data/model/modules/module/cash/transactions/ca
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
@@ -96,6 +95,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'BoxCode': cash.boxCode,
       'Value': cash.value,
       'Statement': cash.statement,
+      'DescriptionAra': cash.descriptionNameArabic,
+      'DescriptionEng': cash.descriptionNameEnglish,
       'TafqitNameArabic': cash.tafqitNameArabic,
       'TafqitNameEnglish': cash.tafqitNameEnglish,
       'addBy': "1"
@@ -156,6 +157,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'BoxCode': cash.boxCode,
       'Value': cash.value,
       'Statement': cash.statement,
+      'DescriptionAra': cash.descriptionNameArabic,
+      'DescriptionEng': cash.descriptionNameEnglish,
       'TafqitNameArabic': cash.tafqitNameArabic,
       'TafqitNameEnglish': cash.tafqitNameEnglish
     };

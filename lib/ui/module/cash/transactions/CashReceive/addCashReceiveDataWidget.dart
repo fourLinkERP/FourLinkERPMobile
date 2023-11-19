@@ -1,4 +1,3 @@
-
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
@@ -85,6 +84,8 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
   final _statementController = TextEditingController();
   final _tafqitNameArabicController = TextEditingController();
   final _tafqitNameEnglishController = TextEditingController();
+  final _descriptionNameArabicController = TextEditingController();
+  final _descriptionNameEnglishController = TextEditingController();
   final _dropdownTypeFormKey = GlobalKey<FormState>();
   final _dropdownCashTargetTypeFormKey = GlobalKey<FormState>();
   final _dropdownCashTargetCodeFormKey = GlobalKey<FormState>();
@@ -179,16 +180,15 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(floatingActionButton: FloatingActionButton(
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
       tooltip: 'save',
       elevation: 5,
       highlightElevation: 5,
-
       backgroundColor:  Colors.transparent,
       onPressed: (){
         saveCashReceive(context);
       },
-
 
       child:Container(
         // alignment: Alignment.center,s
@@ -204,8 +204,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
           shape: BoxShape.circle,
           boxShadow: <BoxShadow>[
             BoxShadow(
-                color: FitnessAppTheme.nearlyDarkBlue
-                    .withOpacity(0.4),
+                color: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.4),
                 offset: const Offset(2.0, 14.0),
                 blurRadius: 16.0),
           ],
@@ -389,16 +388,15 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                               Form(
                                   key: _dropdownCashTargetTypeFormKey,
                                   child: Row(
-                                    crossAxisAlignment: langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('cash_target_type'.tr(),
                                           style: const TextStyle(fontWeight: FontWeight.bold)) ),
 
-                                      const SizedBox(width: 5),
+                                      const SizedBox(width: 10),
 
                                       SizedBox(
-                                        width: 80,
+                                        width: 200,
                                         child: DropdownSearch<CashTargetType>(
                                           validator: (value) => value == null ? "select_a_cash_target_Type".tr() : null,
 
@@ -458,7 +456,85 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
                                     ],
                                   )),
-                              const SizedBox(width: 10),
+
+                            ],
+                          ),
+
+                          const SizedBox(height: 20),
+                          Form(
+                              key: _dropdownBoxTypeFormKey,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('box_type'.tr(),
+                                      style: const TextStyle(fontWeight: FontWeight.bold)) ),
+
+                                  const SizedBox(width: 10),
+                                  SizedBox(
+                                    width: 200,
+                                    child: DropdownSearch<BoxType>(
+                                      validator: (value) => value == null ? "select_a_box_Type".tr() : null,
+
+                                      selectedItem: boxTypeItem,
+                                      popupProps: PopupProps.menu(
+
+                                        itemBuilder: (context, item, isSelected) {
+                                          return Container(
+                                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                                            decoration: !isSelected
+                                                ? null
+                                                : BoxDecoration(
+
+                                              border: Border.all(color: Theme.of(context).primaryColor),
+                                              borderRadius: BorderRadius.circular(5),
+                                              color: Colors.white,
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
+                                            ),
+                                          );
+                                        },
+                                        showSearchBox: true,
+
+
+                                      ),
+                                      enabled: true,
+
+                                      items: boxTypes,
+                                      itemAsString: (BoxType u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
+
+                                      onChanged: (value){
+                                        //v.text = value!.cusTypesCode.toString();
+                                        //print(value!.id);
+                                        boxTypeSelectedValue = value!.code;
+                                        setBoxCode(boxTypeSelectedValue.toString());
+                                      },
+
+                                      filterFn: (instance, filter){
+                                        if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
+                                          print(filter);
+                                          return true;
+                                        }
+                                        else{
+                                          return false;
+                                        }
+                                      },
+                                      dropdownDecoratorProps: const DropDownDecoratorProps(
+                                        dropdownSearchDecoration: InputDecoration(
+                                          //labelText: "box_type".tr(),
+
+                                        ),),
+
+                                    ),
+                                  ),
+
+                                ],
+                              )),
+                          const SizedBox(height: 20),
+
+                          Row(
+                            children: [
                               Form(
                                   key: _dropdownCashTargetCodeFormKey,
                                   child: Row(
@@ -469,7 +545,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
                                       const SizedBox(width: 5),
                                       SizedBox(
-                                        width: 80,
+                                        width: 90,
                                         child: DropdownSearch<TargetCode>(
                                           validator: (value) => value == null ? "select_a_cash_target_Code".tr() : null,
 
@@ -528,84 +604,9 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
                                     ],
                                   )),
-                            ],
-                          ),
-
-                          const SizedBox(height: 20),
-
-                          Row(
-                            children: [
-                              Form(
-                                  key: _dropdownBoxTypeFormKey,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('box_type'.tr(),
-                                          style: const TextStyle(fontWeight: FontWeight.bold)) ),
-
-                                      const SizedBox(width: 5),
-                                      SizedBox(
-                                        width: 90,
-                                        child: DropdownSearch<BoxType>(
-                                          validator: (value) => value == null ? "select_a_box_Type".tr() : null,
-
-                                          selectedItem: boxTypeItem,
-                                          popupProps: PopupProps.menu(
-
-                                            itemBuilder: (context, item, isSelected) {
-                                              return Container(
-                                                margin: const EdgeInsets.symmetric(horizontal: 8),
-                                                decoration: !isSelected
-                                                    ? null
-                                                    : BoxDecoration(
-
-                                                  border: Border.all(color: Theme.of(context).primaryColor),
-                                                  borderRadius: BorderRadius.circular(5),
-                                                  color: Colors.white,
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
-                                                  child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
-                                                ),
-                                              );
-                                            },
-                                            showSearchBox: true,
-
-
-                                          ),
-                                          enabled: true,
-
-                                          items: boxTypes,
-                                          itemAsString: (BoxType u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
-
-                                          onChanged: (value){
-                                            //v.text = value!.cusTypesCode.toString();
-                                            //print(value!.id);
-                                            boxTypeSelectedValue = value!.code;
-                                            setBoxCode(boxTypeSelectedValue.toString());
-                                          },
-
-                                          filterFn: (instance, filter){
-                                            if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
-                                              print(filter);
-                                              return true;
-                                            }
-                                            else{
-                                              return false;
-                                            }
-                                          },
-                                          dropdownDecoratorProps: const DropDownDecoratorProps(
-                                            dropdownSearchDecoration: InputDecoration(
-                                              //labelText: "box_type".tr(),
-
-                                            ),),
-
-                                        ),
-                                      ),
-
-                                    ],
-                                  )),
                               const SizedBox(width: 10),
+
+                              //const SizedBox(width: 10),
                               Form(
                                   key: _dropdownBoxCodeFormKey,
                                   child: Row(
@@ -617,7 +618,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                       const SizedBox(width: 5),
 
                                       SizedBox(
-                                        width: 100,
+                                        width: 90,
                                         child: DropdownSearch<BoxCode>(
                                           validator: (value) => value == null ? "select_a_box_Code".tr() : null,
 
@@ -642,7 +643,6 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                               );
                                             },
                                             showSearchBox: true,
-
 
                                           ),
                                           enabled: true,
@@ -680,6 +680,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                             ],
                           ),
 
+
                           Container(
                             margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
                             child: Row(
@@ -689,7 +690,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                 const SizedBox(width: 10),
 
                                 SizedBox(
-                                  width: 170,
+                                  width: 200,
                                   child: TextFormField(
                                     controller: _valueController,
                                     decoration: const InputDecoration(
@@ -713,12 +714,68 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                             margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                             child: Row(
                               children: <Widget>[
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameArabic'.tr(),
+                                    style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                                const SizedBox(width: 10),
+
+                                SizedBox(
+                                  width: 206,
+                                  child: TextFormField(
+                                    controller: _descriptionNameArabicController,
+                                    decoration: const InputDecoration(
+                                      hintText: '',
+                                    ),
+                                    // validator: (value) {
+                                    //   if (value!.isEmpty) {
+                                    //     return 'please_enter_value'.tr();
+                                    //   }
+                                    //   return null;
+                                    // },
+                                    //enabled: false,
+                                    onChanged: (value) {},
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                            child: Row(
+                              children: <Widget>[
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameEnglish'.tr(),
+                                    style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                                const SizedBox(width: 10),
+
+                                SizedBox(
+                                  width: 200,
+                                  child: TextFormField(
+                                    controller: _descriptionNameEnglishController,
+                                    decoration: const InputDecoration(
+                                      hintText: '',
+                                    ),
+                                    // validator: (value) {
+                                    //   if (value!.isEmpty) {
+                                    //     return 'please_enter_value'.tr();
+                                    //   }
+                                    //   return null;
+                                    // },
+                                    //enabled: false,
+                                    onChanged: (value) {},
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                            child: Row(
+                              children: <Widget>[
                                 Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameArabic'.tr(),
                                     style: const TextStyle(fontWeight: FontWeight.bold)) ),
                                 const SizedBox(width: 10),
 
                                 SizedBox(
-                                  width: 150,
+                                  width: 210,
                                   child: TextFormField(
                                     controller: _tafqitNameArabicController,
                                     decoration: const InputDecoration(
@@ -747,7 +804,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                 const SizedBox(width: 10),
 
                                 SizedBox(
-                                  width: 150,
+                                  width: 210,
                                   child: TextFormField(
                                     controller: _tafqitNameEnglishController,
                                     decoration: const InputDecoration(
@@ -775,7 +832,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                     style: const TextStyle(fontWeight: FontWeight.bold)) ),
                                 const SizedBox(width: 10),
                                 SizedBox(
-                                  width: 150,
+                                  width: 210,
                                   child: TextFormField(
                                     controller: _statementController,
                                     decoration: const InputDecoration(
@@ -834,8 +891,8 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
   getCashTypeData() {
     if (cashTypes != null) {
       for(var i = 0; i < cashTypes.length; i++){
-        menuCashReceiveTypes.add(DropdownMenuItem(child: Text(cashTypes[i].
-        descAra.toString()),value: cashTypes[i].code.toString()));
+        menuCashReceiveTypes.add(DropdownMenuItem(value: cashTypes[i].code.toString(), child: Text(cashTypes[i].
+        descAra.toString())));
         if(cashTypes[i].code == "1"){
           // print('in amr3');
           cashTypeItem = cashTypes[cashTypes.indexOf(cashTypes[i])];
@@ -857,8 +914,8 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
   getCashTargetTypeData() {
     if (cashTargetTypes != null) {
       for(var i = 0; i < cashTargetTypes.length; i++){
-        menuCashReceiveTypes.add(DropdownMenuItem(child: Text(cashTargetTypes[i].
-        typeNameAra.toString()),value: cashTypes[i].code.toString()));
+        menuCashReceiveTypes.add(DropdownMenuItem(value: cashTypes[i].code.toString(), child: Text(cashTargetTypes[i].
+        typeNameAra.toString())));
         if(cashTargetTypes[i].code == 1){
           // print('in amr3');
           cashTargetTypeItem = cashTargetTypes[cashTargetTypes.indexOf(cashTargetTypes[i])];

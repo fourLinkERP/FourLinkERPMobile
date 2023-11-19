@@ -440,7 +440,9 @@
     "Enter": "ادخل",
     "Required conditions: ": "البنود المطلوبة: ",
     "Customer: ": "العميل: ",
-    "Item: ": "الصنف: "
+    "Item: ": "الصنف: ",
+    "descriptionNameArabic": "الوصف العربي",
+    "descriptionNameEnglish": "الوصف الانجليزي"
 
 }
 

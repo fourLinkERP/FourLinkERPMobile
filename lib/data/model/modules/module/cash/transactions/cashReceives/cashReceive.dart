@@ -25,6 +25,8 @@ class CashReceive {
   double? currencyRate ;
   String? description ;
   double? value ;
+  String? descriptionNameArabic;
+  String? descriptionNameEnglish;
   String?  tafqitNameArabic ;
   String?  tafqitNameEnglish ;
   String?  targetNameAra ;
@@ -51,6 +53,8 @@ class CashReceive {
     this.currencyRate,
     this.description,
     this.value,
+    this.descriptionNameArabic,
+    this.descriptionNameEnglish,
     this.tafqitNameArabic,
     this.tafqitNameEnglish,
     this.targetNameAra,
@@ -75,6 +79,8 @@ class CashReceive {
       currencyCode: (json['currencyCode'] != null) ? json['currencyCode'] as int : 0,
       currencyRate: (json['currencyRate'] != null) ? json['currencyRate'].toDouble() : 0,
       value: (json['value'] != null) ? json['value'].toDouble() : 0,
+      descriptionNameArabic: (json['descriptionNameArabic'] != null) ? json['descriptionNameArabic'] as String : "",
+      descriptionNameEnglish: (json['descriptionNameEnglish'] != null) ? json['descriptionNameEnglish'] as String : "",
       tafqitNameArabic: (json['tafqitNameArabic'] != null) ? json['tafqitNameArabic'] as String : "",
       tafqitNameEnglish: (json['tafqitNameEnglish'] != null) ? json['tafqitNameEnglish'] as String : "",
       targetNameAra: (json['targetNameAra'] != null) ? json['targetNameAra'] as String : "",

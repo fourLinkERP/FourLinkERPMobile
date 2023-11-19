@@ -391,5 +391,7 @@
     "Height":"Height",
     "Overweight": "Overweight",
     "Body fat": "Body fat",
-    "Weight": "Weight"
+    "Weight": "Weight",
+    "descriptionNameEnglish": "English description",
+    "descriptionNameArabic": "Arabic description"
 }

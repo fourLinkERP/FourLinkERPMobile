@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'package:fourlinkmobileapp/data/model/modules/module/cash/basicInputs/cashTargetTypes/cashTargetType.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/general/tafqeet/tafqeet.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
 
@@ -9,8 +7,6 @@ import '../../../../../common/globals.dart';
  class TafqeetApiService {
 
   String searchApi= baseUrl.toString()  + 'v1/tafqeet/tafqitcurrency';
-
-
 
   Future<Tafqeet> getTafqeet(String currencyCode,String currencyValue) async {
 

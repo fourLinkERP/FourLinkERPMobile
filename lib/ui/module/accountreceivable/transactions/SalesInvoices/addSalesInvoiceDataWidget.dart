@@ -459,7 +459,7 @@ class _AddSalesInvoiceHDataWidgetState
                                             style: const TextStyle(fontWeight: FontWeight.bold))),
                                     const SizedBox(width: 5),
                                     SizedBox(
-                                      width: 85,
+                                      width: 100,
                                       child: DropdownSearch<Item>(
                                         selectedItem: itemItem,
                                         popupProps: PopupProps.menu(
@@ -526,7 +526,7 @@ class _AddSalesInvoiceHDataWidgetState
                                 )
                             ),
                             //Align(child: Text('unit_name'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 20),
                             Form(
                                 key: _dropdownUnitFormKey,
                                 child: Row(
@@ -535,7 +535,7 @@ class _AddSalesInvoiceHDataWidgetState
                                             style: const TextStyle(fontWeight: FontWeight.bold))),
                                     const SizedBox(width: 5),
                                     SizedBox(
-                                      width: 85,
+                                      width: 100,
                                       child: DropdownSearch<Unit>(
                                         selectedItem: unitItem,
                                         popupProps: PopupProps.menu(
@@ -562,26 +562,17 @@ class _AddSalesInvoiceHDataWidgetState
                                         onChanged: (value) {
                                           //v.text = value!.cusTypesCode.toString();
                                           //print(value!.id);
-                                          selectedUnitValue =
-                                              value!.unitCode.toString();
-                                          selectedUnitName =
-                                          (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
+                                          selectedUnitValue = value!.unitCode.toString();
+                                          selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
 
                                           if (selectedUnitValue != null &&
                                               selectedItemValue != null) {
                                             String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                             //Item Price
-                                            setItemPrice(
-                                                selectedItemValue.toString(),
-                                                selectedUnitValue.toString(),
-                                                criteria);
+                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
                                             //Factor
-                                            int qty = (_displayQtyController.text != null) ? int.parse(
-                                                _displayQtyController.text) : 0;
-                                            setItemQty(
-                                                selectedItemValue.toString(),
-                                                selectedUnitValue.toString(),
-                                                qty);
+                                            int qty = (_displayQtyController.text != null) ? int.parse(_displayQtyController.text) : 0;
+                                            setItemQty(selectedItemValue.toString(), selectedUnitValue.toString(), qty);
                                           }
                                         },
 
@@ -619,7 +610,7 @@ class _AddSalesInvoiceHDataWidgetState
                           children: [
                         Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_price :'.tr(),
                             style: const TextStyle(fontWeight: FontWeight.bold))),
-                            const SizedBox(width: 10),
+                        const SizedBox(width: 10),
                         SizedBox(
                           width: 100,
                           child: TextFormField(
@@ -681,9 +672,9 @@ class _AddSalesInvoiceHDataWidgetState
                         const SizedBox(width: 10),*/
                         Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('discount :'.tr(),
                             style: const TextStyle(fontWeight: FontWeight.bold))),
-                        const SizedBox(width: 5),
+                        const SizedBox(width: 10),
                         SizedBox(
-                          width: 85,
+                          width: 100,
                           child: TextFormField(
                             controller: _displayDiscountController,
                             keyboardType: TextInputType.number,
@@ -761,11 +752,10 @@ class _AddSalesInvoiceHDataWidgetState
                               DataColumn(label: Text("net".tr()), numeric: true,),
                               DataColumn(label: Text("action".tr()),),
                             ],
-                            rows: SalesInvoiceDLst.map(
-                                  (p) =>
+                            rows: SalesInvoiceDLst.map((p) =>
                                   DataRow(cells: [
                                     DataCell(
-                                        Container(
+                                        SizedBox(
                                             width: 5, //SET width
                                             child: Text(p.lineNum.toString()))
 
@@ -779,52 +769,40 @@ class _AddSalesInvoiceHDataWidgetState
                                             child: Text(p.itemName.toString()))
                                     ),
                                     DataCell(
-                                        Container(
+                                        SizedBox(
                                           //width: 15, //SET width
-                                            child: Text(
-                                                p.displayQty.toString()))
+                                            child: Text(p.displayQty.toString()))
                                     ),
                                     DataCell(
-                                        Container(
+                                        SizedBox(
                                           //width: 15, //SET width
                                             child: Text(p.displayPrice.toString()))
-
                                     ),
                                     DataCell(
-                                        Container(
+                                        SizedBox(
                                           //width: 15, //SET width
-                                            child: Text(
-                                                p.displayTotal.toString()))
-
+                                            child: Text(p.displayTotal.toString()))
                                     ),
                                     DataCell(
-                                        Container(
+                                        SizedBox(
                                           //width: 15, //SET width
-                                            child: Text(p.displayDiscountValue
-                                                .toString()))
+                                            child: Text(p.displayDiscountValue.toString()))
                                     ),
                                     DataCell(
-                                        Container(
+                                        SizedBox(
                                           //width: 15, //SET width
-                                            child: Text(
-                                                p.netAfterDiscount.toString()))
+                                            child: Text(p.netAfterDiscount.toString()))
                                     ),
                                     DataCell(
-                                        Container(
+                                        SizedBox(
                                           //width: 15, //SET width
-                                            child: Text(p.displayTotalTaxValue
-                                                .toString()))
+                                            child: Text(p.displayTotalTaxValue.toString()))
                                     ),
                                     DataCell(
-                                        Container(
-                                          //width: 15, //SET width
-                                            child: Text(
-                                                p.displayNetValue.toString()))
-                                    ),
-
-                                    DataCell(
-                                        Container(width: 30, child: Image.asset('assets/images/delete.png'))
-                                    ),
+                                        SizedBox(
+                                          //width: 15,
+                                            child: Text(p.displayNetValue.toString()))),
+                                    DataCell(SizedBox(width: 30, child: Image.asset('assets/images/delete.png'))),
                                   ]),
                             ).toList(),
                           ),
@@ -836,6 +814,7 @@ class _AddSalesInvoiceHDataWidgetState
                               children: [
                                 Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('totalQty'.tr(),
                                     style: const TextStyle(fontWeight: FontWeight.bold))),
+                                const SizedBox(width: 5),
                                 SizedBox(
                                   width: 80,
                                   child: textFormFields(
@@ -892,7 +871,7 @@ class _AddSalesInvoiceHDataWidgetState
                             ),
                           ],
                         ),
-                        //const SizedBox(height: 20),
+                        const SizedBox(height: 15),
                         Row(
                           children: [
                             Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
@@ -1047,7 +1026,7 @@ class _AddSalesInvoiceHDataWidgetState
                                   child: Text('tafqitNameArabic'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
                               const SizedBox(width: 10),
                               SizedBox(
-                                width: 150,
+                                width: 210,
                                 child: TextFormField(
                                   controller: _tafqitNameArabicController,
                                   decoration: const InputDecoration(
@@ -1073,7 +1052,7 @@ class _AddSalesInvoiceHDataWidgetState
                               Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
                                   child: Text('tafqitNameEnglish'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
                               SizedBox(
-                                width: 150,
+                                width: 210,
                                 child: TextFormField(
                                   controller: _tafqitNameEnglishController,
                                   decoration: const InputDecoration(
@@ -1110,9 +1089,15 @@ class _AddSalesInvoiceHDataWidgetState
   changeItemUnit(String itemCode) {
     //Units
     units = [];
-    Future<List<Unit>> Units = _unitsApiService.getItemUnit(itemCode).then((
-        data) {
+    Future<List<Unit>> Units = _unitsApiService.getItemUnit(itemCode).then((data) {
+
       units = data;
+      if(data.isNotEmpty){
+
+        unitItem = data[0];
+        setItemPrice;
+
+      }
       setState(() {
 
       });
@@ -1125,8 +1110,7 @@ class _AddSalesInvoiceHDataWidgetState
 //Item Tax Value
   setItemTaxValue(String itemCode, double netValue) {
     //Serial
-    Future<
-        InventoryOperation> futureInventoryOperation = _inventoryOperationApiService
+    Future<InventoryOperation> futureInventoryOperation = _inventoryOperationApiService
         .getItemTaxValue(itemCode, netValue).then((data) {
       print('cccc0');
       InventoryOperation inventoryOperation = data;
@@ -1152,21 +1136,16 @@ class _AddSalesInvoiceHDataWidgetState
       print(e);
     });
   }
-
 //Item Cost
-  setItemCostPrice(String itemCode, String storeCode, int MatrixSerialCode,
-      String trxDate) {
+  setItemCostPrice(String itemCode, String storeCode, int MatrixSerialCode, String trxDate) {
     //Serial
-    Future<
-        InventoryOperation> futureInventoryOperation = _inventoryOperationApiService
-        .getItemCostPrice(itemCode, storeCode, MatrixSerialCode, trxDate).then((
-        data) {
+    Future<InventoryOperation> futureInventoryOperation = _inventoryOperationApiService
+        .getItemCostPrice(itemCode, storeCode, MatrixSerialCode, trxDate).then((data) {
       InventoryOperation inventoryOperation = data;
 
       setState(() {
         _costPriceController.text = inventoryOperation.itemCostPrice.toString();
       });
-
 
       return inventoryOperation;
     }, onError: (e) {
