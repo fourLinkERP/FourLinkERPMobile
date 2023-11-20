@@ -180,7 +180,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
         children: [
           Row(
               children: [
-            Container(
+            SizedBox(
                 width: 60,
                 height: 60,
                 child: ClipRRect(

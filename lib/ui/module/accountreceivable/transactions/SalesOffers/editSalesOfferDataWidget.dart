@@ -132,6 +132,9 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
   final _taxController = TextEditingController(); //Tax Value
   final _netAftertaxController = TextEditingController(); //Tax Value
   final _costPriceController = TextEditingController(); //Cost Price
+  final _descriptionNameArabicController = TextEditingController();
+  final _descriptionNameEnglishController = TextEditingController();
+
   static const int numItems = 0;
 
   SalesOfferType?  salesOfferTypeItem=SalesOfferType(offersTypeCode: "",offersTypeNameAra: "",offersTypeNameEng: "",id: 0);
@@ -677,7 +680,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                             Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_qty :'.tr()) ),
                             const SizedBox(width: 10),
                             SizedBox(
-                              width: 100,
+                              width: 110,
                               child: TextFormField(
                                 controller: _displayQtyController,
                                 decoration: const InputDecoration(
@@ -712,66 +715,41 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                         Row(
                           children: [
                             Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('discount'.tr()) ),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              width: 220,
+                              child: TextFormField(
+                                controller: _displayDiscountController,
+                                keyboardType: TextInputType.number,
+                                //hintText: 'discount'.tr(),
+                                onSaved: (val) {
+                                  discount = val;
+                                },
+                                onChanged: (value) {
+
+                                  double price=0;
+                                  if(!_priceController.text.isEmpty)
+                                  {
+                                    price=double.parse(_priceController.text);
+                                  }
+
+                                  double qtyVal=0;
+                                  if(!_displayQtyController.text.isEmpty)
+                                  {
+                                    qtyVal=double.parse(_displayQtyController.text);
+                                  }
+
+                                  print('toGetUnittotal');
+                                  var total = qtyVal * price;
+                                  setMaxDiscount(double.parse(value), total , empCode );
+
+                                },
+                              ),
+                            ),
                           ],
                         ),
-                        TextFormField(
-                          controller: _displayDiscountController,
-                          keyboardType: TextInputType.number,
-                          //hintText: 'discount'.tr(),
-                          onSaved: (val) {
-                            discount = val;
-                          },
-                          onChanged: (value) {
 
-                            double price=0;
-                            if(!_priceController.text.isEmpty)
-                            {
-                              price=double.parse(_priceController.text);
-                            }
 
-                            double qtyVal=0;
-                            if(!_displayQtyController.text.isEmpty)
-                            {
-                              qtyVal=double.parse(_displayQtyController.text);
-                            }
-
-                            print('toGetUnittotal');
-                            var total = qtyVal * price;
-                            setMaxDiscount(double.parse(value), total , empCode );
-
-                          },
-                        ),
-                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('netAfterDiscount'.tr()) ),
-                        textFormFields(
-                          enable: false,
-                          controller: _netAfterDiscountController,
-                          //hintText: 'discount'.tr(),
-                          onSaved: (val) {
-                            discount = val;
-                          },
-                          textInputType: TextInputType.number,
-                        ),
-                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('vat'.tr()) ),
-                        TextFormField(
-                            controller: _taxController,
-                            keyboardType: TextInputType.number,
-                            enabled: false,
-                            //hintText: 'vat'.tr(),
-                            onSaved: (val) {
-                              vat = val;
-                            },
-                            //textInputType: TextInputType.number,
-                            onChanged: (value) {
-                              calcTotalPriceRow();
-                            }
-
-                        ),
-                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('netAfterTax'.tr()) ),
-                        TextFormField(
-                          enabled: false,
-                          controller: _netAftertaxController,
-
-                        ),
 
                         const SizedBox(height: 20),
                         Row(children: [
@@ -825,57 +803,32 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                             border: TableBorder.all(),
                             columnSpacing: 20,
                             columns: [
-                              DataColumn(
-                                label: Text("id".tr()),
-
-                              ),
+                              DataColumn(label: Text("id".tr()),),
                               // DataColumn(
                               //   label: Text("Code"),
                               // ),
-                              DataColumn(
-                                label: Text("name".tr()),
-                              ),
-                              DataColumn(
-                                label: Text("qty".tr()),
-                                numeric: true,
-                              ),
-                              DataColumn(
-                                label: Text("price".tr()),
-                                numeric: true,
-                              ),
-                              DataColumn(
-                                label: Text("total".tr()),
-                                numeric: true,
-                              ),
-                              DataColumn(
-                                label: Text("discount".tr()),
-                                numeric: true,
-                              ),
-                              DataColumn(
-                                label: Text("netAfterDiscount".tr()),
-                                numeric: true,
-                              ),
-                              DataColumn(
-                                label: Text("vat".tr()),
-                                numeric: true,
-                              ),
+                              DataColumn(label: Text("name".tr()),),
 
-                              DataColumn(
-                                label: Text("net".tr()),
-                                numeric: true,
-                              ),
-                              DataColumn(
-                                label: Text("action".tr()),
-                              ),
+                              DataColumn(label: Text("qty".tr()), numeric: true,),
+
+                              DataColumn(label: Text("price".tr()), numeric: true,),
+
+                              DataColumn(label: Text("total".tr()), numeric: true,),
+
+                              DataColumn(label: Text("discount".tr()), numeric: true,),
+
+                              DataColumn(label: Text("netAfterDiscount".tr()), numeric: true,),
+
+                              DataColumn(label: Text("vat".tr()), numeric: true,),
+
+                              DataColumn(label: Text("net".tr()), numeric: true,),
+
+                              DataColumn(label: Text("action".tr()),),
                             ],
                             rows: salesOfferDLst.map(
                                   (p) => DataRow(cells: [
                                 DataCell(
-                                    SizedBox(
-                                        width: 5, //SET width
-                                        child:  Text(p.lineNum.toString()))
-
-                                ),
+                                    SizedBox(width: 5, child:  Text(p.lineNum.toString()))),
                                 // DataCell(
                                 //   Text(p.itemCode.toString()),
                                 // ),
@@ -932,149 +885,308 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                             ).toList(),
                           ),
                         ),
-                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('totalQty'.tr()) ),
-                        textFormFields(
-                          controller: _totalQtyController,
-                          // hintText: "totalQty".tr(),
-                          enable: false,
-                          onSaved: (val) {
-                            total = val;
-                          },
-                          textInputType: TextInputType.number,
-                        ),
-                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('rowsCount'.tr()) ),
-                        textFormFields(
-                          controller: _rowsCountController,
-                          //hintText: "rowsCount".tr(),
-                          enable: false,
-                          onSaved: (val) {
-                            total = val;
-                          },
-                          textInputType: TextInputType.number,
-                        ),
-                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountPercent'.tr()) ),
-                        TextFormField(
-                          controller: _invoiceDiscountPercentController,
-                          // hintText: "invoiceDiscountPercent".tr(),
-                          enabled: true,
-                          onChanged: (value){
+                        const SizedBox(height: 15),
 
-                          },
-                          keyboardType: TextInputType.number,
-                        ),
-                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountValue'.tr()) ),
-                        TextFormField(
-                          enabled: true,
-                          controller: _invoiceDiscountValueController,
-                          // hintText: "invoiceDiscountValue".tr(),
-
-                          onChanged: (value){
-
-                          },
-                          keyboardType: TextInputType.number,
-                        ),
-                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('totalValue'.tr()) ),
-                        textFormFields(
-                          controller: _totalValueController,
-                          //hintText: "totalValue".tr(),
-                          enable: false,
-                          onSaved: (val) {
-                            total = val;
-                          },
-                          textInputType: TextInputType.number,
-                        ),
-                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('totalDiscount'.tr()) ),
-                        textFormFields(
-                          controller: _totalDiscountController,
-                          //hintText: "totalDiscount".tr(),
-                          enable: false,
-                          onSaved: (val) {
-                            total = val;
-                          },
-                          textInputType: TextInputType.number,
-                        ),
-                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('totalAfterDiscount'.tr()) ),
-                        textFormFields(
-                          controller: _totalAfterDiscountController,
-                          //hintText: "totalAfterDiscount".tr(),
-                          enable: false,
-                          onSaved: (val) {
-                            total = val;
-                          },
-                          textInputType: TextInputType.number,
-                        ),
-                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('totalBeforeTax'.tr()) ),
-                        textFormFields(
-                          controller: _totalBeforeTaxController,
-                          //hintText: "totalBeforeTax".tr(),
-                          enable: false,
-                          onSaved: (val) {
-                            total = val;
-                          },
-                          textInputType: TextInputType.number,
-                        ),
-                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('totalTax'.tr()) ),
-                        textFormFields(
-                          controller: _totalTaxController,
-                          //hintText: "totalTax".tr(),
-                          enable: false,
-                          onSaved: (val) {
-                            total = val;
-                          },
-                          textInputType: TextInputType.number,
-                        ),
-                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('total'.tr()) ),
-                        textFormFields(
-                          controller: _totalNetController,
-                          //hintText: "total".tr(),
-                          enable: false,
-                          onSaved: (val) {
-                            total = val;
-                          },
-                          textInputType: TextInputType.number,
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Column(
-                            crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                            children: <Widget>[
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameArabic'.tr()) ),
-                              TextFormField(
-                                controller: _tafqitNameArabicController,
-                                decoration: const InputDecoration(
-                                  // hintText: '',
+                        Row(
+                          children: [
+                            Row(
+                              children: [
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('totalQty'.tr()) ),
+                                const SizedBox(width: 5),
+                                SizedBox(
+                                  width: 80,
+                                  child: textFormFields(
+                                    controller: _totalQtyController,
+                                    // hintText: "totalQty".tr(),
+                                    enable: false,
+                                    onSaved: (val) {
+                                      total = val;
+                                    },
+                                    textInputType: TextInputType.number,
+                                  ),
                                 ),
-                                // validator: (value) {
-                                //   if (value!.isEmpty) {
-                                //     return 'please_enter_value'.tr();
-                                //   }
-                                //   return null;
-                                // },
-                                enabled: false,
-                                onChanged: (value) {},
+                              ],
+                            ),
+                            const SizedBox(width: 10),
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('rowsCount'.tr()) ),
+                            const SizedBox(width: 5),
+                            SizedBox(
+                              width: 80,
+                              child: textFormFields(
+                                controller: _rowsCountController,
+                                //hintText: "rowsCount".tr(),
+                                enable: false,
+                                onSaved: (val) {
+                                  total = val;
+                                },
+                                textInputType: TextInputType.number,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+
+                        Row(
+                          children: [
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountPercent'.tr()) ),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              width: 150,
+                              child: TextFormField(
+                                controller: _invoiceDiscountPercentController,
+                                // hintText: "invoiceDiscountPercent".tr(),
+                                enabled: true,
+                                onChanged: (value){
+
+                                },
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+
+                        Row(
+                          children: [
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountValue'.tr()) ),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              width: 150,
+                              child: TextFormField(
+                                enabled: true,
+                                controller: _invoiceDiscountValueController,
+                                // hintText: "invoiceDiscountValue".tr(),
+                                onChanged: (value){
+
+                                },
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+
+                        Row(
+                          children: [
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('totalValue'.tr()) ),
+                            const SizedBox(width: 5),
+                            SizedBox(
+                              width: 70,
+                              child: textFormFields(
+                                controller: _totalValueController,
+                                //hintText: "totalValue".tr(),
+                                enable: false,
+                                onSaved: (val) {
+                                  total = val;
+                                },
+                                textInputType: TextInputType.number,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('totalDiscount'.tr())),
+
+                            const SizedBox(width: 5),
+                            SizedBox(
+                              width: 70,
+                              child: textFormFields(
+                                controller: _totalDiscountController,
+                                //hintText: "totalDiscount".tr(),
+                                enable: false,
+                                onSaved: (val) {
+                                  total = val;
+                                },
+                                textInputType: TextInputType.number,
+                              ),
+                            ),
+
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+
+                        Row(
+                          children: [
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('totalAfterDiscount'.tr())),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              width: 150,
+                              child: textFormFields(
+                                controller: _totalAfterDiscountController,
+                                //hintText: "totalAfterDiscount".tr(),
+                                enable: false,
+                                onSaved: (val) {
+                                  total = val;
+                                },
+                                textInputType: TextInputType.number,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+
+                        Row(
+                          children: [
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('totalBeforeTax'.tr()) ),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              width: 150,
+                              child: textFormFields(
+                                controller: _totalBeforeTaxController,
+                                //hintText: "totalBeforeTax".tr(),
+                                enable: false,
+                                onSaved: (val) {
+                                  total = val;
+                                },
+                                textInputType: TextInputType.number,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+
+                        Row(
+                          children: [
+                            Row(
+                              children: [
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('totalTax'.tr()) ),
+                                const SizedBox(width: 5),
+                                SizedBox(
+                                  width: 80,
+                                  child: textFormFields(
+                                    controller: _totalTaxController,
+                                    //hintText: "totalTax".tr(),
+                                    enable: false,
+                                    onSaved: (val) {
+                                      total = val;
+                                    },
+                                    textInputType: TextInputType.number,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(width: 10),
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('total'.tr()) ),
+                            const SizedBox(width: 5),
+                            SizedBox(
+                              width: 80,
+                              child: textFormFields(
+                                controller: _totalNetController,
+                                //hintText: "total".tr(),
+                                enable: false,
+                                onSaved: (val) {
+                                  total = val;
+                                },
+                                textInputType: TextInputType.number,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          child: Row(
+                            children: <Widget>[
+                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameArabic'.tr(),
+                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              const SizedBox(width: 10),
+
+                              SizedBox(
+                                width: 206,
+                                child: TextFormField(
+                                  controller: _descriptionNameArabicController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'please_enter_value'.tr();
+                                  //   }
+                                  //   return null;
+                                  // },
+                                  //enabled: false,
+                                  onChanged: (value) {},
+                                ),
                               ),
                             ],
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Column(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          child: Row(
+                            children: <Widget>[
+                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameEnglish'.tr(),
+                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              const SizedBox(width: 10),
+
+                              SizedBox(
+                                width: 200,
+                                child: TextFormField(
+                                  controller: _descriptionNameEnglishController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'please_enter_value'.tr();
+                                  //   }
+                                  //   return null;
+                                  // },
+                                  //enabled: false,
+                                  onChanged: (value) {},
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          child: Row(
+                            children: <Widget>[
+                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameArabic'.tr()) ),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 210,
+                                child: TextFormField(
+                                  controller: _tafqitNameArabicController,
+                                  decoration: const InputDecoration(
+                                    // hintText: '',
+                                  ),
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'please_enter_value'.tr();
+                                  //   }
+                                  //   return null;
+                                  // },
+                                  enabled: false,
+                                  onChanged: (value) {},
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          child: Row(
                             crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                             children: <Widget>[
                               Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameEnglish'.tr()) ),
-                              TextFormField(
-                                controller: _tafqitNameEnglishController,
-                                decoration: const InputDecoration(
-                                  // hintText: '',
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 210,
+                                child: TextFormField(
+                                  controller: _tafqitNameEnglishController,
+                                  decoration: const InputDecoration(
+                                    // hintText: '',
+                                  ),
+                                  enabled: false,
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'please_enter_value'.tr();
+                                  //   }
+                                  //   return null;
+                                  // },
+                                  onChanged: (value) {},
                                 ),
-                                enabled: false,
-                                // validator: (value) {
-                                //   if (value!.isEmpty) {
-                                //     return 'please_enter_value'.tr();
-                                //   }
-                                //   return null;
-                                // },
-                                onChanged: (value) {},
                               ),
                             ],
                           ),

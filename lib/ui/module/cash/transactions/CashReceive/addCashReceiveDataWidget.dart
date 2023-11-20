@@ -177,6 +177,8 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
   String? cashReceiveSerial;
   String? cashReceiveDate;
 
+  DateTime get pickedDate => DateTime.now();
+
   @override
   Widget build(BuildContext context) {
 
@@ -225,7 +227,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
         title: ListTile(
           leading: Image.asset('assets/images/logowhite2.png', scale: 3),
           title: Text('cash_receipt'.tr(),
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),),
         ),
         backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
       ),
@@ -275,11 +277,8 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                 );
                               },
                               showSearchBox: true,
-
-
                             ),
                             enabled: true,
-
                             items: cashTypes,
                             itemAsString: (CashType u) =>(langId ==1 )? u.descAra.toString() : u.descEng.toString(),
 
@@ -337,7 +336,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                         child: textFormFields(
                           enable: false,
                           controller: _cashReceiveDateController,
-                          hintText: "date".tr(),
+                          hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                           onTap: () async {
                             DateTime? pickedDate = await showDatePicker(
                                 context: context,
@@ -464,7 +463,6 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                           Form(
                               key: _dropdownBoxTypeFormKey,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('box_type'.tr(),
                                       style: const TextStyle(fontWeight: FontWeight.bold)) ),
@@ -481,8 +479,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                         itemBuilder: (context, item, isSelected) {
                                           return Container(
                                             margin: const EdgeInsets.symmetric(horizontal: 8),
-                                            decoration: !isSelected
-                                                ? null
+                                            decoration: !isSelected ? null
                                                 : BoxDecoration(
 
                                               border: Border.all(color: Theme.of(context).primaryColor),
@@ -496,7 +493,6 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                           );
                                         },
                                         showSearchBox: true,
-
 
                                       ),
                                       enabled: true,
@@ -532,7 +528,6 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                 ],
                               )),
                           const SizedBox(height: 20),
-
                           Row(
                             children: [
                               Form(

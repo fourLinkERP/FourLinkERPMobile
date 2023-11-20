@@ -13,7 +13,8 @@ class BoxType {
 
 
 
-  BoxType({this.id,
+  BoxType({
+    this.id,
     this.code ,
     this.nameAra,
     this.nameEng,
@@ -48,10 +49,6 @@ class BoxType {
     return 'Trans{id: $id, name: $nameAra }';
   }
 }
-
-
-
-
 
 
 // Our demo Branchs

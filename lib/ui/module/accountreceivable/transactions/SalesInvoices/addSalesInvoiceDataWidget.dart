@@ -136,6 +136,8 @@ class _AddSalesInvoiceHDataWidgetState
   final _taxController = TextEditingController(); //Tax Value
   final _netAftertaxController = TextEditingController(); //Tax Value
   final _costPriceController = TextEditingController(); //Cost Price
+  final _descriptionNameArabicController = TextEditingController();
+  final _descriptionNameEnglishController = TextEditingController();
 
 
   final _dropdownTaxFormKey = GlobalKey<FormState>();
@@ -238,14 +240,12 @@ class _AddSalesInvoiceHDataWidgetState
         title: Row(crossAxisAlignment: langId == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
             Image.asset('assets/images/logowhite2.png', scale: 3,),
-            const SizedBox(
-              width: 1,
-            ),
+            const SizedBox(width: 1,),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 11, 2, 0),
               //apply padding to all four sides
               child: Text('sales_invoice'.tr(),
-                style: const TextStyle(color: Colors.white),),
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),),
             )
           ],
         ),
@@ -268,20 +268,9 @@ class _AddSalesInvoiceHDataWidgetState
                         Form(
                             key: _dropdownTypeFormKey,
                             child: Column(
-                              crossAxisAlignment: langId == 1
-                                  ? CrossAxisAlignment.start
-                                  : CrossAxisAlignment.end,
+                              crossAxisAlignment: langId == 1 ? CrossAxisAlignment.start : CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                /*if (isLoading == true)
-                                  Positioned.fill(
-                                    child: Container(
-                                      color: Colors.black.withOpacity(0.5),
-                                      // Colors.black.withOpacity(0.5),
-                                      child: const Center(
-                                        child: CircularProgressIndicator(),),
-                                    ),
-                                  ),*/
 
                                 DropdownSearch<SalesInvoiceType>(
                                   validator: (value) => value == null ? "select_a_Type".tr() : null,
@@ -382,14 +371,12 @@ class _AddSalesInvoiceHDataWidgetState
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 20),
 
                         Form(
                           key: _dropdownCustomerFormKey,
                           child: Row(
-                            //crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(height: 10),
                               Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Customer: ".tr(),
                                       style: const TextStyle(fontWeight: FontWeight.bold))),
                               const SizedBox(width: 10),
@@ -650,26 +637,7 @@ class _AddSalesInvoiceHDataWidgetState
                         const SizedBox(height: 20),
                         Row(
                           children:[
-                        /*Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('total :'.tr(),
-                            style: const TextStyle(fontWeight: FontWeight.bold))),
-                        const SizedBox(width: 15),
 
-                        SizedBox(
-                          width: 100,
-                          child: TextField(
-                            enabled: false,
-                            keyboardType: TextInputType.number,
-                            controller: _displayTotalController,
-                            // enable: false,
-                            // //hintText: 'vat'.tr(),
-                            // onSaved: (val) {
-                            //   vat = val;
-                            // },
-                            // textInputType: TextInputType.number,
-                            // onChanged: (value) {},
-                          ),
-                        ),
-                        const SizedBox(width: 10),*/
                         Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('discount :'.tr(),
                             style: const TextStyle(fontWeight: FontWeight.bold))),
                         const SizedBox(width: 10),
@@ -1019,6 +987,50 @@ class _AddSalesInvoiceHDataWidgetState
                         ),
                         const SizedBox(height: 20),
                         Container(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          child: Row(
+                            children: <Widget>[
+                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameArabic'.tr(),
+                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              const SizedBox(width: 10),
+
+                              SizedBox(
+                                width: 206,
+                                child: TextFormField(
+                                  controller: _descriptionNameArabicController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+
+                                  onChanged: (value) {},
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          child: Row(
+                            children: <Widget>[
+                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameEnglish'.tr(),
+                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              const SizedBox(width: 10),
+
+                              SizedBox(
+                                width: 200,
+                                child: TextFormField(
+                                  controller: _descriptionNameEnglishController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+
+                                  onChanged: (value) {},
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
                           margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Row(
                             children: <Widget>[
@@ -1051,6 +1063,7 @@ class _AddSalesInvoiceHDataWidgetState
                             children: <Widget>[
                               Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
                                   child: Text('tafqitNameEnglish'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
+                              const SizedBox(width: 10),
                               SizedBox(
                                 width: 210,
                                 child: TextFormField(

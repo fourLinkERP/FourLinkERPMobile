@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:core';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/transactions/salesOrders/salesOrderD.dart';
@@ -15,8 +14,8 @@ import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/Sales
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/editSalesOrderDataWidget.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
+//import 'package:pdf/pdf.dart';
+//import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
 
 import '../../../../../cubit/app_cubit.dart';
@@ -46,7 +45,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     // TODO: implement initState
     print('okkkkkkkkkkk');
     AppCubit.get(context).CheckConnection();
-    Timer(Duration(seconds: 30), () { // <-- Delay here
+    Timer(const Duration(seconds: 30), () { // <-- Delay here
       setState(() {
         if(_salesOrders.isEmpty){
           isLoading = false;
@@ -108,21 +107,21 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Color.fromRGBO(240, 242, 246,1), // Main Color
-          title: Container(
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
+          title: SizedBox(
             height: 38,
             child: TextField(
               onChanged: (value) => onSearch(value),
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: EdgeInsets.all(0),
+                  contentPadding: const EdgeInsets.all(0),
                   prefixIcon: Icon(Icons.search, color: Colors.grey.shade500,),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
                       borderSide: BorderSide.none
                   ),
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                       fontSize: 14,
                       color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
                   ),
@@ -153,8 +152,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
               shape: BoxShape.circle,
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                    color: FitnessAppTheme.nearlyDarkBlue
-                        .withOpacity(0.4),
+                    color: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.4),
                     offset: const Offset(2.0, 14.0),
                     blurRadius: 16.0),
               ],
@@ -162,7 +160,6 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-
                 splashColor: Colors.white.withOpacity(0.1),
                 highlightColor: Colors.transparent,
                 focusColor: Colors.transparent,
@@ -171,7 +168,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
                   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSalesInvoiceHDataWidget()));
                   _navigateToAddScreen(context);
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.add,
                   color: FitnessAppTheme.white,
                   size: 46,
@@ -185,14 +182,14 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
 
   customerComponent({required SalesOrderH customer}) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20),
-      padding: EdgeInsets.only(top: 10, bottom: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.all(10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
               children: [
-                Container(
+                SizedBox(
                     width: 60,
                     height: 60,
                     child: ClipRRect(
@@ -200,11 +197,11 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
                       child: Image.asset('assets/images/clients.png'),
                     )
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Column(
                     crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                     children: [
-                      Text(customer.customerCode!, style: TextStyle(
+                      Text(customer.customerCode!, style: const TextStyle(
                           color: Colors.white, fontWeight: FontWeight.w500)),
                       //SizedBox(height: 5,),
                       //Text(customer.customerNameEng!, style: TextStyle(color: Colors.grey[500])),
@@ -261,7 +258,6 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     if (result == null || !result) {
       return;
     }
-
     int menuId=6203;
     bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
     if(isAllowDelete)
@@ -273,11 +269,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     {
       FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
     }
-
-
-
   }
-
 
   _navigateToAddScreen(BuildContext context) async {
     int menuId=6203;
@@ -296,9 +288,6 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     {
       FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
     }
-
-
-
   }
 
   _navigateToEditScreen (BuildContext context, SalesOrderH customer) async {
@@ -318,13 +307,9 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     {
       FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
     }
-
-
-
   }
 
   _navigateToPrintScreen (BuildContext context, SalesOrderH invoiceH) async {
-
 
     // DateTime date = DateTime.parse(invoiceH.sellOrdersDate.toString());
     // final dueDate = date.add(Duration(days: 7));
@@ -435,23 +420,22 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     //
     // PdfApi.openFile(pdfFile);
 
-
   }
 
 
 
   Widget BuildsalesOrders(){
     if(State is AppErrorState){
-      return Center(child: Text('no data'));
+      return const Center(child: Text('no data'));
     }
     if(AppCubit.get(context).Conection==false){
-      return Center(child: Text('no internet connection'));
+      return const Center(child: Text('no internet connection'));
     }
    else if(_salesOrders.isEmpty&&AppCubit.get(context).Conection==true){
       return Center(child: CircularProgressIndicator());
     }else{
       return Container(
-        color:  Color.fromRGBO(240, 242, 246,1), // Main Color
+        color:  const Color.fromRGBO(240, 242, 246,1), // Main Color
         child: ListView.builder(
             itemCount: _salesOrders == null ? 0 : _salesOrders.length,
             itemBuilder: (BuildContext context, int index) {
@@ -468,51 +452,46 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/sales.png'),
-                      title: Text(
-                          'serial'.tr() + " : " + _salesOrders[index].sellOrdersSerial.toString()),
+                      title: Text('serial'.tr() + " : " + _salesOrders[index].sellOrdersSerial.toString()),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
                           Container(height: 20, color: Colors.white30, child: Row(
                             children: [
-                              Text(
-                                  'date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesOrders[index].sellOrdersDate.toString())))  ,
+                              Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesOrders[index].sellOrdersDate.toString())))  ,
 
                             ],
 
                           )),
                           Container(height: 20, color: Colors.white30, child: Row(
                             children: [
-
-                              Text(
-                                  'customer'.tr() + " : " + _salesOrders[index].customerName.toString()),
-
+                              Text('customer'.tr() + " : " + _salesOrders[index].customerName.toString()),
 
                             ],
 
                           )),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           Container(
                               child: Row(
                                 children: <Widget>[
                                   Center(
                                       child: ElevatedButton.icon(
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.edit,
-                                          color: Color.fromRGBO(0, 136, 134, 1),
+                                          color: Colors.white,
                                           size: 20.0,
                                           weight: 10,
                                         ),
-                                        label: Text('edit'.tr(),style:TextStyle(color: Color.fromRGBO(0, 136, 134, 1)) ),
+                                        label: Text('edit'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
                                           _navigateToEditScreen(context,_salesOrders[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
-                                            shape: new RoundedRectangleBorder(
-                                              borderRadius: new BorderRadius.circular(5),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(5),
                                             ),
-                                            padding: EdgeInsets.all(7),
-                                            backgroundColor: Colors.white,
+                                            padding: const EdgeInsets.all(7),
+                                            backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
                                             foregroundColor: Colors.black,
                                             elevation: 0,
                                             side: const BorderSide(
@@ -521,25 +500,25 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
                                             )
                                         ),
                                       )),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Center(
                                       child: ElevatedButton.icon(
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.delete,
-                                          color: Color.fromRGBO(144, 16, 46, 1),
+                                          color: Colors.white,
                                           size: 20.0,
                                           weight: 10,
                                         ),
-                                        label: Text('delete'.tr(),style:TextStyle(color: Color.fromRGBO(144, 16, 46, 1)) ),
+                                        label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
                                           _deleteItem(context,_salesOrders[index].id);
                                         },
                                         style: ElevatedButton.styleFrom(
-                                            shape: new RoundedRectangleBorder(
-                                              borderRadius: new BorderRadius.circular(5),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(5),
                                             ),
-                                            padding: EdgeInsets.all(7),
-                                            backgroundColor: Colors.white,
+                                            padding: const EdgeInsets.all(7),
+                                            backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
                                             foregroundColor: Colors.black,
                                             elevation: 0,
                                             side: const BorderSide(
@@ -548,25 +527,25 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
                                             )
                                         ),
                                       )),
-                                  SizedBox(width: 5),
+                                  const SizedBox(width: 5),
                                   Center(
                                       child: ElevatedButton.icon(
-                                        icon: Icon(
+                                        icon: const Icon(
                                           Icons.print,
-                                          color: Colors.black87,
+                                          color: Colors.white,
                                           size: 20.0,
                                           weight: 10,
                                         ),
-                                        label: Text('print'.tr(),style:TextStyle(color: Colors.black87) ),
+                                        label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
                                           _navigateToPrintScreen(context,_salesOrders[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
-                                            shape: new RoundedRectangleBorder(
-                                              borderRadius: new BorderRadius.circular(5),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(5),
                                             ),
-                                            padding: EdgeInsets.all(7),
-                                            backgroundColor: Colors.white,
+                                            padding: const EdgeInsets.all(7),
+                                            backgroundColor: Colors.black87,
                                             foregroundColor: Colors.black,
                                             elevation: 0,
                                             side: const BorderSide(

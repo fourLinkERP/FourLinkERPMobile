@@ -1,5 +1,3 @@
-
-
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
@@ -11,7 +9,6 @@ import 'package:fourlinkmobileapp/data/model/modules/module/cash/basicInputs/cas
 import 'package:fourlinkmobileapp/data/model/modules/module/cash/basicInputs/cashTargetTypes/cashTargetType.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/cash/setup/cashTypes/cashType.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/cash/transactions/cashReceives/cashReceive.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/general/nextSerial/nextSerial.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/general/tafqeet/tafqeet.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
@@ -87,6 +84,8 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
   final _refNoController = TextEditingController();
   final _valueController = TextEditingController();
   final _statementController = TextEditingController();
+  final _descriptionNameArabicController = TextEditingController();
+  final _descriptionNameEnglishController = TextEditingController();
   final _tafqitNameArabicController = TextEditingController();
   final _tafqitNameEnglishController = TextEditingController();
   final _dropdownTypeFormKey = GlobalKey<FormState>();
@@ -201,6 +200,7 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
   String? cashReceiveSerial;
   String? cashReceiveDate;
 
+  DateTime get pickedDate => DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -237,7 +237,7 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                   blurRadius: 16.0),
             ],
           ),
-          child: Material(
+          child: const Material(
             color: Colors.transparent,
             child: Icon(
               Icons.data_saver_on,
@@ -247,51 +247,29 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
           ),
         ),
     ),
-      appBar:AppBar(
+      appBar: AppBar(
         centerTitle: true,
-        title: Expanded(
-          child: Row(
-            crossAxisAlignment:langId==1? CrossAxisAlignment.end
-                :CrossAxisAlignment.start,
-            children: [
-
-              Image.asset(
-
-                'assets/images/logowhite2.png',
-                scale: 3,
-              ),
-              const SizedBox(
-                width: 1,
-              ),
-              Padding(
-                padding:EdgeInsets.only(top: 5),
-                child: Expanded(
-                  child: Text('cash_receipt'.tr(),style:
-                  TextStyle(color: Colors.white),),
-                ),
-              )
-
-            ],
-          ),
+        title: ListTile(
+          leading: Image.asset('assets/images/logowhite2.png', scale: 3),
+          title: Text('cash_receipt'.tr(),
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0)),
         ),
-        backgroundColor: Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
       ),
 
       body: Form(
         key: _addFormKey,
         child: SingleChildScrollView(
           child: Container(
-            padding: EdgeInsets.all(0.0),
+            padding: const EdgeInsets.all(0.0),
               child: Card(
                 child: Container(
-                  padding: EdgeInsets.all(4.0),
+                  padding: const EdgeInsets.all(4.0),
                   //width: 600,
                     child: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
                         children: <Widget>[
-                    const SizedBox(height: 40),
-                  headLines(number: '01', title: 'cashReceive_info'.tr()),
-
+                          const SizedBox(height: 20),
 
                   Form(
                       key: _dropdownTypeFormKey,
@@ -308,7 +286,7 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
 
                               itemBuilder: (context, item, isSelected) {
                                 return Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 8),
+                                  margin: const EdgeInsets.symmetric(horizontal: 8),
                                   decoration: !isSelected
                                       ? null
                                       : BoxDecoration(
@@ -324,8 +302,6 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                                 );
                               },
                               showSearchBox: true,
-
-
                             ),
                             enabled: true,
 
@@ -358,362 +334,450 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
 
                         ],
                       )),
-                  const SizedBox(height: 20),
-                  Align(child: Text('serial'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
-                  textFormFields(
-                    controller: _cashReceiveSerialController,
-                    enable: false,
-                    hintText: "serial".tr(),
-                    onSaved: (val) {
-                      cashReceiveSerial = val;
-                    },
-                    textInputType: TextInputType.name,
-                  ),
-                  const SizedBox(height: 20),
-                  Align(child: Text('date'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
-                  textFormFields(
-                    controller: _cashReceiveDateController,
-                    hintText: "date".tr(),
-                    onTap: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1950),
-                          lastDate: DateTime(2050));
+                          const SizedBox(height: 20),
 
-                      if (pickedDate != null) {
-                        _cashReceiveDateController.text =DateFormat('yyyy-MM-dd').format(pickedDate);
-                      }
-                    },
-                    onSaved: (val) {
-                      cashReceiveDate = val;
-                    },
-                    textInputType: TextInputType.datetime,
-                  ),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                    child: Column(
-                      crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Align(child: Text('ref_no'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
-                        TextFormField(
-                          controller: _refNoController,
-                          decoration: const InputDecoration(
-                            hintText: '',
+                          Row(
+                            children: [
+                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Serial :'.tr(),
+                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 100,
+                                child: textFormFields(
+                                  controller: _cashReceiveSerialController,
+                                  enable: false,
+                                  hintText: "serial".tr(),
+                                  onSaved: (val) {
+                                    cashReceiveSerial = val;
+                                  },
+                                  textInputType: TextInputType.name,
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Date :'.tr(),
+                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 100,
+                                child: textFormFields(
+                                  enable: false,
+                                  controller: _cashReceiveDateController,
+                                  hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
+                                  onTap: () async {
+                                    DateTime? pickedDate = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(1950),
+                                        lastDate: DateTime(2050));
+
+                                    if (pickedDate != null) {
+                                      _cashReceiveDateController.text =DateFormat('yyyy-MM-dd').format(pickedDate);
+                                    }
+                                  },
+                                  onSaved: (val) {
+                                    cashReceiveDate = val;
+                                  },
+                                  textInputType: TextInputType.datetime,
+                                ),
+                              ),
+
+                            ],
                           ),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'please_enter_ref_no'.tr();
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {},
+
+                     const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                        child: Row(
+                          children: <Widget>[
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('ref_no'.tr(),
+                                style: const TextStyle(fontWeight: FontWeight.bold))),
+                            const SizedBox(width: 5),
+                            SizedBox(
+                              width: 90,
+                              child: TextFormField(
+                                controller: _refNoController,
+                                decoration: const InputDecoration(
+                                  hintText: '',
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'please_enter_ref_no'.tr();
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {},
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(width: 10),
+                      Form(
+                        key: _dropdownCashTargetTypeFormKey,
+                        child: Row(
+                          children: [
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text("cash_target_type".tr(),
+                                style: const TextStyle(fontWeight: FontWeight.bold))),
+                            const SizedBox(width: 5),
+                            SizedBox(
+                              width: 110,
+                              child: DropdownSearch<CashTargetType>(
+                                validator: (value) => value == null ? "select_a_cash_target_Type".tr() : null,
+
+                                selectedItem: cashTargetTypeItem,
+                                popupProps: PopupProps.menu(
+
+                                  itemBuilder: (context, item, isSelected) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                                      decoration: !isSelected ? null
+                                          : BoxDecoration(
+
+                                        border: Border.all(color: Theme.of(context).primaryColor),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text((langId ==1 )?item.typeNameAra.toString():item.typeNameEng.toString()),
+                                      ),
+                                    );
+                                  },
+                                  showSearchBox: true,
+                                ),
+                                enabled: false,
+
+                                items: cashTargetTypes,
+                                itemAsString: (CashTargetType u) =>(langId ==1 )? u.typeNameAra.toString() : u.typeNameEng.toString(),
+
+                                onChanged: (value){
+                                  //v.text = value!.cusTypesCode.toString();
+                                  //print(value!.id);
+                                  cashTargetTypeIdSelectedValue = value!.code ;
+                                  setTargetCode(cashTargetTypeIdSelectedValue.toString());
+                                },
+
+                                filterFn: (instance, filter){
+                                  if((langId ==1 )? instance.typeNameAra!.contains(filter) : instance.typeNameAra!.contains(filter)){
+                                    print(filter);
+                                    return true;
+                                  }
+                                  else{
+                                    return false;
+                                  }
+                                },
+                                dropdownDecoratorProps: const DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+
+                                  ),),
+
+                              ),
+                            ),
+
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 40),
-                  headLines(number: '02', title: 'beneficiary_info'.tr()),
-                          Form(
-                              key: _dropdownCashTargetTypeFormKey,
-                              child: Column(
-                                crossAxisAlignment: langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
 
-                                  DropdownSearch<CashTargetType>(
-                                    validator: (value) => value == null ? "select_a_cash_target_Type".tr() : null,
 
-                                    selectedItem: cashTargetTypeItem,
-                                    popupProps: PopupProps.menu(
 
-                                      itemBuilder: (context, item, isSelected) {
-                                        return Container(
-                                          margin: EdgeInsets.symmetric(horizontal: 8),
-                                          decoration: !isSelected
-                                              ? null
-                                              : BoxDecoration(
+                              const SizedBox(height: 20),
+                              Form(
+                                  key: _dropdownCashTargetCodeFormKey,
+                                  child: Row(
+                                    children: [
+                                      Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text("cash_target_code".tr(),
+                                          style: const TextStyle(fontWeight: FontWeight.bold))),
+                                      const SizedBox(width: 10),
+                                      SizedBox(
+                                        width: 230,
+                                        child: DropdownSearch<TargetCode>(
+                                          validator: (value) => value == null ? "select_a_cash_target_Code".tr() : null,
 
-                                            border: Border.all(color: Theme.of(context).primaryColor),
-                                            borderRadius: BorderRadius.circular(5),
-                                            color: Colors.white,
+                                          selectedItem: cashTargetCodeItem,
+                                          popupProps: PopupProps.menu(
+
+                                            itemBuilder: (context, item, isSelected) {
+                                              return Container(
+                                                margin: const EdgeInsets.symmetric(horizontal: 8),
+                                                decoration: !isSelected
+                                                    ? null
+                                                    : BoxDecoration(
+
+                                                  border: Border.all(color: Theme.of(context).primaryColor),
+                                                  borderRadius: BorderRadius.circular(5),
+                                                  color: Colors.white,
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
+                                                ),
+                                              );
+                                            },
+                                            showSearchBox: true,
+
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text((langId ==1 )?item.typeNameAra.toString():item.typeNameEng.toString()),
-                                          ),
-                                        );
-                                      },
-                                      showSearchBox: true,
+                                          enabled: true,
 
+                                          items: targetCodes,
+                                          itemAsString: (TargetCode u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
 
-                                    ),
-                                    enabled: false,
+                                          onChanged: (value){
+                                            //v.text = value!.cusTypesCode.toString();
+                                            //print(value!.id);
+                                            cashTargetCodeSelectedValue = value!.code.toString();
+                                            print('cashTargetCodeSelectedValue Is >> ' + cashTargetCodeSelectedValue.toString());
+                                          },
 
-                                    items: cashTargetTypes,
-                                    itemAsString: (CashTargetType u) =>(langId ==1 )? u.typeNameAra.toString() : u.typeNameEng.toString(),
+                                          filterFn: (instance, filter){
+                                            if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
+                                              print(filter);
+                                              return true;
+                                            }
+                                            else{
+                                              return false;
+                                            }
+                                          },
+                                          dropdownDecoratorProps: const DropDownDecoratorProps(
+                                            dropdownSearchDecoration: InputDecoration(
 
-                                    onChanged: (value){
-                                      //v.text = value!.cusTypesCode.toString();
-                                      //print(value!.id);
-                                      cashTargetTypeIdSelectedValue = value!.code ;
-                                      setTargetCode(cashTargetTypeIdSelectedValue.toString());
-                                    },
+                                            ),),
 
-                                    filterFn: (instance, filter){
-                                      if((langId ==1 )? instance.typeNameAra!.contains(filter) : instance.typeNameAra!.contains(filter)){
-                                        print(filter);
-                                        return true;
-                                      }
-                                      else{
-                                        return false;
-                                      }
-                                    },
-                                    dropdownDecoratorProps: DropDownDecoratorProps(
-                                      dropdownSearchDecoration: InputDecoration(
-                                        labelText: "cash_target_type".tr(),
+                                        ),
+                                      ),
 
-                                      ),),
-
-                                  ),
-
-                                ],
-                              )),
-                          Form(
-                              key: _dropdownCashTargetCodeFormKey,
-                              child: Column(
-                                crossAxisAlignment: langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-
-                                  DropdownSearch<TargetCode>(
-                                    validator: (value) => value == null ? "select_a_cash_target_Code".tr() : null,
-
-                                    selectedItem: cashTargetCodeItem,
-                                    popupProps: PopupProps.menu(
-
-                                      itemBuilder: (context, item, isSelected) {
-                                        return Container(
-                                          margin: EdgeInsets.symmetric(horizontal: 8),
-                                          decoration: !isSelected
-                                              ? null
-                                              : BoxDecoration(
-
-                                            border: Border.all(color: Theme.of(context).primaryColor),
-                                            borderRadius: BorderRadius.circular(5),
-                                            color: Colors.white,
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
-                                          ),
-                                        );
-                                      },
-                                      showSearchBox: true,
-
-
-                                    ),
-                                    enabled: true,
-
-                                    items: targetCodes,
-                                    itemAsString: (TargetCode u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
-
-                                    onChanged: (value){
-                                      //v.text = value!.cusTypesCode.toString();
-                                      //print(value!.id);
-                                      cashTargetCodeSelectedValue = value!.code.toString();
-                                       print('cashTargetCodeSelectedValue Is >> ' + cashTargetCodeSelectedValue.toString());
-                                    },
-
-                                    filterFn: (instance, filter){
-                                      if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
-                                        print(filter);
-                                        return true;
-                                      }
-                                      else{
-                                        return false;
-                                      }
-                                    },
-                                    dropdownDecoratorProps: DropDownDecoratorProps(
-                                      dropdownSearchDecoration: InputDecoration(
-                                        labelText: "cash_target_code".tr(),
-
-                                      ),),
-
-                                  ),
-
-                                ],
-                              )),
-
+                                    ],
+                                  )),
 
                           const SizedBox(height: 20),
-                          headLines(number: '03', title: 'payment_info'.tr()),
+
                           Form(
                               key: _dropdownBoxTypeFormKey,
-                              child: Column(
-                                crossAxisAlignment: langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              child: Row(
                                 children: [
+                                  Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text("box_type".tr(),
+                                      style: const TextStyle(fontWeight: FontWeight.bold))),
+                                  const SizedBox(width: 10),
+                                  SizedBox(
+                                    width: 210,
+                                    child: DropdownSearch<BoxType>(
+                                      validator: (value) => value == null ? "select_a_box_Type".tr() : null,
 
-                                  DropdownSearch<BoxType>(
-                                    validator: (value) => value == null ? "select_a_box_Type".tr() : null,
+                                      selectedItem: boxTypeItem,
+                                      popupProps: PopupProps.menu(
 
-                                    selectedItem: boxTypeItem,
-                                    popupProps: PopupProps.menu(
+                                        itemBuilder: (context, item, isSelected) {
+                                          return Container(
+                                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                                            decoration: !isSelected ? null
+                                                : BoxDecoration(
 
-                                      itemBuilder: (context, item, isSelected) {
-                                        return Container(
-                                          margin: EdgeInsets.symmetric(horizontal: 8),
-                                          decoration: !isSelected
-                                              ? null
-                                              : BoxDecoration(
+                                              border: Border.all(color: Theme.of(context).primaryColor),
+                                              borderRadius: BorderRadius.circular(5),
+                                              color: Colors.white,
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
+                                            ),
+                                          );
+                                        },
+                                        showSearchBox: true,
+                                      ),
+                                      enabled: true,
 
-                                            border: Border.all(color: Theme.of(context).primaryColor),
-                                            borderRadius: BorderRadius.circular(5),
-                                            color: Colors.white,
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
-                                          ),
-                                        );
+                                      items: boxTypes,
+                                      itemAsString: (BoxType u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
+
+                                      onChanged: (value){
+                                        //v.text = value!.cusTypesCode.toString();
+                                        //print(value!.id);
+                                        boxTypeSelectedValue = value!.code;
+                                        setBoxCode(boxTypeSelectedValue.toString());
                                       },
-                                      showSearchBox: true,
 
+                                      filterFn: (instance, filter){
+                                        if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
+                                          print(filter);
+                                          return true;
+                                        }
+                                        else{
+                                          return false;
+                                        }
+                                      },
+                                      dropdownDecoratorProps: const DropDownDecoratorProps(
+                                        dropdownSearchDecoration: InputDecoration(
+
+                                        ),),
 
                                     ),
-                                    enabled: true,
-
-                                    items: boxTypes,
-                                    itemAsString: (BoxType u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
-
-                                    onChanged: (value){
-                                      //v.text = value!.cusTypesCode.toString();
-                                      //print(value!.id);
-                                      boxTypeSelectedValue = value!.code;
-                                      setBoxCode(boxTypeSelectedValue.toString());
-                                    },
-
-                                    filterFn: (instance, filter){
-                                      if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
-                                        print(filter);
-                                        return true;
-                                      }
-                                      else{
-                                        return false;
-                                      }
-                                    },
-                                    dropdownDecoratorProps: DropDownDecoratorProps(
-                                      dropdownSearchDecoration: InputDecoration(
-                                        labelText: "box_type".tr(),
-
-                                      ),),
-
                                   ),
 
                                 ],
                               )),
+                          const SizedBox(height: 20),
 
                           Form(
                               key: _dropdownBoxCodeFormKey,
-                              child: Column(
-                                crossAxisAlignment: langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                                mainAxisAlignment: MainAxisAlignment.center,
+                              child: Row(
                                 children: [
+                                  Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text("box_code".tr(),
+                                      style: const TextStyle(fontWeight: FontWeight.bold))),
+                                  const SizedBox(width: 10),
+                                  SizedBox(
+                                    width: 220,
+                                    child: DropdownSearch<BoxCode>(
+                                      validator: (value) => value == null ? "select_a_box_Code".tr() : null,
 
-                                  DropdownSearch<BoxCode>(
-                                    validator: (value) => value == null ? "select_a_box_Code".tr() : null,
+                                      selectedItem: boxCodeItem,
+                                      popupProps: PopupProps.menu(
 
-                                    selectedItem: boxCodeItem,
-                                    popupProps: PopupProps.menu(
+                                        itemBuilder: (context, item, isSelected) {
+                                          return Container(
+                                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                                            decoration: !isSelected
+                                                ? null
+                                                : BoxDecoration(
 
-                                      itemBuilder: (context, item, isSelected) {
-                                        return Container(
-                                          margin: EdgeInsets.symmetric(horizontal: 8),
-                                          decoration: !isSelected
-                                              ? null
-                                              : BoxDecoration(
+                                              border: Border.all(color: Theme.of(context).primaryColor),
+                                              borderRadius: BorderRadius.circular(5),
+                                              color: Colors.white,
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
+                                            ),
+                                          );
+                                        },
+                                        showSearchBox: true,
+                                      ),
+                                      enabled: true,
 
-                                            border: Border.all(color: Theme.of(context).primaryColor),
-                                            borderRadius: BorderRadius.circular(5),
-                                            color: Colors.white,
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
-                                          ),
-                                        );
+                                      items: boxCodes,
+                                      itemAsString: (BoxCode u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
+
+                                      onChanged: (value){
+                                        //v.text = value!.cusTypesCode.toString();
+
+                                        boxCodeSelectedValue = value!.code;
+                                        print('boxCodeSelectedValue Is >> ' + boxCodeSelectedValue.toString());
                                       },
-                                      showSearchBox: true,
 
+                                      filterFn: (instance, filter){
+                                        if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
+                                          print(filter);
+                                          return true;
+                                        }
+                                        else{
+                                          return false;
+                                        }
+                                      },
+                                      dropdownDecoratorProps: const DropDownDecoratorProps(
+                                        dropdownSearchDecoration: InputDecoration(
+
+                                        ),),
 
                                     ),
-                                    enabled: true,
-
-                                    items: boxCodes,
-                                    itemAsString: (BoxCode u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
-
-                                    onChanged: (value){
-                                      //v.text = value!.cusTypesCode.toString();
-
-                                      boxCodeSelectedValue = value!.code;
-                                      print('boxCodeSelectedValue Is >> ' + boxCodeSelectedValue.toString());
-                                    },
-
-                                    filterFn: (instance, filter){
-                                      if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
-                                        print(filter);
-                                        return true;
-                                      }
-                                      else{
-                                        return false;
-                                      }
-                                    },
-                                    dropdownDecoratorProps: DropDownDecoratorProps(
-                                      dropdownSearchDecoration: InputDecoration(
-                                        labelText: "box_code".tr(),
-
-                                      ),),
-
                                   ),
 
                                 ],
                               )),
-
-
-
-                          headLines(number: '04', title: 'cash_Receive_detail_info'.tr()),
+                          const SizedBox(height: 20),
 
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                            child: Column(
-                              crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
+                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                            child: Row(
                               children: <Widget>[
-                                Align(child: Text('value'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
-                                TextFormField(
-                                  controller: _valueController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('value'.tr(),
+                                style: const TextStyle(fontWeight: FontWeight.bold))),
+                                const SizedBox(width: 10),
+                                SizedBox(
+                                  width: 230,
+                                  child: TextFormField(
+                                    controller: _valueController,
+                                    decoration: const InputDecoration(
+                                      hintText: '',
+                                    ),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'please_enter_value'.tr();
+                                      }
+                                      return null;
+                                    },
+                                    onChanged: (value) {
+                                      setTafqeet("1" ,value.toString());
+                                    },
                                   ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'please_enter_value'.tr();
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {
-                                    setTafqeet("1" ,value.toString());
-                                  },
                                 ),
                               ],
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                            child: Row(
+                              children: <Widget>[
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameArabic'.tr(),
+                                    style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                                const SizedBox(width: 10),
+
+                                SizedBox(
+                                  width: 206,
+                                  child: TextFormField(
+                                    controller: _descriptionNameArabicController,
+                                    decoration: const InputDecoration(
+                                      hintText: '',
+                                    ),
+                                    // validator: (value) {
+                                    //   if (value!.isEmpty) {
+                                    //     return 'please_enter_value'.tr();
+                                    //   }
+                                    //   return null;
+                                    // },
+                                    //enabled: false,
+                                    onChanged: (value) {},
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                            child: Row(
+                              children: <Widget>[
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameEnglish'.tr(),
+                                    style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                                const SizedBox(width: 10),
+
+                                SizedBox(
+                                  width: 200,
+                                  child: TextFormField(
+                                    controller: _descriptionNameEnglishController,
+                                    decoration: const InputDecoration(
+                                      hintText: '',
+                                    ),
+                                    // validator: (value) {
+                                    //   if (value!.isEmpty) {
+                                    //     return 'please_enter_value'.tr();
+                                    //   }
+                                    //   return null;
+                                    // },
+                                    //enabled: false,
+                                    onChanged: (value) {},
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                             child: Column(
                               crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                               children: <Widget>[
-                                Align(child: Text('tafqitNameArabic'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameArabic'.tr(),
+                                    style: const TextStyle(fontWeight: FontWeight.bold))),
                                 TextFormField(
                                   controller: _tafqitNameArabicController,
                                   decoration: const InputDecoration(
@@ -732,11 +796,12 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                             child: Column(
                               crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                               children: <Widget>[
-                                Align(child: Text('tafqitNameEnglish'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameEnglish'.tr(),
+                                    style: const TextStyle(fontWeight: FontWeight.bold))),
                                 TextFormField(
                                   controller: _tafqitNameEnglishController,
                                   decoration: const InputDecoration(
@@ -755,23 +820,27 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                            child: Column(
-                              crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
+                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                            child: Row(
                               children: <Widget>[
-                                Align(child: Text('statement'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
-                                TextFormField(
-                                  controller: _statementController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('statement'.tr(),
+                                    style: const TextStyle(fontWeight: FontWeight.bold))),
+                                const SizedBox(width: 10),
+                                SizedBox(
+                                  width: 210,
+                                  child: TextFormField(
+                                    controller: _statementController,
+                                    decoration: const InputDecoration(
+                                      hintText: '',
+                                    ),
+                                    validator: (value) {
+                                      if (value!.isEmpty) {
+                                        return 'please_enter_statement'.tr();
+                                      }
+                                      return null;
+                                    },
+                                    onChanged: (value) {},
                                   ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'please_enter_statement'.tr();
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {},
                                 ),
                               ],
                             ),
