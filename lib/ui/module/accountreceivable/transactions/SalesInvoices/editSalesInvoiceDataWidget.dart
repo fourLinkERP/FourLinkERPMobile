@@ -141,6 +141,8 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
   Item?  itemItem=Item(itemCode: "",itemNameAra: "",itemNameEng: "",id: 0);
   Unit?  unitItem=Unit(unitCode: "",unitNameAra: "",unitNameEng: "",id: 0);
 
+  DateTime get pickedDate => DateTime.now();
+
   @override
   void initState() {
     productPrice = 0;
@@ -353,7 +355,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                               child: textFormFields(
                                 enable: false,
                                 controller: _salesInvoicesDateController,
-                                hintText: "date".tr(),
+                                hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                                 onTap: () async {
                                   DateTime? pickedDate = await showDatePicker(
                                       context: context,
@@ -455,7 +457,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                                     Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Item: '.tr()) ),
                                     const SizedBox(width: 5),
                                     SizedBox(
-                                      width: 100,
+                                      width: 90,
                                       child: DropdownSearch<Item>(
                                         selectedItem: itemItem,
                                         popupProps: PopupProps.menu(
@@ -515,16 +517,9 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                                       ),
                                     ),
 
-                                    // ElevatedButton(
-                                    //     onPressed: () {
-                                    //       if (_dropdownFormKey.currentState!.validate()) {
-                                    //         //valid flow
-                                    //       }
-                                    //     },
-                                    //     child: Text("Submit"))
                                   ],
                                 )),
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 15),
 
                             Form(
                                 key: _dropdownUnitFormKey,
@@ -533,7 +528,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                                     Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Unit name :'.tr()) ),
                                     const SizedBox(width: 5),
                                     SizedBox(
-                                      width: 100,
+                                      width: 90,
                                       child: DropdownSearch<Unit>(
                                         selectedItem: unitItem,
                                         popupProps: PopupProps.menu(

@@ -90,32 +90,19 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
           ),
         ),
       ),
-      appBar:AppBar(
+      appBar: AppBar(
         centerTitle: true,
-        title: Expanded(
-          child: Row(
-            crossAxisAlignment:langId==1? CrossAxisAlignment.end
-                :CrossAxisAlignment.start,
-            children: [
-
-              Image.asset(
-
-                'assets/images/logowhite2.png',
-                scale: 3,
-              ),
-              const SizedBox(
-                width: 1,
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text('add_new_Items'.tr(),style:
-                  const TextStyle(color: Colors.white),),
-                ),
-              )
-
-            ],
-          ),
+        title: Row(crossAxisAlignment: langId == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+            Image.asset('assets/images/logowhite2.png', scale: 3,),
+            const SizedBox(width: 1,),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 11, 2, 0),
+              //apply padding to all four sides
+              child: Text('add_new_Items'.tr(),
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),),
+            )
+          ],
         ),
         backgroundColor: const Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
       ),
@@ -124,7 +111,7 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
         key: _addFormKey,
         child: SingleChildScrollView(
           child: Container(
-            margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+            margin: const EdgeInsets.only(top: 40, left: 10, right: 10),
             // padding: EdgeInsets.all(20.0),
             child: Card(
                 child: Container(
@@ -133,70 +120,80 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
                     child: Column(
                       children: <Widget>[
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 5, 0, 0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          margin: const EdgeInsets.fromLTRB(0, 5, 0, 20),
+                          child: Row(
+                            //crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text('code'.tr()),
-                              TextFormField(
-                                controller: _itemCodeController,
-                                decoration: const InputDecoration(
-                                  hintText: '',
+                              Text('code'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 220,
+                                child: TextFormField(
+                                  controller: _itemCodeController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'please_enter_code'.tr();
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {},
                                 ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'please_enter_code'.tr();
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {},
                               ),
                             ],
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Column(
-                             crossAxisAlignment: CrossAxisAlignment.start,
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          child: Row(
+
                             children: <Widget>[
 
-                              Text('arabicName'.tr()),
-                              TextFormField(
-                                textAlign: TextAlign.start,
-                                controller: _itemNameAraController,
-                                decoration: const InputDecoration(
-                                  hintText: '',
+                              Text('arabicName'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 200,
+                                child: TextFormField(
+                                  textAlign: TextAlign.start,
+                                  controller: _itemNameAraController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'please_enter_arabicName'.tr();
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {},
                                 ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'please_enter_arabicName'.tr();
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {},
                               ),
                             ],
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          child: Row(
                             children: <Widget>[
-                              Text('englishName'.tr()),
-
-                              TextFormField(
-                                controller: _itemNameEngController,
-                                decoration: const InputDecoration(
-                                  hintText: '',
+                              Text('englishName'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 200,
+                                child: TextFormField(
+                                  controller: _itemNameEngController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'please_enter_englishName'.tr();
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {},
                                 ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'please_enter_englishName'.tr();
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {},
                               ),
                             ],
                           ),
@@ -276,8 +273,8 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
                         // )
 
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Column(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          child: const Column(
                             children: <Widget>[
                               // ElevatedButton(
                               //   style: ButtonStyle(

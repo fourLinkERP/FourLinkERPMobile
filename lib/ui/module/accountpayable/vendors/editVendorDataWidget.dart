@@ -43,7 +43,7 @@ class _EditVendorDataWidgetState extends State<EditVendorDataWidget> {
   @override
   void initState() {
     id = widget.vendors.id!;
-    _vendorCodeController.text = widget.vendors.vendorCode!.toString();
+    _vendorCodeController.text = widget.vendors.vendorCode.toString();
     _vendorNameAraController.text = widget.vendors.vendorNameAra!;
     _vendorNameEngController.text = widget.vendors.vendorNameEng!;
     if(widget.vendors.address1 != null){
@@ -120,7 +120,7 @@ class _EditVendorDataWidgetState extends State<EditVendorDataWidget> {
                   blurRadius: 16.0),
             ],
           ),
-          child: Material(
+          child: const Material(
             color: Colors.transparent,
             child: Icon(
               Icons.data_saver_on,
@@ -130,34 +130,21 @@ class _EditVendorDataWidgetState extends State<EditVendorDataWidget> {
           ),
         ),
       ),
-      appBar:AppBar(
+      appBar: AppBar(
         centerTitle: true,
-        title: Expanded(
-          child: Row(
-            crossAxisAlignment:langId==1? CrossAxisAlignment.end
-                :CrossAxisAlignment.start,
-            children: [
-
-              Image.asset(
-
-                'assets/images/logowhite2.png',
-                scale: 3,
-              ),
-              const SizedBox(
-                width: 1,
-              ),
-              Padding(
-                padding:EdgeInsets.only(top: 10),
-                child: Expanded(
-                  child: Text('Edit Vendors'.tr(),style:
-                  TextStyle(color: Colors.white),),
-                ),
-              )
-
-            ],
-          ),
+        title: Row(crossAxisAlignment: langId == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+            Image.asset('assets/images/logowhite2.png', scale: 3,),
+            const SizedBox(width: 1,),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 11, 2, 0),
+              //apply padding to all four sides
+              child: Text('Edit Vendors'.tr(),
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),),
+            )
+          ],
         ),
-        backgroundColor: Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
       ),
 
       body: Form(
@@ -167,12 +154,12 @@ class _EditVendorDataWidgetState extends State<EditVendorDataWidget> {
 
             child: Card(
                 child: Container(
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     width: 440,
                     child: Column(
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Column(
                             children: <Widget>[
                               Align(
@@ -185,7 +172,7 @@ class _EditVendorDataWidgetState extends State<EditVendorDataWidget> {
                                   hintText: '',
                                 ),
                                 validator: (value) {
-                                  if (value!.isEmpty) {
+                                  if (value == null) {
                                     return 'please_enter_code'.tr();
                                   }
                                   return null;
@@ -196,7 +183,7 @@ class _EditVendorDataWidgetState extends State<EditVendorDataWidget> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Column(
                             children: <Widget>[
 
@@ -221,7 +208,7 @@ class _EditVendorDataWidgetState extends State<EditVendorDataWidget> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Column(
                             children: <Widget>[
                               Align(
@@ -246,7 +233,7 @@ class _EditVendorDataWidgetState extends State<EditVendorDataWidget> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Column(
                             children: <Widget>[
                               Align(
@@ -270,7 +257,7 @@ class _EditVendorDataWidgetState extends State<EditVendorDataWidget> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Column(
                             children: <Widget>[
                               Align(
@@ -295,7 +282,7 @@ class _EditVendorDataWidgetState extends State<EditVendorDataWidget> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Column(
                             children: <Widget>[
                               Align(
@@ -319,8 +306,8 @@ class _EditVendorDataWidgetState extends State<EditVendorDataWidget> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Column(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          child: const Column(
                             children: <Widget>[
                               // ElevatedButton(
                               //   style: ButtonStyle(

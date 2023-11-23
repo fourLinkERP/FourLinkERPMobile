@@ -422,7 +422,7 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                                 style: const TextStyle(fontWeight: FontWeight.bold))),
                             const SizedBox(width: 5),
                             SizedBox(
-                              width: 110,
+                              width: 100,
                               child: DropdownSearch<CashTargetType>(
                                 validator: (value) => value == null ? "select_a_cash_target_Type".tr() : null,
 

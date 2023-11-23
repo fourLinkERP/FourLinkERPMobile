@@ -231,7 +231,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
         ),
         backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
       ),
-      //'cash_receipt'.tr()
+
       body: Form(
         key: _addFormKey,
         child: SingleChildScrollView(

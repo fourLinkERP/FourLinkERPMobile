@@ -106,7 +106,6 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
               return;
             }
 
-
           api.createCustomer(context,Customer(customerCode: _customerCodeController.text ,
               customerNameAra: _customerNameAraController.text ,
               customerNameEng: _customerNameEngController.text ,
@@ -148,101 +147,113 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
             ),
           ),
       ),
-      appBar:AppBar(
+      appBar: AppBar(
         centerTitle: true,
-        title: Expanded(
-          child: Row(
-            crossAxisAlignment:langId==1? CrossAxisAlignment.end :CrossAxisAlignment.start,
-            children: [
-              Image.asset('assets/images/logowhite2.png', scale: 3,),
-              const SizedBox(
-                width: 1,
-              ),
-              Padding(
-                padding:const EdgeInsets.only(top: 5),
-                child: Expanded(
-                  child: Text('add_new_Customers'.tr(),style: const TextStyle(color: Colors.white),),
-                ),
-              )
-            ],
-          ),
+        title: Row(
+          crossAxisAlignment: langId == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+          children: [
+            Image.asset('assets/images/logowhite2.png', scale: 3,),
+            const SizedBox(width: 1,),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 11, 2, 0),
+              //apply padding to all four sides
+              child: Text('add_new_Customers'.tr(),
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),),
+            )
+          ],
         ),
         backgroundColor: const Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
       ),
+
       body: Form(
         key: _addFormKey,
         child: SingleChildScrollView(
           child: Container(
             child: Card(
                 child: Container(
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     width: 440,
                     child: Column(
                       children: <Widget>[
+                        const SizedBox(height: 20),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Column(
-                            crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          child: Row(
                             children: <Widget>[
-                              Align(child: Text('code'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
-                              TextFormField(
-                                controller: _customerCodeController,
-                                enabled: false,
-                                decoration: const InputDecoration(
-                                  hintText: ''
+
+                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('code'.tr(),
+                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                    width: 220,
+                                    child: TextFormField(
+                                      controller: _customerCodeController,
+                                      enabled: false,
+                                      decoration: const InputDecoration(
+                                          hintText: ''
+                                      ),
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return 'please_enter_code'.tr();
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (value) {},
+                                    ),
+                                  ),
+                            ],
+                          ),
+                        ),
+
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          child: Row(
+                            children: <Widget>[
+                              Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('arabicName'.tr(),
+                                      style: const TextStyle(fontWeight: FontWeight.bold))),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 200,
+                                child: TextFormField(
+                                  controller: _customerNameAraController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'please_enter_arabicName'.tr();
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {},
                                 ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'please_enter_code'.tr();
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {},
                               ),
                             ],
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Column(
-                            crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                            children: <Widget>[
-                              Align(child: Text('arabicName'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
-                              TextFormField(
-                                controller: _customerNameAraController,
-                                decoration: const InputDecoration(
-                                  hintText: '',
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'please_enter_arabicName'.tr();
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {},
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Column(crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          child: Row(
 
                             children: <Widget>[
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('englishName'.tr()) ),
-                              TextFormField(
-                                controller: _customerNameEngController,
-                                decoration: const InputDecoration(
-                                  hintText: '',
+                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('englishName'.tr(),
+                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 200,
+                                child: TextFormField(
+                                  controller: _customerNameEngController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'please_enter_englishName'.tr();
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {},
                                 ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'please_enter_englishName'.tr();
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {},
                               ),
                             ],
                           ),
@@ -288,120 +299,145 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                         //         //     child: Text("Submit"))
                         //       ],
                         //     )),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text("customerType".tr(),
+                                style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              width: 200,
+                              child: DropdownSearch<CustomerType>(
+                                popupProps: PopupProps.menu(
+                                  itemBuilder: (context, item, isSelected) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                                      decoration: !isSelected
+                                          ? null
+                                          : BoxDecoration(
 
-                        DropdownSearch<CustomerType>(
-                          popupProps: PopupProps.menu(
-                            itemBuilder: (context, item, isSelected) {
-                              return Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 8),
-                                decoration: !isSelected
-                                    ? null
-                                    : BoxDecoration(
+                                        border: Border.all(color: Theme.of(context).primaryColor),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text((langId==1)? item.cusTypesNameAra.toString():  item.cusTypesNameEng.toString(),
+                                          textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
+                                        textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
-                                  border: Border.all(color: Theme.of(context).primaryColor),
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
+                                      ),
+                                    );
+                                  },
+                                  showSearchBox: true,
                                 ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text((langId==1)? item.cusTypesNameAra.toString():  item.cusTypesNameEng.toString(),
-                                    textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
-                                  textAlign: langId==1?TextAlign.right:TextAlign.left,),
+                                items: customerTypes,
+                                itemAsString: (CustomerType u) => u.cusTypesNameAra.toString(),
+                                onChanged: (value){
+                                  //v.text = value!.cusTypesCode.toString();
+                                  //print(value!.id);
+                                  customerTypeSelectedValue =  value!.cusTypesCode.toString();
+                                },
 
-                                ),
-                              );
-                            },
-                            showSearchBox: true,
-                          ),
-                          items: customerTypes,
-                          itemAsString: (CustomerType u) => u.cusTypesNameAra.toString(),
-                          onChanged: (value){
-                            //v.text = value!.cusTypesCode.toString();
-                            //print(value!.id);
-                            customerTypeSelectedValue =  value!.cusTypesCode.toString();
-                          },
+                                filterFn: (instance, filter){
+                                  if(instance.cusTypesNameAra!.contains(filter)){
+                                    print(filter);
+                                    return true;
+                                  }
+                                  else{
+                                    return false;
+                                  }
+                                },
+                                dropdownDecoratorProps: const DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    //labelText: "customerType".tr(),
 
-                          filterFn: (instance, filter){
-                            if(instance.cusTypesNameAra!.contains(filter)){
-                              print(filter);
-                              return true;
-                            }
-                            else{
-                              return false;
-                            }
-                          },
-                          dropdownDecoratorProps: DropDownDecoratorProps(
-                            dropdownSearchDecoration: InputDecoration(
-                              labelText: "customerType".tr(),
-
-                            ),),
+                                  ),),
 
 
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 20),
 
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Column(
-                            crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          child: Row(
                             children: <Widget>[
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('taxIdentificationNumber'.tr()) ),
-                              TextFormField(
-                                controller: _taxIdentificationNumberController,
-                                decoration: const InputDecoration(
-                                  hintText: '',
+
+                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('taxIdentificationNumber'.tr(),
+                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 150,
+                                child: TextFormField(
+                                  controller: _taxIdentificationNumberController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'please_enter_taxIdentificationNumber'.tr();
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {},
                                 ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'please_enter_taxIdentificationNumber'.tr();
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {},
                               ),
                             ],
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Column(
-                            crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          child: Row(
                             children: <Widget>[
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('address'.tr()) ),
-                              TextFormField(
-                                controller: _addressController,
-                                decoration: const InputDecoration(
-                                  hintText: '',
+
+                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('address'.tr(),
+                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 220,
+                                child: TextFormField(
+                                  controller: _addressController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'please_enter_address'.tr();
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {},
                                 ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'please_enter_address'.tr();
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {},
                               ),
                             ],
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Column(
-                            crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          child: Row(
+                            //crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                             children: <Widget>[
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('phone'.tr()) ),
-                              TextFormField(
-                                controller: _phone1Controller,
-                                decoration: const InputDecoration(
-                                  hintText: '',
+                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('phone'.tr(),
+                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                width: 220,
+                                child: TextFormField(
+                                  controller: _phone1Controller,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'please_enter_phone'.tr();
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {},
                                 ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'please_enter_phone'.tr();
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {},
                               ),
                             ],
                           ),
@@ -437,7 +473,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                           // ),
                         ),
                         const SizedBox(height: 20),
-                        Container(
+                        SizedBox(
                           width:  double.infinity,
                           child: ElevatedButton(
                             style: ButtonStyle(
@@ -451,54 +487,16 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                               //saveInvoice(context);
 
                             },
-                            child: Text('commercialTaxNo'.tr(), style: TextStyle(color: Colors.white)),
+                            child: Text('commercialTaxNo'.tr(), style: const TextStyle(color: Colors.white)),
                             //color: Colors.blue,
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Container( width: double.infinity,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( Color.fromRGBO(144, 16, 46, 1),),
-                                padding:
-                                MaterialStateProperty.all(const EdgeInsets.all(20)),
-                                textStyle: MaterialStateProperty.all(
-                                    const TextStyle(fontSize: 14, color: Colors.white))),
-                            onPressed: () {
-                              _showPicker(context: context);
-                              //saveInvoice(context);
-
-                            },
-                            child: Text('governmentId'.tr(), style: TextStyle(color: Colors.white)),
-                            //color: Colors.blue,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-
-                        Container( width: double.infinity,
-                          child: ElevatedButton(
-
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( Color.fromRGBO(144, 16, 46, 1),),
-                                padding:
-                                MaterialStateProperty.all(const EdgeInsets.all(20)),
-                                textStyle: MaterialStateProperty.all(
-                                    const TextStyle(fontSize: 14, color: Colors.white))),
-                            onPressed: () {
-                              _showPicker(context: context);
-                              //saveInvoice(context);
-
-                            },
-                            child: Text('shopId'.tr(), style: TextStyle(color: Colors.white)),
-                            //color: Colors.blue,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
+                        SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( Color.fromRGBO(144, 16, 46, 1),),
+                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
                                 padding:
                                 MaterialStateProperty.all(const EdgeInsets.all(20)),
                                 textStyle: MaterialStateProperty.all(
@@ -508,16 +506,18 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                               //saveInvoice(context);
 
                             },
-                            child: Text('shopPlate'.tr(), style: TextStyle(color: Colors.white)),
+                            child: Text('governmentId'.tr(), style: const TextStyle(color: Colors.white)),
                             //color: Colors.blue,
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Container(
+
+                        SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
+
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( Color.fromRGBO(144, 16, 46, 1),),
+                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
                                 padding:
                                 MaterialStateProperty.all(const EdgeInsets.all(20)),
                                 textStyle: MaterialStateProperty.all(
@@ -527,16 +527,54 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                               //saveInvoice(context);
 
                             },
-                            child: Text('taxId'.tr(), style: TextStyle(color: Colors.white)),
+                            child: Text('shopId'.tr(), style: const TextStyle(color: Colors.white)),
                             //color: Colors.blue,
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Container(
+                        SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( Color.fromRGBO(144, 16, 46, 1),),
+                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
+                                padding:
+                                MaterialStateProperty.all(const EdgeInsets.all(20)),
+                                textStyle: MaterialStateProperty.all(
+                                    const TextStyle(fontSize: 14, color: Colors.white))),
+                            onPressed: () {
+                              _showPicker(context: context);
+                              //saveInvoice(context);
+
+                            },
+                            child: Text('shopPlate'.tr(), style: const TextStyle(color: Colors.white)),
+                            //color: Colors.blue,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
+                                padding:
+                                MaterialStateProperty.all(const EdgeInsets.all(20)),
+                                textStyle: MaterialStateProperty.all(
+                                    const TextStyle(fontSize: 14, color: Colors.white))),
+                            onPressed: () {
+                              _showPicker(context: context);
+                              //saveInvoice(context);
+
+                            },
+                            child: Text('taxId'.tr(), style: const TextStyle(color: Colors.white)),
+                            //color: Colors.blue,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
                                 padding:
                                 MaterialStateProperty.all(const EdgeInsets.all(20)),
                                 textStyle: MaterialStateProperty.all(
@@ -549,7 +587,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                             },
 
 
-                            child: Text('customerLocation'.tr(), style: TextStyle(color: Colors.white)),
+                            child: Text('customerLocation'.tr(), style: const TextStyle(color: Colors.white)),
                             //color: Colors.blue,
                           ),
                         ),
@@ -557,8 +595,8 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
 
 
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Column(
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          child: const Column(
                             children: <Widget>[
 
                             ],

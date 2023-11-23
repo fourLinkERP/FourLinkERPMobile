@@ -1,11 +1,10 @@
-
 import 'dart:async';
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+//import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
-import 'package:fourlinkmobileapp/models/products.dart';
+//import 'package:fourlinkmobileapp/models/products.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../cubit/app_cubit.dart';
@@ -91,21 +90,21 @@ class _VendorListPageState extends State<VendorListPage> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Color.fromRGBO(240, 242, 246,1), // Main Color
-          title: Container(
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
+          title: SizedBox(
             height: 38,
             child: TextField(
               onChanged: (value) => onSearch(value),
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
-                  contentPadding: EdgeInsets.all(0),
+                  contentPadding: const EdgeInsets.all(0),
                   prefixIcon: Icon(Icons.search, color: Colors.grey.shade500,),
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
                       borderSide: BorderSide.none
                   ),
-                  hintStyle: TextStyle(
+                  hintStyle: const TextStyle(
                       fontSize: 14,
                       color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
                   ),
@@ -154,7 +153,7 @@ class _VendorListPageState extends State<VendorListPage> {
                   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSalesInvoiceHDataWidget()));
                   _navigateToAddScreen(context);
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.add,
                   color: FitnessAppTheme.white,
                   size: 46,
@@ -168,14 +167,14 @@ class _VendorListPageState extends State<VendorListPage> {
 
   vendorComponent({required Vendor vendor}) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20),
-      padding: EdgeInsets.only(top: 10, bottom: 10),
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      padding: const EdgeInsets.only(top: 10, bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
               children: [
-                Container(
+                SizedBox(
                     width: 60,
                     height: 60,
                     child: ClipRRect(
@@ -183,11 +182,11 @@ class _VendorListPageState extends State<VendorListPage> {
                       child: Image.asset('assets/images/vendors.png'),
                     )
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(vendor.vendorNameAra!, style: TextStyle(
+                      Text(vendor.vendorNameAra!, style: const TextStyle(
                           color: Colors.white, fontWeight: FontWeight.w500)),
                       //SizedBox(height: 5,),
                       //Text(vendor.vendorNameEng!, style: TextStyle(color: Colors.grey[500])),
@@ -279,16 +278,16 @@ class _VendorListPageState extends State<VendorListPage> {
   }
   Widget Build_vendors(){
     if(State is AppErrorState){
-      return Center(child: Text('no data'));
+      return const Center(child: Text('no data'));
     }
     if(AppCubit.get(context).Conection==false){
-      return Center(child: Text('no internet connection'));
+      return const Center(child: Text('no internet connection'));
     }
      else if(_vendors.isEmpty&&AppCubit.get(context).Conection==true){
         return Center(child: CircularProgressIndicator());
       }else{
         return  Container(
-          color: Color.fromRGBO(240, 242, 246,1),
+          color: const Color.fromRGBO(240, 242, 246,1),
           child: ListView.builder(
               itemCount: _vendors == null ? 0 : _vendors.length,
               itemBuilder: (BuildContext context, int index) {
@@ -329,28 +328,28 @@ class _VendorListPageState extends State<VendorListPage> {
                               ],
 
                             )),
-                            SizedBox(width: 5),
-                            Container(
+                            const SizedBox(width: 5),
+                            SizedBox(
                                 child: Row(
                                   children: <Widget>[
                                     Center(
                                         child: ElevatedButton.icon(
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.edit,
-                                            color: Color.fromRGBO(0, 136, 134, 1),
+                                            color: Colors.white,
                                             size: 20.0,
                                             weight: 10,
                                           ),
-                                          label: Text('edit'.tr(),style:TextStyle(color: Color.fromRGBO(0, 136, 134, 1)) ),
+                                          label: Text('edit'.tr(),style: const TextStyle(color: Colors.white) ),
                                           onPressed: () {
                                             _navigateToEditScreen(context,_vendors[index]);
                                           },
                                           style: ElevatedButton.styleFrom(
-                                              shape: new RoundedRectangleBorder(
-                                                borderRadius: new BorderRadius.circular(5),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(5),
                                               ),
-                                              padding: EdgeInsets.all(7),
-                                              backgroundColor: Colors.white,
+                                              padding: const EdgeInsets.all(7),
+                                              backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
                                               foregroundColor: Colors.black,
                                               elevation: 0,
                                               side: const BorderSide(
@@ -359,25 +358,25 @@ class _VendorListPageState extends State<VendorListPage> {
                                               )
                                           ),
                                         )),
-                                    SizedBox(width: 5),
+                                    const SizedBox(width: 5),
                                     Center(
                                         child: ElevatedButton.icon(
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.delete,
-                                            color: Color.fromRGBO(144, 16, 46, 1),
+                                            color: Colors.white,
                                             size: 20.0,
                                             weight: 10,
                                           ),
-                                          label: Text('delete'.tr(),style:TextStyle(color: Color.fromRGBO(144, 16, 46, 1)) ),
+                                          label: Text('delete'.tr(),style: const TextStyle(color: Colors.white) ),
                                           onPressed: () {
                                             _deleteItem(context,_vendors[index].id);
                                           },
                                           style: ElevatedButton.styleFrom(
-                                              shape: new RoundedRectangleBorder(
-                                                borderRadius: new BorderRadius.circular(5),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(5),
                                               ),
-                                              padding: EdgeInsets.all(7),
-                                              backgroundColor: Colors.white,
+                                              padding: const EdgeInsets.all(7),
+                                              backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
                                               foregroundColor: Colors.black,
                                               elevation: 0,
                                               side: const BorderSide(
@@ -386,25 +385,25 @@ class _VendorListPageState extends State<VendorListPage> {
                                               )
                                           ),
                                         )),
-                                    SizedBox(width: 5),
+                                    const SizedBox(width: 5),
                                     Center(
                                         child: ElevatedButton.icon(
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.print,
-                                            color: Colors.black87,
+                                            color: Colors.white,
                                             size: 20.0,
                                             weight: 10,
                                           ),
-                                          label: Text('print'.tr(),style:TextStyle(color: Colors.black87) ),
+                                          label: Text('print'.tr(),style:const TextStyle(color: Colors.white) ),
                                           onPressed: () {
                                             //_navigateToPrintScreen(context,_customers[index]);
                                           },
                                           style: ElevatedButton.styleFrom(
-                                              shape: new RoundedRectangleBorder(
-                                                borderRadius: new BorderRadius.circular(5),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(5),
                                               ),
-                                              padding: EdgeInsets.all(7),
-                                              backgroundColor: Colors.white,
+                                              padding: const EdgeInsets.all(7),
+                                              backgroundColor: Colors.black87,
                                               foregroundColor: Colors.black,
                                               elevation: 0,
                                               side: const BorderSide(

@@ -150,7 +150,7 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
                     blurRadius: 16.0),
               ],
             ),
-            child: Material(
+            child: const Material(
               color: Colors.transparent,
               child: Icon(
                 Icons.data_saver_on,
@@ -178,17 +178,17 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
                 width: 1,
               ),
               Padding(
-                padding:EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 10),
                 child: Expanded(
                   child: Text('Edit_Customers'.tr(),style:
-                  TextStyle(color: Colors.white),),
+                  const TextStyle(color: Colors.white),),
                 ),
               )
 
             ],
           ),
         ),
-        backgroundColor: Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
       ),
 
       body: Form(
@@ -197,14 +197,14 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
           child: Container(
 
             child: Card(
-                child: Container(
+                child: SizedBox(
 
                     width: 440,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -227,7 +227,7 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -251,7 +251,7 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Column(
                             crossAxisAlignment:CrossAxisAlignment.start,
                             children: <Widget>[

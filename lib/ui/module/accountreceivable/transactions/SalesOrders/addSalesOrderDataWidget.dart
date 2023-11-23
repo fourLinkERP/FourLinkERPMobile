@@ -199,6 +199,8 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   String? sellOrdersSerial;
   String? sellOrdersDate;
 
+  DateTime get pickedDate => DateTime.now();
+
   @override
   Widget build(BuildContext context) {
 
@@ -364,7 +366,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                               child: textFormFields(
                                 enable: false,
                                 controller: _salesOrdersDateController,
-                                hintText: "date".tr(),
+                                hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                                 onTap: () async {
                                   DateTime? pickedDate = await showDatePicker(
                                       context: context,
@@ -460,7 +462,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                                         style: const TextStyle(fontWeight: FontWeight.bold))),
                                     const SizedBox(width: 10),
                                     SizedBox(
-                                      width: 100,
+                                      width: 90,
                                       child: DropdownSearch<Item>(
                                         selectedItem: itemItem,
                                         popupProps: PopupProps.menu(
@@ -526,7 +528,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                                     //     child: Text("Submit"))
                                   ],
                                 )),
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 15),
                             Form(
                                 key: _dropdownUnitFormKey,
                                 child: Row(
@@ -535,7 +537,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                                         style: const TextStyle(fontWeight: FontWeight.bold))),
                                     const SizedBox(width: 5),
                                     SizedBox(
-                                      width: 100,
+                                      width: 90,
                                       child: DropdownSearch<Unit>(
                                         selectedItem: unitItem,
                                         popupProps: PopupProps.menu(
@@ -985,21 +987,26 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
 
                         const SizedBox(height: 20),
 
-                        Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
-                            child: Text('totalAfterDiscount'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 150,
-                          child: textFormFields(
-                            controller: _totalAfterDiscountController,
-                            //hintText: "totalAfterDiscount".tr(),
-                            enable: false,
-                            onSaved: (val) {
-                              total = val;
-                            },
-                            textInputType: TextInputType.number,
-                          ),
+                        Row(
+                          children: [
+                            Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
+                                child: Text('totalAfterDiscount'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              width: 150,
+                              child: textFormFields(
+                                controller: _totalAfterDiscountController,
+                                //hintText: "totalAfterDiscount".tr(),
+                                enable: false,
+                                onSaved: (val) {
+                                  total = val;
+                                },
+                                textInputType: TextInputType.number,
+                              ),
+                            ),
+                          ],
                         ),
+
                         const SizedBox(height: 20),
 
                         Row(
@@ -1156,19 +1163,13 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                                     // hintText: '',
                                   ),
                                   enabled: false,
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'please_enter_value'.tr();
-                                  //   }
-                                  //   return null;
-                                  // },
+
                                   onChanged: (value) {},
                                 ),
                               ),
                             ],
                           ),
                         )
-
 
                       ],
                     )
@@ -1208,8 +1209,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   getCustomerData() {
     if (customers != null) {
       for(var i = 0; i < customers.length; i++){
-        menuCustomers.add(DropdownMenuItem(child: Text(customers[i].customerNameAra.toString()),
-            value: customers[i].customerCode.toString()));
+        menuCustomers.add(DropdownMenuItem(value: customers[i].customerCode.toString(), child: Text(customers[i].customerNameAra.toString())));
       }
     }
     setState(() {
@@ -1220,8 +1220,8 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   getSalesOrderTypeData() {
     if (salesOrderTypes != null) {
       for(var i = 0; i < salesOrderTypes.length; i++){
-        menuSalesOrderTypes.add(DropdownMenuItem(child: Text(salesOrderTypes[i].
-        sellOrdersTypeNameAra.toString()),value: salesOrderTypes[i].sellOrdersTypeCode.toString()));
+        menuSalesOrderTypes.add(DropdownMenuItem(value: salesOrderTypes[i].sellOrdersTypeCode.toString(), child: Text(salesOrderTypes[i].
+        sellOrdersTypeNameAra.toString())));
         if(salesOrderTypes[i].sellOrdersTypeCode == "1"){
           // print('in amr3');
           salesOrderTypeItem = salesOrderTypes[salesOrderTypes.indexOf(salesOrderTypes[i])];
@@ -1244,15 +1244,13 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   getItemData() {
     if (items != null) {
       for(var i = 0; i < items.length; i++){
-        menuItems.add(DropdownMenuItem(child: Text(items[i].itemNameAra.
-        toString()),value: items[i].itemCode.toString()));
+        menuItems.add(DropdownMenuItem(value: items[i].itemCode.toString(), child: Text(items[i].itemNameAra.toString())));
       }
     }
     setState(() {
 
     });
   }
-
 
   // _navigateToAddDetailScreen (BuildContext context, String invoiceSerial) async {
   //   final result = await Navigator.push(

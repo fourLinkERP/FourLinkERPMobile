@@ -238,6 +238,8 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
   String? offerSerial;
   String? offerDate;
 
+  DateTime get pickedDate => DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -401,7 +403,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                               width: 100,
                               child: textFormFields(
                                 controller: _offerDateController,
-                                hintText: "date".tr(),
+                                hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                                 onTap: () async {
                                   DateTime? pickedDate = await showDatePicker(
                                       context: context,
@@ -506,7 +508,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                     Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Item: '.tr()) ),
                                     const SizedBox(width: 5),
                                     SizedBox(
-                                      width: 100,
+                                      width: 90,
                                       child: DropdownSearch<Item>(
                                         selectedItem: itemItem,
                                         popupProps: PopupProps.menu(
@@ -573,7 +575,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                     //     child: Text("Submit"))
                                   ],
                                 )),
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 15),
                             Form(
                                 key: _dropdownUnitFormKey,
                                 child: Row(
@@ -581,7 +583,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                     Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Unit name :'.tr()) ),
                                     const SizedBox(width: 5),
                                     SizedBox(
-                                      width: 100,
+                                      width: 90,
                                       child: DropdownSearch<Unit>(
                                         selectedItem: unitItem,
                                         popupProps: PopupProps.menu(

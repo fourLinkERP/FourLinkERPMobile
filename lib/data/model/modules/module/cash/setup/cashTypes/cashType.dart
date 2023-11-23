@@ -13,7 +13,8 @@ class CashType {
 
 
 
-  CashType({this.id,
+  CashType({
+    this.id,
     this.code ,
     this.descAra,
     this.descEng,

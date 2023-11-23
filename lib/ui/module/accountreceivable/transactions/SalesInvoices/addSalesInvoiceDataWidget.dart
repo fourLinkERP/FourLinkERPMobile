@@ -198,6 +198,8 @@ class _AddSalesInvoiceHDataWidgetState
   String? salesInvoicesSerial;
   String? salesInvoicesDate;
 
+  DateTime get pickedDate => DateTime.now();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -351,7 +353,7 @@ class _AddSalesInvoiceHDataWidgetState
                               child: textFormFields(
                                 enable: false,
                                 controller: _salesInvoicesDateController,
-                                //hintText: "date".tr(),
+                                hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                                 onTap: () async {
                                   DateTime? pickedDate = await showDatePicker(
                                       context: context,
@@ -446,7 +448,7 @@ class _AddSalesInvoiceHDataWidgetState
                                             style: const TextStyle(fontWeight: FontWeight.bold))),
                                     const SizedBox(width: 5),
                                     SizedBox(
-                                      width: 100,
+                                      width: 90,
                                       child: DropdownSearch<Item>(
                                         selectedItem: itemItem,
                                         popupProps: PopupProps.menu(
@@ -513,7 +515,7 @@ class _AddSalesInvoiceHDataWidgetState
                                 )
                             ),
                             //Align(child: Text('unit_name'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 15),
                             Form(
                                 key: _dropdownUnitFormKey,
                                 child: Row(
@@ -522,7 +524,7 @@ class _AddSalesInvoiceHDataWidgetState
                                             style: const TextStyle(fontWeight: FontWeight.bold))),
                                     const SizedBox(width: 5),
                                     SizedBox(
-                                      width: 100,
+                                      width: 90,
                                       child: DropdownSearch<Unit>(
                                         selectedItem: unitItem,
                                         popupProps: PopupProps.menu(
@@ -1559,8 +1561,8 @@ class _AddSalesInvoiceHDataWidgetState
   getCustomerData() {
     for (var i = 0; i < customers.length; i++) {
       menuCustomers.add(DropdownMenuItem(
-          child: Text(customers[i].customerNameAra.toString()),
-          value: customers[i].customerCode.toString()));
+          value: customers[i].customerCode.toString(),
+          child: Text(customers[i].customerNameAra.toString())));
     }
       setState(() {
 
@@ -1570,9 +1572,8 @@ class _AddSalesInvoiceHDataWidgetState
   getSalesInvoiceTypeData() {
     for (var i = 0; i < salesInvoiceTypes.length; i++) {
       menuSalesInvoiceTypes.add(
-          DropdownMenuItem(child: Text(salesInvoiceTypes[i].
-          salesInvoicesTypeNameAra.toString()),
-              value: salesInvoiceTypes[i].salesInvoicesTypeCode.toString()));
+          DropdownMenuItem(value: salesInvoiceTypes[i].salesInvoicesTypeCode.toString(), child: Text(salesInvoiceTypes[i].
+          salesInvoicesTypeNameAra.toString())));
       if (salesInvoiceTypes[i].salesInvoicesTypeCode == selectedTypeValue) {
         // print('in amr3');
         salesInvoiceTypeItem =
@@ -1610,8 +1611,7 @@ class _AddSalesInvoiceHDataWidgetState
 
   fillCombos() {
     //Sales Invoice Type
-    Future<List<
-        SalesInvoiceType>> futureSalesInvoiceType = _salesInvoiceTypeApiService
+    Future<List<SalesInvoiceType>> futureSalesInvoiceType = _salesInvoiceTypeApiService
         .getSalesInvoicesTypes().then((data) {
       salesInvoiceTypes = data;
       //print(customers.length.toString());

@@ -1,6 +1,4 @@
-
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 
 Color lColor = const Color(0xffE4E5E6);
@@ -35,7 +33,8 @@ class CashReceive {
   // String? Phone1;
   //String image;
 
-  CashReceive({this.id,
+  CashReceive({
+    this.id,
     //General Info
     this.trxKind,
     this.trxDate,
@@ -94,10 +93,6 @@ class CashReceive {
     return 'Trans{id: $id, name: $trxSerial }';
   }
 }
-
-
-
-
 
 
 // Our demo Branchs

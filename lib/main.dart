@@ -37,8 +37,7 @@ main() async {
     assetsDirectory: 'assets/lang/',
   );
 
-
-
+  
   runApp(LocalizedApp(child: DevicePreview(enabled: true, builder:(context)=> MyApp())));
 }
 

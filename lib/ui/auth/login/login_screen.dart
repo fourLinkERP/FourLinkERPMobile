@@ -14,6 +14,7 @@ import 'package:fourlinkmobileapp/service/module/administration/basicInputs/comp
 import 'package:fourlinkmobileapp/service/module/administration/basicInputs/employeeApiService.dart';
 import 'package:fourlinkmobileapp/ui/home/home_screen.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../common/globals.dart';
 import '../../../helpers/toast.dart';
 import '../../../theme/theme_helper.dart';
@@ -307,8 +308,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       child: Text(
                                         'forget_password'.tr(),
                                         style: const TextStyle(
-                                          color: Color.fromRGBO(
-                                              146, 161, 190, 1),
+                                          color: Color.fromRGBO(146, 161, 190, 1),
                                         ),
                                       ),
                                     ),
@@ -320,8 +320,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               Column(
                                 children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceAround,
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       Expanded(
                                         flex: 1,
@@ -378,12 +377,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                       remember: false).then((
                                                       value) {
                                                     if (
-                                                    AppCubit
-                                                        .get(context)
-                                                        .isArabic
+                                                    AppCubit.get(context).isArabic
                                                     ) {
-                                                      AppCubit.get(context)
-                                                          .ChangeAppLang();
+                                                      AppCubit.get(context).ChangeAppLang();
                                                     }
                                                     setSelectedVal(val);
                                                   }
@@ -403,8 +399,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ],
                               ),
                               Container(
-                                decoration:
-                                ThemeHelper().buttonBoxDecoration(context),
+                                decoration: ThemeHelper().buttonBoxDecoration(context),
                                 child: ElevatedButton(
                                   style: ThemeHelper().buttonStyle(),
                                   child: Padding(
@@ -420,17 +415,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   onPressed: () async {
 
+                                    //final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                                    //sharedPreferences.setString('email', _emailController.text);
                                     if (_formKey.currentState!.validate()) {
                                       startLogin(true);
                                     }
-
                                     //After successful login we will redirect to profile page. Let's create profile page now
                                   },
                                 ),
                               ),
                               Container(
-                                margin: const EdgeInsets.fromLTRB(
-                                    10, 20, 10, 20),
+                                margin: const EdgeInsets.fromLTRB(10, 20, 10, 20),
                                 //child: Text('Don\'t have an account? Create'),
                                 child: Text.rich(TextSpan(children: [
                                   TextSpan(text: 'dont_have_account'.tr()),
@@ -446,9 +441,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         );*/
                                         Navigator.push(
                                             context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    RegistrationScreen())
+                                            MaterialPageRoute(builder: (context) => RegistrationScreen())
                                         );
                                       },
                                     style: TextStyle(
@@ -464,6 +457,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 alignment: Alignment.center,
                                 child: GestureDetector(
                                   onTap: () async {
+                                    //final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                                    //sharedPreferences.setString('email', _emailController.text);
                                     startQuickLogin();
                                   },
                                   child: Text(

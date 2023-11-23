@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/cubit/app_cubit.dart';
-import '../../helpers/colors.dart';
 import '../../helpers/navigator.dart';
-import '../../helpers/text_styles.dart';
-import '../../network/cache_helper.dart';
 import '../auth/login/login_screen.dart';
-
 
 
  class SplashScreen extends StatefulWidget {
@@ -19,17 +15,8 @@ class _SplashScreenState extends State<SplashScreen> {
   static const String routeName = '/SplashScreen';
   @override
   void initState() {
+
     super.initState();
-
-
-    //get the cities
-
-/*    Provider.of<UtilsProvider>(context, listen: false).fn_GetCities();
-    Provider.of<UtilsProvider>(context, listen: false).fn_GetTerms();
-    Provider.of<UtilsProvider>(context, listen: false).fn_GetSliderImages();
-    Provider.of<UtilsProvider>(context, listen: false).fn_GetMainServices();
-    Provider.of<UtilsProvider>(context, listen: false).fn_GetInquiries();
-    Provider.of<UtilsProvider>(context, listen: false).complainNumber(); */
 
     Future.delayed(const Duration(seconds: 4), () {
       AppCubit.get(context).GetData();
