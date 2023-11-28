@@ -393,5 +393,10 @@
     "Body fat": "Body fat",
     "Weight": "Weight",
     "descriptionNameEnglish": "English description",
-    "descriptionNameArabic": "Arabic description"
+    "descriptionNameArabic": "Arabic description",
+    "searchRequestVacation": "Search Request Vacation",
+    "searchAdditionalRequest": "Search Additional Request",
+    "searchRequestAdvance": "Search Request Advance",
+    "searchRequestNeeds": "Search Request Needs",
+    "searchRequestIncrease": "Search Request an Increase"
 }

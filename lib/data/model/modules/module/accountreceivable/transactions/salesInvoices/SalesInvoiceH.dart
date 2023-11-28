@@ -1,6 +1,4 @@
-
-import 'dart:io';
-
+//import 'dart:io';
 import 'package:flutter/cupertino.dart';
 
 Color lColor = const Color(0xffE4E5E6);
@@ -35,7 +33,8 @@ class SalesInvoiceH {
   String?  tafqitNameEnglish ;
 
 
-  SalesInvoiceH({this.id,
+  SalesInvoiceH({
+    this.id,
     //General Info
     this.salesInvoicesCase,
     this.salesInvoicesTypeCode ,
@@ -104,8 +103,6 @@ class SalesInvoiceH {
     return 'Trans{id: $id, name: $salesInvoicesSerial }';
   }
 }
-
-
 
 
 

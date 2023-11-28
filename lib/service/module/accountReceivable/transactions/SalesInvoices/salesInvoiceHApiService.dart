@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceH.dart';
@@ -41,7 +40,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       //print('Invoice After ');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesInvoiceH> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => SalesInvoiceH.fromJson(item)).toList();
       }
      //print('Invoice Finish');
@@ -145,7 +144,6 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       throw Exception('Failed to post sales Invoice');
     }
 
-    return  0;
   }
 
   Future<int> updateSalesInvoiceH(BuildContext context ,int id, SalesInvoiceH invoice) async {
@@ -202,7 +200,6 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       throw Exception('Failed to update a case');
     }
 
-    return 0;
   }
 
   Future<void> deleteSalesInvoiceH(BuildContext context ,int? id) async {

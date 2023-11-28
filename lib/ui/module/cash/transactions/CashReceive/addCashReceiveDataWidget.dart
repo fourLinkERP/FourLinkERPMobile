@@ -28,15 +28,15 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 //APIS
-NextSerialApiService _nextSerialApiService=new NextSerialApiService();
-TafqeetApiService _tafqeetApiService=new TafqeetApiService();
-CashTypeTypeApiService _cashTypeTypeApiService=new CashTypeTypeApiService();
-CashTargetTypeApiService _cashTargetTypeApiService=new CashTargetTypeApiService();
-BoxTypeApiService _boxTypeApiService=new BoxTypeApiService();
-CashReceiveApiService _cashReceiveApiService=new CashReceiveApiService();
-CustomerApiService _customerApiService=new CustomerApiService(); //Customer
-CashSafeApiService _cashSafeApiService=new CashSafeApiService(); //Cash
-CashBankBranchApiService _cashBankBranchApiService=new CashBankBranchApiService(); //Bank
+NextSerialApiService _nextSerialApiService=NextSerialApiService();
+TafqeetApiService _tafqeetApiService=TafqeetApiService();
+CashTypeTypeApiService _cashTypeTypeApiService=CashTypeTypeApiService();
+CashTargetTypeApiService _cashTargetTypeApiService=CashTargetTypeApiService();
+BoxTypeApiService _boxTypeApiService=BoxTypeApiService();
+CashReceiveApiService _cashReceiveApiService=CashReceiveApiService();
+CustomerApiService _customerApiService=CustomerApiService(); //Customer
+CashSafeApiService _cashSafeApiService=CashSafeApiService(); //Cash
+CashBankBranchApiService _cashBankBranchApiService=CashBankBranchApiService(); //Bank
 
 //List Models
 // List<Customer> customers=[];

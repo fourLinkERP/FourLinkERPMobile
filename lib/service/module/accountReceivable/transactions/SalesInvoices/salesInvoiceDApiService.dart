@@ -43,7 +43,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       print('Booter 4 SalesInvoiceD');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesInvoiceD> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => SalesInvoiceD.fromJson(item)).toList();
       }
       print('B 1 Finish SalesInvoiceD');

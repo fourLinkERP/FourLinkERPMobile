@@ -442,7 +442,12 @@
     "Customer: ": "العميل: ",
     "Item: ": "الصنف: ",
     "descriptionNameArabic": "الوصف العربي",
-    "descriptionNameEnglish": "الوصف الانجليزي"
+    "descriptionNameEnglish": "الوصف الانجليزي",
+    "searchRequestVacation": "بحث طلب اجازة",
+    "searchAdditionalRequest": "بحث طلب اضافي",
+    "searchRequestAdvance": "بحث طلب سلفة",
+    "searchRequestNeeds": "بحث طلب احتياج مواد",
+    "searchRequestIncrease": "بحث طلب زيادة راتب"
 
 }
 

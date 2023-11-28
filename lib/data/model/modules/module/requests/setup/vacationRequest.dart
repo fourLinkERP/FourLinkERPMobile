@@ -2,6 +2,7 @@
 
 class VacationRequests{
   int? id;
+
   String? vacationTypeCode;
   String? targetType;
   String? targetCode;

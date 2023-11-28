@@ -1,5 +1,5 @@
-import'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVacation/addRequestVacation.dart';
+import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestAdvance/addRequestAdvance.dart';
 
 import 'dart:core';
 import 'package:fourlinkmobileapp/common/globals.dart';
@@ -11,58 +11,57 @@ import '../../../../../cubit/app_cubit.dart';
 import '../../../../../cubit/app_states.dart';
 import 'package:intl/intl.dart';
 
-class RequestVacationList extends StatefulWidget {
-  const RequestVacationList({Key? key}) : super(key: key);
+class RequestAdvanceList extends StatefulWidget {
+  const RequestAdvanceList({Key? key}) : super(key: key);
 
   @override
-  State<RequestVacationList> createState() => _RequestVacationListState();
+  State<RequestAdvanceList> createState() => _RequestAdvanceListState();
 }
 
-class _RequestVacationListState extends State<RequestVacationList> {
+class _RequestAdvanceListState extends State<RequestAdvanceList> {
 
   DateTime get pickedDate => DateTime.now();
 
   @override
   Widget build(BuildContext context) {
 
-
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
-        title: SizedBox(
-          //height: 60,
-          child: Column(
-            crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
-            children: [
-              //Align(child: Text('serial'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
-              TextField(
-                onChanged: (value) => onSearch(value),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.all(0),
-                  prefixIcon: const Icon(Icons.search, color: Colors.black26,),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    borderSide: BorderSide.none,
-                  ),
-                  hintStyle: const TextStyle(
-                      fontSize: 16,
-                      color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
-                  ),
-                  hintText: "searchRequestVacation".tr(),
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
+          title: SizedBox(
+            //height: 60,
+            child: Column(
+              crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
+              children: [
+                //Align(child: Text('serial'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
+                TextField(
+                  onChanged: (value) => onSearch(value),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: const EdgeInsets.all(0),
+                    prefixIcon: const Icon(Icons.search, color: Colors.black26,),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(50),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintStyle: const TextStyle(
+                        fontSize: 16,
+                        color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
+                    ),
+                    hintText: "searchRequestAdvance".tr(),
 
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-        body: buildVacationRequests(),
+        body: buildAdvanceRequests(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestVacation()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestAdvance()));
           },
           backgroundColor: Colors.transparent,
           tooltip: 'Increment',
@@ -94,7 +93,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
                 highlightColor: Colors.transparent,
                 focusColor: Colors.transparent,
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestVacation()));
+                   Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestAdvance()));
                 },
                 child: const Icon(
                   Icons.add,
@@ -108,8 +107,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
 
     );
   }
-
-  Widget buildVacationRequests(){
+  Widget buildAdvanceRequests(){
     if(State is AppErrorState){
       return const Center(child: Text('no data'));
     }
@@ -118,7 +116,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
 
     }
     else if(//_salesInvoices.isEmpty
-        AppCubit.get(context).Conection==true){
+    AppCubit.get(context).Conection==true){
       return const Center(child: CircularProgressIndicator());
     }else{
       return Container(
@@ -132,13 +130,13 @@ class _RequestVacationListState extends State<RequestVacationList> {
                 Card(
                   child: InkWell(
                     onTap: () {
-                     // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_salesInvoices[index])),
-                     // );
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_salesInvoices[index])),
+                      // );
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/salesCart.png'),
-                      title: Text('serial'.tr() + " : " + "1"),
-                        //  _salesInvoices[index].salesInvoicesSerial.toString()),
+                      title: Text('serial'.tr() + " : " + "5"),
+                      //  _salesInvoices[index].salesInvoicesSerial.toString()),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
@@ -148,15 +146,15 @@ class _RequestVacationListState extends State<RequestVacationList> {
                               child: Row(
                                 children: [
                                   Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(pickedDate),),
-                                      //DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString())))  ,
+                                  //DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString())))  ,
 
                                 ],
 
                               )),
                           Container(height: 20, color: Colors.white30, child: Row(
                             children: [
-                              Text('customer'.tr() + " : " + "2"),
-                                  //_salesInvoices[index].customerName.toString()),
+                              Text('customer'.tr() + " : " + "4"),
+                              //_salesInvoices[index].customerName.toString()),
                             ],
 
                           )),
@@ -174,7 +172,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
                                         ),
                                         label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
                                         onPressed: () {
-                                         // _navigateToEditScreen(context,_salesInvoices[index]);
+                                          // _navigateToEditScreen(context,_salesInvoices[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -202,7 +200,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
                                         ),
                                         label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                         // _deleteItem(context,_salesInvoices[index].id);
+                                          // _deleteItem(context,_salesInvoices[index].id);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -229,7 +227,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
                                         ),
                                         label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                         // _navigateToPrintScreen(context,_salesInvoices[index]);
+                                          // _navigateToPrintScreen(context,_salesInvoices[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -259,7 +257,6 @@ class _RequestVacationListState extends State<RequestVacationList> {
     }
   }
   onSearch(String search) {
-
     if(search.isEmpty)
     {
       //getData();
@@ -269,4 +266,3 @@ class _RequestVacationListState extends State<RequestVacationList> {
     });
   }
 }
-

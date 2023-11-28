@@ -1078,37 +1078,30 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
 
   saveCashReceive(BuildContext context) {
 
-
-
     //Serial
     if(_cashReceiveSerialController.text.isEmpty){
       FN_showToast(context,'please_Set_Invoice_Serial'.tr(),Colors.black);
       return;
     }
-
     //Date
     if(_cashReceiveDateController.text.isEmpty){
       FN_showToast(context,'please_Set_Invoice_Date'.tr(),Colors.black);
       return;
     }
-
     //TargetCode
     if(cashTargetCodeSelectedValue == null || cashTargetCodeSelectedValue!.isEmpty){
       FN_showToast(context,'please_Set_TargetCode'.tr(),Colors.black);
       return;
     }
-
     //BoxCode
     if(boxCodeSelectedValue == null || boxCodeSelectedValue!.isEmpty){
       FN_showToast(context,'please_Set_BoxCode'.tr(),Colors.black);
       return;
     }
-
     if(_valueController.text.isEmpty){
       FN_showToast(context,'please_Set_Value'.tr(),Colors.black);
       return;
     }
-
 
     _cashReceiveApiService.updateCashReceive( context,id,CashReceive(
         trxKind: 1,

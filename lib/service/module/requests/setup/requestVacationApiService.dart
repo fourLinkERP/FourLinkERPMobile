@@ -15,7 +15,6 @@ class VacationRequestsApiService {
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'EmpCode': empCode,
 
     };
 
@@ -45,6 +44,7 @@ class VacationRequestsApiService {
       throw "Failed to load VacationRequest list";
     }
   }
+
 
 
 }

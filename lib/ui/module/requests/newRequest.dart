@@ -1,10 +1,11 @@
 import'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVacation/requestVacationList.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/additionalRequest.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/requestAdvance.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/requestSalaryIncrease.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVacation/addRequestVacation.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/requestNeeds.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestAdvance/requestAdvanceList.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestSalaryIncrease/requestSalaryIncreaseList.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestNeeds/requestNeedsList.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/AdditionalRequest/additionalRequestList.dart';
+
 class NewRequest extends StatelessWidget {
   const NewRequest({Key? key}) : super(key: key);
 
@@ -25,7 +26,7 @@ class NewRequest extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestVacation()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestVacationList()));
             },
             child: Text('Request vacation'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
           ),
@@ -41,7 +42,7 @@ class NewRequest extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestAdvance()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestAdvanceList()));
             },
             child: Text('Request an advance'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
           ),
@@ -57,7 +58,7 @@ class NewRequest extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestSalary()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestSalaryIncreaseList()));
             },
             child: Text('Request salary increase'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
           ),
@@ -73,7 +74,7 @@ class NewRequest extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const AdditionalRequest()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const AdditionalRequestList()));
             },
             child: Text('Additional request'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
           ),
@@ -89,7 +90,7 @@ class NewRequest extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestNeeds()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestNeedsList()));
             },
             child: Text('Request needs'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
           ),

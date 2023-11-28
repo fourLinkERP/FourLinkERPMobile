@@ -24,8 +24,8 @@ import 'editSalesInvoiceDataWidget.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
 
-SalesInvoiceHApiService _apiService=new SalesInvoiceHApiService();
-SalesInvoiceDApiService _apiDService=new SalesInvoiceDApiService();
+SalesInvoiceHApiService _apiService= SalesInvoiceHApiService();
+SalesInvoiceDApiService _apiDService= SalesInvoiceDApiService();
 //Get SalesInvoiceH List
 
 
@@ -74,9 +74,8 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
-          //
-          title: Container(
-            //height: 80,
+          title: SizedBox(
+            //height: 60,
             child: Column(
               crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
               children: [
@@ -104,7 +103,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             ),
           ),
         ),
-        body: BuildsalesInvoices(),
+        body: buildSalesInvoices(),
 
         floatingActionButton: FloatingActionButton(
           shape: const RoundedRectangleBorder(
@@ -318,7 +317,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
 
   //#region Build
 
-    Widget BuildsalesInvoices(){
+    Widget buildSalesInvoices(){
       if(State is AppErrorState){
         return const Center(child: Text('no data'));
       }
@@ -333,7 +332,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
           color: const Color.fromRGBO(240, 242, 246,1),// Main Color
 
           child: ListView.builder(
-              itemCount: _salesInvoices == null ? 0 : _salesInvoices.length,
+              itemCount: _salesInvoices.isEmpty ? 0 : _salesInvoices.length,
               itemBuilder: (BuildContext context, int index) {
                 return
                   Card(
@@ -342,8 +341,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  DetailSalesInvoiceHWidget(_salesInvoices[index])),
+                              builder: (context) => DetailSalesInvoiceHWidget(_salesInvoices[index])),
                         );
                       },
                       child: ListTile(
@@ -364,15 +362,12 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                             )),
                             Container(height: 20, color: Colors.white30, child: Row(
                               children: [
-
                                 Text('customer'.tr() + " : " + _salesInvoices[index].customerName.toString()),
-
-
                               ],
 
                             )),
                             const SizedBox(width: 5),
-                            Container(
+                            SizedBox(
                                 child: Row(
                                   children: <Widget>[
                                 Center(
@@ -400,7 +395,8 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                                       color: Color.fromRGBO(0, 136, 134, 1)
                                   )
                               ),
-                            )),
+                            )
+                                ),
                             const SizedBox(width: 5),
                               Center(
                                   child: ElevatedButton.icon(
@@ -464,13 +460,9 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                       ),
                     ),
 
-
-
                   );
               }),
-
         );
-
       }
     }
 
@@ -485,7 +477,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
         AppCubit.get(context).EmitErrorState();
       });
       _salesInvoices = (await futureSalesInvoiceH)!;
-      if (_salesInvoices != null) {
+      if (_salesInvoices.isNotEmpty) {
         setState(() {
           _founded = _salesInvoices!;
           String search = '';
