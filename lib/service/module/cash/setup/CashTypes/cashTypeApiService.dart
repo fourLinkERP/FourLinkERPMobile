@@ -1,11 +1,10 @@
 import 'dart:convert';
 import 'package:fourlinkmobileapp/data/model/modules/module/cash/setup/cashTypes/cashType.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
-import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
-import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/helpers/toast.dart';
+//import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
+//import 'package:flutter/material.dart';
+//import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
  class CashTypeTypeApiService {
@@ -34,7 +33,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       },
       body: jsonEncode(data),
     );
-
 
     if (response.statusCode == 200) {
       print('CashType 2');

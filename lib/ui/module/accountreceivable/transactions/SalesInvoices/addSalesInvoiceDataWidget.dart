@@ -1,7 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/setup/salesInvoiceTypes/salesInvoiceType.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/setup/salesInvoiceTypes/salesInvoiceType.dart'; // *
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceD.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/general/inventoryOperation/inventoryOperation.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/general/nextSerial/nextSerial.dart';
@@ -13,7 +13,7 @@ import 'package:fourlinkmobileapp/service/general/tafqeet/tafqeetApiService.dart
 import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/items/itemApiService.dart';
 import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/units/unitApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
-import 'package:fourlinkmobileapp/service/module/accountReceivable/setup/SalesInvoiceTypes/salesInvoiceType.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/setup/SalesInvoiceTypes/salesInvoiceType.dart'; // *
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/SalesInvoices/salesInvoiceDApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/SalesInvoices/salesInvoiceHApiService.dart';
 import 'package:fourlinkmobileapp/service/module/general/inventoryOperation/inventoryOperationApiService.dart';
@@ -31,7 +31,7 @@ import '../../../../../service/module/general/NextSerial/generalApiService.dart'
 
 //APIS;
 NextSerialApiService _nextSerialApiService = NextSerialApiService();
-SalesInvoicesTypeApiService _salesInvoiceTypeApiService = SalesInvoicesTypeApiService();
+SalesInvoicesTypeApiService _salesInvoiceTypeApiService = SalesInvoicesTypeApiService();  //*
 SalesInvoiceHApiService _salesInvoiceHApiService = SalesInvoiceHApiService();
 SalesInvoiceDApiService _salesInvoiceDApiService = SalesInvoiceDApiService();
 InventoryOperationApiService _inventoryOperationApiService = InventoryOperationApiService();
@@ -42,7 +42,7 @@ TafqeetApiService _tafqeetApiService = TafqeetApiService();
 
 //List Models
 List<Customer> customers = [];
-List<SalesInvoiceType> salesInvoiceTypes = [];
+List<SalesInvoiceType> salesInvoiceTypes = [];  //*
 List<Item> items = [];
 List<Unit> units = [];
 
@@ -63,19 +63,18 @@ double totalBeforeTax = 0;
 double totalTax = 0;
 double totalAfterDiscount = 0;
 double totalNet = 0;
-bool isLoading = true;
+
+bool isLoading = true;  //*
 
 
 class AddSalesInvoiceHDataWidget extends StatefulWidget {
   AddSalesInvoiceHDataWidget();
 
   @override
-  _AddSalesInvoiceHDataWidgetState createState() =>
-      _AddSalesInvoiceHDataWidgetState();
+  _AddSalesInvoiceHDataWidgetState createState() => _AddSalesInvoiceHDataWidgetState();
 }
 
-class _AddSalesInvoiceHDataWidgetState
-    extends State<AddSalesInvoiceHDataWidget> {
+class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget> {
   _AddSalesInvoiceHDataWidgetState();
 
   List<SalesInvoiceD> SalesInvoiceDLst = <SalesInvoiceD>[];
@@ -147,7 +146,7 @@ class _AddSalesInvoiceHDataWidgetState
       salesInvoicesTypeCode: "",
       salesInvoicesTypeNameAra: "",
       salesInvoicesTypeNameEng: "",
-      id: 0);
+      id: 0); //*
   Item? itemItem = Item(itemCode: "", itemNameAra: "", itemNameEng: "", id: 0);
   Unit? unitItem = Unit(unitCode: "", unitNameAra: "", unitNameEng: "", id: 0);
 
@@ -177,7 +176,7 @@ class _AddSalesInvoiceHDataWidgetState
     totalNet = 0;
 
     print('generalSetupSalesInvoicesTypeCode >> $generalSetupSalesInvoicesTypeCode');
-    if (!generalSetupSalesInvoicesTypeCode.toString().isEmpty) {
+    if (generalSetupSalesInvoicesTypeCode.toString().isNotEmpty) {
       selectedTypeValue = generalSetupSalesInvoicesTypeCode;
     }
 

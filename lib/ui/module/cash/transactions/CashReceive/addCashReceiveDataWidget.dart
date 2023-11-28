@@ -884,19 +884,15 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
 
   getCashTypeData() {
-    if (cashTypes != null) {
+    if (cashTypes.isNotEmpty) {
       for(var i = 0; i < cashTypes.length; i++){
         menuCashReceiveTypes.add(DropdownMenuItem(value: cashTypes[i].code.toString(), child: Text(cashTypes[i].
         descAra.toString())));
         if(cashTypes[i].code == "1"){
           // print('in amr3');
           cashTypeItem = cashTypes[cashTypes.indexOf(cashTypes[i])];
-          // print('in amr4');
-          // print(customerTypeItem );
         }
-
       }
-
       typeCodeSelectedValue = "1";
       setNextSerial();
     }
@@ -949,8 +945,8 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
   getCashSafeData() {
     if (cashSafes != null) {
       for(var i = 0; i < cashSafes.length; i++){
-        menuCashSafes.add(DropdownMenuItem(child: Text(cashSafes[i].
-        safeNameAra.toString()),value: cashSafes[i].safeCode.toString()));
+        menuCashSafes.add(DropdownMenuItem(value: cashSafes[i].safeCode.toString(), child: Text(cashSafes[i].
+        safeNameAra.toString())));
       }
     }
     setState(() {
@@ -1188,8 +1184,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
           children: [
             Text(
               number,
-              style: TextStyle(
-
+              style: const TextStyle(
                 color: Colors.black87,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -1199,12 +1194,12 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
             Container(
               height: 25,
               width: 3,
-              color: Color.fromRGBO(144, 16, 46, 1),
+              color: const Color.fromRGBO(144, 16, 46, 1),
             ),
             const SizedBox(width: 10),
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black87,
                 fontSize: 20,
                 fontWeight: FontWeight.w500,

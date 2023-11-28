@@ -1,12 +1,8 @@
 import 'dart:convert';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/setup/salesInvoiceTypes/salesInvoiceType.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
-import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
-import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/helpers/toast.dart';
+
 
 
  class SalesInvoicesTypeApiService {
@@ -42,7 +38,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       print('SalesInvoiceType 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesInvoiceType> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => SalesInvoiceType.fromJson(item)).toList();
       }
       print('SalesInvoiceType 3');
