@@ -14,8 +14,6 @@ VacationRequestsApiService _vacationRequestsApiService = VacationRequestsApiServ
 
 // List Models
 List<VacationRequests> vacationRequests = [];
-
-
 bool isLoading = true;
 
 class RequestVacation extends StatefulWidget {
@@ -91,9 +89,7 @@ class _RequestVacationState extends State<RequestVacation> {
   final _dropdownTypeFormKey = GlobalKey<FormState>(); //Type
 
   VacationRequests? vacationRequestItem = VacationRequests(
-      targetType: "",
       vacationTypeCode: "",
-      targetCode: "",
       id: 0,
   );
 
@@ -704,8 +700,8 @@ class _RequestVacationState extends State<RequestVacation> {
   getVacationRequestsData() {
     if (vacationRequests.isNotEmpty) {
       for(var i = 0; i < vacationRequests.length; i++){
-        menuVacationTypes.add(DropdownMenuItem(value: vacationRequests[i].vacationTypeCode.toString(), child: Text(vacationRequests[i].
-        targetType.toString())));
+        menuVacationTypes.add(DropdownMenuItem(value: vacationRequests[i].vacationTypeCode.toString(), child:
+        Text(vacationRequests[i].vacationTypeName.toString())));
         if(vacationRequests[i].vacationTypeCode == "1"){
           // print('in amr3');
           vacationRequestItem = vacationRequests[vacationRequests.indexOf(vacationRequests[i])];

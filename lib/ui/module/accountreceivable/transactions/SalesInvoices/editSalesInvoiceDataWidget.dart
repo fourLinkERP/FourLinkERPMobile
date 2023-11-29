@@ -28,15 +28,15 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 //APIS
 
-NextSerialApiService _nextSerialApiService=new NextSerialApiService();
-SalesInvoicesTypeApiService _salesInvoiceTypeApiService=new SalesInvoicesTypeApiService();
-SalesInvoiceHApiService _salesInvoiceHApiService=new SalesInvoiceHApiService();
-SalesInvoiceDApiService _salesInvoiceDApiService=new SalesInvoiceDApiService();
-CustomerApiService _customerApiService=new CustomerApiService();
-ItemApiService _itemsApiService = new ItemApiService();
-UnitApiService _unitsApiService = new UnitApiService();
-TafqeetApiService _tafqeetApiService=new TafqeetApiService();
-InventoryOperationApiService _inventoryOperationApiService = new InventoryOperationApiService();
+NextSerialApiService _nextSerialApiService= NextSerialApiService();
+SalesInvoicesTypeApiService _salesInvoiceTypeApiService= SalesInvoicesTypeApiService();
+SalesInvoiceHApiService _salesInvoiceHApiService= SalesInvoiceHApiService();
+SalesInvoiceDApiService _salesInvoiceDApiService= SalesInvoiceDApiService();
+CustomerApiService _customerApiService= CustomerApiService();
+ItemApiService _itemsApiService = ItemApiService();
+UnitApiService _unitsApiService = UnitApiService();
+TafqeetApiService _tafqeetApiService= TafqeetApiService();
+InventoryOperationApiService _inventoryOperationApiService = InventoryOperationApiService();
 
 //List Models
 List<Customer> customers=[];

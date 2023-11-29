@@ -398,5 +398,6 @@
     "searchAdditionalRequest": "Search Additional Request",
     "searchRequestAdvance": "Search Request Advance",
     "searchRequestNeeds": "Search Request Needs",
-    "searchRequestIncrease": "Search Request an Increase"
+    "searchRequestIncrease": "Search Request an Increase",
+    "edit_request_vacation": "Edit Request Vacation"
 }

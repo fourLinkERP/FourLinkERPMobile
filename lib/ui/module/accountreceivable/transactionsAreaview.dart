@@ -3,6 +3,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/salesOrderList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/salesInvoiceList.dart';
 import 'package:fourlinkmobileapp/ui/module/cash/transactions/CashReceive/cashReceiveList.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVacation/requestVacationList.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
 import '../../../theme/fitness_app_theme.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -224,7 +225,21 @@ class AreaView extends StatelessWidget {
                       {
                         FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                       }
-                    }
+                      }
+
+                      else if(imagepath == 'assets/fitness_app/vacation.png')
+                      {
+                        int menuId=45201;
+                        bool isAllowView = PermissionHelper.checkViewPermission(menuId);
+                        if(isAllowView)
+                        {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const RequestVacationList()));
+                        }
+                        else
+                        {
+                          FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                        }
+                      }
 
                   },
                   child: Column(

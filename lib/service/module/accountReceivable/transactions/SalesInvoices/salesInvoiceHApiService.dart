@@ -55,11 +55,9 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
   }
 
   Future<SalesInvoiceH> getSalesInvoiceHById(int id) async {
-
     var data = {
       // "id": id
     };
-
     String apiGet=getByIdApi + id.toString();
 
     var response = await http.post(Uri.parse(apiGet),
@@ -176,8 +174,6 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       'addBy': "1"
     };
 
-    print('Start Update');
-
     String apiUpdate =updateApi + id.toString();
     print('Start Update apiUpdate ' + apiUpdate );
 
@@ -191,7 +187,6 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
     print('Start Update after ' );
     if (response.statusCode == 200) {
       print('Start Update done ' );
-      //var data = jsonDecode(response.body)['data'];
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
