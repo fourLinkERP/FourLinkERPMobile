@@ -18,6 +18,7 @@ class VacationRequests{
   int? vacationBalance;
   String? startWorkDate;
   String? departmentCode;
+  String? departmentName;
   int? advanceBalance;
   int? requestDays;
   String? jobName;
@@ -47,6 +48,7 @@ class VacationRequests{
     this.vacationBalance,
     this.startWorkDate,
     this.departmentCode,
+    this.departmentName,
     this.advanceBalance,
     this.requestDays,
     this.jobName,
@@ -77,6 +79,7 @@ class VacationRequests{
       vacationBalance: (json['vacationBalance'] != null) ? json['vacationBalance'] as int : 0,
       startWorkDate: (json['startWorkDate'] != null) ? json['startWorkDate'] as String : pickedDate,
       departmentCode: (json['departmentCode'] != null) ? json['departmentCode'] as String : "",
+      departmentName: (json['departmentName'] != null) ? json['departmentName'] as String : "",
       advanceBalance: (json['advanceBalance'] != null) ? json['advanceBalance'] as int : 0,
       requestDays: (json['requestDays'] != null) ? json['requestDays'] as int : 0,
       jobName: (json['jobName'] != null) ? json['jobName'] as String : "",

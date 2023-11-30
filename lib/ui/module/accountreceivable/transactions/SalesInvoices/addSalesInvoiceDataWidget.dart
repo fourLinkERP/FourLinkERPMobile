@@ -113,7 +113,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
   final _totalValueController = TextEditingController(); //Total Value
   final _totalDiscountController = TextEditingController(); //Total Discount
   final _totalAfterDiscountController = TextEditingController(); //Total After Discount
-  final _totalTotalBeforeTaxController = TextEditingController(); //Total Before Tax
   final _totalTaxController = TextEditingController(); //Total Tax
   final _totalBeforeTaxController = TextEditingController(); // Total Before Tax
   final _totalNetController = TextEditingController(); // Total Net
@@ -1483,32 +1482,16 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       salesInvoicesTypeCode: selectedTypeValue.toString(),
       salesInvoicesDate: _salesInvoicesDateController.text,
       customerCode: selectedCustomerValue.toString(),
-      totalQty: (!_totalQtyController.text.isEmpty) ? _totalQtyController.text
-          .toDouble() : 0,
-
-      totalTax: (!_totalTaxController.text.isEmpty) ? _totalTaxController.text
-          .toDouble() : 0,
-      totalDiscount: (!_totalDiscountController.text.isEmpty)
-          ? _totalDiscountController.text.toDouble()
-          : 0,
-
+      totalQty: (_totalQtyController.text.isNotEmpty) ? _totalQtyController.text.toDouble() : 0,
+      totalTax: (_totalTaxController.text.isNotEmpty) ? _totalTaxController.text.toDouble() : 0,
+      totalDiscount: (_totalDiscountController.text.isNotEmpty) ? _totalDiscountController.text.toDouble() : 0,
       rowsCount: (rowsCount > 0) ? rowsCount : 0,
-      totalNet: (!_totalNetController.text.isEmpty) ? _totalNetController.text
-          .toDouble() : 0,
-      invoiceDiscountPercent: (!_invoiceDiscountPercentController.text.isEmpty)
-          ? _invoiceDiscountPercentController.text.toDouble()
-          : 0,
-      invoiceDiscountValue: (!_invoiceDiscountValueController.text.isEmpty)
-          ? _invoiceDiscountValueController.text.toDouble()
-          : 0,
-      totalValue: (!_totalValueController.text.isEmpty) ? _totalValueController
-          .text.toDouble() : 0,
-      totalAfterDiscount: (!_totalAfterDiscountController.text.isEmpty)
-          ? _totalAfterDiscountController.text.toDouble()
-          : 0,
-      totalBeforeTax: (!_totalBeforeTaxController.text.isEmpty)
-          ? _totalBeforeTaxController.text.toDouble()
-          : 0,
+      totalNet: (_totalNetController.text.isNotEmpty) ? _totalNetController.text.toDouble() : 0,
+      invoiceDiscountPercent: (_invoiceDiscountPercentController.text.isNotEmpty) ? _invoiceDiscountPercentController.text.toDouble() : 0,
+      invoiceDiscountValue: (_invoiceDiscountValueController.text.isNotEmpty) ? _invoiceDiscountValueController.text.toDouble() : 0,
+      totalValue: (_totalValueController.text.isNotEmpty) ? _totalValueController.text.toDouble() : 0,
+      totalAfterDiscount: (_totalAfterDiscountController.text.isNotEmpty) ? _totalAfterDiscountController.text.toDouble() : 0,
+      totalBeforeTax: (_totalBeforeTaxController.text.isNotEmpty) ? _totalBeforeTaxController.text.toDouble() : 0,
 
 
       //salesManCode: salesInvoicesSerial,
@@ -1550,7 +1533,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     //print To Send
     sendEmail();
 
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SalesInvoiceHListPage()));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const SalesInvoiceHListPage()));
   }
 
 //#endregion
@@ -1599,9 +1582,8 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
   getUnitData() {
     for (var i = 0; i < units.length; i++) {
-      menuUnits.add(DropdownMenuItem(child: Text(
-          (langId == 1) ? units[i].unitNameAra.toString() : units[i]
-              .unitNameEng.toString()), value: units[i].unitCode.toString()));
+      menuUnits.add(DropdownMenuItem(value: units[i].unitCode.toString(), child: Text(
+          (langId == 1) ? units[i].unitNameAra.toString() : units[i].unitNameEng.toString())));
     }
       setState(() {
 

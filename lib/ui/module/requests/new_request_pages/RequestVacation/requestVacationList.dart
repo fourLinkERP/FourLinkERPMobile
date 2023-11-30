@@ -99,7 +99,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
         body: buildVacationRequests(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestVacation()));
+            Navigator.push(context, MaterialPageRoute(builder: (context) =>  RequestVacation()));
           },
           backgroundColor: Colors.transparent,
           tooltip: 'Increment',
@@ -131,7 +131,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
                 highlightColor: Colors.transparent,
                 focusColor: Colors.transparent,
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestVacation()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  RequestVacation()));
                 },
                 child: const Icon(
                   Icons.add,
@@ -152,7 +152,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if(isAllowAdd)
     {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RequestVacation(),
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => RequestVacation(),
       )).then((value) {
         getData();
       });
@@ -201,7 +201,6 @@ class _RequestVacationListState extends State<RequestVacationList> {
         ],
       ),
     );
-
     if (result == null || !result) {
       return;
     }
@@ -210,7 +209,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
     bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
     if(isAllowDelete)
     {
-      //var res = _apiService.deleteSalesInvoiceH(context,id).then((value) => getData());
+      var res = _apiService.deleteVacationRequest(context,id).then((value) => getData());
     }
     else
     {
@@ -391,5 +390,6 @@ class _RequestVacationListState extends State<RequestVacationList> {
       });
     }
   }
+
 }
 

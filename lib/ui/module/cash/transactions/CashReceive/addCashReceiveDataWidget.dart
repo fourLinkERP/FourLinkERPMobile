@@ -903,7 +903,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
 
   getCashTargetTypeData() {
-    if (cashTargetTypes != null) {
+    if (cashTargetTypes.isNotEmpty) {
       for(var i = 0; i < cashTargetTypes.length; i++){
         menuCashReceiveTypes.add(DropdownMenuItem(value: cashTypes[i].code.toString(), child: Text(cashTargetTypes[i].
         typeNameAra.toString())));
@@ -924,10 +924,10 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
   }
 
   getBoxTypeData() {
-    if (boxTypes != null) {
+    if (boxTypes.isNotEmpty) {
       for(var i = 0; i < boxTypes.length; i++){
-        menuCashReceiveTypes.add(DropdownMenuItem(child: Text(boxTypes[i].
-        nameAra.toString()),value: cashTypes[i].code.toString()));
+        menuCashReceiveTypes.add(DropdownMenuItem(value: cashTypes[i].code.toString(), child: Text(boxTypes[i].
+        nameAra.toString())));
         if(boxTypes[i].code == "1"){
           // print('in amr3');
           boxTypeItem = boxTypes[boxTypes.indexOf(boxTypes[i])];
@@ -943,7 +943,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
   }
 
   getCashSafeData() {
-    if (cashSafes != null) {
+    if (cashSafes.isNotEmpty) {
       for(var i = 0; i < cashSafes.length; i++){
         menuCashSafes.add(DropdownMenuItem(value: cashSafes[i].safeCode.toString(), child: Text(cashSafes[i].
         safeNameAra.toString())));
@@ -954,10 +954,11 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
   }
 
   getCashBankBranchesData() {
-    if (cashBankBranches != null) {
+    if (cashBankBranches.isNotEmpty) {
       for(var i = 0; i < cashBankBranches.length; i++){
-        menuCashSafes.add(DropdownMenuItem(child: Text(cashBankBranches[i].
-        bankBranchNameAra.toString()),value: cashBankBranches[i].bankBranchCode.toString()));
+        menuCashSafes.add(DropdownMenuItem(
+            value: cashBankBranches[i].bankBranchCode.toString(),
+            child: Text(cashBankBranches[i].bankBranchNameAra.toString())));
       }
     }
     setState(() {
@@ -965,10 +966,11 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
   }
 
   getCustomerData() {
-    if (customers != null) {
+    if (customers.isNotEmpty) {
       for(var i = 0; i < customers.length; i++){
-        menuCustomers.add(DropdownMenuItem(child: Text(customers[i].customerNameAra.toString()),
-            value: customers[i].customerCode.toString()));
+        menuCustomers.add(DropdownMenuItem(
+            value: customers[i].customerCode.toString(),
+            child: Text(customers[i].customerNameAra.toString())));
       }
     }
     setState(() {

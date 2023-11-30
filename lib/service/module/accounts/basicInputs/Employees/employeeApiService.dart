@@ -1,29 +1,28 @@
 import 'dart:convert';
+import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
-import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
- class CustomerApiService {
+ class EmployeeApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/customers/searchData';
-  String createApi= baseUrl.toString()  + 'v1/customers';
-  String updateApi= baseUrl.toString()  + 'v1/customers/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/customers/';
-  String getByIdApi= baseUrl.toString()  + 'v1/customers/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + 'v1/employees/search';
+  String createApi= baseUrl.toString()  + 'v1/employees';
+  String updateApi= baseUrl.toString()  + 'v1/employees/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + 'v1/employees/';
+  String getByIdApi= baseUrl.toString()  + 'v1/employees/';  // Add ID For Get
 
-  Future<List<Customer>>  getCustomers() async {
+  Future<List<Employee>>  getEmployees() async {
 
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode
     };
 
-    print('Customer 1');
+    print('Employee 1');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -35,24 +34,22 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
     if (response.statusCode == 200) {
-      print('Customer 2');
+      print('Employee 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
-      List<Customer> list = [];
+      List<Employee> list = [];
       if (data.isNotEmpty) {
-        list = data.map((item) => Customer.fromJson(item)).toList();
+        list = data.map((item) => Employee.fromJson(item)).toList();
       }
-      print('Customer 3');
+      print('Employee 3');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => Customer.fromJson(data))
-      //     .toList();
+
     } else {
-      print('Customer Failed');
-      throw "Failed to load customer list";
+      print('Employee Failed');
+      throw "Failed to load Employee list";
     }
   }
 
-  Future<Customer> getCustomerById(int id) async {
+  Future<Employee> getEmployeeById(int id) async {
 
     var data = {
       // "id": id
@@ -69,28 +66,21 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
     if (response.statusCode == 200) {
 
-      return Customer.fromJson(json.decode(response.body));
+      return Employee.fromJson(json.decode(response.body));
 
     } else {
       throw Exception('Failed to load a case');
     }
   }
 
-  Future<int> createCustomer(BuildContext context ,Customer customer) async {
+  Future<int> createEmployee(BuildContext context ,Employee employee) async {
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'customerCode': customer.customerCode,
-      'customerNameAra': customer.customerNameAra,
-      'customerNameEng': customer.customerNameEng,
-      'taxIdentificationNumber': customer.taxIdentificationNumber,
-      'address': customer.address,
-      'Phone1': customer.phone1,
-      'customerTypeCode': customer.customerTypeCode,
-      // 'address': customer.address,
-      // 'city': customer.city,
-      // 'country': customer.country,
-      // 'status': customer.status
+      'empCode': employee.empCode,
+      'empNameAra': employee.empNameAra,
+      'empNameEng': employee.empNameEng,
+
     };
 
     final http.Response response = await http.post(
@@ -103,37 +93,31 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     );
 
 
-
     if (response.statusCode == 200) {
 
-      //print('B 1');
-      //var data = jsonDecode(response.body)['data'];
-      //print('B 1 Finish');
       FN_showToast(context,'save_success'.tr() ,Colors.black);
 
       return  1;
 
 
     } else {
-      throw Exception('Failed to post customer');
+      throw Exception('Failed to post Employee');
     }
 
     return  0;
   }
 
-  Future<int> updateCustomer(BuildContext context ,int id, Customer customer) async {
+  Future<int> updateEmployee(BuildContext context ,int id, Employee employee) async {
 
     print('Start Update');
 
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'customerCode': customer.customerCode,
-      'customerNameAra': customer.customerNameAra,
-      'customerNameEng': customer.customerNameEng,
-      'taxIdentificationNumber': customer.taxIdentificationNumber,
-      'address': customer.address,
-      'Phone1': customer.phone1
+      'empCode': employee.empCode,
+      'empNameAra': employee.empNameAra,
+      'empNameEng': employee.empNameEng,
+
     };
 
     String apiUpdate =updateApi + id.toString();
@@ -148,8 +132,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
     print('Start Update after ' );
     if (response.statusCode == 200) {
+
       print('Start Update done ' );
-      //var data = jsonDecode(response.body)['data'];
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
@@ -161,7 +145,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     return 0;
   }
 
-  Future<void> deleteCustomer(BuildContext context ,int? id) async {
+  Future<void> deleteEmployee(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
     print('url' + apiDel);

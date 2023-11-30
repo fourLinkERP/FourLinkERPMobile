@@ -5,12 +5,13 @@ Widget defaultFormField({
   required TextInputType type,
   bool isPassword = false,
   String? Function(String?)? validate,
-  required String label,
+  String? label,
   IconData? prefix,
   required Color colors,
   IconData? suffix,
   VoidCallback? suffixPressed,
   bool enable = true,
+  String? Function(String?)?  onSaved,
 
 }) => TextFormField(
   controller: controller,
@@ -18,6 +19,7 @@ Widget defaultFormField({
   obscureText: isPassword,
   validator: validate,
   enabled: enable,
+  onSaved: onSaved,
 
   decoration: InputDecoration(
     labelText: label,

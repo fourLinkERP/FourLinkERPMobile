@@ -1,45 +1,64 @@
 import'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/CostCenters/CostCenter.dart';
+import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/CostCenters/costCenterApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/services.dart';
 import 'package:fourlinkmobileapp/common/login_components.dart';
 import 'package:intl/intl.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/vacationRequest.dart';
 import 'package:fourlinkmobileapp/service/module/requests/setup/requestVacationApiService.dart';
-//import 'package:fourlinkmobileapp/data/model/modules/module/general/nextSerial/nextSerial.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/general/nextSerial/nextSerial.dart';
+import '../../../../../common/globals.dart';
+import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
+import '../../../../../theme/fitness_app_theme.dart';
 
 // APIs
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
 VacationRequestsApiService _vacationRequestsApiService = VacationRequestsApiService();
+CostCenterApiService _costCenterApiService = CostCenterApiService();
 
 // List Models
 List<VacationRequests> vacationRequests = [];
+List<CostCenter> costCenters =[];
+
 bool isLoading = true;
 
 class RequestVacation extends StatefulWidget {
   static const String routeName = 'newr';
-  const RequestVacation({Key? key}) : super(key: key);
+  RequestVacation();
 
   @override
-  State<RequestVacation> createState() => _RequestVacationState();
+  _RequestVacationState createState() => _RequestVacationState();
 }
 
 class _RequestVacationState extends State<RequestVacation> {
+  _RequestVacationState();
+
   String _dropdownValue_job = 'Employee 1';
   String _dropdownValue_cost = 'cost 1';
   String _dropdownValue_request = 'Section 1';
   String _dropdownValue_vacation_type = 'type 1';
 
+  List<VacationRequests> VacationRequestLst = <VacationRequests>[];
+  List<VacationRequests> selected = [];
+  List<DropdownMenuItem<String>> menuDepartment = [];
   List<DropdownMenuItem<String>> menuVacationTypes = [];
+  List<DropdownMenuItem<String>> menuEmployees = [];
+  List<DropdownMenuItem<String>> menuCostCenter = [];
+  List<CostCenter> costCenterTypes=[];
 
 
-  String? selectedTypeValue = "1";
+  String? selectedEmployeeValue = null;
+  String? selectedRequestSectionValue = null;
+  String? selectedVacationTypeValue = "1";
+  String? selectedCostName = null;
+
   final _addFormKey = GlobalKey<FormState>();
 
-  String? vacationDate;
   String? fromDate;
   String? toDate;
-  String? vacationReservedDate;
+  String? vacationDueDate;
   String? lastSalaryDate;
 
   final _items_job = [
@@ -71,24 +90,29 @@ class _RequestVacationState extends State<RequestVacation> {
     'type 5',
   ];
 
-  final _dateController = TextEditingController();
+  final _dropdownTypeFormKey = GlobalKey<FormState>(); //Type
+  final _dropdownCostFormKey = GlobalKey<FormState>(); //Cost
+  final _dropdownRequestFormKey = GlobalKey<FormState>(); //Request Section
+
+  final _vacationRequestSerialController = TextEditingController(); // Serial
+  final _vacationRequestTrxDateController = TextEditingController(); // Date
   final _fromDateController = TextEditingController();
   final _toDateController = TextEditingController();
-  final _fileController = TextEditingController();
-  final _messageController = TextEditingController();
-  final _jobController = TextEditingController();
-  final _requestedPeriodController = TextEditingController();
-  final _listBalanceController = TextEditingController();
-  final _vacationBalanceController = TextEditingController();
-  final _allowedBalanceController = TextEditingController();
-  final _employeeBalanceController = TextEditingController();
-  final _advanceBalanceController = TextEditingController();
-  final _reasonController = TextEditingController();
-  final _vacationReservedDateController = TextEditingController();
-  final _lastSalaryDateController =  TextEditingController();
-  final _dropdownTypeFormKey = GlobalKey<FormState>(); //Type
+  //final _fileController = TextEditingController();
+  final _vacationRequestMessageController = TextEditingController();
+  final _vacationRequestJobController = TextEditingController();
+  final _vacationRequestRequestedDaysController = TextEditingController();
+  final _vacationRequestListBalanceController = TextEditingController();
+  final _vacationRequestVacationBalanceController = TextEditingController();
+  final _vacationRequestAllowedBalanceController = TextEditingController();
+  final _vacationRequestEmployeeBalanceController = TextEditingController();
+  final _vacationRequestAdvanceBalanceController = TextEditingController();
+  final _vacationRequestNoteController = TextEditingController();
+  final _vacationRequestDueDateController = TextEditingController();
+  final _vacationRequestLastSalaryDateController =  TextEditingController();
 
-  VacationRequests? vacationRequestItem = VacationRequests(
+
+  VacationRequests? vacationRequestTypeItem = VacationRequests(
       vacationTypeCode: "",
       id: 0,
   );
@@ -96,17 +120,46 @@ class _RequestVacationState extends State<RequestVacation> {
   @override
   initState() {
     super.initState();
+    fetchData();
 
-    // Vacation Requests
-    Future<List<VacationRequests>> futureVacationRequest = _vacationRequestsApiService.getVacationRequests().then((data) {
+    Future<List<VacationRequests>> futureVacationType = _vacationRequestsApiService.getVacationRequests().then((data) {
       vacationRequests = data;
       //print(customers.length.toString());
-      getVacationRequestsData();
+      getVacationRequestsTypeData();
       return vacationRequests;
     }, onError: (e) {
       print(e);
     });
+
+    Future<List<VacationRequests>> futureEmployees = _vacationRequestsApiService.getVacationRequests().then((data) {
+      vacationRequests = data;
+
+      getVacationRequestsEmployeesData();
+      return vacationRequests;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<CostCenter>> futureCostCenter = _costCenterApiService.getCostCenters().then((data) {
+      costCenters = data;
+
+      getCostCenterData();
+      return costCenters;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<VacationRequests>> futureDepartment = _vacationRequestsApiService.getVacationRequests().then((data) {
+      vacationRequests = data;
+      getVacationRequestsDepartmentData();
+      return vacationRequests;
+    }, onError: (e) {
+      print(e);
+    });
+
+    //fillCombos();
   }
+
   void fetchData() async {
     // Simulate fetching data
     await Future.delayed(const Duration(milliseconds: 50));
@@ -116,12 +169,57 @@ class _RequestVacationState extends State<RequestVacation> {
       isLoading = false;
     });
   }
+  String? vacationRequestSerial;
+  String? vacationRequestDate;
+  String? vacationRequestMessage;
+  String? vacationRequestJob;
+  String? requestedDays;
+  int? vacationRequestListBalance;
+  int? vacationRequestEmployeeBalance;
+  int? vacationRequestAdvanceBalance;
+  int? vacationRequestVacationBalance;
+  int? vacationRequestAllowedBalance;
+  String? vacationRequestNote;
 
   DateTime get pickedDate => DateTime.now();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            //saveInvoice(context);
+          },
+          child: Container(
+            // alignment: Alignment.center
+            decoration: BoxDecoration(
+              color: FitnessAppTheme.nearlyDarkBlue,
+              gradient: LinearGradient(
+                  colors: [
+                    FitnessAppTheme.nearlyDarkBlue,
+                    HexColor('#6A88E5'),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight),
+              shape: BoxShape.circle,
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: FitnessAppTheme.nearlyDarkBlue
+                        .withOpacity(0.4),
+                    offset: const Offset(2.0, 14.0),
+                    blurRadius: 16.0),
+              ],
+            ),
+            child: const Material(
+              color: Colors.transparent,
+              child: Icon(
+                Icons.data_saver_on,
+                color: FitnessAppTheme.white,
+                size: 46,
+              ),
+            ),
+          ),
+        ),
         appBar: AppBar(
           centerTitle: true,
           title: ListTile(
@@ -140,15 +238,14 @@ class _RequestVacationState extends State<RequestVacation> {
                   child: ListView(
                       children: [
                         ListTile(
-                          leading: Text("File number: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text("Document number: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           title: SizedBox(
                             width: 220,
                             height: 45,
                             child: defaultFormField(
                               enable: false,
-                              controller: _fileController,
-                              label: '9'.tr(),
-                              type: TextInputType.number,
+                              controller: _vacationRequestSerialController,
+                              type: TextInputType.name,
                               colors: Colors.blueGrey,
                               //prefix: null,
                               validate: (String? value) {
@@ -157,19 +254,22 @@ class _RequestVacationState extends State<RequestVacation> {
                                 }
                                 return null;
                               },
+                              onSaved: (val) {
+                                vacationRequestSerial = val;
+                              },
                             ),
                           ),
                         ),
                         const SizedBox(height: 12,),
                         ListTile(
-                          leading: Text("File date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text("Document date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: SizedBox(
                             width: 220,
                             height: 55,
                             child: textFormFields(
                               enable: false,
                               hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
-                              controller: _dateController,
+                              controller: _vacationRequestTrxDateController,
                               //hintText: "date".tr(),
                               onTap: () async {
                                 DateTime? pickedDate = await showDatePicker(
@@ -179,11 +279,11 @@ class _RequestVacationState extends State<RequestVacation> {
                                     lastDate: DateTime(2050));
 
                                 if (pickedDate != null) {
-                                  _dateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                  _vacationRequestTrxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                                 }
                               },
                               onSaved: (val) {
-                                vacationDate = val;
+                                vacationRequestDate = val;
                               },
                               textInputType: TextInputType.datetime,
                             ),
@@ -196,7 +296,7 @@ class _RequestVacationState extends State<RequestVacation> {
                             width: 220,
                             height: 55,
                             child: defaultFormField(
-                              controller: _messageController,
+                              controller: _vacationRequestMessageController,
                               label: 'message'.tr(),
                               type: TextInputType.text,
                               colors: Colors.blueGrey,
@@ -205,6 +305,10 @@ class _RequestVacationState extends State<RequestVacation> {
                                 if (value!.isEmpty) {
                                   return 'message must be non empty';
                                 }
+                                return null;
+                              },
+                              onSaved: (val) {
+                                vacationRequestMessage = val;
                                 return null;
                               },
                             ),
@@ -322,7 +426,7 @@ class _RequestVacationState extends State<RequestVacation> {
                             width: 220,
                             height: 45,
                             child: defaultFormField(
-                              controller: _jobController,
+                              controller: _vacationRequestJobController,
                               label: 'job'.tr(),
                               type: TextInputType.text,
                               colors: Colors.blueGrey,
@@ -331,6 +435,10 @@ class _RequestVacationState extends State<RequestVacation> {
                                 if (value!.isEmpty) {
                                   return 'job must be non empty';
                                 }
+                                return null;
+                              },
+                              onSaved: (val) {
+                                vacationRequestJob = val;
                                 return null;
                               },
                             ),
@@ -435,15 +543,19 @@ class _RequestVacationState extends State<RequestVacation> {
                             width: 200,
                             height: 55,
                             child: defaultFormField(
-                              controller: _requestedPeriodController,
+                              controller: _vacationRequestRequestedDaysController,
                               label: ' per day'.tr(),
                               type: TextInputType.number,
                               colors: Colors.blueGrey,
                               //prefix: null,
                               validate: (String? value) {
                                 if (value!.isEmpty) {
-                                  return 'Requested period must be non empty';
+                                  return 'Requested days must be non empty';
                                 }
+                                return null;
+                              },
+                              onSaved: (val) {
+                                requestedDays = val;
                                 return null;
                               },
                             ),
@@ -456,7 +568,7 @@ class _RequestVacationState extends State<RequestVacation> {
                             width: 200,
                             height: 55,
                             child: defaultFormField(
-                              controller: _listBalanceController,
+                              controller: _vacationRequestListBalanceController,
                               label: 'list balance'.tr(),
                               type: TextInputType.number,
                               colors: Colors.blueGrey,
@@ -465,6 +577,10 @@ class _RequestVacationState extends State<RequestVacation> {
                                 if (value!.isEmpty) {
                                   return 'balance must be non empty';
                                 }
+                                return null;
+                              },
+                              onSaved: (val) {
+                                vacationRequestListBalance = val as int?;
                                 return null;
                               },
                             ),
@@ -477,7 +593,7 @@ class _RequestVacationState extends State<RequestVacation> {
                             width: 200,
                             height: 55,
                             child: defaultFormField(
-                              controller: _vacationBalanceController,
+                              controller: _vacationRequestVacationBalanceController,
                               label: 'vacation balance'.tr(),
                               type: TextInputType.number,
                               colors: Colors.blueGrey,
@@ -486,6 +602,10 @@ class _RequestVacationState extends State<RequestVacation> {
                                 if (value!.isEmpty) {
                                   return 'vacation balance must be non empty';
                                 }
+                                return null;
+                              },
+                              onSaved: (val) {
+                                vacationRequestVacationBalance = val as int?;
                                 return null;
                               },
                             ),
@@ -498,7 +618,7 @@ class _RequestVacationState extends State<RequestVacation> {
                             width: 200,
                             height: 55,
                             child: defaultFormField(
-                              controller: _allowedBalanceController,
+                              controller: _vacationRequestAllowedBalanceController,
                               label: 'allowed balance'.tr(),
                               type: TextInputType.number,
                               colors: Colors.blueGrey,
@@ -507,6 +627,10 @@ class _RequestVacationState extends State<RequestVacation> {
                                 if (value!.isEmpty) {
                                   return 'allowed balance must be non empty';
                                 }
+                                return null;
+                              },
+                              onSaved: (val) {
+                                vacationRequestAllowedBalance = val as int?;
                                 return null;
                               },
                             ),
@@ -519,7 +643,7 @@ class _RequestVacationState extends State<RequestVacation> {
                             width: 200,
                             height: 55,
                             child: defaultFormField(
-                              controller: _employeeBalanceController,
+                              controller: _vacationRequestEmployeeBalanceController,
                               label: 'employee balance'.tr(),
                               type: TextInputType.number,
                               colors: Colors.blueGrey,
@@ -528,6 +652,10 @@ class _RequestVacationState extends State<RequestVacation> {
                                 if (value!.isEmpty) {
                                   return 'employee balance must be non empty';
                                 }
+                                return null;
+                              },
+                              onSaved: (val) {
+                                vacationRequestEmployeeBalance = val as int?;
                                 return null;
                               },
                             ),
@@ -541,7 +669,7 @@ class _RequestVacationState extends State<RequestVacation> {
                             height: 55,
                             child: textFormFields(
                               hintText: 'Select Date'.tr(),
-                              controller: _vacationReservedDateController,
+                              controller: _vacationRequestDueDateController,
                               //hintText: "date".tr(),
                               onTap: () async {
                                 DateTime? pickedDate = await showDatePicker(
@@ -551,11 +679,11 @@ class _RequestVacationState extends State<RequestVacation> {
                                     lastDate: DateTime(2050));
 
                                 if (pickedDate != null) {
-                                  _vacationReservedDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                  _vacationRequestDueDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                                 }
                               },
                               onSaved: (val) {
-                                vacationReservedDate = val;
+                                vacationDueDate = val;
                               },
                               textInputType: TextInputType.datetime,
                             ),
@@ -568,7 +696,7 @@ class _RequestVacationState extends State<RequestVacation> {
                             width: 200,
                             height: 45,
                             child: defaultFormField(
-                              controller: _advanceBalanceController,
+                              controller: _vacationRequestAdvanceBalanceController,
                               label: 'value'.tr(),
                               type: TextInputType.number,
                               colors: Colors.blueGrey,
@@ -577,6 +705,10 @@ class _RequestVacationState extends State<RequestVacation> {
                                 if (value!.isEmpty) {
                                   return 'advance balance must be non empty';
                                 }
+                                return null;
+                              },
+                              onSaved: (val) {
+                                vacationRequestAdvanceBalance = val as int?;
                                 return null;
                               },
                             ),
@@ -590,7 +722,7 @@ class _RequestVacationState extends State<RequestVacation> {
                             height: 55,
                             child: textFormFields(
                               hintText: 'Select Date'.tr(),
-                              controller: _lastSalaryDateController,
+                              controller: _vacationRequestLastSalaryDateController,
                               //hintText: "date".tr(),
                               onTap: () async {
                                 DateTime? pickedDate = await showDatePicker(
@@ -600,7 +732,7 @@ class _RequestVacationState extends State<RequestVacation> {
                                     lastDate: DateTime(2050));
 
                                 if (pickedDate != null) {
-                                  _lastSalaryDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                  _vacationRequestLastSalaryDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                                 }
                               },
                               onSaved: (val) {
@@ -617,7 +749,7 @@ class _RequestVacationState extends State<RequestVacation> {
                             width: 200,
                             height: 55,
                             child: defaultFormField(
-                              controller: _reasonController,
+                              controller: _vacationRequestNoteController,
                               label: 'notes'.tr(),
                               type: TextInputType.text,
                               colors: Colors.blueGrey,
@@ -626,6 +758,10 @@ class _RequestVacationState extends State<RequestVacation> {
                                 if (value!.isEmpty) {
                                   return 'notes must be non empty';
                                 }
+                                return null;
+                              },
+                              onSaved: (val) {
+                                vacationRequestNote = val;
                                 return null;
                               },
                             ),
@@ -697,21 +833,171 @@ class _RequestVacationState extends State<RequestVacation> {
       ),
     );
   }
-  getVacationRequestsData() {
+  getVacationRequestsTypeData() {
     if (vacationRequests.isNotEmpty) {
       for(var i = 0; i < vacationRequests.length; i++){
-        menuVacationTypes.add(DropdownMenuItem(value: vacationRequests[i].vacationTypeCode.toString(), child:
-        Text(vacationRequests[i].vacationTypeName.toString())));
-        if(vacationRequests[i].vacationTypeCode == "1"){
+        menuVacationTypes.add(DropdownMenuItem(
+            value: vacationRequests[i].vacationTypeCode.toString(),
+            child: Text(vacationRequests[i].vacationTypeName.toString())));
+        if(vacationRequests[i].vacationTypeCode == selectedVacationTypeValue){
           // print('in amr3');
-          vacationRequestItem = vacationRequests[vacationRequests.indexOf(vacationRequests[i])];
+          vacationRequestTypeItem = vacationRequests[vacationRequests.indexOf(vacationRequests[i])];
         }
       }
-      selectedTypeValue = "1";
+      //selectedVacationTypeValue = "1";
       //setNextSerial();
     }
     setState(() {
 
     });
   }
+  getVacationRequestsEmployeesData() {
+    if (vacationRequests.isNotEmpty) {
+      for(var i = 0; i < vacationRequests.length; i++){
+        menuEmployees.add(DropdownMenuItem(
+            value: vacationRequests[i].empCode.toString(),
+            child: Text(vacationRequests[i].empName.toString())));
+      }
+    }
+    setState(() {
+
+    });
+  }
+  // getCostCenterData() {
+  //   if (vacationRequests.isNotEmpty) {
+  //     for(var i = 0; i < vacationRequests.length; i++){
+  //       menuCostCenter.add(DropdownMenuItem(
+  //           value: vacationRequests[i].costCenterCode1.toString(),
+  //           child: Text(vacationRequests[i].costCenterName.toString())));
+  //     }
+  //   }
+  //   setState(() {
+  //
+  //   });
+  // }
+
+
+
+  getCostCenterData() {
+    if (costCenterTypes.isNotEmpty) {
+      for(var i = 0; i < costCenterTypes.length; i++){
+        menuCostCenter.add(
+            DropdownMenuItem(
+                value: costCenterTypes[i].costCenterCode.toString(),
+                child: Text((langId==1)?  costCenterTypes[i].costCenterNameAra.toString() : costCenterTypes[i].costCenterNameEng.toString())));
+      }
+    }
+    setState(() {
+
+    });
+  }
+
+
+
+
+  getVacationRequestsDepartmentData() {
+    if (vacationRequests.isNotEmpty) {
+      for(var i = 0; i < vacationRequests.length; i++){
+        menuDepartment.add(DropdownMenuItem(
+            value: vacationRequests[i].departmentCode.toString(),
+            child: Text(vacationRequests[i].departmentName.toString())));
+      }
+    }
+    setState(() {
+
+    });
+  }
+  // saveVacationRequest(BuildContext context) {
+  //   print('323434');
+  //   //Items
+  //   if (SalesInvoiceDLst.length <= 0) {
+  //     FN_showToast(
+  //         context, 'please_Insert_One_Item_At_Least'.tr(), Colors.black);
+  //     return;
+  //   }
+  //
+  //   //Serial
+  //   if (_salesInvoicesSerialController.text.isEmpty) {
+  //     FN_showToast(context, 'please_Set_Invoice_Serial'.tr(), Colors.black);
+  //     return;
+  //   }
+  //
+  //   //Date
+  //   if (_salesInvoicesDateController.text.isEmpty) {
+  //     FN_showToast(context, 'please_Set_Invoice_Date'.tr(), Colors.black);
+  //     return;
+  //   }
+  //
+  //   //Customer
+  //   if (selectedCustomerValue == null || selectedCustomerValue!.isEmpty) {
+  //     FN_showToast(context, 'please_Set_Customer'.tr(), Colors.black);
+  //     return;
+  //   }
+  //
+  //   // //Currency
+  //   // if(currencyCodeSelectedValue == null || currencyCodeSelectedValue!.isEmpty){
+  //   //   FN_showToast(context,'Please Set Currency',Colors.black);
+  //   //   return;
+  //   // }
+  //
+  //   _salesInvoiceHApiService.createSalesInvoiceH(context, SalesInvoiceH(
+  //
+  //     salesInvoicesCase: 1,
+  //     salesInvoicesSerial: _salesInvoicesSerialController.text,
+  //     salesInvoicesTypeCode: selectedTypeValue.toString(),
+  //     salesInvoicesDate: _salesInvoicesDateController.text,
+  //     customerCode: selectedCustomerValue.toString(),
+  //     totalQty: (_totalQtyController.text.isNotEmpty) ? _totalQtyController.text.toDouble() : 0,
+  //     totalTax: (_totalTaxController.text.isNotEmpty) ? _totalTaxController.text.toDouble() : 0,
+  //     totalDiscount: (_totalDiscountController.text.isNotEmpty) ? _totalDiscountController.text.toDouble() : 0,
+  //     rowsCount: (rowsCount > 0) ? rowsCount : 0,
+  //     totalNet: (_totalNetController.text.isNotEmpty) ? _totalNetController.text.toDouble() : 0,
+  //     invoiceDiscountPercent: (_invoiceDiscountPercentController.text.isNotEmpty) ? _invoiceDiscountPercentController.text.toDouble() : 0,
+  //     invoiceDiscountValue: (_invoiceDiscountValueController.text.isNotEmpty) ? _invoiceDiscountValueController.text.toDouble() : 0,
+  //     totalValue: (_totalValueController.text.isNotEmpty) ? _totalValueController.text.toDouble() : 0,
+  //     totalAfterDiscount: (_totalAfterDiscountController.text.isNotEmpty) ? _totalAfterDiscountController.text.toDouble() : 0,
+  //     totalBeforeTax: (_totalBeforeTaxController.text.isNotEmpty) ? _totalBeforeTaxController.text.toDouble() : 0,
+  //
+  //
+  //     //salesManCode: salesInvoicesSerial,
+  //     // currencyCode: "1",
+  //     // taxGroupCode: "1",
+  //   ));
+  //
+  //   //Save Footer For Now
+  //
+  //   for (var i = 0; i < SalesInvoiceDLst.length; i++) {
+  //     SalesInvoiceD _salesInvoiceD = SalesInvoiceDLst[i];
+  //     if (_salesInvoiceD.isUpdate == false) {
+  //       //Add
+  //       _salesInvoiceDApiService.createSalesInvoiceD(context, SalesInvoiceD(
+  //
+  //           salesInvoicesCase: 1,
+  //           salesInvoicesSerial: _salesInvoicesSerialController.text,
+  //           salesInvoicesTypeCode: selectedTypeValue,
+  //           itemCode: _salesInvoiceD.itemCode,
+  //           lineNum: _salesInvoiceD.lineNum,
+  //           price: _salesInvoiceD.price,
+  //           displayPrice: _salesInvoiceD.price,
+  //           qty: _salesInvoiceD.qty,
+  //           displayQty: _salesInvoiceD.displayQty,
+  //           total: _salesInvoiceD.total,
+  //           displayTotal: _salesInvoiceD.total,
+  //           totalTaxValue: _salesInvoiceD.totalTaxValue,
+  //           discountValue: _salesInvoiceD.discountValue,
+  //           displayDiscountValue: _salesInvoiceD.discountValue,
+  //           costPrice: _salesInvoiceD.costPrice,
+  //           netAfterDiscount: _salesInvoiceD.netAfterDiscount,
+  //           displayTotalTaxValue: _salesInvoiceD.displayTotalTaxValue,
+  //           displayNetValue: _salesInvoiceD.displayNetValue,
+  //           storeCode: "1" // For Now
+  //       ));
+  //     }
+  //   }
+  //
+  //   //print To Send
+  //   sendEmail();
+  //
+  //   Navigator.push(context, MaterialPageRoute(builder: (context) => const SalesInvoiceHListPage()));
+  // }
 }
