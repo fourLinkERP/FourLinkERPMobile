@@ -31,6 +31,17 @@ class VacationRequests{
   String? vacationTypeCode;
   String? costCenterCode1;
   String? latestVacationDate;
+  // bool confirmed;
+  // bool isActive;
+  // bool isBlocked;
+  // bool isDeleted;
+  // bool isImported;
+  // bool isLinkWithTaxAuthority;
+  // bool isSynchronized;
+  // bool isSystem;
+  // bool notActive;
+  // bool postedToGL;
+  // bool flgDelete;
 
   VacationRequests({
     this.id,

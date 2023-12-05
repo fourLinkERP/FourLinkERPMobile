@@ -100,7 +100,6 @@ class _RequestVacationState extends State<RequestVacation> {
     //fetchData();
     Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("WFW_EmployeeVacationRequests", "TrxSerial", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
       NextSerial nextSerial = data;
-
       _vacationRequestSerialController.text = nextSerial.nextSerial.toString();
       return nextSerial;
     }, onError: (e) {
@@ -184,7 +183,7 @@ class _RequestVacationState extends State<RequestVacation> {
                             child: defaultFormField(
                               enable: false,
                               controller: _vacationRequestSerialController,
-                              type: TextInputType.name,
+                              type: TextInputType.text,
                               colors: Colors.blueGrey,
                               //prefix: null,
                               validate: (String? value) {
@@ -1018,7 +1017,6 @@ class _RequestVacationState extends State<RequestVacation> {
       notes: _vacationRequestNoteController.text,
       latestVacationDate: _vacationRequestLastSalaryDateController.text,
       vacationDueDate: _vacationRequestDueDateController.text,
-
     ));
     Navigator.pop(context,true );
   }

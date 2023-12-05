@@ -56,7 +56,10 @@ class _RequestSalaryIncreaseListState extends State<RequestSalaryIncreaseList> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {}); //getData();
+    setState(() {
+      getData();
+    });
+
     return Scaffold(
         appBar: AppBar(
           elevation: 0,

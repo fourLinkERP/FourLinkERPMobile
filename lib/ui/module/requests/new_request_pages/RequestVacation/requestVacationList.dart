@@ -261,7 +261,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
                               )),
                           Container(height: 20, color: Colors.white30, child: Row(
                             children: [
-                              Text('customer'.tr() + " : " + vacationRequests[index].empName.toString()),
+                              Text('employee'.tr() + " : " + vacationRequests[index].empName.toString()),
                             ],
 
                           )),

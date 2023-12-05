@@ -77,7 +77,7 @@ class VacationRequestsApiService {
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'trxSerial': request.trxSerial, //Sales Invoice Type
+      'trxSerial': request.trxSerial,
       'messageTitle': request.messageTitle,
       'costCenterCode1': request.costCenterCode1,
       'departmentCode': request.departmentCode,
@@ -95,8 +95,23 @@ class VacationRequestsApiService {
       'advanceBalance': request.advanceBalance,
       'latestVacationDate': request.latestVacationDate,
       'notes': request.notes,
+      "confirmed": false,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSynchronized": false,
+      "isSystem": false,
+      "notActive": false,
+      "postedToGL": false,
+      "flgDelete": false,
+      "year":2023
 
     };
+
+    print('to print body');
+    print(data.toString());
 
     final http.Response response = await http.post(
       Uri.parse(createApi),

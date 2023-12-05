@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/advanceRequest.dart';
 import 'package:fourlinkmobileapp/service/module/requests/setup/requestAdvanceApiService.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestAdvance/addRequestAdvance.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestAdvance/editRequestAdvance.dart';
 import 'dart:core';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -15,6 +16,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../../helpers/toast.dart';
 import '../../../../../utils/permissionHelper.dart';
+
 
 //APIs
 AdvanceRequestApiService _apiService = AdvanceRequestApiService();
@@ -208,7 +210,7 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
                                         ),
                                         label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
                                         onPressed: () {
-                                          // _navigateToEditScreen(context,_salesInvoices[index]);
+                                           _navigateToEditScreen(context,advanceRequests[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -305,22 +307,23 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
     else {
       FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
     }
+
   }
-  // _navigateToEditScreen (BuildContext context, AdvanceRequests advanceRequests) async {
-  //
-  //   int menuId = 45203;
-  //   bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
-  //   if(isAllowEdit)
-  //   {
-  //
-  //     final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-  //         EditRequestAdvance(advanceRequests)),).then((value) => getData());
-  //   }
-  //   else
-  //   {
-  //     FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
-  //   }
-  // }
+  _navigateToEditScreen (BuildContext context, AdvanceRequests advanceRequests) async {
+
+    int menuId = 45203;
+    bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
+    if(isAllowEdit)
+    {
+
+      final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+          EditRequestAdvance(advanceRequests)),).then((value) => getData());
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
+    }
+  }
 
   void getData() async {
     Future<List<AdvanceRequests>?> futureAdvanceRequests = _apiService.getAdvanceRequests().catchError((Error){

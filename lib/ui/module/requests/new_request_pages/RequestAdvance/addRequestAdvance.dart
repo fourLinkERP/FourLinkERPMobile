@@ -59,7 +59,6 @@ class _RequestAdvanceState extends State<RequestAdvance> {
   final _advanceTrxDateController = TextEditingController(); // Date
   final _recruitmentDateController = TextEditingController();
   final _contractPeriodController = TextEditingController();
-  final _amountOfAdvanceController = TextEditingController();
   final _lastIncreaseDateController = TextEditingController();
   final _basicSalaryController = TextEditingController();
   final _fullSalaryController = TextEditingController();
@@ -434,7 +433,7 @@ class _RequestAdvanceState extends State<RequestAdvance> {
                       width: 220,
                       height: 45,
                       child: defaultFormField(
-                        controller: _amountOfAdvanceController,
+                        controller: _latestAdvanceAmountController,
                         label: 'Enter '.tr(),
                         type: TextInputType.number,
                         colors: Colors.blueGrey,
