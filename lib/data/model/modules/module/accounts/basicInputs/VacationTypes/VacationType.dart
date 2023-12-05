@@ -18,10 +18,10 @@ class VacationType {
 
   factory VacationType.fromJson(Map<String, dynamic> json) {
     return VacationType(
-      id: json['id'] as int,
-      vacationTypeCode: json['vacationTypeCode'] as String,
-      vacationTypeNameAra: json['vacationTypeNameAra'] as String,
-      vacationTypeNameEng: json['vacationTypeNameEng'] as String,
+      id: (json['id'] != null) ? json['id'] as int : 0,
+      vacationTypeCode: (json['vacationTypeCode'] != null) ? json['vacationTypeCode'] as String : " ",
+      vacationTypeNameAra: (json['vacationTypeNameAra'] != null) ? json['vacationTypeNameAra'] as String : " ",
+      vacationTypeNameEng: (json['vacationTypeNameEng'] != null) ? json['vacationTypeNameEng'] as String : " ",
     );
   }
 

@@ -1,6 +1,14 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/CostCenters/CostCenter.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Jobs/Job.dart';
 import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/CostCenters/costCenterApiService.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/VacationTypes/VacationType.dart';
+import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/VacationTypes/vacationTypeApiService.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Departments/Department.dart';
+import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/Departments/departmentApiService.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
+import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/Employees/employeeApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/services.dart';
 import 'package:fourlinkmobileapp/common/login_components.dart';
@@ -8,19 +16,21 @@ import 'package:intl/intl.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/vacationRequest.dart';
 import 'package:fourlinkmobileapp/service/module/requests/setup/requestVacationApiService.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/general/nextSerial/nextSerial.dart';
+import 'package:supercharged/supercharged.dart';
 import '../../../../../common/globals.dart';
-import '../../../../../helpers/hex_decimal.dart';
+import '../../../../../helpers/toast.dart';
+import '../../../../../service/module/accounts/basicInputs/Jobs/jobApiService.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
-import '../../../../../theme/fitness_app_theme.dart';
 
 // APIs
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
-VacationRequestsApiService _vacationRequestsApiService = VacationRequestsApiService();
+VacationTypeApiService _vacationTypeApiService = VacationTypeApiService();
+DepartmentApiService _departmentApiService = DepartmentApiService();
+EmployeeApiService _employeeApiService = EmployeeApiService();
 CostCenterApiService _costCenterApiService = CostCenterApiService();
+JobApiService _jobApiService = JobApiService();
 
-// List Models
-List<VacationRequests> vacationRequests = [];
-List<CostCenter> costCenters =[];
+
 
 bool isLoading = true;
 
@@ -35,25 +45,30 @@ class RequestVacation extends StatefulWidget {
 class _RequestVacationState extends State<RequestVacation> {
   _RequestVacationState();
 
-  String _dropdownValue_job = 'Employee 1';
-  String _dropdownValue_cost = 'cost 1';
-  String _dropdownValue_request = 'Section 1';
-  String _dropdownValue_vacation_type = 'type 1';
+  // List Models
+  List<VacationType> vacationTypes = [];
+  List<Department> departments = [];
+  List<Employee> employees = [];
+  List<Job> jobs = [];
+  List<CostCenter> costCenters =[];
 
-  List<VacationRequests> VacationRequestLst = <VacationRequests>[];
-  List<VacationRequests> selected = [];
-  List<DropdownMenuItem<String>> menuDepartment = [];
+
+  //List<VacationRequests> VacationRequestLst = <VacationRequests>[];
+  //List<VacationRequests> selected = [];
+  List<DropdownMenuItem<String>> menuDepartments = [];
   List<DropdownMenuItem<String>> menuVacationTypes = [];
   List<DropdownMenuItem<String>> menuEmployees = [];
-  List<DropdownMenuItem<String>> menuCostCenter = [];
-  List<CostCenter> costCenterTypes=[];
+  List<DropdownMenuItem<String>> menuCostCenters = [];
+  List<DropdownMenuItem<String>> menuJobs = [];
 
 
   String? selectedEmployeeValue = null;
-  String? selectedRequestSectionValue = null;
-  String? selectedVacationTypeValue = "1";
-  String? selectedCostName = null;
+  String? selectedDepartmentValue = null;
+  String? selectedJobValue = null;
+  String? selectedVacationTypeValue = null;
+  String? selectedCostCenterValue = null;
 
+  final VacationRequestsApiService api = VacationRequestsApiService();
   final _addFormKey = GlobalKey<FormState>();
 
   String? fromDate;
@@ -61,46 +76,13 @@ class _RequestVacationState extends State<RequestVacation> {
   String? vacationDueDate;
   String? lastSalaryDate;
 
-  final _items_job = [
-    'Employee 1',
-    'Employee 2',
-    'Employee 3',
-    'Employee 4',
-    'Employee 5',
-  ];
-  final _items_cost = [
-    'cost 1',
-    'cost 2',
-    'cost 3',
-    'cost 4',
-    'cost 5',
-  ];
-  final _items_request_section = [
-    'Section 1',
-    'Section 2',
-    'Section 3',
-    'Section 4',
-    'Section 5',
-  ];
-  final _items_vacation_type = [
-    'type 1',
-    'type 2',
-    'type 3',
-    'type 4',
-    'type 5',
-  ];
 
-  final _dropdownTypeFormKey = GlobalKey<FormState>(); //Type
-  final _dropdownCostFormKey = GlobalKey<FormState>(); //Cost
-  final _dropdownRequestFormKey = GlobalKey<FormState>(); //Request Section
 
   final _vacationRequestSerialController = TextEditingController(); // Serial
   final _vacationRequestTrxDateController = TextEditingController(); // Date
   final _fromDateController = TextEditingController();
   final _toDateController = TextEditingController();
-  //final _fileController = TextEditingController();
   final _vacationRequestMessageController = TextEditingController();
-  final _vacationRequestJobController = TextEditingController();
   final _vacationRequestRequestedDaysController = TextEditingController();
   final _vacationRequestListBalanceController = TextEditingController();
   final _vacationRequestVacationBalanceController = TextEditingController();
@@ -112,30 +94,42 @@ class _RequestVacationState extends State<RequestVacation> {
   final _vacationRequestLastSalaryDateController =  TextEditingController();
 
 
-  VacationRequests? vacationRequestTypeItem = VacationRequests(
-      vacationTypeCode: "",
-      id: 0,
-  );
-
   @override
-  initState() {
+   initState() {
     super.initState();
-    fetchData();
+    //fetchData();
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("WFW_EmployeeVacationRequests", "TrxSerial", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
+      NextSerial nextSerial = data;
 
-    Future<List<VacationRequests>> futureVacationType = _vacationRequestsApiService.getVacationRequests().then((data) {
-      vacationRequests = data;
-      //print(customers.length.toString());
-      getVacationRequestsTypeData();
-      return vacationRequests;
+      _vacationRequestSerialController.text = nextSerial.nextSerial.toString();
+      return nextSerial;
     }, onError: (e) {
       print(e);
     });
 
-    Future<List<VacationRequests>> futureEmployees = _vacationRequestsApiService.getVacationRequests().then((data) {
-      vacationRequests = data;
+    Future<List<VacationType>> futureVacationType = _vacationTypeApiService.getVacationTypes().then((data) {
+      vacationTypes = data;
+      //print(customers.length.toString());
+      getVacationTypeData();
+      return vacationTypes;
+    }, onError: (e) {
+      print(e);
+    });
 
-      getVacationRequestsEmployeesData();
-      return vacationRequests;
+    Future<List<Employee>> futureEmployees = _employeeApiService.getEmployees().then((data) {
+      employees = data;
+
+      getEmployeesData();
+      return employees;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<Job>> futureJobs = _jobApiService.getJobs().then((data) {
+      jobs = data;
+
+      getJobsData();
+      return jobs;
     }, onError: (e) {
       print(e);
     });
@@ -149,77 +143,22 @@ class _RequestVacationState extends State<RequestVacation> {
       print(e);
     });
 
-    Future<List<VacationRequests>> futureDepartment = _vacationRequestsApiService.getVacationRequests().then((data) {
-      vacationRequests = data;
-      getVacationRequestsDepartmentData();
-      return vacationRequests;
+    Future<List<Department>> futureDepartment = _departmentApiService.getDepartments().then((data) {
+      departments = data;
+      getDepartmentData();
+      return departments;
     }, onError: (e) {
       print(e);
     });
 
-    //fillCombos();
   }
 
-  void fetchData() async {
-    // Simulate fetching data
-    await Future.delayed(const Duration(milliseconds: 50));
-
-    // Set isLoading to false when data is retrieved
-    setState(() {
-      isLoading = false;
-    });
-  }
-  String? vacationRequestSerial;
-  String? vacationRequestDate;
-  String? vacationRequestMessage;
-  String? vacationRequestJob;
-  String? requestedDays;
-  int? vacationRequestListBalance;
-  int? vacationRequestEmployeeBalance;
-  int? vacationRequestAdvanceBalance;
-  int? vacationRequestVacationBalance;
-  int? vacationRequestAllowedBalance;
-  String? vacationRequestNote;
 
   DateTime get pickedDate => DateTime.now();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            //saveInvoice(context);
-          },
-          child: Container(
-            // alignment: Alignment.center
-            decoration: BoxDecoration(
-              color: FitnessAppTheme.nearlyDarkBlue,
-              gradient: LinearGradient(
-                  colors: [
-                    FitnessAppTheme.nearlyDarkBlue,
-                    HexColor('#6A88E5'),
-                  ],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight),
-              shape: BoxShape.circle,
-              boxShadow: <BoxShadow>[
-                BoxShadow(
-                    color: FitnessAppTheme.nearlyDarkBlue
-                        .withOpacity(0.4),
-                    offset: const Offset(2.0, 14.0),
-                    blurRadius: 16.0),
-              ],
-            ),
-            child: const Material(
-              color: Colors.transparent,
-              child: Icon(
-                Icons.data_saver_on,
-                color: FitnessAppTheme.white,
-                size: 46,
-              ),
-            ),
-          ),
-        ),
         appBar: AppBar(
           centerTitle: true,
           title: ListTile(
@@ -250,12 +189,9 @@ class _RequestVacationState extends State<RequestVacation> {
                               //prefix: null,
                               validate: (String? value) {
                                 if (value!.isEmpty) {
-                                  return 'file number must be non empty';
+                                  return 'Doc number must be non empty';
                                 }
                                 return null;
-                              },
-                              onSaved: (val) {
-                                vacationRequestSerial = val;
                               },
                             ),
                           ),
@@ -270,6 +206,7 @@ class _RequestVacationState extends State<RequestVacation> {
                               enable: false,
                               hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                               controller: _vacationRequestTrxDateController,
+                              textInputType: TextInputType.datetime,
                               //hintText: "date".tr(),
                               onTap: () async {
                                 DateTime? pickedDate = await showDatePicker(
@@ -282,10 +219,6 @@ class _RequestVacationState extends State<RequestVacation> {
                                   _vacationRequestTrxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                                 }
                               },
-                              onSaved: (val) {
-                                vacationRequestDate = val;
-                              },
-                              textInputType: TextInputType.datetime,
                             ),
                           ),
                         ),
@@ -307,16 +240,16 @@ class _RequestVacationState extends State<RequestVacation> {
                                 }
                                 return null;
                               },
-                              onSaved: (val) {
-                                vacationRequestMessage = val;
-                                return null;
-                              },
+                              // onSaved: (val) {
+                              //   vacationRequestMessage = val;
+                              //   return null;
+                              // },
                             ),
                           ),
                         ),
                         const SizedBox(height: 12,),
                         ListTile(
-                          leading: Text("Cost: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text("Cost center: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: Container(
                             width: 220,
                             height: 55,
@@ -325,26 +258,54 @@ class _RequestVacationState extends State<RequestVacation> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Center(
-                              child: DropdownButton(
-                                items: _items_cost.map((String item) {
-                                  return DropdownMenuItem(
-                                    value: item,
-                                    child: Text(item),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue){
-                                  setState(() {
-                                    _dropdownValue_cost = newValue!;
-                                  });
-                                },
-                                value: _dropdownValue_cost,
-                                borderRadius: BorderRadius.circular(10),
-                                icon: const Icon(Icons.keyboard_arrow_down),
-                                // iconSize: 20,
-                                style: const TextStyle(
-                                  //fontSize: 15,
-                                  color: Colors.black,
+                              child: DropdownSearch<CostCenter>(
+                                popupProps: PopupProps.menu(
+                                  itemBuilder: (context, item, isSelected) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                                      decoration: !isSelected ? null
+                                          : BoxDecoration(
+
+                                        border: Border.all(color: Theme.of(context).primaryColor),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text((langId==1)? item.costCenterNameAra.toString():  item.costCenterNameEng.toString(),
+                                          //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
+                                          textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                      ),
+                                    );
+                                  },
+                                  showSearchBox: true,
                                 ),
+                                items: costCenters,
+                                itemAsString: (CostCenter u) => u.costCenterNameAra.toString(),
+                                onChanged: (value){
+                                  //v.text = value!.cusTypesCode.toString();
+                                  //print(value!.id);
+                                  selectedCostCenterValue =  value!.costCenterCode.toString();
+                                },
+                                filterFn: (instance, filter){
+                                  if(instance.costCenterNameAra!.contains(filter)){
+                                    print(filter);
+                                    return true;
+                                  }
+                                  else{
+                                    return false;
+                                  }
+                                },
+                                dropdownDecoratorProps: const DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    labelStyle: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                    icon: Icon(Icons.keyboard_arrow_down),
+                                  ),
+                                ),
+
                               ),
                             ),
                           ),
@@ -360,26 +321,54 @@ class _RequestVacationState extends State<RequestVacation> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Center(
-                              child: DropdownButton(
-                                items: _items_request_section.map((String item) {
-                                  return DropdownMenuItem(
-                                    value: item,
-                                    child: Text(item),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue){
-                                  setState(() {
-                                    _dropdownValue_request = newValue!;
-                                  });
-                                },
-                                value: _dropdownValue_request,
-                                borderRadius: BorderRadius.circular(10),
-                                icon: const Icon(Icons.keyboard_arrow_down),
-                                // iconSize: 20,
-                                style: const TextStyle(
-                                  //fontSize: 15,
-                                  color: Colors.black,
+                              child: DropdownSearch<Department>(
+                                popupProps: PopupProps.menu(
+                                  itemBuilder: (context, item, isSelected) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                                      decoration: !isSelected ? null
+                                          : BoxDecoration(
+
+                                        border: Border.all(color: Theme.of(context).primaryColor),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text((langId==1)? item.departmentNameAra.toString():  item.departmentNameEng.toString(),
+                                          //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
+                                          textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                      ),
+                                    );
+                                  },
+                                  showSearchBox: true,
                                 ),
+                                items: departments,
+                                itemAsString: (Department u) => u.departmentNameAra.toString(),
+                                onChanged: (value){
+                                  //v.text = value!.cusTypesCode.toString();
+                                  //print(value!.id);
+                                  selectedDepartmentValue =  value!.departmentCode.toString();
+                                },
+                                filterFn: (instance, filter){
+                                  if(instance.departmentNameAra!.contains(filter)){
+                                    print(filter);
+                                    return true;
+                                  }
+                                  else{
+                                    return false;
+                                  }
+                                },
+                                dropdownDecoratorProps: const DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    labelStyle: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                    icon: Icon(Icons.keyboard_arrow_down),
+                                  ),
+                                ),
+
                               ),
                             ),
                           ),
@@ -395,26 +384,54 @@ class _RequestVacationState extends State<RequestVacation> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Center(
-                              child: DropdownButton(
-                                items: _items_job.map((String item) {
-                                  return DropdownMenuItem(
-                                    value: item,
-                                    child: Text(item),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue){
-                                  setState(() {
-                                    _dropdownValue_job = newValue!;
-                                  });
-                                },
-                                value: _dropdownValue_job,
-                                borderRadius: BorderRadius.circular(10),
-                                icon: const Icon(Icons.keyboard_arrow_down),
-                                // iconSize: 20,
-                                style: const TextStyle(
-                                  //fontSize: 15,
-                                  color: Colors.black,
+                              child: DropdownSearch<Employee>(
+                                popupProps: PopupProps.menu(
+                                  itemBuilder: (context, item, isSelected) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                                      decoration: !isSelected ? null
+                                          : BoxDecoration(
+
+                                        border: Border.all(color: Theme.of(context).primaryColor),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text((langId==1)? item.empNameAra.toString():  item.empNameEng.toString(),
+                                          //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
+                                          textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                      ),
+                                    );
+                                  },
+                                  showSearchBox: true,
                                 ),
+                                items: employees,
+                                itemAsString: (Employee u) => u.empNameAra.toString(),
+                                onChanged: (value){
+                                  //v.text = value!.cusTypesCode.toString();
+                                  //print(value!.id);
+                                  selectedEmployeeValue =  value!.empCode.toString();
+                                },
+                                filterFn: (instance, filter){
+                                  if(instance.empNameAra!.contains(filter)){
+                                    print(filter);
+                                    return true;
+                                  }
+                                  else{
+                                    return false;
+                                  }
+                                },
+                                dropdownDecoratorProps: const DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    labelStyle: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                    icon: Icon(Icons.keyboard_arrow_down),
+                                  ),
+                                ),
+
                               ),
                             ),
                           ),
@@ -422,27 +439,65 @@ class _RequestVacationState extends State<RequestVacation> {
                         const SizedBox(height: 12,),
                         ListTile(
                           leading: Text("Job: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: SizedBox(
-                            width: 220,
-                            height: 45,
-                            child: defaultFormField(
-                              controller: _vacationRequestJobController,
-                              label: 'job'.tr(),
-                              type: TextInputType.text,
-                              colors: Colors.blueGrey,
-                              //prefix: null,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'job must be non empty';
+                          trailing: Container(
+                          width: 220,
+                          height: 55,
+                          decoration: BoxDecoration(
+                            color: Colors.grey,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: DropdownSearch<Job>(
+                              popupProps: PopupProps.menu(
+                                itemBuilder: (context, item, isSelected) {
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                                    decoration: !isSelected ? null
+                                        : BoxDecoration(
+
+                                      border: Border.all(color: Theme.of(context).primaryColor),
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.white,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text((langId==1)? item.jobNameAra.toString():  item.jobNameEng.toString(),
+                                        //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
+                                        textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                    ),
+                                  );
+                                },
+                                showSearchBox: true,
+                              ),
+                              items: jobs,
+                              itemAsString: (Job u) => u.jobNameAra.toString(),
+                              onChanged: (value){
+                                //v.text = value!.cusTypesCode.toString();
+                                //print(value!.id);
+                                selectedJobValue =  value!.jobCode.toString();
+                              },
+                              filterFn: (instance, filter){
+                                if(instance.jobNameAra!.contains(filter)){
+                                  print(filter);
+                                  return true;
                                 }
-                                return null;
+                                else{
+                                  return false;
+                                }
                               },
-                              onSaved: (val) {
-                                vacationRequestJob = val;
-                                return null;
-                              },
+                              dropdownDecoratorProps: const DropDownDecoratorProps(
+                                dropdownSearchDecoration: InputDecoration(
+                                  labelStyle: TextStyle(
+                                    color: Colors.black,
+                                  ),
+                                  icon: Icon(Icons.keyboard_arrow_down),
+                                ),
+                              ),
+
                             ),
                           ),
+                        ),
                         ),
                         const SizedBox(height: 12,),
                         ListTile(
@@ -453,7 +508,6 @@ class _RequestVacationState extends State<RequestVacation> {
                             child: textFormFields(
                               hintText: 'Select Date'.tr(),
                               controller: _fromDateController,
-                              //hintText: "date".tr(),
                               onTap: () async {
                                 DateTime? pickedDate = await showDatePicker(
                                     context: context,
@@ -465,9 +519,7 @@ class _RequestVacationState extends State<RequestVacation> {
                                   _fromDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                                 }
                               },
-                              onSaved: (val) {
-                                fromDate = val;
-                              },
+
                               textInputType: TextInputType.datetime,
                             ),
                           ),
@@ -493,9 +545,9 @@ class _RequestVacationState extends State<RequestVacation> {
                                   _toDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                                 }
                               },
-                              onSaved: (val) {
-                                toDate = val;
-                              },
+                              // onSaved: (val) {
+                              //   toDate = val;
+                              // },
                               textInputType: TextInputType.datetime,
                             ),
                           ),
@@ -511,33 +563,61 @@ class _RequestVacationState extends State<RequestVacation> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Center(
-                              child: DropdownButton(
-                                items: _items_vacation_type.map((String item) {
-                                  return DropdownMenuItem(
-                                    value: item,
-                                    child: Text(item),
-                                  );
-                                }).toList(),
-                                onChanged: (String? newValue){
-                                  setState(() {
-                                    _dropdownValue_vacation_type = newValue!;
-                                  });
-                                },
-                                value: _dropdownValue_vacation_type,
-                                borderRadius: BorderRadius.circular(10),
-                                icon: const Icon(Icons.keyboard_arrow_down),
-                                // iconSize: 20,
-                                style: const TextStyle(
-                                  //fontSize: 15,
-                                  color: Colors.black,
+                              child: DropdownSearch<VacationType>(
+                                popupProps: PopupProps.menu(
+                                  itemBuilder: (context, item, isSelected) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                                      decoration: !isSelected ? null
+                                          : BoxDecoration(
+
+                                        border: Border.all(color: Theme.of(context).primaryColor),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text((langId==1)? item.vacationTypeNameAra.toString():  item.vacationTypeNameEng.toString(),
+                                          //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
+                                          textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                      ),
+                                    );
+                                  },
+                                  showSearchBox: true,
                                 ),
+                                items: vacationTypes,
+                                itemAsString: (VacationType u) => u.vacationTypeNameAra.toString(),
+                                onChanged: (value){
+                                  //v.text = value!.cusTypesCode.toString();
+                                  //print(value!.id);
+                                  selectedVacationTypeValue =  value!.vacationTypeCode.toString();
+                                },
+                                filterFn: (instance, filter){
+                                  if(instance.vacationTypeNameAra!.contains(filter)){
+                                    print(filter);
+                                    return true;
+                                  }
+                                  else{
+                                    return false;
+                                  }
+                                },
+                                dropdownDecoratorProps: const DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                    labelStyle: TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                    icon: Icon(Icons.keyboard_arrow_down),
+                                  ),
+                                ),
+
                               ),
                             ),
                           ),
                         ),
                         const SizedBox(height: 12,),
                         ListTile(
-                          leading: Text("Requested period: ".tr(),
+                          leading: Text("Requested Days: ".tr(),
                               style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: SizedBox(
                             width: 200,
@@ -554,10 +634,10 @@ class _RequestVacationState extends State<RequestVacation> {
                                 }
                                 return null;
                               },
-                              onSaved: (val) {
-                                requestedDays = val;
-                                return null;
-                              },
+                              // onSaved: (val) {
+                              //   requestedDays = val;
+                              //   return null;
+                              // },
                             ),
                           ),
                         ),
@@ -579,10 +659,7 @@ class _RequestVacationState extends State<RequestVacation> {
                                 }
                                 return null;
                               },
-                              onSaved: (val) {
-                                vacationRequestListBalance = val as int?;
-                                return null;
-                              },
+
                             ),
                           ),
                         ),
@@ -604,10 +681,10 @@ class _RequestVacationState extends State<RequestVacation> {
                                 }
                                 return null;
                               },
-                              onSaved: (val) {
-                                vacationRequestVacationBalance = val as int?;
-                                return null;
-                              },
+                              // onSaved: (val) {
+                              //   vacationRequestVacationBalance = val as int?;
+                              //   return null;
+                              // },
                             ),
                           ),
                         ),
@@ -629,10 +706,10 @@ class _RequestVacationState extends State<RequestVacation> {
                                 }
                                 return null;
                               },
-                              onSaved: (val) {
-                                vacationRequestAllowedBalance = val as int?;
-                                return null;
-                              },
+                              // onSaved: (val) {
+                              //   vacationRequestAllowedBalance = val as int?;
+                              //   return null;
+                              // },
                             ),
                           ),
                         ),
@@ -654,16 +731,16 @@ class _RequestVacationState extends State<RequestVacation> {
                                 }
                                 return null;
                               },
-                              onSaved: (val) {
-                                vacationRequestEmployeeBalance = val as int?;
-                                return null;
-                              },
+                              // onSaved: (val) {
+                              //   vacationRequestEmployeeBalance = val as int?;
+                              //   return null;
+                              // },
                             ),
                           ),
                         ),
                         const SizedBox(height: 12),
                         ListTile(
-                          leading: Text("Vacation date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text("Vacation due date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: SizedBox(
                             width: 190,
                             height: 55,
@@ -682,9 +759,9 @@ class _RequestVacationState extends State<RequestVacation> {
                                   _vacationRequestDueDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                                 }
                               },
-                              onSaved: (val) {
-                                vacationDueDate = val;
-                              },
+                              // onSaved: (val) {
+                              //   vacationDueDate = val;
+                              // },
                               textInputType: TextInputType.datetime,
                             ),
                           ),
@@ -707,10 +784,10 @@ class _RequestVacationState extends State<RequestVacation> {
                                 }
                                 return null;
                               },
-                              onSaved: (val) {
-                                vacationRequestAdvanceBalance = val as int?;
-                                return null;
-                              },
+                              // onSaved: (val) {
+                              //   vacationRequestAdvanceBalance = val as int?;
+                              //   return null;
+                              // },
                             ),
                           ),
                         ),
@@ -735,16 +812,14 @@ class _RequestVacationState extends State<RequestVacation> {
                                   _vacationRequestLastSalaryDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                                 }
                               },
-                              onSaved: (val) {
-                                lastSalaryDate = val;
-                              },
+
                               textInputType: TextInputType.datetime,
                             ),
                           ),
                         ),
                         const SizedBox(height: 12),
                         ListTile(
-                          leading: Text("The requester notes: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text("Notes: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: SizedBox(
                             width: 200,
                             height: 55,
@@ -760,10 +835,7 @@ class _RequestVacationState extends State<RequestVacation> {
                                 }
                                 return null;
                               },
-                              onSaved: (val) {
-                                vacationRequestNote = val;
-                                return null;
-                              },
+
                             ),
                           ),
                         ),
@@ -785,7 +857,9 @@ class _RequestVacationState extends State<RequestVacation> {
                           borderRadius: BorderRadius.circular(80),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        saveVacationRequest(context);
+                      },
                       child: Text('Save'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
                     ),
                   ),
@@ -833,58 +907,52 @@ class _RequestVacationState extends State<RequestVacation> {
       ),
     );
   }
-  getVacationRequestsTypeData() {
-    if (vacationRequests.isNotEmpty) {
-      for(var i = 0; i < vacationRequests.length; i++){
-        menuVacationTypes.add(DropdownMenuItem(
-            value: vacationRequests[i].vacationTypeCode.toString(),
-            child: Text(vacationRequests[i].vacationTypeName.toString())));
-        if(vacationRequests[i].vacationTypeCode == selectedVacationTypeValue){
-          // print('in amr3');
-          vacationRequestTypeItem = vacationRequests[vacationRequests.indexOf(vacationRequests[i])];
-        }
+  getVacationTypeData() {
+    if (vacationTypes.isNotEmpty) {
+      for(var i = 0; i < vacationTypes.length; i++){
+        menuVacationTypes.add(
+            DropdownMenuItem(
+                value: vacationTypes[i].vacationTypeCode.toString(),
+                child: Text((langId==1)?  vacationTypes[i].vacationTypeNameAra.toString() : vacationTypes[i].vacationTypeNameEng.toString())));
       }
-      //selectedVacationTypeValue = "1";
-      //setNextSerial();
     }
     setState(() {
 
     });
   }
-  getVacationRequestsEmployeesData() {
-    if (vacationRequests.isNotEmpty) {
-      for(var i = 0; i < vacationRequests.length; i++){
+  getEmployeesData() {
+    if (employees.isNotEmpty) {
+      for(var i = 0; i < employees.length; i++){
         menuEmployees.add(DropdownMenuItem(
-            value: vacationRequests[i].empCode.toString(),
-            child: Text(vacationRequests[i].empName.toString())));
+            value: employees[i].empCode.toString(),
+            child: Text((langId==1)? employees[i].empNameAra.toString() : employees[i].empNameEng.toString())));
       }
     }
     setState(() {
 
     });
   }
-  // getCostCenterData() {
-  //   if (vacationRequests.isNotEmpty) {
-  //     for(var i = 0; i < vacationRequests.length; i++){
-  //       menuCostCenter.add(DropdownMenuItem(
-  //           value: vacationRequests[i].costCenterCode1.toString(),
-  //           child: Text(vacationRequests[i].costCenterName.toString())));
-  //     }
-  //   }
-  //   setState(() {
-  //
-  //   });
-  // }
 
+  getJobsData() {
+    if (jobs.isNotEmpty) {
+      for(var i = 0; i < jobs.length; i++){
+        menuJobs.add(DropdownMenuItem(
+            value: jobs[i].jobCode.toString(),
+            child: Text((langId==1)? jobs[i].jobNameAra.toString() : jobs[i].jobNameEng.toString())));
+      }
+    }
+    setState(() {
 
+    });
+  }
 
   getCostCenterData() {
-    if (costCenterTypes.isNotEmpty) {
-      for(var i = 0; i < costCenterTypes.length; i++){
-        menuCostCenter.add(
+    if (costCenters.isNotEmpty) {
+      for(var i = 0; i < costCenters.length; i++){
+        menuCostCenters.add(
             DropdownMenuItem(
-                value: costCenterTypes[i].costCenterCode.toString(),
-                child: Text((langId==1)?  costCenterTypes[i].costCenterNameAra.toString() : costCenterTypes[i].costCenterNameEng.toString())));
+                value: costCenters[i].costCenterCode.toString(),
+                child: Text((langId==1)?  costCenters[i].costCenterNameAra.toString() : costCenters[i].costCenterNameEng.toString())));
       }
     }
     setState(() {
@@ -892,112 +960,67 @@ class _RequestVacationState extends State<RequestVacation> {
     });
   }
 
-
-
-
-  getVacationRequestsDepartmentData() {
-    if (vacationRequests.isNotEmpty) {
-      for(var i = 0; i < vacationRequests.length; i++){
-        menuDepartment.add(DropdownMenuItem(
-            value: vacationRequests[i].departmentCode.toString(),
-            child: Text(vacationRequests[i].departmentName.toString())));
+  getDepartmentData() {
+    if (departments.isNotEmpty) {
+      for(var i = 0; i < departments.length; i++){
+        menuDepartments.add(DropdownMenuItem(
+            value: departments[i].departmentCode.toString(),
+            child: Text((langId==1)?  departments[i].departmentNameAra.toString() : departments[i].departmentNameEng.toString())));
       }
     }
     setState(() {
 
     });
   }
-  // saveVacationRequest(BuildContext context) {
-  //   print('323434');
-  //   //Items
-  //   if (SalesInvoiceDLst.length <= 0) {
-  //     FN_showToast(
-  //         context, 'please_Insert_One_Item_At_Least'.tr(), Colors.black);
-  //     return;
-  //   }
-  //
-  //   //Serial
-  //   if (_salesInvoicesSerialController.text.isEmpty) {
-  //     FN_showToast(context, 'please_Set_Invoice_Serial'.tr(), Colors.black);
-  //     return;
-  //   }
-  //
-  //   //Date
-  //   if (_salesInvoicesDateController.text.isEmpty) {
-  //     FN_showToast(context, 'please_Set_Invoice_Date'.tr(), Colors.black);
-  //     return;
-  //   }
-  //
-  //   //Customer
-  //   if (selectedCustomerValue == null || selectedCustomerValue!.isEmpty) {
-  //     FN_showToast(context, 'please_Set_Customer'.tr(), Colors.black);
-  //     return;
-  //   }
-  //
-  //   // //Currency
-  //   // if(currencyCodeSelectedValue == null || currencyCodeSelectedValue!.isEmpty){
-  //   //   FN_showToast(context,'Please Set Currency',Colors.black);
-  //   //   return;
-  //   // }
-  //
-  //   _salesInvoiceHApiService.createSalesInvoiceH(context, SalesInvoiceH(
-  //
-  //     salesInvoicesCase: 1,
-  //     salesInvoicesSerial: _salesInvoicesSerialController.text,
-  //     salesInvoicesTypeCode: selectedTypeValue.toString(),
-  //     salesInvoicesDate: _salesInvoicesDateController.text,
-  //     customerCode: selectedCustomerValue.toString(),
-  //     totalQty: (_totalQtyController.text.isNotEmpty) ? _totalQtyController.text.toDouble() : 0,
-  //     totalTax: (_totalTaxController.text.isNotEmpty) ? _totalTaxController.text.toDouble() : 0,
-  //     totalDiscount: (_totalDiscountController.text.isNotEmpty) ? _totalDiscountController.text.toDouble() : 0,
-  //     rowsCount: (rowsCount > 0) ? rowsCount : 0,
-  //     totalNet: (_totalNetController.text.isNotEmpty) ? _totalNetController.text.toDouble() : 0,
-  //     invoiceDiscountPercent: (_invoiceDiscountPercentController.text.isNotEmpty) ? _invoiceDiscountPercentController.text.toDouble() : 0,
-  //     invoiceDiscountValue: (_invoiceDiscountValueController.text.isNotEmpty) ? _invoiceDiscountValueController.text.toDouble() : 0,
-  //     totalValue: (_totalValueController.text.isNotEmpty) ? _totalValueController.text.toDouble() : 0,
-  //     totalAfterDiscount: (_totalAfterDiscountController.text.isNotEmpty) ? _totalAfterDiscountController.text.toDouble() : 0,
-  //     totalBeforeTax: (_totalBeforeTaxController.text.isNotEmpty) ? _totalBeforeTaxController.text.toDouble() : 0,
-  //
-  //
-  //     //salesManCode: salesInvoicesSerial,
-  //     // currencyCode: "1",
-  //     // taxGroupCode: "1",
-  //   ));
-  //
-  //   //Save Footer For Now
-  //
-  //   for (var i = 0; i < SalesInvoiceDLst.length; i++) {
-  //     SalesInvoiceD _salesInvoiceD = SalesInvoiceDLst[i];
-  //     if (_salesInvoiceD.isUpdate == false) {
-  //       //Add
-  //       _salesInvoiceDApiService.createSalesInvoiceD(context, SalesInvoiceD(
-  //
-  //           salesInvoicesCase: 1,
-  //           salesInvoicesSerial: _salesInvoicesSerialController.text,
-  //           salesInvoicesTypeCode: selectedTypeValue,
-  //           itemCode: _salesInvoiceD.itemCode,
-  //           lineNum: _salesInvoiceD.lineNum,
-  //           price: _salesInvoiceD.price,
-  //           displayPrice: _salesInvoiceD.price,
-  //           qty: _salesInvoiceD.qty,
-  //           displayQty: _salesInvoiceD.displayQty,
-  //           total: _salesInvoiceD.total,
-  //           displayTotal: _salesInvoiceD.total,
-  //           totalTaxValue: _salesInvoiceD.totalTaxValue,
-  //           discountValue: _salesInvoiceD.discountValue,
-  //           displayDiscountValue: _salesInvoiceD.discountValue,
-  //           costPrice: _salesInvoiceD.costPrice,
-  //           netAfterDiscount: _salesInvoiceD.netAfterDiscount,
-  //           displayTotalTaxValue: _salesInvoiceD.displayTotalTaxValue,
-  //           displayNetValue: _salesInvoiceD.displayNetValue,
-  //           storeCode: "1" // For Now
-  //       ));
-  //     }
-  //   }
-  //
-  //   //print To Send
-  //   sendEmail();
-  //
-  //   Navigator.push(context, MaterialPageRoute(builder: (context) => const SalesInvoiceHListPage()));
-  // }
+  saveVacationRequest(BuildContext context)
+  {
+    if (_vacationRequestDueDateController.text.isEmpty) {
+          FN_showToast(context, 'please set vacation date'.tr(), Colors.black);
+          return;
+         }
+    if (selectedVacationTypeValue == null || selectedVacationTypeValue!.isEmpty) {
+           FN_showToast(context, 'please set vacation type'.tr(), Colors.black);
+           return;
+         }
+    // if (selectedJobValue == null || selectedJobValue!.isEmpty) {
+    //   FN_showToast(context, 'please set a job'.tr(), Colors.black);
+    //   return;
+    // }
+    if (selectedCostCenterValue == null || selectedCostCenterValue!.isEmpty) {
+      FN_showToast(context, 'please set cost center value'.tr(), Colors.black);
+      return;
+    }
+    if (selectedEmployeeValue == null || selectedEmployeeValue!.isEmpty) {
+      FN_showToast(context, 'please set cost employee value'.tr(), Colors.black);
+      return;
+    }
+    // if (selectedDepartmentValue == null || selectedDepartmentValue!.isEmpty) {
+    //   FN_showToast(context, 'please set a department'.tr(), Colors.black);
+    //   return;
+    // }
+    api.createVacationRequest(context, VacationRequests(
+      costCenterCode1: selectedCostCenterValue,
+      empCode: selectedEmployeeValue,
+      jobCode: selectedJobValue,
+      vacationTypeCode: selectedVacationTypeValue,
+      departmentCode: selectedDepartmentValue,
+      trxDate: _vacationRequestTrxDateController.text,
+      trxSerial: _vacationRequestSerialController.text,
+      messageTitle: _vacationRequestMessageController.text,
+      fromDate: _fromDateController.text,
+      toDate: _toDateController.text,
+      requestDays: _vacationRequestRequestedDaysController.text.toInt(),
+      vacationBalance: _vacationRequestVacationBalanceController.text.toInt(),
+      allowBalance: _vacationRequestAllowedBalanceController.text.toInt(),
+      empBalance: _vacationRequestEmployeeBalanceController.text.toInt(),
+      advanceBalance: _vacationRequestAdvanceBalanceController.text.toInt(),
+      ruleBalance: _vacationRequestListBalanceController.text.toInt(),
+      notes: _vacationRequestNoteController.text,
+      latestVacationDate: _vacationRequestLastSalaryDateController.text,
+      vacationDueDate: _vacationRequestDueDateController.text,
+
+    ));
+    Navigator.pop(context,true );
+  }
+
 }

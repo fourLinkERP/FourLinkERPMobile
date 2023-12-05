@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 String get pickedDate => (DateTime.now()).toString();
 
@@ -9,6 +8,7 @@ class VacationRequests{
   String? notes;
   String? vacationRequestsName;
   String? trxSerial;
+  String? trxDate;
   String? vacationTypeName;
   String? messageTitle;
   int? allowBalance;
@@ -38,6 +38,7 @@ class VacationRequests{
     this.requestTypeCode,
     this.notes,
     this.vacationRequestsName,
+    this.trxDate,
     this.trxSerial,
     this.vacationTypeName,
     this.messageTitle,
@@ -70,6 +71,7 @@ class VacationRequests{
       notes: (json['notes'] != null) ? json['notes'] as String : " ",
       vacationRequestsName: (json['vacationRequestsName'] != null) ? json['vacationRequestsName'] as String : " ",
       trxSerial: (json['trxSerial'] != null) ? json['trxSerial'] as String : "",
+      trxDate: (json['trxDate'] != null) ? json['trxDate'] as String : pickedDate,
       vacationTypeName: (json['vacationTypeName'] != null) ? json['vacationTypeName'] as String : "",
       messageTitle: (json['messageTitle'] != null) ? json['messageTitle'] as String : "",
       allowBalance: (json['allowBalance'] != null) ? json['allowBalance'] as int : 0,

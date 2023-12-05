@@ -9,7 +9,8 @@ class Employee {
 
 
 
-  Employee({this.id,
+  Employee({
+    this.id,
     this.empCode,
     this.empNameAra,
     this.empNameEng,
@@ -17,10 +18,10 @@ class Employee {
 
   factory Employee.fromJson(Map<String, dynamic> json) {
     return Employee(
-      id: json['id'] as int,
-      empCode: json['empCode'] as String,
-      empNameAra: json['empNameAra'] as String,
-      empNameEng: json['empNameEng'] as String,
+      id: (json['id'] != null) ? json['id'] as int : 0,
+      empCode: (json['empCode'] != null) ? json['empCode'] as String : " ",
+      empNameAra: (json['empNameAra'] != null) ? json['empNameAra'] as String : " ",
+      empNameEng: (json['empNameEng'] != null)? json['empNameEng'] as String : " ",
     );
   }
 

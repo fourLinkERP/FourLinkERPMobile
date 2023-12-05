@@ -96,12 +96,7 @@ class VacationRequestsApiService {
       'latestVacationDate': request.latestVacationDate,
       'notes': request.notes,
 
-
-      // 'Year': invoice.year,
     };
-
-    print('save request 1');
-    print('save ' + data.toString());
 
     final http.Response response = await http.post(
       Uri.parse(createApi),
@@ -111,19 +106,19 @@ class VacationRequestsApiService {
       },
       body: jsonEncode(data),
     );
-    print('save request 2');
 
     if (response.statusCode == 200) {
-
-      print('save request 3');
+      print('save request Success');
       FN_showToast(context,'save_success'.tr() ,Colors.black);
 
       return  1;
 
-
     } else {
       print('save request Error');
-      throw Exception('Failed to post sales Invoice');
+
+      FN_showToast(context,'could not save '.tr() ,Colors.black);
+
+      throw Exception('Failed to post vacation request');
     }
   }
   Future<int> updateVacationRequest(BuildContext context, int id ,VacationRequests request) async {
@@ -132,7 +127,8 @@ class VacationRequestsApiService {
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'trxSerial': request.trxSerial, //Sales Invoice Type
+      'trxSerial': request.trxSerial,
+      'trxDate' : request.trxDate,
       'messageTitle': request.messageTitle,
       'costCenterCode1': request.costCenterCode1,
       'departmentCode': request.departmentCode,
@@ -198,7 +194,7 @@ class VacationRequestsApiService {
       print('Deleted--------');
       FN_showToast(context,'delete_success'.tr() ,Colors.black);
     } else {
-      throw "Failed to delete a salesInvoice.";
+      throw "Failed to delete a vacationRequest.";
     }
   }
 

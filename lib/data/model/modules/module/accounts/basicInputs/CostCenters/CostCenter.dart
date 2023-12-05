@@ -9,7 +9,8 @@ class CostCenter {
 
 
 
-  CostCenter({this.id,
+  CostCenter({
+    this.id,
     this.costCenterCode ,
     this.costCenterNameAra,
     this.costCenterNameEng,
@@ -17,10 +18,10 @@ class CostCenter {
 
   factory CostCenter.fromJson(Map<String, dynamic> json) {
     return CostCenter(
-      id: json['id'] as int,
-      costCenterCode: json['costCenterCode'] as String,
-      costCenterNameAra: json['costCenterNameAra'] as String,
-      costCenterNameEng: json['costCenterNameEng'] as String,
+      id: (json['id'] != null) ? json['id'] as int : 0,
+      costCenterCode: (json['costCenterCode'] != null) ? json['costCenterCode'] as String : " ",
+      costCenterNameAra: (json['costCenterNameAra'] != null) ? json['costCenterNameAra'] as String : " ",
+      costCenterNameEng: (json['costCenterNameEng'] != null) ? json['costCenterNameEng'] as String : " ",
     );
   }
 

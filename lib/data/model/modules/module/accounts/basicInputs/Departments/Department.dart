@@ -9,7 +9,8 @@ class Department {
 
 
 
-  Department({this.id,
+  Department({
+    this.id,
     this.departmentCode ,
     this.departmentNameAra,
     this.departmentNameEng,
@@ -17,10 +18,10 @@ class Department {
 
   factory Department.fromJson(Map<String, dynamic> json) {
     return Department(
-      id: json['id'] as int,
-      departmentCode: json['departmentCode'] as String,
-      departmentNameAra: json['departmentNameAra'] as String,
-      departmentNameEng: json['departmentNameEng'] as String,
+      id: (json['id'] != null) ? json['id'] as int : 0,
+      departmentCode: (json['departmentCode'] != null) ? json['departmentCode'] as String : " ",
+      departmentNameAra: (json['departmentNameAra'] != null) ? json['departmentNameAra'] as String : " ",
+      departmentNameEng: (json['departmentNameEng'] != null) ? json['departmentNameEng'] as String : " ",
     );
   }
 

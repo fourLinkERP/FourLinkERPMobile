@@ -51,7 +51,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
     getData();
     super.initState();
     setState(() {
-      _founded = vacationRequests!;
+      _founded = vacationRequests;
     });
   }
 
@@ -96,10 +96,11 @@ class _RequestVacationListState extends State<RequestVacationList> {
           ),
         ),
       ),
-        body: buildVacationRequests(),
+        body: SafeArea(child: buildVacationRequests()),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>  RequestVacation()));
+            _navigateToAddScreen(context);
+            //Navigator.push(context, MaterialPageRoute(builder: (context) =>  RequestVacation()));
           },
           backgroundColor: Colors.transparent,
           tooltip: 'Increment',
@@ -117,8 +118,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
               shape: BoxShape.circle,
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                    color: FitnessAppTheme.nearlyDarkBlue
-                        .withOpacity(0.4),
+                    color: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.4),
                     offset: const Offset(2.0, 14.0),
                     blurRadius: 16.0),
               ],
@@ -131,7 +131,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
                 highlightColor: Colors.transparent,
                 focusColor: Colors.transparent,
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  RequestVacation()));
+                  _navigateToAddScreen(context);
                 },
                 child: const Icon(
                   Icons.add,
@@ -163,17 +163,15 @@ class _RequestVacationListState extends State<RequestVacationList> {
     }
 
   }
-  _navigateToEditScreen (BuildContext context, VacationRequests customer) async {
+  _navigateToEditScreen (BuildContext context, VacationRequests requests) async {
 
     int menuId=45201;
     bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
     if(isAllowEdit)
     {
 
-      final result = await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => EditRequestVacation(customer)),
-      ).then((value) => getData());
+      final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+          EditRequestVacation(requests)),).then((value) => getData());
 
     }
     else
@@ -247,6 +245,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/vacation.png'),
                       title: Text('serial'.tr() + " : " + vacationRequests[index].trxSerial.toString()),
+
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
@@ -255,7 +254,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
                               color: Colors.white30,
                               child: Row(
                                 children: [
-                                  Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(vacationRequests[index].vacationDueDate.toString())))  ,
+                                  Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(vacationRequests[index].trxDate.toString())))  ,
 
                                 ],
 
@@ -373,7 +372,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
       getData();
     }
     setState(() {
-      vacationRequests = _founded!.where((VacationRequests) =>
+      vacationRequests = _founded.where((VacationRequests) =>
           VacationRequests.trxSerial!.toLowerCase().contains(search)).toList();
     });
   }
@@ -384,7 +383,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
     vacationRequests = (await futureVacationRequests)!;
     if (vacationRequests.isNotEmpty) {
       setState(() {
-        _founded = vacationRequests!;
+        _founded = vacationRequests;
         String search = '';
 
       });

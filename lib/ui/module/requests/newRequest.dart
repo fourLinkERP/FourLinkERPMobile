@@ -42,7 +42,7 @@ class NewRequest extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestAdvanceList()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>  RequestAdvanceList()));
             },
             child: Text('Request an advance'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
           ),

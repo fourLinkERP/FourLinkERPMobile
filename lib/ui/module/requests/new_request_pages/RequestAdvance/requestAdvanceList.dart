@@ -1,30 +1,65 @@
-import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestAdvance/addRequestAdvance.dart';
+import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/advanceRequest.dart';
+import 'package:fourlinkmobileapp/service/module/requests/setup/requestAdvanceApiService.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestAdvance/addRequestAdvance.dart';
 import 'dart:core';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
-
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../cubit/app_states.dart';
 import 'package:intl/intl.dart';
+
+import '../../../../../helpers/toast.dart';
+import '../../../../../utils/permissionHelper.dart';
+
+//APIs
+AdvanceRequestApiService _apiService = AdvanceRequestApiService();
 
 class RequestAdvanceList extends StatefulWidget {
   const RequestAdvanceList({Key? key}) : super(key: key);
 
   @override
-  State<RequestAdvanceList> createState() => _RequestAdvanceListState();
+  _RequestAdvanceListState createState() => _RequestAdvanceListState();
 }
 
 class _RequestAdvanceListState extends State<RequestAdvanceList> {
+
+  bool isLoading = true;
+  List<AdvanceRequests> advanceRequests = [];
+  List<AdvanceRequests> _founded = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    print('okkkkkkkkkkk');
+    AppCubit.get(context).CheckConnection();
+    Timer(const Duration(seconds: 30), () { // <-- Delay here
+      setState(() {
+        if(advanceRequests.isEmpty){
+          isLoading = false;
+        }
+        // <-- Code run after delay
+      });
+    });
+
+    getData();
+    super.initState();
+    setState(() {
+      _founded = advanceRequests;
+    });
+  }
 
   DateTime get pickedDate => DateTime.now();
 
   @override
   Widget build(BuildContext context) {
-
+    setState(() {
+      getData();
+    });
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -58,10 +93,10 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
             ),
           ),
         ),
-        body: buildAdvanceRequests(),
+        body: SafeArea(child: buildAdvanceRequests()),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestAdvance()));
+            _navigateToAddScreen(context);
           },
           backgroundColor: Colors.transparent,
           tooltip: 'Increment',
@@ -93,7 +128,7 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
                 highlightColor: Colors.transparent,
                 focusColor: Colors.transparent,
                 onTap: (){
-                   Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestAdvance()));
+                  _navigateToAddScreen(context);
                 },
                 child: const Icon(
                   Icons.add,
@@ -108,6 +143,9 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
     );
   }
   Widget buildAdvanceRequests(){
+    if (advanceRequests.isEmpty) {
+      return const Center(child: CircularProgressIndicator());
+    }
     if(State is AppErrorState){
       return const Center(child: Text('no data'));
     }
@@ -115,16 +153,16 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
       return const Center(child: Text('no internet connection'));
 
     }
-    else if(//_salesInvoices.isEmpty
-    AppCubit.get(context).Conection==true){
+    else if(advanceRequests.isEmpty&&AppCubit.get(context).Conection==true){
       return const Center(child: CircularProgressIndicator());
-    }else{
+    }
+    else{
       return Container(
         margin: const EdgeInsets.only(top: 5,),
         color: const Color.fromRGBO(240, 242, 246,1),// Main Color
 
         child: ListView.builder(
-            itemCount: 3,//_salesInvoices.isEmpty ? 0 : _salesInvoices.length,
+            itemCount: advanceRequests.isEmpty ? 0 : advanceRequests.length,
             itemBuilder: (BuildContext context, int index) {
               return
                 Card(
@@ -134,9 +172,9 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
                       // );
                     },
                     child: ListTile(
-                      leading: Image.asset('assets/fitness_app/salesCart.png'),
-                      title: Text('serial'.tr() + " : " + "5"),
-                      //  _salesInvoices[index].salesInvoicesSerial.toString()),
+                      leading: Image.asset('assets/fitness_app/requestSalary.png'),
+                      title: Text('serial'.tr() + " : " + advanceRequests[index].trxSerial.toString()),
+
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
@@ -145,16 +183,14 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
                               color: Colors.white30,
                               child: Row(
                                 children: [
-                                  Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(pickedDate),),
-                                  //DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString())))  ,
+                                  Text('date'.tr() + " : "  + DateFormat('yyyy-MM-dd').format(DateTime.parse(advanceRequests[index].trxDate.toString())))  ,
 
                                 ],
 
                               )),
                           Container(height: 20, color: Colors.white30, child: Row(
                             children: [
-                              Text('customer'.tr() + " : " + "4"),
-                              //_salesInvoices[index].customerName.toString()),
+                              Text('employee'.tr() + " : " + advanceRequests[index].empName.toString()),
                             ],
 
                           )),
@@ -200,7 +236,7 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
                                         ),
                                         label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                          // _deleteItem(context,_salesInvoices[index].id);
+                                           _deleteItem(context,advanceRequests[index].id);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -256,13 +292,110 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
       );
     }
   }
+  _navigateToAddScreen(BuildContext context) async {
+
+    int menuId = 45202;
+    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    if(isAllowAdd) {
+      print('you_have_add_permission');
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => RequestAdvance(),)).then((value) {
+        getData();
+      });
+    }
+    else {
+      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    }
+  }
+  // _navigateToEditScreen (BuildContext context, AdvanceRequests advanceRequests) async {
+  //
+  //   int menuId = 45203;
+  //   bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
+  //   if(isAllowEdit)
+  //   {
+  //
+  //     final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+  //         EditRequestAdvance(advanceRequests)),).then((value) => getData());
+  //   }
+  //   else
+  //   {
+  //     FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
+  //   }
+  // }
+
+  void getData() async {
+    Future<List<AdvanceRequests>?> futureAdvanceRequests = _apiService.getAdvanceRequests().catchError((Error){
+      print('Error${Error}');
+      AppCubit.get(context).EmitErrorState();
+    });
+    advanceRequests = (await futureAdvanceRequests)!;
+    if (advanceRequests.isNotEmpty) {
+      setState(() {
+        _founded = advanceRequests;
+        String search = '';
+      });
+    }
+  }
+  // Future<void> getData() async {
+  //   try {
+  //     List<AdvanceRequests>? futureAdvanceRequests = await _apiService.getAdvanceRequests();
+  //     if (futureAdvanceRequests.isNotEmpty) {
+  //       setState(() {
+  //         advanceRequests = futureAdvanceRequests;
+  //         _founded = advanceRequests;
+  //         String search = '';
+  //       });
+  //     }
+  //   } catch (error) {
+  //     print('Error: $error');
+  //     AppCubit.get(context).EmitErrorState();
+  //     return Future.value(); // Return a future with no value
+  //   }
+  // }
+
   onSearch(String search) {
     if(search.isEmpty)
     {
-      //getData();
+      getData();
     }
     setState(() {
-
+      advanceRequests = _founded.where((AdvanceRequests) =>
+          AdvanceRequests.trxSerial!.toLowerCase().contains(search)).toList();
     });
+  }
+
+  _deleteItem(BuildContext context,int? id) async {
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Are you sure?'),
+        content: const Text('This action will permanently delete this data'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+    if (result == null || !result) {
+      return;
+    }
+
+    int menuId=45202;
+    bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
+    if(isAllowDelete)
+    {
+      var res = _apiService.deleteAdvanceRequest(context,id).then((value) => getData());
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
+    }
+
   }
 }

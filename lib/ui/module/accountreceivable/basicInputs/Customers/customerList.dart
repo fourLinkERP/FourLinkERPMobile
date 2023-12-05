@@ -63,16 +63,14 @@ class _CustomerListPageState extends State<CustomerListPage> {
   }
 
   void getData() async {
-    Future<List<Customer>?> futureCustomer =
-        _apiService.getCustomers().catchError((Error) {
+    Future<List<Customer>?> futureCustomer = _apiService.getCustomers().catchError((Error) {
       print('Error${Error}');
       AppCubit.get(context).EmitErrorState();
     });
     print('xxxx1');
     _customers = (await futureCustomer)!;
-    print('xxxx2');
     print('xxxx2 len ' + _customers.length.toString());
-    if (_customers != null) {
+    if (_customers.isNotEmpty) {
       setState(() {
         print('xxxx');
         _founded = _customers;
@@ -87,8 +85,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
     }
 
     setState(() {
-      _customers = _founded
-          .where((Customer) =>
+      _customers = _founded.where((Customer) =>
               Customer.customerNameAra!.toLowerCase().contains(search)).toList();
     });
   }
@@ -190,8 +187,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
             const SizedBox(width: 10),
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(customer.customerNameAra!,
-                  style: const TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w500)),
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500)),
               //SizedBox(height: 5,),
               //Text(customer.customerNameEng!, style: TextStyle(color: Colors.grey[500])),
             ])
@@ -282,17 +278,12 @@ class _CustomerListPageState extends State<CustomerListPage> {
         padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
         color: const Color.fromRGBO(240, 242, 246, 1),
         child: ListView.builder(
-            itemCount: _customers == null ? 0 : _customers.length,
+            itemCount: _customers.isEmpty ? 0 : _customers.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              DetailCustomerWidget(_customers[index])),
-                    );
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DetailCustomerWidget(_customers[index])),);
                   },
                   child: ListTile(
                     leading: Image.asset('assets/fitness_app/clients.png'),

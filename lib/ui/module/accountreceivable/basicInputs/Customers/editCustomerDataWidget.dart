@@ -14,7 +14,7 @@ import '../../../../../service/module/accountReceivable/basicInputs/CustomerType
 // enum Gender { male, female }
 // enum Status { positive, dead, recovered }
 
-CustomerTypeApiService _customerTypeApiService=new CustomerTypeApiService();
+CustomerTypeApiService _customerTypeApiService= CustomerTypeApiService();
 
 class EditCustomerDataWidget extends StatefulWidget {
   EditCustomerDataWidget(this.customers);
@@ -108,7 +108,8 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
         onPressed: (){
           // if (_addFormKey.currentState.validate()) {
           //   _addFormKey.currentState.save();
-          api.updateCustomer(context,id, Customer(customerCode: _customerCodeController.text ,
+          api.updateCustomer(context,id, Customer(
+              customerCode: _customerCodeController.text ,
               customerNameAra: _customerNameAraController.text ,
               customerNameEng: _customerNameEngController.text ,
               taxIdentificationNumber: _taxIdentificationNumberController.text ,
@@ -163,30 +164,16 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
       ),
       appBar:AppBar(
         centerTitle: true,
-        title: Expanded(
-          child: Row(
-            crossAxisAlignment:langId==1? CrossAxisAlignment.end
-                :CrossAxisAlignment.start,
-            children: [
-
-              Image.asset(
-
-                'assets/images/logowhite2.png',
-                scale: 3,
-              ),
-              const SizedBox(
-                width: 1,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Expanded(
-                  child: Text('Edit_Customers'.tr(),style:
-                  const TextStyle(color: Colors.white),),
-                ),
-              )
-
-            ],
-          ),
+        title: Row(
+          crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
+          children: [
+            Image.asset('assets/images/logowhite2.png', scale: 3,),
+            const SizedBox(width: 1,),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0,11,2,0), //apply padding to all four sides
+              child: Text('Edit_Customers'.tr(),style: const TextStyle(color: Colors.white),),
+            )
+          ],
         ),
         backgroundColor: const Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
       ),
@@ -194,11 +181,9 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
       body: Form(
         key: _addFormKey,
         child: SingleChildScrollView(
-          child: Container(
-
+          child: SizedBox(
             child: Card(
                 child: SizedBox(
-
                     width: 440,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -281,7 +266,7 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
 
                             itemBuilder: (context, item, isSelected) {
                               return Container(
-                                margin: EdgeInsets.symmetric(horizontal: 8),
+                                margin: const EdgeInsets.symmetric(horizontal: 8),
 
                                 decoration: !isSelected
                                     ? null
@@ -329,7 +314,7 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
 
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Column(
                             crossAxisAlignment:CrossAxisAlignment.start,
                             children: <Widget>[
@@ -352,7 +337,7 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Column(
                             crossAxisAlignment:CrossAxisAlignment.start,
                             children: <Widget>[
@@ -376,7 +361,7 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
                           ),
                         ),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Column(
                             crossAxisAlignment:CrossAxisAlignment.start,
                             children: <Widget>[
@@ -427,11 +412,11 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
                           // ),
                         ),
                         const SizedBox(height: 20),
-                        Container(
+                        SizedBox(
                           width:  double.infinity,
                           child: ElevatedButton(
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( Color.fromRGBO(144, 16, 46, 1),),
+                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
                                 padding:
                                 MaterialStateProperty.all(const EdgeInsets.all(20)),
                                 textStyle: MaterialStateProperty.all(
@@ -441,54 +426,16 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
                               //saveInvoice(context);
 
                             },
-                            child: Text('commercialTaxNo'.tr(), style: TextStyle(color: Colors.white)),
+                            child: Text('commercialTaxNo'.tr(), style: const TextStyle(color: Colors.white)),
                             //color: Colors.blue,
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Container( width: double.infinity,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( Color.fromRGBO(144, 16, 46, 1),),
-                                padding:
-                                MaterialStateProperty.all(const EdgeInsets.all(20)),
-                                textStyle: MaterialStateProperty.all(
-                                    const TextStyle(fontSize: 14, color: Colors.white))),
-                            onPressed: () {
-
-                              //saveInvoice(context);
-
-                            },
-                            child: Text('governmentId'.tr(), style: TextStyle(color: Colors.white)),
-                            //color: Colors.blue,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-
-                        Container( width: double.infinity,
-                          child: ElevatedButton(
-
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( Color.fromRGBO(144, 16, 46, 1),),
-                                padding:
-                                MaterialStateProperty.all(const EdgeInsets.all(20)),
-                                textStyle: MaterialStateProperty.all(
-                                    const TextStyle(fontSize: 14, color: Colors.white))),
-                            onPressed: () {
-
-                              //saveInvoice(context);
-
-                            },
-                            child: Text('shopId'.tr(), style: TextStyle(color: Colors.white)),
-                            //color: Colors.blue,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
+                        SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( Color.fromRGBO(144, 16, 46, 1),),
+                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
                                 padding:
                                 MaterialStateProperty.all(const EdgeInsets.all(20)),
                                 textStyle: MaterialStateProperty.all(
@@ -498,16 +445,18 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
                               //saveInvoice(context);
 
                             },
-                            child: Text('shopPlate'.tr(), style: TextStyle(color: Colors.white)),
+                            child: Text('governmentId'.tr(), style: const TextStyle(color: Colors.white)),
                             //color: Colors.blue,
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Container(
+
+                        SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
+
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( Color.fromRGBO(144, 16, 46, 1),),
+                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
                                 padding:
                                 MaterialStateProperty.all(const EdgeInsets.all(20)),
                                 textStyle: MaterialStateProperty.all(
@@ -517,16 +466,54 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
                               //saveInvoice(context);
 
                             },
-                            child: Text('taxId'.tr(), style: TextStyle(color: Colors.white)),
+                            child: Text('shopId'.tr(), style: const TextStyle(color: Colors.white)),
                             //color: Colors.blue,
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Container(
+                        SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( Color.fromRGBO(144, 16, 46, 1),),
+                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
+                                padding:
+                                MaterialStateProperty.all(const EdgeInsets.all(20)),
+                                textStyle: MaterialStateProperty.all(
+                                    const TextStyle(fontSize: 14, color: Colors.white))),
+                            onPressed: () {
+
+                              //saveInvoice(context);
+
+                            },
+                            child: Text('shopPlate'.tr(), style: const TextStyle(color: Colors.white)),
+                            //color: Colors.blue,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
+                                padding:
+                                MaterialStateProperty.all(const EdgeInsets.all(20)),
+                                textStyle: MaterialStateProperty.all(
+                                    const TextStyle(fontSize: 14, color: Colors.white))),
+                            onPressed: () {
+
+                              //saveInvoice(context);
+
+                            },
+                            child: Text('taxId'.tr(), style: const TextStyle(color: Colors.white)),
+                            //color: Colors.blue,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
                                 padding:
                                 MaterialStateProperty.all(const EdgeInsets.all(20)),
                                 textStyle: MaterialStateProperty.all(
@@ -539,16 +526,16 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
                             },
 
 
-                            child: Text('customerLocation'.tr(), style: TextStyle(color: Colors.white)),
+                            child: Text('customerLocation'.tr(), style: const TextStyle(color: Colors.white)),
                             //color: Colors.blue,
                           ),
                         ),
                         const SizedBox(height: 20),
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Column(
                             crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.end,
-                            children: <Widget>[
+                            children: const <Widget>[
 
                             ],
                           ),
@@ -565,17 +552,14 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
 
 
   getCustomerTypeData() {
-    if (customerTypes != null) {
+    if (customerTypes.isNotEmpty) {
       for(var i = 0; i < customerTypes.length; i++){
-
-        menuCustomerType.add(DropdownMenuItem(child: Text((langId==1)?  customerTypes[i].cusTypesNameAra.toString() : customerTypes[i].cusTypesNameEng.toString()),
-            value: customerTypes[i].cusTypesCode.toString()));
-        // print('in amr2');
+        menuCustomerType.add(
+            DropdownMenuItem(
+            value: customerTypes[i].cusTypesCode.toString(),
+            child: Text((langId==1)?  customerTypes[i].cusTypesNameAra.toString() : customerTypes[i].cusTypesNameEng.toString())));
         if(customerTypes[i].cusTypesCode == customerTypeSelectedValue){
-          // print('in amr3');
           customerTypeItem = customerTypes[customerTypes.indexOf(customerTypes[i])];
-          // print('in amr4');
-          // print(customerTypeItem );
         }
       }
 

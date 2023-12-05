@@ -97,22 +97,21 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
 
         backgroundColor:  Colors.transparent,
         onPressed: (){
-          // if (_addFormKey.currentState.validate()) {
-          //   _addFormKey.currentState.save();
-
           if(_phone1Controller.text.isEmpty)
             {
               FN_showToast(context,'please_enter_phone'.tr() ,Colors.black);
               return;
             }
 
-          api.createCustomer(context,Customer(customerCode: _customerCodeController.text ,
+          api.createCustomer(context,Customer(
+              customerCode: _customerCodeController.text ,
               customerNameAra: _customerNameAraController.text ,
               customerNameEng: _customerNameEngController.text ,
               taxIdentificationNumber: _taxIdentificationNumberController.text ,
               phone1: _phone1Controller.text ,
-              address: _addressController.text,customerTypeCode: customerTypeSelectedValue ));
-          //
+              address: _addressController.text,
+              customerTypeCode: customerTypeSelectedValue ));
+
           Navigator.pop(context,true );
         },
 
@@ -168,7 +167,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
       body: Form(
         key: _addFormKey,
         child: SingleChildScrollView(
-          child: Container(
+          child: SizedBox(
             child: Card(
                 child: Container(
                     padding: const EdgeInsets.all(10.0),
@@ -615,12 +614,12 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
 
 
   getCustomerTypeData() {
-    if (customerTypes != null) {
+    if (customerTypes.isNotEmpty) {
       for(var i = 0; i < customerTypes.length; i++){
         menuCustomerType.add(
             DropdownMenuItem(
-                child: Text((langId==1)?  customerTypes[i].cusTypesNameAra.toString() : customerTypes[i].cusTypesNameEng.toString())
-                ,value: customerTypes[i].cusTypesCode.toString()));
+                value: customerTypes[i].cusTypesCode.toString(),
+                child: Text((langId==1)?  customerTypes[i].cusTypesNameAra.toString() : customerTypes[i].cusTypesNameEng.toString())));
       }
     }
     setState(() {
@@ -681,7 +680,5 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
     setState (() => this.image = imageTemporary);
 
    }
-
-
 
 }

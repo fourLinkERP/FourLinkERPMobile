@@ -11,7 +11,8 @@ Widget defaultFormField({
   IconData? suffix,
   VoidCallback? suffixPressed,
   bool enable = true,
-  String? Function(String?)?  onSaved,
+  onSaved,
+  String? Function(String?)? onChanged,
 
 }) => TextFormField(
   controller: controller,
@@ -20,6 +21,7 @@ Widget defaultFormField({
   validator: validate,
   enabled: enable,
   onSaved: onSaved,
+  onChanged: onChanged,
 
   decoration: InputDecoration(
     labelText: label,
