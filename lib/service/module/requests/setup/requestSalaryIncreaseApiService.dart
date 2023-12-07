@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/salaryIncreaseRequest.dart';
 import 'dart:convert';
-
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
-
 
 class SalaryIncreaseApiService {
 
@@ -36,14 +34,14 @@ class SalaryIncreaseApiService {
 
     if(response.statusCode == 200)
     {
-      print('SalaryIncrease success1');
+      //print('SalaryIncrease success1');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalaryIncRequests> list = [];
       if(data.isNotEmpty)
       {
         list = data.map((item) => SalaryIncRequests.fromJson(item)).toList();
       }
-      print('SalaryIncrease success 2');
+      //print('SalaryIncrease success 2');
       return list;
     }
     else {
@@ -95,10 +93,22 @@ class SalaryIncreaseApiService {
       'advanceBalance': salaryRequest.advanceBalance,
       'advanceReason': salaryRequest.advanceReason,
       'notes': salaryRequest.notes,
+      "confirmed": false,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSynchronized": false,
+      "isSystem": false,
+      "notActive": false,
+      "postedToGL": false,
+      "flgDelete": false,
+      "year": 2023
 
-
-      // 'Year': invoice.year,
     };
+    print('to print body');
+    print(data.toString());
 
     final http.Response response = await http.post(
       Uri.parse(createApi),
@@ -117,6 +127,7 @@ class SalaryIncreaseApiService {
 
     } else {
       print('save request Error');
+
       FN_showToast(context,'couldn not save '.tr() ,Colors.black);
       throw Exception('Failed to post salary increase request');
     }
@@ -145,9 +156,19 @@ class SalaryIncreaseApiService {
       'advanceBalance': salaryRequest.advanceBalance,
       'advanceReason': salaryRequest.advanceReason,
       'notes': salaryRequest.notes,
+      "confirmed": false,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSynchronized": false,
+      "isSystem": false,
+      "notActive": false,
+      "postedToGL": false,
+      "flgDelete": false,
+      "year": 2023
 
-
-      // 'Year': invoice.year,
     };
 
     String apiUpdate =updateApi + id.toString();

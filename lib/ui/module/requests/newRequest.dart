@@ -3,7 +3,7 @@ import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVa
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestAdvance/requestAdvanceList.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestSalaryIncrease/requestSalaryIncreaseList.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestNeeds/requestNeedsList.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestResources/requestResourcesList.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/AdditionalRequest/additionalRequestList.dart';
 
 class NewRequest extends StatelessWidget {
@@ -90,9 +90,9 @@ class NewRequest extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestNeedsList()));
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const RequestResourceList()));
             },
-            child: Text('Request needs'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
+            child: Text('Request resource requirements'.tr(),style: const TextStyle(color: Colors.white, fontSize: 17.0,),),
           ),
           
         ],

@@ -34,6 +34,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
   bool isLoading = true;
   List<VacationRequests> vacationRequests = [];
   List<VacationRequests> _founded = [];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -54,8 +55,6 @@ class _RequestVacationListState extends State<RequestVacationList> {
       _founded = vacationRequests;
     });
   }
-
-  //DateTime get pickedDate => DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -213,7 +212,6 @@ class _RequestVacationListState extends State<RequestVacationList> {
     {
       FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
     }
-
   }
 
   Widget buildVacationRequests(){
@@ -224,7 +222,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
       return const Center(child: Text('no internet connection'));
 
     }
-    else if(vacationRequests.isEmpty&&AppCubit.get(context).Conection==true){
+    else if(vacationRequests.isEmpty && AppCubit.get(context).Conection==true){
       return const Center(child: CircularProgressIndicator());
     }else{
       //print("Success..................");

@@ -509,8 +509,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                               items: jobs,
                               itemAsString: (Job u) => u.jobNameAra.toString(),
                               onChanged: (value){
-                                //v.text = value!.cusTypesCode.toString();
-                                //print(value!.id);
                                 selectedJobValue =  value!.jobCode.toString();
                               },
                               filterFn: (instance, filter){
@@ -544,7 +542,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                           child: textFormFields(
                             hintText: 'Select Date'.tr(),
                             controller: _fromDateController,
-                            //hintText: "date".tr(),
                             onTap: () async {
                               DateTime? pickedDate = await showDatePicker(
                                   context: context,
@@ -802,9 +799,7 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                 _vacationRequestDueDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                               }
                             },
-                            // onSaved: (val) {
-                            //   vacationDueDate = val;
-                            // },
+
                             textInputType: TextInputType.datetime,
                           ),
                         ),
@@ -827,10 +822,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                               }
                               return null;
                             },
-                            // onSaved: (val) {
-                            //   vacationRequestAdvanceBalance = val as int?;
-                            //   return null;
-                            // },
                           ),
                         ),
                       ),
@@ -856,9 +847,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                 _vacationRequestLastSalaryDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                               }
                             },
-                            // onSaved: (val) {
-                            //   lastSalaryDate = val;
-                            // },
                             textInputType: TextInputType.datetime,
                           ),
                         ),

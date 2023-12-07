@@ -151,7 +151,7 @@ class _RequestSalaryState extends State<RequestSalary> {
                         enable: false,
                         hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                         controller: _salaryIncTrxDateController,
-                        //hintText: "date".tr(),
+                        textInputType: TextInputType.datetime,
                         onTap: () async {
                           DateTime? pickedDate = await showDatePicker(
                               context: context,
@@ -162,8 +162,10 @@ class _RequestSalaryState extends State<RequestSalary> {
                           if (pickedDate != null) {
                             _salaryIncTrxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                           }
+                          if (pickedDate == null) {
+                            _salaryIncTrxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate!);
+                          }
                         },
-                        textInputType: TextInputType.datetime,
                       ),
                     ),
                   ),
@@ -691,7 +693,7 @@ class _RequestSalaryState extends State<RequestSalary> {
     api.createSalaryIncRequest(context, SalaryIncRequests(
       empCode: selectedEmployeeValue,
       jobCode: selectedJobValue,
-      trxDate: _salaryIncTrxDateController.text,
+      trxDate: DateFormat('yyyy-MM-dd').format(pickedDate),
       trxSerial: _salaryIncSerialController.text,
       basicSalary: _basicSalaryController.text.toInt(),
       fullSalary: _fullSalaryController.text.toInt(),

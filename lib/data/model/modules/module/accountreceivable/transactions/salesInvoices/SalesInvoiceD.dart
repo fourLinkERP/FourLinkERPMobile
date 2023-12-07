@@ -1,7 +1,4 @@
 
-import 'dart:io';
-
-
 class SalesInvoiceD {
   int? id;
   //General Info
@@ -97,10 +94,6 @@ class SalesInvoiceD {
       invoiceDiscountValue: json['invoiceDiscountValue'] != null ?  json['invoiceDiscountValue'].toDouble() : 0.0
 
 
-
-
-
-
     );
   }
 
@@ -109,24 +102,3 @@ class SalesInvoiceD {
     return 'Trans{id: $id, name: $salesInvoicesSerial }';
   }
 }
-
-
-
-
-
-
-// Our demo Branchs
-
-// List<Customer> demoBranches = [
-//   Customer(
-//       id: 1,
-//       name: "Maadi - Branch",
-//       description: descriptionData
-//   ),
-//   Customer(
-//       id: 2,
-//       name: "Tahrir - Branch",
-//       description: descriptionData
-//   )
-// ];
-

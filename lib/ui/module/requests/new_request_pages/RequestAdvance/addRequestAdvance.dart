@@ -6,6 +6,7 @@ import 'package:fourlinkmobileapp/service/module/requests/setup/requestAdvanceAp
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:supercharged/supercharged.dart';
 
 import '../../../../../common/globals.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
@@ -382,19 +383,22 @@ class _RequestAdvanceState extends State<RequestAdvance> {
                     leading: Text("Contract period: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                     trailing: SizedBox(
                       width: 220,
-                      height: 45,
-                      child: defaultFormField(
+                      height: 55,
+                      child: textFormFields(
+                        hintText: 'Select Date'.tr(),
                         controller: _contractPeriodController,
-                        label: 'per year,month,day'.tr(),
-                        type: TextInputType.text,
-                        colors: Colors.blueGrey,
-                        //prefix: null,
-                        validate: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'contract period must be non empty';
+                        onTap: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(1950),
+                              lastDate: DateTime(2050));
+
+                          if (pickedDate != null) {
+                            _contractPeriodController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                           }
-                          return null;
                         },
+                        textInputType: TextInputType.datetime,
                       ),
                     ),
                   ),
@@ -641,8 +645,6 @@ class _RequestAdvanceState extends State<RequestAdvance> {
                       ),
                     ),
                   ),
-
-
                 ]
               ),
             ),
@@ -752,18 +754,18 @@ class _RequestAdvanceState extends State<RequestAdvance> {
     api.createAdvanceRequest(context, AdvanceRequests(
       empCode: selectedEmployeeValue,
       jobCode: selectedJobValue,
-      trxDate: _advanceTrxDateController.text,
+      trxDate: DateFormat('yyyy-MM-dd').format(pickedDate),
       trxSerial: _advanceTrxSerialController.text,
-      basicSalary: basicSalary,
-      fullSalary: fullSalary,
+      basicSalary: _basicSalaryController.text.toInt(),
+      fullSalary: _fullSalaryController.text.toInt(),
       recruitmentDate: _recruitmentDateController.text,
       contractPeriod: _contractPeriodController.text,
       latestAdvanceAmount: latestAdvanceAmount,
-      amountRequired: amountRequired,
-      approvedAmount: approvedAmount,
-      empBalance: empBalance,
-      advanceBalance: advanceBalance,
-      installmentValue: installmentValue,
+      amountRequired: _amountRequiredOfAdvanceController.text.toInt(),
+      approvedAmount: _approvedAmountOfAdvanceController.text.toInt(),
+      empBalance: _empBalanceController.text.toInt(),
+      advanceBalance: _advanceBalanceController.text.toInt(),
+      installmentValue: _installmentController.text.toInt(),
       advanceReason: _advanceReasonController.text,
       notes: _noteController.text,
       latestAdvanceDate: _latestAdvanceDateController.text,

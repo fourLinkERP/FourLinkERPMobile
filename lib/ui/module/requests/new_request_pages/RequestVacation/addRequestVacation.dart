@@ -53,8 +53,6 @@ class _RequestVacationState extends State<RequestVacation> {
   List<CostCenter> costCenters =[];
 
 
-  //List<VacationRequests> VacationRequestLst = <VacationRequests>[];
-  //List<VacationRequests> selected = [];
   List<DropdownMenuItem<String>> menuDepartments = [];
   List<DropdownMenuItem<String>> menuVacationTypes = [];
   List<DropdownMenuItem<String>> menuEmployees = [];
@@ -206,7 +204,6 @@ class _RequestVacationState extends State<RequestVacation> {
                               hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                               controller: _vacationRequestTrxDateController,
                               textInputType: TextInputType.datetime,
-                              //hintText: "date".tr(),
                               onTap: () async {
                                 DateTime? pickedDate = await showDatePicker(
                                     context: context,
@@ -223,7 +220,7 @@ class _RequestVacationState extends State<RequestVacation> {
                         ),
                         const SizedBox(height: 12,),
                         ListTile(
-                          leading: Text("message: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text("message title: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: SizedBox(
                             width: 220,
                             height: 55,
@@ -544,9 +541,7 @@ class _RequestVacationState extends State<RequestVacation> {
                                   _toDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                                 }
                               },
-                              // onSaved: (val) {
-                              //   toDate = val;
-                              // },
+
                               textInputType: TextInputType.datetime,
                             ),
                           ),
@@ -680,10 +675,6 @@ class _RequestVacationState extends State<RequestVacation> {
                                 }
                                 return null;
                               },
-                              // onSaved: (val) {
-                              //   vacationRequestVacationBalance = val as int?;
-                              //   return null;
-                              // },
                             ),
                           ),
                         ),
@@ -730,10 +721,7 @@ class _RequestVacationState extends State<RequestVacation> {
                                 }
                                 return null;
                               },
-                              // onSaved: (val) {
-                              //   vacationRequestEmployeeBalance = val as int?;
-                              //   return null;
-                              // },
+
                             ),
                           ),
                         ),
