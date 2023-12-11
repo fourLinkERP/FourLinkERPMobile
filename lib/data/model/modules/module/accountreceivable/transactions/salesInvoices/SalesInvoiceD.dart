@@ -78,21 +78,20 @@ class SalesInvoiceD {
       unitName: (json['unitName'] !=null) ? json['unitName'] as String : "",
       displayPrice: json['displayPrice'] != null ?  json['displayPrice'].toDouble()  : 0.0 ,
       netBeforeTax: json['netBeforeTax'] != null ?  json['netBeforeTax'].toDouble()  : 0.0 ,
-      price: json['price'] != null ? json['price'].toDouble() : 0.0  ,
-      displayQty: json['displayQty'] != null ?  json['displayQty'] as int : 0   ,
-      qty: json['qty'] != null ?  json['qty'] as int : 0   ,
-      displayTotal: json['displayTotal'] != null ?  json['displayTotal'].toDouble() : 0.0  ,
+      price: json['price'] != null ? json['price'].toDouble() : 0.0,
+      displayQty: json['displayQty'] != null ?  json['displayQty'] as int : 0,
+      qty: json['qty'] != null ?  json['qty'] as int : 0,
+      displayTotal: json['displayTotal'] != null ?  json['displayTotal'].toDouble() : 0.0,
       total: json['total'] != null ?  json['total'].toDouble() : 0.0  ,
-      displayDiscountValue: json['displayDiscountValue'] != null ?  json['displayDiscountValue'].toDouble() : 0.0  ,
+      displayDiscountValue: json['displayDiscountValue'] != null ?  json['displayDiscountValue'].toDouble() : 0.0,
       discountValue: json['discountValue'] != null ?  json['discountValue'].toDouble() : 0.0  ,
-      displayTotalTaxValue: json['displayTotalTaxValue'] != null ?  json['displayTotalTaxValue'].toDouble() : 0.0  ,
-      totalTaxValue: json['totalTaxValue'] != null ?  json['totalTaxValue'].toDouble() : 0.0  ,
+      displayTotalTaxValue: json['displayTotalTaxValue'] != null ?  json['displayTotalTaxValue'].toDouble() : 0.0,
+      totalTaxValue: json['totalTaxValue'] != null ?  json['totalTaxValue'].toDouble() : 0.0,
       costPrice: json['costPrice'] != null ?  json['costPrice'].toDouble() : 0.0,
       displayNetValue: json['displayNetValue'] != null ?  json['displayNetValue'].toDouble() : 0.0,
       netValue: json['netValue'] != null ?  json['netValue'].toDouble() : 0.0,
       netAfterDiscount: json['netAfterDiscount'] != null ?  json['netAfterDiscount'].toDouble() : 0.0,
       invoiceDiscountValue: json['invoiceDiscountValue'] != null ?  json['invoiceDiscountValue'].toDouble() : 0.0
-
 
     );
   }

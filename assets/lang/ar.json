@@ -431,7 +431,8 @@
     "Year: ": "السنة: ",
     "Month: ": "الشهر: ",
     "The Employees": "الموظفين",
-    "Cost centers: ": "مراكز التكلفة",
+    "Add Employee": "اضافة موظف",
+    "Additional cost center: ": "مركز تكلفة اضافي",
     "Number of hours: ": "عدد الساعات: ",
     "Request Resources": "طلب احتياج",
     "Request resource requirements": "طلب احتياج موارد",
@@ -452,7 +453,8 @@
     "searchRequestIncrease": "بحث طلب زيادة راتب",
     "edit_request_resource" : "تعديل طلب احتياج",
     "General" : "عام",
-    "Employees": "الموظفين"
+    "Employees": "الموظفين",
+    "add_Employee_Done": "تم اضافة موظف"
 
 }
 

@@ -1,21 +1,21 @@
 import 'dart:convert';
-
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/vacationRequest.dart';
 
-class VacationRequestsApiService {
+import '../../../../../data/model/modules/module/requests/setup/additionalRequest/AdditionalRequestD.dart';
 
-  String searchApi = baseUrl.toString() + 'v1/workflowvacationrequests/search';
-  String createApi = baseUrl.toString() + 'v1/workflowvacationrequests';
-  String updateApi = baseUrl.toString() + 'v1/workflowvacationrequests/'; // Add ID For Edit
-  String deleteApi = baseUrl.toString() + 'v1/workflowvacationrequests/';
-  String getByIdApi = baseUrl.toString() + 'v1/workflowvacationrequests/'; // Add ID For Get
+class AdditionalRequestDApiService {
 
-  Future<List<VacationRequests>> getVacationRequests () async {
+  String searchApi = baseUrl.toString() + 'v1/workflowadditionalrequestdetails/search';
+  String createApi = baseUrl.toString() + 'v1/workflowadditionalrequestdetails';
+  String updateApi = baseUrl.toString() + 'v1/workflowadditionalrequestdetails/'; // Add ID For Edit
+  String deleteApi = baseUrl.toString() + 'v1/workflowadditionalrequestdetails/';
+  String getByIdApi = baseUrl.toString() + 'v1/workflowadditionalrequestdetails/'; // Add ID For Get
+
+  Future<List<AdditionalRequestD>> getAdditionalRequestD () async {
     Map data = {
       'Search': {
         'CompanyCode': companyCode,
@@ -35,23 +35,23 @@ class VacationRequestsApiService {
 
     if(response.statusCode == 200)
     {
-      //print('VacationRequests success1');
+      //print('AdditionalRequestD success1');
       List<dynamic> data = jsonDecode(response.body)['data'];
-      List<VacationRequests> list = [];
+      List<AdditionalRequestD> list = [];
       if(data.isNotEmpty)
-        {
-          list = data.map((item) => VacationRequests.fromJson(item)).toList(); //VacationRequests.fromJson
-        }
-      //print('VacationRequests success 2');
+      {
+        list = data.map((item) => AdditionalRequestD.fromJson(item)).toList(); //AdditionalRequestD.fromJson
+      }
+      //print('AdditionalRequestD success 2');
       return list;
     }
     else {
-      print('VacationRequest Failed');
-      throw "Failed to load VacationRequest list";
+      print('AdditionalRequestD Failed');
+      throw "Failed to load AdditionalRequestD list";
     }
   }
 
-  Future<VacationRequests> getVacationRequestById(int id) async {
+  Future<AdditionalRequestD> getAdditionalRequestDById(int id) async {
     var data = {
       // "id": id
     };
@@ -66,36 +66,25 @@ class VacationRequestsApiService {
 
     if (response.statusCode == 200) {
 
-      return VacationRequests.fromJson(json.decode(response.body));
+      return AdditionalRequestD.fromJson(json.decode(response.body));
 
     } else {
       throw Exception('Failed to load a case');
     }
   }
-  Future<int> createVacationRequest(BuildContext context ,VacationRequests request) async {
-    print('save request 0');
+  Future<int> createAdditionalRequestD(BuildContext context ,AdditionalRequestD addRequestD) async {
+    print('save addRequestD 0');
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'trxSerial': request.trxSerial,
-      'trxDate' : request.trxDate,
-      'messageTitle': request.messageTitle,
-      'costCenterCode1': request.costCenterCode1,
-      'departmentCode': request.departmentCode,
-      'empCode': request.empCode,
-      'jobCode': request.jobCode,
-      'fromDate': request.fromDate,
-      'toDate': request.toDate,
-      'vacationTypeCode': request.vacationTypeCode,
-      'requestDays': request.requestDays,
-      'ruleBalance': request.ruleBalance,
-      'vacationBalance': request.vacationBalance,
-      'allowBalance': request.allowBalance,
-      'empBalance': request.empBalance ,
-      'vacationDueDate': request.vacationDueDate,
-      'advanceBalance': request.advanceBalance,
-      'latestVacationDate': request.latestVacationDate,
-      'notes': request.notes,
+      'trxSerial': addRequestD.trxSerial,
+      'trxDate':addRequestD.trxDate,
+      'empCode': addRequestD.empCode,
+      'empName': addRequestD.empName,
+      'hours': addRequestD.hours,
+      'reason': addRequestD.reason,
+      'costCenterCode1': addRequestD.costCenterCode1,
+      'costCenterCode2': addRequestD.costCenterCode2,
       "confirmed": false,
       "isActive": true,
       "isBlocked": false,
@@ -124,47 +113,46 @@ class VacationRequestsApiService {
     );
 
     if (response.statusCode == 200) {
-      print('save request Success');
+      print('save addRequestD Success');
       FN_showToast(context,'save_success'.tr() ,Colors.black);
 
       return  1;
 
     } else {
-      print('save request Error');
+      print('save addRequestD Error');
 
       FN_showToast(context,'could not save '.tr() ,Colors.black);
 
-      throw Exception('Failed to post vacation request');
+      throw Exception('Failed to post Additional requestH');
     }
   }
-  Future<int> updateVacationRequest(BuildContext context, int id ,VacationRequests request) async {
+  Future<int> updateAdditionalRequestD(BuildContext context, int id ,AdditionalRequestD addRequestD) async {
     print('Start Update');
 
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'trxSerial': request.trxSerial,
-      'trxDate' : request.trxDate,
-      'messageTitle': request.messageTitle,
-      'costCenterCode1': request.costCenterCode1,
-      'departmentCode': request.departmentCode,
-      'empCode': request.empCode,
-      'jobCode': request.jobCode,
-      'fromDate': request.fromDate,
-      'toDate': request.toDate,
-      'vacationTypeCode': request.vacationTypeCode,
-      'requestDays': request.requestDays,
-      'ruleBalance': request.ruleBalance,
-      'vacationBalance': request.vacationBalance,
-      'allowBalance': request.allowBalance,
-      'empBalance': request.empBalance ,
-      'vacationDueDate': request.vacationDueDate,
-      'advanceBalance': request.advanceBalance,
-      'latestVacationDate': request.latestVacationDate,
-      'notes': request.notes,
+      'trxSerial': addRequestD.trxSerial,
+      'trxDate':addRequestD.trxDate,
+      'empCode': addRequestD.empCode,
+      'empName': addRequestD.empName,
+      'hours': addRequestD.hours,
+      'reason': addRequestD.reason,
+      'costCenterCode1': addRequestD.costCenterCode1,
+      'costCenterCode2': addRequestD.costCenterCode2,
+      "confirmed": false,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSynchronized": false,
+      "isSystem": false,
+      "notActive": false,
+      "postedToGL": false,
+      "flgDelete": false,
+      "year":2023
 
-
-      // 'Year': invoice.year,
     };
 
     String apiUpdate =updateApi + id.toString();
@@ -188,7 +176,7 @@ class VacationRequestsApiService {
     }
   }
 
-  Future<void> deleteVacationRequest(BuildContext context ,int? id) async {
+  Future<void> deleteAdditionalRequestD(BuildContext context ,int? id) async {
 
     String apiDel= deleteApi + id.toString();
     print('url' + apiDel);
@@ -210,7 +198,7 @@ class VacationRequestsApiService {
       print('Deleted--------');
       FN_showToast(context,'delete_success'.tr() ,Colors.black);
     } else {
-      throw "Failed to delete a vacationRequest.";
+      throw "Failed to delete a AdditionalRequestD.";
     }
   }
 

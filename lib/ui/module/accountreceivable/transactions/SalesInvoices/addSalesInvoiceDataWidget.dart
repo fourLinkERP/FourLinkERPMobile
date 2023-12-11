@@ -239,17 +239,16 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
         centerTitle: true,
         title: Row(crossAxisAlignment: langId == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
           children: [
-            Image.asset('assets/images/logowhite2.png', scale: 3,),
-            const SizedBox(width: 1,),
+            Image.asset('assets/images/logowhite2.png', scale: 3),
+            const SizedBox(width: 1),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 11, 2, 0),
-              //apply padding to all four sides
               child: Text('sales_invoice'.tr(),
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),),
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0)),
             )
           ],
         ),
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
       ),
       body: Form(
 
@@ -474,18 +473,18 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                         onChanged: (value) {
                                           //v.text = value!.cusTypesCode.toString();
                                           //print(value!.id);
-                                          selectedItemValue =
-                                              value!.itemCode.toString();
+                                          selectedItemValue = value!.itemCode.toString();
                                           selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
                                           _displayQtyController.text = "1";
                                           changeItemUnit(
                                               selectedItemValue.toString());
 
                                           //Factor
-                                          int qty = (_displayQtyController.text != null) ? int.parse(_displayQtyController.text) : 0;
+                                          int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                           setItemQty(
                                               selectedItemValue.toString(),
-                                              selectedUnitValue.toString(), qty);
+                                              selectedUnitValue.toString(), qty
+                                          );
 
                                           //Cost Price
                                           setItemCostPrice(selectedItemValue.toString(), "1", 0, _salesInvoicesDateController.text);
@@ -512,7 +511,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                   ],
                                 )
                             ),
-                            //Align(child: Text('unit_name'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
+
                             const SizedBox(width: 15),
                             Form(
                                 key: _dropdownUnitFormKey,
@@ -558,7 +557,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                             //Item Price
                                             setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
                                             //Factor
-                                            int qty = (_displayQtyController.text != null) ? int.parse(_displayQtyController.text) : 0;
+                                            int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                             setItemQty(selectedItemValue.toString(), selectedUnitValue.toString(), qty);
                                           }
                                         },
@@ -707,9 +706,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                             columnSpacing: 20,
                             columns: [
                               DataColumn(label: Text("id".tr()),),
-                              // DataColumn(
-                              //   label: Text("Code"),
-                              // ),
                               DataColumn(label: Text("name".tr()),),
                               DataColumn(label: Text("qty".tr()), numeric: true,),
                               DataColumn(label: Text("price".tr()), numeric: true,),
@@ -726,11 +722,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                         SizedBox(
                                             width: 5, //SET width
                                             child: Text(p.lineNum.toString()))
-
                                     ),
-                                    // DataCell(
-                                    //   Text(p.itemCode.toString()),
-                                    // ),
                                     DataCell(
                                         SizedBox(
                                             width: 50, //SET width
@@ -1130,9 +1122,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
       setState(() {
         print('cccc');
-        double tax = (inventoryOperation.itemTaxValue != null)
-            ? inventoryOperation.itemTaxValue
-            : 0;
+        double tax = (inventoryOperation.itemTaxValue != null) ? inventoryOperation.itemTaxValue : 0;
         print(tax.toString());
         _taxController.text = tax.toString();
         double nextAfterDiscount = 0;
@@ -1169,18 +1159,15 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 //Item Quantity
   setItemQty(String itemCode, String unitCode, int qty) {
     //Serial
-    Future<
-        InventoryOperation> futureInventoryOperation = _inventoryOperationApiService
-        .getItemQty(itemCode, unitCode, qty).then((data) {
+    Future<InventoryOperation> futureInventoryOperation =
+    _inventoryOperationApiService.getItemQty(itemCode, unitCode, qty).then((data) {
       InventoryOperation inventoryOperation = data;
 
       setState(() {
         _qtyController.text =
-        (inventoryOperation.itemFactorQty != null) ? inventoryOperation
-            .itemFactorQty.toString() : "1";
+        (inventoryOperation.itemFactorQty != null) ? inventoryOperation.itemFactorQty.toString() : "1";
         calcTotalPriceRow();
       });
-
 
       return inventoryOperation;
     }, onError: (e) {
@@ -1201,7 +1188,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
         _priceController.text = sellPrice.toString();
         calcTotalPriceRow();
       });
-
 
       return sellPrice;
     }, onError: (e) {
@@ -1314,85 +1300,53 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       return;
     }
 
-
-    SalesInvoiceD _salesInvoiceD = new SalesInvoiceD();
+    SalesInvoiceD _salesInvoiceD = SalesInvoiceD();
     //print('Add Product 1');
     //Item
     _salesInvoiceD.itemCode = selectedItemValue;
     _salesInvoiceD.itemName = selectedItemName;
-    //print('Add Product 2');
     //Qty
-    _salesInvoiceD.displayQty =
-    (!_displayQtyController.text.isEmpty) ? int.parse(
-        _displayQtyController.text) : 0;
-    _salesInvoiceD.qty = (!_displayQtyController.text.isEmpty) ? int.parse(
-        _displayQtyController.text) : 0;
-
-    //print('Add Product 2 - display Qty ' + _salesInvoiceD.displayQty.toString());
-    //print('Add Product 2 -  Qty ' + _salesInvoiceD.qty.toString());
+    _salesInvoiceD.displayQty = (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
+    _salesInvoiceD.qty = (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
 
     //Cost Price
-    //print('Add Product 3');
     _salesInvoiceD.costPrice =
-    (!_costPriceController.text.isEmpty) ? double.parse(
-        _costPriceController.text) : 0;
+    (_costPriceController.text.isNotEmpty) ? double.parse(_costPriceController.text) : 0;
 
-    //print('Add Product 3 - costPrice ' + _salesInvoiceD.costPrice.toString());
-
-    //print('Add Product 4');
     //Price
-    _salesInvoiceD.displayPrice =
-    (!_displayPriceController.text.isEmpty) ? double.parse(
-        _displayPriceController.text) : 0;
-    _salesInvoiceD.price =
-    (!_displayPriceController.text.isEmpty) ? double.parse(
-        _displayPriceController.text) : 0;
+    _salesInvoiceD.displayPrice = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
 
-    //print('Add Product 4 - costPrice ' + _salesInvoiceD.displayPrice.toString());
-    //print('Add Product 4 - costPrice ' + _salesInvoiceD.price.toString());
+    _salesInvoiceD.price = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
 
-
-    //print('Add Product 5');
     //Total
     _salesInvoiceD.total = _salesInvoiceD.qty * _salesInvoiceD.price;
-    _salesInvoiceD.displayTotal =
-        _salesInvoiceD.displayQty * _salesInvoiceD.displayPrice;
+    _salesInvoiceD.displayTotal = _salesInvoiceD.displayQty * _salesInvoiceD.displayPrice;
     //print('Add Product 6');
     //discount
     _salesInvoiceD.displayDiscountValue =
-    (!_displayDiscountController.text.isEmpty) ? double.parse(
-        _displayDiscountController.text) : 0;
+    (_displayDiscountController.text.isNotEmpty) ? double.parse(_displayDiscountController.text) : 0;
     _salesInvoiceD.discountValue = _salesInvoiceD.displayDiscountValue;
     //print('Add Product 7');
     //Net After Discount
-    _salesInvoiceD.netAfterDiscount =
-        _salesInvoiceD.displayTotal - _salesInvoiceD.displayDiscountValue;
+    _salesInvoiceD.netAfterDiscount = _salesInvoiceD.displayTotal - _salesInvoiceD.displayDiscountValue;
     //print('Add Product 8');
     //netBeforeTax
 
     //Vat
     //Tax Value
     //print('Add Product 9');
-    setItemTaxValue(
-        selectedItemValue.toString(), _salesInvoiceD.netAfterDiscount);
-    _salesInvoiceD.displayTotalTaxValue =
-    (!_taxController.text.isEmpty) ? double.parse(_taxController.text) : 0;
-    _salesInvoiceD.totalTaxValue =
-    (!_taxController.text.isEmpty) ? double.parse(_taxController.text) : 0;
+    setItemTaxValue(selectedItemValue.toString(), _salesInvoiceD.netAfterDiscount);
+    _salesInvoiceD.displayTotalTaxValue = (_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
+    _salesInvoiceD.totalTaxValue = (_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
     //Total Net
-    _salesInvoiceD.displayNetValue =
-        _salesInvoiceD.netAfterDiscount + _salesInvoiceD.displayTotalTaxValue;
-    _salesInvoiceD.netValue =
-        _salesInvoiceD.netAfterDiscount + _salesInvoiceD.totalTaxValue;
-
+    _salesInvoiceD.displayNetValue = _salesInvoiceD.netAfterDiscount + _salesInvoiceD.displayTotalTaxValue;
+    _salesInvoiceD.netValue = _salesInvoiceD.netAfterDiscount + _salesInvoiceD.totalTaxValue;
 
     print('Add Product 10');
 
     _salesInvoiceD.lineNum = lineNum;
 
-
     SalesInvoiceDLst.add(_salesInvoiceD);
-
 
     totalQty += _salesInvoiceD.displayQty;
     totalPrice += _salesInvoiceD.displayPrice;
@@ -1403,7 +1357,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     totalBeforeTax = totalAfterDiscount;
     totalTax += _salesInvoiceD.displayTotalTaxValue;
     totalNet = totalBeforeTax + totalTax;
-    //summeryTotal += productTotalAfterVat;
 
     _totalQtyController.text = totalQty.toString();
     _totalDiscountController.text = totalDiscount.toString();
@@ -1529,7 +1482,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
         ));
       }
     }
-
     //print To Send
     sendEmail();
 
@@ -1641,8 +1593,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
   _navigateToAddDetailScreen(BuildContext context, String invoiceSerial) async {
     final result = await Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) => AddSalesInvoiceDetailDataWidget(invoiceSerial)),
+      MaterialPageRoute(builder: (context) => AddSalesInvoiceDetailDataWidget(invoiceSerial)),
     );
     //).then((value) => getData());
 
@@ -1696,16 +1647,13 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
   Widget headLines({required String number, required String title}) {
     return Column(
-      crossAxisAlignment: langId == 1
-          ? CrossAxisAlignment.end
-          : CrossAxisAlignment.start,
+      crossAxisAlignment: langId == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
       children: [
         Row(
           children: [
             Text(
               number,
-              style: TextStyle(
-
+              style: const TextStyle(
                 color: Colors.black87,
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -1715,12 +1663,12 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
             Container(
               height: 25,
               width: 3,
-              color: Color.fromRGBO(144, 16, 46, 1),
+              color: const Color.fromRGBO(144, 16, 46, 1),
             ),
             const SizedBox(width: 10),
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black87,
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
@@ -1745,12 +1693,12 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
   calcTotalPriceRow() {
     double price = 0;
-    if (!_priceController.text.isEmpty) {
+    if (_priceController.text.isNotEmpty) {
       price = double.parse(_priceController.text);
     }
 
     double qtyVal = 0;
-    if (!_displayQtyController.text.isEmpty) {
+    if (_displayQtyController.text.isNotEmpty) {
       qtyVal = double.parse(_displayQtyController.text);
     }
 
@@ -1760,7 +1708,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     _totalController.text = total.toString();
 
     double discount = 0;
-    if (!_displayDiscountController.text.isEmpty) {
+    if (_displayDiscountController.text.isNotEmpty) {
       discount = double.parse(_displayDiscountController.text);
     }
 

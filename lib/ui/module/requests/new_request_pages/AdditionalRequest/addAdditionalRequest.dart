@@ -1,6 +1,6 @@
 import'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/AdditionalRequest/employeeTab.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/AdditionalRequest/generalAdditionalReqTab.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/AdditionalRequest/Employees/addEmployeesTab.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/AdditionalRequest/General/addGeneralAdditionalReqTab.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/services.dart';
 
@@ -42,7 +42,7 @@ class _AdditionalRequestState extends State<AdditionalRequest> {
           ),
           backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
         ),
-        body: const TabBarView(
+        body: TabBarView(
           children: [
             GeneralAddReqTab(),
             EmployeeTab(),

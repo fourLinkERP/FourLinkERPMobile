@@ -1,8 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/AdditionalRequest/addAdditionalRequest.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/additionalRequest/AdditionalRequestH.dart';
+import 'package:fourlinkmobileapp/service/module/requests/setup/AdditionalRequest/additionalRequestHApiService.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/AdditionalRequest/General/addGeneralAdditionalReqTab.dart';
 
 import 'dart:core';
 import 'package:fourlinkmobileapp/common/globals.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/AdditionalRequest/General/editGeneralAdditionalRequest.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
@@ -11,21 +16,51 @@ import '../../../../../cubit/app_cubit.dart';
 import '../../../../../cubit/app_states.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../helpers/toast.dart';
+import '../../../../../utils/permissionHelper.dart';
+
+//APIs
+AdditionalRequestHApiService _apiService = AdditionalRequestHApiService();
+
 class AdditionalRequestList extends StatefulWidget {
   const AdditionalRequestList({Key? key}) : super(key: key);
 
   @override
-  State<AdditionalRequestList> createState() => _AdditionalRequestListState();
+  _AdditionalRequestListState createState() => _AdditionalRequestListState();
 }
 
 class _AdditionalRequestListState extends State<AdditionalRequestList> {
 
-  DateTime get pickedDate => DateTime.now();
+  bool isLoading = true;
+  List<AdditionalRequestH> additionalRequestsH = [];
+  List<AdditionalRequestH> _founded = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    print('okkkkkkkkkkk');
+    AppCubit.get(context).CheckConnection();
+    Timer(const Duration(seconds: 30), () { // <-- Delay here
+      setState(() {
+        if(additionalRequestsH.isEmpty){
+          isLoading = false;
+        }
+        // <-- Code run after delay
+      });
+    });
+
+    getData();
+    super.initState();
+    setState(() {
+      _founded = additionalRequestsH;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-
-
+    setState(() {
+      getData();
+    });
 
     return Scaffold(
         appBar: AppBar(
@@ -36,7 +71,6 @@ class _AdditionalRequestListState extends State<AdditionalRequestList> {
             child: Column(
               crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
               children: [
-                //Align(child: Text('serial'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
                 TextField(
                   onChanged: (value) => onSearch(value),
                   decoration: InputDecoration(
@@ -63,7 +97,7 @@ class _AdditionalRequestListState extends State<AdditionalRequestList> {
         body: buildAdditionalRequests(),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) =>  const AdditionalRequest()));
+            _navigateToAddScreen(context);
           },
           backgroundColor: Colors.transparent,
           tooltip: 'Increment',
@@ -95,7 +129,7 @@ class _AdditionalRequestListState extends State<AdditionalRequestList> {
                 highlightColor: Colors.transparent,
                 focusColor: Colors.transparent,
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  const AdditionalRequest()));
+                  _navigateToAddScreen(context);
                 },
                 child: const Icon(
                   Icons.add,
@@ -118,16 +152,16 @@ class _AdditionalRequestListState extends State<AdditionalRequestList> {
       return const Center(child: Text('no internet connection'));
 
     }
-    else if(//_salesInvoices.isEmpty
-    AppCubit.get(context).Conection==true){
+    else if(additionalRequestsH.isEmpty && AppCubit.get(context).Conection==true){
       return const Center(child: CircularProgressIndicator());
     }else{
+      print("Success..................");
       return Container(
         margin: const EdgeInsets.only(top: 5,),
         color: const Color.fromRGBO(240, 242, 246,1),// Main Color
 
         child: ListView.builder(
-            itemCount: 3,//_salesInvoices.isEmpty ? 0 : _salesInvoices.length,
+            itemCount: additionalRequestsH.isEmpty ? 0 : additionalRequestsH.length,
             itemBuilder: (BuildContext context, int index) {
               return
                 Card(
@@ -137,9 +171,8 @@ class _AdditionalRequestListState extends State<AdditionalRequestList> {
                       // );
                     },
                     child: ListTile(
-                      leading: Image.asset('assets/fitness_app/salesCart.png'),
-                      title: Text('serial'.tr() + " : " + "2"),
-                      //  _salesInvoices[index].salesInvoicesSerial.toString()),
+                      leading: Image.asset('assets/fitness_app/requestSalary.png'),
+                      title: Text('serial'.tr() + " : " + additionalRequestsH[index].trxSerial.toString()),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
@@ -148,16 +181,14 @@ class _AdditionalRequestListState extends State<AdditionalRequestList> {
                               color: Colors.white30,
                               child: Row(
                                 children: [
-                                  Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(pickedDate),),
-                                  //DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString())))  ,
+                                  Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(additionalRequestsH[index].trxDate.toString())))  ,
 
                                 ],
 
                               )),
                           Container(height: 20, color: Colors.white30, child: Row(
                             children: [
-                              Text('customer'.tr() + " : " + "1"),
-                              //_salesInvoices[index].customerName.toString()),
+                              Text('cost center'.tr() + " : " + additionalRequestsH[index].costCenterName.toString()),
                             ],
 
                           )),
@@ -175,7 +206,7 @@ class _AdditionalRequestListState extends State<AdditionalRequestList> {
                                         ),
                                         label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
                                         onPressed: () {
-                                          // _navigateToEditScreen(context,_salesInvoices[index]);
+                                          _navigateToEditScreen(context,additionalRequestsH[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -203,7 +234,7 @@ class _AdditionalRequestListState extends State<AdditionalRequestList> {
                                         ),
                                         label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                          // _deleteItem(context,_salesInvoices[index].id);
+                                          _deleteItem(context,additionalRequestsH[index].id);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -259,13 +290,98 @@ class _AdditionalRequestListState extends State<AdditionalRequestList> {
       );
     }
   }
+  _navigateToEditScreen (BuildContext context, AdditionalRequestH additionalRequests) async {
+
+    int menuId=45204;
+    bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
+    if(isAllowEdit)
+    {
+
+      final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+          EditGeneralAdditionalRequest(additionalRequests)),).then((value) => getData());
+
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
+    }
+
+  }
+
   onSearch(String search) {
     if(search.isEmpty)
     {
-      //getData();
+      getData();
     }
     setState(() {
-
+      additionalRequestsH = _founded.where((AdditionalRequestH) =>
+          AdditionalRequestH.trxSerial!.toLowerCase().contains(search)).toList();
     });
+  }
+  void getData() async {
+    Future<List<AdditionalRequestH>?> futureAdditionalRequestsH = _apiService.getAdditionalRequestH ().catchError((Error){
+      print('Error ${Error}');
+      AppCubit.get(context).EmitErrorState();
+    });
+    print('1 before list');
+    additionalRequestsH = (await futureAdditionalRequestsH)!;
+    if (additionalRequestsH.isNotEmpty) {
+      setState(() {
+        _founded = additionalRequestsH;
+        String search = '';
+
+      });
+    }
+  }
+  _deleteItem(BuildContext context,int? id) async {
+
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Are you sure?'),
+        content: const Text('This action will permanently delete this data'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+    if (result == null || !result) {
+      return;
+    }
+
+    int menuId=45204;
+    bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
+    if(isAllowDelete)
+    {
+      var res = _apiService.deleteAdditionalRequestH(context,id).then((value) => getData());
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
+    }
+  }
+  _navigateToAddScreen(BuildContext context) async {
+
+    int menuId=45204;
+    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    if(isAllowAdd)
+    {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => GeneralAddReqTab(),
+      )).then((value) {
+        getData();
+      });
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    }
+
   }
 }

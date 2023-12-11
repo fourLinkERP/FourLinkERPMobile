@@ -401,5 +401,6 @@
     "searchRequestIncrease": "Search Request an Increase",
     "edit_request_vacation": "Edit Request Vacation",
     "edit_request_salary": "Edit Request salary increase",
-    "edit_request_resource": "Edit Request resource"
+    "edit_request_resource": "Edit Request resource",
+    "add_Employee_Done": "Add Employee Done"
 }
