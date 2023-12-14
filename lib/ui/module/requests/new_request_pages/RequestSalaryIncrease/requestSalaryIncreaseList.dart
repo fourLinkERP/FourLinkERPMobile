@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/salaryIncreaseRequest.dart';
 import 'package:fourlinkmobileapp/service/module/requests/setup/requestSalaryIncreaseApiService.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestSalaryIncrease/addRequestSalaryIncrease.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestSalaryIncrease/addRequestSalaryIncreaseTabs.dart';
 import 'dart:core';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestSalaryIncrease/editRequestSalaryIncrease.dart';

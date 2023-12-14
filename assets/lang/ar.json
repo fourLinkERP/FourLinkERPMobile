@@ -378,7 +378,7 @@
     "Additional request": "طلب اضافي",
     "New Request": "طلب جديد",
     "My Requests": "طلباتي",
-    "My Duties": "مهماتي",
+    "My Duties": "مهامي",
     "Document number: ": "رقم المستند: ",
     "Enter File Number": "ادخل رقم المستند",
     "Document date: ": "تاريخ المستند: ",
@@ -454,7 +454,9 @@
     "edit_request_resource" : "تعديل طلب احتياج",
     "General" : "عام",
     "Employees": "الموظفين",
-    "add_Employee_Done": "تم اضافة موظف"
+    "add_Employee_Done": "تم اضافة موظف",
+    "Status: ": "الحالة: ",
+    "status": "الحالة"
 
 }
 

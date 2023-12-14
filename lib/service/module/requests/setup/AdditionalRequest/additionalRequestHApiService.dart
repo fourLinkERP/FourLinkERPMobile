@@ -21,7 +21,6 @@ class AdditionalRequestHApiService {
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
       }
-
     };
 
     final http.Response response = await http.post(
@@ -33,7 +32,7 @@ class AdditionalRequestHApiService {
       body: jsonEncode(data),
     );
 
-    if(response.statusCode == 200)
+    if (response.statusCode == 200)
     {
       //print('AdditionalRequestH success1');
       List<dynamic> data = jsonDecode(response.body)['data'];

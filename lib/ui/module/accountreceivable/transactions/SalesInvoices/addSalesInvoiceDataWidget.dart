@@ -1446,10 +1446,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       totalAfterDiscount: (_totalAfterDiscountController.text.isNotEmpty) ? _totalAfterDiscountController.text.toDouble() : 0,
       totalBeforeTax: (_totalBeforeTaxController.text.isNotEmpty) ? _totalBeforeTaxController.text.toDouble() : 0,
 
-
-      //salesManCode: salesInvoicesSerial,
-      // currencyCode: "1",
-      // taxGroupCode: "1",
     ));
 
     //Save Footer For Now

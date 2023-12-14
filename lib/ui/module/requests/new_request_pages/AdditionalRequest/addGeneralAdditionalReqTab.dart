@@ -7,17 +7,17 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:supercharged/supercharged.dart';
-import '../../../../../../common/globals.dart';
-import '../../../../../../common/login_components.dart';
-import '../../../../../../data/model/modules/module/accounts/basicInputs/CostCenters/CostCenter.dart';
-import '../../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
-import '../../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
-import '../../../../../../data/model/modules/module/requests/setup/additionalRequest/AdditionalRequestH.dart';
-import '../../../../../../helpers/toast.dart';
-import '../../../../../../service/module/accounts/basicInputs/CostCenters/costCenterApiService.dart';
-import '../../../../../../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
-import '../../../../../../service/module/general/NextSerial/generalApiService.dart';
-import '../../../../../../service/module/requests/setup/AdditionalRequest/additionalRequestDApiService.dart';
+import '../../../../../common/globals.dart';
+import '../../../../../common/login_components.dart';
+import '../../../../../data/model/modules/module/accounts/basicInputs/CostCenters/CostCenter.dart';
+import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
+import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
+import '../../../../../data/model/modules/module/requests/setup/additionalRequest/AdditionalRequestH.dart';
+import '../../../../../helpers/toast.dart';
+import '../../../../../service/module/accounts/basicInputs/CostCenters/costCenterApiService.dart';
+import '../../../../../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
+import '../../../../../service/module/general/NextSerial/generalApiService.dart';
+import '../../../../../service/module/requests/setup/AdditionalRequest/additionalRequestDApiService.dart';
 
 //APIs
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
@@ -50,7 +50,6 @@ class _GeneralAddReqTabState extends State<GeneralAddReqTab> {
   String? selectedCostCenter1Value = null;
   String? selectedCostCenter2Value = null;
   int lineNum = 1;
-  int rowsCount = 0;
   final _addFormKey = GlobalKey<FormState>();
   final _additionalRecHTrxSerialController = TextEditingController();
   final _additionalRecHTrxDateController = TextEditingController();
@@ -81,7 +80,7 @@ class _GeneralAddReqTabState extends State<GeneralAddReqTab> {
       print(e);
     });
 
-    Future<List<CostCenter>> futureCostCenter = _costCenterApiService.getCostCenters().then((data) {
+    Future<List<CostCenter>> futureCostCenter = _costCenterApiService.getCostCenters().then((data){
       costCenters = data;
 
       getCostCenterData();
@@ -89,14 +88,28 @@ class _GeneralAddReqTabState extends State<GeneralAddReqTab> {
     }, onError: (e) {
       print(e);
     });
-
   }
 
   DateTime get pickedDate => DateTime.now();
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+        // appBar: AppBar(
+        //   centerTitle: true,
+        //   title: Row(crossAxisAlignment: langId == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        //     children: [
+        //       Image.asset('assets/images/logowhite2.png', scale: 3),
+        //       const SizedBox(width: 1),
+        //       Padding (
+        //         padding: const EdgeInsets.fromLTRB(0, 11, 2, 0),
+        //         child: Text('Additional Request'.tr(), style: const TextStyle(color: Colors.white)),
+        //       ),
+        //     ],
+        //   ),
+        //   backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+        // ),
     body: Form(
       key: _addFormKey,
       child: Column(
@@ -548,7 +561,8 @@ class _GeneralAddReqTabState extends State<GeneralAddReqTab> {
                         DataColumn(label: Text("emp name".tr()),),
                         DataColumn(label: Text("Cost center".tr()),),
                         DataColumn(label: Text("Additional cost center".tr()),),
-                        DataColumn(label: Text("action".tr()),),
+                        DataColumn(label: Text("edit".tr()),),
+                        DataColumn(label: Text("delete".tr()),),
                       ],
                       rows: additionalRequestDLst.map((p) =>
                           DataRow(
@@ -556,10 +570,14 @@ class _GeneralAddReqTabState extends State<GeneralAddReqTab> {
                             DataCell(SizedBox(width: 5, child: Text(p.lineNum.toString()))),
                             DataCell(SizedBox(width: 50, child: Text(p.empName.toString()))),
                             DataCell(SizedBox(child: Text(p.costCenterName1.toString()))),
-                            DataCell(SizedBox(child: Text(p.costCenterName2.toString()))
-                            ),
+                            DataCell(SizedBox(child: Text(p.costCenterName2.toString()))),
+                            DataCell(IconButton(icon: const Icon(Icons.edit, size: 20.0, color: Colors.green,),
+                              onPressed: () {},
+                            )),
+                            DataCell(IconButton(icon: const Icon(Icons.delete, size: 20.0, color: Colors.red,),
+                                  onPressed: () {},
+                                )),
 
-                            DataCell(SizedBox(width: 30, child: Image.asset('assets/images/delete.png'))),
                           ]),
                       ).toList(),
                     ),
@@ -636,7 +654,8 @@ class _GeneralAddReqTabState extends State<GeneralAddReqTab> {
         menuCostCenters.add(
             DropdownMenuItem(
                 value: costCenters[i].costCenterCode.toString(),
-                child: Text((langId==1)?  costCenters[i].costCenterNameAra.toString() : costCenters[i].costCenterNameEng.toString())));
+                child: Text((langId==1)?  costCenters[i].costCenterNameAra.toString() : costCenters[i].costCenterNameEng.toString())),
+        );
       }
     }
     setState(() {

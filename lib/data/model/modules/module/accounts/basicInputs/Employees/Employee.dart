@@ -1,12 +1,9 @@
 
-
 class Employee {
   int? id;
   String? empCode;
   String? empNameAra ;
   String? empNameEng;
-
-
 
 
   Employee({

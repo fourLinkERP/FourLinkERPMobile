@@ -3,11 +3,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/additionalRequest/AdditionalRequestH.dart';
 import 'package:fourlinkmobileapp/service/module/requests/setup/AdditionalRequest/additionalRequestHApiService.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/AdditionalRequest/General/addGeneralAdditionalReqTab.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/AdditionalRequest/addAdditionalRequestTabs.dart';
 
 import 'dart:core';
 import 'package:fourlinkmobileapp/common/globals.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/AdditionalRequest/General/editGeneralAdditionalRequest.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/AdditionalRequest/editGeneralAdditionalRequest.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
@@ -364,7 +364,7 @@ class _AdditionalRequestListState extends State<AdditionalRequestList> {
     }
     else
     {
-      FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
+      FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black); 
     }
   }
   _navigateToAddScreen(BuildContext context) async {
@@ -373,7 +373,7 @@ class _AdditionalRequestListState extends State<AdditionalRequestList> {
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if(isAllowAdd)
     {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => GeneralAddReqTab(),
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddAdditionalRequest(),
       )).then((value) {
         getData();
       });

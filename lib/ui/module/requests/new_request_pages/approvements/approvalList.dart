@@ -1,101 +1,32 @@
-import 'dart:async';
-
-import'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVacation/editRequestVacation.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVacation/addRequestVacationTabs.dart';
-
-import 'dart:core';
-import 'package:fourlinkmobileapp/common/globals.dart';
+import 'package:flutter/material.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
-import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/vacationRequest.dart';
-import 'package:fourlinkmobileapp/service/module/requests/setup/requestVacationApiService.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/approvements/addApproval.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/approvements/editApproval.dart';
+import 'package:intl/intl.dart';
+import '../../../../../common/globals.dart';
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../cubit/app_states.dart';
-import 'package:intl/intl.dart';
+import '../../../../../helpers/hex_decimal.dart';
+import '../../../../../theme/fitness_app_theme.dart';
 
-import '../../../../../helpers/toast.dart';
-import '../../../../../utils/permissionHelper.dart';
-
-
-// APIs
-VacationRequestsApiService _apiService = VacationRequestsApiService();
-
-class RequestVacationList extends StatefulWidget {
-  const RequestVacationList({Key? key}) : super(key: key);
+class Approvals extends StatefulWidget {
+  const Approvals({Key? key}) : super(key: key);
 
   @override
-  _RequestVacationListState createState() => _RequestVacationListState();
+  State<Approvals> createState() => _ApprovalsState();
 }
 
-class _RequestVacationListState extends State<RequestVacationList> {
+class _ApprovalsState extends State<Approvals> {
 
-  bool isLoading = true;
-  List<VacationRequests> vacationRequests = [];
-  List<VacationRequests> _founded = [];
+  final _addFormKey = GlobalKey<FormState>();
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    print('okkkkkkkkkkk');
-    AppCubit.get(context).CheckConnection();
-    Timer(const Duration(seconds: 30), () { // <-- Delay here
-      setState(() {
-        if(vacationRequests.isEmpty){
-          isLoading = false;
-        }
-        // <-- Code run after delay
-      });
-    });
-
-    getData();
-    super.initState();
-    setState(() {
-      _founded = vacationRequests;
-    });
-  }
+  DateTime get pickedDate => DateTime.now();
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      getData();
-    });
-
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
-        title: SizedBox(
-          //height: 60,
-          child: Column(
-            crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
-            children: [
-              //Align(child: Text('serial'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
-              TextField(
-                onChanged: (value) => onSearch(value),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.all(0),
-                  prefixIcon: const Icon(Icons.search, color: Colors.black26,),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    borderSide: BorderSide.none,
-                  ),
-                  hintStyle: const TextStyle(
-                      fontSize: 16,
-                      color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
-                  ),
-                  hintText: "searchRequestVacation".tr(),
 
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-        body: SafeArea(child: buildVacationRequests()),
+        body: SafeArea(child: buildApprovals()),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             _navigateToAddScreen(context);
@@ -141,80 +72,9 @@ class _RequestVacationListState extends State<RequestVacationList> {
             ),
           ),
         )
-
     );
   }
-  _navigateToAddScreen(BuildContext context) async {
-
-    // CircularProgressIndicator();
-    int menuId=45201;
-    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
-    if(isAllowAdd)
-    {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => RequestVacation(),
-      )).then((value) {
-        getData();
-      });
-    }
-    else
-    {
-      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
-    }
-
-  }
-  _navigateToEditScreen (BuildContext context, VacationRequests requests) async {
-
-    int menuId=45201;
-    bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
-    if(isAllowEdit)
-    {
-
-      final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-          EditRequestVacation(requests)),).then((value) => getData());
-
-    }
-    else
-    {
-      FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
-    }
-
-  }
-  _deleteItem(BuildContext context,int? id) async {
-
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Are you sure?'),
-        content: const Text('This action will permanently delete this data'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );
-    if (result == null || !result) {
-      return;
-    }
-
-    int menuId=45201;
-    bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
-    if(isAllowDelete)
-    {
-      var res = _apiService.deleteVacationRequest(context,id).then((value) => getData());
-    }
-    else
-    {
-      FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
-    }
-  }
-
-  Widget buildVacationRequests(){
+  Widget buildApprovals(){
     if(State is AppErrorState){
       return const Center(child: Text('no data'));
     }
@@ -222,27 +82,29 @@ class _RequestVacationListState extends State<RequestVacationList> {
       return const Center(child: Text('no internet connection'));
 
     }
-    else if(vacationRequests.isEmpty && AppCubit.get(context).Conection==true){
-      return const Center(child: CircularProgressIndicator());
-    }else{
+    // else if(vacationRequests.isEmpty && AppCubit.get(context).Connection==true){
+    //   return const Center(child: CircularProgressIndicator());
+    // }
+    else{
       //print("Success..................");
       return Container(
         margin: const EdgeInsets.only(top: 5,),
         color: const Color.fromRGBO(240, 242, 246,1),// Main Color
 
         child: ListView.builder(
-            itemCount: vacationRequests.isEmpty ? 0 : vacationRequests.length,
+            itemCount: 3, //vacationRequests.isEmpty ? 0 : vacationRequests.length,
             itemBuilder: (BuildContext context, int index) {
               return
                 Card(
                   child: InkWell(
                     onTap: () {
-                     // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_salesInvoices[index])),
-                     // );
+                      // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_salesInvoices[index])),
+                      // );
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/vacation.png'),
-                      title: Text('serial'.tr() + " : " + vacationRequests[index].trxSerial.toString()),
+                      title: Text('serial'.tr() + " : 1" ),
+                        //  + vacationRequests[index].trxSerial.toString()),
 
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
@@ -252,14 +114,14 @@ class _RequestVacationListState extends State<RequestVacationList> {
                               color: Colors.white30,
                               child: Row(
                                 children: [
-                                  Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(vacationRequests[index].trxDate.toString())))  ,
-
+                                  Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(pickedDate)),
+                                    //  DateFormat('yyyy-MM-dd').format(DateTime.parse(vacationRequests[index].trxDate.toString())))  ,
                                 ],
-
                               )),
                           Container(height: 20, color: Colors.white30, child: Row(
                             children: [
-                              Text('employee'.tr() + " : " + vacationRequests[index].empName.toString()),
+                              Text('employee'.tr() + " : Admin" ),
+                                 // + vacationRequests[index].empName.toString()),
                             ],
 
                           )),
@@ -277,7 +139,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
                                         ),
                                         label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
                                         onPressed: () {
-                                          _navigateToEditScreen(context,vacationRequests[index]);
+                                           _navigateToEditScreen(context);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -305,7 +167,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
                                         ),
                                         label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                          _deleteItem(context,vacationRequests[index].id);
+                                         // _deleteItem(context,vacationRequests[index].id);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -330,9 +192,9 @@ class _RequestVacationListState extends State<RequestVacationList> {
                                           size: 20.0,
                                           weight: 10,
                                         ),
-                                        label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
+                                        label: Text('print'.tr(),style:const TextStyle(color: Colors.white,)),
                                         onPressed: () {
-                                         // _navigateToPrintScreen(context,_salesInvoices[index]);
+                                          // _navigateToPrintScreen(context,_salesInvoices[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -361,32 +223,40 @@ class _RequestVacationListState extends State<RequestVacationList> {
       );
     }
   }
+  _navigateToAddScreen(BuildContext context) async {
 
+    // CircularProgressIndicator();
+    // int menuId=45201;
+    // bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    // if(isAllowAdd)
+    // {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddApproval()),);
+          //.then((value) {
+        //getData();
+      //}
+    //);
+   // }
+   //  else
+   //  {
+   //    FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+   //  }
 
-  onSearch(String search) {
-
-    if(search.isEmpty)
-    {
-      getData();
-    }
-    setState(() {
-      vacationRequests = _founded.where((VacationRequests) =>
-          VacationRequests.trxSerial!.toLowerCase().contains(search)).toList();
-    });
   }
-  void getData() async {
-    Future<List<VacationRequests>?> futureVacationRequests = _apiService.getVacationRequests().catchError((Error){
-      AppCubit.get(context).EmitErrorState();
-    });
-    vacationRequests = (await futureVacationRequests)!;
-    if (vacationRequests.isNotEmpty) {
-      setState(() {
-        _founded = vacationRequests;
-        String search = '';
+  _navigateToEditScreen (BuildContext context) async {
 
-      });
-    }
+    // int menuId=45201;
+    // bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
+    // if(isAllowEdit)
+    // {
+    //
+    //   final result = await
+      Navigator.push(context, MaterialPageRoute(builder: (context) => EditApproval()),);
+    //
+    // }
+    // else
+    // {
+    //   FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
+    // }
+
   }
-
 }
-

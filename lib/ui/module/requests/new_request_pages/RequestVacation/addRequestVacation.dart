@@ -34,16 +34,16 @@ JobApiService _jobApiService = JobApiService();
 
 bool isLoading = true;
 
-class RequestVacation extends StatefulWidget {
+class AddRequestVacation extends StatefulWidget {
   static const String routeName = 'newr';
-  RequestVacation();
+  AddRequestVacation();
 
   @override
-  _RequestVacationState createState() => _RequestVacationState();
+  _AddRequestVacationState createState() => _AddRequestVacationState();
 }
 
-class _RequestVacationState extends State<RequestVacation> {
-  _RequestVacationState();
+class _AddRequestVacationState extends State<AddRequestVacation> {
+  _AddRequestVacationState();
 
   // List Models
   List<VacationType> vacationTypes = [];
@@ -156,7 +156,7 @@ class _RequestVacationState extends State<RequestVacation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
+        /*appBar: AppBar(
           centerTitle: true,
           title: ListTile(
                 leading: Image.asset('assets/images/logowhite2.png', scale: 3),
@@ -164,7 +164,7 @@ class _RequestVacationState extends State<RequestVacation> {
                   style: const TextStyle(color: Colors.white),),
               ),
           backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-        ),
+        ),*/
         body: Form(
           key: _addFormKey,
             child: Column(

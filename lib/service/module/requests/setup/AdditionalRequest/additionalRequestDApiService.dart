@@ -15,11 +15,12 @@ class AdditionalRequestDApiService {
   String deleteApi = baseUrl.toString() + 'v1/workflowadditionalrequestdetails/';
   String getByIdApi = baseUrl.toString() + 'v1/workflowadditionalrequestdetails/'; // Add ID For Get
 
-  Future<List<AdditionalRequestD>> getAdditionalRequestD () async {
+  Future<List<AdditionalRequestD>> getAdditionalRequestD (String? trxSerial) async {
     Map data = {
       'Search': {
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
+        'TrxSerial': trxSerial
       }
 
     };
@@ -35,14 +36,16 @@ class AdditionalRequestDApiService {
 
     if(response.statusCode == 200)
     {
-      //print('AdditionalRequestD success1');
+      print('AdditionalRequestD success1');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<AdditionalRequestD> list = [];
       if(data.isNotEmpty)
       {
         list = data.map((item) => AdditionalRequestD.fromJson(item)).toList(); //AdditionalRequestD.fromJson
       }
-      //print('AdditionalRequestD success 2');
+      print('to print body');
+      print(data.toString());
+      print('AdditionalRequestD success 2');
       return list;
     }
     else {

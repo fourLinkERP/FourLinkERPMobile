@@ -24,15 +24,15 @@ JobApiService _jobApiService = JobApiService();
 
 bool isLoading = true;
 
-class RequestSalary extends StatefulWidget {
-  RequestSalary();
+class AddRequestSalary extends StatefulWidget {
+  AddRequestSalary();
 
   @override
-  _RequestSalaryState createState() => _RequestSalaryState();
+  _AddRequestSalaryState createState() => _AddRequestSalaryState();
 }
 
-class _RequestSalaryState extends State<RequestSalary> {
-  _RequestSalaryState();
+class _AddRequestSalaryState extends State<AddRequestSalary> {
+  _AddRequestSalaryState();
 
   List<Employee> employees = [];
   List<Job> jobs = [];
@@ -104,15 +104,15 @@ class _RequestSalaryState extends State<RequestSalary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: ListTile(
-              leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-              title: Text('Request Salary Increase'.tr(),
-                style: const TextStyle(color: Colors.white),),
-            ),
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-      ),
+      // appBar: AppBar(
+      //   centerTitle: true,
+      //   title: ListTile(
+      //         leading: Image.asset('assets/images/logowhite2.png', scale: 3),
+      //         title: Text('Request Salary Increase'.tr(),
+      //           style: const TextStyle(color: Colors.white),),
+      //       ),
+      //   backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+      // ),
       body: Form(
         key: _addFormKey,
         child: Column(

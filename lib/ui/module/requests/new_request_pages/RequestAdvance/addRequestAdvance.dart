@@ -22,15 +22,15 @@ NextSerialApiService _nextSerialApiService= NextSerialApiService();
 EmployeeApiService _employeeApiService = EmployeeApiService();
 JobApiService _jobApiService = JobApiService();
 
-class RequestAdvance extends StatefulWidget {
-  RequestAdvance();
+class AddRequestAdvance extends StatefulWidget {
+  AddRequestAdvance();
 
   @override
-  _RequestAdvanceState createState() => _RequestAdvanceState();
+  _AddRequestAdvanceState createState() => _AddRequestAdvanceState();
 }
 
-class _RequestAdvanceState extends State<RequestAdvance> {
-  _RequestAdvanceState();
+class _AddRequestAdvanceState extends State<AddRequestAdvance> {
+  _AddRequestAdvanceState();
 
   List<Employee> employees = [];
   List<Job> jobs = [];
@@ -110,7 +110,7 @@ class _RequestAdvanceState extends State<RequestAdvance> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         centerTitle: true,
         title: ListTile(
           leading: Image.asset('assets/images/logowhite2.png', scale: 3),
@@ -118,7 +118,7 @@ class _RequestAdvanceState extends State<RequestAdvance> {
             style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
         ),
         backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-      ),
+      ),*/
       body: Form(
         key: _addFormKey,
         child: Column(
@@ -354,7 +354,7 @@ class _RequestAdvanceState extends State<RequestAdvance> {
                   ListTile(
                     leading: Text("Recruitment date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                     trailing: SizedBox(
-                      width: 220,
+                      width: 200,
                       height: 55,
                       child: textFormFields(
                         hintText: 'Select Date'.tr(),

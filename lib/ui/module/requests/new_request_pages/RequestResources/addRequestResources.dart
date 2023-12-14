@@ -22,15 +22,15 @@ NextSerialApiService _nextSerialApiService= NextSerialApiService();
 DepartmentApiService _departmentApiService = DepartmentApiService();
 CostCenterApiService _costCenterApiService = CostCenterApiService();
 
-class RequestResources extends StatefulWidget {
-  RequestResources();
+class AddRequestResources extends StatefulWidget {
+  AddRequestResources();
 
   @override
-  _RequestResourcesState createState() => _RequestResourcesState();
+  _AddRequestResourcesState createState() => _AddRequestResourcesState();
 }
 
-class _RequestResourcesState extends State<RequestResources> {
-  _RequestResourcesState();
+class _AddRequestResourcesState extends State<AddRequestResources> {
+  _AddRequestResourcesState();
 
   // List Models
   List<Department> departments = [];
@@ -90,15 +90,15 @@ class _RequestResourcesState extends State<RequestResources> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: ListTile(
-          leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-          title: Text('Request Resources'.tr(),
-            style: const TextStyle(color: Colors.white),),
-        ),
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-      ),
+      // appBar: AppBar(
+      //   centerTitle: true,
+      //   title: ListTile(
+      //     leading: Image.asset('assets/images/logowhite2.png', scale: 3),
+      //     title: Text('Request Resources'.tr(),
+      //       style: const TextStyle(color: Colors.white),),
+      //   ),
+      //   backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+      // ),
       body: Form(
         key: _addFormKey,
         child: Column(

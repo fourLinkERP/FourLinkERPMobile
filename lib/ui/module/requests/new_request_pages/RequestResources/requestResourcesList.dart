@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/service/module/requests/setup/requestResourcesApiService.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestResources/addRequestResources.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestResources/addRequestResourcesTabs.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestResources/editRequestResources.dart';
 import 'dart:core';
 import 'package:fourlinkmobileapp/common/globals.dart';
