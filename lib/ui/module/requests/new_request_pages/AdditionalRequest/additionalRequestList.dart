@@ -7,6 +7,7 @@ import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/Additiona
 
 import 'dart:core';
 import 'package:fourlinkmobileapp/common/globals.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/AdditionalRequest/detailAdditionalRequest.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/AdditionalRequest/editGeneralAdditionalRequest.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
@@ -167,8 +168,7 @@ class _AdditionalRequestListState extends State<AdditionalRequestList> {
                 Card(
                   child: InkWell(
                     onTap: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_salesInvoices[index])),
-                      // );
+                       Navigator.push(context, MaterialPageRoute(builder: (context) => DetailAdditionalRequest(additionalRequestsH[index])),);
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/requestSalary.png'),

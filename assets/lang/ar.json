@@ -456,7 +456,9 @@
     "Employees": "الموظفين",
     "add_Employee_Done": "تم اضافة موظف",
     "Status: ": "الحالة: ",
-    "status": "الحالة"
+    "status": "الحالة",
+    "Inbox Mails": "البريد الوارد",
+    "OutboxMails": "البريد الصادر"
 
 }
 

@@ -5,6 +5,7 @@ import 'package:fourlinkmobileapp/service/module/requests/setup/requestSalaryInc
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestSalaryIncrease/addRequestSalaryIncreaseTabs.dart';
 import 'dart:core';
 import 'package:fourlinkmobileapp/common/globals.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestSalaryIncrease/detailRequestSalaryIncrease.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestSalaryIncrease/editRequestSalaryIncrease.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
@@ -200,8 +201,7 @@ class _RequestSalaryIncreaseListState extends State<RequestSalaryIncreaseList> {
                 Card(
                   child: InkWell(
                     onTap: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_salesInvoices[index])),
-                      // );
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRequestSalary(salaryIncRequests[index])),);
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/requestSalary.png'),

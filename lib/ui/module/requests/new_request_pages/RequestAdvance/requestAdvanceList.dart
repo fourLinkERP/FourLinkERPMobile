@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/advanceRequest.dart';
 import 'package:fourlinkmobileapp/service/module/requests/setup/requestAdvanceApiService.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestAdvance/addRequestAdvanceTabs.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestAdvance/detailRequestAdvance.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestAdvance/editRequestAdvance.dart';
 import 'dart:core';
 import 'package:fourlinkmobileapp/common/globals.dart';
@@ -170,8 +171,7 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
                 Card(
                   child: InkWell(
                     onTap: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_salesInvoices[index])),
-                      // );
+                       Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRequestAdvance(advanceRequests[index])),);
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/requestSalary.png'),

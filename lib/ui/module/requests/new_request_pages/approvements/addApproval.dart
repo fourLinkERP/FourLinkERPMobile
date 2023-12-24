@@ -103,7 +103,6 @@ class _AddApprovalState extends State<AddApproval> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text((langId==1)? item.empNameAra.toString():  item.empNameEng.toString(),
-                                      //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
                                       textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
                                   ),
@@ -177,8 +176,6 @@ class _AddApprovalState extends State<AddApproval> {
                             items: levels,
                             itemAsString: (Level u) => u.levelNameAra.toString(),
                             onChanged: (value){
-                              //v.text = value!.cusTypesCode.toString();
-                              //print(value!.id);
                               selectedLevelValue =  value!.levelCode.toString();
                             },
                             filterFn: (instance, filter){
@@ -296,7 +293,9 @@ class _AddApprovalState extends State<AddApproval> {
         menuLevels.add(
             DropdownMenuItem(
             value: levels[i].levelCode.toString(),
-            child: Text((langId==1)? levels[i].levelNameAra.toString() : levels[i].levelNameEng.toString())));
+            child: Text((langId==1)? levels[i].levelNameAra.toString() : levels[i].levelNameEng.toString())
+            ),
+        );
       }
     }
     setState(() {

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVacation/detailRequestVacation.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVacation/editRequestVacation.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVacation/addRequestVacationTabs.dart';
 
@@ -237,8 +238,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
                 Card(
                   child: InkWell(
                     onTap: () {
-                     // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_salesInvoices[index])),
-                     // );
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRequestVacation(vacationRequests[index])),);
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/vacation.png'),

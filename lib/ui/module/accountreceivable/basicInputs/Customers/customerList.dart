@@ -67,12 +67,9 @@ class _CustomerListPageState extends State<CustomerListPage> {
       print('Error${Error}');
       AppCubit.get(context).EmitErrorState();
     });
-    print('xxxx1');
     _customers = (await futureCustomer)!;
-    print('xxxx2 len ' + _customers.length.toString());
     if (_customers.isNotEmpty) {
       setState(() {
-        print('xxxx');
         _founded = _customers;
         String search = '';
       });

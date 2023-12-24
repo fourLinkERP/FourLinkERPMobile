@@ -309,7 +309,6 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
 
   _navigateToPrintScreen (BuildContext context, SalesOfferH invoiceH) async {
 
-
     // // DateTime date = DateTime.parse(invoiceH.salesOffersDate.toString());
     // // final dueDate = date.add(Duration(days: 7));
     // //
@@ -418,15 +417,11 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
     // final pdfFile = await PdfInvoiceApi.generate(invoice);
     //
     // PdfApi.openFile(pdfFile);
-
-
   }
-
-
 
    Widget BuildsalesOffers(){
     if(_salesOffers.isEmpty){
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
     }else{
       return Container(
         color: Color.fromRGBO(240, 242, 246,1), // Main Color
@@ -446,33 +441,23 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/quotion.png'),
-                      title: Text(
-                          'serial'.tr() + " : " + _salesOffers[index].offerSerial.toString()),
+                      title: Text('serial'.tr() + " : " + _salesOffers[index].offerSerial.toString()),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
                           Container(height: 20, color: Colors.white30, child: Row(
                             children: [
-                              Text(
-                                  'date'.tr() + " : "
-                                      + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesOffers[index].offerDate.toString()))
-                              ),
-
+                              Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesOffers[index].offerDate.toString()))),
                             ],
-
                           )),
                           Container(height: 20, color: Colors.white30, child: Row(
                             children: [
-
-                              Text(
-                                  'customer'.tr() + " : " + _salesOffers[index].customerName.toString()),
-
-
+                              Text('customer'.tr() + " : " + _salesOffers[index].customerName.toString()),
                             ],
 
                           )),
-                          SizedBox(width: 5),
-                          Container(
+                          const SizedBox(width: 5),
+                          SizedBox(
                               child: Row(
                                 children: <Widget>[
                                   Center(
@@ -554,9 +539,8 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                                                 color: Colors.black87
                                             )
                                         ),
-                                      )),
-
-
+                                      )
+                                  ),
                                 ],
                               ))
                           // Container(
@@ -612,12 +596,8 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                       ),
                     ),
                   ),
-
-
-
                 );
             }),
-
       );
 
     }

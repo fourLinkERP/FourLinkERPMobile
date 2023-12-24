@@ -7,6 +7,7 @@ class SalaryIncRequests {
   String? empCode;
   String? empName;
   String? jobCode;
+  String? jobName;
   int? basicSalary;
   int? fullSalary;
   String? recruitmentDate;
@@ -30,6 +31,7 @@ class SalaryIncRequests {
     this.empCode,
     this.empName,
     this.jobCode,
+    this.jobName,
     this.basicSalary,
     this.fullSalary,
     this.recruitmentDate,
@@ -55,7 +57,8 @@ class SalaryIncRequests {
       trxDate: (json['trxDate'] != null) ? json['trxDate'] as String : pickedDate,
       empCode: (json['empCode'] != null) ? json['empCode'] as String : "",
       empName: (json['empName'] != null) ? json['empName'] as String : "",
-      jobCode: (json['jobCode'] != null) ? json['jobCode'] as String : "",
+      jobCode: (json['jobCode'] != null) ? json['jobCode'] as String : " ",
+      jobName: (json['jobName'] != null) ? json['jobName'] as String : " ",
       basicSalary: (json['basicSalary'] != null) ? json['basicSalary'] as int : 0,
       fullSalary: (json['fullSalary'] != null) ? json['fullSalary'] as int : 0,
       recruitmentDate: (json['recruitmentDate'] != null) ? json['recruitmentDate'] as String : pickedDate,

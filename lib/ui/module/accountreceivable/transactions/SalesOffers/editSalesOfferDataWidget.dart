@@ -27,16 +27,16 @@ import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 //APIS
-NextSerialApiService _nextSerialApiService=new NextSerialApiService();
-SalesOffersTypeApiService _salesOfferTypeApiService=new SalesOffersTypeApiService();
-SalesOfferHApiService _salesOfferHApiService=new SalesOfferHApiService();
-SalesOfferDApiService _salesOfferDApiService=new SalesOfferDApiService();
-CustomerApiService _customerApiService=new CustomerApiService();
-ItemApiService _itemsApiService = new ItemApiService();
-UnitApiService _unitsApiService = new UnitApiService();
-TafqeetApiService _tafqeetApiService=new TafqeetApiService();
-SalesInvoiceDApiService _salesInvoiceDApiService=new SalesInvoiceDApiService();
-InventoryOperationApiService _inventoryOperationApiService = new InventoryOperationApiService();
+NextSerialApiService _nextSerialApiService= NextSerialApiService();
+SalesOffersTypeApiService _salesOfferTypeApiService= SalesOffersTypeApiService();
+SalesOfferHApiService _salesOfferHApiService= SalesOfferHApiService();
+SalesOfferDApiService _salesOfferDApiService= SalesOfferDApiService();
+CustomerApiService _customerApiService= CustomerApiService();
+ItemApiService _itemsApiService = ItemApiService();
+UnitApiService _unitsApiService = UnitApiService();
+TafqeetApiService _tafqeetApiService= TafqeetApiService();
+SalesInvoiceDApiService _salesInvoiceDApiService= SalesInvoiceDApiService();
+InventoryOperationApiService _inventoryOperationApiService = InventoryOperationApiService();
 
 //List Models
 List<Customer> customers=[];
@@ -178,8 +178,6 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     _invoiceDiscountPercentController.text = widget.salesOffersH.invoiceDiscountPercent.toString();
     _invoiceDiscountValueController.text = widget.salesOffersH.invoiceDiscountValue.toString();
     _totalAfterDiscountController.text = widget.salesOffersH.totalAfterDiscount.toString();
-
-
 
 
 
@@ -506,7 +504,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
 
                                   children: [
                                     Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Item: '.tr()) ),
-                                    const SizedBox(width: 5),
+                                    const SizedBox(width: 10),
                                     SizedBox(
                                       width: 90,
                                       child: DropdownSearch<Item>(
@@ -542,7 +540,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                           changeItemUnit(selectedItemValue.toString());
 
                                           //Factor
-                                          int qty=(_displayQtyController.text !=null)? int.parse(_displayQtyController.text):0;
+                                          int qty=(_displayQtyController.text.isNotEmpty)? int.parse(_displayQtyController.text):0;
                                           setItemQty(selectedItemValue.toString(),selectedUnitValue.toString(), qty);
 
 
@@ -566,13 +564,6 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                       ),
                                     ),
 
-                                    // ElevatedButton(
-                                    //     onPressed: () {
-                                    //       if (_dropdownFormKey.currentState!.validate()) {
-                                    //         //valid flow
-                                    //       }
-                                    //     },
-                                    //     child: Text("Submit"))
                                   ],
                                 )),
                             const SizedBox(width: 15),
@@ -590,10 +581,8 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                           itemBuilder: (context, item, isSelected) {
                                             return Container(
                                               margin: const EdgeInsets.symmetric(horizontal: 8),
-                                              decoration: !isSelected
-                                                  ? null
-                                                  : BoxDecoration(
-
+                                              decoration: !isSelected ? null :
+                                              BoxDecoration(
                                                 border: Border.all(color: Colors.black12),
                                                 borderRadius: BorderRadius.circular(5),
                                                 color: Colors.white,
@@ -622,7 +611,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                             //Item Price
                                             setItemPrice(selectedItemValue.toString(),selectedUnitValue.toString(),criteria);
                                             //Factor
-                                            int qty=(_displayQtyController.text !=null)? int.parse(_displayQtyController.text):0;
+                                            int qty=(_displayQtyController.text.isNotEmpty)? int.parse(_displayQtyController.text):0;
                                             setItemQty(selectedItemValue.toString(),selectedUnitValue.toString(), qty);
 
                                           }
@@ -664,7 +653,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                             Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_price :'.tr()) ),
                             const SizedBox(width: 10),
                             SizedBox(
-                              width: 100,
+                              width: 90,
                               child: TextFormField(
                                 controller: _displayPriceController,
                                 //hintText: "price".tr(),
@@ -678,11 +667,11 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                 },
                               ),
                             ),
-                            const SizedBox(width: 15),
+                            const SizedBox(width: 10),
                             Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_qty :'.tr()) ),
                             const SizedBox(width: 10),
                             SizedBox(
-                              width: 110,
+                              width: 100,
                               child: TextFormField(
                                 controller: _displayQtyController,
                                 decoration: const InputDecoration(
@@ -1304,29 +1293,29 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     }
 
 
-    SalesOfferD _salesOfferD= new SalesOfferD();
+    SalesOfferD _salesOfferD= SalesOfferD();
     //print('Add Product 1');
     //Item
     _salesOfferD.itemCode= selectedItemValue;
     _salesOfferD.itemName= selectedItemName;
     //print('Add Product 2');
     //Qty
-    _salesOfferD.displayQty= (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
-    _salesOfferD.qty= (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
+    _salesOfferD.displayQty= (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+    _salesOfferD.qty= (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
 
     //print('Add Product 2 - display Qty ' + _salesOfferD.displayQty.toString());
     //print('Add Product 2 -  Qty ' + _salesOfferD.qty.toString());
 
     //Cost Price
     //print('Add Product 3');
-    _salesOfferD.costPrice= (!_costPriceController.text.isEmpty)?  double.parse(_costPriceController.text):0;
+    _salesOfferD.costPrice= (_costPriceController.text.isNotEmpty)?  double.parse(_costPriceController.text):0;
 
     //print('Add Product 3 - costPrice ' + _salesOfferD.costPrice.toString());
 
     //print('Add Product 4');
     //Price
-    _salesOfferD.displayPrice= (!_displayPriceController.text.isEmpty) ?  double.parse(_displayPriceController.text) : 0 ;
-    _salesOfferD.price = (!_displayPriceController.text.isEmpty) ? double.parse(_displayPriceController.text) : 0;
+    _salesOfferD.displayPrice= (_displayPriceController.text.isNotEmpty) ?  double.parse(_displayPriceController.text) : 0 ;
+    _salesOfferD.price = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
 
     //print('Add Product 4 - costPrice ' + _salesOfferD.displayPrice.toString());
     //print('Add Product 4 - costPrice ' + _salesOfferD.price.toString());
@@ -1338,7 +1327,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     _salesOfferD.displayTotal= _salesOfferD.displayQty * _salesOfferD.displayPrice ;
     //print('Add Product 6');
     //discount
-    _salesOfferD.displayDiscountValue = (!_displayDiscountController.text.isEmpty) ?  double.parse(_displayDiscountController.text) : 0 ;
+    _salesOfferD.displayDiscountValue = (_displayDiscountController.text.isNotEmpty) ?  double.parse(_displayDiscountController.text) : 0 ;
     _salesOfferD.discountValue= _salesOfferD.displayDiscountValue ;
     //print('Add Product 7');
     //Net After Discount
@@ -1350,8 +1339,8 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     //Tax Value
     //print('Add Product 9');
     setItemTaxValue(selectedItemValue.toString(),_salesOfferD.netAfterDiscount);
-    _salesOfferD.displayTotalTaxValue = (!_taxController.text.isEmpty) ? double.parse(_taxController.text) : 0;
-    _salesOfferD.totalTaxValue = (!_taxController.text.isEmpty) ?  double.parse(_taxController.text) : 0;
+    _salesOfferD.displayTotalTaxValue = (_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
+    _salesOfferD.totalTaxValue = (_taxController.text.isNotEmpty) ?  double.parse(_taxController.text) : 0;
     //Total Net
     _salesOfferD.displayNetValue = _salesOfferD.netAfterDiscount + _salesOfferD.displayTotalTaxValue;
     _salesOfferD.netValue= _salesOfferD.netAfterDiscount + _salesOfferD.totalTaxValue;
@@ -1419,7 +1408,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
   saveInvoice(BuildContext context) {
 
     //Items
-    if(salesOfferDLst == null || salesOfferDLst.length <=0){
+    if(salesOfferDLst.isEmpty || salesOfferDLst.length <=0){
       FN_showToast(context,'please_Insert_One_Item_At_Least'.tr(),Colors.black);
       return;
     }
@@ -1454,18 +1443,17 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
       offerTypeCode: selectedTypeValue,
       offerDate: _offerDateController.text,
       customerCode: selectedCustomerValue ,
-      totalQty:(!_totalQtyController.text.isEmpty)?  _totalQtyController.text.toDouble():0 ,
-      totalTax:(!_totalTaxController.text.isEmpty)?  _totalTaxController.text.toDouble():0 ,
-      totalDiscount:(!_totalDiscountController.text.isEmpty)?  _totalDiscountController.text.toDouble():0 ,
+      totalQty:(_totalQtyController.text.isNotEmpty)?  _totalQtyController.text.toDouble():0 ,
+      totalTax:(_totalTaxController.text.isNotEmpty)?  _totalTaxController.text.toDouble():0 ,
+      totalDiscount:(_totalDiscountController.text.isNotEmpty)?  _totalDiscountController.text.toDouble():0 ,
       rowsCount:(rowsCount != null && rowsCount >0 )? rowsCount :0 ,
-      totalNet:(!_totalNetController.text.isEmpty)?  _totalNetController.text.toDouble():0 ,
-      invoiceDiscountPercent:(!_invoiceDiscountPercentController.text.isEmpty)?  _invoiceDiscountPercentController.text.toDouble():0 ,
-      invoiceDiscountValue:(!_invoiceDiscountValueController.text.isEmpty)?  _invoiceDiscountValueController.text.toDouble():0 ,
-      totalValue:(!_totalValueController.text.isEmpty)?  _totalValueController.text.toDouble():0 ,
-      totalAfterDiscount:(!_totalAfterDiscountController.text.isEmpty)?  _totalAfterDiscountController.text.toDouble():0 ,
-      totalBeforeTax:(!_totalBeforeTaxController.text.isEmpty)?  _totalBeforeTaxController.text.toDouble():0 ,
-      // currencyCode: "1",
-      // taxGroupCode: "1",
+      totalNet:(_totalNetController.text.isNotEmpty)?  _totalNetController.text.toDouble():0 ,
+      invoiceDiscountPercent:(_invoiceDiscountPercentController.text.isNotEmpty)?  _invoiceDiscountPercentController.text.toDouble():0 ,
+      invoiceDiscountValue:(_invoiceDiscountValueController.text.isNotEmpty)?  _invoiceDiscountValueController.text.toDouble():0 ,
+      totalValue:(_totalValueController.text.isNotEmpty)?  _totalValueController.text.toDouble():0 ,
+      totalAfterDiscount:(_totalAfterDiscountController.text.isNotEmpty)?  _totalAfterDiscountController.text.toDouble():0 ,
+      totalBeforeTax:(_totalBeforeTaxController.text.isNotEmpty)?  _totalBeforeTaxController.text.toDouble():0 ,
+
     ));
 
     //Save Footer For Now
@@ -1512,8 +1500,8 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
   getSalesOfferTypeData() {
     if (salesOfferTypes != null) {
       for(var i = 0; i < salesOfferTypes.length; i++){
-        menuSalesOfferTypes.add(DropdownMenuItem(child: Text(salesOfferTypes[i].
-        offersTypeNameAra.toString()),value: salesOfferTypes[i].offersTypeCode.toString()));
+        menuSalesOfferTypes.add(DropdownMenuItem(value: salesOfferTypes[i].offersTypeCode.toString(), child: Text(salesOfferTypes[i].
+        offersTypeNameAra.toString())));
         if(salesOfferTypes[i].offersTypeCode == selectedTypeValue){
           // print('in amr3');
           salesOfferTypeItem = salesOfferTypes[salesOfferTypes.indexOf(salesOfferTypes[i])];

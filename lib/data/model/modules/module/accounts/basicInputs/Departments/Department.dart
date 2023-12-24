@@ -1,11 +1,9 @@
 
-
 class Department {
   int? id;
   String? departmentCode ;
   String? departmentNameAra ;
   String? departmentNameEng;
-
 
 
 

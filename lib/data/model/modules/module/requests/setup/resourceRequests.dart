@@ -8,7 +8,9 @@ class ResourceRequests{
   String? trxDate;
   int? statementNumber;
   String? departmentCode;
+  String? departmentName;
   String? costCenterCode1;
+  String? costCenterName;
   String? title;
   String? messageTitle;
   String? requiredItem;
@@ -22,7 +24,9 @@ class ResourceRequests{
     this.trxDate,
     this.statementNumber,
     this.departmentCode,
+    this.departmentName,
     this.costCenterCode1,
+    this.costCenterName,
     this.title,
     this.messageTitle,
     this.requiredItem,
@@ -37,7 +41,9 @@ class ResourceRequests{
       trxDate: (json['trxDate'] != null) ? json['trxDate'] as String : pickedDate,
       statementNumber: (json['statementNumber'] != null) ? json['statementNumber'] as int : 0,
       departmentCode: (json['departmentCode'] != null) ? json['departmentCode'] as String : " ",
+      departmentName: (json['departmentName'] != null) ? json['departmentName'] as String : " ",
       costCenterCode1: (json['costCenterCode1'] != null) ? json['costCenterCode1'] as String : " ",
+      costCenterName: (json['costCenterName'] != null) ? json['costCenterName'] as String : " ",
       title: (json['title'] != null) ? json['title'] as String : " ",
       messageTitle: (json['messageTitle'] != null) ? json['messageTitle'] as String : " ",
       requiredItem: (json['requiredItem'] != null) ? json['requiredItem'] as String : " ",

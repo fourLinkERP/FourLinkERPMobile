@@ -1,9 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/service/module/requests/setup/requestResourcesApiService.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestResources/addRequestResourcesTabs.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestResources/editRequestResources.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestResources/detailRequestResources.dart';
 import 'dart:core';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -167,8 +167,7 @@ class _RequestResourceListState extends State<RequestResourceList> {
                 Card(
                   child: InkWell(
                     onTap: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_salesInvoices[index])),
-                      // );
+                       Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRequestResources(resourceRequests[index])),);
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/salesCart.png'),
@@ -257,11 +256,11 @@ class _RequestResourceListState extends State<RequestResourceList> {
                                           Icons.print,
                                           color: Colors.white,
                                           size: 20.0,
-                                          weight: 10,
+                                          weight: 10.0,
                                         ),
                                         label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                          // _navigateToPrintScreen(context,_salesInvoices[index]);
+                                           //_navigateToPrintScreen(context,resourceRequests[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -276,7 +275,8 @@ class _RequestResourceListState extends State<RequestResourceList> {
                                                 color: Colors.black87
                                             )
                                         ),
-                                      )),
+                                      ),
+                                  ),
 
                                 ],
                               ))
@@ -387,5 +387,6 @@ class _RequestResourceListState extends State<RequestResourceList> {
       FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
     }
   }
+
 
 }

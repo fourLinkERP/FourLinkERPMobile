@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
-
-import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
-import '../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
-import 'editCustomerDataWidget.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVacation/editRequestVacation.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import '../../../../../data/model/modules/module/requests/setup/vacationRequest.dart';
+import '../../../../../service/module/requests/setup/requestVacationApiService.dart';
 
-class DetailCustomerWidget extends StatefulWidget {
-  DetailCustomerWidget(this.customers);
-
-  final Customer customers;
+class DetailRequestVacation extends StatefulWidget {
+  DetailRequestVacation(this.requests);
+  final VacationRequests requests;
 
   @override
-  _DetailCustomerWidgetState createState() => _DetailCustomerWidgetState();
+  State<DetailRequestVacation> createState() => _DetailRequestVacationState();
 }
 
-class _DetailCustomerWidgetState extends State<DetailCustomerWidget> {
-  _DetailCustomerWidgetState();
+class _DetailRequestVacationState extends State<DetailRequestVacation> {
 
-  CustomerApiService api = new CustomerApiService();
+  VacationRequestsApiService api = VacationRequestsApiService();
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +32,7 @@ class _DetailCustomerWidgetState extends State<DetailCustomerWidget> {
               child: Container(
                   padding: const EdgeInsets.only(top: 20.0, left: 0.0, bottom: 0.0),
                   width: 400,
-                  height: 355,
+                  height: 300,
                   child: Column(
                     children: <Widget>[
                       Container(
@@ -43,24 +40,15 @@ class _DetailCustomerWidgetState extends State<DetailCustomerWidget> {
                         //EdgeInsets.fromLTRB(0, 20, 0, 20)
                         child: Column(
                           children: <Widget>[
-                            Text('code'.tr() + ': ' + widget.customers.customerCode.toString(),
+                            Text('Serial: '.tr() + widget.requests.trxSerial.toString(),
                                 style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                             const SizedBox(height: 15.0),
-                            Text('arabicName'.tr() + ': ' + widget.customers.customerNameEng.toString(),
+                            Text('Employee: '.tr()  + widget.requests.empName.toString(),
                                 style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                             const SizedBox(height: 15.0),
-                            Text('${'englishName'.tr()}: ${widget.customers.customerNameAra}',
+                            Text('Cost center: '.tr()  + widget.requests.costCenterName.toString(),
                                 style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 15.0),
-                            Text('taxIdentificationNumber'.tr() + ': ' + widget.customers.taxIdentificationNumber.toString(),
-                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                            //Colors.black.withOpacity(0.8)
-                            const SizedBox(height: 15.0),
-                            Text('address'.tr() + ': ' + widget.customers.address.toString(),
-                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 15.0),
-                            Text('phone'.tr() + ': ' + widget.customers.address.toString(),
-                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+
                           ],
                         ),
                       ),
@@ -84,59 +72,59 @@ class _DetailCustomerWidgetState extends State<DetailCustomerWidget> {
                       //   ),
                       // ),
                       Container(
-                        margin: const EdgeInsets.fromLTRB(40, 15, 0, 10),
+                        margin: const EdgeInsets.fromLTRB(30, 15, 0, 10),
                         child: Row(
                           children: <Widget>[
                             SizedBox(
                               height: 55,
                               width: 115,
-                                child: ElevatedButton.icon(
-                                  icon: const Icon(
-                                    Icons.edit,
-                                    color: Colors.white,
-                                    size: 22.0,
+                              child: ElevatedButton.icon(
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                  size: 22.0,
 
-                                  ),
-                                  label: const Text('Edit', style: TextStyle(color: Colors.white, fontSize: 18.0)),
-                                  onPressed: () {
-                                    _navigateToEditScreen(context, widget.customers);
-                                  },
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20.0),
-                                      ),
-                                    ),
-                                  ),
-
-                      ),
-
-                            ),
-                            const SizedBox(width: 45),
-                            Container(
-                              height: 55,
-                              width: 115,
-                                child: ElevatedButton.icon(
-                                  icon: const Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                    size: 22.0,
-                                  ),
-                                  label: Text('delete'.tr(),
-                                      style: const TextStyle(color: Colors.white, fontSize: 16.0)),
-                                  onPressed: () {
-                                    _confirmDialog();
-                                  },
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(210, 10, 46, 1)),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20.0),
-                                      ),
+                                ),
+                                label: const Text('Edit', style: TextStyle(color: Colors.white, fontSize: 18.0)),
+                                onPressed: () {
+                                  _navigateToEditScreen(context, widget.requests);
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
                                     ),
                                   ),
                                 ),
+
+                              ),
+
+                            ),
+                            const SizedBox(width: 40),
+                            Container(
+                              height: 55,
+                              width: 115,
+                              child: ElevatedButton.icon(
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                  size: 22.0,
+                                ),
+                                label: Text('delete'.tr(),
+                                    style: const TextStyle(color: Colors.white, fontSize: 16.0)),
+                                onPressed: () {
+                                  _confirmDialog();
+                                },
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(210, 10, 46, 1)),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                             const SizedBox(width: 5),
                             //color: Colors.blue,
@@ -149,15 +137,11 @@ class _DetailCustomerWidgetState extends State<DetailCustomerWidget> {
       ),
     );
   }
-
-  _navigateToEditScreen(BuildContext context, Customer customers) async {
+  _navigateToEditScreen(BuildContext context, VacationRequests requests) async {
     final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => EditCustomerDataWidget(customers)),
+      context, MaterialPageRoute(builder: (context) => EditRequestVacation(requests)),
     );
   }
-
   Future<void> _confirmDialog() async {
     return showDialog<void>(
       context: context,
