@@ -457,8 +457,8 @@
     "add_Employee_Done": "تم اضافة موظف",
     "Status: ": "الحالة: ",
     "status": "الحالة",
-    "Inbox Mails": "البريد الوارد",
-    "OutboxMails": "البريد الصادر"
-
+    "Inbox Mail": "البريد الوارد",
+    "Outbox Mail": "البريد الصادر",
+    "Priority: ": "درجة الاهمية: "
 }
 

@@ -6,7 +6,6 @@ import 'package:fourlinkmobileapp/widgets/MainTransactions.dart';
 import 'package:fourlinkmobileapp/cubit/app_cubit.dart';
 import 'package:fourlinkmobileapp/routes/pageRoute.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
-import 'package:fourlinkmobileapp/screens/business/basicinputs.dart';
 import 'package:fourlinkmobileapp/ui/home/home_screen.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../theme/app_theme.dart';
@@ -87,10 +86,10 @@ class _navigationDrawerState extends State<navigationDrawer> {
               icon: Icons.area_chart,
               text: 'Charts'.tr(),
               onTap: () =>{
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>  Charts()),)
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>  Charts(title: 'Chart1',)),)
               } //Navigator.pushReplacementNamed(context, pageRoutes.report),
           ),
-          Divider(),
+          const Divider(),
           createDrawerBodyItem(
             icon: Icons.notifications_active,
             text: 'Notifications'.tr(),

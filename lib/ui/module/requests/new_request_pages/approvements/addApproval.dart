@@ -155,9 +155,7 @@ class _AddApprovalState extends State<AddApproval> {
                               itemBuilder: (context, item, isSelected) {
                                 return Container(
                                   margin: const EdgeInsets.symmetric(horizontal: 8),
-                                  decoration: !isSelected ? null
-                                      : BoxDecoration(
-
+                                  decoration: !isSelected ? null : BoxDecoration(
                                     border: Border.all(color: Theme.of(context).primaryColor),
                                     borderRadius: BorderRadius.circular(5),
                                     color: Colors.white,
