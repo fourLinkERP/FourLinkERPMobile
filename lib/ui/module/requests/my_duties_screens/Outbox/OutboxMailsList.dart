@@ -119,132 +119,135 @@ class _OutboxMailsListState extends State<OutboxMailsList> {
       return Container(
         margin: const EdgeInsets.only(top: 5,),
         color: const Color.fromRGBO(240, 242, 246, 1), // Main Color
-
-        child: ListView.builder(
-            itemCount: 2,
-            //vacationRequests.isEmpty ? 0 : vacationRequests.length,
-            itemBuilder: (BuildContext context, int index) {
-              return
-                Card(
-                  child: InkWell(
-                    onTap: () {
-                      //Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRequestVacation(vacationRequests[index])),);
-                    },
-                    child: ListTile(
-                      leading: Image.asset('assets/fitness_app/vacation.png'),
-                      title: Text('serial'.tr() + " : " + "2"),
-                      // vacationRequests[index].trxSerial.toString()),
-
-                      subtitle: Column(
-                        crossAxisAlignment: langId == 1 ? CrossAxisAlignment.start : CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Container(
-                              height: 20,
-                              color: Colors.white30,
-                              child: Row(
-                                children: [
-                                  Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(pickedDate)),
-                                  // DateFormat('yyyy-MM-dd').format(DateTime.parse(vacationRequests[index].trxDate.toString()))),
-                                ],
-
-                              )),
-                          Container(
-                              height: 20, color: Colors.white30, child: Row(
-                            children: [
-                              Text('employee'.tr() + " : " + "Test"),
-                              //vacationRequests[index].empName.toString()),
-                            ],
-                          )),
-                          const SizedBox(width: 5),
-                          SizedBox(
-                              child: Row(
-                                children: <Widget>[
-                                  Center(
-                                      child: ElevatedButton.icon(
-                                        icon: const Icon(
-                                          Icons.edit,
-                                          color: Colors.white,
-                                          size: 20.0,
-                                          weight: 10,
-                                        ),
-                                        label: Text('edit'.tr(), style: const TextStyle(color: Colors.white)),
-                                        onPressed: () {
-                                          // _navigateToEditScreen(context, vacationRequests[index]);
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(5),
-                                            ),
-                                            padding: const EdgeInsets.all(7),
-                                            backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
-                                            foregroundColor: Colors.black,
-                                            elevation: 0,
-                                            side: const BorderSide(
-                                                width: 1,
-                                                color: Color.fromRGBO(0, 136, 134, 1)
-                                            )
-                                        ),
-                                      )
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Center(
-                                      child: ElevatedButton.icon(
-                                        icon: const Icon(
-                                          Icons.delete,
-                                          color: Colors.white,
-                                          size: 20.0,
-                                          weight: 10,
-                                        ),
-                                        label: Text('delete'.tr(), style: const TextStyle(color: Colors.white,)),
-                                        onPressed: () {
-                                          // _deleteItem(context, vacationRequests[index].id);
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5),),
-                                            padding: const EdgeInsets.all(7),
-                                            backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-                                            foregroundColor: Colors.black,
-                                            elevation: 0,
-                                            side: const BorderSide(
-                                                width: 1,
-                                                color: Color.fromRGBO(144, 16, 46, 1)
-                                            )
-                                        ),
-                                      )),
-                                  const SizedBox(width: 5),
-                                  Center(
-                                      child: ElevatedButton.icon(
-                                        icon: const Icon(
-                                          Icons.print,
-                                          color: Colors.white,
-                                          size: 20.0,
-                                          weight: 10,
-                                        ),
-                                        label: Text('print'.tr(), style: const TextStyle(color: Colors.white,)),
-                                        onPressed: () {
-                                          // _navigateToPrintScreen(context,_salesInvoices[index]);
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(5),
-                                            ),
-                                            padding: const EdgeInsets.all(7),
-                                            backgroundColor: Colors.black87,
-                                            foregroundColor: Colors.black,
-                                            elevation: 0,
-                                            side: const BorderSide(width: 1, color: Colors.black87)
-                                        ),
-                                      )),
-
-                                ],
-                              ))
-                        ],
-                      ),
-                    ),
-                  ),
-
-                );
-            }),
+        child: const Center(
+          child: Text("Outbox Mails is Empty",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blueGrey,fontSize: 20.0),),
+        ),
+        // child: ListView.builder(
+        //     itemCount: 2,
+        //     //vacationRequests.isEmpty ? 0 : vacationRequests.length,
+        //     itemBuilder: (BuildContext context, int index) {
+        //       return
+        //         Card(
+        //           child: InkWell(
+        //             onTap: () {
+        //               //Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRequestVacation(vacationRequests[index])),);
+        //             },
+        //             child: ListTile(
+        //               leading: Image.asset('assets/fitness_app/vacation.png'),
+        //               title: Text('serial'.tr() + " : " + "2"),
+        //               // vacationRequests[index].trxSerial.toString()),
+        //
+        //               subtitle: Column(
+        //                 crossAxisAlignment: langId == 1 ? CrossAxisAlignment.start : CrossAxisAlignment.end,
+        //                 children: <Widget>[
+        //                   Container(
+        //                       height: 20,
+        //                       color: Colors.white30,
+        //                       child: Row(
+        //                         children: [
+        //                           Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(pickedDate)),
+        //                           // DateFormat('yyyy-MM-dd').format(DateTime.parse(vacationRequests[index].trxDate.toString()))),
+        //                         ],
+        //
+        //                       )),
+        //                   Container(
+        //                       height: 20, color: Colors.white30, child: Row(
+        //                     children: [
+        //                       Text('employee'.tr() + " : " + "Test"),
+        //                       //vacationRequests[index].empName.toString()),
+        //                     ],
+        //                   )),
+        //                   const SizedBox(width: 5),
+        //                   SizedBox(
+        //                       child: Row(
+        //                         children: <Widget>[
+        //                           Center(
+        //                               child: ElevatedButton.icon(
+        //                                 icon: const Icon(
+        //                                   Icons.edit,
+        //                                   color: Colors.white,
+        //                                   size: 20.0,
+        //                                   weight: 10,
+        //                                 ),
+        //                                 label: Text('edit'.tr(), style: const TextStyle(color: Colors.white)),
+        //                                 onPressed: () {
+        //                                   // _navigateToEditScreen(context, vacationRequests[index]);
+        //                                 },
+        //                                 style: ElevatedButton.styleFrom(
+        //                                     shape: RoundedRectangleBorder(
+        //                                       borderRadius: BorderRadius.circular(5),
+        //                                     ),
+        //                                     padding: const EdgeInsets.all(7),
+        //                                     backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
+        //                                     foregroundColor: Colors.black,
+        //                                     elevation: 0,
+        //                                     side: const BorderSide(
+        //                                         width: 1,
+        //                                         color: Color.fromRGBO(0, 136, 134, 1)
+        //                                     )
+        //                                 ),
+        //                               )
+        //                           ),
+        //                           const SizedBox(width: 5),
+        //                           Center(
+        //                               child: ElevatedButton.icon(
+        //                                 icon: const Icon(
+        //                                   Icons.delete,
+        //                                   color: Colors.white,
+        //                                   size: 20.0,
+        //                                   weight: 10,
+        //                                 ),
+        //                                 label: Text('delete'.tr(), style: const TextStyle(color: Colors.white,)),
+        //                                 onPressed: () {
+        //                                   // _deleteItem(context, vacationRequests[index].id);
+        //                                 },
+        //                                 style: ElevatedButton.styleFrom(
+        //                                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5),),
+        //                                     padding: const EdgeInsets.all(7),
+        //                                     backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+        //                                     foregroundColor: Colors.black,
+        //                                     elevation: 0,
+        //                                     side: const BorderSide(
+        //                                         width: 1,
+        //                                         color: Color.fromRGBO(144, 16, 46, 1)
+        //                                     )
+        //                                 ),
+        //                               )),
+        //                           const SizedBox(width: 5),
+        //                           Center(
+        //                               child: ElevatedButton.icon(
+        //                                 icon: const Icon(
+        //                                   Icons.print,
+        //                                   color: Colors.white,
+        //                                   size: 20.0,
+        //                                   weight: 10,
+        //                                 ),
+        //                                 label: Text('print'.tr(), style: const TextStyle(color: Colors.white,)),
+        //                                 onPressed: () {
+        //                                   // _navigateToPrintScreen(context,_salesInvoices[index]);
+        //                                 },
+        //                                 style: ElevatedButton.styleFrom(
+        //                                     shape: RoundedRectangleBorder(
+        //                                       borderRadius: BorderRadius.circular(5),
+        //                                     ),
+        //                                     padding: const EdgeInsets.all(7),
+        //                                     backgroundColor: Colors.black87,
+        //                                     foregroundColor: Colors.black,
+        //                                     elevation: 0,
+        //                                     side: const BorderSide(width: 1, color: Colors.black87)
+        //                                 ),
+        //                               )),
+        //
+        //                         ],
+        //                       ))
+        //                 ],
+        //               ),
+        //             ),
+        //           ),
+        //
+        //         );
+        //     }),
       );
     }
   }

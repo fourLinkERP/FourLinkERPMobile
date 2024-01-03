@@ -10,7 +10,7 @@ import 'package:fourlinkmobileapp/ui/home/home_screen.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../theme/app_theme.dart';
 import '../../ui/module/requests/ReqistsList.dart';
-import '../../ui/setting/send_email.dart';
+//import '../../ui/setting/send_email.dart';
 import 'createDrawerBodyItem.dart';
 import 'createDrawerHeader.dart';
 
@@ -75,13 +75,13 @@ class _navigationDrawerState extends State<navigationDrawer> {
             onTap: () =>
                 Navigator.push(context, MaterialPageRoute(builder: (context) =>  Requests()),)
           ),
-          createDrawerBodyItem(
-              icon: Icons.email,
-              text: 'Send Email'.tr(),
-              onTap: () =>{
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>  SendEmail()),)
-              } //Navigator.pushReplacementNamed(context, pageRoutes.report),
-          ),
+          // createDrawerBodyItem(
+          //     icon: Icons.email,
+          //     text: 'Send Email'.tr(),
+          //     onTap: () =>{
+          //       Navigator.push(context, MaterialPageRoute(builder: (context) =>  SendEmail()),)
+          //     } //Navigator.pushReplacementNamed(context, pageRoutes.report),
+          // ),
           createDrawerBodyItem(
               icon: Icons.area_chart,
               text: 'Charts'.tr(),

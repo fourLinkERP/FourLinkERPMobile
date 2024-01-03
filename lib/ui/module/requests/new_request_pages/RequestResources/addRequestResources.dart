@@ -496,11 +496,6 @@ class _AddRequestResourcesState extends State<AddRequestResources> {
 
   saveResourceRequest(BuildContext context)
   {
-
-    // if (selectedJobValue == null || selectedJobValue!.isEmpty) {
-    //   FN_showToast(context, 'please set a job'.tr(), Colors.black);
-    //   return;
-    // }
     if (selectedCostCenterValue == null || selectedCostCenterValue!.isEmpty) {
       FN_showToast(context, 'please set cost center value'.tr(), Colors.black);
       return;

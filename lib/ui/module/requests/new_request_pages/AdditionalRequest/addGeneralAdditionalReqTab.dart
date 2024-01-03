@@ -291,7 +291,7 @@ class _GeneralAddReqTabState extends State<GeneralAddReqTab> {
                     padding: const EdgeInsets.all(5),
                     color: Colors.pink[50],
                     height: 50,
-                    child: const Text('Employees', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25,),),
+                    child:  Text('Employees'.tr(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25,),),
                   ),
                   const SizedBox(height: 12),
                   ListTile(
@@ -740,7 +740,7 @@ class _GeneralAddReqTabState extends State<GeneralAddReqTab> {
     additionalRequestDLst.add(_additionalRequestD);
     lineNum++;
 
-    FN_showToast(context, 'add_Employee_Done'.tr(), Colors.black);
+    FN_showToast(context, 'add_Request_Done'.tr(), Colors.black);
 
     setState(() {
       selectedEmployeeValue = " ";

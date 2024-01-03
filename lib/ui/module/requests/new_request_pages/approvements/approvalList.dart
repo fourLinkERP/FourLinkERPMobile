@@ -18,8 +18,6 @@ class Approvals extends StatefulWidget {
 
 class _ApprovalsState extends State<Approvals> {
 
-  final _addFormKey = GlobalKey<FormState>();
-
   DateTime get pickedDate => DateTime.now();
 
   @override
