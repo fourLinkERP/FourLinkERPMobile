@@ -34,14 +34,14 @@ class MailApiService {
 
     if(response.statusCode == 200)
     {
-      print('Mail sent success1');
+      //print('Mail sent success1');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<Mails> list = [];
       if(data.isNotEmpty)
       {
         list = data.map((item) => Mails.fromJson(item)).toList();
       }
-      print('Mail sent success 2');
+      //print('Mail sent success 2');
       return list;
     }
     else {
@@ -71,12 +71,13 @@ class MailApiService {
     }
   }
   Future<int> createMail(BuildContext context ,Mails mail) async {
-    print('save request 0');
+    //print('save request 0');
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
       'toEmail': mail.toEmail,
       'fromEmail': mail.fromEmail,
+      'trxDate': mail.trxDate,
       'maxReplyDate' : mail.maxReplyDate,
       'bodyAra': mail.bodyAra,
       'messageTitleAra': mail.messageTitleAra,
@@ -128,6 +129,7 @@ class MailApiService {
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
+      'trxDate': mail.trxDate,
       'toEmail': mail.toEmail,
       'fromEmail': mail.fromEmail,
       'maxReplyDate' : mail.maxReplyDate,

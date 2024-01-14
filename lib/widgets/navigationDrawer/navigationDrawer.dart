@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/ui/module/DashboardCharts/chartsUi.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/setting_requests/SettingRequestsList/settingRequestList.dart';
 import 'package:fourlinkmobileapp/widgets/MainBasicInputs.dart';
 import 'package:fourlinkmobileapp/widgets/MainReports.dart';
 import 'package:fourlinkmobileapp/widgets/MainTransactions.dart';
@@ -31,6 +32,7 @@ class _navigationDrawerState extends State<navigationDrawer> {
 
       backgroundColor: isLightMode ? AppTheme.white : AppTheme.nearlyBlack,
       child: ListView(
+        scrollDirection: Axis.vertical,
         padding: EdgeInsets.zero,
         children: <Widget>[
           createDrawerHeader(),
@@ -72,16 +74,15 @@ class _navigationDrawerState extends State<navigationDrawer> {
           createDrawerBodyItem(
             icon: Icons.content_paste_go,
             text: 'Requests'.tr(),
-            onTap: () =>
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>  Requests()),)
+            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>  Requests()),)
           ),
-          // createDrawerBodyItem(
-          //     icon: Icons.email,
-          //     text: 'Send Email'.tr(),
-          //     onTap: () =>{
-          //       Navigator.push(context, MaterialPageRoute(builder: (context) =>  SendEmail()),)
-          //     } //Navigator.pushReplacementNamed(context, pageRoutes.report),
-          // ),
+          createDrawerBodyItem(
+              icon: Icons.settings_applications,
+              text: 'Setting Requests'.tr(),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>  SettingRequestList()),)
+          ),
+
+
           createDrawerBodyItem(
               icon: Icons.area_chart,
               text: 'Charts'.tr(),
@@ -93,8 +94,7 @@ class _navigationDrawerState extends State<navigationDrawer> {
           createDrawerBodyItem(
             icon: Icons.notifications_active,
             text: 'Notifications'.tr(),
-            onTap: () =>
-                Navigator.pushReplacementNamed(context, pageRoutes.notification),
+            onTap: () => Navigator.pushReplacementNamed(context, pageRoutes.notification),
           ),
           createDrawerBodyItem(
             icon: Icons.contact_phone,
@@ -114,24 +114,13 @@ class _navigationDrawerState extends State<navigationDrawer> {
               {
                 currentLanguage='ar';
                 langId=1;
-
-
                 print('arabic applied');
-
-
 
                 print(langId.toString());
                 //translator.setNewLanguage(context,newLanguage:currentLanguage,restart: false, remember: true,);
                 translator.setNewLanguage(context,newLanguage:currentLanguage,restart: false, remember: true)
                     .then((value) =>
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-
-
-                                HomeScreen())),
-
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen())),
                 );
               }
               else    {
@@ -140,15 +129,12 @@ class _navigationDrawerState extends State<navigationDrawer> {
                 print('english applied');
                 print(langId.toString());
                 translator.setNewLanguage(context,newLanguage:currentLanguage,restart: false, remember: true).then((value) =>
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                HomeScreen())),
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen())),
                 );
               }
             },
           ),
+          const SizedBox(height: 50),
         ],
       ),
     );

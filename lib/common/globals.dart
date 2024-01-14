@@ -13,6 +13,9 @@ String apiPassword="";//Will Set On App Perference
 //Company And Branch
 int companyCode = 1;//Will Set On App Perference
 int branchCode = 1; //Will Set On App Perference
+// RequestTypeCode & TransactionId
+String requestTypeCode = "";
+String transactionId = "";
 //Language
 int langId = 2; //1-Arabic   2-English
 //Employee

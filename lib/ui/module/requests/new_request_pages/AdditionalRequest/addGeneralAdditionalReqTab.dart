@@ -281,7 +281,6 @@ class _GeneralAddReqTabState extends State<GeneralAddReqTab> {
                               icon: Icon(Icons.keyboard_arrow_down),
                             ),
                           ),
-
                         ),
                       ),
                     ),

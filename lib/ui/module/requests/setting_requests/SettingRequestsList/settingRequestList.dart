@@ -1,36 +1,59 @@
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
+import'package:flutter/material.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/approvements/addApproval.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/approvements/editApproval.dart';
-import 'package:intl/intl.dart';
+
 import '../../../../../common/globals.dart';
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../cubit/app_states.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../theme/fitness_app_theme.dart';
+import '../../../../../utils/permissionHelper.dart';
 
-class Approvals extends StatefulWidget {
-  const Approvals({Key? key}) : super(key: key);
+class SettingRequestList extends StatefulWidget {
+  const SettingRequestList({Key? key}) : super(key: key);
 
   @override
-  State<Approvals> createState() => _ApprovalsState();
+  State<SettingRequestList> createState() => _SettingRequestListState();
 }
 
-class _ApprovalsState extends State<Approvals> {
-
-  DateTime get pickedDate => DateTime.now();
-
+class _SettingRequestListState extends State<SettingRequestList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
+        title: SizedBox(
+          //height: 60,
+          child: Column(
+            crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
+            children: [
+              TextField(
+                onChanged: (value) => onSearch(value),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding: const EdgeInsets.all(0),
+                  prefixIcon: const Icon(Icons.search, color: Colors.black26,),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    borderSide: BorderSide.none,
+                  ),
+                  hintStyle: const TextStyle(
+                      fontSize: 16,
+                      color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
+                  ),
+                  hintText: "searchSettingRequests".tr(),
 
-        body: SafeArea(child: buildApprovals()),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      body: SafeArea(child: buildSettingRequests()),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            _navigateToAddScreen(context);
-            //Navigator.push(context, MaterialPageRoute(builder: (context) =>  RequestVacation()));
+           // _navigateToAddScreen(context);
           },
           backgroundColor: Colors.transparent,
           tooltip: 'Increment',
@@ -44,8 +67,7 @@ class _ApprovalsState extends State<Approvals> {
                     HexColor('#6A88E5'),
                   ],
                   begin: Alignment.topLeft,
-                  end: Alignment.bottomRight
-              ),
+                  end: Alignment.bottomRight),
               shape: BoxShape.circle,
               boxShadow: <BoxShadow>[
                 BoxShadow(
@@ -62,7 +84,8 @@ class _ApprovalsState extends State<Approvals> {
                 highlightColor: Colors.transparent,
                 focusColor: Colors.transparent,
                 onTap: (){
-                  _navigateToAddScreen(context);
+                  //_navigateToAddScreen(context);
+
                 },
                 child: const Icon(
                   Icons.add,
@@ -73,40 +96,40 @@ class _ApprovalsState extends State<Approvals> {
             ),
           ),
         )
+
     );
   }
-  Widget buildApprovals(){
+  Widget buildSettingRequests(){
     if(State is AppErrorState){
+      print("failed1..................");
       return const Center(child: Text('no data'));
     }
     if(AppCubit.get(context).Conection==false){
+      print("failed2..................");
       return const Center(child: Text('no internet connection'));
 
     }
-    // else if(vacationRequests.isEmpty && AppCubit.get(context).Connection==true){
+    // else if(resourceRequests.isEmpty && AppCubit.get(context).Conection==true){
     //   return const Center(child: CircularProgressIndicator());
-    // }
+    //}
     else{
-      //print("Success..................");
+      print("Success..................");
       return Container(
         margin: const EdgeInsets.only(top: 5,),
         color: const Color.fromRGBO(240, 242, 246,1),// Main Color
 
         child: ListView.builder(
-            itemCount: 3, //vacationRequests.isEmpty ? 0 : vacationRequests.length,
+            itemCount: 0 , //resourceRequests.isEmpty ? 0 : resourceRequests.length,
             itemBuilder: (BuildContext context, int index) {
               return
                 Card(
                   child: InkWell(
                     onTap: () {
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_salesInvoices[index])),
-                      // );
+                      //Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRequestResources(resourceRequests[index])),);
                     },
                     child: ListTile(
-                      leading: Image.asset('assets/fitness_app/vacation.png'),
-                      title: Text('serial'.tr() + " : 1" ),
-                        //  + vacationRequests[index].trxSerial.toString()),
-
+                      leading: Image.asset('assets/fitness_app/salesCart.png'),
+                      title: Text('Code'.tr() + " : " ), //resourceRequests[index].trxSerial.toString()),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
@@ -115,14 +138,14 @@ class _ApprovalsState extends State<Approvals> {
                               color: Colors.white30,
                               child: Row(
                                 children: [
-                                  Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(pickedDate)),
-                                    //  DateFormat('yyyy-MM-dd').format(DateTime.parse(vacationRequests[index].trxDate.toString())))  ,
+                                  Text('date'.tr() + " : " ) ,//+ DateFormat('yyyy-MM-dd').format(DateTime.parse(resourceRequests[index].trxDate.toString())))  ,
+
                                 ],
+
                               )),
                           Container(height: 20, color: Colors.white30, child: Row(
                             children: [
-                              Text('employee'.tr() + " : Admin" ),
-                                 // + vacationRequests[index].empName.toString()),
+                              Text('required item:'.tr() + " : " ) //+ resourceRequests[index].requiredItem.toString()),
                             ],
 
                           )),
@@ -140,7 +163,7 @@ class _ApprovalsState extends State<Approvals> {
                                         ),
                                         label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
                                         onPressed: () {
-                                           _navigateToEditScreen(context);
+                                          //_navigateToEditScreen(context,resourceRequests[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -168,7 +191,7 @@ class _ApprovalsState extends State<Approvals> {
                                         ),
                                         label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                         // _deleteItem(context,vacationRequests[index].id);
+                                          //_deleteItem(context,resourceRequests[index].id);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -186,31 +209,32 @@ class _ApprovalsState extends State<Approvals> {
                                       )),
                                   const SizedBox(width: 5),
                                   Center(
-                                      child: ElevatedButton.icon(
-                                        icon: const Icon(
-                                          Icons.print,
-                                          color: Colors.white,
-                                          size: 20.0,
-                                          weight: 10,
-                                        ),
-                                        label: Text('print'.tr(),style:const TextStyle(color: Colors.white,)),
-                                        onPressed: () {
-                                          // _navigateToPrintScreen(context,_salesInvoices[index]);
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(5),
-                                            ),
-                                            padding: const EdgeInsets.all(7),
-                                            backgroundColor: Colors.black87,
-                                            foregroundColor: Colors.black,
-                                            elevation: 0,
-                                            side: const BorderSide(
-                                                width: 1,
-                                                color: Colors.black87
-                                            )
-                                        ),
-                                      )),
+                                    child: ElevatedButton.icon(
+                                      icon: const Icon(
+                                        Icons.print,
+                                        color: Colors.white,
+                                        size: 20.0,
+                                        weight: 10.0,
+                                      ),
+                                      label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
+                                      onPressed: () {
+                                        //_navigateToPrintScreen(context,resourceRequests[index]);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(5),
+                                          ),
+                                          padding: const EdgeInsets.all(7),
+                                          backgroundColor: Colors.black87,
+                                          foregroundColor: Colors.black,
+                                          elevation: 0,
+                                          side: const BorderSide(
+                                              width: 1,
+                                              color: Colors.black87
+                                          )
+                                      ),
+                                    ),
+                                  ),
 
                                 ],
                               ))
@@ -224,65 +248,66 @@ class _ApprovalsState extends State<Approvals> {
       );
     }
   }
-  _navigateToAddScreen(BuildContext context) async {
 
-    // CircularProgressIndicator();
-    // int menuId=45201;
-    // bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
-    // if(isAllowAdd)
-    // {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddApproval()),);
-          //.then((value) {
-        //getData();
-      //}
-    //);
-   // }
-   //  else
-   //  {
-   //    FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
-   //  }
-
+  onSearch(String search) {
+    if(search.isEmpty)
+    {
+      getData();
+    }
+    setState(() {
+      // resourceRequests = _founded.where((ResourceRequests) =>
+      //     ResourceRequests.trxSerial!.toLowerCase().contains(search)).toList();
+    });
   }
-  _navigateToEditScreen (BuildContext context) async {
-
-    // int menuId=45201;
-    // bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
-    // if(isAllowEdit)
-    // {
+  void getData() async {
+    // Future<List<ResourceRequests>?> futureResourceRequests = _apiService.getResourceRequests ().catchError((Error){
+    //   print('Error ${Error}');
+    //   AppCubit.get(context).EmitErrorState();
+    // });
+    // print('xxxx1 before list');
+    // resourceRequests = (await futureResourceRequests)!;
+    // print('xxxx2 len ' + resourceRequests.length.toString());
+    // if (resourceRequests.isNotEmpty) {
+    //   setState(() {
+    //     print('xxxx after state');
+    //     _founded = resourceRequests!;
+    //     String search = '';
     //
-    //   final result = await
-      Navigator.push(context, MaterialPageRoute(builder: (context) => EditApproval()),);
-    //
+    //   });
     // }
-    // else
-    // {
-    //   FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
-    // }
-
   }
-
-  // void processWorkflows() {
-  //   debugger;
-  //   if (!utilityService.isEmptyValue(workflowForm.get('workFlowTransactionId').value) &&
-  //       !utilityService.isEmptyValue(workflowForm.get('requestTypeCode').value)) {
-  //     workflowParams = globalService.addSearchAnotherParams(workflowParams, null);
-  //     workflowParams.search['transactionId'] = workflowForm.get('workFlowTransactionId').value;
-  //     workflowParams.search['requestTypeCode'] = workflowForm.get('requestTypeCode').value;
-  //     workflowService.processWorkflows(workflowParams).listen((result) {
-  //       debugger;
-  //       if (!utilityService.isEmptyValue(result)) {
-  //         final EmpCode = globalService.getEmpCode();
-  //         //Set Employee Value
-  //         if (EmpCode == result['empCode']) {
-  //           workflowForm.get('actionEmpCode').setValue(result['empCode']);
-  //         }
-  //         if (EmpCode == result['alternativeEmpCode']) {
-  //           workflowForm.get('actionEmpCode').setValue(result['alternativeEmpCode']);
-  //         }
-  //         //Set Level Code
-  //         workflowForm.get('levelCode').setValue(result['levelCode']);
-  //       }
-  //     });
+  // _deleteItem(BuildContext context,int? id) async {
+  //
+  //   final result = await showDialog<bool>(
+  //     context: context,
+  //     builder: (context) => AlertDialog(
+  //       title: const Text('Are you sure?'),
+  //       content: const Text('This action will permanently delete this data'),
+  //       actions: [
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(context, false),
+  //           child: const Text('Cancel'),
+  //         ),
+  //         TextButton(
+  //           onPressed: () => Navigator.pop(context, true),
+  //           child: const Text('Delete'),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  //   if (result == null || !result) {
+  //     return;
+  //   }
+  //
+  //   int menuId=45205;
+  //   bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
+  //   if(isAllowDelete)
+  //   {
+  //     var res = _apiService.deleteResourceRequest(context,id).then((value) => getData());
+  //   }
+  //   else
+  //   {
+  //     FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
   //   }
   // }
 }

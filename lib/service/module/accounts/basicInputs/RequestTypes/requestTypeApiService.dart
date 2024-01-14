@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/CostCenters/CostCenter.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/RequestTypes/RequestType.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
@@ -7,22 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
- class CostCenterApiService {
+class RequestTypeApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/costcenters/search';
-  String createApi= baseUrl.toString()  + 'v1/costcenters';
-  String updateApi= baseUrl.toString()  + 'v1/costcenters/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/costcenters/';
-  String getByIdApi= baseUrl.toString()  + 'v1/costcenters/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + 'v1/requesttypes/search';
+  String createApi= baseUrl.toString()  + 'v1/requesttypes';
+  String updateApi= baseUrl.toString()  + 'v1/requesttypes/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + 'v1/requesttypes/';
+  String getByIdApi= baseUrl.toString()  + 'v1/requesttypes/';  // Add ID For Get
 
-  Future<List<CostCenter>>  getCostCenters() async {
+  Future<List<RequestType>>  getRequestTypes() async {
 
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode
     };
 
-    print('CostCenter 1');
+    print('RequestType 1');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -34,22 +34,22 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
     if (response.statusCode == 200) {
-      print('CostCenter 2');
+      print('RequestType 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
-      List<CostCenter> list = [];
+      List<RequestType> list = [];
       if (data.isNotEmpty) {
-        list = data.map((item) => CostCenter.fromJson(item)).toList();
+        list = data.map((item) => RequestType.fromJson(item)).toList();
       }
-      print('CostCenter 3');
+      print('RequestType 3');
       return  list;
 
     } else {
-      print('CostCenter Failed');
-      throw "Failed to load costCenter list";
+      print('RequestType Failed');
+      throw "Failed to load RequestType list";
     }
   }
 
-  Future<CostCenter> getCostCenterById(int id) async {
+  Future<RequestType> getRequestTypeById(int id) async {
 
     var data = {
       // "id": id
@@ -66,24 +66,24 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
     if (response.statusCode == 200) {
 
-      return CostCenter.fromJson(json.decode(response.body));
+      return RequestType.fromJson(json.decode(response.body));
 
     } else {
       throw Exception('Failed to load a case');
     }
   }
 
-  Future<int> createCostCenter(BuildContext context ,CostCenter costCenter) async {
+  Future<int> createRequestType(BuildContext context ,RequestType requestType) async {
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'costCenterCode': costCenter.costCenterCode,
-      'costCenterNameAra': costCenter.costCenterNameAra,
-      'costCenterNameEng': costCenter.costCenterNameEng,
-      // 'taxIdentificationNumber': costCenter.taxIdentificationNumber,
-      // 'address': costCenter.address,
-      // 'Phone1': costCenter.phone1,
-      // 'costCenterTypeCode': costCenter.customerTypeCode,
+      'requestTypeCode': requestType.requestTypeCode,
+      'requestTypeNameAra': requestType.requestTypeNameAra,
+      'requestTypeNameEng': requestType.requestTypeNameEng,
+      // 'taxIdentificationNumber': requestType.taxIdentificationNumber,
+      // 'address': requestType.address,
+      // 'Phone1': requestType.phone1,
+      // 'requestTypeTypeCode': requestType.customerTypeCode,
       // 'address': customer.address,
       // 'city': customer.city,
       // 'country': customer.country,
@@ -108,25 +108,25 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
     } else {
-      throw Exception('Failed to post costCenter');
+      throw Exception('Failed to post requestType');
     }
 
     return  0;
   }
 
-  Future<int> updateCostCenter(BuildContext context ,int id, CostCenter costCenter) async {
+  Future<int> updateRequestType(BuildContext context ,int id, RequestType requestType) async {
 
     print('Start Update');
 
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'costCenterCode': costCenter.costCenterCode,
-      'costCenterNameAra': costCenter.costCenterNameAra,
-      'costCenterNameEng': costCenter.costCenterNameEng,
-      // 'taxIdentificationNumber': costCenter.taxIdentificationNumber,
-      // 'address': costCenter.address,
-      // 'Phone1': costCenter.phone1
+      'requestTypeCode': requestType.requestTypeCode,
+      'requestTypeNameAra': requestType.requestTypeNameAra,
+      'requestTypeNameEng': requestType.requestTypeNameEng,
+      // 'taxIdentificationNumber': requestType.taxIdentificationNumber,
+      // 'address': requestType.address,
+      // 'Phone1': requestType.phone1
     };
 
     String apiUpdate =updateApi + id.toString();
@@ -155,7 +155,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     return 0;
   }
 
-  Future<void> deleteCostCenter(BuildContext context ,int? id) async {
+  Future<void> deleteRequestType(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
     print('url' + apiDel);
