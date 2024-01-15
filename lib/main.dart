@@ -29,7 +29,6 @@ main() async {
 
   await CacheHelper.init();
 
-
   await translator.init(
     localeType: LocalizationDefaultType.device,
     language: currentLanguage,
@@ -38,7 +37,7 @@ main() async {
   );
 
   
-  runApp(LocalizedApp(child: DevicePreview(enabled: true, builder:(context)=> MyApp())));
+  runApp(LocalizedApp(child: DevicePreview(enabled: false, builder:(context)=> MyApp())));
 }
 
 

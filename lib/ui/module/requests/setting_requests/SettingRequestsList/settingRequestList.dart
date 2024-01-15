@@ -1,4 +1,6 @@
 import'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/setting_requests/AddSettingRequests/addSettingRequest.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/setting_requests/AddSettingRequests/addSettingRequestTabs.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../../common/globals.dart';
@@ -53,6 +55,7 @@ class _SettingRequestListState extends State<SettingRequestList> {
       body: SafeArea(child: buildSettingRequests()),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSettingRequestTabs(),));
            // _navigateToAddScreen(context);
           },
           backgroundColor: Colors.transparent,
@@ -85,7 +88,7 @@ class _SettingRequestListState extends State<SettingRequestList> {
                 focusColor: Colors.transparent,
                 onTap: (){
                   //_navigateToAddScreen(context);
-
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSettingRequestTabs(),));
                 },
                 child: const Icon(
                   Icons.add,
@@ -115,138 +118,149 @@ class _SettingRequestListState extends State<SettingRequestList> {
     else{
       print("Success..................");
       return Container(
-        margin: const EdgeInsets.only(top: 5,),
-        color: const Color.fromRGBO(240, 242, 246,1),// Main Color
-
-        child: ListView.builder(
-            itemCount: 0 , //resourceRequests.isEmpty ? 0 : resourceRequests.length,
-            itemBuilder: (BuildContext context, int index) {
-              return
-                Card(
-                  child: InkWell(
-                    onTap: () {
-                      //Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRequestResources(resourceRequests[index])),);
-                    },
-                    child: ListTile(
-                      leading: Image.asset('assets/fitness_app/salesCart.png'),
-                      title: Text('Code'.tr() + " : " ), //resourceRequests[index].trxSerial.toString()),
-                      subtitle: Column(
-                        crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Container(
-                              height: 20,
-                              color: Colors.white30,
-                              child: Row(
-                                children: [
-                                  Text('date'.tr() + " : " ) ,//+ DateFormat('yyyy-MM-dd').format(DateTime.parse(resourceRequests[index].trxDate.toString())))  ,
-
-                                ],
-
-                              )),
-                          Container(height: 20, color: Colors.white30, child: Row(
-                            children: [
-                              Text('required item:'.tr() + " : " ) //+ resourceRequests[index].requiredItem.toString()),
-                            ],
-
-                          )),
-                          const SizedBox(width: 5),
-                          SizedBox(
-                              child: Row(
-                                children: <Widget>[
-                                  Center(
-                                      child: ElevatedButton.icon(
-                                        icon: const Icon(
-                                          Icons.edit,
-                                          color: Colors.white,
-                                          size: 20.0,
-                                          weight: 10,
-                                        ),
-                                        label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
-                                        onPressed: () {
-                                          //_navigateToEditScreen(context,resourceRequests[index]);
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(5),
-                                            ),
-                                            padding: const EdgeInsets.all(7),
-                                            backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
-                                            foregroundColor: Colors.black,
-                                            elevation: 0,
-                                            side: const BorderSide(
-                                                width: 1,
-                                                color: Color.fromRGBO(0, 136, 134, 1)
-                                            )
-                                        ),
-                                      )
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Center(
-                                      child: ElevatedButton.icon(
-                                        icon: const Icon(
-                                          Icons.delete,
-                                          color: Colors.white,
-                                          size: 20.0,
-                                          weight: 10,
-                                        ),
-                                        label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
-                                        onPressed: () {
-                                          //_deleteItem(context,resourceRequests[index].id);
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(5),
-                                            ),
-                                            padding: const EdgeInsets.all(7),
-                                            backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-                                            foregroundColor: Colors.black,
-                                            elevation: 0,
-                                            side: const BorderSide(
-                                                width: 1,
-                                                color: Color.fromRGBO(144, 16, 46, 1)
-                                            )
-                                        ),
-                                      )),
-                                  const SizedBox(width: 5),
-                                  Center(
-                                    child: ElevatedButton.icon(
-                                      icon: const Icon(
-                                        Icons.print,
-                                        color: Colors.white,
-                                        size: 20.0,
-                                        weight: 10.0,
-                                      ),
-                                      label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
-                                      onPressed: () {
-                                        //_navigateToPrintScreen(context,resourceRequests[index]);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5),
-                                          ),
-                                          padding: const EdgeInsets.all(7),
-                                          backgroundColor: Colors.black87,
-                                          foregroundColor: Colors.black,
-                                          elevation: 0,
-                                          side: const BorderSide(
-                                              width: 1,
-                                              color: Colors.black87
-                                          )
-                                      ),
-                                    ),
-                                  ),
-
-                                ],
-                              ))
-                        ],
-                      ),
-                    ),
-                  ),
-
-                );
-            }),
+        child: Center(
+          child: Text("List is Empty", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.grey),),
+        ),
+        // margin: const EdgeInsets.only(top: 5,),
+        // color: const Color.fromRGBO(240, 242, 246,1),// Main Color
+        //
+        // child: ListView.builder(
+        //     itemCount: 0 , //resourceRequests.isEmpty ? 0 : resourceRequests.length,
+        //     itemBuilder: (BuildContext context, int index) {
+        //       return
+        //         Card(
+        //           child: InkWell(
+        //             onTap: () {
+        //               //Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRequestResources(resourceRequests[index])),);
+        //             },
+        //             child: ListTile(
+        //               leading: Image.asset('assets/fitness_app/salesCart.png'),
+        //               title: Text('Code'.tr() + " : " ), //resourceRequests[index].trxSerial.toString()),
+        //               subtitle: Column(
+        //                 crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
+        //                 children: <Widget>[
+        //                   Container(
+        //                       height: 20,
+        //                       color: Colors.white30,
+        //                       child: Row(
+        //                         children: [
+        //                           Text('date'.tr() + " : " ),//+ DateFormat('yyyy-MM-dd').format(DateTime.parse(resourceRequests[index].trxDate.toString())))  ,
+        //                         ],
+        //                       )),
+        //                   Container(
+        //                     height: 20,
+        //                     color: Colors.white30,
+        //                     child: Row(
+        //                       children: [
+        //                         Text('required item:'.tr() + " : ") //+ resourceRequests[index].requiredItem.toString()),
+        //                       ],
+        //                     )),
+        //                 const SizedBox(width: 5),
+        //                   SizedBox(
+        //                       child: Row(
+        //                         children: <Widget>[
+        //                           Center(
+        //                               child: ElevatedButton.icon(
+        //                                 icon: const Icon(
+        //                                   Icons.edit,
+        //                                   color: Colors.white,
+        //                                   size: 20.0,
+        //                                   weight: 10,
+        //                                 ),
+        //                                 label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
+        //                                 onPressed: () {
+        //                                   //_navigateToEditScreen(context,resourceRequests[index]);
+        //                                 },
+        //                                 style: ElevatedButton.styleFrom(
+        //                                     shape: RoundedRectangleBorder(
+        //                                       borderRadius: BorderRadius.circular(5),
+        //                                     ),
+        //                                     padding: const EdgeInsets.all(7),
+        //                                     backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
+        //                                     foregroundColor: Colors.black,
+        //                                     elevation: 0,
+        //                                     side: const BorderSide(
+        //                                         width: 1,
+        //                                         color: Color.fromRGBO(0, 136, 134, 1)
+        //                                     )
+        //                                 ),
+        //                               )
+        //                           ),
+        //                           const SizedBox(width: 5),
+        //                           Center(
+        //                               child: ElevatedButton.icon(
+        //                                 icon: const Icon(
+        //                                   Icons.delete,
+        //                                   color: Colors.white,
+        //                                   size: 20.0,
+        //                                   weight: 10,
+        //                                 ),
+        //                                 label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
+        //                                 onPressed: () {
+        //                                   //_deleteItem(context,resourceRequests[index].id);
+        //                                 },
+        //                                 style: ElevatedButton.styleFrom(
+        //                                     shape: RoundedRectangleBorder(
+        //                                       borderRadius: BorderRadius.circular(5),
+        //                                     ),
+        //                                     padding: const EdgeInsets.all(7),
+        //                                     backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+        //                                     foregroundColor: Colors.black,
+        //                                     elevation: 0,
+        //                                     side: const BorderSide(
+        //                                         width: 1,
+        //                                         color: Color.fromRGBO(144, 16, 46, 1)
+        //                                     )
+        //                                 ),
+        //                               )),
+        //                           const SizedBox(width: 5),
+        //                           Center(
+        //                             child: ElevatedButton.icon(
+        //                               icon: const Icon(
+        //                                 Icons.print,
+        //                                 color: Colors.white,
+        //                                 size: 20.0,
+        //                                 weight: 10.0,
+        //                               ),
+        //                               label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
+        //                               onPressed: () {
+        //                                 //_navigateToPrintScreen(context,resourceRequests[index]);
+        //                               },
+        //                               style: ElevatedButton.styleFrom(
+        //                                   shape: RoundedRectangleBorder(
+        //                                     borderRadius: BorderRadius.circular(5),
+        //                                   ),
+        //                                   padding: const EdgeInsets.all(7),
+        //                                   backgroundColor: Colors.black87,
+        //                                   foregroundColor: Colors.black,
+        //                                   elevation: 0,
+        //                                   side: const BorderSide(
+        //                                       width: 1,
+        //                                       color: Colors.black87
+        //                                   )
+        //                               ),
+        //                             ),
+        //                           ),
+        //
+        //                         ],
+        //                       ))
+        //                 ],
+        //               ),
+        //             ),
+        //           ),
+        //
+        //         );
+        //     }),
       );
     }
+  }
+  _navigateToAddScreen(BuildContext context) async {
+
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSettingRequest(),
+      )).then((value) {
+        getData();
+      });
+
   }
 
   onSearch(String search) {
