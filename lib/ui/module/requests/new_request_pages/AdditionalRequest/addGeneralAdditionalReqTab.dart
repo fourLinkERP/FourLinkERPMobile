@@ -704,8 +704,7 @@ class _GeneralAddReqTabState extends State<GeneralAddReqTab> {
     ));
     for (var i = 0; i < additionalRequestDLst.length; i++) {
       AdditionalRequestD _additionalRequestD = additionalRequestDLst[i];
-
-      if (_additionalRequestD.isUpdate == false) {
+      if (_additionalRequestD.isUpdate == false){
         _additionalRequestDApiService.createAdditionalRequestD(context, AdditionalRequestD(
           costCenterCode1: selectedCostCenter1Value,
           costCenterCode2: selectedCostCenter2Value,

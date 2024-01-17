@@ -1,17 +1,22 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/UserGroups/UserGroup.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/requests/basicInputs/settingRequests/SettingRequestD.dart';
 import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/UserGroups/userGroupApiService.dart';
 import 'package:flutter/services.dart';
+import 'package:fourlinkmobileapp/service/module/requests/SettingRequests/settingRequestDApiService.dart';
 import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:supercharged/supercharged.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
+import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
+import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 
 //APIs
+NextSerialApiService _settingRequestCodeApiService = NextSerialApiService();
 EmployeeApiService _employeeApiService = EmployeeApiService();
 GroupApiService _groupApiService = GroupApiService();
 
@@ -24,6 +29,8 @@ class AddReqDetails extends StatefulWidget {
 
 class _AddReqDetailsState extends State<AddReqDetails> {
 
+  List<SettingRequestD> settingRequestDLst = <SettingRequestD>[];
+  List<SettingRequestD> selected = [];
   List<Employee> employees = [];
   List<UserGroup> groups = [];
   List<DropdownMenuItem<String>> menuEmployees = [];
@@ -33,7 +40,10 @@ class _AddReqDetailsState extends State<AddReqDetails> {
   String? selectedAlternativeEmployeeValue = null;
   String? selectedGroupValue = null;
 
+  final SettingRequestDApiService api = SettingRequestDApiService();
+  int lineNum = 1;
   final _addFormKey = GlobalKey<FormState>();
+  final _settingRequestCodeController = TextEditingController();
   final _levelsController = TextEditingController();
   final _emailReceiversController = TextEditingController();
   final _whatsappReceiversController = TextEditingController();
@@ -44,6 +54,13 @@ class _AddReqDetailsState extends State<AddReqDetails> {
   @override
   initState() {
     super.initState();
+    Future<NextSerial>  futureSerial = _settingRequestCodeApiService.getNextSerial("WFW_SettingRequestsH", "SettingRequestCode", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
+      NextSerial nextSerial = data;
+      _settingRequestCodeController.text = nextSerial.nextSerial.toString();
+      return nextSerial;
+    }, onError: (e) {
+      print(e);
+    });
 
     Future<List<Employee>> futureEmployees = _employeeApiService.getEmployees().then((data) {
       employees = data;
@@ -165,6 +182,7 @@ class _AddReqDetailsState extends State<AddReqDetails> {
                           ),
                         ),
                         const SizedBox(height: 12),
+                        // more than 20 days
                         ListTile(
                           leading: Text("Employee: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: Container(
@@ -349,6 +367,7 @@ class _AddReqDetailsState extends State<AddReqDetails> {
                             ),
                           ),
                         ),
+                        // to have some of
                         const SizedBox(height: 12,),
                         ListTile(
                           leading: Text("Description Ara: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -479,6 +498,18 @@ class _AddReqDetailsState extends State<AddReqDetails> {
     }
     setState(() {
 
+    });
+  }
+  setNextSerial() {
+    //Serial
+    Future<NextSerial> futureSerial = _settingRequestCodeApiService.getNextSerial(
+        "WFW_SettingRequestsH", "SettingRequestCode",
+      " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString(),).then((data) {
+      NextSerial nextSerial = data;
+      _settingRequestCodeController.text = nextSerial.nextSerial.toString();
+      return nextSerial;
+    }, onError: (e) {
+      print(e);
     });
   }
 }

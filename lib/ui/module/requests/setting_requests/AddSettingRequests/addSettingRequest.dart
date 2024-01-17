@@ -1,33 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Menus/Menu.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/requests/basicInputs/settingRequests/SettingRequestH.dart';
 import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/Menus/menuApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/RequestTypes/requestTypeApiService.dart';
+import 'package:fourlinkmobileapp/service/module/requests/SettingRequests/settingRequestHApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:supercharged/supercharged.dart';
 import '../../../../../common/globals.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import '../../../../../common/login_components.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/CostCenters/CostCenter.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Departments/Department.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/RequestTypes/RequestType.dart';
+import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
+import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/accounts/basicInputs/CostCenters/costCenterApiService.dart';
 import '../../../../../service/module/accounts/basicInputs/Departments/departmentApiService.dart';
+import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 
 // APIs
+NextSerialApiService _settingRequestCodeApiService= NextSerialApiService();
 MenuApiService _menuApiService = MenuApiService();
 RequestTypeApiService _requestTypeApiService = RequestTypeApiService();
 DepartmentApiService _departmentApiService = DepartmentApiService();
 CostCenterApiService _costCenterApiService = CostCenterApiService();
 
 class AddSettingRequest extends StatefulWidget {
-  const AddSettingRequest({Key? key}) : super(key: key);
+  AddSettingRequest();
 
   @override
   State<AddSettingRequest> createState() => _AddSettingRequestState();
 }
 
 class _AddSettingRequestState extends State<AddSettingRequest> {
+  _AddSettingRequestState();
 
   // List Models
   List<Menu> menus = [];
@@ -40,16 +48,17 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
   List<DropdownMenuItem<String>> menuDepartments = [];
   List<DropdownMenuItem<String>> menuCostCenters = [];
 
+
   String? selectedMenuValue = null;
   String? selectedRequestTypeValue = null;
   String? selectedDepartmentValue = null;
-  String? selectedrelatedTransactionValue = null;
-  String? selectedrelatedTransactionDesValue = null;
+  int? selectedrelatedTransactionValue = null;
+  int? selectedrelatedTransactionDesValue = null;
   String? selectedCostCenterValue = null;
 
+  final SettingRequestHApiService api = SettingRequestHApiService();
   final _addFormKey = GlobalKey<FormState>();
   final _settingRequestCodeController = TextEditingController();
-  final _requestTypeCodeController = TextEditingController();
   final _settingNameAraController = TextEditingController();
   final _settingNameEngController = TextEditingController();
   final _numberOfLevelsController = TextEditingController();
@@ -60,6 +69,14 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
   @override
   initState() {
     super.initState();
+
+    Future<NextSerial>  futureSerial = _settingRequestCodeApiService.getNextSerial("WFW_SettingRequestsH", "SettingRequestCode", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
+      NextSerial nextSerial = data;
+      _settingRequestCodeController.text = nextSerial.nextSerial.toString();
+      return nextSerial;
+    }, onError: (e) {
+      print(e);
+    });
 
     Future<List<RequestType>> futureRequestType = _requestTypeApiService.getRequestTypes().then((data) {
       requestTypes = data;
@@ -444,7 +461,7 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
                                 onChanged: (value){
                                   //v.text = value!.cusTypesCode.toString();
                                   //print(value!.id);
-                                  selectedrelatedTransactionValue =  value!.menuId.toString();
+                                  selectedrelatedTransactionValue =  value!.menuId;
                                 },
                                 filterFn: (instance, filter){
                                   if(instance.menuAraName!.contains(filter)){
@@ -506,7 +523,7 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
                                 onChanged: (value){
                                   //v.text = value!.cusTypesCode.toString();
                                   //print(value!.id);
-                                  selectedrelatedTransactionDesValue =  value!.menuId.toString();
+                                  selectedrelatedTransactionDesValue =  value!.menuId;
                                 },
                                 filterFn: (instance, filter){
                                   if(instance.menuAraName!.contains(filter)){
@@ -590,7 +607,7 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
                         ),
                       ),
                       onPressed: () {
-                        //saveResourceRequest(context);
+                        saveSettingRequest(context);
                       },
                       child: Text('Save'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
                     ),
@@ -603,6 +620,19 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
 
     );
   }
+  // getCostCenterData() {
+  //   if (costCenters.isNotEmpty) {
+  //     for(var i = 0; i < costCenters.length; i++){
+  //       menuCostCenters.add(
+  //           DropdownMenuItem(
+  //               value: costCenters[i].costCenterCode.toString(),
+  //               child: Text((langId==1)?  costCenters[i].costCenterNameAra.toString() : costCenters[i].costCenterNameEng.toString())));
+  //     }
+  //   }
+  //   setState(() {
+  //
+  //   });
+  // }
   getCostCenterData() {
     if (costCenters.isNotEmpty) {
       for(var i = 0; i < costCenters.length; i++){
@@ -688,5 +718,43 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
         ),
       ),
     );
+  }
+  saveSettingRequest(BuildContext context)
+  {
+    if (selectedCostCenterValue == null || selectedCostCenterValue!.isEmpty) {
+      FN_showToast(context, 'please set cost center value'.tr(), Colors.red);
+      return;
+    }
+
+    if (selectedDepartmentValue == null || selectedDepartmentValue!.isEmpty) {
+      FN_showToast(context, 'please set a department'.tr(), Colors.red);
+      return;
+    }
+    if (selectedrelatedTransactionValue == null) {
+      FN_showToast(context, 'please set a value'.tr(), Colors.red);
+      return;
+    }
+
+    if (selectedrelatedTransactionDesValue == null) {
+      FN_showToast(context, 'please set a value'.tr(), Colors.red);
+      return;
+    }
+
+    api.createSettingRequestH(context, SettingRequestH(
+
+      requestTypeCode: selectedRequestTypeValue,
+      relatedTransactionMenuId: selectedrelatedTransactionValue,
+      relatedTransactionDestinationMenuId: selectedrelatedTransactionDesValue,
+      costCenterCode1: selectedCostCenterValue,
+      departmentCode: selectedDepartmentValue,
+      settingRequestCode: _settingRequestCodeController.text,
+      numberOfLevels: _numberOfLevelsController.text.toInt(),
+      sendEmailAfterConfirmation: _sendEmailController.text,
+      settingRequestNameAra: _settingNameAraController.text,
+      settingRequestNameEng: _settingNameEngController.text,
+      descriptionAra: _descriptionAraController.text,
+      descriptionEng: _descriptionEngController.text,
+    ));
+    Navigator.pop(context,true );
   }
 }

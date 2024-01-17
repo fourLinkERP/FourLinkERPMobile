@@ -1,12 +1,12 @@
 String get pickedDate => (DateTime.now()).toString();
 
-class AdditionalRequestH {
+class SettingRequestH {
   int? id;
   String? settingRequestCode;
   String? requestTypeCode;
   String? settingRequestNameAra;
   String? settingRequestNameEng;
-  String? numberOfLevels;
+  int? numberOfLevels;
   String? costCenterCode1;
   String? departmentCode;
   String? sendEmailAfterConfirmation;
@@ -15,7 +15,7 @@ class AdditionalRequestH {
   String? descriptionAra;
   String? descriptionEng;
 
-  AdditionalRequestH(
+  SettingRequestH(
       {
         this.id,
         this.settingRequestCode,
@@ -31,14 +31,14 @@ class AdditionalRequestH {
         this.descriptionAra,
         this.descriptionEng,
       });
-  factory AdditionalRequestH.fromJson(Map<String, dynamic> json){
-    return AdditionalRequestH(
+  factory SettingRequestH.fromJson(Map<String, dynamic> json){
+    return SettingRequestH(
       id: (json['id'] != null) ? json['id'] as int : 0,
       settingRequestCode: (json['settingRequestCode'] != null) ? json['settingRequestCode'] as String : "",
       requestTypeCode: (json['requestTypeCode'] != null) ? json['requestTypeCode'] as String : "",
       settingRequestNameAra: (json['settingRequestNameAra'] != null) ? json['settingRequestNameAra'] as String : "",
       settingRequestNameEng: (json['settingRequestNameEng'] != null) ? json['settingRequestNameEng'] as String : " ",
-      numberOfLevels: (json['numberOfLevels'] != null) ? json['numberOfLevels'] as String : " ",
+      numberOfLevels: (json['numberOfLevels'] != null) ? json['numberOfLevels'] as int : 0,
       costCenterCode1: (json['costCenterCode1'] != null) ? json['costCenterCode1'] as String : " ",
       departmentCode: (json['departmentCode'] != null) ? json['departmentCode'] as String : " ",
       sendEmailAfterConfirmation: (json['sendEmailAfterConfirmation'] != null) ? json['sendEmailAfterConfirmation'] as String : " ",
