@@ -483,6 +483,12 @@
     "Priority: ": "درجة الاهمية: ",
     "Outbox Mails is Empty": "البريد الصادر فارغ",
     "Inbox Mails is Empty": "البريد الوارد فارغ",
-    "Send Email": "إرسال بريد"
+    "Send Email": "إرسال بريد",
+    "Customer": "العميل",
+    "Customer requests": "طلبات العميل",
+    "Indicators": "المؤشرات",
+    "External detection": "الكشف الخارجي",
+    "Reviews": "المراجعات",
+    "Repair Agreements": "إصلاح الموافقات"
 }
 

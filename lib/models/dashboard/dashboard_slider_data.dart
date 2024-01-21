@@ -19,13 +19,21 @@ class DashboardSliderListData {
 
   static List<DashboardSliderListData> tabIconsList = <DashboardSliderListData>[
     DashboardSliderListData(
-      imagePath: 'assets/fitness_app/newinventory.png',
-      titleTxt: 'purchase'.tr(),
+      imagePath: 'assets/fitness_app/car.png',
+      titleTxt: 'Work Shop'.tr(),
       kacl: 0,
       meals: <String>['', ''],
       startColor: '#FA7D82',
       endColor: '#FFB295',
     ),
+    // DashboardSliderListData(
+    //   imagePath: 'assets/fitness_app/newinventory.png',
+    //   titleTxt: 'purchase'.tr(),
+    //   kacl: 0,
+    //   meals: <String>['', ''],
+    //   startColor: '#FA7D82',
+    //   endColor: '#FFB295',
+    // ),
     DashboardSliderListData(
       imagePath: 'assets/fitness_app/salesCart.png',
       titleTxt: 'Sales'.tr(),

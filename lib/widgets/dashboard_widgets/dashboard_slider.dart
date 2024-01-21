@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/models/dashboard/dashboard_slider_data.dart';
 import '../../theme/fitness_app_theme.dart';
 import '../../helpers/hex_decimal.dart';
+import '../../ui/module/workshop/workshop_home/workshopMainScreen.dart';
 import '../MainTransactions.dart';
  
 
@@ -234,7 +235,7 @@ class MealsView extends StatelessWidget {
                                         child: InkWell(
                                           onTap: (){
                                             if(index==0){
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainTransactions()),);
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  WorkshopHome()),);
                                             }else if(index==1){
                                               Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainTransactions()),);
                                               //Navigator.push(context, MaterialPageRoute(builder: (context) =>  SalesPage()),);
