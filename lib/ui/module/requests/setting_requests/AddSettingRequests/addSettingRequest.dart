@@ -48,8 +48,6 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
   List<DropdownMenuItem<String>> menuDepartments = [];
   List<DropdownMenuItem<String>> menuCostCenters = [];
 
-
-  String? selectedMenuValue = null;
   String? selectedRequestTypeValue = null;
   String? selectedDepartmentValue = null;
   int? selectedrelatedTransactionValue = null;
@@ -620,19 +618,6 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
 
     );
   }
-  // getCostCenterData() {
-  //   if (costCenters.isNotEmpty) {
-  //     for(var i = 0; i < costCenters.length; i++){
-  //       menuCostCenters.add(
-  //           DropdownMenuItem(
-  //               value: costCenters[i].costCenterCode.toString(),
-  //               child: Text((langId==1)?  costCenters[i].costCenterNameAra.toString() : costCenters[i].costCenterNameEng.toString())));
-  //     }
-  //   }
-  //   setState(() {
-  //
-  //   });
-  // }
   getCostCenterData() {
     if (costCenters.isNotEmpty) {
       for(var i = 0; i < costCenters.length; i++){

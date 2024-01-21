@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/requests/basicInputs/settingRequests/SettingRequestD.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/setting_requests/Details/addDetail.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../common/globals.dart';
@@ -18,37 +19,37 @@ class _DetailsListState extends State<DetailsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        //   elevation: 0,
-        //   backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
-        //   title: SizedBox(
-        //     //height: 60,
-        //     child: Column(
-        //       crossAxisAlignment: langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
-        //       children: [
-        //         TextField(
-        //           onChanged: (value) => onSearch(value),
-        //           decoration: InputDecoration(
-        //             filled: true,
-        //             fillColor: Colors.white,
-        //             contentPadding: const EdgeInsets.all(0),
-        //             prefixIcon: const Icon(Icons.search, color: Colors.black26,),
-        //             border: OutlineInputBorder(
-        //               borderRadius: BorderRadius.circular(50),
-        //               borderSide: BorderSide.none,
-        //             ),
-        //             hintStyle: const TextStyle(
-        //                 fontSize: 16,
-        //                 color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
-        //             ),
-        //             hintText: "searchSettingRequests".tr(),
-        //
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // ),
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
+          title: SizedBox(
+            //height: 60,
+            child: Column(
+              crossAxisAlignment: langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  onChanged: (value) => onSearch(value),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: const EdgeInsets.all(0),
+                    prefixIcon: const Icon(Icons.search, color: Colors.black26,),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(50),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintStyle: const TextStyle(
+                        fontSize: 16,
+                        color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
+                    ),
+                    hintText: "searchSettingRequestDetails".tr(),
+
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
         body: SafeArea(child: buildSettingRequestDetails()),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -110,17 +111,17 @@ class _DetailsListState extends State<DetailsList> {
     });
   }
   void getData() async {
-    // Future<List<ResourceRequests>?> futureResourceRequests = _apiService.getResourceRequests ().catchError((Error){
+    // Future<List<SettingRequestD>?> futureSettingRequests = _apiService.getSettingRequestH ().catchError((Error){
     //   print('Error ${Error}');
     //   AppCubit.get(context).EmitErrorState();
     // });
     // print('xxxx1 before list');
-    // resourceRequests = (await futureResourceRequests)!;
-    // print('xxxx2 len ' + resourceRequests.length.toString());
-    // if (resourceRequests.isNotEmpty) {
+    // settingRequestsH = (await futureSettingRequests)!;
+    // print('xxxx2 len ' + settingRequestsH.length.toString());
+    // if (settingRequestsD.isNotEmpty) {
     //   setState(() {
     //     print('xxxx after state');
-    //     _founded = resourceRequests!;
+    //     _founded = settingRequestsH!;
     //     String search = '';
     //
     //   });

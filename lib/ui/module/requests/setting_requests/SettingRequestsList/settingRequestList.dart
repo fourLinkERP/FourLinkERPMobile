@@ -4,15 +4,15 @@ import'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/requests/basicInputs/settingRequests/SettingRequestH.dart';
 import 'package:fourlinkmobileapp/service/module/requests/SettingRequests/settingRequestHApiService.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/setting_requests/AddSettingRequests/addSettingRequestTabs.dart';
+//import 'package:fourlinkmobileapp/ui/module/requests/setting_requests/EditSettingRequests/editSettingRequestTabs.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../../common/globals.dart';
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../cubit/app_states.dart';
 import '../../../../../helpers/hex_decimal.dart';
-import '../../../../../helpers/toast.dart';
+//import '../../../../../helpers/toast.dart';
 import '../../../../../theme/fitness_app_theme.dart';
-import '../../../../../utils/permissionHelper.dart';
 import '../EditSettingRequests/editSettingRequests.dart';
 
 //API
@@ -33,17 +33,17 @@ class _SettingRequestListState extends State<SettingRequestList> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    print('okkkkkkkkkkk');
-    AppCubit.get(context).CheckConnection();
-    Timer(const Duration(seconds: 30), () { // <-- Delay here
-      setState(() {
-        if(settingRequestsH.isEmpty){
-          isLoading = false;
-        }
-        // <-- Code run after delay
-      });
-    });
+    // // TODO: implement initState
+    // print('okkkkkkkkkkk');
+    // AppCubit.get(context).CheckConnection();
+    // Timer(const Duration(seconds: 30), () { // <-- Delay here
+    //   setState(() {
+    //     if(settingRequestsH.isEmpty){
+    //       isLoading = false;
+    //     }
+    //     // <-- Code run after delay
+    //   });
+    // });
 
     getData();
     super.initState();
