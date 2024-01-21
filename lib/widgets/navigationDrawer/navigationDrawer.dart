@@ -10,7 +10,7 @@ import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/ui/home/home_screen.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../theme/app_theme.dart';
-import '../../ui/module/requests/ReqistsList.dart';
+import '../../ui/module/requests/generalList/ReqistsList.dart';
 //import '../../ui/setting/send_email.dart';
 import 'createDrawerBodyItem.dart';
 import 'createDrawerHeader.dart';

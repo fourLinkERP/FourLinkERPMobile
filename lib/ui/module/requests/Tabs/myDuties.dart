@@ -1,8 +1,8 @@
 import'package:flutter/material.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
-import 'my_duties_screens/Inbox/InboxMailsList.dart';
-import 'my_duties_screens/Outbox/OutboxMailsList.dart';
+import '../my_duties_screens/Inbox/InboxMailsList.dart';
+import '../my_duties_screens/Outbox/OutboxMailsList.dart';
 
 
 class MyDuties extends StatelessWidget {
