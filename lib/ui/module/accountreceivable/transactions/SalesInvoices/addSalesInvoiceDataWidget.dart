@@ -695,7 +695,8 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                         color: Color.fromRGBO(144, 16, 46, 1)
                                     )
                                 ),
-                              )),
+                              ),
+                          ),
 
                         ]),
                         const SizedBox(height: 20),

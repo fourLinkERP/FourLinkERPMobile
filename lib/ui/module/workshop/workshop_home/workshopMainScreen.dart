@@ -55,10 +55,10 @@ class _WorkshopHomeState extends State<WorkshopHome> {
                         )
                       ]
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        "New Repair Agreement",
-                        style: TextStyle(
+                        "new_repair_agreement".tr(),
+                        style: const TextStyle(
                           color: Color.fromRGBO(200, 16, 46, 1),
                           fontWeight: FontWeight.bold,
                           fontSize: 17,
@@ -93,10 +93,10 @@ class _WorkshopHomeState extends State<WorkshopHome> {
                           )
                         ]
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        "Search",
-                        style: TextStyle(
+                        "search".tr(),
+                        style: const TextStyle(
                           color: Color.fromRGBO(200, 16, 46, 1),
                           fontWeight: FontWeight.bold,
                           fontSize: 17,
@@ -131,10 +131,10 @@ class _WorkshopHomeState extends State<WorkshopHome> {
                           )
                         ]
                     ),
-                    child: const Center(
+                    child: Center(
                       child: Text(
-                        "Dashboard",
-                        style: TextStyle(
+                        "dashboard".tr(),
+                        style: const TextStyle(
                           color: Color.fromRGBO(200, 16, 46, 1),
                           fontWeight: FontWeight.bold,
                           fontSize: 17,

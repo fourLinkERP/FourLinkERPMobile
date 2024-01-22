@@ -493,6 +493,23 @@
     "Customer_Information": "معلومات العميل",
     "customer_name": "اسم العميل",
     "customer_identity": "هوية العميل",
-    "name_of_the_one_who_brought_the_car": "اسم من احضر السيارة"
+    "name_of_the_one_who_brought_the_car": "اسم من احضر السيارة",
+    "number_of_the_one_who_brought_the_car": "رقم من احضر السيارة",
+    "Car_Information": "معلومات السيارة",
+    "chassis_number": "رقم الشاسيه",
+    "plate_number": "رقم اللوحة",
+    "model": "الموديل",
+    "car_group": "مجموعة السيارة",
+    "Work Shop": "الورشة",
+    "next": "التالي",
+    "new_repair_agreement": "اتفاقية إصلاح جديدة",
+    "dashboard": "الداش بورد",
+    "chassis_num": "رقم الشاسيه",
+    "plate_num": "رقم اللوحة",
+    "customer_requests": "طلبات العميل",
+    "maintenance_type": "نوع الصيانة",
+    "maintenance_category": "فئة الصيانة",
+    "services": "الخدمات",
+    "add": "اضافة"
 }
 
