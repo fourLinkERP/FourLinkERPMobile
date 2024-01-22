@@ -335,7 +335,7 @@ class _CustomerRequestsState extends State<CustomerRequests> {
                               colors: Colors.blueGrey,
                               validate: (String? value) {
                                 if (value!.isEmpty) {
-                                  return 'plate number must be non empty';
+                                  return 'total must be non empty';
                                 }
                                 return null;
                               },
