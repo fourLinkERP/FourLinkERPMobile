@@ -489,6 +489,10 @@
     "Indicators": "المؤشرات",
     "External detection": "الكشف الخارجي",
     "Reviews": "المراجعات",
-    "Repair Agreements": "إصلاح الموافقات"
+    "Repair Agreements": "إصلاح الموافقات",
+    "Customer_Information": "معلومات العميل",
+    "customer_name": "اسم العميل",
+    "customer_identity": "هوية العميل",
+    "name_of_the_one_who_brought_the_car": "اسم من احضر السيارة"
 }
 

@@ -402,5 +402,9 @@
     "edit_request_vacation": "Edit Request Vacation",
     "edit_request_salary": "Edit Request salary increase",
     "edit_request_resource": "Edit Request resource",
-    "add_Employee_Done": "Add Employee Done"
+    "add_Employee_Done": "Add Employee Done",
+    "customer_name": "Customer name",
+    "customer_identity": "Customer identity",
+    "name_of_the_one_who_brought_the_car": "Name of the one who brought the car",
+    "number_of_the_one_who_brought_the_car": "Number of the one who brought the car"
 }

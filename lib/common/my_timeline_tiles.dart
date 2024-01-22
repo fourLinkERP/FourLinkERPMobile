@@ -17,7 +17,7 @@ class MyTimeLineTile extends StatelessWidget {
       required this.isPast,
       required this.icon,
       required this.text,
-      required this.onTab
+      required this.onTab,
 
    });
 
@@ -28,12 +28,12 @@ class MyTimeLineTile extends StatelessWidget {
       child: TimelineTile(
         isFirst: isFirst,
         isLast: isLast,
-        beforeLineStyle: const LineStyle(
-          color: Color.fromRGBO(200, 16, 46, 1),
+        beforeLineStyle: LineStyle(
+          color: isPast ? Colors.blueGrey.shade500 : Colors.blueGrey.shade200,                      //Color.fromRGBO(200, 16, 46, 1),
         ),
         indicatorStyle: IndicatorStyle(
           width: 40,
-          color: const Color.fromRGBO(200, 16, 46, 1),
+          color: isPast ? Colors.green : Colors.blueGrey.shade200,
           iconStyle: IconStyle(
             iconData: icon,
             color: Colors.white,
@@ -51,7 +51,7 @@ class MyTimeLineTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15),
                     boxShadow:  const [
                       BoxShadow(
-                        color: Color.fromRGBO(200, 16, 46, 1),
+                        color: Colors.blueGrey,
                         spreadRadius: 1,
                         blurRadius: 8,
                         offset: Offset(4, 4),
@@ -67,8 +67,8 @@ class MyTimeLineTile extends StatelessWidget {
                 child: Center(
                   child: Text(
                     text.tr(),
-                    style: const TextStyle(
-                      color: Color.fromRGBO(200, 16, 46, 1),
+                    style:  TextStyle(
+                      color: isPast ? Colors.blueGrey.shade500 : Colors.blueGrey.shade200,
                       fontWeight: FontWeight.bold,
                       fontSize: 17,
                     ),

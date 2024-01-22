@@ -37,7 +37,7 @@ class _NewRepairAgreeTabsState extends State<NewRepairAgreeTabs> {
               onTab: () {  Navigator.push(context, MaterialPageRoute(builder: (context) =>  CustomerRequests()),);  },),
             MyTimeLineTile(isFirst: false, isLast: false, isPast: true, icon: Icons.drag_indicator,text: "Indicators",
               onTab: () {  Navigator.push(context, MaterialPageRoute(builder: (context) =>  ExternalDetection()),);  },),
-            MyTimeLineTile(isFirst: false, isLast: false, isPast: true, icon: Icons.document_scanner_rounded,text: "External detection",
+            MyTimeLineTile(isFirst: false, isLast: false, isPast: false, icon: Icons.document_scanner_rounded,text: "External detection",
               onTab: () {  Navigator.push(context, MaterialPageRoute(builder: (context) =>  Indicators()),);  },),
             MyTimeLineTile(isFirst: false, isLast: true, isPast: false, icon: Icons.reviews,text: "Reviews",
               onTab: () {  Navigator.push(context, MaterialPageRoute(builder: (context) =>  Reviews()),);  },),

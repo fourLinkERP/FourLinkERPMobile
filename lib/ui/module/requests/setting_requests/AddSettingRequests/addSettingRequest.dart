@@ -216,7 +216,12 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
 
                         const SizedBox(height: 12),
                         ListTile(
-                          leading: Text("Request name Ara: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text("Request name Ara: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ],
+                          ),
                           trailing: SizedBox(
                             width: 200,
                             height: 55,
@@ -339,7 +344,12 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
                         ),
                         const SizedBox(height: 12,),
                         ListTile(
-                          leading: Text("Request department: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text("Request department: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ],
+                          ),
                           trailing: Container(
                             width: 190,
                             height: 55,
