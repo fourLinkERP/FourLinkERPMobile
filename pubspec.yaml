@@ -60,6 +60,8 @@ dependencies:
   fl_chart: ^0.63.0
   syncfusion_flutter_gauges: ^22.2.12
   timeline_tile: ^2.0.0
+  image_cropper: ^4.0.0
+  image_picker: ^1.0.1
 
 
 

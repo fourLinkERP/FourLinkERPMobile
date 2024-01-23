@@ -510,6 +510,15 @@
     "maintenance_type": "نوع الصيانة",
     "maintenance_category": "فئة الصيانة",
     "services": "الخدمات",
-    "add": "اضافة"
+    "add": "اضافة",
+    "indicators":"المؤشرات",
+    "navigation_device_memory_card": "كارت ذاكرة جهاز الملاحة",
+    "delivered": "تم تسليمه",
+    "existing_objects": "الاغراض الموجودة",
+    "usb_device": "جهاز يو اس بي",
+    "metal_rim_lock":"قفل الجنوط المعدنية",
+    "duration": "مدة",
+    "lighting_lamps": "مصابيح الاضاءة"
+
 }
 

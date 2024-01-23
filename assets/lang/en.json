@@ -420,5 +420,12 @@
     "add": "Add",
     "maintenance_type": "Maintenance type",
     "maintenance_category": "Maintenance category",
-    "services": "Services"
+    "services": "Services",
+    "indicators": "Indicators",
+    "navigation_device_memory_card": "Navigation device memory card",
+    "delivered": "Delivered",
+    "existing_objects": "Existing Objects",
+    "usb_device": "USB device",
+    "metal_rim_lock": "Metal rim lock",
+    "lighting_lamps": "Lighting Lamps"
 }

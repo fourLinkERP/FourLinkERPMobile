@@ -2,7 +2,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/editSalesInvoiceDataWidget.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/indicators/Indecators.dart';
+import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/indicators/Indicators.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
@@ -327,9 +327,7 @@ class _CustomerRequestsState extends State<CustomerRequests> {
                             height: 40,
                             width: 155,
                             child: defaultFormField(
-                              //label: 'plate_num'.tr(),
                               enable: false,
-                              // prefix: Icons.search,
                               controller: totalController,
                               type: TextInputType.number,
                               colors: Colors.blueGrey,
