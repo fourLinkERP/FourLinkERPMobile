@@ -159,7 +159,7 @@
     "bill": "الفاتورة ",
     "order_num": "رقم الطلب: ",
     "arrive_time": "وقت الوصول ",
-    "service_type": "نوع الخدمة: ",
+    "service_type": "نوع الخدمة",
     "distance": "المسافة:",
     "do_service_finish": "هل تم انتهاء الخدمة",
     "service_ended": "انتهاء الخدمة",
@@ -518,7 +518,21 @@
     "usb_device": "جهاز يو اس بي",
     "metal_rim_lock":"قفل الجنوط المعدنية",
     "duration": "مدة",
-    "lighting_lamps": "مصابيح الاضاءة"
+    "lighting_lamps": "مصابيح الاضاءة",
+    "external_detection": "الكشف الخارجي",
+    "select_image": "اختر صورة",
+    "write_a_comment": "اكتب تعليق",
+    "review": "المراجعة",
+    "payment_method": "طريقة الدفع",
+    "return_old_parts": "إرجاع الاجزاء القديمة",
+    "transportation_service": "خدمة النقل",
+    "the_client_is_waiting": "العميل منتظر",
+    "expected_cost": "التكلفة المتوقعة",
+    "customer_signature": "توقيع العميل",
+    "service_classification": "فئة الخدمة",
+    "expected_delivering_date": "تاريخ التسليم المتوقع"
+
+
 
 }
 

@@ -17,22 +17,22 @@ class _IndicatorsState extends State<Indicators> {
   bool? _isCheckedUSB = false;
   bool? _isCheckedDelivered3 = false;
   bool? _isCheckedRims = false;
-  bool? _isCheckedlight1 = false;
-  bool? _isCheckedlight2 = false;
-  bool? _isCheckedlight3 = false;
-  bool? _isCheckedlight4 = false;
-  bool? _isCheckedlight5 = false;
-  bool? _isCheckedlight6 = false;
-  bool? _isCheckedlight7 = false;
-  bool? _isCheckedlight8 = false;
-  bool? _isCheckedlight9 = false;
-  bool? _isCheckedlight10 = false;
-  bool? _isCheckedlight11 = false;
-  bool? _isCheckedlight12 = false;
-  bool? _isCheckedlight13 = false;
-  bool? _isCheckedlight14 = false;
-  bool? _isCheckedlight15 = false;
-  bool? _isCheckedlight16 = false;
+  bool? isCheckedLight1 = false;
+  bool? isCheckedLight2 = false;
+  bool? isCheckedLight3 = false;
+  bool? isCheckedLight4 = false;
+  bool? isCheckedLight5 = false;
+  bool? isCheckedLight6 = false;
+  bool? isCheckedLight7 = false;
+  bool? isCheckedLight8 = false;
+  bool? isCheckedLight9 = false;
+  bool? isCheckedLight10 = false;
+  bool? isCheckedLight11 = false;
+  bool? isCheckedLight12 = false;
+  bool? isCheckedLight13 = false;
+  bool? isCheckedLight14 = false;
+  bool? isCheckedLight15 = false;
+  bool? isCheckedLight16 = false;
 
 
 
@@ -183,10 +183,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm1.jpg', scale: 1),
-                          value: _isCheckedlight1,
+                          value: isCheckedLight1,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight1 = newValue;
+                              isCheckedLight1 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -199,10 +199,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm2.jpg', scale: 1),
-                          value: _isCheckedlight2,
+                          value: isCheckedLight2,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight2 = newValue;
+                              isCheckedLight2 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -220,10 +220,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm3.jpg', scale: 3),
-                          value: _isCheckedlight3,
+                          value: isCheckedLight3,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight3 = newValue;
+                              isCheckedLight3 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -236,10 +236,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm4.jpg', scale: 1),
-                          value: _isCheckedlight4,
+                          value: isCheckedLight4,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight4 = newValue;
+                              isCheckedLight4 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -256,10 +256,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm5.jpg', scale: 1),
-                          value: _isCheckedlight5,
+                          value: isCheckedLight5,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight5 = newValue;
+                              isCheckedLight5 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -272,10 +272,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm6.jpg', scale: 1),
-                          value: _isCheckedlight6,
+                          value: isCheckedLight6,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight6 = newValue;
+                              isCheckedLight6 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -292,10 +292,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm7.jpg', scale: 1),
-                          value: _isCheckedlight7,
+                          value: isCheckedLight7,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight7 = newValue;
+                              isCheckedLight7 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -308,10 +308,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm8.jpg', scale: 1),
-                          value: _isCheckedlight8,
+                          value: isCheckedLight8,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight8 = newValue;
+                              isCheckedLight8 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -328,10 +328,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm9.jpg', scale: 1),
-                          value: _isCheckedlight9,
+                          value: isCheckedLight9,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight9 = newValue;
+                              isCheckedLight9 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -344,10 +344,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm10.jpg', scale: 1),
-                          value: _isCheckedlight10,
+                          value: isCheckedLight10,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight10 = newValue;
+                              isCheckedLight10 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -365,10 +365,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm11.jpg', scale: 1),
-                          value: _isCheckedlight11,
+                          value: isCheckedLight11,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight11 = newValue;
+                              isCheckedLight11 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -381,10 +381,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm12.jpg', scale: 1),
-                          value: _isCheckedlight12,
+                          value: isCheckedLight12,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight12 = newValue;
+                              isCheckedLight12 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -401,10 +401,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm13.jpg', scale: 1),
-                          value: _isCheckedlight13,
+                          value: isCheckedLight13,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight13 = newValue;
+                              isCheckedLight13 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -417,10 +417,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm14.jpg', scale: 1),
-                          value: _isCheckedlight14,
+                          value: isCheckedLight14,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight14 = newValue;
+                              isCheckedLight14 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -437,10 +437,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm15.jpg', scale: 1),
-                          value: _isCheckedlight15,
+                          value: isCheckedLight15,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight15 = newValue;
+                              isCheckedLight15 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -453,10 +453,10 @@ class _IndicatorsState extends State<Indicators> {
                         width: 150,
                         child: CheckboxListTile(
                           title: Image.asset('assets/fitness_app/cm16.jpg', scale: 1),
-                          value: _isCheckedlight16,
+                          value: isCheckedLight16,
                           onChanged: (bool? newValue){
                             setState(() {
-                              _isCheckedlight16 = newValue;
+                              isCheckedLight16 = newValue;
                             });
                           },
                           activeColor: const Color.fromRGBO(144, 16, 46, 1),

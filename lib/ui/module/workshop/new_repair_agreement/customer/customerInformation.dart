@@ -181,8 +181,6 @@ class _CustomerInfoState extends State<CustomerInfo> {
                           width: 155,
                           child: defaultFormField(
                             enable: true,
-                            //label: 'mobile num',
-                            //prefix: Icons.search,
                             controller: customerNameController,
                             type: TextInputType.number,
                             colors: Colors.blueGrey,
@@ -199,15 +197,13 @@ class _CustomerInfoState extends State<CustomerInfo> {
                           height: 40,
                           width: 155,
                           child: defaultFormField(
-                            //label: 'plate num',
                             enable: true,
-                            //prefix: Icons.search,
                             controller: customerIdentityController,
-                            type: TextInputType.number,
+                            type: TextInputType.text,
                             colors: Colors.blueGrey,
                             validate: (String? value) {
                               if (value!.isEmpty) {
-                                return 'plate number must be non empty';
+                                return 'identity must be non empty';
                               }
                               return null;
                             },
@@ -218,9 +214,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                           height: 40,
                           width: 155,
                           child: defaultFormField(
-                            //label: 'plate num',
                             enable: true,
-                            //prefix: Icons.search,
                             controller: emailController,
                             type: TextInputType.emailAddress,
                             colors: Colors.blueGrey,
@@ -237,9 +231,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                           height: 40,
                           width: 155,
                           child: defaultFormField(
-                            //label: 'plate num',
                             enable: true,
-                            //prefix: Icons.search,
                             controller: bringerNameController,
                             type: TextInputType.text,
                             colors: Colors.blueGrey,
@@ -256,9 +248,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                           height: 40,
                           width: 155,
                           child: defaultFormField(
-                            //label: 'plate num',
                             enable: true,
-                            //prefix: Icons.search,
                             controller: bringerNumberController,
                             type: TextInputType.text,
                             colors: Colors.blueGrey,
@@ -281,11 +271,11 @@ class _CustomerInfoState extends State<CustomerInfo> {
                 child: Center(
                   child: Text(
                     "Car_Information".tr(),
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 300,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
@@ -330,8 +320,6 @@ class _CustomerInfoState extends State<CustomerInfo> {
                           width: 155,
                           child: defaultFormField(
                             enable: true,
-                            //label: 'mobile num',
-                            //prefix: Icons.search,
                             controller: chassis1NumberController,
                             type: TextInputType.number,
                             colors: Colors.blueGrey,

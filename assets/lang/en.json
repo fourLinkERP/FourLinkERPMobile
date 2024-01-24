@@ -207,7 +207,7 @@
 
 
     "order_num": "order id: ",
-    "service_type": "service type: ",
+    "service_type": "Service type",
     "approximate_price": "Approximate price: ",
     "total_price": "Total Price: ",
     "cost_spare_parts": "cost of spare parts ",
@@ -427,5 +427,19 @@
     "existing_objects": "Existing Objects",
     "usb_device": "USB device",
     "metal_rim_lock": "Metal rim lock",
-    "lighting_lamps": "Lighting Lamps"
+    "lighting_lamps": "Lighting Lamps",
+    "external_detection": "External Detection",
+    "select_image": "Select image",
+    "write_a_comment": "write a comment",
+    "review": "Review",
+    "payment_method": "Payment Method",
+    "service_classification": "Service classification",
+    "expected_delivering_date": "Expected delivering date",
+    "return_old_parts": "Return old parts",
+    "transportation_service": "Transportation service",
+    "the_client_is_waiting": "The client is waiting",
+    "expected_cost": "Expected cost",
+    "customer_signature": "Customer signature"
+
+
 }

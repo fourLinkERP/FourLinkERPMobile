@@ -10,6 +10,7 @@ Widget defaultFormField({
   required Color colors,
   IconData? suffix,
   VoidCallback? suffixPressed,
+  VoidCallback? onTab,
   bool enable = true,
   onSaved,
   String? Function(String?)? onChanged,
@@ -21,6 +22,7 @@ Widget defaultFormField({
   validator: validate,
   enabled: enable,
   onSaved: onSaved,
+  onTap: onTab,
   onChanged: onChanged,
 
   decoration: InputDecoration(
