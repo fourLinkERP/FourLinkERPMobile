@@ -439,7 +439,9 @@
     "transportation_service": "Transportation service",
     "the_client_is_waiting": "The client is waiting",
     "expected_cost": "Expected cost",
-    "customer_signature": "Customer signature"
-
+    "customer_signature": "Customer signature",
+    "back": "Back",
+    "chassis_num": "chassis num",
+    "plate_num": "plate num"
 
 }

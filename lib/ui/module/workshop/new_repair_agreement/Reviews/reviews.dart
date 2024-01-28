@@ -35,24 +35,21 @@ class _ReviewsState extends State<Reviews> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: ListTile(
-          leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-          title: Text('review'.tr(),
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
-        ),
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-      ),
-      body: Form(
+    return Form(
+      // appBar: AppBar(
+      //   centerTitle: true,
+      //   title: ListTile(
+      //     leading: Image.asset('assets/images/logowhite2.png', scale: 3),
+      //     title: Text('review'.tr(),
+      //       style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
+      //   ),
+      //   backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+      // ),
+     // body: Form(
         key: _addFormKey,
-        child: Container(
-          margin: const EdgeInsets.all(20),
+        child: SizedBox(
           child: ListView(
-            //scrollDirection: Axis.horizontal,
             children: [
-
               SizedBox(
                 height: 30,
                 width: 50,
@@ -69,43 +66,42 @@ class _ReviewsState extends State<Reviews> {
                   scrollDirection: Axis.horizontal,
                   children: [
                     Column(
-                      //mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 30),
                         SizedBox(
                           height: 40,
-                          width: 130,
+                          width: 120,
                           child: Text("payment_method".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
                         ),
 
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 130,
+                          width: 120,
                           child: Text("service_type".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 130,
+                          width: 120,
                           child: Text("service_classification".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 130,
+                          width: 120,
                           child: Text("expected_delivering_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
 
                       ],
                     ),
-                    const SizedBox(width: 10,),
+                    const SizedBox(width: 5,),
                     Column(
                       children: [
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 200,
+                          width: 180,
                           child: DropdownSearch<Customer>(
                             selectedItem: null,
                             popupProps: PopupProps.menu(
@@ -158,7 +154,7 @@ class _ReviewsState extends State<Reviews> {
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 200,
+                          width: 180,
                           child: DropdownSearch<Customer>(
                             selectedItem: null,
                             popupProps: PopupProps.menu(
@@ -210,7 +206,7 @@ class _ReviewsState extends State<Reviews> {
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 200,
+                          width: 180,
                           child: DropdownSearch<Customer>(
                             selectedItem: null,
                             popupProps: PopupProps.menu(
@@ -262,7 +258,7 @@ class _ReviewsState extends State<Reviews> {
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 155,
+                          width: 175,
                           child: defaultFormField(
                             label: 'date'.tr(),
                             controller: expectedDeliveringDateController,
@@ -332,7 +328,7 @@ class _ReviewsState extends State<Reviews> {
                 ),
               ),
               const SizedBox(height: 20),
-              Container(
+              SizedBox(
                 height: 120,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
@@ -341,7 +337,7 @@ class _ReviewsState extends State<Reviews> {
                       children: [
                         SizedBox(
                           height: 40,
-                          width: 155,
+                          width: 140,
                           child: Center(child: Text("expected_cost".tr(), style: const TextStyle(fontWeight: FontWeight.bold),)),
                         ),
                         const SizedBox(height: 20),
@@ -391,52 +387,51 @@ class _ReviewsState extends State<Reviews> {
                   ],
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
-                child: InkWell(
-                  onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) =>  NewRepairAgreeTabs()),);},
-                  child: Container(
-                    height: 70,
-                    width: 70,
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color.fromRGBO(200, 16, 46, 1),
-                            spreadRadius: 1,
-                            blurRadius: 8,
-                            offset: Offset(4, 4),
-                          ),
-                          BoxShadow(
-                            color: Colors.white,
-                            spreadRadius: 2,
-                            blurRadius: 8,
-                            offset: Offset(-4, -4),
-                          )
-                        ]
-                    ),
-                    child: Center(
-                      child: Text(
-                        "save".tr(),
-                        style: const TextStyle(
-                          color: Color.fromRGBO(200, 16, 46, 1),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-
+              // Container(
+              //   margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
+              //   child: InkWell(
+              //     onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) =>  NewRepairAgreeTabs()),);},
+              //     child: Container(
+              //       height: 70,
+              //       width: 70,
+              //       decoration: BoxDecoration(
+              //           color: Colors.grey.shade300,
+              //           borderRadius: BorderRadius.circular(15),
+              //           boxShadow: const [
+              //             BoxShadow(
+              //               color: Color.fromRGBO(200, 16, 46, 1),
+              //               spreadRadius: 1,
+              //               blurRadius: 8,
+              //               offset: Offset(4, 4),
+              //             ),
+              //             BoxShadow(
+              //               color: Colors.white,
+              //               spreadRadius: 2,
+              //               blurRadius: 8,
+              //               offset: Offset(-4, -4),
+              //             )
+              //           ]
+              //       ),
+              //       child: Center(
+              //         child: Text(
+              //           "save".tr(),
+              //           style: const TextStyle(
+              //             color: Color.fromRGBO(200, 16, 46, 1),
+              //             fontWeight: FontWeight.bold,
+              //             fontSize: 17,
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(height: 20),
             ],
           ),
 
 
         ),
-      ),
+     // ),
     );
   }
 }

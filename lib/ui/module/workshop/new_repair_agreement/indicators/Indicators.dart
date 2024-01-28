@@ -33,482 +33,432 @@ class _IndicatorsState extends State<Indicators> {
   bool? isCheckedLight14 = false;
   bool? isCheckedLight15 = false;
   bool? isCheckedLight16 = false;
-
+  final _addFormKey = GlobalKey<FormState>();
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: ListTile(
-          leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-          title: Text('indicators'.tr(),
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
-        ),
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-      ),
-      body: Container(
-        margin: const EdgeInsets.only(top: 20.0, left: 5.0, right: 5.0),
-        child: ListView(
-          scrollDirection: Axis.vertical,
-          children: [
-            Center(
-              child: Text("existing_objects".tr(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),),
-            ),
-            const SizedBox(height: 30,),
-            Row(
-              children: [
-                SizedBox(
-                  height: 60,
-                  width: 170,
-                  child: CheckboxListTile(
-                    title: Text("navigation_device_memory_card".tr()),
-                    value: _isCheckedMemory,
-                    onChanged: (bool? newValue){
-                      setState(() {
-                        _isCheckedMemory = newValue;
-                      });
-                    },
-                    activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                    controlAffinity: ListTileControlAffinity.leading,
-                  ),
-                ),
-                const SizedBox(width: 10,),
-                SizedBox(
-                  height: 60,
-                  width: 170,
-                  child: CheckboxListTile(
-                    title: Text("delivered".tr()),
-                    value: _isCheckedDelivered1,
-                    onChanged: (bool? newValue){
-                      setState(() {
-                        _isCheckedDelivered1 = newValue;
-                      });
-                    },
-                    activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                    controlAffinity: ListTileControlAffinity.leading,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20,),
-            Row(
-              children: [
-
-                SizedBox(
-                  height: 60,
-                  width: 170,
-                  child: CheckboxListTile(
-                    title: Text("usb_device".tr()),
-                    value: _isCheckedUSB,
-                    onChanged: (bool? newValue){
-                      setState(() {
-                        _isCheckedUSB = newValue;
-                      });
-                    },
-                    activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                    controlAffinity: ListTileControlAffinity.leading,
-                  ),
-                ),
-                const SizedBox(width: 10,),
-                SizedBox(
-                  height: 60,
-                  width: 170,
-                  child: CheckboxListTile(
-                    title: Text("delivered".tr()),
-                    value: _isCheckedDelivered2,
-                    onChanged: (bool? newValue){
-                      setState(() {
-                        _isCheckedDelivered2 = newValue;
-                      });
-                    },
-                    activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                    controlAffinity: ListTileControlAffinity.leading,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20,),
-            Row(
-              children: [
-
-                SizedBox(
-                  height: 60,
-                  width: 170,
-                  child: CheckboxListTile(
-                    title: Text("metal_rim_lock".tr()),
-                    value: _isCheckedRims,
-                    onChanged: (bool? newValue){
-                      setState(() {
-                        _isCheckedRims = newValue;
-                      });
-                    },
-                    activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                    controlAffinity: ListTileControlAffinity.leading,
-                  ),
-                ),
-                const SizedBox(width: 10,),
-                SizedBox(
-                  height: 60,
-                  width: 170,
-                  child: CheckboxListTile(
-                    title: Text("delivered".tr()),
-                    value: _isCheckedDelivered3,
-                    onChanged: (bool? newValue){
-                      setState(() {
-                        _isCheckedDelivered3 = newValue;
-                      });
-                    },
-                    activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                    controlAffinity: ListTileControlAffinity.leading,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 30,),
-            Center(
-              child: Text("lighting_lamps".tr(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),),
-            ),
-            const SizedBox(height: 30.0),
-            Container(
-              width: 480,
-              height: 1200,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm1.jpg', scale: 1),
-                          value: isCheckedLight1,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight1 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-                      const SizedBox(width: 2),
-                      SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm2.jpg', scale: 1),
-                          value: isCheckedLight2,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight2 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-
-                    ],
-                  ),
-                  const SizedBox(height: 2),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm3.jpg', scale: 3),
-                          value: isCheckedLight3,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight3 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-                      const SizedBox(width: 2),
-                      SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm4.jpg', scale: 1),
-                          value: isCheckedLight4,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight4 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 2),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm5.jpg', scale: 1),
-                          value: isCheckedLight5,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight5 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-                      const SizedBox(width: 2),
-                      SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm6.jpg', scale: 1),
-                          value: isCheckedLight6,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight6 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 2),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm7.jpg', scale: 1),
-                          value: isCheckedLight7,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight7 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-                      const SizedBox(width: 2),
-                      SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm8.jpg', scale: 1),
-                          value: isCheckedLight8,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight8 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 2),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm9.jpg', scale: 1),
-                          value: isCheckedLight9,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight9 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-                      const SizedBox(width: 2),
-                      SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm10.jpg', scale: 1),
-                          value: isCheckedLight10,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight10 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-
-                    ],
-                  ),
-                  const SizedBox(height: 2),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm11.jpg', scale: 1),
-                          value: isCheckedLight11,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight11 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-                      const SizedBox(width: 2),
-                      SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm12.jpg', scale: 1),
-                          value: isCheckedLight12,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight12 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 2),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm13.jpg', scale: 1),
-                          value: isCheckedLight13,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight13 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-                      const SizedBox(width: 2),
-                      SizedBox(
-                        height: 150,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm14.jpg', scale: 1),
-                          value: isCheckedLight14,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight14 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 2),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 130,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm15.jpg', scale: 1),
-                          value: isCheckedLight15,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight15 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-                      const SizedBox(width: 2),
-                      SizedBox(
-                        height: 130,
-                        width: 150,
-                        child: CheckboxListTile(
-                          title: Image.asset('assets/fitness_app/cm16.jpg', scale: 1),
-                          value: isCheckedLight16,
-                          onChanged: (bool? newValue){
-                            setState(() {
-                              isCheckedLight16 = newValue;
-                            });
-                          },
-                          activeColor: const Color.fromRGBO(144, 16, 46, 1),
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
+    return Form(
+      key: _addFormKey,
+      child: SizedBox(
+          child: ListView(
+            children: [
+              Center(
+                child: Text("existing_objects".tr(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),),
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
-              child: InkWell(
-                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) =>  ExternalDetection()),);},
-                child: Container(
-                  height: 70,
-                  width: 70,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(200, 16, 46, 1),
-                          spreadRadius: 1,
-                          blurRadius: 8,
-                          offset: Offset(4, 4),
-                        ),
-                        BoxShadow(
-                          color: Colors.white,
-                          spreadRadius: 2,
-                          blurRadius: 8,
-                          offset: Offset(-4, -4),
-                        )
-                      ]
-                  ),
-                  child: Center(
-                    child: Text(
-                      "next".tr(),
-                      style: const TextStyle(
-                        color: Color.fromRGBO(200, 16, 46, 1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
+              const SizedBox(height: 30,),
+              Row(
+                children: [
+                  SizedBox(
+                    height: 60,
+                    width: 158,
+                    child: CheckboxListTile(
+                      title: Text("navigation_device_memory_card".tr()),
+                      value: _isCheckedMemory,
+                      onChanged: (bool? newValue){
+                        setState(() {
+                          _isCheckedMemory = newValue;
+                        });
+                      },
+                      activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                      controlAffinity: ListTileControlAffinity.leading,
                     ),
                   ),
+                  SizedBox(
+                    height: 60,
+                    width: 154,
+                    child: CheckboxListTile(
+                      title: Text("delivered".tr()),
+                      value: _isCheckedDelivered1,
+                      onChanged: (bool? newValue){
+                        setState(() {
+                          _isCheckedDelivered1 = newValue;
+                        });
+                      },
+                      activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                      controlAffinity: ListTileControlAffinity.leading,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20,),
+              Row(
+                children: [
+
+                  SizedBox(
+                    height: 60,
+                    width: 155,
+                    child: CheckboxListTile(
+                      title: Text("usb_device".tr()),
+                      value: _isCheckedUSB,
+                      onChanged: (bool? newValue){
+                        setState(() {
+                          _isCheckedUSB = newValue;
+                        });
+                      },
+                      activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                      controlAffinity: ListTileControlAffinity.leading,
+                    ),
+                  ),
+                 // const SizedBox(width: 5,),
+                  SizedBox(
+                    height: 60,
+                    width: 155,
+                    child: CheckboxListTile(
+                      title: Text("delivered".tr()),
+                      value: _isCheckedDelivered2,
+                      onChanged: (bool? newValue){
+                        setState(() {
+                          _isCheckedDelivered2 = newValue;
+                        });
+                      },
+                      activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                      controlAffinity: ListTileControlAffinity.leading,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20,),
+              Row(
+                children: [
+
+                  SizedBox(
+                    height: 60,
+                    width: 155,
+                    child: CheckboxListTile(
+                      title: Text("metal_rim_lock".tr()),
+                      value: _isCheckedRims,
+                      onChanged: (bool? newValue){
+                        setState(() {
+                          _isCheckedRims = newValue;
+                        });
+                      },
+                      activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                      controlAffinity: ListTileControlAffinity.leading,
+                    ),
+                  ),
+                  //const SizedBox(width: 5,),
+                  SizedBox(
+                    height: 60,
+                    width: 155,
+                    child: CheckboxListTile(
+                      title: Text("delivered".tr()),
+                      value: _isCheckedDelivered3,
+                      onChanged: (bool? newValue){
+                        setState(() {
+                          _isCheckedDelivered3 = newValue;
+                        });
+                      },
+                      activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                      controlAffinity: ListTileControlAffinity.leading,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 30,),
+              Center(
+                child: Text("lighting_lamps".tr(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20.0),),
+              ),
+              const SizedBox(height: 30.0),
+              Container(
+                width: 480,
+                height: 1200,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm1.jpg', scale: 1),
+                            value: isCheckedLight1,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight1 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm2.jpg', scale: 1),
+                            value: isCheckedLight2,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight2 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm3.jpg', scale: 3),
+                            value: isCheckedLight3,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight3 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm4.jpg', scale: 1),
+                            value: isCheckedLight4,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight4 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm5.jpg', scale: 1),
+                            value: isCheckedLight5,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight5 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm6.jpg', scale: 1),
+                            value: isCheckedLight6,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight6 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm7.jpg', scale: 1),
+                            value: isCheckedLight7,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight7 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm8.jpg', scale: 1),
+                            value: isCheckedLight8,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight8 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm9.jpg', scale: 1),
+                            value: isCheckedLight9,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight9 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm10.jpg', scale: 1),
+                            value: isCheckedLight10,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight10 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm11.jpg', scale: 1),
+                            value: isCheckedLight11,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight11 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm12.jpg', scale: 1),
+                            value: isCheckedLight12,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight12 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm13.jpg', scale: 1),
+                            value: isCheckedLight13,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight13 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        SizedBox(
+                          height: 150,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm14.jpg', scale: 1),
+                            value: isCheckedLight14,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight14 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 130,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm15.jpg', scale: 1),
+                            value: isCheckedLight15,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight15 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                        const SizedBox(width: 2),
+                        SizedBox(
+                          height: 130,
+                          width: 150,
+                          child: CheckboxListTile(
+                            title: Image.asset('assets/fitness_app/cm16.jpg', scale: 1),
+                            value: isCheckedLight16,
+                            onChanged: (bool? newValue){
+                              setState(() {
+                                isCheckedLight16 = newValue;
+                              });
+                            },
+                            activeColor: const Color.fromRGBO(144, 16, 46, 1),
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-          ],
-        ),
+            ],
+          ),
       ),
     );
   }

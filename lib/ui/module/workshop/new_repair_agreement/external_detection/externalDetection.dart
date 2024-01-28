@@ -27,20 +27,10 @@ class _ExternalDetectionState extends State<ExternalDetection> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: ListTile(
-          leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-          title: Text('external_detection'.tr(),
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
-        ),
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-      ),
-      body: Center(
+    return Center(
         child: ListView(
           children: [
-            const SizedBox(height: 20.0,),
+            const SizedBox(height: 10.0,),
             imageFile == null
                 ? Image.asset('assets/fitness_app/imageIcon.png', height: 220.0, width: 220.0,)
                 : ClipRRect(
@@ -173,7 +163,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
             ),
             const SizedBox(height: 20.0,),
             Center(
-              child: Container(
+              child: SizedBox(
                 height: 50,
                 width: 300,
                 child: defaultFormField(
@@ -538,7 +528,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
             const SizedBox(height: 20),
           ],
         ),
-      ),
+     // ),
     );
   }
 
@@ -596,7 +586,8 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                           },
                         ))
                   ],
-                )),
+                )
+            ),
           );
         }
     );

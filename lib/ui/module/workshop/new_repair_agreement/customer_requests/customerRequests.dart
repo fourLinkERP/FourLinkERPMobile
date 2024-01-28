@@ -2,7 +2,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/editSalesInvoiceDataWidget.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/indicators/Indicators.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
@@ -26,22 +25,11 @@ class _CustomerRequestsState extends State<CustomerRequests> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: ListTile(
-          leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-          title: Text('customer_requests'.tr(),
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
-        ),
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-      ),
-      body: Form(
+    return Form(
         key: _addFormKey,
         child: Container(
-          margin: const EdgeInsets.all(20),
+          margin: const EdgeInsets.only(top: 10,),
           child: ListView(
-            //scrollDirection: Axis.horizontal,
             children: [
               SizedBox(
                 height: 30,
@@ -53,31 +41,30 @@ class _CustomerRequestsState extends State<CustomerRequests> {
                   ),
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 230,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
                     Column(
-                      //mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const SizedBox(height: 30),
                         SizedBox(
                           height: 40,
-                          width: 130,
+                          width: 120,
                           child: Text("maintenance_type".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
                         ),
 
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 130,
+                          width: 120,
                           child: Text("maintenance_category".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 130,
+                          width: 120,
                           child: Text("services".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
                       ],
@@ -307,16 +294,15 @@ class _CustomerRequestsState extends State<CustomerRequests> {
                 ),
               ),
               const SizedBox(height: 40),
-              Container(
-                height: 120,
-                child: ListView(
-                    scrollDirection: Axis.horizontal,
+              SizedBox(
+                height: 80,
+                child: Row(
                     children: [
                       Column(
                         children: [
                           SizedBox(
                             height: 40,
-                            width: 155,
+                            width: 120,
                             child: Center(child: Text("total".tr(), style: const TextStyle(fontWeight: FontWeight.bold),)),
                           ),
                         ],
@@ -325,7 +311,7 @@ class _CustomerRequestsState extends State<CustomerRequests> {
                         children: [
                           SizedBox(
                             height: 40,
-                            width: 155,
+                            width: 140,
                             child: defaultFormField(
                               enable: false,
                               controller: totalController,
@@ -341,52 +327,12 @@ class _CustomerRequestsState extends State<CustomerRequests> {
                           ),
                         ],
                       ),
-                      ],
+                    ],
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
-                child: InkWell(
-                  onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) =>  Indicators()),);},
-                  child: Container(
-                    height: 70,
-                    width: 70,
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Color.fromRGBO(200, 16, 46, 1),
-                            spreadRadius: 1,
-                            blurRadius: 8,
-                            offset: Offset(4, 4),
-                          ),
-                          BoxShadow(
-                            color: Colors.white,
-                            spreadRadius: 2,
-                            blurRadius: 8,
-                            offset: Offset(-4, -4),
-                          )
-                        ]
-                    ),
-                    child: Center(
-                      child: Text(
-                        "next".tr(),
-                        style: const TextStyle(
-                          color: Color.fromRGBO(200, 16, 46, 1),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
             ],
           ),
         ),
-      ),
     );
   }
 }
