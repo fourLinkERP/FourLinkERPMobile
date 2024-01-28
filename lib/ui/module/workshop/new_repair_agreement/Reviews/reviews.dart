@@ -36,16 +36,6 @@ class _ReviewsState extends State<Reviews> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      // appBar: AppBar(
-      //   centerTitle: true,
-      //   title: ListTile(
-      //     leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-      //     title: Text('review'.tr(),
-      //       style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
-      //   ),
-      //   backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-      // ),
-     // body: Form(
         key: _addFormKey,
         child: SizedBox(
           child: ListView(
