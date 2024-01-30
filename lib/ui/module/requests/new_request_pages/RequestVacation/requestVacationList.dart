@@ -17,6 +17,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../../helpers/toast.dart';
 import '../../../../../utils/permissionHelper.dart';
+import 'editRequestVacationTabs.dart';
 
 
 // APIs
@@ -170,7 +171,8 @@ class _RequestVacationListState extends State<RequestVacationList> {
     {
 
       final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-          EditRequestVacation(requests)),).then((value) => getData());
+          //EditRequestVacation(requests)),).then((value) => getData());
+          EditRequestVacationTabs(requests)),).then((value) => getData());
 
     }
     else

@@ -6,14 +6,20 @@ import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVa
 import '../../../../../data/model/modules/module/requests/setup/vacationRequest.dart';
 
 class EditRequestVacationTabs extends StatefulWidget {
-  const EditRequestVacationTabs({Key? key}) : super(key: key);
+  //EditRequestVacationTabs(this.finalRequests);
+  EditRequestVacationTabs(this.requests);
+  VacationRequests requests;
 
   @override
-  State<EditRequestVacationTabs> createState() => _EditRequestVacationTabsState();
+  State<EditRequestVacationTabs> createState() => EditRequestVacationTabsState(requests);
 }
 
-class _EditRequestVacationTabsState extends State<EditRequestVacationTabs> {
-  late VacationRequests requests;
+class EditRequestVacationTabsState extends State<EditRequestVacationTabs> {
+   late VacationRequests _requests;
+
+   EditRequestVacationTabsState(VacationRequests requests) {
+     this._requests = requests;
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +44,7 @@ class _EditRequestVacationTabsState extends State<EditRequestVacationTabs> {
         ),
         body: TabBarView(
           children: [
-            EditRequestVacation(requests),
+            EditRequestVacation(_requests),
             Approvals(),
           ],
         ),

@@ -93,7 +93,7 @@ class _ApprovalsState extends State<Approvals> {
         color: const Color.fromRGBO(240, 242, 246,1),// Main Color
 
         child: ListView.builder(
-            itemCount: 3, //vacationRequests.isEmpty ? 0 : vacationRequests.length,
+            itemCount: 0, //vacationRequests.isEmpty ? 0 : vacationRequests.length,
             itemBuilder: (BuildContext context, int index) {
               return
                 Card(
