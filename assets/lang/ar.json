@@ -390,6 +390,7 @@
     "Employee: ": "الموظف: ",
     "Request section: ": "قسم الطلب: ",
     "Job: ": "الوظيفة: ",
+    "job": "الوظيفة: ",
     "job": "اكتب وظيفة",
     "From date: ": "من تاريخ: ",
     "To date: ": "الى تاريخ: ",
@@ -488,6 +489,13 @@
     "trxdate": "التاريخ",
     "message_title": "عنوان الرسالة",
     "costcenter": "مركز التكلفة",
-    "required_field": "لايمكن ترك الحقل خالي"
+    "department": "الادارة",
+    "employee": "الموظف",
+    "from_date": "من تاريخ",
+    "to_date": "الي تاريخ",
+    "required_field": "لايمكن ترك الحقل خالي",
+    "please_set_vacation_type": "لا يمكن ترك نوع الاجازة خالي",
+    "please_set_from_date": "لا يمكن ترك من تاريخ الاجازة خالي",
+    "please_set_to_date": "لا يمكن ترك الي تاريخ الاجازة خالي"
 }
 

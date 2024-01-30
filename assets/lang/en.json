@@ -404,8 +404,16 @@
     "edit_request_resource": "Edit Request resource",
     "add_Employee_Done": "Add Employee Done",
     "trxserial": "Serial",
+    "job": "Job",
     "trxdate": "Date",
     "message_title": "Title",
     "costcenter": "Cost center",
-    "required_field": "Vacation Request Is Required"
+    "department": "Department",
+    "employee": "Employee",
+    "from_date": "From Date",
+    "to_date": "To Date",
+    "required_field": "Vacation Request Is Required",
+    "please_set_vacation_type": "Please Enter Vacation Type",
+    "please_set_from_date": "Please Enter From Vacation Date",
+    "please_set_to_date": "Please Enter To Vacation Date"
 }

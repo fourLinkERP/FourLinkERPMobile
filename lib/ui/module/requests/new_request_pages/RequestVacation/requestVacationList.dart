@@ -149,17 +149,17 @@ class _RequestVacationListState extends State<RequestVacationList> {
     // CircularProgressIndicator();
     int menuId=45201;
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
-    if(isAllowAdd)
-    {
+    // if(isAllowAdd)
+    // {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => RequestVacation(),
       )).then((value) {
         getData();
       });
-    }
-    else
-    {
-      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
-    }
+    // }
+    // else
+    // {
+    //   FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    // }
 
   }
   _navigateToEditScreen (BuildContext context, VacationRequests requests) async {

@@ -87,14 +87,14 @@ class VacationRequestsApiService {
       'fromDate': request.fromDate,
       'toDate': request.toDate,
       'vacationTypeCode': request.vacationTypeCode,
-      'requestDays': request.requestDays,
-      'ruleBalance': request.ruleBalance,
-      'vacationBalance': request.vacationBalance,
-      'allowBalance': request.allowBalance,
-      'empBalance': request.empBalance ,
-      'vacationDueDate': request.vacationDueDate,
-      'advanceBalance': request.advanceBalance,
-      'latestVacationDate': request.latestVacationDate,
+      // 'requestDays': request.requestDays,
+      // 'ruleBalance': request.ruleBalance,
+      // 'vacationBalance': request.vacationBalance,
+      // 'allowBalance': request.allowBalance,
+      // 'empBalance': request.empBalance ,
+      // 'vacationDueDate': request.vacationDueDate,
+      // 'advanceBalance': request.advanceBalance,
+      // 'latestVacationDate': request.latestVacationDate,
       'notes': request.notes,
       "confirmed": false,
       "isActive": true,
@@ -107,7 +107,7 @@ class VacationRequestsApiService {
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "year":2023
+      "year":financialYearCode
 
     };
 
