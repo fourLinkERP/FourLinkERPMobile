@@ -89,7 +89,7 @@ class _AddReqDetailsState extends State<AddReqDetails> {
         centerTitle: true,
         title: ListTile(
           leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-          title: Text('Add setting request details'.tr(),
+          title: Text('add_setting_request_details'.tr(),
             style: const TextStyle(color: Colors.white),),
         ),
         backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -103,7 +103,7 @@ class _AddReqDetailsState extends State<AddReqDetails> {
                     child: ListView(
                       children: [
                         ListTile(
-                          leading: Text("Level: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text('level'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           title: SizedBox(
                             width: 180,
                             height: 45,
@@ -115,7 +115,7 @@ class _AddReqDetailsState extends State<AddReqDetails> {
                               //prefix: null,
                               validate: (String? value) {
                                 if (value!.isEmpty) {
-                                  return 'req code must be non empty';
+                                  return 'field_cannot_be_empty'.tr();;
                                 }
                                 return null;
                               },
@@ -124,7 +124,7 @@ class _AddReqDetailsState extends State<AddReqDetails> {
                         ),
                         const SizedBox(height: 12,),
                         ListTile(
-                          leading: Text("Group: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text('group'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: Container(
                             width: 220,
                             height: 55,
@@ -184,7 +184,7 @@ class _AddReqDetailsState extends State<AddReqDetails> {
                         const SizedBox(height: 12),
                         // more than 20 days
                         ListTile(
-                          leading: Text("Employee: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text('employee'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: Container(
                             width: 220,
                             height: 55,
@@ -245,7 +245,7 @@ class _AddReqDetailsState extends State<AddReqDetails> {
                         ),
                         const SizedBox(height: 12),
                         ListTile(
-                          leading: Text("Alternative employee: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text("alternative_employee".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: Container(
                             width: 220,
                             height: 55,
@@ -306,64 +306,64 @@ class _AddReqDetailsState extends State<AddReqDetails> {
                         ),
                         const SizedBox(height: 12),
                         ListTile(
-                          leading: Text("Email receivers: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text('email_receivers'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: SizedBox(
                             width: 200,
                             height: 55,
                             child: defaultFormField(
                               controller: _emailReceiversController,
-                              label: 'email'.tr(),
+                              label: 'email_receivers'.tr(),
                               type: TextInputType.text,
                               colors: Colors.blueGrey,
                               //prefix: null,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'name must be non empty';
-                                }
-                                return null;
-                              },
+                              // validate: (String? value) {
+                              //   if (value!.isEmpty) {
+                              //     return 'name must be non empty';
+                              //   }
+                              //   return null;
+                              // },
                             ),
                           ),
                         ),
                         const SizedBox(height: 12,),
                         ListTile(
-                          leading: Text("SMS receivers: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text('sms_receivers'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: SizedBox(
                             width: 200,
                             height: 55,
                             child: defaultFormField(
                               controller: _smsReceiversController,
-                              label: 'SMS'.tr(),
+                              label: 'sms_receivers'.tr(),
                               type: TextInputType.text,
                               colors: Colors.blueGrey,
                               //prefix: null,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'name must be non empty';
-                                }
-                                return null;
-                              },
+                              // validate: (String? value) {
+                              //   if (value!.isEmpty) {
+                              //     return 'name must be non empty';
+                              //   }
+                              //   return null;
+                              // },
                             ),
                           ),
                         ),
                         const SizedBox(height: 12,),
                         ListTile(
-                          leading: Text("Whatsapp receivers: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text('whatsapp_receivers'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: SizedBox(
                             width: 220,
                             height: 55,
                             child: defaultFormField(
                               controller: _whatsappReceiversController,
-                              label: 'whatsapp'.tr(),
+                              label: 'whatsapp_receivers'.tr(),
                               type: TextInputType.number,
                               colors: Colors.blueGrey,
                               //prefix: null,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'num of levels must be non empty';
-                                }
-                                return null;
-                              },
+                              // validate: (String? value) {
+                              //   if (value!.isEmpty) {
+                              //     return 'num of levels must be non empty';
+                              //   }
+                              //   return null;
+                              // },
                             ),
                           ),
                         ),

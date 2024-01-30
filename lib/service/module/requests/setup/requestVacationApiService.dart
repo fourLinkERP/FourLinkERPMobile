@@ -113,6 +113,11 @@ class VacationRequestsApiService {
 
     print('to print body');
     print(data.toString());
+    print('uri');
+    print(createApi);
+    print('token');
+    print('Bearer $token');
+
 
     final http.Response response = await http.post(
       Uri.parse(createApi),

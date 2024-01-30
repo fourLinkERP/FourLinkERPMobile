@@ -177,6 +177,7 @@ class _SettingRequestListState extends State<SettingRequestList> {
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
+
                           Container(
                               height: 20,
                               color: Colors.white30,

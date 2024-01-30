@@ -174,7 +174,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                   child: ListView(
                       children: [
                         ListTile(
-                          leading: Text("Document number: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text('trxserial'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           title: SizedBox(
                             width: 220,
                             height: 45,
@@ -186,7 +186,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                               //prefix: null,
                               validate: (String? value) {
                                 if (value!.isEmpty) {
-                                  return 'Doc number must be non empty';
+                                  return 'required_field'.tr();
                                 }
                                 return null;
                               },
@@ -195,7 +195,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                         ),
                         const SizedBox(height: 12,),
                         ListTile(
-                          leading: Text("Document date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text('trxdate'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: SizedBox(
                             width: 220,
                             height: 55,
@@ -220,19 +220,19 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                         ),
                         const SizedBox(height: 12,),
                         ListTile(
-                          leading: Text("message title: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          leading: Text('message_title'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: SizedBox(
                             width: 220,
                             height: 55,
                             child: defaultFormField(
                               controller: _vacationRequestMessageController,
-                              label: 'message'.tr(),
+                              label: 'message_title'.tr(),
                               type: TextInputType.text,
                               colors: Colors.blueGrey,
                               //prefix: null,
                               validate: (String? value) {
                                 if (value!.isEmpty) {
-                                  return 'message must be non empty';
+                                  return 'required_field'.tr();
                                 }
                                 return null;
                               },
@@ -547,264 +547,264 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                           ),
                         ),
                         const SizedBox(height: 12,),
-                        ListTile(
-                          leading: Text("Vacation type: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: Container(
-                            width: 220,
-                            height: 55,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Center(
-                              child: DropdownSearch<VacationType>(
-                                popupProps: PopupProps.menu(
-                                  itemBuilder: (context, item, isSelected) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                                      decoration: !isSelected ? null
-                                          : BoxDecoration(
-
-                                        border: Border.all(color: Theme.of(context).primaryColor),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.white,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text((langId==1)? item.vacationTypeNameAra.toString():  item.vacationTypeNameEng.toString(),
-                                          //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
-                                          textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                      ),
-                                    );
-                                  },
-                                  showSearchBox: true,
-                                ),
-                                items: vacationTypes,
-                                itemAsString: (VacationType u) => u.vacationTypeNameAra.toString(),
-                                onChanged: (value){
-                                  //v.text = value!.cusTypesCode.toString();
-                                  //print(value!.id);
-                                  selectedVacationTypeValue =  value!.vacationTypeCode.toString();
-                                },
-                                filterFn: (instance, filter){
-                                  if(instance.vacationTypeNameAra!.contains(filter)){
-                                    print(filter);
-                                    return true;
-                                  }
-                                  else{
-                                    return false;
-                                  }
-                                },
-                                dropdownDecoratorProps: const DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelStyle: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                    icon: Icon(Icons.keyboard_arrow_down),
-                                  ),
-                                ),
-
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12,),
-                        ListTile(
-                          leading: Text("Requested Days: ".tr(),
-                              style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: SizedBox(
-                            width: 200,
-                            height: 55,
-                            child: defaultFormField(
-                              controller: _vacationRequestRequestedDaysController,
-                              label: ' per day'.tr(),
-                              type: TextInputType.number,
-                              colors: Colors.blueGrey,
-                              //prefix: null,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'Requested days must be non empty';
-                                }
-                                return null;
-                              },
-                              // onSaved: (val) {
-                              //   requestedDays = val;
-                              //   return null;
-                              // },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12,),
-                        ListTile(
-                          leading: Text("List balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: SizedBox(
-                            width: 200,
-                            height: 55,
-                            child: defaultFormField(
-                              controller: _vacationRequestListBalanceController,
-                              label: 'list balance'.tr(),
-                              type: TextInputType.number,
-                              colors: Colors.blueGrey,
-                              //prefix: null,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'balance must be non empty';
-                                }
-                                return null;
-                              },
-
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12,),
-                        ListTile(
-                          leading: Text("Vacations balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: SizedBox(
-                            width: 200,
-                            height: 55,
-                            child: defaultFormField(
-                              controller: _vacationRequestVacationBalanceController,
-                              label: 'vacation balance'.tr(),
-                              type: TextInputType.number,
-                              colors: Colors.blueGrey,
-                              //prefix: null,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'vacation balance must be non empty';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12,),
-                        ListTile(
-                          leading: Text("Allowed balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: SizedBox(
-                            width: 200,
-                            height: 55,
-                            child: defaultFormField(
-                              controller: _vacationRequestAllowedBalanceController,
-                              label: 'allowed balance'.tr(),
-                              type: TextInputType.number,
-                              colors: Colors.blueGrey,
-                              //prefix: null,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'allowed balance must be non empty';
-                                }
-                                return null;
-                              },
-                              // onSaved: (val) {
-                              //   vacationRequestAllowedBalance = val as int?;
-                              //   return null;
-                              // },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12,),
-                        ListTile(
-                          leading: Text("Employee balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: SizedBox(
-                            width: 200,
-                            height: 55,
-                            child: defaultFormField(
-                              controller: _vacationRequestEmployeeBalanceController,
-                              label: 'employee balance'.tr(),
-                              type: TextInputType.number,
-                              colors: Colors.blueGrey,
-                              //prefix: null,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'employee balance must be non empty';
-                                }
-                                return null;
-                              },
-
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        ListTile(
-                          leading: Text("Vacation due date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: SizedBox(
-                            width: 190,
-                            height: 55,
-                            child: textFormFields(
-                              hintText: 'Select Date'.tr(),
-                              controller: _vacationRequestDueDateController,
-                              //hintText: "date".tr(),
-                              onTap: () async {
-                                DateTime? pickedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(1950),
-                                    lastDate: DateTime(2050));
-
-                                if (pickedDate != null) {
-                                  _vacationRequestDueDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                }
-                              },
-                              // onSaved: (val) {
-                              //   vacationDueDate = val;
-                              // },
-                              textInputType: TextInputType.datetime,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        ListTile(
-                          leading: Text("Advance balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: SizedBox(
-                            width: 200,
-                            height: 45,
-                            child: defaultFormField(
-                              controller: _vacationRequestAdvanceBalanceController,
-                              label: 'value'.tr(),
-                              type: TextInputType.number,
-                              colors: Colors.blueGrey,
-                              //prefix: null,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'advance balance must be non empty';
-                                }
-                                return null;
-                              },
-                              // onSaved: (val) {
-                              //   vacationRequestAdvanceBalance = val as int?;
-                              //   return null;
-                              // },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        ListTile(
-                          leading: Text("Last salary date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: SizedBox(
-                            width: 200,
-                            height: 55,
-                            child: textFormFields(
-                              hintText: 'Select Date'.tr(),
-                              controller: _vacationRequestLastSalaryDateController,
-                              //hintText: "date".tr(),
-                              onTap: () async {
-                                DateTime? pickedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    firstDate: DateTime(1950),
-                                    lastDate: DateTime(2050));
-
-                                if (pickedDate != null) {
-                                  _vacationRequestLastSalaryDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                }
-                              },
-
-                              textInputType: TextInputType.datetime,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
+                        // ListTile(
+                        //   leading: Text("Vacation type: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                        //   trailing: Container(
+                        //     width: 220,
+                        //     height: 55,
+                        //     decoration: BoxDecoration(
+                        //       color: Colors.grey,
+                        //       borderRadius: BorderRadius.circular(10),
+                        //     ),
+                        //     child: Center(
+                        //       child: DropdownSearch<VacationType>(
+                        //         popupProps: PopupProps.menu(
+                        //           itemBuilder: (context, item, isSelected) {
+                        //             return Container(
+                        //               margin: const EdgeInsets.symmetric(horizontal: 8),
+                        //               decoration: !isSelected ? null
+                        //                   : BoxDecoration(
+                        //
+                        //                 border: Border.all(color: Theme.of(context).primaryColor),
+                        //                 borderRadius: BorderRadius.circular(5),
+                        //                 color: Colors.white,
+                        //               ),
+                        //               child: Padding(
+                        //                 padding: const EdgeInsets.all(8.0),
+                        //                 child: Text((langId==1)? item.vacationTypeNameAra.toString():  item.vacationTypeNameEng.toString(),
+                        //                   //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
+                        //                   textAlign: langId==1?TextAlign.right:TextAlign.left,),
+                        //
+                        //               ),
+                        //             );
+                        //           },
+                        //           showSearchBox: true,
+                        //         ),
+                        //         items: vacationTypes,
+                        //         itemAsString: (VacationType u) => u.vacationTypeNameAra.toString(),
+                        //         onChanged: (value){
+                        //           //v.text = value!.cusTypesCode.toString();
+                        //           //print(value!.id);
+                        //           selectedVacationTypeValue =  value!.vacationTypeCode.toString();
+                        //         },
+                        //         filterFn: (instance, filter){
+                        //           if(instance.vacationTypeNameAra!.contains(filter)){
+                        //             print(filter);
+                        //             return true;
+                        //           }
+                        //           else{
+                        //             return false;
+                        //           }
+                        //         },
+                        //         dropdownDecoratorProps: const DropDownDecoratorProps(
+                        //           dropdownSearchDecoration: InputDecoration(
+                        //             labelStyle: TextStyle(
+                        //               color: Colors.black,
+                        //             ),
+                        //             icon: Icon(Icons.keyboard_arrow_down),
+                        //           ),
+                        //         ),
+                        //
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 12,),
+                        // ListTile(
+                        //   leading: Text("Requested Days: ".tr(),
+                        //       style: const TextStyle(fontWeight: FontWeight.bold)),
+                        //   trailing: SizedBox(
+                        //     width: 200,
+                        //     height: 55,
+                        //     child: defaultFormField(
+                        //       controller: _vacationRequestRequestedDaysController,
+                        //       label: ' per day'.tr(),
+                        //       type: TextInputType.number,
+                        //       colors: Colors.blueGrey,
+                        //       //prefix: null,
+                        //       validate: (String? value) {
+                        //         if (value!.isEmpty) {
+                        //           return 'Requested days must be non empty';
+                        //         }
+                        //         return null;
+                        //       },
+                        //       // onSaved: (val) {
+                        //       //   requestedDays = val;
+                        //       //   return null;
+                        //       // },
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 12,),
+                        // ListTile(
+                        //   leading: Text("List balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                        //   trailing: SizedBox(
+                        //     width: 200,
+                        //     height: 55,
+                        //     child: defaultFormField(
+                        //       controller: _vacationRequestListBalanceController,
+                        //       label: 'list balance'.tr(),
+                        //       type: TextInputType.number,
+                        //       colors: Colors.blueGrey,
+                        //       //prefix: null,
+                        //       validate: (String? value) {
+                        //         if (value!.isEmpty) {
+                        //           return 'balance must be non empty';
+                        //         }
+                        //         return null;
+                        //       },
+                        //
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 12,),
+                        // ListTile(
+                        //   leading: Text("Vacations balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                        //   trailing: SizedBox(
+                        //     width: 200,
+                        //     height: 55,
+                        //     child: defaultFormField(
+                        //       controller: _vacationRequestVacationBalanceController,
+                        //       label: 'vacation balance'.tr(),
+                        //       type: TextInputType.number,
+                        //       colors: Colors.blueGrey,
+                        //       //prefix: null,
+                        //       validate: (String? value) {
+                        //         if (value!.isEmpty) {
+                        //           return 'vacation balance must be non empty';
+                        //         }
+                        //         return null;
+                        //       },
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 12,),
+                        // ListTile(
+                        //   leading: Text("Allowed balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                        //   trailing: SizedBox(
+                        //     width: 200,
+                        //     height: 55,
+                        //     child: defaultFormField(
+                        //       controller: _vacationRequestAllowedBalanceController,
+                        //       label: 'allowed balance'.tr(),
+                        //       type: TextInputType.number,
+                        //       colors: Colors.blueGrey,
+                        //       //prefix: null,
+                        //       validate: (String? value) {
+                        //         if (value!.isEmpty) {
+                        //           return 'allowed balance must be non empty';
+                        //         }
+                        //         return null;
+                        //       },
+                        //       // onSaved: (val) {
+                        //       //   vacationRequestAllowedBalance = val as int?;
+                        //       //   return null;
+                        //       // },
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 12,),
+                        // ListTile(
+                        //   leading: Text("Employee balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                        //   trailing: SizedBox(
+                        //     width: 200,
+                        //     height: 55,
+                        //     child: defaultFormField(
+                        //       controller: _vacationRequestEmployeeBalanceController,
+                        //       label: 'employee balance'.tr(),
+                        //       type: TextInputType.number,
+                        //       colors: Colors.blueGrey,
+                        //       //prefix: null,
+                        //       validate: (String? value) {
+                        //         if (value!.isEmpty) {
+                        //           return 'employee balance must be non empty';
+                        //         }
+                        //         return null;
+                        //       },
+                        //
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 12),
+                        // ListTile(
+                        //   leading: Text("Vacation due date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                        //   trailing: SizedBox(
+                        //     width: 190,
+                        //     height: 55,
+                        //     child: textFormFields(
+                        //       hintText: 'Select Date'.tr(),
+                        //       controller: _vacationRequestDueDateController,
+                        //       //hintText: "date".tr(),
+                        //       onTap: () async {
+                        //         DateTime? pickedDate = await showDatePicker(
+                        //             context: context,
+                        //             initialDate: DateTime.now(),
+                        //             firstDate: DateTime(1950),
+                        //             lastDate: DateTime(2050));
+                        //
+                        //         if (pickedDate != null) {
+                        //           _vacationRequestDueDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                        //         }
+                        //       },
+                        //       // onSaved: (val) {
+                        //       //   vacationDueDate = val;
+                        //       // },
+                        //       textInputType: TextInputType.datetime,
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 12),
+                        // ListTile(
+                        //   leading: Text("Advance balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                        //   trailing: SizedBox(
+                        //     width: 200,
+                        //     height: 45,
+                        //     child: defaultFormField(
+                        //       controller: _vacationRequestAdvanceBalanceController,
+                        //       label: 'value'.tr(),
+                        //       type: TextInputType.number,
+                        //       colors: Colors.blueGrey,
+                        //       //prefix: null,
+                        //       validate: (String? value) {
+                        //         if (value!.isEmpty) {
+                        //           return 'advance balance must be non empty';
+                        //         }
+                        //         return null;
+                        //       },
+                        //       // onSaved: (val) {
+                        //       //   vacationRequestAdvanceBalance = val as int?;
+                        //       //   return null;
+                        //       // },
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 12),
+                        // ListTile(
+                        //   leading: Text("Last salary date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                        //   trailing: SizedBox(
+                        //     width: 200,
+                        //     height: 55,
+                        //     child: textFormFields(
+                        //       hintText: 'Select Date'.tr(),
+                        //       controller: _vacationRequestLastSalaryDateController,
+                        //       //hintText: "date".tr(),
+                        //       onTap: () async {
+                        //         DateTime? pickedDate = await showDatePicker(
+                        //             context: context,
+                        //             initialDate: DateTime.now(),
+                        //             firstDate: DateTime(1950),
+                        //             lastDate: DateTime(2050));
+                        //
+                        //         if (pickedDate != null) {
+                        //           _vacationRequestLastSalaryDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                        //         }
+                        //       },
+                        //
+                        //       textInputType: TextInputType.datetime,
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 12),
                         ListTile(
                           leading: Text("Notes: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                           trailing: SizedBox(
