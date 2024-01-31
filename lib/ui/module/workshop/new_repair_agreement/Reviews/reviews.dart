@@ -235,15 +235,13 @@ class _ReviewsState extends State<Reviews> {
                                 );
                               },
                               showSearchBox: true,
-
                             ),
 
                             items: serviceClassifications,
                             itemAsString: (Customer u) =>
                             (langId == 1) ? u.customerNameAra.toString() : u.customerNameEng.toString(),
                             onChanged: (value) {
-                              // selectedCustomerValue = value!.customerCode.toString();
-                              // selectedCustomerEmail = value.email.toString();// i've changed value!
+
                             },
 
                             filterFn: (instance, filter) {
@@ -417,6 +415,7 @@ class _ReviewsState extends State<Reviews> {
                   ],
                 ),
               ),
+
             ],
           ),
         ),
