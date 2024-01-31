@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-//import 'package:fourlinkmobileapp/common/my_timeline_tiles.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/Reviews/reviews.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/customer/customerInformation.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/customer_requests/customerRequests.dart';
@@ -98,20 +97,6 @@ class _NewRepairAgreeTabsState extends State<NewRepairAgreeTabs> {
                       decoration: BoxDecoration(
                           color: Colors.grey.shade300,
                           borderRadius: BorderRadius.circular(15),
-                          // boxShadow: const [
-                          //   BoxShadow(
-                          //     color: Color.fromRGBO(200, 16, 46, 1),
-                          //     spreadRadius: 1,
-                          //     blurRadius: 8,
-                          //     offset: Offset(4, 4),
-                          //   ),
-                          //   BoxShadow(
-                          //     color: Colors.white,
-                          //     spreadRadius: 2,
-                          //     blurRadius: 8,
-                          //     offset: Offset(-4, -4),
-                          //   )
-                          // ]
                       ),
                       child: Center(
                         child: Text(
@@ -137,27 +122,28 @@ class _NewRepairAgreeTabsState extends State<NewRepairAgreeTabs> {
   List<Step> getSteps() => [
     Step(
         state: currentStep > 0 ? StepState.complete : StepState.indexed,
-        title: const Text("1"),
+        title: const Icon(Icons.person),
         content: const SizedBox( height: 540,child: CustomerInfo()),
-        isActive: currentStep >= 0),
+        isActive: currentStep >= 0
+    ),
     Step(
         state: currentStep > 1 ? StepState.complete : StepState.indexed,
-        title: const Text("2"),
+        title: const Icon(Icons.request_page),
         content: const SizedBox( height: 540,child: CustomerRequests()),
         isActive: currentStep >= 1),
     Step(
         state: currentStep > 2 ? StepState.complete : StepState.indexed,
-        title: const Text("3"),
+        title: const Icon(Icons.drag_indicator),
         content: const SizedBox( height: 540,child: Indicators()),
         isActive: currentStep >= 2),
     Step(
         state: currentStep > 3 ? StepState.complete : StepState.indexed,
-        title: const Text("4"),
+        title: const Icon(Icons.document_scanner_rounded),
         content: const SizedBox( height: 540,child: ExternalDetection()),
         isActive: currentStep >= 3),
     Step(
         state: currentStep > 4 ? StepState.complete : StepState.indexed,
-        title: const Text("5"),
+        title: const Icon(Icons.reviews),
         content: const SizedBox( height: 540,child: Reviews()),
         isActive: currentStep >= 4),
   ];

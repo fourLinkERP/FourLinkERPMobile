@@ -1,6 +1,5 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/main_tabs/newRepairAgreementsMainTabs.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:intl/intl.dart';
 import '../../../../../common/globals.dart';
@@ -19,7 +18,8 @@ class _ReviewsState extends State<Reviews> {
   final _addFormKey = GlobalKey<FormState>();
   final serviceTypeController = TextEditingController();
   final serviceClassificationController = TextEditingController();
-  final expectedDeliveringDateController = TextEditingController();
+  final deliveryDateController = TextEditingController();
+  final deliveryTimeController = TextEditingController();
   final expectedCostController = TextEditingController();
   final signatureController = TextEditingController();
 
@@ -43,15 +43,27 @@ class _ReviewsState extends State<Reviews> {
               SizedBox(
                 height: 30,
                 width: 50,
-                child: Center(
-                  child: Text(
-                    "review".tr(),
-                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
+                child: Row(
+                  children: [
+                    Container(
+                      decoration: const BoxDecoration(
+                          border: Border(
+                              bottom: BorderSide(
+                                color: Colors.red,
+                                width: 2.0,
+                              )
+                          )
+                      ),
+                      child: Text(
+                        "review".tr(),
+                        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(
-                height: 300,
+                height: 280,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
@@ -64,23 +76,29 @@ class _ReviewsState extends State<Reviews> {
                           child: Text("payment_method".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
                         ),
 
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          height: 40,
+                          width: 120,
+                          child: Text("issue_type".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        const SizedBox(height: 10),
                         SizedBox(
                           height: 40,
                           width: 120,
                           child: Text("service_type".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         SizedBox(
                           height: 40,
                           width: 120,
-                          child: Text("service_classification".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          child: Text("delivery_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         SizedBox(
                           height: 40,
                           width: 120,
-                          child: Text("expected_delivering_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          child: Text("delivery_time".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
 
                       ],
@@ -132,16 +150,16 @@ class _ReviewsState extends State<Reviews> {
                                 return false;
                               }
                             },
-                            dropdownDecoratorProps: const DropDownDecoratorProps(
-                              dropdownSearchDecoration: InputDecoration(
-                                //labelText: 'Select'.tr(),
-
-                              ),
-                            ),
+                            // dropdownDecoratorProps: const DropDownDecoratorProps(
+                            //   dropdownSearchDecoration: InputDecoration(
+                            //     //labelText: 'Select'.tr(),
+                            //
+                            //   ),
+                            // ),
                           ),
                         ),
 
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         SizedBox(
                           height: 40,
                           width: 180,
@@ -185,15 +203,15 @@ class _ReviewsState extends State<Reviews> {
                                 return false;
                               }
                             },
-                            dropdownDecoratorProps: const DropDownDecoratorProps(
-                              dropdownSearchDecoration: InputDecoration(
-                                //labelText: 'Select'.tr(),
-
-                              ),
-                            ),
+                            // dropdownDecoratorProps: const DropDownDecoratorProps(
+                            //   dropdownSearchDecoration: InputDecoration(
+                            //     //labelText: 'Select'.tr(),
+                            //
+                            //   ),
+                            // ),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         SizedBox(
                           height: 40,
                           width: 180,
@@ -237,21 +255,21 @@ class _ReviewsState extends State<Reviews> {
                                 return false;
                               }
                             },
-                            dropdownDecoratorProps: const DropDownDecoratorProps(
-                              dropdownSearchDecoration: InputDecoration(
-                                //labelText: 'Select'.tr(),
-
-                              ),
-                            ),
+                            // dropdownDecoratorProps: const DropDownDecoratorProps(
+                            //   dropdownSearchDecoration: InputDecoration(
+                            //     //labelText: 'Select'.tr(),
+                            //
+                            //   ),
+                            // ),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         SizedBox(
                           height: 40,
                           width: 175,
                           child: defaultFormField(
                             label: 'date'.tr(),
-                            controller: expectedDeliveringDateController,
+                            controller: deliveryDateController,
                             onTab: () async {
                               DateTime? pickedDate = await showDatePicker(
                                   context: context,
@@ -260,7 +278,29 @@ class _ReviewsState extends State<Reviews> {
                                   lastDate: DateTime(2050));
 
                               if (pickedDate != null) {
-                                expectedDeliveringDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                deliveryDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                              }
+                            },
+                            type: TextInputType.datetime,
+                            colors: Colors.blueGrey,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          height: 40,
+                          width: 175,
+                          child: defaultFormField(
+                            label: 'time'.tr(),
+                            controller: deliveryTimeController,
+                            onTab: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1950),
+                                  lastDate: DateTime(2050));
+
+                              if (pickedDate != null) {
+                                deliveryTimeController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                               }
                             },
                             type: TextInputType.datetime,
@@ -273,7 +313,7 @@ class _ReviewsState extends State<Reviews> {
                 ),
               ),
               SizedBox(
-                height: 60,
+                height: 40,
                 width: 170,
                 child: CheckboxListTile(
                   title: Text("return_old_parts".tr()),
@@ -288,7 +328,7 @@ class _ReviewsState extends State<Reviews> {
                 ),
               ),
               SizedBox(
-                height: 60,
+                height: 40,
                 width: 170,
                 child: CheckboxListTile(
                   title: Text("transportation_service".tr()),
@@ -303,7 +343,7 @@ class _ReviewsState extends State<Reviews> {
                 ),
               ),
               SizedBox(
-                height: 60,
+                height: 40,
                 width: 170,
                 child: CheckboxListTile(
                   title: Text("the_client_is_waiting".tr()),
@@ -327,14 +367,14 @@ class _ReviewsState extends State<Reviews> {
                       children: [
                         SizedBox(
                           height: 40,
-                          width: 140,
-                          child: Center(child: Text("expected_cost".tr(), style: const TextStyle(fontWeight: FontWeight.bold),)),
+                          width: 100,
+                          child: Center(child: Text("the_cost".tr(), style: const TextStyle(fontWeight: FontWeight.bold),)),
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 155,
-                          child: Center(child: Text("customer_signature".tr(), style: const TextStyle(fontWeight: FontWeight.bold),)),
+                          width: 100,
+                          child: Center(child: Text("signature".tr(), style: const TextStyle(fontWeight: FontWeight.bold),)),
                         ),
                       ],
                     ),
@@ -358,8 +398,8 @@ class _ReviewsState extends State<Reviews> {
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
-                          height: 40,
-                          width: 155,
+                          height: 50,
+                          width: 170,
                           child: defaultFormField(
                             controller: signatureController,
                             type: TextInputType.text,
@@ -377,51 +417,9 @@ class _ReviewsState extends State<Reviews> {
                   ],
                 ),
               ),
-              // Container(
-              //   margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
-              //   child: InkWell(
-              //     onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) =>  NewRepairAgreeTabs()),);},
-              //     child: Container(
-              //       height: 70,
-              //       width: 70,
-              //       decoration: BoxDecoration(
-              //           color: Colors.grey.shade300,
-              //           borderRadius: BorderRadius.circular(15),
-              //           boxShadow: const [
-              //             BoxShadow(
-              //               color: Color.fromRGBO(200, 16, 46, 1),
-              //               spreadRadius: 1,
-              //               blurRadius: 8,
-              //               offset: Offset(4, 4),
-              //             ),
-              //             BoxShadow(
-              //               color: Colors.white,
-              //               spreadRadius: 2,
-              //               blurRadius: 8,
-              //               offset: Offset(-4, -4),
-              //             )
-              //           ]
-              //       ),
-              //       child: Center(
-              //         child: Text(
-              //           "save".tr(),
-              //           style: const TextStyle(
-              //             color: Color.fromRGBO(200, 16, 46, 1),
-              //             fontWeight: FontWeight.bold,
-              //             fontSize: 17,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // const SizedBox(height: 20),
             ],
           ),
-
-
         ),
-     // ),
     );
   }
 }

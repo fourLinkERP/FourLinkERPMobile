@@ -17,7 +17,13 @@ class ExternalDetection extends StatefulWidget {
 
 class _ExternalDetectionState extends State<ExternalDetection> {
 
-  File? imageFile;
+  File? imageFile1;
+  File? imageFile2;
+  File? imageFile3;
+  File? imageFile4;
+  File? imageFile5;
+  File? imageFile6;
+
   final comment1Controller = TextEditingController();
   final comment2Controller = TextEditingController();
   final comment3Controller = TextEditingController();
@@ -31,510 +37,519 @@ class _ExternalDetectionState extends State<ExternalDetection> {
         child: ListView(
           children: [
             const SizedBox(height: 10.0,),
-            imageFile == null
-                ? Image.asset('assets/fitness_app/imageIcon.png', height: 220.0, width: 220.0,)
-                : ClipRRect(
-                borderRadius: BorderRadius.zero,
-                child: Image.file(imageFile!, height: 220.0, width: 220.0, )//fit: BoxFit.fill,)
+            Row(
+              children: [
+                imageFile1 == null
+                    ? Image.asset('assets/fitness_app/imageIcon.png', height: 150.0, width: 150.0,)
+                    : ClipRRect(
+                    borderRadius: BorderRadius.zero,
+                    child: Image.file(imageFile1!, height: 150.0, width: 150.0, )//fit: BoxFit.fill,)
+                ),
+                const SizedBox(width: 10.0),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 55,
+                      width: 145,
+                      //margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
+                      child: InkWell(
+                        onTap: () async {
+                          Map<Permission, PermissionStatus> statuses = await [
+                            Permission.storage, Permission.camera,
+                          ].request();
+                          if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
+                            showImagePicker(context, _imgFromGallery1(), _imgFromCamera1());
+                          } else {
+                            print('no permission provided');
+                          }
+                        },
+                        child: Container(
+                          height: 55,
+                          width: 145,
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade300,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color.fromRGBO(200, 16, 46, 1),
+                                  spreadRadius: 1,
+                                  blurRadius: 8,
+                                  offset: Offset(4, 4),
+                                ),
+                                BoxShadow(
+                                  color: Colors.white,
+                                  spreadRadius: 2,
+                                  blurRadius: 8,
+                                  offset: Offset(-4, -4),
+                                )
+                              ]
+                          ),
+                          child: Center(
+                            child: Text(
+                              "select_image".tr(),
+                              style: const TextStyle(
+                                color: Color.fromRGBO(200, 16, 46, 1),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10.0,),
+                    SizedBox(
+                      height: 55,
+                      width: 145,
+                      child: defaultFormField(
+                        enable: true,
+                        label: 'write_a_comment'.tr(),
+                        prefix: Icons.edit,
+                        controller: comment1Controller,
+                        type: TextInputType.text,
+                        colors: Colors.blueGrey,
+                        validate: (String? value) {
+                          if (value!.isEmpty) {
+                            return 'comment must be non empty';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 10.0,),
+            Row(
+              children: [
+                imageFile2 == null
+                    ? Image.asset('assets/fitness_app/imageIcon.png', height: 150.0, width: 150.0,)
+                    : ClipRRect(
+                    borderRadius: BorderRadius.zero,
+                    child: Image.file(imageFile2!, height: 150.0, width: 150.0, )//fit: BoxFit.fill,)
+                ),
+                const SizedBox(width: 10.0,),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 55,
+                      width: 145,
+                      //margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
+                      child: InkWell(
+                        onTap: () async {
+                          Map<Permission, PermissionStatus> statuses = await [
+                            Permission.storage, Permission.camera,
+                          ].request();
+                          if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
+                            showImagePicker(context, _imgFromGallery2(), _imgFromCamera2());
+                          } else {
+                            print('no permission provided');
+                          }
+                        },
+                        child: Container(
+                          height: 50,
+                          width: 130,
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade300,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color.fromRGBO(200, 16, 46, 1),
+                                  spreadRadius: 1,
+                                  blurRadius: 8,
+                                  offset: Offset(4, 4),
+                                ),
+                                BoxShadow(
+                                  color: Colors.white,
+                                  spreadRadius: 2,
+                                  blurRadius: 8,
+                                  offset: Offset(-4, -4),
+                                )
+                              ]
+                          ),
+                          child: Center(
+                            child: Text(
+                              "select_image".tr(),
+                              style: const TextStyle(
+                                color: Color.fromRGBO(200, 16, 46, 1),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10.0,),
+                    SizedBox(
+                      height: 55,
+                      width: 145,
+                      child: defaultFormField(
+                        enable: true,
+                        label: 'write_a_comment'.tr(),
+                        prefix: Icons.edit,
+                        controller: comment2Controller,
+                        type: TextInputType.text,
+                        colors: Colors.blueGrey,
+                        validate: (String? value) {
+                          if (value!.isEmpty) {
+                            return 'comment must be non empty';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
             const SizedBox(height: 10.0,),
-            Container(
-              margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
-              child: InkWell(
-                onTap: () async {
-                  Map<Permission, PermissionStatus> statuses = await [
-                    Permission.storage, Permission.camera,
-                  ].request();
-                  if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
-                    showImagePicker(context);
-                  } else {
-                    print('no permission provided');
-                  }
-                },
-                child: Container(
-                  height: 50,
-                  width: 130,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(200, 16, 46, 1),
-                          spreadRadius: 1,
-                          blurRadius: 8,
-                          offset: Offset(4, 4),
+            Row(
+              children: [
+                imageFile3 == null
+                    ? Image.asset('assets/fitness_app/imageIcon.png', height: 150.0, width: 150.0,)
+                    : ClipRRect(
+                    borderRadius: BorderRadius.zero,
+                    child: Image.file(imageFile3!, height: 150.0, width: 150.0, )//fit: BoxFit.fill,)
+                ),
+                const SizedBox(width: 10.0,),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 55,
+                      width: 145,
+                      child: InkWell(
+                        onTap: () async {
+                          Map<Permission, PermissionStatus> statuses = await [
+                            Permission.storage, Permission.camera,
+                          ].request();
+                          if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
+                            showImagePicker(context, _imgFromGallery3(), _imgFromCamera3());
+                          } else {
+                            print('no permission provided');
+                          }
+                        },
+                        child: Container(
+                          height: 55,
+                          width: 145,
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade300,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color.fromRGBO(200, 16, 46, 1),
+                                  spreadRadius: 1,
+                                  blurRadius: 8,
+                                  offset: Offset(4, 4),
+                                ),
+                                BoxShadow(
+                                  color: Colors.white,
+                                  spreadRadius: 2,
+                                  blurRadius: 8,
+                                  offset: Offset(-4, -4),
+                                )
+                              ]
+                          ),
+                          child: Center(
+                            child: Text(
+                              "select_image".tr(),
+                              style: const TextStyle(
+                                color: Color.fromRGBO(200, 16, 46, 1),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
                         ),
-                        BoxShadow(
-                          color: Colors.white,
-                          spreadRadius: 2,
-                          blurRadius: 8,
-                          offset: Offset(-4, -4),
-                        )
-                      ]
-                  ),
-                  child: Center(
-                    child: Text(
-                      "select_image".tr(),
-                      style: const TextStyle(
-                        color: Color.fromRGBO(200, 16, 46, 1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
                       ),
                     ),
-                  ),
+                    const SizedBox(height: 10.0,),
+                    SizedBox(
+                      height: 55,
+                      width: 145,
+                      child: defaultFormField(
+                        enable: true,
+                        label: 'write_a_comment'.tr(),
+                        prefix: Icons.edit,
+                        controller: comment3Controller,
+                        type: TextInputType.text,
+                        colors: Colors.blueGrey,
+                        validate: (String? value) {
+                          if (value!.isEmpty) {
+                            return 'comment must be non empty';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ),
-            const SizedBox(height: 20.0,),
-            Center(
-              child: Container(
-                height: 50,
-                width: 300,
-                child: defaultFormField(
-                  enable: true,
-                  label: 'write_a_comment'.tr(),
-                  prefix: Icons.edit,
-                  controller: comment1Controller,
-                  type: TextInputType.text,
-                  colors: Colors.blueGrey,
-                  validate: (String? value) {
-                    if (value!.isEmpty) {
-                      return 'comment must be non empty';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 20.0,),
-            imageFile == null
-                ? Image.asset('assets/fitness_app/imageIcon.png', height: 220.0, width: 220.0,)
-                : ClipRRect(
-                borderRadius: BorderRadius.zero,
-                child: Image.file(imageFile!, height: 220.0, width: 220.0, )//fit: BoxFit.fill,)
+              ],
             ),
             const SizedBox(height: 10.0,),
-            Container(
-              margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
-              child: InkWell(
-                onTap: () async {
-                  Map<Permission, PermissionStatus> statuses = await [
-                    Permission.storage, Permission.camera,
-                  ].request();
-                  if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
-                    showImagePicker(context);
-                  } else {
-                    print('no permission provided');
-                  }
-                },
-                child: Container(
-                  height: 50,
-                  width: 130,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(200, 16, 46, 1),
-                          spreadRadius: 1,
-                          blurRadius: 8,
-                          offset: Offset(4, 4),
+            Row(
+              children: [
+                imageFile4 == null
+                    ? Image.asset('assets/fitness_app/imageIcon.png', height: 150.0, width: 150.0,)
+                    : ClipRRect(
+                  borderRadius: BorderRadius.zero,
+                  child: Image.file(imageFile4!, height: 150.0, width: 150.0, ),//fit: BoxFit.fill,)
+                ),
+                const SizedBox(width: 10.0,),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 55,
+                      width: 145,
+                      child: InkWell(
+                        onTap: () async {
+                          Map<Permission, PermissionStatus> statuses = await [
+                            Permission.storage, Permission.camera,
+                          ].request();
+                          if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
+                            showImagePicker(context, _imgFromGallery4(), _imgFromCamera4());
+                          } else {
+                            print('no permission provided');
+                          }
+                        },
+                        child: Container(
+                          height: 55,
+                          width: 145,
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade300,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color.fromRGBO(200, 16, 46, 1),
+                                  spreadRadius: 1,
+                                  blurRadius: 8,
+                                  offset: Offset(4, 4),
+                                ),
+                                BoxShadow(
+                                  color: Colors.white,
+                                  spreadRadius: 2,
+                                  blurRadius: 8,
+                                  offset: Offset(-4, -4),
+                                )
+                              ]
+                          ),
+                          child: Center(
+                            child: Text(
+                              "select_image".tr(),
+                              style: const TextStyle(
+                                color: Color.fromRGBO(200, 16, 46, 1),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
                         ),
-                        BoxShadow(
-                          color: Colors.white,
-                          spreadRadius: 2,
-                          blurRadius: 8,
-                          offset: Offset(-4, -4),
-                        )
-                      ]
-                  ),
-                  child: Center(
-                    child: Text(
-                      "select_image".tr(),
-                      style: const TextStyle(
-                        color: Color.fromRGBO(200, 16, 46, 1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
                       ),
                     ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20.0,),
-            Center(
-              child: SizedBox(
-                height: 50,
-                width: 300,
-                child: defaultFormField(
-                  enable: true,
-                  label: 'write_a_comment'.tr(),
-                  prefix: Icons.edit,
-                  controller: comment2Controller,
-                  type: TextInputType.text,
-                  colors: Colors.blueGrey,
-                  validate: (String? value) {
-                    if (value!.isEmpty) {
-                      return 'comment must be non empty';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 20.0,),
-            imageFile == null
-                ? Image.asset('assets/fitness_app/imageIcon.png', height: 220.0, width: 220.0,)
-                : ClipRRect(
-                borderRadius: BorderRadius.zero,
-                child: Image.file(imageFile!, height: 220.0, width: 220.0, )//fit: BoxFit.fill,)
+                    const SizedBox(height: 10.0,),
+                    SizedBox(
+                      height: 55,
+                      width: 145,
+                      child: defaultFormField(
+                        enable: true,
+                        label: 'write_a_comment'.tr(),
+                        prefix: Icons.edit,
+                        controller: comment4Controller,
+                        type: TextInputType.text,
+                        colors: Colors.blueGrey,
+                        validate: (String? value) {
+                          if (value!.isEmpty) {
+                            return 'comment must be non empty';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
             const SizedBox(height: 10.0,),
-            Container(
-              margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
-              child: InkWell(
-                onTap: () async {
-                  Map<Permission, PermissionStatus> statuses = await [
-                    Permission.storage, Permission.camera,
-                  ].request();
-                  if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
-                    showImagePicker(context);
-                  } else {
-                    print('no permission provided');
-                  }
-                },
-                child: Container(
-                  height: 50,
-                  width: 130,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(200, 16, 46, 1),
-                          spreadRadius: 1,
-                          blurRadius: 8,
-                          offset: Offset(4, 4),
+            Row(
+              children: [
+                imageFile5 == null
+                    ? Image.asset('assets/fitness_app/imageIcon.png', height: 150.0, width: 150.0,)
+                    : ClipRRect(
+                    borderRadius: BorderRadius.zero,
+                    child: Image.file(imageFile5!, height: 150.0, width: 150.0, )//fit: BoxFit.fill,)
+                ),
+                const SizedBox(width: 10.0,),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 55,
+                      width: 145,
+                      child: InkWell(
+                        onTap: () async {
+                          Map<Permission, PermissionStatus> statuses = await [
+                            Permission.storage, Permission.camera,
+                          ].request();
+                          if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
+                            showImagePicker(context, _imgFromGallery5(), _imgFromCamera5());
+                          } else {
+                            print('no permission provided');
+                          }
+                        },
+                        child: Container(
+                          height: 55,
+                          width: 145,
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade300,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color.fromRGBO(200, 16, 46, 1),
+                                  spreadRadius: 1,
+                                  blurRadius: 8,
+                                  offset: Offset(4, 4),
+                                ),
+                                BoxShadow(
+                                  color: Colors.white,
+                                  spreadRadius: 2,
+                                  blurRadius: 8,
+                                  offset: Offset(-4, -4),
+                                )
+                              ]
+                          ),
+                          child: Center(
+                            child: Text(
+                              "select_image".tr(),
+                              style: const TextStyle(
+                                color: Color.fromRGBO(200, 16, 46, 1),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
                         ),
-                        BoxShadow(
-                          color: Colors.white,
-                          spreadRadius: 2,
-                          blurRadius: 8,
-                          offset: Offset(-4, -4),
-                        )
-                      ]
-                  ),
-                  child: Center(
-                    child: Text(
-                      "select_image".tr(),
-                      style: const TextStyle(
-                        color: Color.fromRGBO(200, 16, 46, 1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
                       ),
                     ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20.0,),
-            Center(
-              child: Container(
-                height: 50,
-                width: 300,
-                child: defaultFormField(
-                  enable: true,
-                  label: 'write_a_comment'.tr(),
-                  prefix: Icons.edit,
-                  controller: comment3Controller,
-                  type: TextInputType.text,
-                  colors: Colors.blueGrey,
-                  validate: (String? value) {
-                    if (value!.isEmpty) {
-                      return 'comment must be non empty';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 20.0,),
-            imageFile == null
-                ? Image.asset('assets/fitness_app/imageIcon.png', height: 220.0, width: 220.0,)
-                : ClipRRect(
-                borderRadius: BorderRadius.zero,
-                child: Image.file(imageFile!, height: 220.0, width: 220.0, )//fit: BoxFit.fill,)
+                    const SizedBox(height: 10.0,),
+                    SizedBox(
+                      height: 55,
+                      width: 145,
+                      child: defaultFormField(
+                        enable: true,
+                        label: 'write_a_comment'.tr(),
+                        prefix: Icons.edit,
+                        controller: comment5Controller,
+                        type: TextInputType.text,
+                        colors: Colors.blueGrey,
+                        validate: (String? value) {
+                          if (value!.isEmpty) {
+                            return 'comment must be non empty';
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
             const SizedBox(height: 10.0,),
-            Container(
-              margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
-              child: InkWell(
-                onTap: () async {
-                  Map<Permission, PermissionStatus> statuses = await [
-                    Permission.storage, Permission.camera,
-                  ].request();
-                  if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
-                    showImagePicker(context);
-                  } else {
-                    print('no permission provided');
-                  }
-                },
-                child: Container(
-                  height: 50,
-                  width: 130,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(200, 16, 46, 1),
-                          spreadRadius: 1,
-                          blurRadius: 8,
-                          offset: Offset(4, 4),
+            Row(
+              children: [
+                imageFile6 == null
+                    ? Image.asset('assets/fitness_app/imageIcon.png', height: 150.0, width: 150.0,)
+                    : ClipRRect(
+                    borderRadius: BorderRadius.zero,
+                    child: Image.file(imageFile6!, height: 150.0, width: 150.0, )//fit: BoxFit.fill,)
+                ),
+                const SizedBox(width: 10.0,),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 55,
+                      width: 145,
+                      child: InkWell(
+                        onTap: () async {
+                          Map<Permission, PermissionStatus> statuses = await [
+                            Permission.storage, Permission.camera,
+                          ].request();
+                          if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
+                            showImagePicker(context, _imgFromGallery6(), _imgFromCamera6());
+                          } else {
+                            print('no permission provided');
+                          }
+                        },
+                        child: Container(
+                          height: 55,
+                          width: 145,
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade300,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color.fromRGBO(200, 16, 46, 1),
+                                  spreadRadius: 1,
+                                  blurRadius: 8,
+                                  offset: Offset(4, 4),
+                                ),
+                                BoxShadow(
+                                  color: Colors.white,
+                                  spreadRadius: 2,
+                                  blurRadius: 8,
+                                  offset: Offset(-4, -4),
+                                )
+                              ]
+                          ),
+                          child: Center(
+                            child: Text(
+                              "select_image".tr(),
+                              style: const TextStyle(
+                                color: Color.fromRGBO(200, 16, 46, 1),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 17,
+                              ),
+                            ),
+                          ),
                         ),
-                        BoxShadow(
-                          color: Colors.white,
-                          spreadRadius: 2,
-                          blurRadius: 8,
-                          offset: Offset(-4, -4),
-                        )
-                      ]
-                  ),
-                  child: Center(
-                    child: Text(
-                      "select_image".tr(),
-                      style: const TextStyle(
-                        color: Color.fromRGBO(200, 16, 46, 1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
                       ),
                     ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20.0,),
-            Center(
-              child: Container(
-                height: 50,
-                width: 300,
-                child: defaultFormField(
-                  enable: true,
-                  label: 'write_a_comment'.tr(),
-                  prefix: Icons.edit,
-                  controller: comment4Controller,
-                  type: TextInputType.text,
-                  colors: Colors.blueGrey,
-                  validate: (String? value) {
-                    if (value!.isEmpty) {
-                      return 'comment must be non empty';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 20.0,),
-            imageFile == null
-                ? Image.asset('assets/fitness_app/imageIcon.png', height: 220.0, width: 220.0,)
-                : ClipRRect(
-                borderRadius: BorderRadius.zero,
-                child: Image.file(imageFile!, height: 220.0, width: 220.0, )//fit: BoxFit.fill,)
-            ),
-            const SizedBox(height: 10.0,),
-            Container(
-              margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
-              child: InkWell(
-                onTap: () async {
-                  Map<Permission, PermissionStatus> statuses = await [
-                    Permission.storage, Permission.camera,
-                  ].request();
-                  if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
-                    showImagePicker(context);
-                  } else {
-                    print('no permission provided');
-                  }
-                },
-                child: Container(
-                  height: 50,
-                  width: 130,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(200, 16, 46, 1),
-                          spreadRadius: 1,
-                          blurRadius: 8,
-                          offset: Offset(4, 4),
-                        ),
-                        BoxShadow(
-                          color: Colors.white,
-                          spreadRadius: 2,
-                          blurRadius: 8,
-                          offset: Offset(-4, -4),
-                        )
-                      ]
-                  ),
-                  child: Center(
-                    child: Text(
-                      "select_image".tr(),
-                      style: const TextStyle(
-                        color: Color.fromRGBO(200, 16, 46, 1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
+                    const SizedBox(height: 10.0,),
+                    SizedBox(
+                      height: 55,
+                      width: 145,
+                      child: defaultFormField(
+                        enable: true,
+                        label: 'write_a_comment'.tr(),
+                        prefix: Icons.edit,
+                        controller: comment6Controller,
+                        type: TextInputType.text,
+                        colors: Colors.blueGrey,
+                        validate: (String? value) {
+                          if (value!.isEmpty) {
+                            return 'comment must be non empty';
+                          }
+                          return null;
+                        },
                       ),
                     ),
-                  ),
-                ),
-              ),
+                  ],
+                )
+              ],
             ),
-            const SizedBox(height: 20.0,),
-            Center(
-              child: Container(
-                height: 50,
-                width: 300,
-                child: defaultFormField(
-                  enable: true,
-                  label: 'write_a_comment'.tr(),
-                  prefix: Icons.edit,
-                  controller: comment5Controller,
-                  type: TextInputType.text,
-                  colors: Colors.blueGrey,
-                  validate: (String? value) {
-                    if (value!.isEmpty) {
-                      return 'comment must be non empty';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 20.0,),
-            imageFile == null
-                ? Image.asset('assets/fitness_app/imageIcon.png', height: 220.0, width: 220.0,)
-                : ClipRRect(
-                borderRadius: BorderRadius.zero,
-                child: Image.file(imageFile!, height: 220.0, width: 220.0, )//fit: BoxFit.fill,)
-            ),
-            const SizedBox(height: 10.0,),
-            Container(
-              margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
-              child: InkWell(
-                onTap: () async {
-                  Map<Permission, PermissionStatus> statuses = await [
-                    Permission.storage, Permission.camera,
-                  ].request();
-                  if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
-                    showImagePicker(context);
-                  } else {
-                    print('no permission provided');
-                  }
-                },
-                child: Container(
-                  height: 50,
-                  width: 130,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(200, 16, 46, 1),
-                          spreadRadius: 1,
-                          blurRadius: 8,
-                          offset: Offset(4, 4),
-                        ),
-                        BoxShadow(
-                          color: Colors.white,
-                          spreadRadius: 2,
-                          blurRadius: 8,
-                          offset: Offset(-4, -4),
-                        )
-                      ]
-                  ),
-                  child: Center(
-                    child: Text(
-                      "select_image".tr(),
-                      style: const TextStyle(
-                        color: Color.fromRGBO(200, 16, 46, 1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20.0,),
-            Center(
-              child: Container(
-                height: 50,
-                width: 300,
-                child: defaultFormField(
-                  enable: true,
-                  label: 'write_a_comment'.tr(),
-                  prefix: Icons.edit,
-                  controller: comment6Controller,
-                  type: TextInputType.text,
-                  colors: Colors.blueGrey,
-                  validate: (String? value) {
-                    if (value!.isEmpty) {
-                      return 'comment must be non empty';
-                    }
-                    return null;
-                  },
-                ),
-              ),
-            ),
-            const SizedBox(height: 20.0,),
-            Container(
-              margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
-              child: InkWell(
-                onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) =>  Reviews()),);},
-                child: Container(
-                  height: 70,
-                  width: 70,
-                  decoration: BoxDecoration(
-                      color: Colors.grey.shade300,
-                      borderRadius: BorderRadius.circular(15),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color.fromRGBO(200, 16, 46, 1),
-                          spreadRadius: 1,
-                          blurRadius: 8,
-                          offset: Offset(4, 4),
-                        ),
-                        BoxShadow(
-                          color: Colors.white,
-                          spreadRadius: 2,
-                          blurRadius: 8,
-                          offset: Offset(-4, -4),
-                        )
-                      ]
-                  ),
-                  child: Center(
-                    child: Text(
-                      "next".tr(),
-                      style: const TextStyle(
-                        color: Color.fromRGBO(200, 16, 46, 1),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
           ],
         ),
-     // ),
     );
   }
 
-  final picker = ImagePicker();
+  final picker1 = ImagePicker();
+  final picker2 = ImagePicker();
+  final picker3 = ImagePicker();
+  final picker4 = ImagePicker();
+  final picker5 = ImagePicker();
+  final picker6 = ImagePicker();
 
-  void showImagePicker(BuildContext context) {
+  void showImagePicker(BuildContext context, pickerGallery, pickerCamera) {
     showModalBottomSheet(
         context: context,
         builder: (builder){
@@ -561,7 +576,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                             ],
                           ),
                           onTap: () {
-                            _imgFromGallery();
+                            pickerGallery;
                             Navigator.pop(context);
                           },
                         )),
@@ -581,7 +596,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                             ),
                           ),
                           onTap: () {
-                            _imgFromCamera();
+                            pickerCamera;
                             Navigator.pop(context);
                           },
                         ))
@@ -593,27 +608,27 @@ class _ExternalDetectionState extends State<ExternalDetection> {
     );
   }
 
-  _imgFromGallery() async {
-    await  picker.pickImage(
+  _imgFromGallery1() async {
+    await  picker1.pickImage(
         source: ImageSource.gallery, imageQuality: 50
     ).then((value){
       if(value != null){
-        _cropImage(File(value.path));
+        _cropImage1(File(value.path));
       }
     });
   }
 
-  _imgFromCamera() async {
-    await picker.pickImage(
+  _imgFromCamera1() async {
+    await picker1.pickImage(
         source: ImageSource.camera, imageQuality: 50
     ).then((value){
       if(value != null){
-        _cropImage(File(value.path));
+        _cropImage1(File(value.path));
       }
     });
   }
 
-  _cropImage(File imgFile) async {
+  _cropImage1(File imgFile) async {
     final croppedFile = await ImageCropper().cropImage(
         sourcePath: imgFile.path,
         aspectRatioPresets: Platform.isAndroid
@@ -647,7 +662,307 @@ class _ExternalDetectionState extends State<ExternalDetection> {
 
       imageCache.clear();
       setState(() {
-        imageFile = File(croppedFile.path);
+        imageFile1 = File(croppedFile.path);
+      });
+      // reload();
+    }
+  }
+
+  _imgFromGallery2() async {
+    await  picker2.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage1(File(value.path));
+      }
+    });
+  }
+
+  _imgFromCamera2() async {
+    await picker2.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage2(File(value.path));
+      }
+    });
+  }
+
+  _cropImage2(File imgFile) async {
+    final croppedFile = await ImageCropper().cropImage(
+        sourcePath: imgFile.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ] : [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [AndroidUiSettings(
+            toolbarTitle: "Image Cropper",
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+          IOSUiSettings(
+            title: "Image Cropper",
+          )
+        ]);
+    if (croppedFile != null) {
+
+      imageCache.clear();
+      setState(() {
+        imageFile2 = File(croppedFile.path);
+      });
+      // reload();
+    }
+  }
+
+  _imgFromGallery3() async {
+    await  picker3.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage3(File(value.path));
+      }
+    });
+  }
+
+  _imgFromCamera3() async {
+    await picker3.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage3(File(value.path));
+      }
+    });
+  }
+
+  _cropImage3(File imgFile) async {
+    final croppedFile = await ImageCropper().cropImage(
+        sourcePath: imgFile.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ] : [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [AndroidUiSettings(
+            toolbarTitle: "Image Cropper",
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+          IOSUiSettings(
+            title: "Image Cropper",
+          )
+        ]);
+    if (croppedFile != null) {
+
+      imageCache.clear();
+      setState(() {
+        imageFile3 = File(croppedFile.path);
+      });
+      // reload();
+    }
+  }
+
+  _imgFromGallery4() async {
+    await  picker4.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage4(File(value.path));
+      }
+    });
+  }
+
+  _imgFromCamera4() async {
+    await picker4.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage4(File(value.path));
+      }
+    });
+  }
+
+  _cropImage4(File imgFile) async {
+    final croppedFile = await ImageCropper().cropImage(
+        sourcePath: imgFile.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ] : [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [AndroidUiSettings(
+            toolbarTitle: "Image Cropper",
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+          IOSUiSettings(
+            title: "Image Cropper",
+          )
+        ]);
+    if (croppedFile != null) {
+
+      imageCache.clear();
+      setState(() {
+        imageFile4 = File(croppedFile.path);
+      });
+      // reload();
+    }
+  }
+
+  _imgFromGallery5() async {
+    await  picker5.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage5(File(value.path));
+      }
+    });
+  }
+
+  _imgFromCamera5() async {
+    await picker5.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage5(File(value.path));
+      }
+    });
+  }
+
+  _cropImage5(File imgFile) async {
+    final croppedFile = await ImageCropper().cropImage(
+        sourcePath: imgFile.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ] : [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [AndroidUiSettings(
+            toolbarTitle: "Image Cropper",
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+          IOSUiSettings(
+            title: "Image Cropper",
+          )
+        ]);
+    if (croppedFile != null) {
+
+      imageCache.clear();
+      setState(() {
+        imageFile5 = File(croppedFile.path);
+      });
+      // reload();
+    }
+  }
+
+  _imgFromGallery6() async {
+    await  picker6.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage6(File(value.path));
+      }
+    });
+  }
+
+  _imgFromCamera6() async {
+    await picker6.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage6(File(value.path));
+      }
+    });
+  }
+
+  _cropImage6(File imgFile) async {
+    final croppedFile = await ImageCropper().cropImage(
+        sourcePath: imgFile.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ] : [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [AndroidUiSettings(
+            toolbarTitle: "Image Cropper",
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+          IOSUiSettings(
+            title: "Image Cropper",
+          )
+        ]);
+    if (croppedFile != null) {
+
+      imageCache.clear();
+      setState(() {
+        imageFile6 = File(croppedFile.path);
       });
       // reload();
     }

@@ -17,7 +17,7 @@ class _WorkshopHomeState extends State<WorkshopHome> {
         centerTitle: true,
         title: ListTile(
           leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-          title: Text('Work Shop'.tr(),
+          title: Text('work_shop'.tr(),
             style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
         ),
         backgroundColor: const Color.fromRGBO(144, 16, 46, 1),

@@ -15,9 +15,9 @@ class EmailSettings{
   factory EmailSettings.fromJson(Map<String, dynamic> json) {
     return EmailSettings(
       id: (json['id'] != null) ? json['id'] as int : 0,
-      emailSettingCode: (json['departmentCode'] != null) ? json['departmentCode'] as String : " ",
-      emailSettingNameAra: (json['departmentNameAra'] != null) ? json['departmentNameAra'] as String : " ",
-      emailSettingNameEng: (json['departmentNameEng'] != null) ? json['departmentNameEng'] as String : " ",
+      emailSettingCode: (json['emailSettingCode'] != null) ? json['emailSettingCode'] as String : " ",
+      emailSettingNameAra: (json['emailSettingNameAra'] != null) ? json['emailSettingNameAra'] as String : " ",
+      emailSettingNameEng: (json['emailSettingNameEng'] != null) ? json['emailSettingNameEng'] as String : " ",
     );
   }
 

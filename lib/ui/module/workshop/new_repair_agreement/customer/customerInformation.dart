@@ -1,10 +1,14 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carGroups/carGroup.dart';
+import 'package:fourlinkmobileapp/service/module/carMaintenance/carGroups/carGroupApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
-import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
+
+// APIs
+CarGroupApiService _carGroupApiService = CarGroupApiService();
 
 class CustomerInfo extends StatefulWidget {
   const CustomerInfo({Key? key}) : super(key: key);
@@ -27,7 +31,25 @@ class _CustomerInfoState extends State<CustomerInfo> {
   final chassis1NumberController = TextEditingController();
   final plate1NameController = TextEditingController();
   final modelController = TextEditingController();
-  List<Customer> carGroups = [];
+
+  List<CarGroup> carGroups = [];
+  List<DropdownMenuItem<String>> menuCarGroups = [];
+  String? selectedCarGroupValue = null;
+
+  @override
+  initState() {
+    super.initState();
+
+    Future<List<CarGroup>> futureCarGroup = _carGroupApiService.getCarGroups().then((data) {
+      carGroups = data;
+      getCarGroupsData();
+      return carGroups;
+    }, onError: (e) {
+      print(e);
+    });
+
+
+  }
 
 
   @override
@@ -38,7 +60,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
           child: ListView(
             children: [
               SizedBox(
-                height: 150,
+                height: 130,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
@@ -117,13 +139,13 @@ class _CustomerInfoState extends State<CustomerInfo> {
                 width: 50,
                 child: Center(
                   child: Text(
-                    "Customer_Information".tr(),
+                    "customer_information".tr(),
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
               SizedBox(
-                height: 380,
+                height: 340,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
@@ -133,33 +155,33 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         const SizedBox(height: 30),
                          SizedBox(
                           height: 40,
-                          width: 140,
-                          child: Text("customer_name".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
+                          width: 100,
+                          child: Text("name".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
                         ),
 
                         const SizedBox(height: 20),
                          SizedBox(
                           height: 40,
-                          width: 140,
-                          child: Text("customer_identity".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          width: 100,
+                          child: Text("customer_id".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 140,
+                          width: 100,
                           child: Text("email".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 140,
-                          child: Text("name_of_the_one_who_brought_the_car".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          width: 100,
+                          child: Text("check_in_person".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 140,
-                          child: Text("number_of_the_one_who_brought_the_car".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                          width: 100,
+                          child: Text("mobile".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
                       ],
                     ),
@@ -169,7 +191,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 165,
+                          width: 200,
                           child: defaultFormField(
                             enable: true,
                             controller: customerNameController,
@@ -186,7 +208,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 165,
+                          width: 200,
                           child: defaultFormField(
                             enable: true,
                             controller: customerIdentityController,
@@ -203,7 +225,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 165,
+                          width: 200,
                           child: defaultFormField(
                             enable: true,
                             controller: emailController,
@@ -220,7 +242,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 165,
+                          width: 200,
                           child: defaultFormField(
                             enable: true,
                             controller: bringerNameController,
@@ -237,7 +259,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 165,
+                          width: 200,
                           child: defaultFormField(
                             enable: true,
                             controller: bringerNumberController,
@@ -261,7 +283,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                 width: 50,
                 child: Center(
                   child: Text(
-                    "Car_Information".tr(),
+                    "car_information".tr(),
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -277,38 +299,38 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         const SizedBox(height: 30),
                         SizedBox(
                           height: 40,
-                          width: 130,
+                          width: 110,
                           child: Text("chassis_number".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
                         ),
 
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 130,
+                          width: 110,
                           child: Text("plate_number".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 130,
+                          width: 110,
                           child: Text("model".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 130,
+                          width: 110,
                           child: Text("car_group".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                         ),
 
                       ],
                     ),
-                    const SizedBox(width: 10,),
+                    const SizedBox(width: 5,),
                     Column(
                       children: [
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 170,
+                          width: 185,
                           child: defaultFormField(
                             enable: true,
                             controller: chassis1NumberController,
@@ -325,7 +347,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 170,
+                          width: 185,
                           child: defaultFormField(
                             enable: true,
                             controller: plate1NameController,
@@ -342,7 +364,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 170,
+                          width: 185,
                           child: defaultFormField(
                             enable: true,
                             controller: modelController,
@@ -360,53 +382,55 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         const SizedBox(height: 20),
                         SizedBox(
                           height: 40,
-                          width: 170,
-                          child: DropdownSearch<Customer>(
-                            selectedItem: null,
+                          width: 185,
+                          child: DropdownSearch<CarGroup>(
                             popupProps: PopupProps.menu(
-
                               itemBuilder: (context, item, isSelected) {
                                 return Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 8),
-                                  decoration: !isSelected ? null : BoxDecoration(
-                                    border: Border.all(color: Colors.black12),
+                                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: !isSelected ? null
+                                      : BoxDecoration(
+
+                                    border: Border.all(color: Theme.of(context).primaryColor),
                                     borderRadius: BorderRadius.circular(5),
                                     color: Colors.white,
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text((langId == 1) ? item.customerNameAra.toString() : item.customerNameEng.toString()),
+                                    child: Text((langId==1)? item.groupNameAra.toString():  item.groupNameEng.toString(),
+                                      //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
+                                      textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
                                   ),
                                 );
                               },
                               showSearchBox: true,
-
                             ),
-
-                            items: carGroups,//customers,
-                            itemAsString: (Customer u) =>
-                            (langId == 1) ? u.customerNameAra.toString() : u.customerNameEng.toString(),
-                            onChanged: (value) {
-                              // selectedCustomerValue = value!.customerCode.toString();
-                              // selectedCustomerEmail = value.email.toString();// i've changed value!
+                            items: carGroups,
+                            itemAsString: (CarGroup u) => u.groupNameAra.toString(),
+                            onChanged: (value){
+                              //v.text = value!.cusTypesCode.toString();
+                              //print(value!.id);
+                              selectedCarGroupValue =  value!.groupCode.toString();
                             },
-
-                            filterFn: (instance, filter) {
-                              if ((langId == 1) ? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)) {
+                            filterFn: (instance, filter){
+                              if(instance.groupNameAra!.contains(filter)){
                                 print(filter);
                                 return true;
                               }
-                              else {
+                              else{
                                 return false;
                               }
                             },
-                            dropdownDecoratorProps: const DropDownDecoratorProps(
-                              dropdownSearchDecoration: InputDecoration(
-                                //labelText: 'Select'.tr(),
+                            // dropdownDecoratorProps: const DropDownDecoratorProps(
+                            // dropdownSearchDecoration: InputDecoration(
+                            //   labelStyle: TextStyle(
+                            //     color: Colors.black,
+                            //   ),
+                            //   //icon: Icon(Icons.keyboard_arrow_down),
+                            // ),
+                            // ),
 
-                              ),
-                            ),
                           ),
                         ),
                       ],
@@ -414,51 +438,22 @@ class _CustomerInfoState extends State<CustomerInfo> {
                   ],
                 ),
               ),
-              // Container(
-              //   //margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
-              //   child: InkWell(
-              //     onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context) =>  CustomerRequests()),);},
-              //     child: Container(
-              //       height: 70,
-              //       width: 70,
-              //       decoration: BoxDecoration(
-              //           color: Colors.grey.shade300,
-              //           borderRadius: BorderRadius.circular(15),
-              //           boxShadow: const [
-              //             BoxShadow(
-              //               color: Color.fromRGBO(200, 16, 46, 1),
-              //               spreadRadius: 1,
-              //               blurRadius: 8,
-              //               offset: Offset(4, 4),
-              //             ),
-              //             BoxShadow(
-              //               color: Colors.white,
-              //               spreadRadius: 2,
-              //               blurRadius: 8,
-              //               offset: Offset(-4, -4),
-              //             )
-              //           ]
-              //       ),
-              //       child: Center(
-              //         child: Text(
-              //           "next".tr(),
-              //           style: const TextStyle(
-              //             color: Color.fromRGBO(200, 16, 46, 1),
-              //             fontWeight: FontWeight.bold,
-              //             fontSize: 17,
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // const SizedBox(height: 20),
             ],
           ),
-
-
         ),
-      //),
     );
+  }
+  getCarGroupsData() {
+    if (carGroups.isNotEmpty) {
+      for(var i = 0; i < carGroups.length; i++){
+        menuCarGroups.add(
+            DropdownMenuItem(
+                value: carGroups[i].groupCode.toString(),
+                child: Text((langId==1)?  carGroups[i].groupNameAra.toString() : carGroups[i].groupNameEng.toString())));
+      }
+    }
+    setState(() {
+
+    });
   }
 }

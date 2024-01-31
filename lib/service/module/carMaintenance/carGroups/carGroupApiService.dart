@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/CostCenters/CostCenter.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carGroups/carGroup.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
@@ -7,22 +7,22 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
- class CostCenterApiService {
+class CarGroupApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/costcenters/search';
-  String createApi= baseUrl.toString()  + 'v1/costcenters';
-  String updateApi= baseUrl.toString()  + 'v1/costcenters/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/costcenters/';
-  String getByIdApi= baseUrl.toString()  + 'v1/costcenters/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + 'v1/cargroups/search';
+  String createApi= baseUrl.toString()  + 'v1/cargroups';
+  String updateApi= baseUrl.toString()  + 'v1/cargroups/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + 'v1/cargroups/';
+  String getByIdApi= baseUrl.toString()  + 'v1/cargroups/';  // Add ID For Get
 
-  Future<List<CostCenter>>  getCostCenters() async {
+  Future<List<CarGroup>>  getCarGroups() async {
 
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode
     };
 
-    print('CostCenter 1');
+    print('CarGroup 1');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -34,22 +34,22 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
     if (response.statusCode == 200) {
-      print('CostCenter 2');
+      print('CarGroup 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
-      List<CostCenter> list = [];
+      List<CarGroup> list = [];
       if (data.isNotEmpty) {
-        list = data.map((item) => CostCenter.fromJson(item)).toList();
+        list = data.map((item) => CarGroup.fromJson(item)).toList();
       }
-      print('CostCenter 3');
+      print('CarGroup 3');
       return  list;
 
     } else {
-      print('CostCenter Failed');
-      throw "Failed to load costCenter list";
+      print('CarGroup Failed');
+      throw "Failed to load CarGroup list";
     }
   }
 
-  Future<CostCenter> getCostCenterById(int id) async {
+  Future<CarGroup> getCarGroupById(int id) async {
 
     var data = {
       // "id": id
@@ -66,28 +66,21 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
     if (response.statusCode == 200) {
 
-      return CostCenter.fromJson(json.decode(response.body));
+      return CarGroup.fromJson(json.decode(response.body));
 
     } else {
       throw Exception('Failed to load a case');
     }
   }
 
-  Future<int> createCostCenter(BuildContext context ,CostCenter costCenter) async {
+  Future<int> createCarGroup(BuildContext context ,CarGroup carGroup) async {
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'costCenterCode': costCenter.costCenterCode,
-      'costCenterNameAra': costCenter.costCenterNameAra,
-      'costCenterNameEng': costCenter.costCenterNameEng,
-      // 'taxIdentificationNumber': costCenter.taxIdentificationNumber,
-      // 'address': costCenter.address,
-      // 'Phone1': costCenter.phone1,
-      // 'costCenterTypeCode': costCenter.customerTypeCode,
-      // 'address': customer.address,
-      // 'city': customer.city,
-      // 'country': customer.country,
-      // 'status': customer.status
+      'groupCode': carGroup.groupCode,
+      'groupNameAra': carGroup.groupNameAra,
+      'groupNameEng': carGroup.groupNameEng,
+
     };
 
     final http.Response response = await http.post(
@@ -108,24 +101,22 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
     } else {
-      throw Exception('Failed to post costCenter');
+      throw Exception('Failed to post carGroup');
     }
 
   }
 
-  Future<int> updateCostCenter(BuildContext context ,int id, CostCenter costCenter) async {
+  Future<int> updateCarGroup(BuildContext context ,int id, CarGroup carGroup) async {
 
     print('Start Update');
 
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'costCenterCode': costCenter.costCenterCode,
-      'costCenterNameAra': costCenter.costCenterNameAra,
-      'costCenterNameEng': costCenter.costCenterNameEng,
-      // 'taxIdentificationNumber': costCenter.taxIdentificationNumber,
-      // 'address': costCenter.address,
-      // 'Phone1': costCenter.phone1
+      'groupCode': carGroup.groupCode,
+      'groupNameAra': carGroup.groupNameAra,
+      'groupNameEng': carGroup.groupNameEng,
+
     };
 
     String apiUpdate =updateApi + id.toString();
@@ -142,7 +133,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     if (response.statusCode == 200) {
 
       print('Start Update done ' );
-      //var data = jsonDecode(response.body)['data'];
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
@@ -151,10 +141,9 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       throw Exception('Failed to update a case');
     }
 
-    return 0;
   }
 
-  Future<void> deleteCostCenter(BuildContext context ,int? id) async {
+  Future<void> deleteCarGroup(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
     print('url' + apiDel);
