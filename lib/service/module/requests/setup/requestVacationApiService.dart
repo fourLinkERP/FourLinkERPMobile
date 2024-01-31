@@ -87,14 +87,14 @@ class VacationRequestsApiService {
       'fromDate': request.fromDate,
       'toDate': request.toDate,
       'vacationTypeCode': request.vacationTypeCode,
-      'requestDays': request.requestDays,
-      'ruleBalance': request.ruleBalance,
-      'vacationBalance': request.vacationBalance,
-      'allowBalance': request.allowBalance,
-      'empBalance': request.empBalance ,
-      'vacationDueDate': request.vacationDueDate,
-      'advanceBalance': request.advanceBalance,
-      'latestVacationDate': request.latestVacationDate,
+      // 'requestDays': request.requestDays,
+      // 'ruleBalance': request.ruleBalance,
+      // 'vacationBalance': request.vacationBalance,
+      // 'allowBalance': request.allowBalance,
+      // 'empBalance': request.empBalance ,
+      // 'vacationDueDate': request.vacationDueDate,
+      // 'advanceBalance': request.advanceBalance,
+      // 'latestVacationDate': request.latestVacationDate,
       'notes': request.notes,
       "confirmed": false,
       "isActive": true,
@@ -107,12 +107,17 @@ class VacationRequestsApiService {
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "year":2023
+      "year":financialYearCode
 
     };
 
     print('to print body');
     print(data.toString());
+    print('uri');
+    print(createApi);
+    print('token');
+    print('Bearer $token');
+
 
     final http.Response response = await http.post(
       Uri.parse(createApi),

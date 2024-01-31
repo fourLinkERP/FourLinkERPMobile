@@ -20,7 +20,7 @@ class _RequestVacationState extends State<RequestVacation> {
           centerTitle: true,
           title:ListTile(
             leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-            title: Text('Requests'.tr(),
+            title: Text('vacation_requests'.tr(),
               style: const TextStyle(color: Colors.white),),
           ),
           bottom: TabBar(
@@ -35,7 +35,7 @@ class _RequestVacationState extends State<RequestVacation> {
         body: TabBarView(
           children: [
             AddRequestVacation(),
-            Approvals(),
+            //Approvals(),
           ],
         ),
       ),
