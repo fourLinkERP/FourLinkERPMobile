@@ -23,7 +23,7 @@
     "enter_valid_email": "Enter a valid email address",
     "email_verify": "We will email you a verification code to check your authenticity.",
     "email_empty": "Email can't be empty",
-    "mobile": "Mobile: ",
+    "mobile": "Mobile",
     "enter_mobile": "Enter your mobile",
     "enter_valid_mobile": "Enter a valid phone number",
     "password_required": "Password*",
@@ -263,7 +263,7 @@
     "serial": "Serial",
     "Date :":  "Date :",
     "customer_info":  "Customer Info",
-    "customer":  " customer",
+    "customer":  "Customer",
     "Customers :": "Customers :",
     "invoice_details":  "Invoice Details",
     "item_name":  " Item",
@@ -442,6 +442,16 @@
     "customer_signature": "Customer signature",
     "back": "Back",
     "chassis_num": "chassis num",
-    "plate_num": "plate num"
+    "plate_num": "Plate No",
+    "customer_id": "ID",
+    "check_in_person": "Check In Person",
+    "customer_information": "Customer Information",
+    "car_information": "Car Information",
+    "issue_type": "Issue Type",
+    "labor": "Labor",
+    "delivery_time": "Delivery time",
+    "delivery_date": "Delivery date",
+    "the_cost": "The Cost",
+    "signature": "Signature"
 
 }

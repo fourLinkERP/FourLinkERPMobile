@@ -531,7 +531,17 @@
     "customer_signature": "توقيع العميل",
     "service_classification": "فئة الخدمة",
     "expected_delivering_date": "تاريخ التسليم المتوقع",
-    "back": "رجوع"
+    "back": "رجوع",
+    "customer_id": "الهوية",
+    "check_in_person": "اسم من احضر السيارة",
+    "customer_information": "معلومات العميل",
+    "car_information": "معلومات السيارة",
+    "issue_type": "نوع العطل",
+    "labor": "الخدمة",
+    "delivery_time": "وقت التسليم",
+    "delivery_date": "تاريخ التسليم",
+    "the_cost": "التكلفة",
+    "signature": "التوقيع"
 
 
 }
