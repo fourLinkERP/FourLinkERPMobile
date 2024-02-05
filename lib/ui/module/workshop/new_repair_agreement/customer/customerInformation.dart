@@ -77,7 +77,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                                   });
                                 }),
                           //const SizedBox(width: 5,),
-                          Text("plate_num".tr(),style: TextStyle(fontWeight: FontWeight.bold),),
+                          Text("plate_num".tr(),style: const TextStyle(fontWeight: FontWeight.bold),),
                         ],
                       ),
                       const SizedBox(width: 70,),
@@ -92,7 +92,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                                 });
                               }),
                           //const SizedBox(width: 5,),
-                          Text("mobile".tr(),style: TextStyle(fontWeight: FontWeight.bold)),
+                          Text("mobile".tr(),style: const TextStyle(fontWeight: FontWeight.bold)),
                         ],
                       ),
                     ],

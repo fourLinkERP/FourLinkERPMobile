@@ -45,7 +45,7 @@ class _IndicatorsState extends State<Indicators> {
           children: [
             Material(
               child: SizedBox(
-                height: 50,
+                height: 30,
                 child: TabBar(
                   indicatorColor: const Color.fromRGBO(144, 16, 46, 1),
                   tabs: [

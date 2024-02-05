@@ -4,7 +4,14 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:intl/intl.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
-import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/maintenanceClassification/maintenanceClassification.dart';
+import 'package:fourlinkmobileapp/service/module/carMaintenance/maintenanceClassifications/maintenanceClassificationApiService.dart';
+import 'package:fourlinkmobileapp/service/module/carMaintenance/maintenanceTypes/maintenanceTypeApiService.dart';
+import '../../../../../data/model/modules/module/carMaintenance/maintenanceTypes/maintenanceType.dart';
+
+//APIs
+MaintenanceTypeApiService _maintenanceTypeApiService = MaintenanceTypeApiService();
+MaintenanceClassificationApiService _maintenanceClassificationApiService = MaintenanceClassificationApiService();
 
 class Reviews extends StatefulWidget {
   const Reviews({Key? key}) : super(key: key);
@@ -14,6 +21,49 @@ class Reviews extends StatefulWidget {
 }
 
 class _ReviewsState extends State<Reviews> {
+
+  MaintenanceType? maintenanceTypeItem = MaintenanceType(
+      maintenanceTypeCode: "",
+      maintenanceTypeNameAra: "",
+      maintenanceTypeNameEng: "",
+      id: 0);
+  MaintenanceClassification? maintenanceClassificationItem = MaintenanceClassification(
+      maintenanceClassificationCode: "",
+      maintenanceClassificationNameAra: "",
+      maintenanceClassificationNameEng: "",
+      id: 0);
+
+  String? selectedTypeValue = null;
+  String? selectedClassificationValue = null;
+
+  List<MaintenanceType> maintenanceTypes = [];
+  List<MaintenanceClassification> maintenanceClassifications = [];
+
+  List<DropdownMenuItem<String>> menuMaintenanceTypes = [];
+  List<DropdownMenuItem<String>> menuMaintenanceClassifications = [];
+
+  @override
+  initState() {
+    super.initState();
+
+    Future<List<MaintenanceType>> futureMaintenanceType = _maintenanceTypeApiService.getMaintenanceTypes().then((data) {
+      maintenanceTypes = data;
+      getMaintenanceTypeData();
+      return maintenanceTypes;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<MaintenanceClassification>> futureMaintenanceClassification = _maintenanceClassificationApiService.getMaintenanceClassifications().then((data) {
+      maintenanceClassifications = data;
+      getMaintenanceClassificationData();
+      return maintenanceClassifications;
+    }, onError: (e) {
+      print(e);
+    });
+
+
+  }
 
   final _addFormKey = GlobalKey<FormState>();
   final serviceTypeController = TextEditingController();
@@ -27,9 +77,7 @@ class _ReviewsState extends State<Reviews> {
   bool? _isCheckedTransService = false;
   bool? _isCheckedWaitingCustomer = false;
 
-  List<Customer> paymentMethods = [];
-  List<Customer> serviceTypes = [];
-  List<Customer> serviceClassifications = [];
+  List<MaintenanceClassification> paymentMethods = [];
 
   DateTime get pickedDate => DateTime.now();
 
@@ -110,39 +158,41 @@ class _ReviewsState extends State<Reviews> {
                         SizedBox(
                           height: 40,
                           width: 180,
-                          child: DropdownSearch<Customer>(
-                            selectedItem: null,
+                          child: DropdownSearch<MaintenanceClassification>(
+                            validator: (value) => value == null ? "select_a_Type".tr() : null,
+                            selectedItem: maintenanceClassificationItem,
                             popupProps: PopupProps.menu(
-
                               itemBuilder: (context, item, isSelected) {
                                 return Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 8),
-                                  decoration: !isSelected ? null : BoxDecoration(
-                                    border: Border.all(color: Colors.black12),
+                                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: !isSelected ? null :
+                                  BoxDecoration(
+                                    border: Border.all(color: Theme.of(context).primaryColor),
                                     borderRadius: BorderRadius.circular(5),
                                     color: Colors.white,
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text((langId == 1) ? item.customerNameAra.toString() : item.customerNameEng.toString()),
+                                    child: Text((langId == 1) ? item.maintenanceClassificationNameAra.toString() : item.maintenanceClassificationNameEng.toString()),
                                   ),
                                 );
                               },
                               showSearchBox: true,
-
                             ),
+                            enabled: true,
+                            items: maintenanceClassifications,
+                            itemAsString: (MaintenanceClassification u) =>
+                            (langId == 1) ? u.maintenanceClassificationNameAra.toString() : u.maintenanceClassificationNameEng.toString(),
 
-                            items: paymentMethods,//customers,
-                            itemAsString: (Customer u) =>
-                            (langId == 1) ? u.customerNameAra.toString() : u.customerNameEng.toString(),
                             onChanged: (value) {
-                              // selectedCustomerValue = value!.customerCode.toString();
-                              // selectedCustomerEmail = value.email.toString();// i've changed value!
+                              //v.text = value!.cusTypesCode.toString();
+                              //print(value!.id);
+                              selectedClassificationValue = value!.maintenanceClassificationCode.toString();
+                              //setNextSerial();
                             },
 
                             filterFn: (instance, filter) {
-                              if ((langId == 1) ? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)) {
+                              if ((langId == 1) ? instance.maintenanceClassificationNameAra!.contains(filter) : instance.maintenanceClassificationNameEng!.contains(filter)) {
                                 print(filter);
                                 return true;
                               }
@@ -150,62 +200,9 @@ class _ReviewsState extends State<Reviews> {
                                 return false;
                               }
                             },
-                            // dropdownDecoratorProps: const DropDownDecoratorProps(
+                            // dropdownDecoratorProps: DropDownDecoratorProps(
                             //   dropdownSearchDecoration: InputDecoration(
-                            //     //labelText: 'Select'.tr(),
-                            //
-                            //   ),
-                            // ),
-                          ),
-                        ),
-
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          height: 40,
-                          width: 180,
-                          child: DropdownSearch<Customer>(
-                            selectedItem: null,
-                            popupProps: PopupProps.menu(
-
-                              itemBuilder: (context, item, isSelected) {
-                                return Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 8),
-                                  decoration: !isSelected ? null : BoxDecoration(
-                                    border: Border.all(color: Colors.black12),
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.white,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text((langId == 1) ? item.customerNameAra.toString() : item.customerNameEng.toString()),
-                                  ),
-                                );
-                              },
-                              showSearchBox: true,
-
-                            ),
-
-                            items: serviceTypes,
-                            itemAsString: (Customer u) =>
-                            (langId == 1) ? u.customerNameAra.toString() : u.customerNameEng.toString(),
-                            onChanged: (value) {
-                              // selectedCustomerValue = value!.customerCode.toString();
-                              // selectedCustomerEmail = value.email.toString();// i've changed value!
-                            },
-
-                            filterFn: (instance, filter) {
-                              if ((langId == 1) ? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)) {
-                                print(filter);
-                                return true;
-                              }
-                              else {
-                                return false;
-                              }
-                            },
-                            // dropdownDecoratorProps: const DropDownDecoratorProps(
-                            //   dropdownSearchDecoration: InputDecoration(
-                            //     //labelText: 'Select'.tr(),
+                            //     labelText: "type".tr(),
                             //
                             //   ),
                             // ),
@@ -215,37 +212,41 @@ class _ReviewsState extends State<Reviews> {
                         SizedBox(
                           height: 40,
                           width: 180,
-                          child: DropdownSearch<Customer>(
-                            selectedItem: null,
+                          child: DropdownSearch<MaintenanceClassification>(
+                            validator: (value) => value == null ? "select_a_Type".tr() : null,
+                            selectedItem: maintenanceClassificationItem,
                             popupProps: PopupProps.menu(
-
                               itemBuilder: (context, item, isSelected) {
                                 return Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 8),
-                                  decoration: !isSelected ? null : BoxDecoration(
-                                    border: Border.all(color: Colors.black12),
+                                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: !isSelected ? null :
+                                  BoxDecoration(
+                                    border: Border.all(color: Theme.of(context).primaryColor),
                                     borderRadius: BorderRadius.circular(5),
                                     color: Colors.white,
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text((langId == 1) ? item.customerNameAra.toString() : item.customerNameEng.toString()),
+                                    child: Text((langId == 1) ? item.maintenanceClassificationNameAra.toString() : item.maintenanceClassificationNameEng.toString()),
                                   ),
                                 );
                               },
                               showSearchBox: true,
                             ),
+                            enabled: true,
+                            items: maintenanceClassifications,
+                            itemAsString: (MaintenanceClassification u) =>
+                            (langId == 1) ? u.maintenanceClassificationNameAra.toString() : u.maintenanceClassificationNameEng.toString(),
 
-                            items: serviceClassifications,
-                            itemAsString: (Customer u) =>
-                            (langId == 1) ? u.customerNameAra.toString() : u.customerNameEng.toString(),
                             onChanged: (value) {
-
+                              //v.text = value!.cusTypesCode.toString();
+                              //print(value!.id);
+                              selectedClassificationValue = value!.maintenanceClassificationCode.toString();
+                              //setNextSerial();
                             },
 
                             filterFn: (instance, filter) {
-                              if ((langId == 1) ? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)) {
+                              if ((langId == 1) ? instance.maintenanceClassificationNameAra!.contains(filter) : instance.maintenanceClassificationNameEng!.contains(filter)) {
                                 print(filter);
                                 return true;
                               }
@@ -253,12 +254,66 @@ class _ReviewsState extends State<Reviews> {
                                 return false;
                               }
                             },
-                            // dropdownDecoratorProps: const DropDownDecoratorProps(
+                            // dropdownDecoratorProps: DropDownDecoratorProps(
                             //   dropdownSearchDecoration: InputDecoration(
-                            //     //labelText: 'Select'.tr(),
+                            //     labelText: "type".tr(),
                             //
                             //   ),
                             // ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          height: 40,
+                          width: 180,
+                          child: DropdownSearch<MaintenanceType>(
+                            popupProps: PopupProps.menu(
+                              itemBuilder: (context, item, isSelected) {
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: !isSelected ? null
+                                      : BoxDecoration(
+
+                                    border: Border.all(color: Theme.of(context).primaryColor),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text((langId==1)? item.maintenanceTypeNameAra.toString():  item.maintenanceTypeNameEng.toString(),
+                                      //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
+                                      textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                  ),
+                                );
+                              },
+                              showSearchBox: true,
+                            ),
+                            items: maintenanceTypes,
+                            itemAsString: (MaintenanceType u) => u.maintenanceTypeNameAra.toString(),
+                            onChanged: (value){
+                              //v.text = value!.cusTypesCode.toString();
+                              //print(value!.id);
+                              selectedTypeValue =  value!.maintenanceTypeCode.toString();
+                            },
+                            filterFn: (instance, filter){
+                              if(instance.maintenanceTypeNameAra!.contains(filter)){
+                                print(filter);
+                                return true;
+                              }
+                              else{
+                                return false;
+                              }
+                            },
+                            // dropdownDecoratorProps: const DropDownDecoratorProps(
+                            // dropdownSearchDecoration: InputDecoration(
+                            //   labelStyle: TextStyle(
+                            //     color: Colors.black,
+                            //   ),
+                            //   //icon: Icon(Icons.keyboard_arrow_down),
+                            // ),
+                            // ),
+
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -420,5 +475,31 @@ class _ReviewsState extends State<Reviews> {
           ),
         ),
     );
+  }
+  getMaintenanceTypeData() {
+    if (maintenanceTypes.isNotEmpty) {
+      for(var i = 0; i < maintenanceTypes.length; i++){
+        menuMaintenanceTypes.add(
+            DropdownMenuItem(
+                value: maintenanceTypes[i].maintenanceTypeCode.toString(),
+                child: Text((langId==1)?  maintenanceTypes[i].maintenanceTypeNameAra.toString() : maintenanceTypes[i].maintenanceTypeNameEng.toString())));
+      }
+    }
+    setState(() {
+
+    });
+  }
+  getMaintenanceClassificationData() {
+    if (maintenanceClassifications.isNotEmpty) {
+      for(var i = 0; i < maintenanceClassifications.length; i++){
+        menuMaintenanceClassifications.add(
+            DropdownMenuItem(
+                value: maintenanceClassifications[i].maintenanceClassificationCode.toString(),
+                child: Text((langId==1)?  maintenanceClassifications[i].maintenanceClassificationNameAra.toString() : maintenanceClassifications[i].maintenanceClassificationNameEng.toString())));
+      }
+    }
+    setState(() {
+
+    });
   }
 }

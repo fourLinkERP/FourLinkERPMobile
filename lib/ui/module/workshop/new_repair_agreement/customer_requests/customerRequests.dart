@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/maintenanceClassification/maintenanceClassification.dart';
 import 'package:fourlinkmobileapp/service/module/carMaintenance/maintenanceClassifications/maintenanceClassificationApiService.dart';
 import 'package:fourlinkmobileapp/service/module/carMaintenance/maintenanceTypes/maintenanceTypeApiService.dart';
-import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/editSalesInvoiceDataWidget.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
 import '../../../../../data/model/modules/module/carMaintenance/maintenanceTypes/maintenanceType.dart';
+import '../../../accountReceivable/transactions/salesInvoices/editSalesInvoiceDataWidget.dart';
 
 //APIs
 MaintenanceTypeApiService _maintenanceTypeApiService = MaintenanceTypeApiService();
