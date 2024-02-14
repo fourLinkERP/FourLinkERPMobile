@@ -1,5 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/paymentMethods/paymentMethod.dart';
+import 'package:fourlinkmobileapp/service/module/carMaintenance/paymentMethods/paymentMethodApiServices.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:intl/intl.dart';
 import '../../../../../common/globals.dart';
@@ -12,6 +14,7 @@ import '../../../../../data/model/modules/module/carMaintenance/maintenanceTypes
 //APIs
 MaintenanceTypeApiService _maintenanceTypeApiService = MaintenanceTypeApiService();
 MaintenanceClassificationApiService _maintenanceClassificationApiService = MaintenanceClassificationApiService();
+PaymentMethodApiService _paymentMethodApiService = PaymentMethodApiService();
 
 class Reviews extends StatefulWidget {
   const Reviews({Key? key}) : super(key: key);
@@ -32,15 +35,23 @@ class _ReviewsState extends State<Reviews> {
       maintenanceClassificationNameAra: "",
       maintenanceClassificationNameEng: "",
       id: 0);
+  PaymentMethod? paymentMethodItem = PaymentMethod(
+      paymentMethodCode: "",
+      paymentMethodNameAra: "",
+      paymentMethodNameEng: "",
+      id: 0);
 
   String? selectedTypeValue = null;
   String? selectedClassificationValue = null;
+  String? selectePaymentValue = null;
 
   List<MaintenanceType> maintenanceTypes = [];
   List<MaintenanceClassification> maintenanceClassifications = [];
+  List<PaymentMethod> paymentMethods = [];
 
   List<DropdownMenuItem<String>> menuMaintenanceTypes = [];
   List<DropdownMenuItem<String>> menuMaintenanceClassifications = [];
+  List<DropdownMenuItem<String>> menuPaymentMethods = [];
 
   @override
   initState() {
@@ -62,6 +73,13 @@ class _ReviewsState extends State<Reviews> {
       print(e);
     });
 
+    Future<List<PaymentMethod>> futurePaymentMethod = _paymentMethodApiService.getPaymentMethods().then((data) {
+      paymentMethods = data;
+      getPaymentMethodData();
+      return paymentMethods;
+    }, onError: (e) {
+      print(e);
+    });
 
   }
 
@@ -76,8 +94,6 @@ class _ReviewsState extends State<Reviews> {
   bool? _isCheckedOldParts = false;
   bool? _isCheckedTransService = false;
   bool? _isCheckedWaitingCustomer = false;
-
-  List<MaintenanceClassification> paymentMethods = [];
 
   DateTime get pickedDate => DateTime.now();
 
@@ -158,9 +174,9 @@ class _ReviewsState extends State<Reviews> {
                         SizedBox(
                           height: 40,
                           width: 180,
-                          child: DropdownSearch<MaintenanceClassification>(
+                          child: DropdownSearch<PaymentMethod>(
                             validator: (value) => value == null ? "select_a_Type".tr() : null,
-                            selectedItem: maintenanceClassificationItem,
+                            selectedItem: paymentMethodItem,
                             popupProps: PopupProps.menu(
                               itemBuilder: (context, item, isSelected) {
                                 return Container(
@@ -173,26 +189,26 @@ class _ReviewsState extends State<Reviews> {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text((langId == 1) ? item.maintenanceClassificationNameAra.toString() : item.maintenanceClassificationNameEng.toString()),
+                                    child: Text((langId == 1) ? item.paymentMethodNameAra.toString() : item.paymentMethodNameEng.toString()),
                                   ),
                                 );
                               },
                               showSearchBox: true,
                             ),
                             enabled: true,
-                            items: maintenanceClassifications,
-                            itemAsString: (MaintenanceClassification u) =>
-                            (langId == 1) ? u.maintenanceClassificationNameAra.toString() : u.maintenanceClassificationNameEng.toString(),
+                            items: paymentMethods,
+                            itemAsString: (PaymentMethod u) =>
+                            (langId == 1) ? u.paymentMethodNameAra.toString() : u.paymentMethodNameEng.toString(),
 
                             onChanged: (value) {
                               //v.text = value!.cusTypesCode.toString();
                               //print(value!.id);
-                              selectedClassificationValue = value!.maintenanceClassificationCode.toString();
+                              selectedClassificationValue = value!.paymentMethodCode.toString();
                               //setNextSerial();
                             },
 
                             filterFn: (instance, filter) {
-                              if ((langId == 1) ? instance.maintenanceClassificationNameAra!.contains(filter) : instance.maintenanceClassificationNameEng!.contains(filter)) {
+                              if ((langId == 1) ? instance.paymentMethodNameAra!.contains(filter) : instance.paymentMethodNameEng!.contains(filter)) {
                                 print(filter);
                                 return true;
                               }
@@ -496,6 +512,19 @@ class _ReviewsState extends State<Reviews> {
             DropdownMenuItem(
                 value: maintenanceClassifications[i].maintenanceClassificationCode.toString(),
                 child: Text((langId==1)?  maintenanceClassifications[i].maintenanceClassificationNameAra.toString() : maintenanceClassifications[i].maintenanceClassificationNameEng.toString())));
+      }
+    }
+    setState(() {
+
+    });
+  }
+  getPaymentMethodData() {
+    if (paymentMethods.isNotEmpty) {
+      for(var i = 0; i < paymentMethods.length; i++){
+        menuMaintenanceTypes.add(
+            DropdownMenuItem(
+                value: paymentMethods[i].paymentMethodCode.toString(),
+                child: Text((langId==1)?  paymentMethods[i].paymentMethodNameAra.toString() : paymentMethods[i].paymentMethodNameEng.toString())));
       }
     }
     setState(() {

@@ -1,8 +1,10 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/maintenanceClassification/maintenanceClassification.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/malfunctions/malfunction.dart';
 import 'package:fourlinkmobileapp/service/module/carMaintenance/maintenanceClassifications/maintenanceClassificationApiService.dart';
 import 'package:fourlinkmobileapp/service/module/carMaintenance/maintenanceTypes/maintenanceTypeApiService.dart';
+import 'package:fourlinkmobileapp/service/module/carMaintenance/malfunctions/malfunctionApiServices.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
@@ -12,6 +14,7 @@ import '../../../accountReceivable/transactions/salesInvoices/editSalesInvoiceDa
 //APIs
 MaintenanceTypeApiService _maintenanceTypeApiService = MaintenanceTypeApiService();
 MaintenanceClassificationApiService _maintenanceClassificationApiService = MaintenanceClassificationApiService();
+MalfunctionApiService _malfunctionApiService = MalfunctionApiService();
 
 class CustomerRequests extends StatefulWidget {
   const CustomerRequests({Key? key}) : super(key: key);
@@ -35,6 +38,11 @@ class _CustomerRequestsState extends State<CustomerRequests> {
       maintenanceClassificationNameAra: "",
       maintenanceClassificationNameEng: "",
       id: 0);
+  Malfunction? malfunctionItem = Malfunction(
+      malfunctionCode: "",
+      malfunctionNameAra: "",
+      malfunctionNameEng: "",
+      id: 0);
 
   String? selectedTypeValue = null;
   String? selectedClassificationValue = null;
@@ -42,7 +50,7 @@ class _CustomerRequestsState extends State<CustomerRequests> {
 
   List<MaintenanceType> maintenanceTypes = [];
   List<MaintenanceClassification> maintenanceClassifications = [];
-  List<MaintenanceType> services = [];
+  List<Malfunction> services = [];
 
   List<DropdownMenuItem<String>> menuMaintenanceTypes = [];
   List<DropdownMenuItem<String>> menuMaintenanceClassifications = [];
@@ -64,6 +72,14 @@ class _CustomerRequestsState extends State<CustomerRequests> {
       maintenanceClassifications = data;
       getMaintenanceClassificationData();
       return maintenanceClassifications;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<Malfunction>> futureMalfunction = _malfunctionApiService.getMalfunctions().then((data) {
+      services = data;
+      getMalfunctionData();
+      return services;
     }, onError: (e) {
       print(e);
     });
@@ -252,9 +268,9 @@ class _CustomerRequestsState extends State<CustomerRequests> {
                         SizedBox(
                           height: 40,
                           width: 200,
-                          child: DropdownSearch<MaintenanceClassification>(
+                          child: DropdownSearch<Malfunction>(
                             validator: (value) => value == null ? "select_a_Type".tr() : null,
-                            selectedItem: maintenanceClassificationItem,
+                            selectedItem: malfunctionItem,
                             popupProps: PopupProps.menu(
                               itemBuilder: (context, item, isSelected) {
                                 return Container(
@@ -267,26 +283,26 @@ class _CustomerRequestsState extends State<CustomerRequests> {
                                   ),
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
-                                    child: Text((langId == 1) ? item.maintenanceClassificationNameAra.toString() : item.maintenanceClassificationNameEng.toString()),
+                                    child: Text((langId == 1) ? item.malfunctionNameAra.toString() : item.malfunctionNameEng.toString()),
                                   ),
                                 );
                               },
                               showSearchBox: true,
                             ),
                             enabled: true,
-                            items: maintenanceClassifications,
-                            itemAsString: (MaintenanceClassification u) =>
-                            (langId == 1) ? u.maintenanceClassificationNameAra.toString() : u.maintenanceClassificationNameEng.toString(),
+                            items: services,
+                            itemAsString: (Malfunction u) =>
+                            (langId == 1) ? u.malfunctionNameAra.toString() : u.malfunctionNameEng.toString(),
 
                             onChanged: (value) {
                               //v.text = value!.cusTypesCode.toString();
                               //print(value!.id);
-                              selectedServiceValue = value!.maintenanceClassificationCode.toString();
+                              selectedServiceValue = value!.malfunctionCode.toString();
                               //setNextSerial();
                             },
 
                             filterFn: (instance, filter) {
-                              if ((langId == 1) ? instance.maintenanceClassificationNameAra!.contains(filter) : instance.maintenanceClassificationNameEng!.contains(filter)) {
+                              if ((langId == 1) ? instance.malfunctionNameAra!.contains(filter) : instance.malfunctionNameEng!.contains(filter)) {
                                 print(filter);
                                 return true;
                               }
@@ -349,7 +365,7 @@ class _CustomerRequestsState extends State<CustomerRequests> {
                   rows: SalesInvoiceDLst.map((p) =>
                       DataRow(
                           cells: [
-                            DataCell(SizedBox(child: Text(p.notes.toString()))),
+                            DataCell(SizedBox(child: Text(p.lineNum.toString()))),
                             DataCell(SizedBox(child: Text(p.unitName.toString()))),
                             DataCell(SizedBox(child: Text(p.unitCode.toString()))),
                             DataCell(SizedBox(child: Text(p.price.toString()))),
@@ -422,6 +438,19 @@ class _CustomerRequestsState extends State<CustomerRequests> {
             DropdownMenuItem(
                 value: maintenanceClassifications[i].maintenanceClassificationCode.toString(),
                 child: Text((langId==1)?  maintenanceClassifications[i].maintenanceClassificationNameAra.toString() : maintenanceClassifications[i].maintenanceClassificationNameEng.toString())));
+      }
+    }
+    setState(() {
+
+    });
+  }
+  getMalfunctionData() {
+    if (services.isNotEmpty) {
+      for(var i = 0; i < services.length; i++){
+        menuServices.add(
+            DropdownMenuItem(
+                value: services[i].malfunctionCode.toString(),
+                child: Text((langId==1)?  services[i].malfunctionNameAra.toString() : services[i].malfunctionNameEng.toString())));
       }
     }
     setState(() {

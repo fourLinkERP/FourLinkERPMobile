@@ -246,6 +246,7 @@
     "please_enter_address": "من فضلك ادخل العنوان",
     "phone": "الجوال",
     "please_enter_phone": "من فضلك ادخل رقم الجوال",
+    "please_enter_id": "من فضلك ادخل رقم الجوال",
     "save_success": "تم الحفظ بنجاح",
     "delete_success": "تم الحذف بنجاح",
     "update_success": "تم التحديث بنجاح",
@@ -541,7 +542,9 @@
     "delivery_time": "وقت التسليم",
     "delivery_date": "تاريخ التسليم",
     "the_cost": "التكلفة",
-    "signature": "التوقيع"
+    "signature": "التوقيع",
+    "add_customer": "اضافة عميل",
+    "add_car": "اضافة سيارة"
 
 
 }

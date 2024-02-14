@@ -53,11 +53,11 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   List<CostCenter> costCenters =[];
 
 
-  // List<DropdownMenuItem<String>> menuDepartments = [];
-  // List<DropdownMenuItem<String>> menuVacationTypes = [];
-  // List<DropdownMenuItem<String>> menuEmployees = [];
-  // List<DropdownMenuItem<String>> menuCostCenters = [];
-  // List<DropdownMenuItem<String>> menuJobs = [];
+  List<DropdownMenuItem<String>> menuDepartments = [];
+  List<DropdownMenuItem<String>> menuVacationTypes = [];
+  List<DropdownMenuItem<String>> menuEmployees = [];
+  List<DropdownMenuItem<String>> menuCostCenters = [];
+  List<DropdownMenuItem<String>> menuJobs = [];
 
 
   String? selectedEmployeeValue = null;
@@ -81,15 +81,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   final _fromDateController = TextEditingController();
   final _toDateController = TextEditingController();
   final _vacationRequestMessageController = TextEditingController();
-  final _vacationRequestRequestedDaysController = TextEditingController();
-  final _vacationRequestListBalanceController = TextEditingController();
-  final _vacationRequestVacationBalanceController = TextEditingController();
-  final _vacationRequestAllowedBalanceController = TextEditingController();
-  final _vacationRequestEmployeeBalanceController = TextEditingController();
-  final _vacationRequestAdvanceBalanceController = TextEditingController();
   final _vacationRequestNoteController = TextEditingController();
-  final _vacationRequestDueDateController = TextEditingController();
-  final _vacationRequestLastSalaryDateController =  TextEditingController();
 
 
   @override
@@ -111,7 +103,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
     Future<List<VacationType>> futureVacationType = _vacationTypeApiService.getVacationTypes().then((data) {
       vacationTypes = data;
       //print(customers.length.toString());
-      //getVacationTypeData();
+      getVacationTypeData();
       return vacationTypes;
     }, onError: (e) {
       print(e);
@@ -120,7 +112,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
     Future<List<Employee>> futureEmployees = _employeeApiService.getEmployees().then((data) {
       employees = data;
 
-      //getEmployeesData();
+      getEmployeesData();
       return employees;
     }, onError: (e) {
       print(e);
@@ -129,7 +121,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
     Future<List<Job>> futureJobs = _jobApiService.getJobs().then((data) {
       jobs = data;
 
-      //getJobsData();
+      getJobsData();
       return jobs;
     }, onError: (e) {
       print(e);
@@ -138,7 +130,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
     Future<List<CostCenter>> futureCostCenter = _costCenterApiService.getCostCenters().then((data) {
       costCenters = data;
 
-      //getCostCenterData();
+      getCostCenterData();
       return costCenters;
     }, onError: (e) {
       print(e);
@@ -146,14 +138,13 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
 
     Future<List<Department>> futureDepartment = _departmentApiService.getDepartments().then((data) {
       departments = data;
-      //getDepartmentData();
+      getDepartmentData();
       return departments;
     }, onError: (e) {
       print(e);
     });
 
   }
-
 
   DateTime get pickedDate => DateTime.now();
   DateTime get pickedDate2 => DateTime.now();
@@ -175,81 +166,83 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
           key: _addFormKey,
           child: Column(
             children: [
-              const SizedBox(height: 20),
+              //const SizedBox(height: 20),
               Expanded(
                 child: ListView(
                     children: [
-                      SizedBox(
-                        height: 900,
+                      Container(
+                        margin: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                        height: 780,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
                           children: [
                             Column(
                               //mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 140,
+                                  height: 50,
+                                  width: 100,
                                   child: Text("trxserial".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 140,
+                                  height: 50,
+                                  width: 100,
                                   child: Text("trxdate".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 140,
+                                  height: 50,
+                                  width: 100,
                                   child: Text("message_title".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 140,
-                                  child: Text("costcenter".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  height: 50,
+                                  width: 100,
+                                  child: Text("cost_center".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 140,
+                                  height: 50,
+                                  width: 100,
                                   child: Text("department".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 140,
+                                  height: 50,
+                                  width: 100,
                                   child: Text("employee".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 140,
+                                  height: 50,
+                                  width: 100,
                                   child: Text("job".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 140,
+                                  height: 50,
+                                  width: 100,
                                   child: Text("from_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 140,
+                                  height: 50,
+                                  width: 100,
                                   child: Text("to_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 140,
+                                  height: 50,
+                                  width: 100,
                                   child: Text("vacation_type".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 140,
+                                  height: 50,
+                                  width: 100,
                                   child: Text("notes".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                 ),
                               ],
@@ -258,8 +251,8 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                             Column(
                               children: [
                                 SizedBox(
-                                  height: 40,
-                                  width: 165,
+                                  height: 50,
+                                  width: 210,
                                   child: defaultFormField(
 
                                     enable: false,
@@ -277,9 +270,10 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 165,
+                                  height: 50,
+                                  width: 210,
                                   child: defaultFormField(
+
                                     label: 'trxdate'.tr(),
                                     controller: _vacationRequestTrxDateController,
                                     onTab: () async {
@@ -299,8 +293,8 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 165,
+                                  height: 50,
+                                  width: 210,
                                   child: defaultFormField(
                                     controller: _vacationRequestMessageController,
                                     label: 'message_title'.tr(),
@@ -321,9 +315,8 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 170,
-
+                                  height: 50,
+                                  width: 210,
                                   child: DropdownSearch<CostCenter>(
                                      selectedItem: null,
                                       popupProps: PopupProps.menu(
@@ -365,23 +358,23 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                           return false;
                                         }
                                       },
-                                      dropdownDecoratorProps: const DropDownDecoratorProps(
-                                        dropdownSearchDecoration: InputDecoration(
-                                          labelStyle: TextStyle(
-                                            color: Colors.black,
-                                            backgroundColor: Colors.grey,
-                                          ),
-                                          //icon: Icon(Icons.keyboard_arrow_down),
-                                        ),
-                                      ),
+                                      // dropdownDecoratorProps: const DropDownDecoratorProps(
+                                      //   dropdownSearchDecoration: InputDecoration(
+                                      //     labelStyle: TextStyle(
+                                      //       color: Colors.black,
+                                      //       backgroundColor: Colors.grey,
+                                      //     ),
+                                      //     //icon: Icon(Icons.keyboard_arrow_down),
+                                      //   ),
+                                      // ),
 
                                     ),
 
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 165,
+                                  height: 50,
+                                  width: 210,
                                   // child: Center(),
                                   child: DropdownSearch<Department>(
                                       popupProps: PopupProps.menu(
@@ -422,22 +415,22 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                           return false;
                                         }
                                       },
-                                      dropdownDecoratorProps: const DropDownDecoratorProps(
-                                        dropdownSearchDecoration: InputDecoration(
-                                          labelStyle: TextStyle(
-                                            color: Colors.black,
-                                          ),
-                                          //icon: Icon(Icons.keyboard_arrow_down),
-                                        ),
-                                      ),
+                                      // dropdownDecoratorProps: const DropDownDecoratorProps(
+                                      //   dropdownSearchDecoration: InputDecoration(
+                                      //     labelStyle: TextStyle(
+                                      //       color: Colors.black,
+                                      //     ),
+                                      //     //icon: Icon(Icons.keyboard_arrow_down),
+                                      //   ),
+                                      // ),
 
                                     ),
 
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 165,
+                                  height: 50,
+                                  width: 210,
                                   // child: Center(),
                                   child: DropdownSearch<Employee>(
                                     selectedItem: null,
@@ -479,21 +472,21 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                         return false;
                                       }
                                     },
-                                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                                      dropdownSearchDecoration: InputDecoration(
-                                        labelStyle: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        //icon: Icon(Icons.keyboard_arrow_down),
-                                      ),
-                                    ),
+                                    // dropdownDecoratorProps: const DropDownDecoratorProps(
+                                    //   dropdownSearchDecoration: InputDecoration(
+                                    //     labelStyle: TextStyle(
+                                    //       color: Colors.black,
+                                    //     ),
+                                    //     //icon: Icon(Icons.keyboard_arrow_down),
+                                    //   ),
+                                    // ),
 
                                   ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 165,
+                                  height: 50,
+                                  width: 210,
                                   // child: Center(),
                                   child: DropdownSearch<Job>(
                                     popupProps: PopupProps.menu(
@@ -534,21 +527,21 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                         return false;
                                       }
                                     },
-                                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                                      dropdownSearchDecoration: InputDecoration(
-                                        labelStyle: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        //icon: Icon(Icons.keyboard_arrow_down),
-                                      ),
-                                    ),
+                                    // dropdownDecoratorProps: const DropDownDecoratorProps(
+                                    //   dropdownSearchDecoration: InputDecoration(
+                                    //     labelStyle: TextStyle(
+                                    //       color: Colors.black,
+                                    //     ),
+                                    //     //icon: Icon(Icons.keyboard_arrow_down),
+                                    //   ),
+                                    // ),
 
                                   ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 165,
+                                  height: 50,
+                                  width: 210,
                                   child: defaultFormField(
                                     label: 'from_date'.tr(),
                                     controller: _fromDateController,
@@ -569,8 +562,8 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 165,
+                                  height: 50,
+                                  width: 210,
                                   child: defaultFormField(
                                     label: 'to_date'.tr(),
                                     controller: _toDateController,
@@ -591,8 +584,8 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 170,
+                                  height: 50,
+                                  width: 210,
 
                                   child: DropdownSearch<VacationType>(
                                     popupProps: PopupProps.menu(
@@ -633,22 +626,22 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                         return false;
                                       }
                                     },
-                                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                                      dropdownSearchDecoration: InputDecoration(
-                                        labelStyle: TextStyle(
-                                          color: Colors.black,
-                                        ),
-                                        // icon: Icon(Icons.keyboard_arrow_down),
-                                      ),
-                                    ),
+                                    // dropdownDecoratorProps: const DropDownDecoratorProps(
+                                    //   dropdownSearchDecoration: InputDecoration(
+                                    //     labelStyle: TextStyle(
+                                    //       color: Colors.black,
+                                    //     ),
+                                    //     // icon: Icon(Icons.keyboard_arrow_down),
+                                    //   ),
+                                    // ),
 
                                   ),
 
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  height: 40,
-                                  width: 165,
+                                  height: 50,
+                                  width: 210,
                                   child: defaultFormField(
                                     controller: _vacationRequestNoteController,
                                     label: 'notes'.tr(),
@@ -678,7 +671,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
               ),
               const SizedBox(height: 30,),
               SizedBox(
-                width: 200,
+                width: 210,
                 height: 50,
                 child: Center(
                   child: ElevatedButton(
@@ -742,71 +735,71 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
     );
   }
 
-  // getVacationTypeData() {
-  //   if (vacationTypes.isNotEmpty) {
-  //     for(var i = 0; i < vacationTypes.length; i++){
-  //       menuVacationTypes.add(
-  //           DropdownMenuItem(
-  //               value: vacationTypes[i].vacationTypeCode.toString(),
-  //               child: Text((langId==1)?  vacationTypes[i].vacationTypeNameAra.toString() : vacationTypes[i].vacationTypeNameEng.toString())));
-  //     }
-  //   }
-  //   setState(() {
-  //
-  //   });
-  // }
-  // getEmployeesData() {
-  //   if (employees.isNotEmpty) {
-  //     for(var i = 0; i < employees.length; i++){
-  //       menuEmployees.add(DropdownMenuItem(
-  //           value: employees[i].empCode.toString(),
-  //           child: Text((langId==1)? employees[i].empNameAra.toString() : employees[i].empNameEng.toString())));
-  //     }
-  //   }
-  //   setState(() {
-  //
-  //   });
-  // }
+  getVacationTypeData() {
+    if (vacationTypes.isNotEmpty) {
+      for(var i = 0; i < vacationTypes.length; i++){
+        menuVacationTypes.add(
+            DropdownMenuItem(
+                value: vacationTypes[i].vacationTypeCode.toString(),
+                child: Text((langId==1)?  vacationTypes[i].vacationTypeNameAra.toString() : vacationTypes[i].vacationTypeNameEng.toString())));
+      }
+    }
+    setState(() {
 
-  // getJobsData() {
-  //   if (jobs.isNotEmpty) {
-  //     for(var i = 0; i < jobs.length; i++){
-  //       menuJobs.add(DropdownMenuItem(
-  //           value: jobs[i].jobCode.toString(),
-  //           child: Text((langId==1)? jobs[i].jobNameAra.toString() : jobs[i].jobNameEng.toString())));
-  //     }
-  //   }
-  //   setState(() {
-  //
-  //   });
-  // }
+    });
+  }
+  getEmployeesData() {
+    if (employees.isNotEmpty) {
+      for(var i = 0; i < employees.length; i++){
+        menuEmployees.add(DropdownMenuItem(
+            value: employees[i].empCode.toString(),
+            child: Text((langId==1)? employees[i].empNameAra.toString() : employees[i].empNameEng.toString())));
+      }
+    }
+    setState(() {
 
-  // getCostCenterData() {
-  //   if (costCenters.isNotEmpty) {
-  //     for(var i = 0; i < costCenters.length; i++){
-  //       menuCostCenters.add(
-  //           DropdownMenuItem(
-  //               value: costCenters[i].costCenterCode.toString(),
-  //               child: Text((langId==1)?  costCenters[i].costCenterNameAra.toString() : costCenters[i].costCenterNameEng.toString())));
-  //     }
-  //   }
-  //   setState(() {
+    });
+  }
+
+  getJobsData() {
+    if (jobs.isNotEmpty) {
+      for(var i = 0; i < jobs.length; i++){
+        menuJobs.add(DropdownMenuItem(
+            value: jobs[i].jobCode.toString(),
+            child: Text((langId==1)? jobs[i].jobNameAra.toString() : jobs[i].jobNameEng.toString())));
+      }
+    }
+    setState(() {
+
+    });
+  }
+
+  getCostCenterData() {
+    if (costCenters.isNotEmpty) {
+      for(var i = 0; i < costCenters.length; i++){
+        menuCostCenters.add(
+            DropdownMenuItem(
+                value: costCenters[i].costCenterCode.toString(),
+                child: Text((langId==1)?  costCenters[i].costCenterNameAra.toString() : costCenters[i].costCenterNameEng.toString())));
+      }
+    }
+    setState(() {
+
+    });
+  }
   //
-  //   });
-  // }
-  //
-  // getDepartmentData() {
-  //   if (departments.isNotEmpty) {
-  //     for(var i = 0; i < departments.length; i++){
-  //       menuDepartments.add(DropdownMenuItem(
-  //           value: departments[i].departmentCode.toString(),
-  //           child: Text((langId==1)?  departments[i].departmentNameAra.toString() : departments[i].departmentNameEng.toString())));
-  //     }
-  //   }
-  //   setState(() {
-  //
-  //   });
-  // }
+  getDepartmentData() {
+    if (departments.isNotEmpty) {
+      for(var i = 0; i < departments.length; i++){
+        menuDepartments.add(DropdownMenuItem(
+            value: departments[i].departmentCode.toString(),
+            child: Text((langId==1)?  departments[i].departmentNameAra.toString() : departments[i].departmentNameEng.toString())));
+      }
+    }
+    setState(() {
+
+    });
+  }
   saveVacationRequest(BuildContext context)
   {
     //Vacation Type Required Validation
@@ -857,16 +850,8 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
         messageTitle: _vacationRequestMessageController.text,
         fromDate: _fromDateController.text,
         toDate: _toDateController.text,
-        // requestDays: _vacationRequestRequestedDaysController.text.toInt(),
-        // vacationBalance: _vacationRequestVacationBalanceController.text.toInt(),
-        // allowBalance: _vacationRequestAllowedBalanceController.text.toInt(),
-        // empBalance: _vacationRequestEmployeeBalanceController.text.toInt(),
-        // advanceBalance: _vacationRequestAdvanceBalanceController.text.toInt(),
-        // ruleBalance: _vacationRequestListBalanceController.text.toInt(),
         notes: _vacationRequestNoteController.text
-      // ,
-      // latestVacationDate: _vacationRequestLastSalaryDateController.text,
-      // vacationDueDate: _vacationRequestDueDateController.text,
+
     ));
     Navigator.pop(context,true );
   }

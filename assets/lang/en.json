@@ -405,7 +405,7 @@
     "add_Employee_Done": "Add Employee Done",
     "Customer_Information": "Customer Information",
     "customer_name": "Customer name",
-    "customer_identity": "Customer identity",
+    "customer_identity": "Customer ID",
     "name_of_the_one_who_brought_the_car": "Name of the one who brought the car",
     "number_of_the_one_who_brought_the_car": "Number of the one who brought the car",
     "Car_Information": "Car Information",
@@ -452,6 +452,22 @@
     "delivery_time": "Delivery time",
     "delivery_date": "Delivery date",
     "the_cost": "The Cost",
-    "signature": "Signature"
-
+    "signature": "Signature",
+    "trxserial": "Serial",
+    "trxdate": "Date",
+    "message_title": "Message title",
+    "cost_center": "Cost center",
+    "department": "Department",
+    "employee": "Employee",
+    "job": "Job",
+    "from_date": "From date",
+    "to_date": "To date",
+    "vacation_type": "Vacation type",
+    "notes": "Notes",
+    "vacation_requests": "Vacation Requests",
+    "required_field": "required field",
+    "work_shop": "Work shop",
+    "add_customer": "Add Customer",
+    "repair_agreements": "Repair Agreements",
+    "add_car": "Add Car"
 }

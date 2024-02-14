@@ -512,7 +512,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                 )
                             ),
 
-                            const SizedBox(width: 15),
+                            const SizedBox(width: 25),
                             Form(
                                 key: _dropdownUnitFormKey,
                                 child: Row(
@@ -598,7 +598,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                             style: const TextStyle(fontWeight: FontWeight.bold))),
                         const SizedBox(width: 10),
                         SizedBox(
-                          width: 100,
+                          width: 90,
                           child: TextFormField(
                             controller: _displayPriceController,
                             //hintText: "price".tr(),
@@ -612,13 +612,13 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                             }
                           ),
                         ),
-                            const SizedBox(width: 15),
+                            const SizedBox(width: 20),
 
                         Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_qty :'.tr(),
                             style: const TextStyle(fontWeight: FontWeight.bold))),
                             const SizedBox(width: 10),
                         SizedBox(
-                          width: 100,
+                          width: 90,
                           child: TextFormField(
                             controller: _displayQtyController,
                             decoration: const InputDecoration(

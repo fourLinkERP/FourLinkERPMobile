@@ -25,7 +25,7 @@ class _NewRepairAgreeTabsState extends State<NewRepairAgreeTabs> {
           centerTitle: true,
           title: ListTile(
             leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-            title: Text('Repair Agreements'.tr(),
+            title: Text('repair_agreements'.tr(),
               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
           ),
           backgroundColor: const Color.fromRGBO(144, 16, 46, 1),

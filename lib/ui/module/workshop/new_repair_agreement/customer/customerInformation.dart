@@ -1,14 +1,28 @@
+import 'dart:io';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carGroups/carGroup.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:fourlinkmobileapp/service/module/carMaintenance/carGroups/carGroupApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
+import '../../../../../data/model/modules/module/carMaintenance/carCars/carCar.dart';
+import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
+import '../../../../../helpers/toast.dart';
+import '../../../../../service/module/carMaintenance/carCars/carApiService.dart';
+import '../../../../../service/module/general/NextSerial/generalApiService.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 
 // APIs
 CarGroupApiService _carGroupApiService = CarGroupApiService();
+NextSerialApiService _nextSerialApiService= NextSerialApiService();
 
 class CustomerInfo extends StatefulWidget {
   const CustomerInfo({Key? key}) : super(key: key);
@@ -19,6 +33,8 @@ class CustomerInfo extends StatefulWidget {
 
 class _CustomerInfoState extends State<CustomerInfo> {
 
+  final CustomerApiService api = CustomerApiService();
+  final CarApiService apiCar = CarApiService();
   final _addFormKey = GlobalKey<FormState>();
   final mobileNumberController = TextEditingController();
   final plateNumberController = TextEditingController();
@@ -31,15 +47,53 @@ class _CustomerInfoState extends State<CustomerInfo> {
   final chassis1NumberController = TextEditingController();
   final plate1NameController = TextEditingController();
   final modelController = TextEditingController();
+  final addCustomerCodeController = TextEditingController();
+  final addCustomerNameEngController = TextEditingController();
+  final addCustomerNameAraController = TextEditingController();
+  final addCustomerIDController = TextEditingController();
+  final addCustomerEmailController = TextEditingController();
+  final addCustomerPhoneController = TextEditingController();
+  final addCarChassisController = TextEditingController();
+  final addCarPlateController = TextEditingController();
+  final addCarModelController = TextEditingController();
+  final addCarCodeController = TextEditingController();
 
   List<CarGroup> carGroups = [];
+  List<Customer> customers = [];
+
   List<DropdownMenuItem<String>> menuCarGroups = [];
+  List<DropdownMenuItem<String>> menuCustomers = [];
+
   String? selectedCarGroupValue = null;
+  String? selectedCustomerValue = null;
+  String? selectedAddCarGroupValue = null;
   int _value = 1;
+  bool isSelected = true;
+
+  File? imageFile;
 
   @override
   initState() {
     super.initState();
+
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("AR_Customers", "CustomerCode", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
+      NextSerial nextSerial = data;
+
+      //print(customers.length.toString());
+      addCustomerCodeController.text = nextSerial.nextSerial.toString();
+      return nextSerial;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<NextSerial>  futureSerialCar = _nextSerialApiService.getNextSerial("CMN_Cars", "CarCode", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
+      NextSerial nextSerial = data;
+
+      addCarCodeController.text = nextSerial.nextSerial.toString();
+      return nextSerial;
+    }, onError: (e) {
+      print(e);
+    });
 
     Future<List<CarGroup>> futureCarGroup = _carGroupApiService.getCarGroups().then((data) {
       carGroups = data;
@@ -51,6 +105,8 @@ class _CustomerInfoState extends State<CustomerInfo> {
 
   }
 
+  //String? get pickedDate => (DateTime.now()).toString();
+  DateTime get pickedDate => DateTime.now();
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -80,7 +136,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                           Text("plate_num".tr(),style: const TextStyle(fontWeight: FontWeight.bold),),
                         ],
                       ),
-                      const SizedBox(width: 70,),
+                      const SizedBox(width: 30,),
                       Row(
                         children: [
                           Radio(
@@ -95,6 +151,37 @@ class _CustomerInfoState extends State<CustomerInfo> {
                           Text("mobile".tr(),style: const TextStyle(fontWeight: FontWeight.bold)),
                         ],
                       ),
+                          const SizedBox(width: 25,),
+                          SizedBox(
+                            height: 30,
+                            width: 60,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                Map<Permission, PermissionStatus> statuses = await [
+                                  Permission.storage, Permission.camera,
+                                ].request();
+                                if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
+                                  showImagePicker(context);
+                                } else {
+                                  print('no permission provided');
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  padding: const EdgeInsets.all(7),
+                                  backgroundColor: Colors.cyan,
+                                  foregroundColor: Colors.black,
+                                  elevation: 0,
+                                  side: const BorderSide(
+                                      width: 1,
+                                      color: Colors.cyan, //olorScheme.secondary,
+                                  )
+                              ),
+                              child: const Text('scan', style: TextStyle(color: Colors.white),), //Color.fromRGBO(144, 16, 46, 1)
+                            ),
+                          )
                     ],
                   ),
                     ],
@@ -102,23 +189,35 @@ class _CustomerInfoState extends State<CustomerInfo> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 40,
-              width: 100,
-              child: defaultFormField(
-                enable: true,
-                label: 'chassis_num'.tr(),
-                prefix: Icons.search,
-                controller: chassisNumberController,
-                type: TextInputType.number,
-                colors: Colors.blueGrey,
-                validate: (String? value) {
-                  if (value!.isEmpty) {
-                    return 'chassis number must be non empty';
-                  }
-                  return null;
-                },
-              ),
+
+            Row(
+              children: [
+                SizedBox(
+                  height: 40,
+                  width: 250,
+                  child: defaultFormField(
+                    enable: true,
+                    label: 'plate_num'.tr(),
+                    prefix: Icons.search,
+                    controller: chassisNumberController,
+                    type: TextInputType.number,
+                    colors: Colors.blueGrey,
+                    validate: (String? value) {
+                      if (value!.isEmpty) {
+                        return 'plate number must be non empty';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                const SizedBox(width: 10,),
+                IconButton(
+                    onPressed: (){},
+                    icon: const Icon(Icons.search),
+                    iconSize: 30,
+                  color: Colors.blueGrey,
+                )
+              ],
             ),
             const SizedBox(height: 20),
             Row(
@@ -138,7 +237,45 @@ class _CustomerInfoState extends State<CustomerInfo> {
                     "customer_information".tr(),
                     style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-          ),
+                ),
+                const SizedBox(width: 30,),
+                SizedBox(
+                  height: 40,
+                  width: 70,
+                  child: ElevatedButton.icon(
+                    icon: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 15.0,
+                      weight: 15,
+                    ),
+                    label: Text('add'.tr(),
+                        style: const TextStyle(color: Colors.white)),
+                    onPressed: () {
+                      dialogPopUp("add_customer".tr(),
+                        addCustomerNameEngController,
+                        addCustomerNameAraController,
+                        addCustomerEmailController,
+                        addCustomerIDController,
+                        addCustomerPhoneController
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: const EdgeInsets.all(7),
+                        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+                        foregroundColor: Colors.black,
+                        elevation: 0,
+                        side: const BorderSide(
+                            width: 1,
+                            color: Color.fromRGBO(144, 16, 46, 1)
+                        )
+                    ),
+                  ),
+                )
+
               ],
             ),
           SizedBox(
@@ -241,7 +378,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         height: 40,
                         width: 240,
                         child: defaultFormField(
-                          enable: false,
+                          enable: true,
                           controller: bringerNameController,
                           type: TextInputType.text,
                           colors: Colors.blueGrey,
@@ -293,6 +430,42 @@ class _CustomerInfoState extends State<CustomerInfo> {
                       style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                 ),
+                const SizedBox(width: 70,),
+                SizedBox(
+                  height: 40,
+                  width: 70,
+                  child: ElevatedButton.icon(
+                    icon: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 15.0,
+                      weight: 15,
+                    ),
+                    label: Text('add'.tr(),
+                        style: const TextStyle(color: Colors.white)),
+                    onPressed: () {
+                      dialogPopUp2("add_car".tr(),
+                          addCarChassisController,
+                          addCarPlateController,
+                          addCarModelController,
+                          selectedAddCarGroupValue
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: const EdgeInsets.all(7),
+                        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+                        foregroundColor: Colors.black,
+                        elevation: 0,
+                        side: const BorderSide(
+                            width: 1,
+                            color: Color.fromRGBO(144, 16, 46, 1)
+                        )
+                    ),
+                  ),
+                )
               ],
             ),
             SizedBox(
@@ -391,7 +564,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         height: 40,
                         width: 185,
                         child: DropdownSearch<CarGroup>(
-                          enabled: false,
+                          enabled: true,
                           popupProps: PopupProps.menu(
                             itemBuilder: (context, item, isSelected) {
                               return Container(
@@ -463,4 +636,486 @@ class _CustomerInfoState extends State<CustomerInfo> {
 
     });
   }
+
+  dialogPopUp(String textMsg, TextEditingController controllerNameEng, TextEditingController controllerNameAra,TextEditingController controllerEmail,TextEditingController controllerID,TextEditingController controllerPhone,){
+    showDialog(
+        context: context,
+        builder: (context){
+          return StatefulBuilder(
+              builder: (context, setStateForDialog){
+                return AlertDialog(
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(17.0))),
+                  scrollable: true,
+                  title: Text(textMsg, textAlign: TextAlign.center,
+                    style: const TextStyle(color: Color.fromRGBO(144, 16, 46, 1),fontWeight: FontWeight.bold),
+                  ),
+                  contentPadding: const EdgeInsets.only(top: 15.0, bottom: 15.0, left: 10.0, right: 10.0),
+                  content: SizedBox(
+                    height: 370,
+                    width: 300,
+                    child: ListView(
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: defaultFormField(
+                            enable: true,
+                            label: '${'englishName'.tr()} *',
+                            controller: controllerNameEng,
+                            type: TextInputType.text,
+                            colors: Colors.blueGrey,
+                            validate: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'name must be non empty';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 15.0,),
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: defaultFormField(
+                            enable: true,
+                            label: '${'arabicName'.tr()} *',
+                            controller: controllerNameAra,
+                            type: TextInputType.text,
+                            colors: Colors.blueGrey,
+                            validate: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'name must be non empty';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 15.0,),
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: defaultFormField(
+                            enable: true,
+                            label: 'email'.tr(),
+                            controller: controllerEmail,
+                            type: TextInputType.text,
+                            colors: Colors.blueGrey,
+                            validate: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'email must be non empty';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 15.0,),
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: defaultFormField(
+                            enable: true,
+                            label: '${'customer_id'.tr()} *',
+                            controller: controllerID,
+                            type: TextInputType.text,
+                            colors: Colors.blueGrey,
+                            validate: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'id must be non empty';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 15.0,),
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: defaultFormField(
+                            enable: true,
+                            label: '${'mobile'.tr()} *',
+                            controller: controllerPhone,
+                            type: TextInputType.number,
+                            colors: Colors.blueGrey,
+                            validate: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'phone must be non empty';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 40.0,),
+                        SizedBox(
+                          width: 200,
+                          height: 45,
+                          child: Center(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                fixedSize: const Size(100, 55),
+                                backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 20.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(80),
+                                ),
+                              ),
+                              onPressed: (){
+                                if(addCustomerPhoneController.text.isEmpty)
+                                {
+                                  FN_showToast(context,'please_enter_phone'.tr() ,Colors.black);
+                                  return;
+                                }
+                                if(addCustomerIDController.text.isEmpty)
+                                {
+                                  FN_showToast(context,'please_enter_id'.tr() ,Colors.black);
+                                  return;
+                                }
+                                if(addCustomerNameEngController.text.isEmpty)
+                                {
+                                  FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
+                                  return;
+                                }
+                                if(addCustomerNameAraController.text.isEmpty)
+                                {
+                                  FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
+                                  return;
+                                }
+
+                                api.createCustomer(context, Customer(
+                                    customerCode: addCustomerCodeController.text ,
+                                    customerNameAra: addCustomerNameAraController.text ,
+                                    customerNameEng: addCustomerNameEngController.text ,
+                                    email: addCustomerEmailController.text ,
+                                    phone1: addCustomerPhoneController.text ,
+                                    idNo: addCustomerIDController.text,
+                                  )
+                                );
+                                Navigator.pop(context,true);
+                              },
+                              child: Text('Save'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+          );
+        }
+    );
+  }
+  dialogPopUp2(String textMsg, TextEditingController controllerChassis, TextEditingController controllerPlate,TextEditingController controllerModel, String? carGroup,){
+    showDialog(
+        context: context,
+        builder: (context){
+          return StatefulBuilder(
+              builder: (context, setStateForDialog){
+                return AlertDialog(
+                  shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(17.0))),
+                  scrollable: true,
+                  title: Text(textMsg, textAlign: TextAlign.center,
+                    style: const TextStyle(color: Color.fromRGBO(144, 16, 46, 1),fontWeight: FontWeight.bold),
+                  ),
+                  contentPadding: const EdgeInsets.only(top: 15.0, bottom: 15.0, left: 10.0, right: 10.0),
+                  content: SizedBox(
+                    height: 320,
+                    width: 300,
+                    child: ListView(
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: defaultFormField(
+                            enable: true,
+                            label: '${'chassis_number'.tr()} *',
+                            controller: controllerChassis,
+                            type: TextInputType.text,
+                            colors: Colors.blueGrey,
+                            validate: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'chassis must be non empty';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 15.0,),
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: defaultFormField(
+                            enable: true,
+                            label: '${'plate_number'.tr()} *',
+                            controller: controllerPlate,
+                            type: TextInputType.text,
+                            colors: Colors.blueGrey,
+                            validate: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'plate must be non empty';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 15.0,),
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: defaultFormField(
+                            enable: true,
+                            label: 'model'.tr(),
+                            controller: controllerModel,
+                            type: TextInputType.text,
+                            colors: Colors.blueGrey,
+                            validate: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'model must be non empty';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(height: 15.0,),
+                        Row(
+                          children: [
+                            SizedBox(
+                              height: 20,
+                              width: 80,
+                              child: Text('car_group'.tr()+' : ', style: TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold),),
+                            ),
+                            const SizedBox(width: 20,),
+                            SizedBox(
+                              height: 40,
+                              width: 190,
+                              child: DropdownSearch<CarGroup>(
+                                enabled: true,
+                                popupProps: PopupProps.menu(
+                                  itemBuilder: (context, item, isSelected) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                                      decoration: !isSelected ? null
+                                          : BoxDecoration(
+
+                                        border: Border.all(color: Theme.of(context).primaryColor),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text((langId==1)? item.groupNameAra.toString():  item.groupNameEng.toString(),
+                                          //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
+                                          textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                      ),
+                                    );
+                                  },
+                                  showSearchBox: true,
+                                ),
+                                items: carGroups,
+                                itemAsString: (CarGroup u) => u.groupNameAra.toString(),
+                                onChanged: (value){
+                                  //v.text = value!.cusTypesCode.toString();
+                                  //print(value!.id);
+                                  selectedAddCarGroupValue =  value!.groupCode.toString();
+                                },
+                                filterFn: (instance, filter){
+                                  if(instance.groupNameAra!.contains(filter)){
+                                    print(filter);
+                                    return true;
+                                  }
+                                  else{
+                                    return false;
+                                  }
+                                },
+                                // dropdownDecoratorProps: const DropDownDecoratorProps(
+                                // dropdownSearchDecoration: InputDecoration(
+                                //   labelStyle: TextStyle(
+                                //     color: Colors.black,
+                                //   ),
+                                //   //icon: Icon(Icons.keyboard_arrow_down),
+                                // ),
+                                // ),
+
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 40.0,),
+                        SizedBox(
+                          width: 200,
+                          height: 45,
+                          child: Center(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                fixedSize: const Size(100, 55),
+                                backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 20.0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(80),
+                                ),
+                              ),
+                              onPressed: (){
+                                if(addCarChassisController.text.isEmpty)
+                                {
+                                  FN_showToast(context,'please_chassis_number'.tr() ,Colors.black);
+                                  return;
+                                }
+                                if(addCarPlateController.text.isEmpty)
+                                {
+                                  FN_showToast(context,'please_plate_number'.tr() ,Colors.black);
+                                  return;
+                                }
+                                if(selectedAddCarGroupValue == null)
+                                {
+                                  FN_showToast(context,'please_choose_car_group'.tr() ,Colors.black);
+                                  return;
+                                }
+
+                                apiCar.createCar(context, Car(
+                                  carCode: addCarCodeController.text ,
+                                  chassisNumber: addCarChassisController.text ,
+                                  plateNumberAra: addCarPlateController.text ,
+                                  plateNumberEng: addCarPlateController.text ,
+                                  model: addCarModelController.text ,
+                                  groupCode: selectedAddCarGroupValue,
+                                  addTime: DateFormat('yyyy-MM-dd').format(pickedDate) //(DateTime.now()).toString()
+                                )
+                                );
+                                Navigator.pop(context,true);
+                              },
+                              child: Text('Save'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+          );
+        }
+    );
+  }
+  final picker = ImagePicker();
+
+  void showImagePicker(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder){
+          return Card(
+            child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height/5.2,
+                margin: const EdgeInsets.only(top: 8.0),
+                padding: const EdgeInsets.all(12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                        child: InkWell(
+                          child: const Column(
+                            children: [
+                              Icon(Icons.image, size: 60.0,),
+                              SizedBox(height: 12.0),
+                              Text(
+                                "Gallery",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16, color: Colors.black),
+                              )
+                            ],
+                          ),
+                          onTap: () {
+                            _imgFromGallery();
+                            Navigator.pop(context);
+                          },
+                        )),
+                    Expanded(
+                        child: InkWell(
+                          child: const SizedBox(
+                            child: Column(
+                              children: [
+                                Icon(Icons.camera_alt, size: 60.0,),
+                                SizedBox(height: 12.0),
+                                Text(
+                                  "Camera",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 16, color: Colors.black),
+                                )
+                              ],
+                            ),
+                          ),
+                          onTap: () {
+                            _imgFromCamera();
+                            Navigator.pop(context);
+                          },
+                        ))
+                  ],
+                )),
+          );
+        }
+    );
+  }
+
+  _imgFromGallery() async {
+    await  picker.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage(File(value.path));
+      }
+    });
+  }
+
+  _imgFromCamera() async {
+    await picker.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage(File(value.path));
+      }
+    });
+  }
+
+  _cropImage(File imgFile) async {
+    final croppedFile = await ImageCropper().cropImage(
+        sourcePath: imgFile.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ] : [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [AndroidUiSettings(
+            toolbarTitle: "Image Cropper",
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+          IOSUiSettings(
+            title: "Image Cropper",
+          )
+        ]);
+    if (croppedFile != null) {
+
+      imageCache.clear();
+      setState(() {
+        imageFile = File(croppedFile.path);
+      });
+      // reload();
+    }
+  }
+
 }
