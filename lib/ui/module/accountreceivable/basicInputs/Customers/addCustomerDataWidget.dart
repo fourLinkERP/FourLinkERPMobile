@@ -7,8 +7,10 @@ import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/ba
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/basicInputs/Customers/customerList.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../../../../common/login_components.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -97,6 +99,16 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
 
         backgroundColor:  Colors.transparent,
         onPressed: (){
+          if(_customerNameAraController.text.isEmpty)
+          {
+            FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
+            return;
+          }
+          if(_customerNameEngController.text.isEmpty)
+          {
+            FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
+            return;
+          }
           if(_phone1Controller.text.isEmpty)
             {
               FN_showToast(context,'please_enter_phone'.tr() ,Colors.black);
@@ -112,7 +124,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
               address: _addressController.text,
               customerTypeCode: customerTypeSelectedValue ));
 
-          Navigator.pop(context,true );
+          Navigator.pop(context);
         },
 
 
@@ -130,10 +142,10 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
               shape: BoxShape.circle,
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                    color: FitnessAppTheme.nearlyDarkBlue
-                        .withOpacity(0.4),
+                    color: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.4),
                     offset: const Offset(2.0, 14.0),
-                    blurRadius: 16.0),
+                    blurRadius: 16.0
+                ),
               ],
             ),
             child: const Material(
@@ -167,96 +179,221 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
       body: Form(
         key: _addFormKey,
         child: SingleChildScrollView(
-          child: SizedBox(
-            child: Card(
-                child: Container(
-                    padding: const EdgeInsets.all(10.0),
-                    width: 440,
-                    child: Column(
-                      children: <Widget>[
-                        const SizedBox(height: 20),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                          child: Row(
-                            children: <Widget>[
-
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('code'.tr(),
-                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                              const SizedBox(width: 10),
+          child: Center(
+            child: Container(
+                margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+                padding: const EdgeInsets.all(10.0),
+                //height: 1000,
+                width: 440,
+                child: Column(
+                  children: [
+                    Container(
+                      height: 400,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          //const SizedBox(height: 30),
+                          Column(
+                            children: [
+                              //const SizedBox(height: 10),
                               SizedBox(
-                                    width: 220,
-                                    child: TextFormField(
-                                      controller: _customerCodeController,
-                                      enabled: false,
-                                      decoration: const InputDecoration(
-                                          hintText: ''
-                                      ),
-                                      validator: (value) {
-                                        if (value!.isEmpty) {
-                                          return 'please_enter_code'.tr();
-                                        }
-                                        return null;
-                                      },
-                                      onChanged: (value) {},
-                                    ),
-                                  ),
+                                  width: 120,
+                                  height: 40,
+                                  child: Center(child: Text('code'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                              ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                  width: 120,
+                                  height: 40,
+                                  child: Center(child: Text('arabicName'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                              ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                  width: 120,
+                                  height: 40,
+                                  child: Center(child: Text('englishName'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                              ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                  width: 120,
+                                  height: 40,
+                                  child: Center(child: Text('customerType'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                              ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                  width: 120,
+                                  height: 40,
+                                  child: Center(child: Text('taxIdentificationNumber'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                              ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                  width: 120,
+                                  height: 40,
+                                  child: Center(child: Text('address'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                              ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                  width: 120,
+                                  height: 40,
+                                  child: Center(child: Text('phone'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                              ),
+                              const SizedBox(height: 15),
                             ],
                           ),
-                        ),
-
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                          child: Row(
-                            children: <Widget>[
-                              Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('arabicName'.tr(),
-                                      style: const TextStyle(fontWeight: FontWeight.bold))),
-                              const SizedBox(width: 10),
+                          const SizedBox(width: 5),
+                          Column(
+                            children: [
                               SizedBox(
-                                width: 200,
-                                child: TextFormField(
+                                height: 40,
+                                width: 195,
+                                child: defaultFormField(
+                                  controller: _customerCodeController,
+                                  type: TextInputType.text,
+                                  colors: Colors.blueGrey,
+                                  validate: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return 'code must be non empty';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                height: 40,
+                                width: 195,
+                                child: defaultFormField(
                                   controller: _customerNameAraController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-                                  validator: (value) {
+                                  type: TextInputType.text,
+                                  colors: Colors.blueGrey,
+                                  validate: (String? value) {
                                     if (value!.isEmpty) {
-                                      return 'please_enter_arabicName'.tr();
+                                      return 'code must be non empty';
                                     }
                                     return null;
                                   },
-                                  onChanged: (value) {},
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                          child: Row(
-
-                            children: <Widget>[
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('englishName'.tr(),
-                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                              const SizedBox(width: 10),
+                              const SizedBox(height: 15),
                               SizedBox(
-                                width: 200,
-                                child: TextFormField(
+                                height: 40,
+                                width: 195,
+                                child: defaultFormField(
                                   controller: _customerNameEngController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-                                  validator: (value) {
+                                  type: TextInputType.text,
+                                  colors: Colors.blueGrey,
+                                  validate: (String? value) {
                                     if (value!.isEmpty) {
-                                      return 'please_enter_englishName'.tr();
+                                      return 'code must be non empty';
                                     }
                                     return null;
                                   },
-                                  onChanged: (value) {},
                                 ),
                               ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                height: 40,
+                                width: 195,
+                                child: DropdownSearch<CustomerType>(
+                                  popupProps: PopupProps.menu(
+                                    itemBuilder: (context, item, isSelected) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                                        decoration: !isSelected
+                                            ? null
+                                            : BoxDecoration(
+
+                                          border: Border.all(color: Colors.blueGrey),
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.white,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text((langId==1)? item.cusTypesNameAra.toString():  item.cusTypesNameEng.toString(),
+                                            textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
+                                            textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                        ),
+                                      );
+                                    },
+                                    showSearchBox: true,
+                                  ),
+                                  items: customerTypes,
+                                  itemAsString: (CustomerType u) => u.cusTypesNameAra.toString(),
+                                  onChanged: (value){
+                                    //v.text = value!.cusTypesCode.toString();
+                                    //print(value!.id);
+                                    customerTypeSelectedValue =  value!.cusTypesCode.toString();
+                                  },
+
+                                  filterFn: (instance, filter){
+                                    if(instance.cusTypesNameAra!.contains(filter)){
+                                      print(filter);
+                                      return true;
+                                    }
+                                    else{
+                                      return false;
+                                    }
+                                  },
+
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                height: 40,
+                                width: 195,
+                                child: defaultFormField(
+                                  controller: _taxIdentificationNumberController,
+                                  type: TextInputType.text,
+                                  colors: Colors.blueGrey,
+                                  validate: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return 'code must be non empty';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                height: 40,
+                                width: 195,
+                                child: defaultFormField(
+                                  controller: _addressController,
+                                  type: TextInputType.text,
+                                  colors: Colors.blueGrey,
+                                  validate: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return 'code must be non empty';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                height: 40,
+                                width: 195,
+                                child: defaultFormField(
+                                  controller: _phone1Controller,
+                                  type: TextInputType.text,
+                                  colors: Colors.blueGrey,
+                                  validate: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return 'code must be non empty';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+
                             ],
                           ),
-                        ),
+                          ],
+                      ),
+                    ),
+
                         // Align(child: Text('Customer Type'),alignment: Alignment.topLeft),
                         // Form(
                         //     key: _dropdownCustomerTypeFormKey,
@@ -298,182 +435,40 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                         //         //     child: Text("Submit"))
                         //       ],
                         //     )),
+
                         const SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text("customerType".tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                            const SizedBox(width: 10),
-                            SizedBox(
-                              width: 200,
-                              child: DropdownSearch<CustomerType>(
-                                popupProps: PopupProps.menu(
-                                  itemBuilder: (context, item, isSelected) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                                      decoration: !isSelected
-                                          ? null
-                                          : BoxDecoration(
-
-                                        border: Border.all(color: Theme.of(context).primaryColor),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.white,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text((langId==1)? item.cusTypesNameAra.toString():  item.cusTypesNameEng.toString(),
-                                          textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
-                                        textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                      ),
-                                    );
-                                  },
-                                  showSearchBox: true,
-                                ),
-                                items: customerTypes,
-                                itemAsString: (CustomerType u) => u.cusTypesNameAra.toString(),
-                                onChanged: (value){
-                                  //v.text = value!.cusTypesCode.toString();
-                                  //print(value!.id);
-                                  customerTypeSelectedValue =  value!.cusTypesCode.toString();
-                                },
-
-                                filterFn: (instance, filter){
-                                  if(instance.cusTypesNameAra!.contains(filter)){
-                                    print(filter);
-                                    return true;
-                                  }
-                                  else{
-                                    return false;
-                                  }
-                                },
-                                dropdownDecoratorProps: const DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    //labelText: "customerType".tr(),
-
-                                  ),),
-
-
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                          child: Row(
-                            children: <Widget>[
-
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('taxIdentificationNumber'.tr(),
-                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                width: 150,
-                                child: TextFormField(
-                                  controller: _taxIdentificationNumberController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'please_enter_taxIdentificationNumber'.tr();
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {},
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                          child: Row(
-                            children: <Widget>[
-
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('address'.tr(),
-                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                width: 220,
-                                child: TextFormField(
-                                  controller: _addressController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'please_enter_address'.tr();
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {},
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                          child: Row(
-                            //crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                            children: <Widget>[
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('phone'.tr(),
-                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                width: 220,
-                                child: TextFormField(
-                                  controller: _phone1Controller,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'please_enter_phone'.tr();
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {},
-                                ),
-                              ),
-                            ],
-                          ),
-                        ) ,
-                        const SizedBox(height: 20),
-                        Container(
-                          width: double.infinity,
-                          // child: ElevatedButton(
-                          //   style: ButtonStyle(
-                          //       backgroundColor: MaterialStateProperty.all(Colors.blue),
-                          //       padding:
-                          //       MaterialStateProperty.all(const EdgeInsets.all(20)),
-                          //       textStyle: MaterialStateProperty.all(
-                          //           const TextStyle(fontSize: 14, color: Colors.white))),
-                          //   onPressed: () {
-                          //
-                          //     // if (_addFormKey.currentState.validate()) {
-                          //     //   _addFormKey.currentState.save();
-                          //     api.createCustomer(context,Customer(customerCode: _customerCodeController.text ,
-                          //         customerNameAra: _customerNameAraController.text ,
-                          //         customerNameEng: _customerNameEngController.text ,
-                          //         taxIdentificationNumber: _taxIdentificationNumberController.text ,
-                          //         Phone1: _phone1Controller.text ,
-                          //         address: _addressController.text,customerTypeCode: customerTypeSelectedValue ));
-                          //     //
-                          //     Navigator.pop(context,true );
-                          //
-                          //
-                          //     // }
-                          //   },
-                          //   child: Text('save'.tr(), style: TextStyle(color: Colors.white)),
-                          //   //color: Colors.blue,
-                          // ),
-                        ),
-                        const SizedBox(height: 20),
+                        // Container(
+                        //   width: double.infinity,
+                        //   // child: ElevatedButton(
+                        //   //   style: ButtonStyle(
+                        //   //       backgroundColor: MaterialStateProperty.all(Colors.blue),
+                        //   //       padding:
+                        //   //       MaterialStateProperty.all(const EdgeInsets.all(20)),
+                        //   //       textStyle: MaterialStateProperty.all(
+                        //   //           const TextStyle(fontSize: 14, color: Colors.white))),
+                        //   //   onPressed: () {
+                        //   //
+                        //   //     // if (_addFormKey.currentState.validate()) {
+                        //   //     //   _addFormKey.currentState.save();
+                        //   //     api.createCustomer(context,Customer(customerCode: _customerCodeController.text ,
+                        //   //         customerNameAra: _customerNameAraController.text ,
+                        //   //         customerNameEng: _customerNameEngController.text ,
+                        //   //         taxIdentificationNumber: _taxIdentificationNumberController.text ,
+                        //   //         Phone1: _phone1Controller.text ,
+                        //   //         address: _addressController.text,customerTypeCode: customerTypeSelectedValue ));
+                        //   //     //
+                        //   //     Navigator.pop(context,true );
+                        //   //
+                        //   //
+                        //   //     // }
+                        //   //   },
+                        //   //   child: Text('save'.tr(), style: TextStyle(color: Colors.white)),
+                        //   //   //color: Colors.blue,
+                        //   // ),
+                        // ),
+                        // const SizedBox(height: 20),
                         SizedBox(
-                          width:  double.infinity,
+                          width:  300,//double.infinity,
                           child: ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
@@ -492,7 +487,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
-                          width: double.infinity,
+                          width: 300, //double.infinity,
                           child: ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
@@ -512,7 +507,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                         const SizedBox(height: 20),
 
                         SizedBox(
-                          width: double.infinity,
+                          width: 300,  // double.infinity,
                           child: ElevatedButton(
 
                             style: ButtonStyle(
@@ -532,7 +527,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
-                          width: double.infinity,
+                          width: 300,  //double.infinity,
                           child: ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
@@ -551,7 +546,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
-                          width: double.infinity,
+                          width: 300, //double.infinity,
                           child: ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
@@ -570,7 +565,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
-                          width: double.infinity,
+                          width: 300,   //double.infinity,
                           child: ElevatedButton(
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
@@ -602,8 +597,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                           ),
                         ),
                       ],
-                    )
-                )
+                    ),
             ),
           ),
         ),

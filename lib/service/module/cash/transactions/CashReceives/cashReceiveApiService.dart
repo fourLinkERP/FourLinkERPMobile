@@ -35,17 +35,13 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
     //print('Cash Receive 2');
     if (response.statusCode == 200) {
-      print('Cash Receive 3');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<CashReceive> list = [];
       if (data != null) {
         list = data.map((item) => CashReceive.fromJson(item)).toList();
       }
-      //print('Cash Receive 4');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => CashReceive.fromJson(data))
-      //     .toList();
+
     } else {
       throw "Failed to load cash list";
     }

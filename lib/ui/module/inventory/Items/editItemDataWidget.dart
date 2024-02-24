@@ -5,6 +5,7 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../common/globals.dart';
 import '../../../../data/model/modules/module/inventory/basicInputs/items/items.dart';
+import '../../../../helpers/toast.dart';
 import '../../../../service/module/inventory/basicInputs/items/itemApiService.dart';
 
 // enum Gender { male, female }
@@ -42,7 +43,8 @@ class _EditItemDataWidgetState extends State<EditItemDataWidget> {
 
   @override
   void initState() {
-    id = widget.items.id!;
+     id = widget.items.id!;
+
     _itemCodeController.text = widget.items.itemCode!;
     _itemNameAraController.text = widget.items.itemNameAra!;
     _itemNameEngController.text = widget.items.itemNameEng!;
@@ -90,9 +92,19 @@ class _EditItemDataWidgetState extends State<EditItemDataWidget> {
 
         backgroundColor:  Colors.transparent,
         onPressed: (){
-          // if (_addFormKey.currentState.validate()) {
-          //   _addFormKey.currentState.save();
-          api.updateItem(context,id, Item(itemCode: _itemCodeController.text ,
+          if(_itemCodeController.text.isEmpty){
+            FN_showToast(context, "please_enter_item_code", Colors.black);
+          }
+          if(_itemNameAraController.text.isEmpty){
+            FN_showToast(context, "please_enter_item_name", Colors.black);
+          }
+          if(_itemNameEngController.text.isEmpty){
+            FN_showToast(context, "please_enter_item_name", Colors.black);
+          }
+
+          api.updateItem(context,id, Item(
+            id: id,
+            itemCode: _itemCodeController.text ,
             itemNameAra: _itemNameAraController.text ,
             itemNameEng: _itemNameEngController.text ,
             // taxIdentificationNumber: _taxIdentificationNumberController.text ,
@@ -126,7 +138,7 @@ class _EditItemDataWidgetState extends State<EditItemDataWidget> {
                   blurRadius: 16.0),
             ],
           ),
-          child: Material(
+          child: const Material(
             color: Colors.transparent,
             child: Icon(
               Icons.data_saver_on,
@@ -136,34 +148,14 @@ class _EditItemDataWidgetState extends State<EditItemDataWidget> {
           ),
         ),
       ),
-      appBar:AppBar(
+      appBar: AppBar(
         centerTitle: true,
-        title: Expanded(
-          child: Row(
-            crossAxisAlignment:langId==1? CrossAxisAlignment.end
-                :CrossAxisAlignment.start,
-            children: [
-
-              Image.asset(
-
-                'assets/images/logowhite2.png',
-                scale: 3,
-              ),
-              const SizedBox(
-                width: 1,
-              ),
-              Padding(
-                padding:EdgeInsets.only(top: 5),
-                child: Expanded(
-                  child: Text('Edit_Items'.tr(),style:
-                  TextStyle(color: Colors.white),),
-                ),
-              )
-
-            ],
-          ),
+        title: ListTile(
+          leading: Image.asset('assets/images/logowhite2.png', scale: 3),
+          title: Text('Edit_Items'.tr(),
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 18.0),),
         ),
-        backgroundColor: Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
       ),
 
       body: Form(
@@ -173,12 +165,12 @@ class _EditItemDataWidgetState extends State<EditItemDataWidget> {
             // padding: EdgeInsets.all(20.0),
             child: Card(
                 child: Container(
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     width: 440,
                     child: Column(
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Column(
                             crossAxisAlignment:CrossAxisAlignment.start,
                             children: <Widget>[
@@ -362,5 +354,4 @@ class _EditItemDataWidgetState extends State<EditItemDataWidget> {
       ),
     );
   }
-
 }

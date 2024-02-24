@@ -2,7 +2,7 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/setup/salesInvoiceTypes/salesInvoiceType.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceD.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/salesInvoices/SalesInvoiceReturnD.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/general/inventoryOperation/inventoryOperation.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/general/nextSerial/nextSerial.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/general/tafqeet/tafqeet.dart';
@@ -14,25 +14,24 @@ import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/items/ite
 import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/units/unitApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/setup/SalesInvoiceTypes/salesInvoiceType.dart';
-import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/SalesInvoices/salesInvoiceDApiService.dart';
-import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/SalesInvoices/salesInvoiceHApiService.dart';
 import 'package:fourlinkmobileapp/service/module/general/inventoryOperation/inventoryOperationApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/utils/email.dart';
 import 'package:supercharged/supercharged.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
-import '../../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceH.dart';
+import '../../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceReturnH.dart';
 import '../../../../../helpers/toast.dart';
 import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import '../../../../../service/module/accountReceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnDApiService.dart';
+import '../../../../../service/module/accountReceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnHApiService.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
-import '../../../../../utils/permissionHelper.dart';
 
 //APIS
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
 SalesInvoicesTypeApiService _salesInvoiceTypeApiService= SalesInvoicesTypeApiService();
-SalesInvoiceHApiService _salesInvoiceHApiService= SalesInvoiceHApiService();
-SalesInvoiceDApiService _salesInvoiceDApiService= SalesInvoiceDApiService();
+SalesInvoiceReturnHApiService _salesInvoiceReturnHApiService= SalesInvoiceReturnHApiService();
+SalesInvoiceReturnDApiService _salesInvoiceReturnDApiService= SalesInvoiceReturnDApiService();
 CustomerApiService _customerApiService= CustomerApiService();
 ItemApiService _itemsApiService = ItemApiService();
 UnitApiService _unitsApiService = UnitApiService();
@@ -42,7 +41,7 @@ InventoryOperationApiService _inventoryOperationApiService = InventoryOperationA
 //List Models
 List<Customer> customers=[];
 List<SalesInvoiceType> salesInvoiceTypes=[];
-List<SalesInvoiceD> SalesInvoiceDLst = <SalesInvoiceD>[];
+List<SalesInvoiceReturnD> SalesInvoiceReturnDLst = <SalesInvoiceReturnD>[];
 List<Item> items=[];
 List<Unit> units=[];
 
@@ -64,24 +63,24 @@ double  totalBeforeTax = 0;
 double  totalTax = 0;
 double  totalAfterDiscount = 0;
 double  totalNet = 0;
-class EditSalesInvoiceHDataWidget extends StatefulWidget {
-  EditSalesInvoiceHDataWidget(this.salesInvoicesH);
+class EditSalesInvoiceReturnHWidget extends StatefulWidget {
+  EditSalesInvoiceReturnHWidget(this.salesInvoiceReturnH);
 
-  final SalesInvoiceH salesInvoicesH;
+  final SalesInvoiceReturnH salesInvoiceReturnH;
 
   @override
-  _EditSalesInvoiceHDataWidgetState createState() => _EditSalesInvoiceHDataWidgetState();
+  _EditSalesInvoiceReturnHWidgetState createState() => _EditSalesInvoiceReturnHWidgetState();
 }
 
-class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidget> {
-  _EditSalesInvoiceHDataWidgetState();
+class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHWidget> {
+  _EditSalesInvoiceReturnHWidgetState();
 
-  final SalesInvoiceHApiService api = SalesInvoiceHApiService();
+  final SalesInvoiceReturnHApiService api = SalesInvoiceReturnHApiService();
   final _addFormKey = GlobalKey<FormState>();
   int id = 0;
   final _salesInvoicesSerialController = TextEditingController();
-  List<SalesInvoiceD> salesInvoiceDLst = <SalesInvoiceD>[];
-  List<SalesInvoiceD> selected = [];
+  List<SalesInvoiceReturnD> salesInvoiceReturnDLst = <SalesInvoiceReturnD>[];
+  List<SalesInvoiceReturnD> selected = [];
   List<DropdownMenuItem<String>> menuSalesInvoiceTypes = [ ];
   List<DropdownMenuItem<String>> menuCustomers = [ ];
   List<DropdownMenuItem<String>> menuItems = [ ];
@@ -162,36 +161,36 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     totalAfterDiscount = 0;
     totalNet = 0;
 
-    id = widget.salesInvoicesH.id!;
-    _salesInvoicesSerialController.text = widget.salesInvoicesH.salesInvoicesSerial!;
-    _salesInvoicesDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.salesInvoicesH.salesInvoicesDate!.toString()));
-    selectedCustomerValue = widget.salesInvoicesH.customerCode!;
-    selectedTypeValue = widget.salesInvoicesH.salesInvoicesTypeCode!;
+    id = widget.salesInvoiceReturnH.id!;
+    _salesInvoicesSerialController.text = widget.salesInvoiceReturnH.salesInvoicesSerial!;
+    _salesInvoicesDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.salesInvoiceReturnH.salesInvoicesDate!.toString()));
+    selectedCustomerValue = widget.salesInvoiceReturnH.customerCode!;
+    selectedTypeValue = widget.salesInvoiceReturnH.salesInvoicesTypeCode!;
 
-    _totalQtyController.text = widget.salesInvoicesH.totalQty.toString();
-    _rowsCountController.text = widget.salesInvoicesH.rowsCount.toString();
-    _totalDiscountController.text = widget.salesInvoicesH.totalDiscount.toString();
-    _totalBeforeTaxController.text = widget.salesInvoicesH.totalBeforeTax.toString();
-    _totalTaxController.text = widget.salesInvoicesH.totalTax.toString();
-    _totalNetController.text = widget.salesInvoicesH.totalNet.toString();
+    _totalQtyController.text = widget.salesInvoiceReturnH.totalQty.toString();
+    _rowsCountController.text = widget.salesInvoiceReturnH.rowsCount.toString();
+    _totalDiscountController.text = widget.salesInvoiceReturnH.totalDiscount.toString();
+    _totalBeforeTaxController.text = widget.salesInvoiceReturnH.totalBeforeTax.toString();
+    _totalTaxController.text = widget.salesInvoiceReturnH.totalTax.toString();
+    _totalNetController.text = widget.salesInvoiceReturnH.totalNet.toString();
 
-    _totalValueController.text = widget.salesInvoicesH.totalValue.toString();
-    _invoiceDiscountPercentController.text = widget.salesInvoicesH.invoiceDiscountPercent.toString();
-    _invoiceDiscountValueController.text = widget.salesInvoicesH.invoiceDiscountValue.toString();
-    _totalAfterDiscountController.text = widget.salesInvoicesH.totalAfterDiscount.toString();
+    _totalValueController.text = widget.salesInvoiceReturnH.totalValue.toString();
+    _invoiceDiscountPercentController.text = widget.salesInvoiceReturnH.invoiceDiscountPercent.toString();
+    _invoiceDiscountValueController.text = widget.salesInvoiceReturnH.invoiceDiscountValue.toString();
+    _totalAfterDiscountController.text = widget.salesInvoiceReturnH.totalAfterDiscount.toString();
 
 
-    totalQty =(widget.salesInvoicesH.totalQty != null) ? double.parse(_totalQtyController.text) : 0;
-    rowsCount =(!widget.salesInvoicesH.rowsCount.toString().isEmpty) ? int.parse(_rowsCountController.text) : 0;
-    totalDiscount =(widget.salesInvoicesH.totalDiscount != null)? double.parse(_totalDiscountController.text) : 0;
-    totalBeforeTax =(widget.salesInvoicesH.totalBeforeTax != null)? double.parse(_totalBeforeTaxController.text) : 0;
-    totalTax =(widget.salesInvoicesH.totalTax != null)? double.parse(_totalTaxController.text) : 0;
-    summeryTotal =(widget.salesInvoicesH.totalNet != null)? double.parse(_totalNetController.text) : 0;
+    totalQty =(widget.salesInvoiceReturnH.totalQty != null) ? double.parse(_totalQtyController.text) : 0;
+    rowsCount =(!widget.salesInvoiceReturnH.rowsCount.toString().isEmpty) ? int.parse(_rowsCountController.text) : 0;
+    totalDiscount =(widget.salesInvoiceReturnH.totalDiscount != null)? double.parse(_totalDiscountController.text) : 0;
+    totalBeforeTax =(widget.salesInvoiceReturnH.totalBeforeTax != null)? double.parse(_totalBeforeTaxController.text) : 0;
+    totalTax =(widget.salesInvoiceReturnH.totalTax != null)? double.parse(_totalTaxController.text) : 0;
+    summeryTotal =(widget.salesInvoiceReturnH.totalNet != null)? double.parse(_totalNetController.text) : 0;
     setTafqeet("1" ,summeryTotal.toString());
 
     fillCombos();
-    
- 
+
+
     super.initState();
   }
 
@@ -378,86 +377,87 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                         ),
 
                         const SizedBox(height: 20),
-                        Column(
-                          children: [
-                            Form(
-                                key: _dropdownCustomerFormKey,
-                                child: Row(
-                                  //crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
-                                  children: [
-                                    Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Customer: '.tr())),
-                                    const SizedBox(width: 10),
-                                    SizedBox(
-                                      width: 220,
-                                      child: DropdownSearch<Customer>(
-                                        selectedItem: customerItem,
-                                        popupProps: PopupProps.menu(
+                        Form(
+                            key: _dropdownCustomerFormKey,
+                            child: Row(
+                              //crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
+                              children: [
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Customer: '.tr())),
+                                const SizedBox(width: 10),
+                                SizedBox(
+                                  width: 220,
+                                  child: DropdownSearch<Customer>(
+                                    selectedItem: customerItem,
+                                    popupProps: PopupProps.menu(
 
-                                          itemBuilder: (context, item, isSelected) {
-                                            return Container(
-                                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                                              decoration: !isSelected ? null
-                                                  : BoxDecoration(
+                                      itemBuilder: (context, item, isSelected) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                                          decoration: !isSelected ? null
+                                              : BoxDecoration(
 
-                                                border: Border.all(color: Colors.black12),
-                                                borderRadius: BorderRadius.circular(5),
-                                                color: Colors.white,
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text((langId==1)? item.customerNameAra.toString() : item.customerNameEng.toString()),
-                                              ),
-                                            );
-                                          },
-                                          showSearchBox: true,
+                                            border: Border.all(color: Colors.black12),
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: Colors.white,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text((langId==1)? item.customerNameAra.toString() : item.customerNameEng.toString()),
+                                          ),
+                                        );
+                                      },
+                                      showSearchBox: true,
 
-                                        ),
-
-                                        items: customers,
-                                        itemAsString: (Customer u) => (langId==1)? u.customerNameAra.toString() : u.customerNameEng.toString(),
-
-                                        onChanged: (value){
-                                          //v.text = value!.cusTypesCode.toString();
-                                          //print(value!.id);
-                                          selectedCustomerValue = value!.customerCode.toString();
-                                          selectedCustomerEmail = value!.email.toString();
-                                        },
-
-                                        filterFn: (instance, filter){
-                                          if((langId==1)? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)){
-                                            print(filter);
-                                            return true;
-                                          }
-                                          else{
-                                            return false;
-                                          }
-                                        },
-                                        dropdownDecoratorProps: const DropDownDecoratorProps(
-                                          dropdownSearchDecoration: InputDecoration(
-                                            //labelText: 'customer'.tr(),
-                                          ),),
-
-                                      ),
                                     ),
 
-                                    // ElevatedButton(
-                                    //     onPressed: () {
-                                    //       if (_dropdownFormKey.currentState!.validate()) {
-                                    //         //valid flow
-                                    //       }
-                                    //     },
-                                    //     child: Text("Submit"))
-                                  ],
-                                )),
-                            const SizedBox(height: 20),
+                                    items: customers,
+                                    itemAsString: (Customer u) => (langId==1)? u.customerNameAra.toString() : u.customerNameEng.toString(),
+
+                                    onChanged: (value){
+                                      //v.text = value!.cusTypesCode.toString();
+                                      //print(value!.id);
+                                      selectedCustomerValue = value!.customerCode.toString();
+                                      selectedCustomerEmail = value!.email.toString();
+                                    },
+
+                                    filterFn: (instance, filter){
+                                      if((langId==1)? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)){
+                                        print(filter);
+                                        return true;
+                                      }
+                                      else{
+                                        return false;
+                                      }
+                                    },
+                                    dropdownDecoratorProps: const DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        //labelText: 'customer'.tr(),
+                                      ),),
+
+                                  ),
+                                ),
+
+                                // ElevatedButton(
+                                //     onPressed: () {
+                                //       if (_dropdownFormKey.currentState!.validate()) {
+                                //         //valid flow
+                                //       }
+                                //     },
+                                //     child: Text("Submit"))
+                              ],
+                            )),
+
+                        const SizedBox(height: 15),
+                        Row(
+                          children: [
                             Form(
                                 key: _dropdownItemFormKey,
                                 child: Row(
                                   children: [
                                     Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Item: '.tr()) ),
-                                    const SizedBox(width: 10),
+                                    const SizedBox(width: 5),
                                     SizedBox(
-                                      width: 200,
+                                      width: 90,
                                       child: DropdownSearch<Item>(
                                         selectedItem: itemItem,
                                         popupProps: PopupProps.menu(
@@ -519,12 +519,8 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
 
                                   ],
                                 )),
-                          ],
-                        ),
+                            const SizedBox(width: 15),
 
-                        const SizedBox(height: 15),
-                        Row(
-                          children: [
                             Form(
                                 key: _dropdownUnitFormKey,
                                 child: Row(
@@ -565,7 +561,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                                           selectedUnitName = (langId==1) ? value!.unitNameAra.toString() : value!.unitNameEng.toString();
 
                                           if(selectedUnitValue != null && selectedItemValue != null){
-                                            String criteria=" And CompanyCode=" + companyCode.toString() + " And BranchCode=" + branchCode.toString() + " And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'" + selectedTypeValue.toString() +  "'";
+                                            String criteria=" And CompanyCode=" + companyCode.toString() + " And BranchCode=" + branchCode.toString() + " And SalesInvoicesCase=2 And SalesInvoicesTypeCode=N'" + selectedTypeValue.toString() +  "'";
                                             //Item Price
                                             setItemPrice(selectedItemValue.toString(),selectedUnitValue.toString(),criteria);
                                             //Factor
@@ -586,7 +582,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                                         },
                                         dropdownDecoratorProps: const DropDownDecoratorProps(
                                           dropdownSearchDecoration: InputDecoration(
-                                           // labelText: 'unit_name'.tr(),
+                                            // labelText: 'unit_name'.tr(),
                                           ),),
                                       ),
                                     ),
@@ -600,39 +596,34 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                                     //     child: Text("Submit"))
                                   ],
                                 )),
-                            const SizedBox(width: 20),
-                            Row(
-                              children: [
-                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_price :'.tr()) ),
-                                const SizedBox(width: 10),
-                                SizedBox(
-                                  width: 90,
-                                  child: TextFormField(
-                                    controller: _displayPriceController,
-                                    //hintText: "price".tr(),
-                                    enabled: true,  /// open just for now
-                                    onSaved: (val) {
-                                      //price = val;
-                                    },
-                                    //textInputType: TextInputType.number,
-                                    onChanged: (value){
-                                      calcTotalPriceRow();
-                                    },
-                                  ),
-                                ),
-                              ],
-                            )
-
                           ],
                         ),
                         const SizedBox(height: 20),
 
                         Row(
                           children: [
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_price :'.tr()) ),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              width: 100,
+                              child: TextFormField(
+                                controller: _displayPriceController,
+                                //hintText: "price".tr(),
+                                enabled: false,
+                                onSaved: (val) {
+                                  //price = val;
+                                },
+                                //textInputType: TextInputType.number,
+                                onChanged: (value){
+                                  calcTotalPriceRow();
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 15),
                             Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_qty :'.tr()) ),
                             const SizedBox(width: 10),
                             SizedBox(
-                              width: 85,
+                              width: 100,
                               child: TextFormField(
                                 controller: _displayQtyController,
                                 decoration: const InputDecoration(
@@ -641,46 +632,11 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                                 enabled: true,
                                 keyboardType: TextInputType.number,
                                 onChanged: (value) {
+
                                   calcTotalPriceRow();
+
                                 },
                               ),
-                            ),
-                            const SizedBox(width: 20),
-                            Row(
-                              children: [
-                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('discount :'.tr()) ),
-                                const SizedBox(width: 10),
-                                SizedBox(
-                                  width: 90,
-                                  child: TextFormField(
-                                    controller: _displayDiscountController,
-                                    keyboardType: TextInputType.number,
-                                    //hintText: 'discount'.tr(),
-                                    onSaved: (val) {
-                                      discount = val;
-                                    },
-                                    onChanged: (value) {
-
-                                      double price=0;
-                                      if(_priceController.text.isNotEmpty)
-                                      {
-                                        price=double.parse(_priceController.text);
-                                      }
-
-                                      double qtyVal=0;
-                                      if(_displayQtyController.text.isNotEmpty)
-                                      {
-                                        qtyVal=double.parse(_displayQtyController.text);
-                                      }
-
-                                      print('toGetUnittotal');
-                                      var total = qtyVal * price;
-                                      setMaxDiscount(double.parse(value), total , empCode );
-
-                                    },
-                                  ),
-                                ),
-                              ],
                             ),
 
                           ],
@@ -700,6 +656,42 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                           // textInputType: TextInputType.number,
                           // onChanged: (value) {},
                         ),*/
+                        Row(
+                          children: [
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('discount :'.tr()) ),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              width: 100,
+                              child: TextFormField(
+                                controller: _displayDiscountController,
+                                keyboardType: TextInputType.number,
+                                //hintText: 'discount'.tr(),
+                                onSaved: (val) {
+                                  discount = val;
+                                },
+                                onChanged: (value) {
+
+                                  double price=0;
+                                  if(_priceController.text.isNotEmpty)
+                                  {
+                                    price=double.parse(_priceController.text);
+                                  }
+
+                                  double qtyVal=0;
+                                  if(_displayQtyController.text.isNotEmpty)
+                                  {
+                                    qtyVal=double.parse(_displayQtyController.text);
+                                  }
+
+                                  print('toGetUnittotal');
+                                  var total = qtyVal * price;
+                                  setMaxDiscount(double.parse(value), total , empCode );
+
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
 
                         const SizedBox(height: 20),
                         Row(children: [
@@ -770,67 +762,68 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                               DataColumn(label: Text("net".tr()), numeric: true,),
                               DataColumn(label: Text("action".tr()),),
                             ],
-                            rows: salesInvoiceDLst.map((p) =>
+                            rows: salesInvoiceReturnDLst.map((p) =>
                                 DataRow(
                                     cells: [
                                       DataCell(
-                                        SizedBox(
-                                            width: 5, //SET width
-                                            child:  Text(p.lineNum.toString()))
+                                          SizedBox(
+                                              width: 5, //SET width
+                                              child:  Text(p.lineNum.toString()))
 
-                                        ),
-                                // DataCell(
-                                //   Text(p.itemCode.toString()),
-                                // ),
-                                DataCell(
-                                    SizedBox(
-                                        width: 50, //SET width
-                                        child: Text(p.itemName.toString()))
-                                ),
-                                DataCell(
-                                    SizedBox(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayQty.toString()))
-                                ),
-                                DataCell(
-                                    SizedBox(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayPrice.toString()))
+                                      ),
+                                      // DataCell(
+                                      //   Text(p.itemCode.toString()),
+                                      // ),
+                                      DataCell(
+                                          SizedBox(
+                                              width: 50, //SET width
+                                              child: Text(p.itemName.toString()))
+                                      ),
+                                      DataCell(
+                                          SizedBox(
+                                            //width: 15, //SET width
+                                              child: Text(p.displayQty.toString()))
+                                      ),
+                                      DataCell(
+                                          SizedBox(
+                                            //width: 15, //SET width
+                                              child: Text(p.displayPrice.toString()))
 
-                                ),
-                                DataCell(
-                                    SizedBox(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayTotal.toString()))
+                                      ),
+                                      DataCell(
+                                          SizedBox(
+                                            //width: 15, //SET width
+                                              child: Text(p.displayTotal.toString()))
 
-                                ),
-                                DataCell(
-                                    SizedBox(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayDiscountValue.toString()))
-                                ),
-                                DataCell(
-                                    SizedBox(
-                                      //width: 15, //SET width
-                                        child: Text(p.netAfterDiscount.toString()))
-                                ),
-                                DataCell(
-                                    SizedBox(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayTotalTaxValue.toString()))
-                                ),
-                                DataCell(
-                                    SizedBox(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayNetValue.toString()))
-                                ),
+                                      ),
+                                      DataCell(
+                                          SizedBox(
+                                            //width: 15, //SET width
+                                              child: Text(p.displayDiscountValue.toString()))
+                                      ),
+                                      DataCell(
+                                          SizedBox(
+                                            //width: 15, //SET width
+                                              child: Text(p.netAfterDiscount.toString()))
+                                      ),
+                                      DataCell(
+                                          SizedBox(
+                                            //width: 15, //SET width
+                                              child: Text(p.displayTotalTaxValue.toString()))
+                                      ),
+                                      DataCell(
+                                          SizedBox(
+                                            //width: 15, //SET width
+                                              child: Text(p.displayNetValue.toString()))
+                                      ),
 
-                                DataCell(IconButton(icon: Icon(Icons.delete_forever, size: 30.0, color: Colors.red.shade600,),
-                                     onPressed: () {
-                                          deleteInvoiceRow(context,p.id);
-                                     },
-                                )),
-                              ]),
+                                      DataCell(
+                                          SizedBox(
+                                              width: 30, //SET width
+                                              child: Image.asset('assets/images/delete.png'))
+
+                                      ),
+                                    ]),
                             ).toList(),
                           ),
                         ),
@@ -877,44 +870,44 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                         ),
                         const SizedBox(height: 20),
 
-                        // Row(
-                        //   children: [
-                        //     Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountPercent'.tr()) ),
-                        //     const SizedBox(width: 10),
-                        //     SizedBox(
-                        //       width: 150,
-                        //       child: TextFormField(
-                        //         controller: _invoiceDiscountPercentController,
-                        //         // hintText: "invoiceDiscountPercent".tr(),
-                        //         enabled: true,
-                        //         onChanged: (value){
-                        //
-                        //         },
-                        //         keyboardType: TextInputType.number,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // const SizedBox(height: 15),
-                        // Row(
-                        //   children: [
-                        //     Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountValue'.tr()) ),
-                        //     const SizedBox(width: 10),
-                        //     SizedBox(
-                        //       width: 150,
-                        //       child: TextFormField(
-                        //         enabled: true,
-                        //         controller: _invoiceDiscountValueController,
-                        //         // hintText: "invoiceDiscountValue".tr(),
-                        //         onChanged: (value){
-                        //
-                        //         },
-                        //         keyboardType: TextInputType.number,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountPercent'.tr()) ),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              width: 150,
+                              child: TextFormField(
+                                controller: _invoiceDiscountPercentController,
+                                // hintText: "invoiceDiscountPercent".tr(),
+                                enabled: true,
+                                onChanged: (value){
+
+                                },
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        Row(
+                          children: [
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountValue'.tr()) ),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              width: 150,
+                              child: TextFormField(
+                                enabled: true,
+                                controller: _invoiceDiscountValueController,
+                                // hintText: "invoiceDiscountValue".tr(),
+                                onChanged: (value){
+
+                                },
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
                         Row(
                           children: [
                             Row(
@@ -1137,25 +1130,25 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     //
     // print(' productTotalAfterVat ' + productTotalAfterVat.toString());
     //
-    // SalesInvoiceD _salesInvoiceD= new SalesInvoiceD();
-    // _salesInvoiceD.itemCode= selectedItemValue;
+    // SalesInvoiceReturnD _salesInvoiceReturnD= new SalesInvoiceReturnD();
+    // _salesInvoiceReturnD.itemCode= selectedItemValue;
     // // var item = items.firstWhere((element) => element.itemCode == selectedItemValue) ;
-    // // _salesInvoiceD.itemName=item.itemNameAra.toString();
-    // _salesInvoiceD.itemName= selectedItemName;
-    // _salesInvoiceD.qty= productQuantity;
-    // _salesInvoiceD.displayQty= productQuantity;
-    // _salesInvoiceD.price = productPrice;
-    // _salesInvoiceD.displayPrice= productPrice;
-    // _salesInvoiceD.displayTotalTaxValue = productVat;
-    // _salesInvoiceD.totalTaxValue = productVat;
-    // _salesInvoiceD.discountValue = productDiscount;
-    // _salesInvoiceD.displayDiscountValue = productDiscount;
-    // _salesInvoiceD.displayTotal = productTotalAfterVat;
-    // _salesInvoiceD.total = productTotalAfterVat;
+    // // _salesInvoiceReturnD.itemName=item.itemNameAra.toString();
+    // _salesInvoiceReturnD.itemName= selectedItemName;
+    // _salesInvoiceReturnD.qty= productQuantity;
+    // _salesInvoiceReturnD.displayQty= productQuantity;
+    // _salesInvoiceReturnD.price = productPrice;
+    // _salesInvoiceReturnD.displayPrice= productPrice;
+    // _salesInvoiceReturnD.displayTotalTaxValue = productVat;
+    // _salesInvoiceReturnD.totalTaxValue = productVat;
+    // _salesInvoiceReturnD.discountValue = productDiscount;
+    // _salesInvoiceReturnD.displayDiscountValue = productDiscount;
+    // _salesInvoiceReturnD.displayTotal = productTotalAfterVat;
+    // _salesInvoiceReturnD.total = productTotalAfterVat;
     //
-    // _salesInvoiceD.lineNum = lineNum;
+    // _salesInvoiceReturnD.lineNum = lineNum;
     //
-    // salesInvoiceDLst.add(_salesInvoiceD);
+    // salesInvoiceReturnDLst.add(_salesInvoiceReturnD);
     //
     // totalQty += productQuantity;
     // rowsCount += 1;
@@ -1206,78 +1199,78 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     }
 
 
-    SalesInvoiceD _salesInvoiceD= SalesInvoiceD();
+    SalesInvoiceReturnD _salesInvoiceReturnD= SalesInvoiceReturnD();
     //print('Add Product 1');
     //Item
-    _salesInvoiceD.itemCode= selectedItemValue;
-    _salesInvoiceD.itemName= selectedItemName;
+    _salesInvoiceReturnD.itemCode= selectedItemValue;
+    _salesInvoiceReturnD.itemName= selectedItemName;
     //print('Add Product 2');
     //Qty
-    _salesInvoiceD.displayQty= (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
-    _salesInvoiceD.qty= (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
+    _salesInvoiceReturnD.displayQty= (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
+    _salesInvoiceReturnD.qty= (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
 
-    //print('Add Product 2 - display Qty ' + _salesInvoiceD.displayQty.toString());
-    //print('Add Product 2 -  Qty ' + _salesInvoiceD.qty.toString());
+    //print('Add Product 2 - display Qty ' + _salesInvoiceReturnD.displayQty.toString());
+    //print('Add Product 2 -  Qty ' + _salesInvoiceReturnD.qty.toString());
 
     //Cost Price
     //print('Add Product 3');
-    _salesInvoiceD.costPrice= (!_costPriceController.text.isEmpty)?  double.parse(_costPriceController.text):0;
+    _salesInvoiceReturnD.costPrice= (!_costPriceController.text.isEmpty)?  double.parse(_costPriceController.text):0;
 
-    //print('Add Product 3 - costPrice ' + _salesInvoiceD.costPrice.toString());
+    //print('Add Product 3 - costPrice ' + _salesInvoiceReturnD.costPrice.toString());
 
     //print('Add Product 4');
     //Price
-    _salesInvoiceD.displayPrice= (!_displayPriceController.text.isEmpty) ?  double.parse(_displayPriceController.text) : 0 ;
-    _salesInvoiceD.price = (!_displayPriceController.text.isEmpty) ? double.parse(_displayPriceController.text) : 0;
+    _salesInvoiceReturnD.displayPrice= (!_displayPriceController.text.isEmpty) ?  double.parse(_displayPriceController.text) : 0 ;
+    _salesInvoiceReturnD.price = (!_displayPriceController.text.isEmpty) ? double.parse(_displayPriceController.text) : 0;
 
-    //print('Add Product 4 - costPrice ' + _salesInvoiceD.displayPrice.toString());
-    //print('Add Product 4 - costPrice ' + _salesInvoiceD.price.toString());
+    //print('Add Product 4 - costPrice ' + _salesInvoiceReturnD.displayPrice.toString());
+    //print('Add Product 4 - costPrice ' + _salesInvoiceReturnD.price.toString());
 
 
     //print('Add Product 5');
     //Total
-    _salesInvoiceD.total = _salesInvoiceD.qty * _salesInvoiceD.price ;
-    _salesInvoiceD.displayTotal= _salesInvoiceD.displayQty * _salesInvoiceD.displayPrice ;
+    _salesInvoiceReturnD.total = _salesInvoiceReturnD.qty * _salesInvoiceReturnD.price ;
+    _salesInvoiceReturnD.displayTotal= _salesInvoiceReturnD.displayQty * _salesInvoiceReturnD.displayPrice ;
     //print('Add Product 6');
     //discount
-    _salesInvoiceD.displayDiscountValue = (!_displayDiscountController.text.isEmpty) ?  double.parse(_displayDiscountController.text) : 0 ;
-    _salesInvoiceD.discountValue= _salesInvoiceD.displayDiscountValue ;
+    _salesInvoiceReturnD.displayDiscountValue = (!_displayDiscountController.text.isEmpty) ?  double.parse(_displayDiscountController.text) : 0 ;
+    _salesInvoiceReturnD.discountValue= _salesInvoiceReturnD.displayDiscountValue ;
     //print('Add Product 7');
     //Net After Discount
-    _salesInvoiceD.netAfterDiscount= _salesInvoiceD.displayTotal - _salesInvoiceD.displayDiscountValue;
+    _salesInvoiceReturnD.netAfterDiscount= _salesInvoiceReturnD.displayTotal - _salesInvoiceReturnD.displayDiscountValue;
     //print('Add Product 8');
     //netBeforeTax
 
     //Vat
     //Tax Value
     //print('Add Product 9');
-    setItemTaxValue(selectedItemValue.toString(),_salesInvoiceD.netAfterDiscount);
-    _salesInvoiceD.displayTotalTaxValue = (_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
-    _salesInvoiceD.totalTaxValue = (_taxController.text.isNotEmpty) ?  double.parse(_taxController.text) : 0;
+    setItemTaxValue(selectedItemValue.toString(),_salesInvoiceReturnD.netAfterDiscount);
+    _salesInvoiceReturnD.displayTotalTaxValue = (_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
+    _salesInvoiceReturnD.totalTaxValue = (_taxController.text.isNotEmpty) ?  double.parse(_taxController.text) : 0;
     //Total Net
-    _salesInvoiceD.displayNetValue = _salesInvoiceD.netAfterDiscount + _salesInvoiceD.displayTotalTaxValue;
-    _salesInvoiceD.netValue= _salesInvoiceD.netAfterDiscount + _salesInvoiceD.totalTaxValue;
+    _salesInvoiceReturnD.displayNetValue = _salesInvoiceReturnD.netAfterDiscount + _salesInvoiceReturnD.displayTotalTaxValue;
+    _salesInvoiceReturnD.netValue= _salesInvoiceReturnD.netAfterDiscount + _salesInvoiceReturnD.totalTaxValue;
 
 
     print('Add Product 10');
 
-    _salesInvoiceD.lineNum = lineNum;
+    _salesInvoiceReturnD.lineNum = lineNum;
 
 
 
 
-    SalesInvoiceDLst.add(_salesInvoiceD);
+    SalesInvoiceReturnDLst.add(_salesInvoiceReturnD);
 
 
 
-    totalQty += _salesInvoiceD.displayQty;
-    totalPrice += _salesInvoiceD.displayPrice;
-    totalDiscount += _salesInvoiceD.displayDiscountValue;
+    totalQty += _salesInvoiceReturnD.displayQty;
+    totalPrice += _salesInvoiceReturnD.displayPrice;
+    totalDiscount += _salesInvoiceReturnD.displayDiscountValue;
 
     rowsCount += 1;
     totalAfterDiscount  = (totalQty * totalPrice) - totalDiscount;
     totalBeforeTax = totalAfterDiscount;
-    totalTax += _salesInvoiceD.displayTotalTaxValue;
+    totalTax += _salesInvoiceReturnD.displayTotalTaxValue;
     totalNet = totalBeforeTax+ totalTax;
     //summeryTotal += productTotalAfterVat;
 
@@ -1320,7 +1313,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
   saveInvoice(BuildContext context) {
 
     //Items
-    if(salesInvoiceDLst.isEmpty || salesInvoiceDLst.length <=0){
+    if(salesInvoiceReturnDLst.isEmpty || salesInvoiceReturnDLst.length <=0){
       FN_showToast(context,'please_Insert_One_Item_At_Least'.tr(),Colors.black);
       return;
     }
@@ -1349,9 +1342,9 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     //   return;
     // }
 
-    _salesInvoiceHApiService.updateSalesInvoiceH(context,id,SalesInvoiceH(
+    _salesInvoiceReturnHApiService.updateSalesInvoiceReturnH(context,id,SalesInvoiceReturnH(
 
-      salesInvoicesCase: 1,
+      salesInvoicesCase: 2,
       salesInvoicesSerial: _salesInvoicesSerialController.text,
       salesInvoicesTypeCode: selectedTypeValue,
       salesInvoicesDate: _salesInvoicesDateController.text,
@@ -1371,33 +1364,33 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
 
     //Save Footer For Now
 
-    for(var i = 0; i < salesInvoiceDLst.length; i++){
+    for(var i = 0; i < salesInvoiceReturnDLst.length; i++){
 
-      SalesInvoiceD _salesInvoiceD = salesInvoiceDLst[i];
-      if(_salesInvoiceD.isUpdate == false)
+      SalesInvoiceReturnD _salesInvoiceReturnD = salesInvoiceReturnDLst[i];
+      if(_salesInvoiceReturnD.isUpdate == false)
       {
         //Add
-        _salesInvoiceDApiService.createSalesInvoiceD(context,SalesInvoiceD(
+        _salesInvoiceReturnDApiService.createSalesInvoiceReturnD(context,SalesInvoiceReturnD(
 
-          salesInvoicesCase: 1,
-          salesInvoicesSerial: _salesInvoicesSerialController.text,
-          salesInvoicesTypeCode: selectedTypeValue,
-          itemCode: _salesInvoiceD.itemCode,
-          lineNum: _salesInvoiceD.lineNum,
-          price: _salesInvoiceD.price,
-          displayPrice: _salesInvoiceD.price,
-          qty: _salesInvoiceD.qty,
-          displayQty: _salesInvoiceD.displayQty,
-          total: _salesInvoiceD.total,
-          displayTotal: _salesInvoiceD.total,
-          totalTaxValue: _salesInvoiceD.totalTaxValue,
-          discountValue: _salesInvoiceD.discountValue,
-          displayDiscountValue: _salesInvoiceD.discountValue,
-          costPrice: _salesInvoiceD.costPrice,
-          netAfterDiscount: _salesInvoiceD.netAfterDiscount,
-          displayTotalTaxValue: _salesInvoiceD.displayTotalTaxValue,
-          displayNetValue: _salesInvoiceD.displayNetValue,
-          storeCode: "1" // For Now
+            salesInvoicesCase: 2,
+            salesInvoicesSerial: _salesInvoicesSerialController.text,
+            salesInvoicesTypeCode: selectedTypeValue,
+            itemCode: _salesInvoiceReturnD.itemCode,
+            lineNum: _salesInvoiceReturnD.lineNum,
+            price: _salesInvoiceReturnD.price,
+            displayPrice: _salesInvoiceReturnD.price,
+            qty: _salesInvoiceReturnD.qty,
+            displayQty: _salesInvoiceReturnD.displayQty,
+            total: _salesInvoiceReturnD.total,
+            displayTotal: _salesInvoiceReturnD.total,
+            totalTaxValue: _salesInvoiceReturnD.totalTaxValue,
+            discountValue: _salesInvoiceReturnD.discountValue,
+            displayDiscountValue: _salesInvoiceReturnD.discountValue,
+            costPrice: _salesInvoiceReturnD.costPrice,
+            netAfterDiscount: _salesInvoiceReturnD.netAfterDiscount,
+            displayTotalTaxValue: _salesInvoiceReturnD.displayTotalTaxValue,
+            displayNetValue: _salesInvoiceReturnD.displayNetValue,
+            storeCode: "1" // For Now
         ));
 
       }
@@ -1426,8 +1419,8 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
         hintText: hintText,
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: dColor,
+          borderSide: const BorderSide(
+            color: Color(0xff00416A),
             width: 2,
           ),
         ),
@@ -1535,17 +1528,17 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     });
   }
 
-  getSalesInvoiceData() {
-    if (salesInvoiceDLst.isNotEmpty) {
-      for(var i = 0; i < salesInvoiceDLst.length; i++){
+  getSalesInvoiceReturnData() {
+    if (salesInvoiceReturnDLst.isNotEmpty) {
+      for(var i = 0; i < salesInvoiceReturnDLst.length; i++){
 
-        SalesInvoiceD _salesInvoiceD=salesInvoiceDLst[i];
-        _salesInvoiceD.isUpdate=true;
+        SalesInvoiceReturnD _salesInvoiceReturnD=salesInvoiceReturnDLst[i];
+        _salesInvoiceReturnD.isUpdate=true;
 
       }
     }
     setState(() {
-      //salesInvoiceDLst = salesInvoiceDLst;
+      //salesInvoiceReturnDLst = salesInvoiceReturnDLst;
     });
   }
 
@@ -1608,181 +1601,181 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
   //#region Business Function
 
   // Item Units - Change Item Units
-    changeItemUnit(String itemCode){
-      //Units
-      units=[];
-      Future<List<Unit>> Units = _unitsApiService.getItemUnit(itemCode).then((data) {
-        units = data;
-        setState(() {
+  changeItemUnit(String itemCode){
+    //Units
+    units=[];
+    Future<List<Unit>> Units = _unitsApiService.getItemUnit(itemCode).then((data) {
+      units = data;
+      setState(() {
 
-        });
-        return units;
-      }, onError: (e) {
-        print(e);
       });
-    }
+      return units;
+    }, onError: (e) {
+      print(e);
+    });
+  }
 
   //Item Tax Value
-    setItemTaxValue(String itemCode , double netValue  ){
-      //Serial
-      Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemTaxValue(itemCode, netValue).then((data) {
-        print('cccc0');
-        InventoryOperation inventoryOperation = data;
+  setItemTaxValue(String itemCode , double netValue  ){
+    //Serial
+    Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemTaxValue(itemCode, netValue).then((data) {
+      print('cccc0');
+      InventoryOperation inventoryOperation = data;
 
-        setState(() {
-          print('cccc');
-          double tax = (inventoryOperation.itemTaxValue != null) ? inventoryOperation.itemTaxValue   : 0;
-          print(tax.toString());
-          _taxController.text = tax.toString();
-          double nextAfterDiscount = 0 ;
-          if(_netAfterDiscountController.text.isNotEmpty)
-          {
-            nextAfterDiscount = double.parse(_netAfterDiscountController.text);
-          }
-          double netTotal = nextAfterDiscount + tax;
-          _netAftertaxController.text=netTotal.toString();
-
-
-        });
+      setState(() {
+        print('cccc');
+        double tax = (inventoryOperation.itemTaxValue != null) ? inventoryOperation.itemTaxValue   : 0;
+        print(tax.toString());
+        _taxController.text = tax.toString();
+        double nextAfterDiscount = 0 ;
+        if(_netAfterDiscountController.text.isNotEmpty)
+        {
+          nextAfterDiscount = double.parse(_netAfterDiscountController.text);
+        }
+        double netTotal = nextAfterDiscount + tax;
+        _netAftertaxController.text=netTotal.toString();
 
 
-        return inventoryOperation;
-      }, onError: (e) {
-        print(e);
       });
-    }
+
+
+      return inventoryOperation;
+    }, onError: (e) {
+      print(e);
+    });
+  }
 
   //Item Cost
-    setItemCostPrice(String itemCode , String storeCode, int MatrixSerialCode,String trxDate  ){
-      //Serial
-      Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemCostPrice(itemCode, storeCode, MatrixSerialCode ,trxDate).then((data) {
+  setItemCostPrice(String itemCode , String storeCode, int MatrixSerialCode,String trxDate  ){
+    //Serial
+    Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemCostPrice(itemCode, storeCode, MatrixSerialCode ,trxDate).then((data) {
 
-        InventoryOperation inventoryOperation = data;
+      InventoryOperation inventoryOperation = data;
 
-        setState(() {
-          _costPriceController.text = inventoryOperation.itemCostPrice.toString();
-        });
-
-
-        return inventoryOperation;
-      }, onError: (e) {
-        print(e);
+      setState(() {
+        _costPriceController.text = inventoryOperation.itemCostPrice.toString();
       });
-    }
+
+
+      return inventoryOperation;
+    }, onError: (e) {
+      print(e);
+    });
+  }
 
   //Item Quantity
-    setItemQty(String itemCode , String unitCode,int qty ){
-      //Serial
-      Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemQty(itemCode, unitCode, qty  ).then((data) {
+  setItemQty(String itemCode , String unitCode,int qty ){
+    //Serial
+    Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemQty(itemCode, unitCode, qty  ).then((data) {
 
-        InventoryOperation inventoryOperation = data;
+      InventoryOperation inventoryOperation = data;
 
-        setState(() {
-          _qtyController.text = (inventoryOperation.itemFactorQty != null) ? inventoryOperation.itemFactorQty.toString() : "1";
-          calcTotalPriceRow();
+      setState(() {
+        _qtyController.text = (inventoryOperation.itemFactorQty != null) ? inventoryOperation.itemFactorQty.toString() : "1";
+        calcTotalPriceRow();
 
-        });
-
-
-        return inventoryOperation;
-      }, onError: (e) {
-        print(e);
       });
-    }
+
+
+      return inventoryOperation;
+    }, onError: (e) {
+      print(e);
+    });
+  }
 
   //Item Price
-    setItemPrice(String itemCode , String unitCode,String criteria ){
-      //Serial
-      Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SalesInvoicesType",criteria ).then((data) {
+  setItemPrice(String itemCode , String unitCode,String criteria ){
+    //Serial
+    Future<double>  futureSellPrice = _salesInvoiceReturnDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SalesInvoicesType",criteria ).then((data) {
 
-        double sellPrice = data;
+      double sellPrice = data;
 
-        setState(() {
-          _displayPriceController.text = sellPrice.toString();
-          _priceController.text = sellPrice.toString();
-          calcTotalPriceRow();
-        });
-
-
-        return sellPrice;
-      }, onError: (e) {
-        print(e);
+      setState(() {
+        _displayPriceController.text = sellPrice.toString();
+        _priceController.text = sellPrice.toString();
+        calcTotalPriceRow();
       });
-    }
+
+
+      return sellPrice;
+    }, onError: (e) {
+      print(e);
+    });
+  }
 
   //Item Price
-    setMaxDiscount(double? discountValue, double totalValue ,String empCode ){
-      //Serial
-      Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getUserMaxDiscountResult(discountValue, totalValue,empCode ).then((data) {
-        print('In Max Discount');
-        InventoryOperation inventoryOperation = data;
+  setMaxDiscount(double? discountValue, double totalValue ,String empCode ){
+    //Serial
+    Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getUserMaxDiscountResult(discountValue, totalValue,empCode ).then((data) {
+      print('In Max Discount');
+      InventoryOperation inventoryOperation = data;
 
-        setState(() {
+      setState(() {
 
-          if(inventoryOperation.isExeedUserMaxDiscount == true)
-          {
-            //Toaster
-            FN_showToast(context,'current_discount_exceed_user_discount'.tr(),Colors.black);
+        if(inventoryOperation.isExeedUserMaxDiscount == true)
+        {
+          //Toaster
+          FN_showToast(context,'current_discount_exceed_user_discount'.tr(),Colors.black);
 
-            //Reset Value
-            _displayDiscountController.text = "";
-            _discountController.text="";
-            calcTotalPriceRow();
-          }
-          else{
-            calcTotalPriceRow();
-          }
+          //Reset Value
+          _displayDiscountController.text = "";
+          _discountController.text="";
+          calcTotalPriceRow();
+        }
+        else{
+          calcTotalPriceRow();
+        }
 
-        });
-
-
-        return inventoryOperation;
-      }, onError: (e) {
-        print(e);
       });
-    }
+
+
+      return inventoryOperation;
+    }, onError: (e) {
+      print(e);
+    });
+  }
 
 
   //#region Tafqeet
 
-    setTafqeet(String currencyCode , String currencyValue ){
-      //Serial
-      Future<Tafqeet>  futureTafqeet = _tafqeetApiService.getTafqeet(currencyCode, currencyValue ).then((data) {
+  setTafqeet(String currencyCode , String currencyValue ){
+    //Serial
+    Future<Tafqeet>  futureTafqeet = _tafqeetApiService.getTafqeet(currencyCode, currencyValue ).then((data) {
 
-        Tafqeet tafqeet = data;
-        _tafqitNameArabicController.text = tafqeet.fullTafqitArabicName.toString();
-        _tafqitNameEnglishController.text = tafqeet.fullTafqitEnglishName.toString();
-        setState(() {
+      Tafqeet tafqeet = data;
+      _tafqitNameArabicController.text = tafqeet.fullTafqitArabicName.toString();
+      _tafqitNameEnglishController.text = tafqeet.fullTafqitEnglishName.toString();
+      setState(() {
 
-        });
-
-
-        return tafqeet;
-      }, onError: (e) {
-        print(e);
       });
-    }
+
+
+      return tafqeet;
+    }, onError: (e) {
+      print(e);
+    });
+  }
 
 
   //#endregion
 
   //#region Next Serial
-    setNextSerial(){
-      //Serial
-      Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("AR_SalesInvoicesH", "SalesInvoicesSerial", " And SalesInvoicesCase=1 And SalesInvoicesTypeCode='" + selectedTypeValue.toString() + "'").then((data) {
-        NextSerial nextSerial = data;
+  setNextSerial(){
+    //Serial
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("AR_SalesInvoicesH", "SalesInvoicesSerial", " And SalesInvoicesCase=2 And SalesInvoicesTypeCode='" + selectedTypeValue.toString() + "'").then((data) {
+      NextSerial nextSerial = data;
 
-        //Date
-        DateTime now = DateTime.now();
-        _salesInvoicesDateController.text =DateFormat('yyyy-MM-dd').format(now);
+      //Date
+      DateTime now = DateTime.now();
+      _salesInvoicesDateController.text =DateFormat('yyyy-MM-dd').format(now);
 
-        //print(customers.length.toString());
-        _salesInvoicesSerialController.text = nextSerial.nextSerial.toString();
-        return nextSerial;
-      }, onError: (e) {
-        print(e);
-      });
-    }
+      //print(customers.length.toString());
+      _salesInvoicesSerialController.text = nextSerial.nextSerial.toString();
+      return nextSerial;
+    }, onError: (e) {
+      print(e);
+    });
+  }
 
   //#endregion
 
@@ -1790,9 +1783,9 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
 
 
   fillCombos(){
-  print('start Fill Combos');
+    print('start Fill Combos');
 //Sales Invoice Type
-    Future<List<SalesInvoiceType>> futureSalesInvoiceType = _salesInvoiceTypeApiService.getSalesInvoicesTypes().then((data) {
+    Future<List<SalesInvoiceType>> futureSalesInvoiceType = _salesInvoiceTypeApiService.getSalesInvoicesReturnTypes().then((data) {
       salesInvoiceTypes = data;
       //print(customers.length.toString());
       getSalesInvoiceTypeData();
@@ -1822,21 +1815,21 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     });
 
     //Sales Invoice Details
-    Future<List<SalesInvoiceD>> futureSalesInvoice = _salesInvoiceDApiService.getSalesInvoicesD(id).then((data) {
-      salesInvoiceDLst = data;
+    Future<List<SalesInvoiceReturnD>> futureSalesInvoice = _salesInvoiceReturnDApiService.getSalesInvoiceReturnD(id).then((data) {
+      salesInvoiceReturnDLst = data;
       print('hobaaaaaaaaaaaz');
-      print(salesInvoiceDLst.length.toString());
-      getSalesInvoiceData();
-      return salesInvoiceDLst;
+      print(salesInvoiceReturnDLst.length.toString());
+      getSalesInvoiceReturnData();
+      return salesInvoiceReturnDLst;
     }, onError: (e) {
       print(e);
     });
-    
+
   }
 
   // setItemPrice(String itemCode , String unitCode,String criteria ){
   //   //Serial
-  //   Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SalesInvoicesType",criteria ).then((data) {
+  //   Future<double>  futureSellPrice = _salesInvoiceReturnDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SalesInvoicesType",criteria ).then((data) {
   //
   //     double sellPrice = data;
   //     _priceController.text = sellPrice.toString();
@@ -1909,41 +1902,6 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     Email.sendMail(Username: username, Password: password, DomainSmtp: smtpServer, Subject: subject, Text: text, Recepiant: recepiant, Port: port);
 
   }
-  deleteInvoiceRow(BuildContext context, int? id) async {
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Are you sure?'),
-        content: const Text('This action will permanently delete this data'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );
-    if (result == null || !result) {
-      return;
-    }
-    int menuId = 6204;
-    bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
 
-    if (isAllowDelete) {
-      setState(() {
-        SalesInvoiceDLst.removeWhere((invoiceD) => invoiceD.id == id);
-        _salesInvoiceDApiService.deleteSalesInvoiceD(context, id);
-        lineNum--;
-        rowsCount--;
-
-      });
-    } else {
-      FN_showToast(context, 'you_dont_have_delete_permission'.tr(), Colors.black);
-    }
-  }
 
 }

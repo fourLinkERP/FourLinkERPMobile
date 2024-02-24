@@ -1,5 +1,3 @@
-
-
 import 'package:fourlinkmobileapp/data/model/modules/module/accountPayable/basicInputs/Vendors/vendor.dart';
 import '../../basicInputs/Customers/customer.dart';
 

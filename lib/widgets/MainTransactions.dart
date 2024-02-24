@@ -3,6 +3,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/salesOrderList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/salesInvoiceList.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesOffers/salesOfferList.dart';
 import 'package:fourlinkmobileapp/ui/module/cash/transactions/CashReceive/cashReceiveList.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
@@ -29,6 +30,7 @@ class MainTransactions extends StatelessWidget {
     Widget build(BuildContext context) {
       List<String> areaListData = <String>[
         'assets/fitness_app/salesCart.png',
+        'assets/fitness_app/salesReturnCart.png',
         'assets/fitness_app/quotion.png',
         'assets/fitness_app/inventory.png',
         'assets/fitness_app/accounting.png',
@@ -37,6 +39,7 @@ class MainTransactions extends StatelessWidget {
       ];
       List<String> areaListDataTitle = <String>[
         'salesinvoice'.tr(),
+        'returnSalesInvoice'.tr(),
         'sales_Qution'.tr(),
         'salesOrder'.tr(),
         'cash_receipt'.tr(),
@@ -47,23 +50,25 @@ class MainTransactions extends StatelessWidget {
 
       return  Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
         title: Text(
           'Transactions'.tr(),
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
 
       ),
       body: Container(
-      padding: EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(12.0),
       child: GridView.builder(
       itemCount: areaListData.length,
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
       crossAxisCount: 2,
-      crossAxisSpacing: 4.0,
+      crossAxisSpacing: 5.0,
       mainAxisSpacing: 4.0
       ),
       itemBuilder: (BuildContext context, int index){
       return Container(
+        height: 100,
         decoration: BoxDecoration(
           color: FitnessAppTheme.white,
           borderRadius: const BorderRadius.only(
@@ -103,6 +108,22 @@ class MainTransactions extends StatelessWidget {
                   FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                 }
 
+              }
+              else if(areaListData[index] == 'assets/fitness_app/salesReturnCart.png') // Invoice
+                  {
+                //print('okz1');
+                //areaListData[index] == Image.asset('assets/fitness_app/salesReturnCart.png', scale: 4,).toString();
+
+                int menuId=6204;
+                bool isAllowView = PermissionHelper.checkViewPermission(menuId);
+                if(isAllowView)
+                {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SalesInvoiceReturnHListPage()));
+                }
+                else
+                {
+                  FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                }
 
               }
               else if(areaListData[index]  == 'assets/fitness_app/quotion.png') //Quotion
@@ -113,18 +134,12 @@ class MainTransactions extends StatelessWidget {
                 bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                 if(isAllowView)
                 {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              SalesOfferHListPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SalesOfferHListPage()));
                 }
                 else
                 {
                   FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                 }
-
-
 
               }
               else  if(areaListData[index]  == 'assets/fitness_app/inventory.png')//Orders
@@ -135,11 +150,7 @@ class MainTransactions extends StatelessWidget {
                 bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                 if(isAllowView)
                 {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              SalesOrderHListPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SalesOrderHListPage()));
                 }
                 else
                 {
@@ -155,11 +166,7 @@ class MainTransactions extends StatelessWidget {
                 bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                 if(isAllowView)
                 {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              CashReceiveListPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => CashReceiveListPage()));
                 }
                 else
                 {
@@ -173,11 +180,7 @@ class MainTransactions extends StatelessWidget {
                 bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                 if(isAllowView)
                 {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              SalesOrderHListPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SalesOrderHListPage()));
                 }
                 else
                 {
@@ -190,8 +193,8 @@ class MainTransactions extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding:
-                  const EdgeInsets.only(top: 16, left: 16, right: 16),
-                  child: Image.asset(areaListData[index] !),
+                  const EdgeInsets.only(top: 20.0, left: 16, right: 16),
+                  child: Image.asset(areaListData[index]),
                 ),
                 const SizedBox(height: 20.0),
                 Text(areaListDataTitle[index]!)

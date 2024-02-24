@@ -29,7 +29,6 @@ import '../../../../../common/globals.dart';
       body: jsonEncode(data),
     );
 
-
     if (response.statusCode == 200) {
       print('Boxtype 2');
       List<dynamic> data = jsonDecode(response.body)['data'];

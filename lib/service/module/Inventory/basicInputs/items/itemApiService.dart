@@ -9,10 +9,10 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
 
 
 
-
  class ItemApiService {
 
   String searchApi= baseUrl.toString()  + 'v1/items/searchData';
+  String searchReturnApi= baseUrl.toString()  + 'v1/items/search';
   String createApi= baseUrl.toString()  + 'v1/items';
   String updateApi= baseUrl.toString()  + 'v1/items/';  // Add ID For Edit
   String deleteApi= baseUrl.toString()  + 'v1/items/';
@@ -29,6 +29,46 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
     print('Items 2');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(data),
+    );
+
+    print('Items 4');
+    if (response.statusCode == 200) {
+      print('Items 5');
+      List<dynamic> data = jsonDecode(response.body)['data'];
+      List<Item> list = [];
+      if (data != null) {
+        list = data.map((item) => Item.fromJson(item)).toList();
+      }
+      //print('B 1 Finish');
+      return  list;
+      // return await json.decode(res.body)['data']
+      //     .map((data) => Item.fromJson(data))
+      //     .toList();
+    } else {
+      print('Items Failure');
+      throw "Failed to load item list";
+    }
+  }
+
+  Future<List<Item>>  getReturnItems() async {
+
+    print('Items 1');
+    Map data = {
+      'Search':{
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode,
+        'ItemTypeCode': 3
+      }
+    };
+
+    print('Items 2');
+    final http.Response response = await http.post(
+      Uri.parse(searchReturnApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'
@@ -127,12 +167,23 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
     print('Start Update');
 
     Map data = {
+      'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
       'itemCode': item.itemCode,
       'itemNameAra': item.itemNameAra,
       'itemNameEng': item.itemNameEng,
       'defaultSellPrice': item.defaultSellPrice,
+      "confirmed": false,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSynchronized": false,
+      "isSystem": false,
+      "notActive": false,
+      "flgDelete": false
     };
 
     String apiUpdate =updateApi + id.toString();

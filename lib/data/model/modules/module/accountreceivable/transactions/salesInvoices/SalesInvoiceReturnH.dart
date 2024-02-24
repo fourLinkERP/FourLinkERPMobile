@@ -1,4 +1,3 @@
-//import 'dart:io';
 import 'package:flutter/cupertino.dart';
 
 Color lColor = const Color(0xffE4E5E6);
@@ -6,11 +5,12 @@ Color dColor = const Color(0xff00416A);
 
 String get pickedDate => (DateTime.now()).toString();
 
-class SalesInvoiceH {
+class SalesInvoiceReturnH {
   int? id;
   //General Info
-  int ? salesInvoicesCase ;
+  int ? salesInvoicesCase;
   String? salesInvoicesTypeCode ;
+  String? salesInvoicesTypeName;
   String?  salesInvoicesSerial;
   int? year;
   String? customerCode ;
@@ -35,11 +35,12 @@ class SalesInvoiceH {
   String?  tafqitNameEnglish ;
 
 
-  SalesInvoiceH({
+  SalesInvoiceReturnH({
     this.id,
     //General Info
-    this.salesInvoicesCase,
+    this.salesInvoicesCase = 2,
     this.salesInvoicesTypeCode ,
+    this.salesInvoicesTypeName,
     this.salesInvoicesSerial,
     this.year,
     this.customerCode,
@@ -61,18 +62,19 @@ class SalesInvoiceH {
     this.tafqitNameArabic,
     this.tafqitNameEnglish,
     //image
-    });
+  });
 
-  factory SalesInvoiceH.fromJson(Map<String, dynamic> json) {
-    return SalesInvoiceH(
+  factory SalesInvoiceReturnH.fromJson(Map<String, dynamic> json) {
+    return SalesInvoiceReturnH(
       id: (json['id'] != null) ? json['id'] as int : 1,
-      salesInvoicesCase: (json['salesInvoicesCase'] != null) ? json['salesInvoicesCase'] as int : 1,
-      salesInvoicesTypeCode: (json['salesInvoicesTypeCode'] != null) ? json['salesInvoicesTypeCode'] as String:" ",
-      salesInvoicesSerial: (json['salesInvoicesSerial'] != null) ? json['salesInvoicesSerial'] as String:" ",
+      salesInvoicesCase: (json['salesInvoicesCase'] != null) ? json['salesInvoicesCase'] as int : 2,
+      salesInvoicesTypeCode: (json['salesInvoicesTypeCode'] != null) ? json['salesInvoicesTypeCode'] as String : "",
+      salesInvoicesTypeName: (json['salesInvoicesTypeName'] != null) ? json['salesInvoicesTypeName'] as String : "",
+      salesInvoicesSerial: (json['salesInvoicesSerial'] != null) ? json['salesInvoicesSerial'] as String : "",
       year: (json['year'] != null) ? json['year'] as int : 2024,
-      customerCode: (json['customerCode'] != null) ? json['customerCode'] as String:" ",
-      customerName: (json['customerName'] != null) ? json['customerName'] as String:" ",
-      salesInvoicesDate: (json['salesInvoicesDate'] != null) ? json['salesInvoicesDate'] as String:pickedDate,
+      customerCode: (json['customerCode'] != null) ? json['customerCode'] as String : "",
+      customerName: (json['customerName'] != null) ? json['customerName'] as String : "",
+      salesInvoicesDate: (json['salesInvoicesDate'] != null) ? json['salesInvoicesDate'] as String : pickedDate,
       totalQty: (json['totalQty'] !=null) ? json['totalQty'].toDouble() : 0,
       totalDiscount: (json['totalDiscount'] !=null) ? json['totalDiscount'].toDouble() : 0,
 
@@ -105,22 +107,4 @@ class SalesInvoiceH {
     return 'Trans{id: $id, name: $salesInvoicesSerial }';
   }
 }
-
-
-
-
-// Our demo Branchs
-
-// List<Customer> demoBranches = [
-//   Customer(
-//       id: 1,
-//       name: "Maadi - Branch",
-//       description: descriptionData
-//   ),
-//   Customer(
-//       id: 2,
-//       name: "Tahrir - Branch",
-//       description: descriptionData
-//   )
-// ];
 

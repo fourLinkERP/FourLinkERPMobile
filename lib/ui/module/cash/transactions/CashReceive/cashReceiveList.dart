@@ -12,11 +12,19 @@ import 'package:fourlinkmobileapp/ui/module/cash/transactions/CashReceive/editCa
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../cubit/app_cubit.dart';
+import '../../../../../data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
+import '../../../../../service/general/Pdf/pdf_api.dart';
+import '../../../../../service/general/Pdf/pdf_invoice_api.dart';
 import 'addCashReceiveDataWidget.dart';
 import 'detailCashReceiveWidget.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
+
+import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vendors/vendor.dart';
+import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
+
+
 
 CashReceiveApiService _apiService=new CashReceiveApiService();
 //Get CashReceive List
@@ -33,6 +41,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
 
   bool isLoading=true;
   List<CashReceive> _cashReceives = [];
+  List<CashReceive> _cashReceivesSearch = [];
   List<CashReceive> _founded = [];
 
 
@@ -65,7 +74,10 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
       AppCubit.get(context).EmitErrorState();
     });
     _cashReceives = (await futureCashReceive)!;
-    if (_cashReceives != null) {
+    _cashReceivesSearch = List.from(_cashReceives);
+    if (_cashReceives.isNotEmpty) {
+      _cashReceives.sort((a, b) => int.parse(b.trxSerial!).compareTo(int.parse(a.trxSerial!)));
+
       setState(() {
         _founded = _cashReceives!;
         String search = '';
@@ -77,18 +89,19 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
 
 
 
-  onSearch(String search) {
-
-    if(search.isEmpty)
-      {
-        getData();
-      }
-
-    setState(() {
-      _cashReceives = _founded!.where((CashReceive) =>
-          CashReceive.trxSerial!.toLowerCase().contains(search)).toList();
-    });
+  void onSearch(String search) {
+    if (search.isEmpty) {
+      setState(() {
+        _cashReceives = List.from(_cashReceivesSearch!);
+      });
+    } else {
+      setState(() {
+        _cashReceives = List.from(_cashReceivesSearch!);
+        _cashReceives = _cashReceives.where((cashReceive) => cashReceive.trxSerial!.toLowerCase().contains(search)).toList();
+      });
+    }
   }
+  final searchValueController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -289,10 +302,6 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
       FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
     }
 
-
-
-
-
   }
 
   _navigateToEditScreen (BuildContext context, CashReceive cashReceive) async {
@@ -315,120 +324,71 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
 
   }
 
-  _navigateToPrintScreen (BuildContext context, CashReceive invoiceH) async {
-
-
-    // DateTime date = DateTime.parse(invoiceH.cashReceivesDate.toString());
-    // final dueDate = date.add(Duration(days: 7));
-    //
-    // //Get Sales Invoice Details To Create List Of Items
-    // getDetailData(invoiceH.id);
-    // List<InvoiceItem> invoiceItems=[];
-    // print('Before Sales Invoicr' );
-    // if(_cashReceivesD != null)
-    // {
-    //   print('In Sales Invoicr' );
-    //   //print('_cashReceivesD >> ' + _cashReceivesD.length.toString() );
-    //   for(var i = 0; i < _cashReceivesD.length; i++){
-    //     int qty=_cashReceivesD[i].displayQty as int;
-    //     //double vat=0;
-    //     var vat=_cashReceivesD[i].displayTotalTaxValue ;
-    //     //double price =_cashReceivesD[i].displayPrice! as double;
-    //     double price =0;
-    //
-    //     print('_cashReceivesD >> ' + qty.toString() );
-    //     // print('_cashReceivesD >> ' + vat.toString() );
-    //     // print('_cashReceivesD >> ' + price.toString() );
-    //
-    //     InvoiceItem _invoiceItem=new InvoiceItem
-    //       (description: _cashReceivesD[i].itemName.toString(),
-    //         date: date, quantity: qty  , vat: vat  ,
-    //         unitPrice: price );
-    //
-    //     invoiceItems.add(_invoiceItem);
-    //   }
-    // }
-    //
-    // //print('invoiceItems >> ' + invoiceItems.length.toString() );
-    //
-    // final invoice = Invoice(   //ToDO
-    //   supplier: Vendor(
-    //     vendorNameAra: 'Sarah Field',
-    //     address1: 'Sarah Street 9, Beijing, China',
-    //     paymentInfo: 'https://paypal.me/sarahfieldzz',
-    //   ),
-    //   customer: Customer(
-    //     customerNameAra: invoiceH.customerName,
-    //     address: 'Apple Street, Cupertino, CA 95014', //ToDO
-    //   ),
-    //   info: InvoiceInfo(
-    //     date: date,
-    //     dueDate: dueDate,
-    //     description: 'My description...',
-    //     number: invoiceH.cashReceivesSerial.toString() ,
-    //   ),
-    //   //items: invoiceItems
-    //   items:
-    //   [
-    //     InvoiceItem(
-    //       description: 'Coffee',
-    //       date: DateTime.now(),
-    //       quantity: 3,
-    //       vat: 0.19,
-    //       unitPrice: 5.99,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Water',
-    //       date: DateTime.now(),
-    //       quantity: 8,
-    //       vat: 0.19,
-    //       unitPrice: 0.99,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Orange',
-    //       date: DateTime.now(),
-    //       quantity: 3,
-    //       vat: 0.19,
-    //       unitPrice: 2.99,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Apple',
-    //       date: DateTime.now(),
-    //       quantity: 8,
-    //       vat: 0.19,
-    //       unitPrice: 3.99,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Mango',
-    //       date: DateTime.now(),
-    //       quantity: 1,
-    //       vat: 0.19,
-    //       unitPrice: 1.59,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Blue Berries',
-    //       date: DateTime.now(),
-    //       quantity: 5,
-    //       vat: 0.19,
-    //       unitPrice: 0.99,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Lemon',
-    //       date: DateTime.now(),
-    //       quantity: 4,
-    //       vat: 0.19,
-    //       unitPrice: 1.29,
-    //     ),
-    //   ]
-    //   ,
-    // );
-    //
-    // final pdfFile = await PdfInvoiceApi.generate(invoice);
-    //
-    // PdfApi.openFile(pdfFile);
-
-
-  }
+  // _navigateToPrintScreen (BuildContext context, CashReceive receive) async {
+  //
+  //   int menuId=3203;
+  //   bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
+  //   if(isAllowPrint)
+  //   {
+  //
+  //     DateTime date = DateTime.parse(receive.trxDate.toString());
+  //     final dueDate = date.add(Duration(days: 7));
+  //
+  //     //Get Sales Invoice Details To Create List Of Items
+  //     //getDetailData(receive.id);
+  //     Future<List<CashReceive>?> futureCashReceive = _apiDService.getSalesInvoicesD(receive.id);
+  //     _salesInvoicesD = (await futureSalesInvoiceD)!;
+  //
+  //     List<InvoiceItem> invoiceItems=[];
+  //     if(_salesInvoicesD != null)
+  //     {
+  //       print('In Sales Invoicr' );
+  //       print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString() );
+  //       for(var i = 0; i < _salesInvoicesD.length; i++){
+  //         int qty= (_salesInvoicesD[i].displayQty != null) ? _salesInvoicesD[i].displayQty as int : 0;
+  //         //double vat=0;
+  //         double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? _salesInvoicesD[i].displayTotalTaxValue : 0 ;
+  //         //double price =_salesInvoicesD[i].displayPrice! as double;
+  //         double price =( _salesInvoicesD[i].price != null) ? _salesInvoicesD[i].price : 0;
+  //
+  //
+  //         InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
+  //             date: date, quantity: qty  , vat: vat  , unitPrice: price );
+  //
+  //         invoiceItems.add(_invoiceItem);
+  //       }
+  //     }
+  //
+  //     final invoice = Invoice(   //ToDO
+  //         supplier: Vendor(
+  //           vendorNameAra: 'Sarah Field',
+  //           address1: 'Sarah Street 9, Beijing, China',
+  //           paymentInfo: 'https://paypal.me/sarahfieldzz',
+  //         ),
+  //         customer: Customer(
+  //           customerNameAra: receive.customerName,
+  //           address: 'Apple Street, Cupertino, CA 95014', //ToDO
+  //         ),
+  //         info: InvoiceInfo(
+  //           date: date,
+  //           dueDate: dueDate,
+  //           description: 'My description...',
+  //           number: receive.trxSerial.toString() ,
+  //         ),
+  //         items: invoiceItems
+  //
+  //     );
+  //
+  //     final pdfFile = await PdfInvoiceApi.generate(invoice);
+  //
+  //     PdfApi.openFile(pdfFile);
+  //
+  //   }
+  //   else
+  //   {
+  //     FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
+  //   }
+  // }
 
 
 
@@ -550,7 +510,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
                                         ),
                                         label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                          _navigateToPrintScreen(context,_cashReceives[index]);
+                                          // _navigateToPrintScreen(context,_cashReceives[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(

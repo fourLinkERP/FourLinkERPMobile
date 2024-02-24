@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/common/dto.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/Reviews/reviews.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/customer/customerInformation.dart';
@@ -6,6 +7,8 @@ import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/custom
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/external_detection/externalDetection.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/indicators/Indicators.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/workshop_home/workshopMainScreen.dart';
+
+import '../../../../../helpers/toast.dart';
 
 class NewRepairAgreeTabs extends StatefulWidget {
   const NewRepairAgreeTabs({Key? key}) : super(key: key);
@@ -55,8 +58,45 @@ class _NewRepairAgreeTabsState extends State<NewRepairAgreeTabs> {
               return Row(
                 children: <Widget> [
                   Expanded(child: InkWell(
-                    onTap: details.onStepContinue,
-                    child: Container(
+                    onTap: () {
+                      if (currentStep == 0) {
+                        details.onStepContinue!();
+                      }
+                      else if (currentStep == 1) {
+                        if (DTO.netTotal != 0) {
+                          details.onStepContinue!();
+                        } else {
+                          FN_showToast(context,'Step 1 validation failed'.tr() ,Colors.black);
+                        }
+                      } else if (currentStep == 2) {
+                        details.onStepContinue!();
+                      } else if (currentStep == 3) {
+                        if (DTO.page4Images["image1"] != "" ||
+                            DTO.page4Images["image2"] != "" ||
+                            DTO.page4Images["image3"] != "" ||
+                            DTO.page4Images["image4"] != "" ||
+                            DTO.page4Images["image5"] != "" ||
+                            DTO.page4Images["image6"] != ""
+                        ) {
+                          details.onStepContinue!();
+                        } else {
+                          FN_showToast(context,'Step 3 validation failed'.tr() ,Colors.black);
+                        }
+                      } else if (currentStep == 4) {
+                        if (DTO.page5["paymentMethodCode"] != "" &&
+                            DTO.page5["maintenanceClassificationCode"] != "" &&
+                            DTO.page5["maintenanceTypeCode"] != "" &&
+                            DTO.page5["deliveryDate"] != "" &&
+                            DTO.page5["deliveryTime"] != "" &&
+                            (DTO.page5["returnOldPartStatusCode"] != "" ||
+                                DTO.page5["repeatRepairsStatusCode"] != "")) {
+                          details.onStepContinue!();
+                        } else {
+                          FN_showToast(context,'Step 4 validation failed'.tr() ,Colors.black);
+                        }
+                      }
+                    },
+                      child: Container(
                       height: 50,
                       width: 70,
                       decoration: BoxDecoration(

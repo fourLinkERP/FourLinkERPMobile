@@ -20,9 +20,9 @@ import '../../../../../common/globals.dart';
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode ,
-      'Search':{
-        'CashTrxKindId' : 1
-      }
+      // 'Search':{
+      //   'CashTrxKindId' : 1
+      // }
     };
 
     final http.Response response = await http.post(

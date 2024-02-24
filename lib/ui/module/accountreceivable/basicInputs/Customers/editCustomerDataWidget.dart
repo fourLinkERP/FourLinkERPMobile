@@ -7,6 +7,7 @@ import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
+import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/CustomerTypes/customerTypeApiService.dart';
@@ -106,9 +107,25 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.transparent,
         onPressed: (){
+          if(_customerNameAraController.text.isEmpty)
+          {
+            FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
+            return;
+          }
+          if(_customerNameEngController.text.isEmpty)
+          {
+            FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
+            return;
+          }
+          if(_phone1Controller.text.isEmpty)
+          {
+            FN_showToast(context,'please_enter_phone'.tr() ,Colors.black);
+            return;
+          }
           // if (_addFormKey.currentState.validate()) {
           //   _addFormKey.currentState.save();
           api.updateCustomer(context,id, Customer(
+              id: id,
               customerCode: _customerCodeController.text ,
               customerNameAra: _customerNameAraController.text ,
               customerNameEng: _customerNameEngController.text ,

@@ -1,11 +1,20 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
+import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
+import '../../../../common/login_components.dart';
 import '../../../../data/model/modules/module/inventory/basicInputs/items/items.dart';
+import '../../../../data/model/modules/module/inventory/basicInputs/units/units.dart';
 import '../../../../helpers/hex_decimal.dart';
+import '../../../../service/module/Inventory/basicInputs/units/unitApiService.dart';
 import '../../../../service/module/inventory/basicInputs/items/itemApiService.dart';
+import 'itemList.dart';
+
+//APIs
+UnitApiService _unitsApiService = UnitApiService();
 
 enum Gender { male, female }
 enum Status { positive, dead, recovered }
@@ -25,6 +34,7 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
   final _itemCodeController = TextEditingController();
   final _itemNameAraController = TextEditingController();
   final _itemNameEngController = TextEditingController();
+  final _itemSalePriceController = TextEditingController();
   // final _taxIdentificationNumberController = TextEditingController();
   // final _addressController = TextEditingController();
   // final _phone1Controller = TextEditingController();
@@ -40,6 +50,23 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
   // Status _status = Status.positive;
 
   String arabicNameHint = 'arabicNameHint'.tr();
+  String? selectedUnitValue = null;
+  String? selectedUnitName = null;
+  List<Unit> units = [];
+  List<DropdownMenuItem<String>> menuUnits = [];
+  Unit? unitItem = Unit(unitCode: "", unitNameAra: "", unitNameEng: "", id: 0);
+  @override
+  void initState() {
+    Future<List<Unit>> futureUnits = _unitsApiService.getUnits().then((data) {
+      units = data;
+      //print(customers.length.toString());
+      //getItemData();
+      return units;
+    }, onError: (e) {
+      print(e);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,16 +74,34 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.transparent,
         onPressed: () {
-        api.createItem(context,Item(itemCode: _itemCodeController.text ,
-            itemNameAra: _itemNameAraController.text ,
-            itemNameEng: _itemNameEngController.text
+          if(_itemCodeController.text.isEmpty){
+            FN_showToast(context, "please_enter_item_code", Colors.black);
+            return;
+          }
+          if(_itemNameAraController.text.isEmpty){
+            FN_showToast(context, "please_enter_item_name", Colors.black);
+            return;
+          }
+          if(_itemNameEngController.text.isEmpty){
+            FN_showToast(context, "please_enter_item_name", Colors.black);
+            return;
+          }
+          // if(_itemNameEngController.text.isEmpty){
+          //   FN_showToast(context, "please_select_unit", Colors.black);
+          // }
+
+          api.createItem(context,Item(
+              itemCode: _itemCodeController.text ,
+              itemNameAra: _itemNameAraController.text ,
+              itemNameEng: _itemNameEngController.text,
+
           //,
           // taxIdentificationNumber: _taxIdentificationNumberController.text ,
           // Phone1: _phone1Controller.text ,
           // address: _addressController.text
-        ));
+          ));
 
-        Navigator.pop(context) ;
+          Navigator.push(context, MaterialPageRoute(builder: (context) =>  ItemListPage()),);
       },
 
         child:Container(
@@ -74,8 +119,7 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
             shape: BoxShape.circle,
             boxShadow: <BoxShadow>[
               BoxShadow(
-                  color: FitnessAppTheme.nearlyDarkBlue
-                      .withOpacity(0.4),
+                  color: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.4),
                   offset: const Offset(2.0, 14.0),
                   blurRadius: 16.0),
             ],
@@ -110,207 +154,288 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
       body: Form(
         key: _addFormKey,
         child: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.only(top: 40, left: 10, right: 10),
-            // padding: EdgeInsets.all(20.0),
-            child: Card(
-                child: Container(
-                    padding: const EdgeInsets.all(10.0),
-                    width: 440,
-                    child: Column(
+          child: Center(
+            child: Container(
+                margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                padding: const EdgeInsets.all(10.0),
+                height: 400,
+                width: 440,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    const SizedBox(height: 30),
+                    Column(
                       children: <Widget>[
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 5, 0, 20),
-                          child: Row(
-                            //crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text('code'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                width: 220,
-                                child: TextFormField(
-                                  controller: _itemCodeController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'please_enter_code'.tr();
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {},
-                                ),
-                              ),
-                            ],
+                        const SizedBox(height: 30),
+                        SizedBox(
+                            height: 40,
+                            child: Text('code'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 16))
+                        ),
+                        const SizedBox(height: 25),
+                        SizedBox(
+                            height: 40,
+                            child: Text('arabicName'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15))
+                        ),
+                        const SizedBox(height: 25),
+                        SizedBox(
+                            height: 40,
+                            child: Text('englishName'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15))
+                        ),
+                        const SizedBox(height: 25),
+                        SizedBox(
+                            height: 40,
+                            child: Text('unit_name'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15))
+                        ),
+                        const SizedBox(height: 25),
+                        SizedBox(
+                          height: 40,
+                            child: Text('sell_price'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15))
+                        ),
+
+                      ],
+                    ),
+                    const SizedBox(width: 10),
+                    Column(
+                      children: <Widget>[
+                        const SizedBox(height: 20),
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: defaultFormField(
+                            controller: _itemCodeController,
+                            type: TextInputType.text,
+                            colors: Colors.blueGrey,
+                            validate: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'code must be non empty';
+                              }
+                              return null;
+                            },
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                          child: Row(
-
-                            children: <Widget>[
-
-                              Text('arabicName'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                width: 200,
-                                child: TextFormField(
-                                  textAlign: TextAlign.start,
-                                  controller: _itemNameAraController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'please_enter_arabicName'.tr();
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {},
-                                ),
-                              ),
-                            ],
+                        const SizedBox(height: 25),
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: defaultFormField(
+                            controller: _itemNameAraController,
+                            type: TextInputType.text,
+                            colors: Colors.blueGrey,
+                            validate: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'code must be non empty';
+                              }
+                              return null;
+                            },
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                          child: Row(
-                            children: <Widget>[
-                              Text('englishName'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                width: 200,
-                                child: TextFormField(
-                                  controller: _itemNameEngController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'please_enter_englishName'.tr();
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {},
-                                ),
-                              ),
-                            ],
+                        const SizedBox(height: 25),
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: defaultFormField(
+                            controller: _itemNameEngController,
+                            type: TextInputType.text,
+                            colors: Colors.blueGrey,
+                            validate: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'code must be non empty';
+                              }
+                              return null;
+                            },
                           ),
                         ),
-                        // Container(
-                        //   margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        //   child: Column(
-                        //     children: <Widget>[
-                        //       Align(
-                        //           alignment: Alignment.centerLeft,
-                        //           child: Text('taxIdentificationNumber'.tr(),textAlign: TextAlign.left)
-                        //       ),
-                        //       TextFormField(
-                        //         controller: _taxIdentificationNumberController,
-                        //         decoration: const InputDecoration(
-                        //           hintText: '',
-                        //         ),
-                        //         validator: (value) {
-                        //           if (value!.isEmpty) {
-                        //             return 'please_enter_taxIdentificationNumber'.tr();
-                        //           }
-                        //           return null;
-                        //         },
-                        //         onChanged: (value) {},
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // Container(
-                        //   margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        //   child: Column(
-                        //     children: <Widget>[
-                        //       Align(
-                        //           alignment: Alignment.centerLeft,
-                        //           child: Text('address'.tr(),textAlign: TextAlign.left)
-                        //       ),
-                        //
-                        //       TextFormField(
-                        //         controller: _addressController,
-                        //         decoration: const InputDecoration(
-                        //           hintText: '',
-                        //         ),
-                        //         validator: (value) {
-                        //           if (value!.isEmpty) {
-                        //             return 'please_enter_address'.tr();
-                        //           }
-                        //           return null;
-                        //         },
-                        //         onChanged: (value) {},
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // Container(
-                        //   margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        //   child: Column(
-                        //     children: <Widget>[
-                        //       Align(
-                        //           alignment: Alignment.centerLeft,
-                        //           child: Text('phone'.tr(),textAlign: TextAlign.left)
-                        //       ),
-                        //       TextFormField(
-                        //         controller: _phone1Controller,
-                        //         decoration: const InputDecoration(
-                        //           hintText: '',
-                        //         ),
-                        //         validator: (value) {
-                        //           if (value!.isEmpty) {
-                        //             return 'please_enter_phone'.tr();
-                        //           }
-                        //           return null;
-                        //         },
-                        //         onChanged: (value) {},
-                        //       ),
-                        //     ],
-                        //   ),
-                        // )
+                        const SizedBox(height: 25),
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: DropdownSearch<Unit>(
+                            selectedItem: unitItem,
+                            popupProps: PopupProps.menu(
+                              itemBuilder: (context, item, isSelected) {
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: !isSelected ? null
+                                      : BoxDecoration(
+                                    border: Border.all(color: Colors.blueGrey),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text((langId == 1) ? item.unitNameAra.toString() : item.unitNameEng.toString()),
+                                  ),
+                                );
+                              },
+                              showSearchBox: true,
 
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: const Column(
-                            children: <Widget>[
-                              // ElevatedButton(
-                              //   style: ButtonStyle(
-                              //       backgroundColor: MaterialStateProperty.all(Colors.blue),
-                              //       padding:
-                              //       MaterialStateProperty.all(const EdgeInsets.all(20)),
-                              //       textStyle: MaterialStateProperty.all(
-                              //           const TextStyle(fontSize: 14, color: Colors.white))),
-                              //   onPressed: () {
-                              //     // if (_addFormKey.currentState.validate()) {
-                              //     //   _addFormKey.currentState.save();
-                              //       api.createItem(context,Item(itemCode: _itemCodeController.text ,
-                              //                                   itemNameAra: _itemNameAraController.text ,
-                              //                                   itemNameEng: _itemNameEngController.text
-                              //                                   //,
-                              //                                   // taxIdentificationNumber: _taxIdentificationNumberController.text ,
-                              //                                   // Phone1: _phone1Controller.text ,
-                              //                                   // address: _addressController.text
-                              //       ));
-                              //
-                              //       Navigator.pop(context) ;
-                              //     // }
-                              //   },
-                              //   child: Text('Save', style: TextStyle(color: Colors.white)),
-                              //   //color: Colors.blue,
-                              // )
-                            ],
+                            ),
+                            items: units,
+                            itemAsString: (Unit u) => (langId == 1) ? u.unitNameAra.toString() : u.unitNameEng.toString(),
+                            onChanged: (value) {
+                              //v.text = value!.cusTypesCode.toString();
+                              //print(value!.id);
+                              selectedUnitValue = value!.unitCode.toString();
+                              selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
+                            },
+                            filterFn: (instance, filter) {
+                              if ((langId == 1) ? instance.unitNameAra!.contains(filter) : instance.unitNameEng!.contains(filter)) {
+                                print(filter);
+                                return true;
+                              }
+                              else {
+                                return false;
+                              }
+                            },
+                            // dropdownDecoratorProps: const DropDownDecoratorProps(
+                            //   dropdownSearchDecoration: InputDecoration(
+                            //     //labelText: 'unit_name'.tr(),
+                            //
+                            //   ),
+                            // ),
+
+                          ),
+                        ),
+                        const SizedBox(height: 25),
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: defaultFormField(
+                            controller: _itemSalePriceController,
+                            type: TextInputType.text,
+                            colors: Colors.blueGrey,
+                            validate: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'code must be non empty';
+                              }
+                              return null;
+                            },
                           ),
                         ),
                       ],
-                    )
+                    ),
+
+                    // Container(
+                    //   margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    //   child: Column(
+                    //     children: <Widget>[
+                    //       Align(
+                    //           alignment: Alignment.centerLeft,
+                    //           child: Text('taxIdentificationNumber'.tr(),textAlign: TextAlign.left)
+                    //       ),
+                    //       TextFormField(
+                    //         controller: _taxIdentificationNumberController,
+                    //         decoration: const InputDecoration(
+                    //           hintText: '',
+                    //         ),
+                    //         validator: (value) {
+                    //           if (value!.isEmpty) {
+                    //             return 'please_enter_taxIdentificationNumber'.tr();
+                    //           }
+                    //           return null;
+                    //         },
+                    //         onChanged: (value) {},
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // Container(
+                    //   margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    //   child: Column(
+                    //     children: <Widget>[
+                    //       Align(
+                    //           alignment: Alignment.centerLeft,
+                    //           child: Text('address'.tr(),textAlign: TextAlign.left)
+                    //       ),
+                    //
+                    //       TextFormField(
+                    //         controller: _addressController,
+                    //         decoration: const InputDecoration(
+                    //           hintText: '',
+                    //         ),
+                    //         validator: (value) {
+                    //           if (value!.isEmpty) {
+                    //             return 'please_enter_address'.tr();
+                    //           }
+                    //           return null;
+                    //         },
+                    //         onChanged: (value) {},
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
+                    // Container(
+                    //   margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                    //   child: Column(
+                    //     children: <Widget>[
+                    //       Align(
+                    //           alignment: Alignment.centerLeft,
+                    //           child: Text('phone'.tr(),textAlign: TextAlign.left)
+                    //       ),
+                    //       TextFormField(
+                    //         controller: _phone1Controller,
+                    //         decoration: const InputDecoration(
+                    //           hintText: '',
+                    //         ),
+                    //         validator: (value) {
+                    //           if (value!.isEmpty) {
+                    //             return 'please_enter_phone'.tr();
+                    //           }
+                    //           return null;
+                    //         },
+                    //         onChanged: (value) {},
+                    //       ),
+                    //     ],
+                    //   ),
+                    // )
+
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      child: const Column(
+                        children: <Widget>[
+                          // ElevatedButton(
+                          //   style: ButtonStyle(
+                          //       backgroundColor: MaterialStateProperty.all(Colors.blue),
+                          //       padding:
+                          //       MaterialStateProperty.all(const EdgeInsets.all(20)),
+                          //       textStyle: MaterialStateProperty.all(
+                          //           const TextStyle(fontSize: 14, color: Colors.white))),
+                          //   onPressed: () {
+                          //     // if (_addFormKey.currentState.validate()) {
+                          //     //   _addFormKey.currentState.save();
+                          //       api.createItem(context,Item(itemCode: _itemCodeController.text ,
+                          //                                   itemNameAra: _itemNameAraController.text ,
+                          //                                   itemNameEng: _itemNameEngController.text
+                          //                                   //,
+                          //                                   // taxIdentificationNumber: _taxIdentificationNumberController.text ,
+                          //                                   // Phone1: _phone1Controller.text ,
+                          //                                   // address: _addressController.text
+                          //       ));
+                          //
+                          //       Navigator.pop(context) ;
+                          //     // }
+                          //   },
+                          //   child: Text('Save', style: TextStyle(color: Colors.white)),
+                          //   //color: Colors.blue,
+                          // )
+                        ],
+                      ),
+                    ),
+                  ],
                 )
             ),
           ),
         ),
       ),
     );
+  }
+  getUnitData() {
+    for (var i = 0; i < units.length; i++) {
+      menuUnits.add(DropdownMenuItem(value: units[i].unitCode.toString(), child: Text(
+          (langId == 1) ? units[i].unitNameAra.toString() : units[i].unitNameEng.toString())));
+    }
+    setState(() {
+
+    });
   }
 }

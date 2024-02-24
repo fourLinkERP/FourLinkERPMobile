@@ -178,6 +178,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     print('Start Update');
 
     Map data = {
+      'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
       'customerCode': customer.customerCode,
@@ -187,7 +188,17 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'taxIdentificationNumber': customer.taxIdentificationNumber,
       'address': customer.address,
       'idNo': customer.idNo,
-      'Phone1': customer.phone1
+      'Phone1': customer.phone1,
+      "confirmed": false,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSynchronized": false,
+      "isSystem": false,
+      "notActive": false,
+      "flgDelete": false
     };
 
     String apiUpdate =updateApi + id.toString();

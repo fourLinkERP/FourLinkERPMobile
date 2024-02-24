@@ -69,10 +69,10 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
   // String? customerCodeSelectedValue = null;
   String? targetType = "CUS";
-  String? typeCodeSelectedValue = "1";
+  String? selectedTypeCodeValue = "3";
   int? cashTargetTypeIdSelectedValue = 1;
   String? cashTargetCodeSelectedValue = "";
-  int? boxTypeSelectedValue = 1;
+  int? boxTypeSelectedValue = 2;
   String? boxCodeSelectedValue = "";
 
   final CashReceiveApiService api = CashReceiveApiService();
@@ -255,17 +255,13 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
                           DropdownSearch<CashType>(
                             validator: (value) => value == null ? "select_a_Type".tr() : null,
-
                             selectedItem: cashTypeItem,
                             popupProps: PopupProps.menu(
-
                               itemBuilder: (context, item, isSelected) {
                                 return Container(
                                   margin: const EdgeInsets.symmetric(horizontal: 8),
-                                  decoration: !isSelected
-                                      ? null
+                                  decoration: !isSelected ? null
                                       : BoxDecoration(
-
                                     border: Border.all(color: Theme.of(context).primaryColor),
                                     borderRadius: BorderRadius.circular(5),
                                     color: Colors.white,
@@ -285,7 +281,8 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                             onChanged: (value){
                               //v.text = value!.cusTypesCode.toString();
                               //print(value!.id);
-                              typeCodeSelectedValue = value!.code.toString();
+                              selectedTypeCodeValue = value!.code.toString();
+                              boxTypeSelectedValue = 2;
                               setNextSerial();
                             },
 
@@ -460,74 +457,6 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                           ),
 
                           const SizedBox(height: 20),
-                          Form(
-                              key: _dropdownBoxTypeFormKey,
-                              child: Row(
-                                children: [
-                                  Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('box_type'.tr(),
-                                      style: const TextStyle(fontWeight: FontWeight.bold)) ),
-
-                                  const SizedBox(width: 10),
-                                  SizedBox(
-                                    width: 200,
-                                    child: DropdownSearch<BoxType>(
-                                      validator: (value) => value == null ? "select_a_box_Type".tr() : null,
-
-                                      selectedItem: boxTypeItem,
-                                      popupProps: PopupProps.menu(
-
-                                        itemBuilder: (context, item, isSelected) {
-                                          return Container(
-                                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                                            decoration: !isSelected ? null
-                                                : BoxDecoration(
-
-                                              border: Border.all(color: Theme.of(context).primaryColor),
-                                              borderRadius: BorderRadius.circular(5),
-                                              color: Colors.white,
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
-                                            ),
-                                          );
-                                        },
-                                        showSearchBox: true,
-
-                                      ),
-                                      enabled: true,
-
-                                      items: boxTypes,
-                                      itemAsString: (BoxType u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
-
-                                      onChanged: (value){
-                                        //v.text = value!.cusTypesCode.toString();
-                                        //print(value!.id);
-                                        boxTypeSelectedValue = value!.code;
-                                        setBoxCode(boxTypeSelectedValue.toString());
-                                      },
-
-                                      filterFn: (instance, filter){
-                                        if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
-                                          print(filter);
-                                          return true;
-                                        }
-                                        else{
-                                          return false;
-                                        }
-                                      },
-                                      dropdownDecoratorProps: const DropDownDecoratorProps(
-                                        dropdownSearchDecoration: InputDecoration(
-                                          //labelText: "box_type".tr(),
-
-                                        ),),
-
-                                    ),
-                                  ),
-
-                                ],
-                              )),
-                          const SizedBox(height: 20),
                           Row(
                             children: [
                               Form(
@@ -538,9 +467,9 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                       Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('cash_target_code'.tr(),
                                           style: const TextStyle(fontWeight: FontWeight.bold)) ),
 
-                                      const SizedBox(width: 5),
+                                      const SizedBox(width: 10),
                                       SizedBox(
-                                        width: 90,
+                                        width: 200,
                                         child: DropdownSearch<TargetCode>(
                                           validator: (value) => value == null ? "select_a_cash_target_Code".tr() : null,
 
@@ -599,9 +528,85 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
                                     ],
                                   )),
-                              const SizedBox(width: 10),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Form(
+                                  key: _dropdownBoxTypeFormKey,
+                                  child: Row(
+                                    children: [
+                                      Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('box_type'.tr(),
+                                          style: const TextStyle(fontWeight: FontWeight.bold)) ),
 
-                              //const SizedBox(width: 10),
+                                      const SizedBox(width: 10),
+                                      SizedBox(
+                                        width: 200,
+                                        child: DropdownSearch<BoxType>(
+                                          validator: (value) => value == null ? "select_a_box_Type".tr() : null,
+
+                                          selectedItem: boxTypeItem,
+                                          popupProps: PopupProps.menu(
+
+                                            itemBuilder: (context, item, isSelected) {
+                                              return Container(
+                                                margin: const EdgeInsets.symmetric(horizontal: 8),
+                                                decoration: !isSelected ? null
+                                                    : BoxDecoration(
+
+                                                  border: Border.all(color: Theme.of(context).primaryColor),
+                                                  borderRadius: BorderRadius.circular(5),
+                                                  color: Colors.white,
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
+                                                ),
+                                              );
+                                            },
+                                            showSearchBox: true,
+
+                                          ),
+                                          enabled: true,
+
+                                          items: boxTypes,
+                                          itemAsString: (BoxType u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
+
+                                          onChanged: (value){
+                                            //v.text = value!.cusTypesCode.toString();
+                                            //print(value!.id);
+                                            boxTypeSelectedValue = value!.code;
+                                            setBoxCode(boxTypeSelectedValue.toString());
+                                          },
+
+                                          filterFn: (instance, filter){
+                                            if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
+                                              print(filter);
+                                              return true;
+                                            }
+                                            else{
+                                              return false;
+                                            }
+                                          },
+                                          dropdownDecoratorProps: const DropDownDecoratorProps(
+                                            dropdownSearchDecoration: InputDecoration(
+                                              //labelText: "box_type".tr(),
+
+                                            ),),
+
+                                        ),
+                                      ),
+
+                                    ],
+                                  )),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+
+                          //const SizedBox(width: 10),
+                          Row(
+                            children: [
                               Form(
                                   key: _dropdownBoxCodeFormKey,
                                   child: Row(
@@ -610,10 +615,10 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                       Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('box_code'.tr(),
                                           style: const TextStyle(fontWeight: FontWeight.bold)) ),
 
-                                      const SizedBox(width: 5),
+                                      const SizedBox(width: 10),
 
                                       SizedBox(
-                                        width: 90,
+                                        width: 200,
                                         child: DropdownSearch<BoxCode>(
                                           validator: (value) => value == null ? "select_a_box_Code".tr() : null,
 
@@ -687,6 +692,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                 SizedBox(
                                   width: 200,
                                   child: TextFormField(
+                                    keyboardType: TextInputType.number,
                                     controller: _valueController,
                                     decoration: const InputDecoration(
                                       hintText: '',
@@ -884,18 +890,16 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
 
   getCashTypeData() {
-    if (cashTypes.isNotEmpty) {
       for(var i = 0; i < cashTypes.length; i++){
-        menuCashReceiveTypes.add(DropdownMenuItem(value: cashTypes[i].code.toString(), child: Text(cashTypes[i].
-        descAra.toString())));
-        if(cashTypes[i].code == "1"){
+        menuCashReceiveTypes.add(
+            DropdownMenuItem(value: cashTypes[i].code.toString(), child: Text(cashTypes[i].descAra.toString())));
+        if(cashTypes[i].code == selectedTypeCodeValue){
           // print('in amr3');
           cashTypeItem = cashTypes[cashTypes.indexOf(cashTypes[i])];
         }
       }
-      typeCodeSelectedValue = "1";
-      setNextSerial();
-    }
+      //selectedTypeCodeValue = "1";
+     setNextSerial();
     setState(() {
 
     });
@@ -912,6 +916,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
           cashTargetTypeItem = cashTargetTypes[cashTargetTypes.indexOf(cashTargetTypes[i])];
           cashTargetTypeIdSelectedValue=1;
           setTargetCode(cashTargetTypeIdSelectedValue.toString());
+
           // print('in amr4');
           // print(customerTypeItem );
         }
@@ -928,6 +933,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
       for(var i = 0; i < boxTypes.length; i++){
         menuCashReceiveTypes.add(DropdownMenuItem(value: cashTypes[i].code.toString(), child: Text(boxTypes[i].
         nameAra.toString())));
+
         if(boxTypes[i].code == "1"){
           // print('in amr3');
           boxTypeItem = boxTypes[boxTypes.indexOf(boxTypes[i])];
@@ -936,6 +942,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
         }
 
       }
+      boxTypeSelectedValue = 2;
       //typeCodeSelectedValue = "1";
     }
     setState(() {
@@ -992,7 +999,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
   setNextSerial(){
     //Serial
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("CM_TrxH", "TrxSerial", " And TrxKind=1 And CashTypeCode='" + typeCodeSelectedValue.toString() + "'").then((data) {
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("CM_TrxH", "TrxSerial", " And TrxKind=1 And CashTypeCode='" + selectedTypeCodeValue.toString() + "'").then((data) {
       NextSerial nextSerial = data;
 
       //Date
@@ -1058,17 +1065,21 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
     if(targetType == "1")//Customer
         {
-      if (customers != null) {
-        for(var i = 0; i < cashBankBranches.length; i++){
+      if (customers.isNotEmpty) {
+        for(var i = 0; i < customers.length; i++){
           targetCodes.add(TargetCode(code: customers[i].customerCode,nameAra: customers[i].customerNameAra
               ,nameEng: customers[i].customerNameEng));
         }
-
         targetType="CUS";
       }
-
+      // if (customers.isNotEmpty) {
+      //   for(var i = 0; i < customers.length; i++){
+      //     menuCustomers.add(DropdownMenuItem(
+      //         value: customers[i].customerCode.toString(),
+      //         child: Text(customers[i].customerNameAra.toString())));
+      //   }
+      // }
     }
-
 
     setState(() {
        cashTargetCodeItem=TargetCode(code: "" ,nameAra: "",nameEng: "",id: 0);
@@ -1076,10 +1087,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
   }
 
-
   saveCashReceive(BuildContext context) {
-
-
 
     //Serial
     if(_cashReceiveSerialController.text.isEmpty){
@@ -1113,7 +1121,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
     _cashReceiveApiService.createCashReceive(context,CashReceive(
         trxKind: 1,
-        cashTypeCode: typeCodeSelectedValue,
+        cashTypeCode: selectedTypeCodeValue,
         trxSerial: _cashReceiveSerialController.text,
         trxDate: _cashReceiveDateController.text,
         refNo: _refNoController.text,

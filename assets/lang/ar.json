@@ -233,14 +233,14 @@
     "total": "الاجمالي",
     "total :": "الاجمالي :",
     "action": "اعدادات",
-    "add_new_Customers": "ِاضافة عميل جديد",
+    "add_new_Customers": "اضافة عميل جديد",
     "code": "كود",
     "please_enter_code": "من فضلك ادخل الكود",
     "arabicName": "الاسم العربي",
     "please_enter_arabicName": "من فضلك ادخل الاسم العربي",
     "englishName": "الاسم الاجنبي",
     "please_enter_englishName": "من فضلك ادخل الاسم الاجنبي",
-    "taxIdentificationNumber": "ادخل الرقم الضريبي",
+    "taxIdentificationNumber": "الرقم الضريبي",
     "please_enter_taxIdentificationNumber": "من فضلك ادخل الرقم الضريبي",
     "address": "العنوان",
     "please_enter_address": "من فضلك ادخل العنوان",
@@ -544,7 +544,16 @@
     "the_cost": "التكلفة",
     "signature": "التوقيع",
     "add_customer": "اضافة عميل",
-    "add_car": "اضافة سيارة"
+    "add_car": "اضافة سيارة",
+    "please_enter_item_code": "ادخل كود الصنف",
+    "please_enter_item_name": "ادخل اسم الصنف",
+    "please_select_unit": "اختر وحدة قياس",
+    "sell_price": "سعر البيع",
+    "not_allowed_to_delete": "غير مسموح بالحذف",
+    "searchReturnSalesInvoice": "بحث مرتجع المبيعات",
+    "returnSalesInvoice": "مرتجع المبيعات",
+    "add_return_salesInvoice_return": "اضافة مرتجع المبيعات"
+
 
 
 }

@@ -1,9 +1,9 @@
-
 import 'dart:async';
 import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
+import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../cubit/app_cubit.dart';
@@ -211,31 +211,32 @@ class _ItemListPageState extends State<ItemListPage> {
   }
 
   _deleteItem(BuildContext context,int? id) async {
-
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Are you sure?'),
-        content: const Text('This action will permanently delete this data'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );
-
-    if (result == null || !result) {
-      return;
-    }
-
-    print('lahoiiiiiiiiiiiiii');
-    var res = _apiService.deleteItem(context,id).then((value) => getData());
+    FN_showToast(context, "not_allowed_to_delete", Colors.red);
+    //
+    // final result = await showDialog<bool>(
+    //   context: context,
+    //   builder: (context) => AlertDialog(
+    //     title: const Text('Are you sure?'),
+    //     content: const Text('This action will permanently delete this data'),
+    //     actions: [
+    //       TextButton(
+    //         onPressed: () => Navigator.pop(context, false),
+    //         child: const Text('Cancel'),
+    //       ),
+    //       TextButton(
+    //         onPressed: () => Navigator.pop(context, true),
+    //         child: const Text('Delete'),
+    //       ),
+    //     ],
+    //   ),
+    // );
+    //
+    // if (result == null || !result) {
+    //   return;
+    // }
+    //
+    // print('lahoiiiiiiiiiiiiii');
+    // var res = _apiService.deleteItem(context,id).then((value) => getData());
 
   }
 

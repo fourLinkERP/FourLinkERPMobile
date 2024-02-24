@@ -15,12 +15,11 @@ class CarReceiveD2ApiService {
   String deleteApi = baseUrl.toString() + 'v1/carreceivecardetail2s/';
   String getByIdApi = baseUrl.toString() + 'v1/carreceivecardetail2s/'; // Add ID For Get
 
-  Future<List<CarReceiveD2s>> getCarReceiveD2s (String? trxSerial) async {
+  Future<List<CarReceiveD2s>> getCarReceiveD2s () async {
     Map data = {
       'Search': {
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
-        'TrxSerial': trxSerial
       }
 
     };

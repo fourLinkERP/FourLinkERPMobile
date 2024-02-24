@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carCars/carCar.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carCars/customerCar.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
@@ -9,6 +10,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 class CarApiService {
 
   String searchApi= baseUrl.toString()  + 'v1/carcars/search';
+  String searchDataApi= baseUrl.toString()  + 'v1/carcars/searchdata';
   String createApi= baseUrl.toString()  + 'v1/carcars';
   String updateApi= baseUrl.toString()  + 'v1/carcars/';  // Add ID For Edit
   String deleteApi= baseUrl.toString()  + 'v1/carcars/';
@@ -21,7 +23,6 @@ class CarApiService {
       'BranchCode': branchCode
     };
 
-    print('Car 1');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -31,22 +32,50 @@ class CarApiService {
       body: jsonEncode(data),
     );
 
-
     if (response.statusCode == 200) {
-      print('Car 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<Car> list = [];
       if (data.isNotEmpty) {
         list = data.map((item) => Car.fromJson(item)).toList();
       }
-      print('Car 3');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => Car.fromJson(data))
-      //     .toList();
     } else {
-      print('Car Failed');
       throw "Failed to load Car list";
+    }
+  }
+
+  Future<List<CustomerCar>>  getCustomerCars(String? plateNumberAra, String? mobile) async {
+
+    Map data = {
+      'CompanyCode': companyCode,
+      'BranchCode': branchCode,
+      'PlateNumberAra': plateNumberAra,
+      'Mobile': mobile
+
+    };
+    print('CustomerCar 1');
+    final http.Response response = await http.post(
+      Uri.parse(searchDataApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+
+      print('CustomerCar 2');
+      List<dynamic> data = jsonDecode(response.body)['data'];
+      List<CustomerCar> list = [];
+      if (data.isNotEmpty) {
+        list = data.map((item) => CustomerCar.fromJson(item)).toList();
+      }
+
+      print('CustomerCar 3');
+      return  list;
+    } else {
+      throw "Failed to load CustomerCar list";
     }
   }
 

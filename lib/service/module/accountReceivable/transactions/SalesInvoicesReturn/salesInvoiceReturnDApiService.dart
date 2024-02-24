@@ -1,33 +1,33 @@
 import 'dart:convert';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceD.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
+import '../../../../../data/model/modules/module/accountreceivable/transactions/salesInvoices/SalesInvoiceReturnD.dart';
 
- class SalesInvoiceDApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/salesinvoicedetails/searchData';
-  String createApi= baseUrl.toString()  + 'v1/salesinvoicedetails';
-  String updateApi= baseUrl.toString()  + 'v1/salesinvoicedetails/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/salesinvoicedetails/';
-  String getByIdApi= baseUrl.toString()  + 'v1/salesinvoicedetails/';  // Add ID For Get
+class SalesInvoiceReturnDApiService {
 
-  Future<List<SalesInvoiceD>> getSalesInvoicesD(int? headerId) async {
-    print('Booter 1 SalesInvoiceD');
+  String searchApi= baseUrl.toString()  + 'v1/salesinvoicereturndetails/search';
+  String createApi= baseUrl.toString()  + 'v1/salesinvoicereturndetails';
+  String updateApi= baseUrl.toString()  + 'v1/salesinvoicereturndetails/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + 'v1/salesinvoicereturndetails/';
+  String getByIdApi= baseUrl.toString()  + 'v1/salesinvoicereturndetails/';  // Add ID For Get
+
+  Future<List<SalesInvoiceReturnD>> getSalesInvoiceReturnD(int? headerId) async {
+    print('Booter 1 SalesInvoiceReturnD');
     Map data = {
       // 'CompanyCode': companyCode,
       // 'BranchCode': branchCode,
-      // 'SalesInvoicesCase': 1, //Sales Invoice Case =1
-      // 'SalesInvoicesTypeCode': '1', //Sales Invoice Type
+      // 'SalesInvoiceReturnsCase': 1, //Sales Invoice Case =1
+      // 'SalesInvoiceReturnsTypeCode': '1', //Sales Invoice Type
       'HeaderId': headerId
     };
 
-    print('Booter 2 SalesInvoiceD');
-    print('Booter 2  SalesInvoiceD' + data.toString());
+    print('Booter 2 SalesInvoiceReturnD');
+    print('Booter 2  SalesInvoiceReturnD' + data.toString());
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -37,18 +37,18 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       body: jsonEncode(data),
     );
 
-    print('Booter 3 SalesInvoiceD');
+    print('Booter 3 SalesInvoiceReturnD');
     if (response.statusCode == 200) {
-      print('Booter 4 SalesInvoiceD');
+      print('Booter 4 SalesInvoiceReturnD');
       List<dynamic> data = jsonDecode(response.body)['data'];
-      List<SalesInvoiceD> list = [];
+      List<SalesInvoiceReturnD> list = [];
       if (data.isNotEmpty) {
-        list = data.map((item) => SalesInvoiceD.fromJson(item)).toList();
+        list = data.map((item) => SalesInvoiceReturnD.fromJson(item)).toList();
       }
-      print('B 1 Finish SalesInvoiceD');
+      print('B 1 Finish SalesInvoiceReturnD');
       return  list;
       // return await json.decode(res.body)['data']
-      //     .map((data) => SalesInvoice.fromJson(data))
+      //     .map((data) => SalesInvoiceReturn.fromJson(data))
       //     .toList();
     } else {
       print('Booter Error');
@@ -94,7 +94,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     }
   }
 
-  Future<SalesInvoiceD> getSalesInvoiceDById(int id) async {
+  Future<SalesInvoiceReturnD> getSalesInvoiceReturnDById(int id) async {
 
     var data = {
       // "id": id
@@ -111,7 +111,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
     if (response.statusCode == 200) {
 
-      return SalesInvoiceD.fromJson(json.decode(response.body));
+      return SalesInvoiceReturnD.fromJson(json.decode(response.body));
 
     } else {
       throw Exception('Failed to load a case');
@@ -120,11 +120,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
 
-  Future<int> createSalesInvoiceD(BuildContext context ,SalesInvoiceD invoice) async {
+  Future<int> createSalesInvoiceReturnD(BuildContext context ,SalesInvoiceReturnD invoice) async {
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'SalesInvoicesCase': 1, //Sales Invoice Case =1
+      'SalesInvoicesCase': 2, //Sales Invoice Case =2
       'SalesInvoicesTypeCode': invoice.salesInvoicesTypeCode, //Sales Invoice Type
       'salesInvoicesSerial': invoice.salesInvoicesSerial,
       'year': invoice.year,
@@ -196,14 +196,14 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     return  0;
   }
 
-  Future<int> updateSalesInvoiceD(BuildContext context ,int id, SalesInvoiceD invoice) async {
+  Future<int> updateSalesInvoiceReturnD(BuildContext context ,int id, SalesInvoiceReturnD invoice) async {
 
     print('Start Update');
 
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'SalesInvoicesCase': 1, //Sales Invoice Case =1
+      'SalesInvoicesCase': 2, //Sales Invoice Case = 2
       'SalesInvoicesTypeCode': invoice.salesInvoicesTypeCode,
       'salesInvoicesSerial': invoice.salesInvoicesSerial,
       'year': invoice.year,
@@ -263,7 +263,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     return 0;
   }
 
-  Future<void> deleteSalesInvoiceD(BuildContext context ,int? id) async {  //Future<void> deleteSalesInvoiceD(BuildContext context ,int? id) async {
+  Future<void> deleteSalesInvoiceReturnD(BuildContext context ,int? id) async {  //Future<void> deleteSalesInvoiceReturnD(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
     print('url' + apiDel);
@@ -284,7 +284,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);
     } else {
-      throw "Failed to delete a salesInvoice.";
+      throw "Failed to delete a salesInvoiceReturn.";
     }
   }
 

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carCars/customerCar.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carGroups/carGroup.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:fourlinkmobileapp/service/module/carMaintenance/carGroups/carGroupApiService.dart';
@@ -9,6 +10,7 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
+import '../../../../../cubit/app_cubit.dart';
 import '../../../../../data/model/modules/module/carMaintenance/carCars/carCar.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../helpers/toast.dart';
@@ -23,6 +25,7 @@ import 'package:intl/intl.dart';
 // APIs
 CarGroupApiService _carGroupApiService = CarGroupApiService();
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
+CarApiService _carApiService = CarApiService();
 
 class CustomerInfo extends StatefulWidget {
   const CustomerInfo({Key? key}) : super(key: key);
@@ -38,7 +41,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
   final _addFormKey = GlobalKey<FormState>();
   final mobileNumberController = TextEditingController();
   final plateNumberController = TextEditingController();
-  final chassisNumberController = TextEditingController();
+  final searchNumberController = TextEditingController();
   final customerNameController = TextEditingController();
   final customerIdentityController = TextEditingController();
   final emailController = TextEditingController();
@@ -60,6 +63,8 @@ class _CustomerInfoState extends State<CustomerInfo> {
 
   List<CarGroup> carGroups = [];
   List<Customer> customers = [];
+  List<CustomerCar> _customerCar = [];
+  List<CustomerCar> _founded = [];
 
   List<DropdownMenuItem<String>> menuCarGroups = [];
   List<DropdownMenuItem<String>> menuCustomers = [];
@@ -74,16 +79,12 @@ class _CustomerInfoState extends State<CustomerInfo> {
 
   @override
   initState() {
+    //getData();
     super.initState();
+    AppCubit.get(context).CheckConnection();
 
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("AR_Customers", "CustomerCode", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
-      NextSerial nextSerial = data;
-
-      //print(customers.length.toString());
-      addCustomerCodeController.text = nextSerial.nextSerial.toString();
-      return nextSerial;
-    }, onError: (e) {
-      print(e);
+    setState(() {
+      _founded = _customerCar;
     });
 
     Future<NextSerial>  futureSerialCar = _nextSerialApiService.getNextSerial("CMN_Cars", "CarCode", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
@@ -102,10 +103,56 @@ class _CustomerInfoState extends State<CustomerInfo> {
     }, onError: (e) {
       print(e);
     });
+  }
+  // void getData() async {
+  //   Future<List<CustomerCar>?> futureCustomerCar = apiCar.getCustomerCars(_value == 1 ? searchNumberController.text : null, _value == 2 ? searchNumberController.text : null).catchError((Error) {
+  //     print('Error${Error}');
+  //     AppCubit.get(context).EmitErrorState();
+  //   });
+  //
+  //   _customerCar = (await futureCustomerCar)!;
+  //   print(_customerCar);
+  //   if (_customerCar.isNotEmpty) {
+  //     setState(() {
+  //       _founded = _customerCar;
+  //       String search = '';
+  //     });
+  //   }
+  // }
+  // Future<void> getData() async{
+  //   Future<List<CustomerCar>> futureCustomerCar = apiCar.getCustomerCars(_value == 1 ? searchNumberController.text : null, _value == 2 ? searchNumberController.text : null).then((data) {
+  //     _customerCar = data;
+  //     print('naaaaaaaaaa');
+  //     print(_customerCar.length.toString());
+  //
+  //     return _customerCar;
+  //   }, onError: (e) {
+  //     print(e);
+  //   });
+  // }
+  Future<void> getData() async {
+    try {
+      List<CustomerCar>? data = await apiCar.getCustomerCars(
+        _value == 1 ? searchNumberController.text.toString() : " ",
+        _value == 2 ? searchNumberController.text.toString() : " ",
+      );
 
+      if (data != null) {
+        _customerCar = data;
+        print('naaaaaaaaaa');
+        /// في ايرور هنا مش راضي يعمل سيرش صح فا نشوف ايه المشكلة
+        print(_customerCar.length.toString());
+      } else {
+        print('Received null data from the API.');
+        // Handle null data as needed
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
-  //String? get pickedDate => (DateTime.now()).toString();
+
+
   DateTime get pickedDate => DateTime.now();
   @override
   Widget build(BuildContext context) {
@@ -133,7 +180,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                                   });
                                 }),
                           //const SizedBox(width: 5,),
-                          Text("plate_num".tr(),style: const TextStyle(fontWeight: FontWeight.bold),),
+                          Text("plate_num".tr() ,style: const TextStyle(fontWeight: FontWeight.bold),),
                         ],
                       ),
                       const SizedBox(width: 30,),
@@ -176,7 +223,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                                   elevation: 0,
                                   side: const BorderSide(
                                       width: 1,
-                                      color: Colors.cyan, //olorScheme.secondary,
+                                      color: Colors.cyan, //ColorScheme.secondary,
                                   )
                               ),
                               child: const Text('scan', style: TextStyle(color: Colors.white),), //Color.fromRGBO(144, 16, 46, 1)
@@ -197,10 +244,10 @@ class _CustomerInfoState extends State<CustomerInfo> {
                   width: 250,
                   child: defaultFormField(
                     enable: true,
-                    label: 'plate_num'.tr(),
+                    label: _value == 1 ?'plate_num'.tr() : 'mobile'.tr(),
                     prefix: Icons.search,
-                    controller: chassisNumberController,
-                    type: TextInputType.number,
+                    controller: searchNumberController,
+                    type: TextInputType.text,
                     colors: Colors.blueGrey,
                     validate: (String? value) {
                       if (value!.isEmpty) {
@@ -212,7 +259,28 @@ class _CustomerInfoState extends State<CustomerInfo> {
                 ),
                 const SizedBox(width: 10,),
                 IconButton(
-                    onPressed: (){},
+                  onPressed: () async {
+                    if (searchNumberController.text.isEmpty) {
+                      FN_showToast(context, "please enter mobile or plate number", Colors.red);
+                    } else {
+                      await getData(); // Wait for getData() to complete
+                      if (_customerCar.isNotEmpty) {
+                        customerNameController.text = _customerCar[0].customerName!;
+                        customerIdentityController.text = _customerCar[0].idNo!;
+                        emailController.text = _customerCar[0].email!;
+                        mobileNumberController.text = _customerCar[0].mobile!;
+                        chassis1NumberController.text = _customerCar[0].chassisNumber!;
+                        plate1NameController.text = _customerCar[0].plateNumberAra!;
+                        modelController.text = _customerCar[0].model!;
+                        selectedCarGroupValue = _customerCar[0].groupCode;
+                      }
+                    }
+                  },
+                  // if(_value == 1){
+                  //   ///call api care
+                  // }else{
+                  //   ///call api mobile
+                  // }
                     icon: const Icon(Icons.search),
                     iconSize: 30,
                   color: Colors.blueGrey,
@@ -884,10 +952,10 @@ class _CustomerInfoState extends State<CustomerInfo> {
                               width: 80,
                               child: Text('car_group'.tr()+' : ', style: TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold),),
                             ),
-                            const SizedBox(width: 20,),
+                            const SizedBox(width: 10,),
                             SizedBox(
                               height: 40,
-                              width: 190,
+                              width: 170,
                               child: DropdownSearch<CarGroup>(
                                 enabled: true,
                                 popupProps: PopupProps.menu(
@@ -1114,8 +1182,30 @@ class _CustomerInfoState extends State<CustomerInfo> {
       setState(() {
         imageFile = File(croppedFile.path);
       });
-      // reload();
     }
   }
-
 }
+//   addLaborRow() {
+//     if (selectedLaborValue == null) {
+//       FN_showToast(context, 'please choose labor'.tr(), Colors.black);
+//       return;
+//     }
+//
+//     CarReceiveD2s _carReceiveD2s = CarReceiveD2s();
+//     _carReceiveD2s.malfunctionCode = selectedLaborValue;
+//     _carReceiveD2s.malfunctionName = selectedLaborName;
+//     // _carReceiveD2s.hoursNumber;
+//     // _additionalRequestD.costCenterName1 = selectedCostCenter1Name;
+//     // _additionalRequestD.costCenterCode2 = selectedCostCenter2Value;
+//     // _additionalRequestD.costCenterName2 = selectedCostCenter2Name;
+//     _carReceiveD2s.lineNum = lineNum;
+//
+//      carReceiveD2Lst.add(_carReceiveD2s);
+//     lineNum++;
+//     setState(() {
+//       // selectedEmployeeValue = " ";
+//       // selectedCostCenter1Value = " ";
+//       // selectedCostCenter2Value = " ";
+//     });
+//   }
+// }

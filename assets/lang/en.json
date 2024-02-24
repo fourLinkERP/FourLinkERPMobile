@@ -287,6 +287,7 @@
     "totalTax": "Total Tax",
     "total":  "Total",
     "total :": "Total :",
+    "net_total": "Net total",
     "action":  "Setting",
     "search":"Search",
 
@@ -316,7 +317,7 @@
     "delete": "Delete",
     "product_code": "Product Code : ",
     "product_price": "Product Price : ",
-    "unit_name": "Unit name : ",
+    "unit_name": "Unit name",
     "Unit name :": "Unit name :",
     "product_name_arabic": "Product arabic name : ",
     "product_name_english": "Product english name : ",
@@ -469,5 +470,13 @@
     "work_shop": "Work shop",
     "add_customer": "Add Customer",
     "repair_agreements": "Repair Agreements",
-    "add_car": "Add Car"
+    "add_car": "Add Car",
+    "please_enter_item_code": "please enter item code",
+    "please_enter_item_name": "please enter item name",
+    "please_select_unit": "please select unit",
+    "sell_price": "Sell price",
+    "not_allowed_to_delete": "Not allowed to delete",
+    "searchReturnSalesInvoice": "Search SalesInvoice Return",
+    "returnSalesInvoice": "Sales Invoice Return",
+    "add_return_salesInvoice_return": "Add Sales Invoice Return"
 }

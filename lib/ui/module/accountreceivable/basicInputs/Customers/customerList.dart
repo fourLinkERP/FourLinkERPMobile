@@ -3,6 +3,7 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/cubit/app_cubit.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
+import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
@@ -215,31 +216,32 @@ class _CustomerListPageState extends State<CustomerListPage> {
   }
 
   _deleteItem(BuildContext context, int? id) async {
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Are you sure?'),
-        content: const Text('This action will permanently delete this data'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );
+    FN_showToast(context, "not_allowed_to_delete".tr(), Colors.red);
 
-    if (result == null || !result) {
-      return;
-    }
-
-    print('lahoiiiiiiiiiiiiii');
-    var res =
-        _apiService.deleteCustomer(context, id).then((value) => getData());
+    // final result = await showDialog<bool>(
+    //   context: context,
+    //   builder: (context) => AlertDialog(
+    //     title: const Text('Are you sure?'),
+    //     content: const Text('This action will permanently delete this data'),
+    //     actions: [
+    //       TextButton(
+    //         onPressed: () => Navigator.pop(context, false),
+    //         child: const Text('Cancel'),
+    //       ),
+    //       TextButton(
+    //         onPressed: () => Navigator.pop(context, true),
+    //         child: const Text('Delete'),
+    //       ),
+    //     ],
+    //   ),
+    // );
+    //
+    // if (result == null || !result) {
+    //   return;
+    // }
+    //
+    // print('lahoiiiiiiiiiiiiii');
+    // var res = _apiService.deleteCustomer(context, id).then((value) => getData());
   }
 
   _navigateToAddScreen(BuildContext context) async {

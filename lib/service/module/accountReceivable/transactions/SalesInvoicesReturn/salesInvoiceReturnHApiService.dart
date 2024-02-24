@@ -1,29 +1,29 @@
 import 'dart:convert';
-
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
-import '../../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceH.dart';
+import '../../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceReturnH.dart';
 
 
- class SalesInvoiceHApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/salesinvoiceheaders/searchData';
-  String createApi= baseUrl.toString()  + 'v1/salesinvoiceheaders';
-  String updateApi= baseUrl.toString()  + 'v1/salesinvoiceheaders/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/salesinvoiceheaders/';
-  String getByIdApi= baseUrl.toString()  + 'v1/salesinvoiceheaders/';  // Add ID For Get
+class SalesInvoiceReturnHApiService {
 
-  Future<List<SalesInvoiceH>?> getSalesInvoicesH() async {
+  String searchApi= baseUrl.toString()  + 'v1/salesinvoicereturnheaders/search';
+  String createApi= baseUrl.toString()  + 'v1/salesinvoicereturnheaders';
+  String updateApi= baseUrl.toString()  + 'v1/salesinvoicereturnheaders/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + 'v1/salesinvoicereturnheaders/';
+  String getByIdApi= baseUrl.toString()  + 'v1/salesinvoicereturnheaders/';  // Add ID For Get
+
+  Future<List<SalesInvoiceReturnH>?> getSalesInvoiceReturnH() async {
 
     Map data = {
       'Search':{
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
-        'SalesInvoicesCase': 1
-      } //Sales Invoice Case =1
+        'SalesInvoicesCase': 2
+      }
       // 'SalesInvoicesTypeCode': '1', //Sales Invoice Type
     };
 
@@ -37,18 +37,18 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       body: jsonEncode(data),
     );
 
-    print('Invoice Before ');
+    print('InvoiceReturn Before ');
     if (response.statusCode == 200) {
-      print('Invoice After ');
+      print('InvoiceReturn After ');
       List<dynamic> data = jsonDecode(response.body)['data'];
-      List<SalesInvoiceH> list = [];
+      List<SalesInvoiceReturnH> list = [];
       if (data.isNotEmpty) {
-        list = data.map((item) => SalesInvoiceH.fromJson(item)).toList();
+        list = data.map((item) => SalesInvoiceReturnH.fromJson(item)).toList();
       }
-     print('Invoice Finish');
+      print('Invoice Finish');
       return  list;
       // return await json.decode(res.body)['data']
-      //     .map((data) => SalesInvoice.fromJson(data))
+      //     .map((data) => SalesInvoiceReturn.fromJson(data))
       //     .toList();
     } else {
       //print('Invoice Failure');
@@ -56,7 +56,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
     }
   }
 
-  Future<SalesInvoiceH> getSalesInvoiceHById(int id) async {
+  Future<SalesInvoiceReturnH> getSalesInvoiceReturnHById(int id) async {
     var data = {
       // "id": id
     };
@@ -71,19 +71,19 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
 
     if (response.statusCode == 200) {
 
-      return SalesInvoiceH.fromJson(json.decode(response.body));
+      return SalesInvoiceReturnH.fromJson(json.decode(response.body));
 
     } else {
       throw Exception('Failed to load a case');
     }
   }
 
-  Future<int> createSalesInvoiceH(BuildContext context ,SalesInvoiceH invoice) async {
+  Future<int> createSalesInvoiceReturnH(BuildContext context ,SalesInvoiceReturnH invoice) async {
     print('save invoice 0');
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'SalesInvoicesCase': 1, //Sales Invoice Case =1
+      'SalesInvoicesCase': 2, //Sales Invoice Case = 2
       'SalesInvoicesTypeCode': invoice.salesInvoicesTypeCode, //Sales Invoice Type
       'salesInvoicesSerial': invoice.salesInvoicesSerial,
       'SalesInvoicesDate': invoice.salesInvoicesDate,
@@ -157,7 +157,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
 
   }
 
-  Future<int> updateSalesInvoiceH(BuildContext context ,int id, SalesInvoiceH invoice) async {
+  Future<int> updateSalesInvoiceReturnH(BuildContext context ,int id, SalesInvoiceReturnH invoice) async {
 
     print('Start Update');
 
@@ -165,7 +165,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'SalesInvoicesCase': 1, //Sales Invoice Case =1
+      'SalesInvoicesCase': 2, //Sales Invoice Case =2
       'SalesInvoicesTypeCode': invoice.salesInvoicesTypeCode, //Sales Invoice Type
       'salesInvoicesSerial': invoice.salesInvoicesSerial,
       'SalesInvoicesDate': invoice.salesInvoicesDate,
@@ -221,7 +221,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
 
   }
 
-  Future<void> deleteSalesInvoiceH(BuildContext context ,int? id) async {
+  Future<void> deleteSalesInvoiceReturnH(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
     print('url' + apiDel);
@@ -242,7 +242,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);
     } else {
-      throw "Failed to delete a salesInvoice.";
+      throw "Failed to delete a SalesInvoiceReturn.";
     }
   }
 

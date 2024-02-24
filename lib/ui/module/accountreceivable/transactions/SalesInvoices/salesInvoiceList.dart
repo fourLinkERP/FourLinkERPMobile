@@ -8,7 +8,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import '../../../../../cubit/app_states.dart';
 import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vendors/vendor.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
@@ -21,7 +20,7 @@ import '../../../../../service/module/accountReceivable/transactions/SalesInvoic
 import 'addSalesInvoiceDataWidget.dart';
 import 'detailSalesInvoiceWidget.dart';
 import 'editSalesInvoiceDataWidget.dart';
-//import 'package:pdf/widgets.dart' as pw;
+import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
 
 SalesInvoiceHApiService _apiService= SalesInvoiceHApiService();
@@ -39,6 +38,7 @@ class SalesInvoiceHListPage extends StatefulWidget {
 class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
   bool isLoading=true;
   List<SalesInvoiceH> _salesInvoices = [];
+  List<SalesInvoiceH> _salesInvoicesSearch = [];
   List<SalesInvoiceD> _salesInvoicesD = [];
   List<SalesInvoiceH> _founded = [];
 
@@ -47,58 +47,114 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
   void initState() {
     // TODO: implement initState
     print('okkkkkkkkkkk');
-    AppCubit.get(context).CheckConnection();
-    Timer(const Duration(seconds: 30), () { // <-- Delay here
-      setState(() {
-        if(_salesInvoices.isEmpty){
-          isLoading = false;
-        }
-        // <-- Code run after delay
-      });
-    });
-
     getData();
     super.initState();
+
     setState(() {
       _founded = _salesInvoices!;
     });
   }
+  void getData() async {
+    try {
+      List<SalesInvoiceH>? futureSalesInvoiceH = await _apiService.getSalesInvoicesH();
+
+      if (futureSalesInvoiceH != null) {
+        _salesInvoices = futureSalesInvoiceH;
+
+        if (_salesInvoices.isNotEmpty) {
+          _salesInvoices.sort((a, b) =>
+              int.parse(b.salesInvoicesSerial!).compareTo(int.parse(a.salesInvoicesSerial!)));
+
+          setState(() {
+            _founded = _salesInvoices!;
+          });
+        }
+      }
+    } catch (error) {
+      AppCubit.get(context).EmitErrorState();
+    }
+  }
+  // void getData() async {
+  //   Future<List<SalesInvoiceH>?> futureSalesInvoiceH = _apiService.getSalesInvoicesH().catchError((Error){
+  //     AppCubit.get(context).EmitErrorState();
+  //   });
+  //   _salesInvoices = (await futureSalesInvoiceH)!;
+  //   _salesInvoicesSearch = List.from(_salesInvoices);
+  //   if (_salesInvoices.isNotEmpty) {
+  //     // Sort the list based on salesInvoicesSerial
+  //     _salesInvoices.sort((a, b) => int.parse(b.salesInvoicesSerial!).compareTo(int.parse(a.salesInvoicesSerial!)));
+  //     setState(() {
+  //       _founded = _salesInvoices!;
+  //       String search = '';
+  //     });
+  //   }
+  // }
+
+  void getDetailData(int? headerId) async {
+    Future<List<SalesInvoiceD>?> futureSalesInvoiceD = _apiDService.getSalesInvoicesD(headerId);
+    _salesInvoicesD = (await futureSalesInvoiceD)!;
+
+  }
+  void onSearch(String search) {
+    if (search.isEmpty) {
+      setState(() {
+        _salesInvoices = List.from(_salesInvoicesSearch!);
+      });
+    } else {
+      setState(() {
+        _salesInvoices = List.from(_salesInvoicesSearch!);
+        _salesInvoices = _salesInvoices
+            .where((salesInvoice) =>
+            salesInvoice.customerName!.toLowerCase().contains(search))
+            .toList();
+      });
+    }
+  }
+  final searchValueController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      getData();
-    });
+    // setState(() {
+    //   getData();
+    // });
 
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
           backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
           title: SizedBox(
-            //height: 60,
             child: Column(
-              crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
               children: [
-                //Align(child: Text('serial'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
-                TextField(
-                  onChanged: (value) => onSearch(value),
-                  decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.all(0),
-                      prefixIcon: const Icon(Icons.search, color: Colors.black26,),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50),
-                          borderSide: BorderSide.none,
-                      ),
-                      hintStyle: const TextStyle(
-                          fontSize: 16,
-                          color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
-                      ),
-                      hintText: "searchSalesInvoice".tr(),
+                // SizedBox(
+                //   width: 255,
+                //   child:
+                  TextField(
+                    controller: searchValueController,
+                    onChanged: (searchValue) => onSearch(searchValue),
+                    decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: const EdgeInsets.all(0),
+                        prefixIcon: const Icon(Icons.search, color: Colors.black26,),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(50),
+                            borderSide: BorderSide.none,
+                        ),
+                        hintStyle: const TextStyle(
+                            fontSize: 16,
+                            color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
+                        ),
+                        hintText: "searchSalesInvoice".tr(),
 
+                    ),
                   ),
-                ),
+                //),
+                // IconButton(
+                //   icon: const Icon(Icons.search, size: 25.0, color: Colors.white,),
+                //   onPressed: () {
+                //     onSearch(searchValueController.text.toString());
+                //   },
+                // )
               ],
             ),
           ),
@@ -161,10 +217,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
 
   }
 
-  //#region Navigate
-
     _navigateToAddScreen(BuildContext context) async {
-
       // CircularProgressIndicator();
       int menuId=6204;
       bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
@@ -180,7 +233,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       {
         FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
       }
-
     }
 
     _navigateToEditScreen (BuildContext context, SalesInvoiceH customer) async {
@@ -202,7 +254,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       }
 
     }
-
     _navigateToPrintScreen (BuildContext context, SalesInvoiceH invoiceH) async {
 
       int menuId=6204;
@@ -231,11 +282,8 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             //double price =_salesInvoicesD[i].displayPrice! as double;
             double price =( _salesInvoicesD[i].price != null) ? _salesInvoicesD[i].price : 0;
 
-
-            InvoiceItem _invoiceItem= InvoiceItem
-              (description: _salesInvoicesD[i].itemName.toString(),
-                date: date, quantity: qty  , vat: vat  ,
-                unitPrice: price );
+            InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
+                date: date, quantity: qty  , vat: vat  , unitPrice: price );
 
             invoiceItems.add(_invoiceItem);
           }
@@ -272,62 +320,49 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       }
     }
 
-  //#endregion
-
-  //#region Delete
-
     _deleteItem(BuildContext context,int? id) async {
 
-      final result = await showDialog<bool>(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Are you sure?'),
-          content: const Text('This action will permanently delete this data'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.pop(context, true),
-              child: const Text('Delete'),
-            ),
-          ],
-        ),
-      );
-
-      if (result == null || !result) {
-        return;
-      }
-
-      int menuId=6204;
-      bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
-      if(isAllowDelete)
-      {
-        var res = _apiService.deleteSalesInvoiceH(context,id).then((value) => getData());
-      }
-      else
-      {
-        FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
-      }
+      FN_showToast(context,'not_allowed_to_delete'.tr(),Colors.red);
+      // final result = await showDialog<bool>(
+      //   context: context,
+      //   builder: (context) => AlertDialog(
+      //     title: const Text('Are you sure?'),
+      //     content: const Text('This action will permanently delete this data'),
+      //     actions: [
+      //       TextButton(
+      //         onPressed: () => Navigator.pop(context, false),
+      //         child: const Text('Cancel'),
+      //       ),
+      //       TextButton(
+      //         onPressed: () => Navigator.pop(context, true),
+      //         child: const Text('Delete'),
+      //       ),
+      //     ],
+      //   ),
+      // );
+      //
+      // if (result == null || !result) {
+      //   return;
+      // }
+      //
+      // int menuId=6204;
+      // bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
+      // if(isAllowDelete)
+      // {
+      //   var res = _apiService.deleteSalesInvoiceH(context,id).then((value) => getData());
+      // }
+      // else
+      // {
+      //   FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
+      // }
 
     }
 
-  //#endregion
-
-  //#region Build
-
     Widget buildSalesInvoices(){
-      if(State is AppErrorState){
-        return const Center(child: Text('no data'));
-      }
-      if(AppCubit.get(context).Conection==false){
-        return const Center(child: Text('no internet connection'));
-
-      }
-      else if(_salesInvoices.isEmpty&&AppCubit.get(context).Conection==true){
+      if(_salesInvoices.isEmpty){
         return const Center(child: CircularProgressIndicator());
-      }else{
+      }
+      else{
         return Container(
           color: const Color.fromRGBO(240, 242, 246,1),// Main Color
 
@@ -356,15 +391,12 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                                 child: Row(
                               children: [
                                 Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString())))  ,
-
                               ],
-
                             )),
                             Container(height: 20, color: Colors.white30, child: Row(
                               children: [
                                 Text('customer'.tr() + " : " + _salesInvoices[index].customerName.toString()),
                               ],
-
                             )),
                             const SizedBox(width: 5),
                             SizedBox(
@@ -451,8 +483,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                                               )
                                           ),
                                         )),
-
-
                                   ],
                                 ))
                           ],
@@ -465,48 +495,4 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
         );
       }
     }
-
-  //#endregion
-
-  //#region Get
-
-
-    void getData() async {
-      Future<List<SalesInvoiceH>?> futureSalesInvoiceH = _apiService.getSalesInvoicesH().catchError((Error){
-        AppCubit.get(context).EmitErrorState();
-      });
-      _salesInvoices = (await futureSalesInvoiceH)!;
-      if (_salesInvoices.isNotEmpty) {
-        setState(() {
-          _founded = _salesInvoices!;
-          String search = '';
-
-        });
-      }
-    }
-
-    void getDetailData(int? headerId) async {
-      Future<List<SalesInvoiceD>?> futureSalesInvoiceD = _apiDService.getSalesInvoicesD(headerId);
-      _salesInvoicesD = (await futureSalesInvoiceD)!;
-
-    }
-
-  //#endregion
-
-  //#region Search
-
-    onSearch(String search) {
-
-      if(search.isEmpty)
-      {
-        getData();
-      }
-
-      setState(() {
-        _salesInvoices = _founded!.where((SalesInvoiceH) =>
-            SalesInvoiceH.salesInvoicesSerial!.toLowerCase().contains(search)).toList();
-      });
-    }
-  //#endregion
-
 }
