@@ -49,14 +49,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
     getData();
     super.initState();
     AppCubit.get(context).CheckConnection();
-    // Timer(Duration(seconds: 30), () { // <-- Delay here
-    //   setState(() {
-    //     if(_customers.isEmpty){
-    //       isLoading = false;
-    //     }
-    //     // <-- Code run after delay
-    //   });
-    // });
+
 
     setState(() {
       _founded = _customers;

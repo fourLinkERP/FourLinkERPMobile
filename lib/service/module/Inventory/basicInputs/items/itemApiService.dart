@@ -22,8 +22,11 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
 
     print('Items 1');
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      'Search':{
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode,
+        'ItemTypeCode': 7
+      }
     };
 
     print('Items 2');
@@ -44,7 +47,7 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
       if (data != null) {
         list = data.map((item) => Item.fromJson(item)).toList();
       }
-      //print('B 1 Finish');
+      print('Items 1 Finish');
       return  list;
       // return await json.decode(res.body)['data']
       //     .map((data) => Item.fromJson(data))
@@ -127,6 +130,17 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
       'itemNameAra': item.itemNameAra,
       'itemNameEng': item.itemNameEng,
       'defaultSellPrice': item.defaultSellPrice,
+      'defaultUniteCode': item.defaultUniteCode,
+      "confirmed": false,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSynchronized": false,
+      "isSystem": false,
+      "notActive": false,
+      "flgDelete": false
       // 'age': item.age,
       // 'address': item.address,
       // 'city': item.city,
@@ -174,6 +188,7 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
       'itemNameAra': item.itemNameAra,
       'itemNameEng': item.itemNameEng,
       'defaultSellPrice': item.defaultSellPrice,
+
       "confirmed": false,
       "isActive": true,
       "isBlocked": false,

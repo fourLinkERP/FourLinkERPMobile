@@ -10,6 +10,7 @@ class Customer {
   String? address;
   String? phone1;
   String? customerTypeCode;
+  String? cusGroupsCode;
   String? email;
   String? idNo;
 
@@ -24,6 +25,7 @@ class Customer {
     this.address,
     this.phone1,
     this.customerTypeCode,
+    this.cusGroupsCode,
     this.email,
     this.idNo,
     });
@@ -31,11 +33,12 @@ class Customer {
   factory Customer.fromJson(Map<String, dynamic> json) {
     return Customer(
       id: json['id'] as int,
-      customerCode: json['customerCode'] as String,
+      customerCode: (json['customerCode'] != null)?  json['customerCode'] as String : "",
       customerName: (json['customerName'] != null)?  json['customerName'] as String : "",
-      customerNameAra: json['customerNameAra'] as String,
-      customerNameEng: json['customerNameEng'] as String,
-      customerTypeCode: json['customerTypeCode'] as String,
+      customerNameAra: (json['customerNameAra'] != null)?  json['customerNameAra'] as String : "",
+      customerNameEng: (json['customerNameEng'] != null)?  json['customerNameEng'] as String : "",
+      customerTypeCode: (json['customerTypeCode'] != null)?  json['customerTypeCode'] as String : "",
+      cusGroupsCode: (json['cusGroupsCode'] != null)?  json['cusGroupsCode'] as String : "",
       taxIdentificationNumber: (json['taxIdentificationNumber'] != null)?  json['taxIdentificationNumber'] as String : "",
       address: (json['address'] != null)?  json['address'] as String : "",
       phone1: (json['phone1'] != null)?  json['phone1'] as String : "",

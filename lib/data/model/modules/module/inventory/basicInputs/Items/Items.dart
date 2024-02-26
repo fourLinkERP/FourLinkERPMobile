@@ -5,8 +5,10 @@ class Item {
   String? itemCode ;
   String? itemNameAra ;
   String?  itemNameEng;
+  String? defaultUniteCode;
+  int ? defaultSellPrice;
+
   // String? cusTypesCode,cusTypesName;
-  double ? defaultSellPrice;
   //String image;
 
 
@@ -15,19 +17,21 @@ class Item {
     this.itemCode ,
     this.itemNameAra,
     this.itemNameEng,
+    this.defaultUniteCode,
+    this.defaultSellPrice
     // cusTypesCode,
     // cusTypesName,
-    this.defaultSellPrice
     //image
     });
 
   factory Item.fromJson(Map<String, dynamic> json) {
     return Item(
-      id: json['id'] as int,
-      itemCode: json['itemCode'] as String,
-      itemNameAra: json['itemNameAra'] as String,
-      itemNameEng: json['itemNameEng'] as String,
-      //defaultSellPrice: json['defaultSellPrice'] as double,
+      id: (json['id'] != null) ? json['id'] as int : 0,
+      itemCode: (json['itemCode'] != null) ? json['itemCode'] as String:" ",
+      itemNameAra: (json['itemNameAra'] != null) ? json['itemNameAra'] as String:" ",
+      itemNameEng: (json['itemNameEng'] != null) ? json['itemNameEng'] as String:" ",
+      defaultUniteCode: (json['defaultUniteCode'] != null) ? json['defaultUniteCode'] as String:" ",
+      defaultSellPrice: (json['defaultSellPrice'] != null) ? json['defaultSellPrice'] as int: 0,
       // cusTypesName: json['cusTypesName'] as String,
       // taxIdentificationNumber: json['taxIdentificationNumber'] as String,
       // address: json['address'] as String,

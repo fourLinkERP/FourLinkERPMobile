@@ -552,7 +552,8 @@
     "not_allowed_to_delete": "غير مسموح بالحذف",
     "searchReturnSalesInvoice": "بحث مرتجع المبيعات",
     "returnSalesInvoice": "مرتجع المبيعات",
-    "add_return_salesInvoice_return": "اضافة مرتجع المبيعات"
+    "add_return_salesInvoice_return": "اضافة مرتجع المبيعات",
+    "customerGroup": "مجموعة العميل"
 
 
 

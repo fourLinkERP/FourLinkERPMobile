@@ -7,10 +7,11 @@ import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/ba
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
-import 'package:fourlinkmobileapp/ui/module/accountreceivable/basicInputs/Customers/customerList.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/CustomerGroups/customerGroupApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../../common/login_components.dart';
+import '../../../../../data/model/modules/module/accountreceivable/basicInputs/CustomerGroups/CustomerGroup.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -19,6 +20,7 @@ import '../../../../../service/module/accountReceivable/basicInputs/CustomerType
 
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
 CustomerTypeApiService _customerTypeApiService= CustomerTypeApiService();
+CustomerGroupApiService _customerGroupApiService = CustomerGroupApiService();
 
 
 class AddCustomerDataWidget extends StatefulWidget {
@@ -37,17 +39,19 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
 
   //Menus Data
   List<DropdownMenuItem<String>> menuCustomerType = [ ];
+  List<DropdownMenuItem<String>> menuCustomerGroup = [ ];
   //List Models
   List<CustomerType> customerTypes=[];
+  List<CustomerGroup> customerGroups=[];
   //Selected Value
   String? customerTypeSelectedValue = null;
+  String? customerGroupSelectedValue = null;
 
   final CustomerApiService api = CustomerApiService();
   final _addFormKey = GlobalKey<FormState>();
   final _customerCodeController = TextEditingController();
   final _customerNameAraController = TextEditingController();
   final _customerNameEngController = TextEditingController();
-  final _dropdownCustomerTypeFormKey = GlobalKey<FormState>();
   final _taxIdentificationNumberController = TextEditingController();
   final _addressController = TextEditingController();
   final _phone1Controller = TextEditingController();
@@ -67,11 +71,20 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
     });
 
     //Customer Type
-    Future<List<CustomerType>> futureSalesMan = _customerTypeApiService.getCustomerTypes().then((data) {
+    Future<List<CustomerType>> futureCustomerType = _customerTypeApiService.getCustomerTypes().then((data) {
       customerTypes = data;
       //print(customers.length.toString());
       getCustomerTypeData();
       return customerTypes;
+    }, onError: (e) {
+      print(e);
+    });
+    //Customer Type
+    Future<List<CustomerGroup>> futureCustomerGroup = _customerGroupApiService.getCustomerGroups().then((data) {
+      customerGroups = data;
+      //print(customers.length.toString());
+      getCustomerGroupData();
+      return customerGroups;
     }, onError: (e) {
       print(e);
     });
@@ -114,6 +127,11 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
               FN_showToast(context,'please_enter_phone'.tr() ,Colors.black);
               return;
             }
+          if(customerGroupSelectedValue == null)
+          {
+            FN_showToast(context,'please_select_group'.tr() ,Colors.black);
+            return;
+          }
 
           api.createCustomer(context,Customer(
               customerCode: _customerCodeController.text ,
@@ -122,7 +140,9 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
               taxIdentificationNumber: _taxIdentificationNumberController.text ,
               phone1: _phone1Controller.text ,
               address: _addressController.text,
-              customerTypeCode: customerTypeSelectedValue ));
+              customerTypeCode: customerTypeSelectedValue,
+              cusGroupsCode: customerGroupSelectedValue
+          ));
 
           Navigator.pop(context);
         },
@@ -188,7 +208,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                 child: Column(
                   children: [
                     Container(
-                      height: 400,
+                      height: 450,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: [
@@ -223,6 +243,12 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                               SizedBox(
                                   width: 120,
                                   height: 40,
+                                  child: Center(child: Text('customerGroup'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                              ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                  width: 120,
+                                  height: 40,
                                   child: Center(child: Text('taxIdentificationNumber'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
                               ),
                               const SizedBox(height: 15),
@@ -249,6 +275,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                                 child: defaultFormField(
                                   controller: _customerCodeController,
                                   type: TextInputType.text,
+                                  enable: false,
                                   colors: Colors.blueGrey,
                                   validate: (String? value) {
                                     if (value!.isEmpty) {
@@ -328,6 +355,53 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
 
                                   filterFn: (instance, filter){
                                     if(instance.cusTypesNameAra!.contains(filter)){
+                                      print(filter);
+                                      return true;
+                                    }
+                                    else{
+                                      return false;
+                                    }
+                                  },
+
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                height: 40,
+                                width: 195,
+                                child: DropdownSearch<CustomerGroup>(
+                                  popupProps: PopupProps.menu(
+                                    itemBuilder: (context, item, isSelected) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                                        decoration: !isSelected ? null
+                                            : BoxDecoration(
+
+                                          border: Border.all(color: Colors.blueGrey),
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.white,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text((langId==1)? item.cusGroupsNameAra.toString():  item.cusGroupsNameEng.toString(),
+                                            textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
+                                            textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                        ),
+                                      );
+                                    },
+                                    showSearchBox: true,
+                                  ),
+                                  items: customerGroups,
+                                  itemAsString: (CustomerGroup u) => u.cusGroupsNameAra.toString(),
+                                  onChanged: (value){
+                                    //v.text = value!.cusTypesCode.toString();
+                                    //print(value!.id);
+                                    customerGroupSelectedValue =  value!.cusGroupsCode.toString();
+                                  },
+
+                                  filterFn: (instance, filter){
+                                    if(instance.cusGroupsNameAra!.contains(filter)){
                                       print(filter);
                                       return true;
                                     }
@@ -620,6 +694,19 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
 
       });
     }
+  getCustomerGroupData() {
+    if (customerGroups.isNotEmpty) {
+      for(var i = 0; i < customerGroups.length; i++){
+        menuCustomerGroup.add(
+            DropdownMenuItem(
+                value: customerGroups[i].cusGroupsCode.toString(),
+                child: Text((langId==1)?  customerGroups[i].cusGroupsNameAra.toString() : customerGroups[i].cusGroupsNameEng.toString())));
+      }
+    }
+    setState(() {
+
+    });
+  }
 
   void _showPicker({
     required BuildContext context,

@@ -1,29 +1,28 @@
 import 'dart:convert';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/basicInputs/CustomerGroups/CustomerGroup.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
-import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
- class CustomerApiService {
+class CustomerGroupApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/customers/searchData';
-  String search2Api= baseUrl.toString()  + 'v1/customers/search';
-  String createApi= baseUrl.toString()  + 'v1/customers';
-  String updateApi= baseUrl.toString()  + 'v1/customers/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/customers/';
-  String getByIdApi= baseUrl.toString()  + 'v1/customers/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + 'v1/customergroups/search';
+  String createApi= baseUrl.toString()  + 'v1/customergroups';
+  String updateApi= baseUrl.toString()  + 'v1/customergroups/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + 'v1/customergroups/';
+  String getByIdApi= baseUrl.toString()  + 'v1/customergroups/';  // Add ID For Get
 
-  Future<List<Customer>>  getCustomers() async {
+  Future<List<CustomerGroup>>  getCustomerGroups() async {
 
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode
     };
 
-    print('Customer 1');
+    print('CustomerGroup 1');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -35,60 +34,24 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
     if (response.statusCode == 200) {
-      print('Customer 2');
+      print('CustomerGroup 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
-      List<Customer> list = [];
+      List<CustomerGroup> list = [];
       if (data.isNotEmpty) {
-        list = data.map((item) => Customer.fromJson(item)).toList();
+        list = data.map((item) => CustomerGroup.fromJson(item)).toList();
       }
-      print('Customer 3');
+      print('CustomerGroup 3');
       return  list;
       // return await json.decode(res.body)['data']
-      //     .map((data) => Customer.fromJson(data))
+      //     .map((data) => CustomerGroup.fromJson(data))
       //     .toList();
     } else {
-      print('Customer Failed');
-      throw "Failed to load customer list";
+      print('CustomerGroup Failed');
+      throw "Failed to load CustomerGroup list";
     }
   }
 
-  Future<List<Customer>>  getNewCustomers() async {
-
-    Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode
-    };
-
-    print('Customer 11');
-    final http.Response response = await http.post(
-      Uri.parse(search2Api),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token'
-      },
-      body: jsonEncode(data),
-    );
-
-
-    if (response.statusCode == 200) {
-      print('Customer 22');
-      List<dynamic> data = jsonDecode(response.body)['data'];
-      List<Customer> list = [];
-      if (data.isNotEmpty) {
-        list = data.map((item) => Customer.fromJson(item)).toList();
-      }
-      print('Customer 33');
-      return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => Customer.fromJson(data))
-      //     .toList();
-    } else {
-      print('NewCustomer Failed');
-      throw "Failed to load customer list";
-    }
-  }
-
-  Future<Customer> getCustomerById(int id) async {
+  Future<CustomerGroup> getCustomerGroupById(int id) async {
 
     var data = {
       // "id": id
@@ -105,28 +68,20 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
     if (response.statusCode == 200) {
 
-      return Customer.fromJson(json.decode(response.body));
+      return CustomerGroup.fromJson(json.decode(response.body));
 
     } else {
       throw Exception('Failed to load a case');
     }
   }
 
-  Future<int> createCustomer(BuildContext context ,Customer customer) async {
+  Future<int> createCustomerGroup(BuildContext context ,CustomerGroup customerGroup) async {
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'customerCode': customer.customerCode,
-      'customerName': customer.customerName,
-      'customerNameAra': customer.customerNameAra,
-      'customerNameEng': customer.customerNameEng,
-      'taxIdentificationNumber': customer.taxIdentificationNumber,
-      'address': customer.address,
-      'Phone1': customer.phone1,
-      'email': customer.email,
-      'customerTypeCode': customer.customerTypeCode,
-      'cusGroupsCode': customer.cusGroupsCode,
-      'idNo': customer.idNo,
+      'cusGroupsCode': customerGroup.cusGroupsCode,
+      'cusGroupsNameAra': customerGroup.cusGroupsNameAra,
+      'cusGroupsNameEng': customerGroup.cusGroupsNameEng,
       "notActive": false,
       "flgDelete": false,
       "isDeleted": false,
@@ -138,10 +93,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       "postedToGL": false,
       "isLinkWithTaxAuthority": true,
 
-      // 'address': customer.address,
-      // 'city': customer.city,
-      // 'country': customer.country,
-      // 'status': customer.status
     };
 
     final http.Response response = await http.post(
@@ -168,13 +119,13 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
     } else {
       print('B 1 Error');
-      throw Exception('Failed to post customer');
+      throw Exception('Failed to post customerGroup');
     }
 
     return  0;
   }
 
-  Future<int> updateCustomer(BuildContext context ,int id, Customer customer) async {
+  Future<int> updateCustomerGroup(BuildContext context ,int id, CustomerGroup customerGroup) async {
 
     print('Start Update');
 
@@ -182,16 +133,9 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'customerCode': customer.customerCode,
-      'customerName': customer.customerName,
-      'customerNameAra': customer.customerNameAra,
-      'customerNameEng': customer.customerNameEng,
-      'customerTypeCode': customer.customerTypeCode,
-      'cusGroupsCode': customer.cusGroupsCode,
-      'taxIdentificationNumber': customer.taxIdentificationNumber,
-      'address': customer.address,
-      'idNo': customer.idNo,
-      'Phone1': customer.phone1,
+      'cusGroupsCode': customerGroup.cusGroupsCode,
+      'cusGroupsNameAra': customerGroup.cusGroupsNameAra,
+      'cusGroupsNameEng': customerGroup.cusGroupsNameEng,
       "confirmed": false,
       "isActive": true,
       "isBlocked": false,
@@ -229,7 +173,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     return 0;
   }
 
-  Future<void> deleteCustomer(BuildContext context ,int? id) async {
+  Future<void> deleteCustomerGroup(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
     print('url' + apiDel);
@@ -250,7 +194,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);
     } else {
-      throw "Failed to delete a customer.";
+      throw "Failed to delete a customerGroup.";
     }
   }
 

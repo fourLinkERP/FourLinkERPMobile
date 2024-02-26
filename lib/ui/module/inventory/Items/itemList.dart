@@ -14,7 +14,7 @@ import 'addItemDataWidget.dart';
 import 'detailItemWidget.dart';
 import 'editItemDataWidget.dart';
 
-ItemApiService _apiService=new ItemApiService();
+ItemApiService _apiService= ItemApiService();
 //Get Item List
 
 class ItemListPage extends StatefulWidget {
@@ -34,39 +34,26 @@ class _ItemListPageState extends State<ItemListPage> {
   @override
   void initState() {
     // TODO: implement initState
-    print('okkkkkkkkkkk');
-    AppCubit.get(context).CheckConnection();
-    Timer(Duration(seconds: 30), () { // <-- Delay here
-      setState(() {
-        if(_items.isEmpty){
-           isLoading = false;
-        }
-        // <-- Code run after delay
-      });
-    });
+
     getData();
     super.initState();
-
+    AppCubit.get(context).CheckConnection();
 
     setState(() {
-      _founded = _items!;
+      _founded = _items;
     });
   }
 
   void getData() async {
-    Future<List<Item>?> futureItem = _apiService.getItems().catchError((Error){
+    Future<List<Item>?> futureCustomer = _apiService.getItems().catchError((Error) {
+      print('Error${Error}');
       AppCubit.get(context).EmitErrorState();
     });
-    print('xxxx1');
-    _items = (await futureItem)!;
-    print('xxxx2');
-    print('xxxx2 len ' + _items.length.toString());
-    if (_items != null) {
+    _items = (await futureCustomer)!;
+    if (_items.isNotEmpty) {
       setState(() {
-        print('xxxx');
-        _founded = _items!;
+        _founded = _items;
         String search = '';
-
       });
     }
   }

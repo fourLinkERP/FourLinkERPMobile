@@ -274,7 +274,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                               },
                               showSearchBox: true,
                             ),
-                            enabled: true,
+                            enabled: false,
                             items: cashTypes,
                             itemAsString: (CashType u) =>(langId ==1 )? u.descAra.toString() : u.descEng.toString(),
 
@@ -429,6 +429,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                             //v.text = value!.cusTypesCode.toString();
                                             //print(value!.id);
                                             cashTargetTypeIdSelectedValue = value!.code ;
+                                            boxTypeSelectedValue = 2;
                                             setTargetCode(cashTargetTypeIdSelectedValue.toString());
                                           },
 

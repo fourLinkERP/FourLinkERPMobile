@@ -303,7 +303,7 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                               },
                               showSearchBox: true,
                             ),
-                            enabled: true,
+                            enabled: false,
 
                             items: cashTypes,
                             itemAsString: (CashType u) =>(langId ==1 )? u.descAra.toString() : u.descEng.toString(),
@@ -385,102 +385,83 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                           ),
 
                      const SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                        child: Row(
-                          children: <Widget>[
-                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('ref_no'.tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold))),
-                            const SizedBox(width: 5),
-                            SizedBox(
-                              width: 90,
-                              child: TextFormField(
-                                controller: _refNoController,
-                                decoration: const InputDecoration(
-                                  hintText: '',
-                                ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'please_enter_ref_no'.tr();
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {},
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Form(
-                        key: _dropdownCashTargetTypeFormKey,
-                        child: Row(
-                          children: [
-                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text("cash_target_type".tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold))),
-                            const SizedBox(width: 5),
-                            SizedBox(
-                              width: 100,
-                              child: DropdownSearch<CashTargetType>(
-                                validator: (value) => value == null ? "select_a_cash_target_Type".tr() : null,
+                          Row(
+                            children: [
+                              Form(
+                                  key: _dropdownCashTargetTypeFormKey,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('cash_target_type'.tr(),
+                                          style: const TextStyle(fontWeight: FontWeight.bold)) ),
 
-                                selectedItem: cashTargetTypeItem,
-                                popupProps: PopupProps.menu(
+                                      const SizedBox(width: 10),
 
-                                  itemBuilder: (context, item, isSelected) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                                      decoration: !isSelected ? null
-                                          : BoxDecoration(
+                                      SizedBox(
+                                        width: 200,
+                                        child: DropdownSearch<CashTargetType>(
+                                          validator: (value) => value == null ? "select_a_cash_target_Type".tr() : null,
 
-                                        border: Border.all(color: Theme.of(context).primaryColor),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.white,
+                                          selectedItem: cashTargetTypeItem,
+                                          popupProps: PopupProps.menu(
+
+                                            itemBuilder: (context, item, isSelected) {
+                                              return Container(
+                                                margin: const EdgeInsets.symmetric(horizontal: 8),
+                                                decoration: !isSelected
+                                                    ? null
+                                                    : BoxDecoration(
+
+                                                  border: Border.all(color: Theme.of(context).primaryColor),
+                                                  borderRadius: BorderRadius.circular(5),
+                                                  color: Colors.white,
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Text((langId ==1 )?item.typeNameAra.toString():item.typeNameEng.toString()),
+                                                ),
+                                              );
+                                            },
+                                            showSearchBox: true,
+
+
+                                          ),
+                                          enabled: false,
+
+                                          items: cashTargetTypes,
+                                          itemAsString: (CashTargetType u) =>(langId ==1 )? u.typeNameAra.toString() : u.typeNameEng.toString(),
+
+                                          onChanged: (value){
+                                            //v.text = value!.cusTypesCode.toString();
+                                            //print(value!.id);
+                                            cashTargetTypeIdSelectedValue = value!.code ;
+                                            boxTypeSelectedValue = 2;
+                                            setTargetCode(cashTargetTypeIdSelectedValue.toString());
+                                          },
+
+                                          filterFn: (instance, filter){
+                                            if((langId ==1 )? instance.typeNameAra!.contains(filter) : instance.typeNameAra!.contains(filter)){
+                                              print(filter);
+                                              return true;
+                                            }
+                                            else{
+                                              return false;
+                                            }
+                                          },
+                                          dropdownDecoratorProps: const DropDownDecoratorProps(
+                                            dropdownSearchDecoration: InputDecoration(
+                                              //labelText: "cash_target_type".tr(),
+
+                                            ),),
+
+                                        ),
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text((langId ==1 )?item.typeNameAra.toString():item.typeNameEng.toString()),
-                                      ),
-                                    );
-                                  },
-                                  showSearchBox: true,
-                                ),
-                                enabled: false,
 
-                                items: cashTargetTypes,
-                                itemAsString: (CashTargetType u) =>(langId ==1 )? u.typeNameAra.toString() : u.typeNameEng.toString(),
+                                    ],
+                                  )),
 
-                                onChanged: (value){
-                                  //v.text = value!.cusTypesCode.toString();
-                                  //print(value!.id);
-                                  cashTargetTypeIdSelectedValue = value!.code ;
-                                  setTargetCode(cashTargetTypeIdSelectedValue.toString());
-                                },
-
-                                filterFn: (instance, filter){
-                                  if((langId ==1 )? instance.typeNameAra!.contains(filter) : instance.typeNameAra!.contains(filter)){
-                                    print(filter);
-                                    return true;
-                                  }
-                                  else{
-                                    return false;
-                                  }
-                                },
-                                dropdownDecoratorProps: const DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-
-                                  ),),
-
-                              ),
-                            ),
-
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+                            ],
+                          ),
 
 
 
@@ -1050,13 +1031,13 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
     if(targetType == "1")//Customer
         {
       if (customers != null) {
-        for(var i = 0; i < cashBankBranches.length; i++){
+        for(var i = 0; i < customers.length; i++){
           targetCodes.add(TargetCode(code: customers[i].customerCode,nameAra: customers[i].customerNameAra
               ,nameEng: customers[i].customerNameEng));
 
-          print('ToTatget0');
+          print('ToTarget0');
           if(boxTypes[i].code.toString() == cashTargetCodeSelectedValue.toString()){
-            print('ToTatget');
+            print('ToTarget');
             cashTargetCodeItem = targetCodes[targetCodes.indexOf(targetCodes[i])];
             // print('in amr4');
             // print(customerTypeItem );

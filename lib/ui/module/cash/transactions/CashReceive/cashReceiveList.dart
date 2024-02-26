@@ -244,40 +244,41 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
   }
 
   _deleteItem(BuildContext context,int? id) async {
+    FN_showToast(context,'not_allowed_to_delete'.tr(),Colors.black);
 
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Are you sure?'),
-        content: const Text('This action will permanently delete this data'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );
-
-    if (result == null || !result) {
-      return;
-    }
-
-    int menuId=3203;
-    bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
-    if(isAllowDelete)
-    {
-      print('lahoiiiiiiiiiiiiii');
-      var res = _apiService.deleteCashReceive(context,id).then((value) => getData());
-    }
-    else
-    {
-      FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
-    }
+    // final result = await showDialog<bool>(
+    //   context: context,
+    //   builder: (context) => AlertDialog(
+    //     title: const Text('Are you sure?'),
+    //     content: const Text('This action will permanently delete this data'),
+    //     actions: [
+    //       TextButton(
+    //         onPressed: () => Navigator.pop(context, false),
+    //         child: const Text('Cancel'),
+    //       ),
+    //       TextButton(
+    //         onPressed: () => Navigator.pop(context, true),
+    //         child: const Text('Delete'),
+    //       ),
+    //     ],
+    //   ),
+    // );
+    //
+    // if (result == null || !result) {
+    //   return;
+    // }
+    //
+    // int menuId=3203;
+    // bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
+    // if(isAllowDelete)
+    // {
+    //   print('lahoiiiiiiiiiiiiii');
+    //   var res = _apiService.deleteCashReceive(context,id).then((value) => getData());
+    // }
+    // else
+    // {
+    //   FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
+    // }
 
 
   }

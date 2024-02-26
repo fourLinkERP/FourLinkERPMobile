@@ -478,5 +478,6 @@
     "not_allowed_to_delete": "Not allowed to delete",
     "searchReturnSalesInvoice": "Search SalesInvoice Return",
     "returnSalesInvoice": "Sales Invoice Return",
-    "add_return_salesInvoice_return": "Add Sales Invoice Return"
+    "add_return_salesInvoice_return": "Add Sales Invoice Return",
+    "customerGroup": "Customer Group"
 }

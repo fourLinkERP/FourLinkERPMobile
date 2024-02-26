@@ -34,7 +34,7 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
   final _itemCodeController = TextEditingController();
   final _itemNameAraController = TextEditingController();
   final _itemNameEngController = TextEditingController();
-  final _itemSalePriceController = TextEditingController();
+  final _itemSellPriceController = TextEditingController();
   // final _taxIdentificationNumberController = TextEditingController();
   // final _addressController = TextEditingController();
   // final _phone1Controller = TextEditingController();
@@ -56,8 +56,10 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
   List<DropdownMenuItem<String>> menuUnits = [];
   Unit? unitItem = Unit(unitCode: "", unitNameAra: "", unitNameEng: "", id: 0);
   @override
-  void initState() {
-    Future<List<Unit>> futureUnits = _unitsApiService.getUnits().then((data) {
+  initState() {
+    super.initState();
+
+    Future<List<Unit>> Units = _unitsApiService.getUnits().then((data) {
       units = data;
       //print(customers.length.toString());
       //getItemData();
@@ -65,7 +67,8 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
     }, onError: (e) {
       print(e);
     });
-    super.initState();
+
+
   }
 
   @override
@@ -94,14 +97,16 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
               itemCode: _itemCodeController.text ,
               itemNameAra: _itemNameAraController.text ,
               itemNameEng: _itemNameEngController.text,
+              defaultSellPrice: int.parse(_itemSellPriceController.text),
+              defaultUniteCode: selectedUnitValue
 
-          //,
           // taxIdentificationNumber: _taxIdentificationNumberController.text ,
           // Phone1: _phone1Controller.text ,
           // address: _addressController.text
           ));
 
-          Navigator.push(context, MaterialPageRoute(builder: (context) =>  ItemListPage()),);
+          Navigator.pop(context);
+         // Navigator.push(context, MaterialPageRoute(builder: (context) =>  ItemListPage()),);
       },
 
         child:Container(
@@ -250,6 +255,7 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
                           height: 40,
                           width: 200,
                           child: DropdownSearch<Unit>(
+
                             selectedItem: unitItem,
                             popupProps: PopupProps.menu(
                               itemBuilder: (context, item, isSelected) {
@@ -257,7 +263,7 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
                                   margin: const EdgeInsets.symmetric(horizontal: 8),
                                   decoration: !isSelected ? null
                                       : BoxDecoration(
-                                    border: Border.all(color: Colors.blueGrey),
+                                    border: Border.all(color: Colors.black12),
                                     borderRadius: BorderRadius.circular(5),
                                     color: Colors.white,
                                   ),
@@ -271,15 +277,16 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
 
                             ),
                             items: units,
+
                             itemAsString: (Unit u) => (langId == 1) ? u.unitNameAra.toString() : u.unitNameEng.toString(),
                             onChanged: (value) {
-                              //v.text = value!.cusTypesCode.toString();
-                              //print(value!.id);
                               selectedUnitValue = value!.unitCode.toString();
                               selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
+
                             },
                             filterFn: (instance, filter) {
-                              if ((langId == 1) ? instance.unitNameAra!.contains(filter) : instance.unitNameEng!.contains(filter)) {
+                              if ((langId == 1) ? instance.unitNameAra!.contains(filter) :
+                              instance.unitNameEng!.contains(filter)) {
                                 print(filter);
                                 return true;
                               }
@@ -301,7 +308,7 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
                           height: 40,
                           width: 200,
                           child: defaultFormField(
-                            controller: _itemSalePriceController,
+                            controller: _itemSellPriceController,
                             type: TextInputType.text,
                             colors: Colors.blueGrey,
                             validate: (String? value) {

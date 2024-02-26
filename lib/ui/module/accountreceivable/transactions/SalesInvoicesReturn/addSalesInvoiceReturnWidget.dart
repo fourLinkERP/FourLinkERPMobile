@@ -466,8 +466,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                         items: items,
                                         itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
                                         onChanged: (value) {
-                                          //v.text = value!.cusTypesCode.toString();
-                                          //print(value!.id);
                                           selectedItemValue = value!.itemCode.toString();
                                           selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
                                           _displayQtyController.text = "1";
@@ -597,7 +595,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                   child: TextFormField(
                                       controller: _displayPriceController,
                                       //hintText: "price".tr(),
-                                      enabled: false,
+                                      enabled: true,
                                       onSaved: (val) {
                                         //price = val;
                                       },
@@ -1078,8 +1076,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
 
 
 //#region Business Function
-
-// Item Units - Change Item Units
   changeItemUnit(String itemCode) {
     //Units
     units = [];
@@ -1168,8 +1164,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
   setItemPrice(String itemCode, String unitCode, String criteria) {
     //Serial
     Future<double> futureSellPrice = _salesInvoiceReturnDApiService
-        .getItemSellPriceData(
-        itemCode, unitCode, "View_AR_SalesInvoicesType", criteria).then((data) {
+        .getItemSellPriceData(itemCode, unitCode, "View_AR_SalesInvoicesType", criteria).then((data) {
       double sellPrice = data;
 
       setState(() {
@@ -1239,6 +1234,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
 
 
 //#endregion
+
 
 //#region Next Serial
   setNextSerial() {

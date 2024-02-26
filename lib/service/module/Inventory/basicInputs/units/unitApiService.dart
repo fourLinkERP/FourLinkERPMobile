@@ -22,8 +22,10 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/units/uni
 
     print('Units 1');
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      'Search':{
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode
+      }
     };
 
     print('Units 2');
@@ -44,7 +46,7 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/units/uni
       if (data != null) {
         list = data.map((unit) => Unit.fromJson(unit)).toList();
       }
-      //print('B 1 Finish');
+      print(list.toString());
       return  list;
       // return await json.decode(res.body)['data']
       //     .map((data) => Unit.fromJson(data))
