@@ -602,6 +602,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                 SizedBox(
                                   width: 90,
                                   child: TextFormField(
+                                    keyboardType: TextInputType.number,
                                       controller: _displayPriceController,
                                       //hintText: "price".tr(),
                                       enabled: true,  /// open just for now
@@ -752,8 +753,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                     DataCell(IconButton(icon: Icon(Icons.delete_forever, size: 30.0, color: Colors.red.shade600,),
                                       onPressed: () {
                                         deleteInvoiceRow(context,p.lineNum);
-                                        rowsCount--;
-
+                                        lineNum--;
                                       },
                                     )),
                                   ]),
@@ -1389,18 +1389,21 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
         ],
       ),
     );
+
     if (result == null || !result) {
       return;
     }
+
     int menuId = 6204;
     bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
 
     if (isAllowDelete) {
       setState(() {
-        SalesInvoiceDLst.removeWhere((invoiceD) => invoiceD.id == id);
-        print('++++++++++++++++++++++++++++++'+ id.toString());
-        _salesInvoiceDApiService.deleteSalesInvoiceD(context, id);
+        SalesInvoiceDLst.removeWhere((invoiceD) => invoiceD.lineNum == id);
         lineNum--;
+        rowsCount--;
+        _rowsCountController.text == (rowsCount--).toString();
+
       });
     } else {
       FN_showToast(context, 'you_dont_have_delete_permission'.tr(), Colors.black);

@@ -553,7 +553,9 @@
     "searchReturnSalesInvoice": "بحث مرتجع المبيعات",
     "returnSalesInvoice": "مرتجع المبيعات",
     "add_return_salesInvoice_return": "اضافة مرتجع المبيعات",
-    "customerGroup": "مجموعة العميل"
+    "customerGroup": "مجموعة العميل",
+    "customer_image": "صورة العميل",
+    "item_type": "نوع الصنف"
 
 
 

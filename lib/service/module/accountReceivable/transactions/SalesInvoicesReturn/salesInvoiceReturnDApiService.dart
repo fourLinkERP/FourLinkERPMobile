@@ -52,13 +52,13 @@ class SalesInvoiceReturnDApiService {
       //     .toList();
     } else {
       print('Booter Error');
-      throw "Failed to load customer list";
+      throw "Failed to load salesInvoiceReturnD list";
     }
   }
 
   Future<double>  getItemSellPriceData(String? ItemCode,String? UnitCode,String? tableName,String? criteria) async {
 
-    String sellItemApi = updateApi + "searchItemSellPriceData";
+    String sellItemApi = baseUrl.toString()  + 'v1/salesinvoicedetails/' + "searchItemSellPriceData";
     print('ItemSellPriceData 1');
     Map data = {
       'ItemCode': ItemCode,
@@ -85,9 +85,7 @@ class SalesInvoiceReturnDApiService {
       print('ItemSellPriceData ' + (json.decode(response.body)).toDouble().toString());
 
       return  (json.decode(response.body)).toDouble();
-      // return await json.decode(res.body)['data']
-      //     .map((data) => NextSerial.fromJson(data))
-      //     .toList();
+
     } else {
       print('ItemSellPriceData Failure');
       throw "Failed to load ItemSellPriceData";
@@ -158,14 +156,9 @@ class SalesInvoiceReturnDApiService {
       "flgDelete": false,
       "confirmed": false
 
-      // 'age': customer.age,
-      // 'address': customer.address,
-      // 'city': customer.city,
-      // 'country': customer.country,
-      // 'status': customer.status
     };
 
-    print('Start Create D' );
+    print('Start Create ReturnD' );
     final http.Response response = await http.post(
       Uri.parse(createApi),
       headers: <String, String>{
@@ -175,22 +168,18 @@ class SalesInvoiceReturnDApiService {
       body: jsonEncode(data),
     );
 
-    print('Start Create D2' );
-    print('save ' + data.toString());
+    print('Start Create ReturnD2' );
+    print('save return: ' + data.toString());
 
     if (response.statusCode == 200) {
 
-      //print('B 1');
-      //var data = jsonDecode(response.body)['data'];
-      //print('B 1 Finish');
-      //FN_showToast(context,'save_success'.tr() ,Colors.black);
-      print('Start Create D3' );
+      print('Start Create ReturnD3' );
       return  1;
 
 
     } else {
-      print('Error Create D' );
-      throw Exception('Failed to post sales Invoice');
+      print('Error Create ReturnD' );
+      throw Exception('Failed to post sales Invoice return');
     }
 
     return  0;

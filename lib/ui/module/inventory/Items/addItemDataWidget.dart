@@ -2,19 +2,21 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
+import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/itemTypes/itemTypesApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../common/login_components.dart';
+import '../../../../data/model/modules/module/inventory/basicInputs/ItemTypes/ItemType.dart';
 import '../../../../data/model/modules/module/inventory/basicInputs/items/items.dart';
 import '../../../../data/model/modules/module/inventory/basicInputs/units/units.dart';
 import '../../../../helpers/hex_decimal.dart';
 import '../../../../service/module/Inventory/basicInputs/units/unitApiService.dart';
 import '../../../../service/module/inventory/basicInputs/items/itemApiService.dart';
-import 'itemList.dart';
 
 //APIs
 UnitApiService _unitsApiService = UnitApiService();
+ItemTypeApiService _itemTypeApiService = ItemTypeApiService();
 
 enum Gender { male, female }
 enum Status { positive, dead, recovered }
@@ -35,39 +37,41 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
   final _itemNameAraController = TextEditingController();
   final _itemNameEngController = TextEditingController();
   final _itemSellPriceController = TextEditingController();
-  // final _taxIdentificationNumberController = TextEditingController();
-  // final _addressController = TextEditingController();
-  // final _phone1Controller = TextEditingController();
 
-
-  // String gender = 'male';
-  // Gender _gender = Gender.male;
-  // final _ageController = TextEditingController();
-
-  // final _cityController = TextEditingController();
-  // final _countryController = TextEditingController();
-  // String status = 'positive';
-  // Status _status = Status.positive;
 
   String arabicNameHint = 'arabicNameHint'.tr();
+
   String? selectedUnitValue = null;
   String? selectedUnitName = null;
+  String? selectedItemTypeValue = null;
+  String? selectedItemTypeName = null;
   List<Unit> units = [];
   List<DropdownMenuItem<String>> menuUnits = [];
+  List<ItemType> itemTypes = [];
+  List<DropdownMenuItem<String>> menuItemTypes = [];
+
   Unit? unitItem = Unit(unitCode: "", unitNameAra: "", unitNameEng: "", id: 0);
+  ItemType? itemTypeItem = ItemType(itemTypeCode: 0, itemTypeName: "", id: 0);
+
   @override
   initState() {
     super.initState();
 
     Future<List<Unit>> Units = _unitsApiService.getUnits().then((data) {
       units = data;
-      //print(customers.length.toString());
-      //getItemData();
+      getUnitData();
       return units;
     }, onError: (e) {
       print(e);
     });
 
+    Future<List<ItemType>> ItemTypes = _itemTypeApiService.getItemTypes(langId).then((data) {
+      itemTypes = data;
+      getItemTypeData();
+      return itemTypes;
+    }, onError: (e) {
+      print(e);
+    });
 
   }
 
@@ -89,14 +93,19 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
             FN_showToast(context, "please_enter_item_name", Colors.black);
             return;
           }
-          // if(_itemNameEngController.text.isEmpty){
-          //   FN_showToast(context, "please_select_unit", Colors.black);
-          // }
+          if(selectedItemTypeValue == null){
+            FN_showToast(context, "please_select_item_type", Colors.black);
+            return;
+          }
+          if(selectedUnitValue == null){
+            FN_showToast(context, "please_select_unit", Colors.black);
+          }
 
           api.createItem(context,Item(
               itemCode: _itemCodeController.text ,
               itemNameAra: _itemNameAraController.text ,
               itemNameEng: _itemNameEngController.text,
+
               defaultSellPrice: int.parse(_itemSellPriceController.text),
               defaultUniteCode: selectedUnitValue
 
@@ -163,7 +172,7 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
             child: Container(
                 margin: const EdgeInsets.only(top: 10, left: 10, right: 10),
                 padding: const EdgeInsets.all(10.0),
-                height: 400,
+                height: 420,
                 width: 440,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
@@ -190,6 +199,11 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
                         SizedBox(
                             height: 40,
                             child: Text('unit_name'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15))
+                        ),
+                        const SizedBox(height: 25),
+                        SizedBox(
+                            height: 40,
+                            child: Text('item_type'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15))
                         ),
                         const SizedBox(height: 25),
                         SizedBox(
@@ -300,6 +314,54 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
                             //
                             //   ),
                             // ),
+
+                          ),
+                        ),
+                        const SizedBox(height: 25),
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: DropdownSearch<ItemType>(
+
+                            selectedItem: itemTypeItem,
+                            popupProps: PopupProps.menu(
+                              itemBuilder: (context, item, isSelected) {
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: !isSelected ? null
+                                      : BoxDecoration(
+                                    border: Border.all(color: Colors.black12),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text((item.itemTypeName.toString()),
+                                  ),
+                                  ),
+                                );
+                              },
+                              showSearchBox: true,
+
+                            ),
+                            items: itemTypes,
+
+                            itemAsString: (ItemType u) => u.itemTypeName.toString(),
+                            onChanged: (value) {
+                              selectedItemTypeValue = value!.itemTypeCode.toString();
+                              selectedUnitName = value.itemTypeName.toString();
+
+                            },
+                            filterFn: (instance, filter) {
+                              if (instance.itemTypeName!.contains(filter)) {
+                                print(filter);
+                                return true;
+                              }
+                              else {
+                                return false;
+                              }
+                            },
+
 
                           ),
                         ),
@@ -440,6 +502,15 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
     for (var i = 0; i < units.length; i++) {
       menuUnits.add(DropdownMenuItem(value: units[i].unitCode.toString(), child: Text(
           (langId == 1) ? units[i].unitNameAra.toString() : units[i].unitNameEng.toString())));
+    }
+    setState(() {
+
+    });
+  }
+  getItemTypeData() {
+    for (var i = 0; i < itemTypes.length; i++) {
+      menuItemTypes.add(DropdownMenuItem(value: itemTypes[i].itemTypeCode.toString(), child: Text(
+         itemTypes[i].itemTypeName.toString())));
     }
     setState(() {
 

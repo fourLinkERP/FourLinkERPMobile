@@ -35,7 +35,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
 
   _AddCustomerDataWidgetState();
 
-  File? image;
+  File? customerImage;
 
   //Menus Data
   List<DropdownMenuItem<String>> menuCustomerType = [ ];
@@ -541,6 +541,25 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                         //   // ),
                         // ),
                         // const SizedBox(height: 20),
+                    SizedBox(
+                      width:  300,//double.infinity,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
+                            padding:
+                            MaterialStateProperty.all(const EdgeInsets.all(20)),
+                            textStyle: MaterialStateProperty.all(
+                                const TextStyle(fontSize: 14, color: Colors.white))),
+                        onPressed: () {
+                          _showPicker(context: context);
+                          //saveInvoice(context);
+
+                        },
+                        child: Text('customer_image'.tr(), style: const TextStyle(color: Colors.white)),
+                        //color: Colors.blue,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                         SizedBox(
                           width:  300,//double.infinity,
                           child: ElevatedButton(
@@ -748,8 +767,8 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
     if (image == null) return;
     final imageTemporary = File(image.path);
     print('imageTemporary${imageTemporary}');
-    setState (() => this.image = imageTemporary);
-    print(' File? image;${  this.image}');
+    setState (() => this.customerImage = imageTemporary);
+    print(' File? image;${this.customerImage}');
 
 
   }
@@ -758,7 +777,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
     final image=  await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image == null) return;
     final imageTemporary = File(image.path);
-    setState (() => this.image = imageTemporary);
+    setState (() => this.customerImage = imageTemporary);
 
    }
 

@@ -15,6 +15,7 @@ import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/C
 import 'package:fourlinkmobileapp/service/module/accountReceivable/setup/SalesInvoiceTypes/salesInvoiceType.dart'; // *
 import 'package:fourlinkmobileapp/service/module/general/inventoryOperation/inventoryOperationApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnList.dart';
 
 import 'package:fourlinkmobileapp/utils/email.dart';
 import 'package:supercharged/supercharged.dart';
@@ -471,7 +472,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                           _displayQtyController.text = "1";
                                           changeItemUnit(selectedItemValue.toString());
                                           selectedUnitValue = "1";
-                                          String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=2 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                          String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                           setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
 
 
@@ -593,6 +594,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                 SizedBox(
                                   width: 85,
                                   child: TextFormField(
+                                      keyboardType: TextInputType.number,
                                       controller: _displayPriceController,
                                       //hintText: "price".tr(),
                                       enabled: true,
@@ -1494,6 +1496,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     sendEmail();
 
     Navigator.pop(context);
+    //Navigator.push(context, MaterialPageRoute(builder: (context) => SalesInvoiceReturnHListPage()),);
   }
 
 //#endregion
@@ -1573,7 +1576,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     });
 
     //Items
-    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
+    Future<List<Item>> Items = _itemsApiService.getReturnItems().then((data) {
       items = data;
       //print(customers.length.toString());
       //getItemData();

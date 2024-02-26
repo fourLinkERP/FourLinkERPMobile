@@ -479,5 +479,7 @@
     "searchReturnSalesInvoice": "Search SalesInvoice Return",
     "returnSalesInvoice": "Sales Invoice Return",
     "add_return_salesInvoice_return": "Add Sales Invoice Return",
-    "customerGroup": "Customer Group"
+    "customerGroup": "Customer Group",
+    "customer_image": "Customer Image",
+    "item_type": "Item Type"
 }
