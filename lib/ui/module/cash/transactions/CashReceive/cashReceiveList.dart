@@ -6,6 +6,7 @@ import 'package:fourlinkmobileapp/cubit/app_states.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/cash/transactions/cashReceives/cashReceive.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
+import 'package:fourlinkmobileapp/service/general/cash/cash_receive_report.dart';
 import 'package:fourlinkmobileapp/service/module/cash/transactions/CashReceives/cashReceiveApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/cash/transactions/CashReceive/editCashReceiveDataWidget.dart';
@@ -325,71 +326,84 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
 
   }
 
-  // _navigateToPrintScreen (BuildContext context, CashReceive receive) async {
-  //
-  //   int menuId=3203;
-  //   bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
-  //   if(isAllowPrint)
-  //   {
-  //
-  //     DateTime date = DateTime.parse(receive.trxDate.toString());
-  //     final dueDate = date.add(Duration(days: 7));
-  //
-  //     //Get Sales Invoice Details To Create List Of Items
-  //     //getDetailData(receive.id);
-  //     Future<List<CashReceive>?> futureCashReceive = _apiDService.getSalesInvoicesD(receive.id);
-  //     _salesInvoicesD = (await futureSalesInvoiceD)!;
-  //
-  //     List<InvoiceItem> invoiceItems=[];
-  //     if(_salesInvoicesD != null)
-  //     {
-  //       print('In Sales Invoicr' );
-  //       print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString() );
-  //       for(var i = 0; i < _salesInvoicesD.length; i++){
-  //         int qty= (_salesInvoicesD[i].displayQty != null) ? _salesInvoicesD[i].displayQty as int : 0;
-  //         //double vat=0;
-  //         double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? _salesInvoicesD[i].displayTotalTaxValue : 0 ;
-  //         //double price =_salesInvoicesD[i].displayPrice! as double;
-  //         double price =( _salesInvoicesD[i].price != null) ? _salesInvoicesD[i].price : 0;
-  //
-  //
-  //         InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
-  //             date: date, quantity: qty  , vat: vat  , unitPrice: price );
-  //
-  //         invoiceItems.add(_invoiceItem);
-  //       }
-  //     }
-  //
-  //     final invoice = Invoice(   //ToDO
-  //         supplier: Vendor(
-  //           vendorNameAra: 'Sarah Field',
-  //           address1: 'Sarah Street 9, Beijing, China',
-  //           paymentInfo: 'https://paypal.me/sarahfieldzz',
-  //         ),
-  //         customer: Customer(
-  //           customerNameAra: receive.customerName,
-  //           address: 'Apple Street, Cupertino, CA 95014', //ToDO
-  //         ),
-  //         info: InvoiceInfo(
-  //           date: date,
-  //           dueDate: dueDate,
-  //           description: 'My description...',
-  //           number: receive.trxSerial.toString() ,
-  //         ),
-  //         items: invoiceItems
-  //
-  //     );
-  //
-  //     final pdfFile = await PdfInvoiceApi.generate(invoice);
-  //
-  //     PdfApi.openFile(pdfFile);
-  //
-  //   }
-  //   else
-  //   {
-  //     FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
-  //   }
-  // }
+  _navigateToPrintScreen (BuildContext context, CashReceive receive) async {
+    
+    print('tohoooooooooooz');
+    int menuId=3203;
+    bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
+    if(isAllowPrint)
+    {
+      print('tohoooooooooooz2');
+      DateTime date = DateTime.parse(receive.trxDate.toString());
+      final dueDate = date.add(Duration(days: 7));
+
+      receive.receiveTitle=langId==1?' سند قبض':' سند قبض';
+      receive.receiveTitleDesc=langId==1?'Receipt Voucher':'Receipt Voucher';
+
+      receive.companyName=langId==1?' مؤسسة ركن كريز للحلويات':' مؤسسة ركن كريز للحلويات';
+      receive.companyAddress=langId==1?'العنوان : الرياض - ص ب 14922':'العنوان : الرياض - ص ب 14922';
+      receive.companyCommercial= langId==1?'السجل التجاري 450714529009 :CR':'السجل التجاري 450714529009 :CR';
+      receive.companyVat=langId==1?': Number Vat الرقم الضريبى : 302211485800003':': Number Vat الرقم الضريبى : 302211485800003';
+
+
+      final pdfFile = await CashReceiveReport.generate(receive);
+      PdfApi.openFile(pdfFile);
+
+      //Get Sales Invoice Details To Create List Of Items
+      //getDetailData(receive.id);
+      // Future<List<CashReceive>?> futureCashReceive = _apiDService.getSalesInvoicesD(receive.id);
+      // _salesInvoicesD = (await futureSalesInvoiceD)!;
+      //
+      // List<InvoiceItem> invoiceItems=[];
+      // if(_salesInvoicesD != null)
+      // {
+      //   print('In Sales Invoicr' );
+      //   print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString() );
+      //   for(var i = 0; i < _salesInvoicesD.length; i++){
+      //     int qty= (_salesInvoicesD[i].displayQty != null) ? _salesInvoicesD[i].displayQty as int : 0;
+      //     //double vat=0;
+      //     double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? _salesInvoicesD[i].displayTotalTaxValue : 0 ;
+      //     //double price =_salesInvoicesD[i].displayPrice! as double;
+      //     double price =( _salesInvoicesD[i].price != null) ? _salesInvoicesD[i].price : 0;
+      //
+      //
+      //     InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
+      //         date: date, quantity: qty  , vat: vat  , unitPrice: price );
+      //
+      //     invoiceItems.add(_invoiceItem);
+      //   }
+      // }
+      //
+      // final invoice = Invoice(   //ToDO
+      //     supplier: Vendor(
+      //       vendorNameAra: 'Sarah Field',
+      //       address1: 'Sarah Street 9, Beijing, China',
+      //       paymentInfo: 'https://paypal.me/sarahfieldzz',
+      //     ),
+      //     customer: Customer(
+      //       customerNameAra: receive.customerName,
+      //       address: 'Apple Street, Cupertino, CA 95014', //ToDO
+      //     ),
+      //     info: InvoiceInfo(
+      //       date: date,
+      //       dueDate: dueDate,
+      //       description: 'My description...',
+      //       number: receive.trxSerial.toString() ,
+      //     ),
+      //     items: invoiceItems
+      //
+      // );
+      //
+      // final pdfFile = await PdfInvoiceApi.generate(invoice);
+      //
+      // PdfApi.openFile(pdfFile);
+
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
+    }
+  }
 
 
 
@@ -511,7 +525,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
                                         ),
                                         label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                          // _navigateToPrintScreen(context,_cashReceives[index]);
+                                           _navigateToPrintScreen(context,_cashReceives[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(

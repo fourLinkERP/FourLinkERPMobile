@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:fourlinkmobileapp/data/model/modules/module/accountPayable/basicInputs/Vendors/vendor.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
 import '../../basicInputs/Customers/customer.dart';
 
 class Invoice {
@@ -20,21 +23,32 @@ class InvoiceInfo {
   final String number;
   final DateTime date;
   final DateTime dueDate;
+  final double totalDiscount;
+  final double totalAmount;
+  final double totalBeforeVat;
+  final double totalVatAmount;
+  final double totalAfterVat;
 
   const InvoiceInfo({
     required this.description,
     required this.number,
     required this.date,
     required this.dueDate,
+    required this.totalDiscount,
+    required this.totalAmount,
+    required this.totalBeforeVat,
+    required this.totalVatAmount,
+    required this.totalAfterVat
   });
 }
 
 class InvoiceItem {
   final String description;
   final DateTime date;
-  final int quantity;
+  final double quantity;
   final double vat;
   final double unitPrice;
+  final double totalValue;
 
   const InvoiceItem({
     required this.description,
@@ -42,5 +56,6 @@ class InvoiceItem {
     required this.quantity,
     required this.vat,
     required this.unitPrice,
+    required this.totalValue,
   });
 }

@@ -257,18 +257,25 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
         print('In Sales Invoicr' );
         print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString() );
         for(var i = 0; i < _salesInvoicesD.length; i++){
-          int qty= (_salesInvoicesD[i].displayQty != null) ? _salesInvoicesD[i].displayQty as int : 0;
+          double qty= (_salesInvoicesD[i].displayQty != null) ? _salesInvoicesD[i].displayQty as double : 0;
           //double vat=0;
           double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? _salesInvoicesD[i].displayTotalTaxValue : 0 ;
           //double price =_salesInvoicesD[i].displayPrice! as double;
           double price =( _salesInvoicesD[i].price != null) ? _salesInvoicesD[i].price : 0;
+          double total =( _salesInvoicesD[i].total != null) ? _salesInvoicesD[i].total : 0;
 
           InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
-              date: date, quantity: qty  , vat: vat  , unitPrice: price );
+              date: date, quantity: qty  , vat: vat  , unitPrice: price,totalValue: total );
 
           invoiceItems.add(_invoiceItem);
         }
       }
+
+      double totalDiscount =( invoiceH.totalDiscount != null) ? invoiceH.totalDiscount as double : 0;
+      double totalBeforeVat =( invoiceH.totalValue != null) ? invoiceH.totalValue as double : 0;
+      double totalVatAmount =( invoiceH.totalTax != null) ? invoiceH.totalTax as double : 0;
+      double totalAfterVat =( invoiceH.totalNet != null) ? invoiceH.totalNet as double : 0;
+      double totalAmount =( invoiceH.totalAfterDiscount != null) ? invoiceH.totalAfterDiscount as double : 0;
 
       final invoice = Invoice(   //ToDO
           supplier: Vendor(
@@ -285,6 +292,11 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
             dueDate: dueDate,
             description: 'My description...',
             number: invoiceH.salesInvoicesSerial.toString() ,
+            totalDiscount:  totalDiscount,
+            totalBeforeVat:  totalBeforeVat,
+            totalVatAmount:  totalVatAmount,
+            totalAfterVat:  totalAfterVat,
+            totalAmount:  totalAmount,
           ),
           items: invoiceItems
 

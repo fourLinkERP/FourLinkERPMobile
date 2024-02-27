@@ -138,6 +138,9 @@ flutter:
     - family: Schelyer
       fonts:
         - asset: assets/fonts/jt.ttf
+    - family: HacenTunisia
+      fonts:
+        - asset: assets/fonts/HacenTunisia.ttf
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf

@@ -3,8 +3,11 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/cubit/app_cubit.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/receipt/receipt.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/general/receipt/receiptHeader.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
+import 'package:fourlinkmobileapp/service/general/receipt/pdfReceipt.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -260,58 +263,195 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
       if(isAllowPrint)
       {
+        bool IsReceipt =true;
+        if(IsReceipt)
+          {
+            DateTime date = DateTime.parse(invoiceH.salesInvoicesDate.toString());
+            final dueDate = date.add(Duration(days: 7));
 
-        DateTime date = DateTime.parse(invoiceH.salesInvoicesDate.toString());
-        final dueDate = date.add(Duration(days: 7));
+            //Get Sales Invoice Details To Create List Of Items
+            //getDetailData(invoiceH.id);
+            Future<List<SalesInvoiceD>?> futureSalesInvoiceD = _apiDService.getSalesInvoicesD(invoiceH.id);
+            _salesInvoicesD = (await futureSalesInvoiceD)!;
 
-        //Get Sales Invoice Details To Create List Of Items
-        //getDetailData(invoiceH.id);
-        Future<List<SalesInvoiceD>?> futureSalesInvoiceD = _apiDService.getSalesInvoicesD(invoiceH.id);
-        _salesInvoicesD = (await futureSalesInvoiceD)!;
+            List<InvoiceItem> invoiceItems=[];
+            print('Before Sales Invoicr : ' + invoiceH.id.toString() );
+            if(_salesInvoicesD != null)
+            {
+              print('In Sales Invoicr' );
+              print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString() );
+              for(var i = 0; i < _salesInvoicesD.length; i++){
+                double qty= (_salesInvoicesD[i].displayQty != null) ? _salesInvoicesD[i].displayQty as double  : 0;
+                //double vat=0;
+                double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? _salesInvoicesD[i].displayTotalTaxValue : 0 ;
+                //double price =_salesInvoicesD[i].displayPrice! as double;
+                double price =( _salesInvoicesD[i].price != null) ? _salesInvoicesD[i].price : 0;
+                double total =( _salesInvoicesD[i].total != null) ? _salesInvoicesD[i].total : 0;
 
-        List<InvoiceItem> invoiceItems=[];
-        print('Before Sales Invoicr : ' + invoiceH.id.toString() );
-        if(_salesInvoicesD != null)
-        {
-          print('In Sales Invoicr' );
-          print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString() );
-          for(var i = 0; i < _salesInvoicesD.length; i++){
-            int qty= (_salesInvoicesD[i].displayQty != null) ? _salesInvoicesD[i].displayQty as int : 0;
-            //double vat=0;
-            double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? _salesInvoicesD[i].displayTotalTaxValue : 0 ;
-            //double price =_salesInvoicesD[i].displayPrice! as double;
-            double price =( _salesInvoicesD[i].price != null) ? _salesInvoicesD[i].price : 0;
+                //InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
+                InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
+                    date: date, quantity: qty  , vat: vat  , unitPrice: price , totalValue : total  );
 
-            InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
-                date: date, quantity: qty  , vat: vat  , unitPrice: price );
+                invoiceItems.add(_invoiceItem);
+              }
+            }
 
-            invoiceItems.add(_invoiceItem);
+            double totalDiscount =( invoiceH.totalDiscount != null) ? invoiceH.totalDiscount as double : 0;
+            double totalBeforeVat =( invoiceH.totalValue != null) ? invoiceH.totalValue as double : 0;
+            double totalVatAmount =( invoiceH.totalTax != null) ? invoiceH.totalTax as double : 0;
+            double totalAfterVat =( invoiceH.totalNet != null) ? invoiceH.totalNet as double : 0;
+            double totalAmount =( invoiceH.totalAfterDiscount != null) ? invoiceH.totalAfterDiscount as double : 0;
+
+            final invoice = Invoice(   //ToDO
+                supplier: Vendor(
+                  vendorNameAra: 'Sarah Field',
+                  address1: 'Sarah Street 9, Beijing, China',
+                  paymentInfo: 'https://paypal.me/sarahfieldzz',
+                ),
+                customer: Customer(
+                  customerNameAra: invoiceH.customerName,
+                  address: 'Apple Street, Cupertino, CA 95014', //ToDO
+                ),
+                info: InvoiceInfo(
+                  date: date,
+                  dueDate: dueDate,
+                  description: 'My description...',
+                  number: invoiceH.salesInvoicesSerial.toString() ,
+                  totalDiscount:  totalDiscount,
+                  totalBeforeVat:  totalBeforeVat,
+                  totalVatAmount:  totalVatAmount,
+                  totalAfterVat:  totalAfterVat,
+                  totalAmount:  totalAmount,
+                ),
+                items: invoiceItems
+
+            );
+
+
+        //     DateTime date = DateTime.parse(invoiceH.salesInvoicesDate.toString());
+        //     final dueDate = date.add(Duration(days: 7));
+        //
+        //     //Get Sales Invoice Details To Create List Of Items
+        //     //getDetailData(invoiceH.id);
+        //     Future<List<SalesInvoiceD>?> futureSalesInvoiceD = _apiDService.getSalesInvoicesD(invoiceH.id);
+        //     _salesInvoicesD = (await futureSalesInvoiceD)!;
+        //
+        //     List<InvoiceItem> invoiceItems=[];
+        //     print('Before Sales Invoicr : ' + invoiceH.id.toString() );
+        //     if(_salesInvoicesD != null)
+        //     {
+        //       print('In Sales Invoicr' );
+        //       print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString() );
+        //       for(var i = 0; i < _salesInvoicesD.length; i++){
+        //         double qty= (_salesInvoicesD[i].displayQty != null) ? _salesInvoicesD[i].displayQty as double : 0;
+        //         //double vat=0;
+        //         double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? _salesInvoicesD[i].displayTotalTaxValue : 0 ;
+        //         //double price =_salesInvoicesD[i].displayPrice! as double;
+        //         double price =( _salesInvoicesD[i].price != null) ? _salesInvoicesD[i].price : 0;
+        //
+        //         InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
+        //             date: date, quantity: qty  , vat: vat  , unitPrice: price );
+        //
+        //         invoiceItems.add(_invoiceItem);
+        //       }
+        //     }
+        //
+            String invoiceDate =DateFormat('yyyy-MM-dd hh:mm').format(DateTime.parse(invoiceH.salesInvoicesDate.toString()));
+            final receipt = Receipt(   //ToDO
+                receiptHeader: ReceiptHeader(
+                  companyName: langId==1?' مؤسسة ركن كريز للحلويات':' مؤسسة ركن كريز للحلويات',
+                  companyAddress: langId==1?'العنوان : الرياض - ص ب 14922':'العنوان : الرياض - ص ب 14922',
+                  companyPhone: langId==1?'Tel No :+966539679540':'Tel No :+966539679540',
+                  companyInvoiceTypeName: langId==1?'فاتورة ضريبية مبسطة':'فاتورة ضريبية مبسطة',
+                  companyInvoiceTypeName2: langId==1?'Simplified Tax Invoice':'Simplified Tax Invoice',
+                  companyVatNumber: langId==1?': Number Vat الرقم الضريبى : 302211485800003':': Number Vat الرقم الضريبى : 302211485800003',
+                  companyCommercialName: langId==1?'السجل التجاري 450714529009 :CR':'السجل التجاري 450714529009 :CR',
+                  companyInvoiceNo: langId==1?'رقم الفاتورة ' + invoiceH.salesInvoicesSerial.toString() :'رقم الفاتورة ' + invoiceH.salesInvoicesSerial.toString(),
+                  companyDate: langId==1?'Date ' + invoiceDate :'Date  ' + invoiceDate,
+                ),
+                invoice: invoice
+        //
+         );
+        //
+        //     final pdfFile = await PdfInvoiceReceiptApi.generate(receipt);
+        //     //final pdfFile = await start(receipt);
+        //     //final pdfFile = await PdfInvoiceReceiptApi(receipt);
+        //
+        //     PdfApi.openFile(pdfFile);
+
+
+
+            final pdfFile = await pdfReceipt.generate(receipt);
+
+            PdfApi.openFile(pdfFile);
+       }
+       else{
+          DateTime date = DateTime.parse(invoiceH.salesInvoicesDate.toString());
+          final dueDate = date.add(Duration(days: 7));
+
+          //Get Sales Invoice Details To Create List Of Items
+          //getDetailData(invoiceH.id);
+          Future<List<SalesInvoiceD>?> futureSalesInvoiceD = _apiDService.getSalesInvoicesD(invoiceH.id);
+          _salesInvoicesD = (await futureSalesInvoiceD)!;
+
+          List<InvoiceItem> invoiceItems=[];
+          print('Before Sales Invoicr : ' + invoiceH.id.toString() );
+          if(_salesInvoicesD != null)
+          {
+            print('In Sales Invoicr' );
+            print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString() );
+            for(var i = 0; i < _salesInvoicesD.length; i++){
+              double qty= (_salesInvoicesD[i].displayQty != null) ? _salesInvoicesD[i].displayQty as double : 0;
+              //double vat=0;
+              double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? _salesInvoicesD[i].displayTotalTaxValue : 0 ;
+              //double price =_salesInvoicesD[i].displayPrice! as double;
+              double price =( _salesInvoicesD[i].price != null) ? _salesInvoicesD[i].price : 0;
+              double total =( _salesInvoicesD[i].total != null) ? _salesInvoicesD[i].total : 0;
+
+              InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
+                  date: date, quantity: qty  , vat: vat  , unitPrice: price,totalValue: total );
+
+              invoiceItems.add(_invoiceItem);
+            }
           }
+
+
+          double totalDiscount =( invoiceH.totalDiscount != null) ? invoiceH.totalDiscount as double : 0;
+          double totalBeforeVat =( invoiceH.totalValue != null) ? invoiceH.totalValue as double : 0;
+          double totalVatAmount =( invoiceH.totalTax != null) ? invoiceH.totalTax as double : 0;
+          double totalAfterVat =( invoiceH.totalNet != null) ? invoiceH.totalNet as double : 0;
+          double totalAmount =( invoiceH.totalAfterDiscount != null) ? invoiceH.totalAfterDiscount as double : 0;
+
+          final invoice = Invoice(   //ToDO
+              supplier: Vendor(
+                vendorNameAra: 'Sarah Field',
+                address1: 'Sarah Street 9, Beijing, China',
+                paymentInfo: 'https://paypal.me/sarahfieldzz',
+              ),
+              customer: Customer(
+                customerNameAra: invoiceH.customerName,
+                address: 'Apple Street, Cupertino, CA 95014', //ToDO
+              ),
+              info: InvoiceInfo(
+                date: date,
+                dueDate: dueDate,
+                description: 'My description...',
+                number: invoiceH.salesInvoicesSerial.toString() ,
+                totalDiscount:  totalDiscount,
+                totalBeforeVat:  totalBeforeVat,
+                totalVatAmount:  totalVatAmount,
+                totalAfterVat:  totalAfterVat,
+                totalAmount:  totalAmount,
+              ),
+              items: invoiceItems
+
+          );
+
+          final pdfFile = await PdfInvoiceApi.generate(invoice);
+
+          PdfApi.openFile(pdfFile);
         }
 
-        final invoice = Invoice(   //ToDO
-            supplier: Vendor(
-              vendorNameAra: 'Sarah Field',
-              address1: 'Sarah Street 9, Beijing, China',
-              paymentInfo: 'https://paypal.me/sarahfieldzz',
-            ),
-            customer: Customer(
-              customerNameAra: invoiceH.customerName,
-              address: 'Apple Street, Cupertino, CA 95014', //ToDO
-            ),
-            info: InvoiceInfo(
-              date: date,
-              dueDate: dueDate,
-              description: 'My description...',
-              number: invoiceH.salesInvoicesSerial.toString() ,
-            ),
-            items: invoiceItems
-
-        );
-
-        final pdfFile = await PdfInvoiceApi.generate(invoice);
-
-        PdfApi.openFile(pdfFile);
 
       }
       else

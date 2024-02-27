@@ -1213,8 +1213,8 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     _salesInvoiceD.itemName= selectedItemName;
     //print('Add Product 2');
     //Qty
-    _salesInvoiceD.displayQty= (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
-    _salesInvoiceD.qty= (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
+    _salesInvoiceD.displayQty= (!_displayQtyController.text.isEmpty) ? double.parse(_displayQtyController.text) : 0;
+    _salesInvoiceD.qty= (!_displayQtyController.text.isEmpty) ? double.parse(_displayQtyController.text) : 0.0;
 
     //print('Add Product 2 - display Qty ' + _salesInvoiceD.displayQty.toString());
     //print('Add Product 2 -  Qty ' + _salesInvoiceD.qty.toString());

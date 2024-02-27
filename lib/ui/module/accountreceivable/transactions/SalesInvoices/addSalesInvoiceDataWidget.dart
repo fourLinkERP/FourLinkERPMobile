@@ -1293,8 +1293,8 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     _salesInvoiceD.itemCode = selectedItemValue;
     _salesInvoiceD.itemName = selectedItemName;
     //Qty
-    _salesInvoiceD.displayQty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
-    _salesInvoiceD.qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+    _salesInvoiceD.displayQty = (_displayQtyController.text.isNotEmpty) ? double.parse(_displayQtyController.text) : 0;
+    _salesInvoiceD.qty = (_displayQtyController.text.isNotEmpty) ? double.parse(_displayQtyController.text) : 0;
 
     //Cost Price
     _salesInvoiceD.costPrice =

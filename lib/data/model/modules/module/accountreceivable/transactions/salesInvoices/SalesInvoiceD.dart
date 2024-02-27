@@ -13,8 +13,8 @@ class SalesInvoiceD {
   String? unitName ;
   String? storeCode ;
   String? storeName ;
-  int qty =0;
-  int displayQty;
+  double qty =0;
+  double displayQty;
   double price;
   double displayPrice;
   double costPrice=0;
@@ -79,8 +79,8 @@ class SalesInvoiceD {
       displayPrice: json['displayPrice'] != null ?  json['displayPrice'].toDouble()  : 0.0 ,
       netBeforeTax: json['netBeforeTax'] != null ?  json['netBeforeTax'].toDouble()  : 0.0 ,
       price: json['price'] != null ? json['price'].toDouble() : 0.0,
-      displayQty: json['displayQty'] != null ?  json['displayQty'] as int : 0,
-      qty: json['qty'] != null ?  json['qty'] as int : 0,
+      displayQty: json['displayQty'] != null ?  json['displayQty'].toDouble() : 0.0,
+      qty: json['qty'] != null ?  json['qty'].toDouble() : 0,
       displayTotal: json['displayTotal'] != null ?  json['displayTotal'].toDouble() : 0.0,
       total: json['total'] != null ?  json['total'].toDouble() : 0.0  ,
       displayDiscountValue: json['displayDiscountValue'] != null ?  json['displayDiscountValue'].toDouble() : 0.0,

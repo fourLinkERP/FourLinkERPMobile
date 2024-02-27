@@ -29,9 +29,18 @@ class CashReceive {
   String?  tafqitNameEnglish ;
   String?  targetNameAra ;
   String?  targetNameEng ;
+  String?  receiveTitle ;
+  String?  receiveTitleDesc ;
+  String?  companyName ;
+  String?  companyAddress ;
+  String?  companyCommercial ;
+  String?  companyVat ;
   // String? address;
   // String? Phone1;
   //String image;
+
+
+
 
   CashReceive({
     this.id,
@@ -58,6 +67,12 @@ class CashReceive {
     this.tafqitNameEnglish,
     this.targetNameAra,
     this.targetNameEng,
+    this.receiveTitle='',
+    this.receiveTitleDesc='',
+    this.companyName='',
+    this.companyAddress='',
+    this.companyCommercial='',
+    this.companyVat=''
     //image
     });
 
