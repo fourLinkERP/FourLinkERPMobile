@@ -21,8 +21,8 @@ class SalesInvoiceReturnDApiService {
     Map data = {
       // 'CompanyCode': companyCode,
       // 'BranchCode': branchCode,
-      // 'SalesInvoiceReturnsCase': 1, //Sales Invoice Case =1
-      // 'SalesInvoiceReturnsTypeCode': '1', //Sales Invoice Type
+      //'SalesInvoiceReturnsCase': 2,
+      // 'SalesInvoiceReturnsTypeCode': '1',
       'HeaderId': headerId
     };
 

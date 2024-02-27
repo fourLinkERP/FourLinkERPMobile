@@ -24,8 +24,7 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
     Map data = {
       'Search':{
         'CompanyCode': companyCode,
-        'BranchCode': branchCode,
-        'ItemTypeCode': 7
+        'BranchCode': branchCode
       }
     };
 
@@ -129,6 +128,7 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
       'itemCode': item.itemCode,
       'itemNameAra': item.itemNameAra,
       'itemNameEng': item.itemNameEng,
+      'itemTypeCode': item.itemTypeCode,
       'defaultSellPrice': item.defaultSellPrice,
       'defaultUniteCode': item.defaultUniteCode,
       "confirmed": false,

@@ -722,26 +722,10 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                             ],
                             rows: SalesInvoiceReturnDLst.map((p) =>
                                 DataRow(cells: [
-                                  DataCell(
-                                      SizedBox(
-                                          width: 5, //SET width
-                                          child: Text(p.lineNum.toString()))
-                                  ),
-                                  DataCell(
-                                      SizedBox(
-                                          width: 50, //SET width
-                                          child: Text(p.itemName.toString()))
-                                  ),
-                                  DataCell(
-                                      SizedBox(
-                                        //width: 15, //SET width
-                                          child: Text(p.displayQty.toString()))
-                                  ),
-                                  DataCell(
-                                      SizedBox(
-                                        //width: 15, //SET width
-                                          child: Text(p.displayPrice.toString()))
-                                  ),
+                                  DataCell(SizedBox(width: 5, child: Text(p.lineNum.toString()))),
+                                  DataCell(SizedBox(width: 50, child: Text(p.itemName.toString()))),
+                                  DataCell(SizedBox(child: Text(p.displayQty.toString()))),
+                                  DataCell(SizedBox(child: Text(p.displayPrice.toString()))),
                                   DataCell(SizedBox(child: Text(p.displayTotal.toString()))),
                                   DataCell(SizedBox(child: Text(p.displayDiscountValue.toString()))),
                                   DataCell(SizedBox(child: Text(p.netAfterDiscount.toString()))),
@@ -749,7 +733,8 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                   DataCell(SizedBox(child: Text(p.displayNetValue.toString()))),
                                   DataCell(IconButton(icon: Icon(Icons.delete_forever, size: 30.0, color: Colors.red.shade600,),
                                     onPressed: () {
-                                      deleteInvoiceRow(context,p.id);
+                                      deleteInvoiceRow(context,p.lineNum);
+                                      calcTotalPriceRow();
                                     },
                                   )),
                                 ]),
@@ -1367,9 +1352,8 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
       selectedUnitValue = "";
     });
   }
-  deleteInvoiceRow(BuildContext context,int? id) async {
-
-    final result = await showDialog<bool>(
+  void deleteInvoiceRow(BuildContext context, int? lineNum) async {
+    final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Are you sure?'),
@@ -1387,24 +1371,76 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
       ),
     );
 
-    if (result == null || !result) {
-      return;
-    }
+    if (confirmed!) {
+      // Find the index of the row with the given lineNum
+      int indexToRemove = SalesInvoiceReturnDLst.indexWhere((p) => p.lineNum == lineNum);
 
-    int menuId=6204;
-    bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
-    if(isAllowDelete)
-    {
-      SalesInvoiceReturnDLst.removeWhere((InvoiceD) => InvoiceD.id == id);
-      var res = _salesInvoiceReturnDApiService.deleteSalesInvoiceReturnD(context,id); //.then((value) => getData());
-      lineNum--;
+      if (indexToRemove != -1) {
+        // Remove the row
+        SalesInvoiceReturnDLst.removeAt(indexToRemove);
 
-    }
-    else
-    {
-      FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
-    }
+        // Recalculate the parameters based on the remaining rows
+        recalculateParameters();
 
+
+
+        // Trigger a rebuild
+        setState(() {});
+      }
+    }
+  }
+  void recalculateParameters() {
+    //SalesInvoiceH _salesInvoiceH = SalesInvoiceH();
+    totalQty = 0;
+    totalTax = 0;
+    totalDiscount = 0;
+    rowsCount = SalesInvoiceReturnDLst.length;
+    totalNet = 0;
+    totalPrice = 0;
+    totalBeforeTax = 0;
+    totalAfterDiscount = 0;
+    totalBeforeTax = 0;
+    //_salesInvoiceH.tafqitNameArabic = _tafqitNameArabicController.text;
+    //_salesInvoiceH.tafqitNameEnglish = _tafqitNameEnglishController.text;
+
+    for (var row in SalesInvoiceReturnDLst) {
+      totalQty += row.displayQty;
+      totalTax += row.displayTotalTaxValue;
+      totalDiscount += row.displayDiscountValue;
+      totalNet += row.displayNetValue;
+      totalAfterDiscount += row.netAfterDiscount;
+      totalBeforeTax += row.netAfterDiscount;
+      totalPrice  += row.netAfterDiscount;
+    }
+    // void recalculateHeaderParameters() {
+    //   _salesInvoiceH.totalValue = 0;
+    //   // Calculate totalValue based on the remaining rows
+    //   for (var row in SalesInvoiceDLst) {
+    //     _salesInvoiceH.totalValue += row.displayTotal;
+    //   }
+    //
+    //   // Calculate tafqitNameArabic and tafqitNameEnglish based on your logic
+    //   // ...
+    //
+    //   // Update your controllers or other widgets if needed
+    //   _totalValueController.text = _salesInvoiceH.totalValue.toString();
+    //   _tafqitNameArabicController.text = _salesInvoiceH.tafqitNameArabic;
+    //   _tafqitNameEnglishController.text = _salesInvoiceH.tafqitNameEnglish;
+    // }
+
+    // Calculate invoiceDiscountPercent and invoiceDiscountValue based on your logic
+    // ...
+
+    // Update your controllers or other widgets if needed
+    _totalQtyController.text = totalQty.toString();
+    _totalTaxController.text = totalTax.toString();
+    _totalDiscountController.text = totalDiscount.toString();
+    _rowsCountController.text = rowsCount.toString();
+    _totalNetController.text = totalNet.toString();
+    _totalAfterDiscountController.text = totalAfterDiscount.toString();
+    _totalBeforeTaxController.text = totalBeforeTax.toString();
+    _totalValueController.text = totalPrice.toString();
+    setTafqeet("2", _totalNetController.text);
   }
 
 //Save

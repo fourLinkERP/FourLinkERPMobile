@@ -105,13 +105,10 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
               itemCode: _itemCodeController.text ,
               itemNameAra: _itemNameAraController.text ,
               itemNameEng: _itemNameEngController.text,
-
+              itemTypeCode: int.parse(selectedItemTypeValue!),
               defaultSellPrice: int.parse(_itemSellPriceController.text),
               defaultUniteCode: selectedUnitValue
 
-          // taxIdentificationNumber: _taxIdentificationNumberController.text ,
-          // Phone1: _phone1Controller.text ,
-          // address: _addressController.text
           ));
 
           Navigator.pop(context);

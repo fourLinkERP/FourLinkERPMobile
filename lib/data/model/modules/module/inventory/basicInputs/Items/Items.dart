@@ -6,6 +6,7 @@ class Item {
   String? itemNameAra ;
   String?  itemNameEng;
   String? defaultUniteCode;
+  int?  itemTypeCode;
   int ? defaultSellPrice;
 
   // String? cusTypesCode,cusTypesName;
@@ -17,6 +18,7 @@ class Item {
     this.itemCode ,
     this.itemNameAra,
     this.itemNameEng,
+    this.itemTypeCode,
     this.defaultUniteCode,
     this.defaultSellPrice
     // cusTypesCode,
@@ -30,6 +32,7 @@ class Item {
       itemCode: (json['itemCode'] != null) ? json['itemCode'] as String:" ",
       itemNameAra: (json['itemNameAra'] != null) ? json['itemNameAra'] as String:" ",
       itemNameEng: (json['itemNameEng'] != null) ? json['itemNameEng'] as String:" ",
+      itemTypeCode: (json['itemTypeCode'] != null) ? json['itemTypeCode'] as int: 0,
       defaultUniteCode: (json['defaultUniteCode'] != null) ? json['defaultUniteCode'] as String:" ",
       defaultSellPrice: (json['defaultSellPrice'] != null) ? json['defaultSellPrice'] as int: 0,
       // cusTypesName: json['cusTypesName'] as String,
