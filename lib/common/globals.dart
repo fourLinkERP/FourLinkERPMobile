@@ -17,7 +17,7 @@ int branchCode = 1; //Will Set On App Perference
 String requestTypeCode = "";
 String transactionId = "";
 //Language
-int langId = 2; //1-Arabic   2-English
+int langId = 1; //1-Arabic   2-English
 //Employee
 String empCode = "1";
 //Fiancial Year
