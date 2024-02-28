@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   String langGroup = "";
 
-  int selectedValue = 2;
+  int selectedValue = 1;
   final double _headerHeight = 250;
   final _formKey = GlobalKey<FormState>();
   final _dropdownBranchFormKey = GlobalKey<FormState>();
@@ -433,16 +433,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     text: 'sign_up'.tr(),
                                     recognizer: TapGestureRecognizer()
                                       ..onTap = () {
-                                        /*      Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    RegistrationScreen())
-                                        );*/
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(builder: (context) => RegistrationScreen())
-                                        );
+                                      //Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen()));
                                       },
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
@@ -452,24 +443,24 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ])),
                               ),
-                              Container(
-                                margin: const EdgeInsets.fromLTRB(50, 0, 0, 20),
-                                alignment: Alignment.center,
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    //final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                    //sharedPreferences.setString('email', _emailController.text);
-                                    startQuickLogin();
-                                  },
-                                  child: Text(
-                                    '<- الدخول السريع'.tr(),
-                                    style: const TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              // Container(
+                              //   margin: const EdgeInsets.fromLTRB(50, 0, 0, 20),
+                              //   alignment: Alignment.center,
+                              //   child: GestureDetector(
+                              //     onTap: () async {
+                              //       //final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                              //       //sharedPreferences.setString('email', _emailController.text);
+                              //       startQuickLogin();
+                              //     },
+                              //     child: Text(
+                              //       '<- الدخول السريع'.tr(),
+                              //       style: const TextStyle(
+                              //         color: Colors.red,
+                              //         fontWeight: FontWeight.bold,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
 
                               Align(
                                 alignment: FractionalOffset.bottomCenter,

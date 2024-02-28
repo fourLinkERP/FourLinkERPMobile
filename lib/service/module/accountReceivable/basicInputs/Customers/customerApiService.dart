@@ -9,7 +9,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
  class CustomerApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/customers/searchData';
+  String searchApi= baseUrl.toString()  + 'v1/customers/searchdata';
   String search2Api= baseUrl.toString()  + 'v1/customers/search';
   String createApi= baseUrl.toString()  + 'v1/customers';
   String updateApi= baseUrl.toString()  + 'v1/customers/';  // Add ID For Edit

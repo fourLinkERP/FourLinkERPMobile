@@ -1567,16 +1567,16 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     setState(() {});
   }
 
-  // getItemData() {
-  //   if (items != null) {
-  //     for(var i = 0; i < items.length; i++){
-  //       menuItems.add(DropdownMenuItem(child: Text((langId==1)?items[i].itemNameAra.toString() : items[i].itemNameEng.toString()   ),value: items[i].itemCode.toString()));
-  //     }
-  //   }
-  //   setState(() {
-  //
-  //   });
-  // }
+  getItemData() {
+    if (items != null) {
+      for(var i = 0; i < items.length; i++){
+        menuItems.add(DropdownMenuItem(value: items[i].itemCode.toString(), child: Text((langId==1)?items[i].itemNameAra.toString() : items[i].itemNameEng.toString()   )));
+      }
+    }
+    setState(() {
+
+    });
+  }
 
   getUnitData() {
     for (var i = 0; i < units.length; i++) {
@@ -1605,17 +1605,17 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
       //print(customers.length.toString());
-      //getCustomerData();
+      getCustomerData();
       return customers;
     }, onError: (e) {
       print(e);
     });
 
     //Items
-    Future<List<Item>> Items = _itemsApiService.getReturnItems().then((data) {
+    Future<List<Item>> futureItems = _itemsApiService.getReturnItems().then((data) {
       items = data;
       //print(customers.length.toString());
-      //getItemData();
+      getItemData();
       return items;
     }, onError: (e) {
       print(e);

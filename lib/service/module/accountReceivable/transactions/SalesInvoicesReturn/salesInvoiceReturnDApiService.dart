@@ -19,11 +19,9 @@ class SalesInvoiceReturnDApiService {
   Future<List<SalesInvoiceReturnD>> getSalesInvoiceReturnD(int? headerId) async {
     print('Booter 1 SalesInvoiceReturnD');
     Map data = {
-      // 'CompanyCode': companyCode,
-      // 'BranchCode': branchCode,
-      //'SalesInvoiceReturnsCase': 2,
-      // 'SalesInvoiceReturnsTypeCode': '1',
-      'HeaderId': headerId
+      'Search':{
+        'HeaderId': headerId
+      }
     };
 
     print('Booter 2 SalesInvoiceReturnD');

@@ -22,7 +22,7 @@ int langId = 2; //1-Arabic   2-English
 String empCode = "1";
 //Fiancial Year
 String financialYearCode = '2023'; //Will Set On App Perference
-String currentLanguage='en';
+String currentLanguage='ar'; /// it was en
 //Date
 DateTime date =DateTime.now();
 

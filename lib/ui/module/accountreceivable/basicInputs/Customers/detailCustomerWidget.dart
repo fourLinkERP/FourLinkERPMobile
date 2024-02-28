@@ -35,7 +35,7 @@ class _DetailCustomerWidgetState extends State<DetailCustomerWidget> {
               child: Container(
                   padding: const EdgeInsets.only(top: 20.0, left: 0.0, bottom: 0.0),
                   width: 400,
-                  height: 355,
+                  //height: 355,
                   child: Column(
                     children: <Widget>[
                       Container(
@@ -84,63 +84,32 @@ class _DetailCustomerWidgetState extends State<DetailCustomerWidget> {
                       //   ),
                       // ),
                       Container(
-                        margin: const EdgeInsets.fromLTRB(40, 15, 0, 10),
-                        child: Row(
-                          children: <Widget>[
-                            SizedBox(
-                              height: 55,
-                              width: 115,
-                                child: ElevatedButton.icon(
-                                  icon: const Icon(
-                                    Icons.edit,
-                                    color: Colors.white,
-                                    size: 22.0,
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                        child: SizedBox(
+                          height: 50,
+                          width: 110,
+                            child: ElevatedButton.icon(
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                                size: 20.0,
 
+                              ),
+                              label:  Text('edit'.tr(), style: TextStyle(color: Colors.white, fontSize: 17.0)),
+                              onPressed: () {
+                                _navigateToEditScreen(context, widget.customers);
+                              },
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
                                   ),
-                                  label: const Text('Edit', style: TextStyle(color: Colors.white, fontSize: 18.0)),
-                                  onPressed: () {
-                                    _navigateToEditScreen(context, widget.customers);
-                                  },
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20.0),
-                                      ),
-                                    ),
-                                  ),
+                                ),
+                              ),
 
                       ),
 
-                            ),
-                            const SizedBox(width: 45),
-                            Container(
-                              height: 55,
-                              width: 115,
-                                child: ElevatedButton.icon(
-                                  icon: const Icon(
-                                    Icons.delete,
-                                    color: Colors.white,
-                                    size: 22.0,
-                                  ),
-                                  label: Text('delete'.tr(),
-                                      style: const TextStyle(color: Colors.white, fontSize: 16.0)),
-                                  onPressed: () {
-                                    _confirmDialog();
-                                  },
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(210, 10, 46, 1)),
-                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                      RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(20.0),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                            ),
-                            const SizedBox(width: 5),
-                            //color: Colors.blue,
-                          ],
                         ),
                       ),
                     ],

@@ -63,6 +63,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
     });
     _customers = (await futureCustomer)!;
     if (_customers.isNotEmpty) {
+      _customers.sort((a, b) => int.parse(b.customerCode!).compareTo(int.parse(a.customerCode!)));
       setState(() {
         _founded = _customers;
         String search = '';
@@ -289,19 +290,11 @@ class _CustomerListPageState extends State<CustomerListPage> {
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Row(
-                              children: [
-                                Text('arabicName'.tr() + " : " + _customers[index].customerNameAra.toString()),
-                              ],
-                            )),
+                            child: Text('arabicName'.tr() + " : " + _customers[index].customerNameAra.toString())),
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Row(
-                              children: [
-                                Text('englishName'.tr() + " : " + _customers[index].customerNameEng.toString()),
-                              ],
-                            )
+                            child: Text('englishName'.tr() + " : " + _customers[index].customerNameEng.toString())
                         ),
                         const SizedBox(width: 5),
                         Container(
@@ -387,40 +380,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
                                           width: 1, color: Colors.black87)),
                                 )
                                 ),
-
-                                // Container(
-                                //     child: Row(
-                                //       children: <Widget>[
-                                //         ElevatedButton(
-                                //           style: ButtonStyle(
-                                //               backgroundColor: MaterialStateProperty.all(Colors.blue),
-                                //               padding:
-                                //               MaterialStateProperty.all(const EdgeInsets.all(10)),
-                                //               textStyle: MaterialStateProperty.all(
-                                //                   const TextStyle(fontSize: 14, color: Colors.white))),
-                                //           child: Text('edit'.tr()),
-                                //           onPressed: () {
-                                //             _navigateToEditScreen(context,_customers[index]);
-                                //
-                                //           },
-                                //         ),
-                                //         SizedBox(width: 10),
-                                //         ElevatedButton(
-                                //           style: ButtonStyle(
-                                //               backgroundColor: MaterialStateProperty.all(Colors.redAccent),
-                                //               padding:
-                                //               MaterialStateProperty.all(const EdgeInsets.all(10)),
-                                //               textStyle: MaterialStateProperty.all(
-                                //                   const TextStyle(fontSize: 14, color: Colors.white))),
-                                //           child: Text('delete'.tr()),
-                                //           onPressed: () {
-                                //             _deleteItem(context,_customers[index].id);
-                                //
-                                //
-                                //           },
-                                //         ),
-
-              ],
+                          ],
                             )
                         )
                       ],
