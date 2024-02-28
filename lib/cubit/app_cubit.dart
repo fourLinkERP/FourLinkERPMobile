@@ -23,7 +23,7 @@ print(Conection);
    }
 
   bool? internet;
-  bool isArabic=false;
+  bool isArabic=true;
 
   void ChangeAppLang(){
     isArabic=!isArabic;

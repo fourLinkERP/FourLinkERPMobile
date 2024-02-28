@@ -150,7 +150,7 @@ class _MyAppState extends State<MyApp> {
       setState(() {
 
       });
-      print('ar');
+      print('en');
       return  Locale('en');
 
     }

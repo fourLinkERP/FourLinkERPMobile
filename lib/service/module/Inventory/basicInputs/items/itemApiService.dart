@@ -64,8 +64,9 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
       'Search':{
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
-        'ItemTypeCode': 3
-      }
+        'ItemTypeCode': 7
+      },
+      'ItemTypeCode': 3
     };
 
     print('Items 2');
