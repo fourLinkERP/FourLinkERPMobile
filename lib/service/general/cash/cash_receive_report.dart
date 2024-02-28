@@ -33,19 +33,19 @@ class CashReceiveReport {
         buildTitle(cashReceive),
         Divider(),
         buildInvoice(cashReceive),
-
+        //Divider(),
         //buildTotal(invoice),
       ],
       //footer: (context) => buildFooter(invoice),
     ));
 
-    return PdfApi.saveDocument(name: 'my_invoice.pdf', pdf: pdf);
+    return PdfApi.saveDocument(name: 'cashReceive.pdf', pdf: pdf);
   }
 //
   static Widget buildHeader(CashReceive cashReceive ,pw.MemoryImage companyImage) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      SizedBox(height: 1 * PdfPageFormat.cm),
+      //SizedBox(height: 1 * PdfPageFormat.cm),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -61,7 +61,7 @@ class CashReceiveReport {
           // ),
         ],
       ),
-      SizedBox(height: 1 * PdfPageFormat.cm),
+      //SizedBox(height: 1 * PdfPageFormat.cm),
       Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -79,29 +79,30 @@ class CashReceiveReport {
   crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       pw.Image(companyImage
-      ,width: 200,
-      height: 200),
+      ,width: 220,
+      height: 220),
     // Text(customer.address.toString()),
     ],
   );
 
   static Widget buildInvoiceInfo(CashReceive cashReceive) {
    // final paymentTerms = '${info.dueDate.difference(info.date).inDays} days';
-    String companyName = cashReceive.companyName.toString();
-    String companyAddress = cashReceive.companyAddress.toString();
-    String companyCommercial = cashReceive.companyCommercial.toString();
-    String companyVat = cashReceive.companyVat.toString();
 
-    String companyTitle = langId==1?'الشركة :':'Company :';
-    String companyAddressTitle = langId==1?' العنوان :':'Address : ';
-    String companyCommercialTitle = langId==1?' سجل تجاري رقم :':'Commercial No : ';
+    String companyTitle = langId==1 ? 'الشركة :':'Company :';
+    String companyName =  langId==1 ? companyTitle + cashReceive.companyName.toString() : cashReceive.companyName.toString() + companyTitle;
+    String companyAddressTitle = langId==1?'العنوان :':'Address : ';
+    String companyAddress = langId==1 ? companyAddressTitle + cashReceive.companyAddress.toString() : cashReceive.companyAddress.toString() + companyAddressTitle;
+    String companyCommercialTitle = langId==1?'سجل تجاري رقم :':'Commercial No : ';
+    String companyCommercial = langId==1 ? companyCommercialTitle + cashReceive.companyCommercial.toString(): cashReceive.companyCommercial.toString() + companyCommercialTitle;
     String companyVatTitle = langId==1?'الرقم الضريبي :':'VAT No :';
+    String companyVat =  langId==1 ? companyVatTitle + cashReceive.companyVat.toString(): cashReceive.companyVat.toString() + companyVatTitle;
+
 
     final titles = <String>[
-      companyTitle,
-      companyAddressTitle,
-      companyCommercialTitle,
-      companyVatTitle
+      "",
+      "",
+      "",
+      ""
     ];
     final data = <String>[
       companyName,
@@ -138,19 +139,24 @@ class CashReceiveReport {
   static Widget buildTitle(CashReceive cashReceive) => Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Directionality(
-          textDirection: TextDirection.rtl,
-          child: Center(
-              child: Text(cashReceive.receiveTitle.toString(),
-                  style: TextStyle(
-                    fontSize: 30, )))),
+      // Directionality(
+      //     textDirection: TextDirection.rtl,
+      //     child: Center(
+      //         child: Text(cashReceive.receiveTitle.toString(),
+      //             style: TextStyle(
+      //               fontSize: 30, )))),
+      Container(
+        margin: const EdgeInsets.all(1.0),
+        padding: const EdgeInsets.all(1.0),
+        decoration: BoxDecoration(border: Border.all(),color: PdfColors.grey400),
+        child: Center(child: Text(cashReceive.receiveTitle.toString(),style: TextStyle(fontSize: 20)))),
       //SizedBox(height: 0.8 * PdfPageFormat.cm),
-      Directionality(
-          textDirection: TextDirection.rtl,
-          child: Center(
-              child: Text(cashReceive.receiveTitleDesc.toString(),
-                  style: TextStyle(
-                    fontSize: 15, )))),
+      // Directionality(
+      //     textDirection: TextDirection.rtl,
+      //     child: Center(
+      //         child: Text(cashReceive.receiveTitleDesc.toString(),
+      //             style: TextStyle(
+      //               fontSize: 15, )))),
       SizedBox(height: 0.8 * PdfPageFormat.cm),
     ],
   );
@@ -158,56 +164,143 @@ class CashReceiveReport {
     static Widget buildInvoice(CashReceive cashReceive) => Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(height: 0.8 * PdfPageFormat.cm),
           //Text(recpt.companyName.toString(),   style: TextStyle(fontFamily: 'RobotoMono')),
-          Directionality(
-              textDirection: TextDirection.rtl,
-              child: Center(
-                  child: Text(langId==1?" التاريخ: ":"Date :" + dt.DateFormat('yyyy-MM-dd hh:mm').format(DateTime.parse(cashReceive.trxDate.toString())) + "          " + (langId==1?" رقم المستند : ":"Document No :") + cashReceive.trxSerial.toString() ,
-                      style: TextStyle(
-                        fontSize: 20, )))),
-          SizedBox(height: 0.8 * PdfPageFormat.cm),
-          Directionality(
-              textDirection: TextDirection.rtl,
-              child: Center(
-                  child: Text(langId==1?" استلمنا من السادة: ":"Received From :" + "   " + (langId==1? cashReceive.targetNameAra.toString() : cashReceive.targetNameEng.toString()),
-                      style: TextStyle(
-                        fontSize: 15, )))),
-          SizedBox(height: 0.8 * PdfPageFormat.cm),
-          Directionality(
-              textDirection: TextDirection.rtl,
-              child: Center(
-                  child: Text(langId==1?" الوصف : ":"Description :" + "   " + (langId==1? cashReceive.statement.toString() : cashReceive.statement.toString()),
-                      style: TextStyle(
-                        fontSize: 15, )))),
-          SizedBox(height: 0.8 * PdfPageFormat.cm),
-          Directionality(
-              textDirection: TextDirection.rtl,
-              child: Center(
-                  child: Text(langId==1?" مبلغ وقدرة : ":"Amount :" + "   " + (langId==1? cashReceive.value.toString() : cashReceive.value.toString()),
-                      style: TextStyle(
-                        fontSize: 15, )))),
+    Row(
+    children:[
+          Expanded(
+          child: Text(cashReceive.trxSerial.toString(),style: TextStyle(fontSize: 20))),
+          Expanded(
+          child: Container(
+          decoration: BoxDecoration(border: Border.all(),color: PdfColors.grey400),
+          child: Text((langId==1?" رقم المستند : ":"Document No :"),style: TextStyle(fontSize: 20))))
+      ,Expanded(
+        child: Text(dt.DateFormat('yyyy-MM-dd').format(DateTime.parse(cashReceive.trxDate.toString())),style: TextStyle(fontSize: 20)))
+      ,  Container(
+           width: 120,
+          decoration: BoxDecoration(border: Border.all(),color: PdfColors.grey400),
+          child: Text((langId==1?" التاريخ: ":"Date :"),style: TextStyle(fontSize: 15)))
 
+        ]),
           SizedBox(height: 0.8 * PdfPageFormat.cm),
-          Directionality(
-              textDirection: TextDirection.rtl,
-              child: Center(
-                  child: Text(langId==1?"المبلغ كتابيا : ":"Tafqeet Amount :" + "   " + (langId==1? cashReceive.tafqitNameArabic.toString() : cashReceive.tafqitNameEnglish.toString()),
-                      style: TextStyle(
-                        fontSize: 15, )))),
+          //SizedBox(height: 1.8 * PdfPageFormat.cm),
+          Row(
+              children:[
+
+                 Expanded(
+                  child: Container(
+                      margin: EdgeInsets.only(left: 10,right: 10),
+                    child: Text((langId==1? cashReceive.targetNameAra.toString() : cashReceive.targetNameEng.toString()),style: TextStyle(fontSize: 20)))
+                 )
+                ,
+                     Container(
+                      width: 120,
+                        decoration: BoxDecoration(border: Border.all(),color: PdfColors.grey400),
+                        child: Text((langId==1?" استلمنا من السادة: ":"Received From :"),style: TextStyle(fontSize: 15)))
+
+              ]),
           SizedBox(height: 0.8 * PdfPageFormat.cm),
-          Directionality(
-              textDirection: TextDirection.rtl,
-              child: Center(
-                  child: Text(langId==1?"طريقة الدفع : ":"Payment Method :" + "   " + (langId==1? cashReceive.boxCode.toString() : cashReceive.boxCode.toString()),
-                      style: TextStyle(
-                        fontSize: 15, )))),
+          Row(
+              children:[
+
+                Expanded(
+                    child: Container(
+                        margin: EdgeInsets.only(left: 10,right: 10),
+                        child: Text((langId==1? cashReceive.statement.toString() : cashReceive.statement.toString()),style: TextStyle(fontSize: 20)))
+                )
+                ,
+                Container(
+                    width: 120,
+                    decoration: BoxDecoration(border: Border.all(),color: PdfColors.grey400),
+                    child: Text((langId==1?"الوصف: ":"Description :"),style: TextStyle(fontSize: 15)))
+
+              ]),
           SizedBox(height: 0.8 * PdfPageFormat.cm),
-          Directionality(
-              textDirection: TextDirection.rtl,
-              child: Center(
-                  child: Text(langId==1?"المستلم Received By":"المستلم Received By" + "   " + (langId==1? "المحاسب  Accountant" : "المحاسب Accountant") + "   " + (langId==1? "المدير Manager" : "المدير Manager"),
-                      style: TextStyle(
-                        fontSize: 15, )))),
+          Row(
+              children:[
+
+                Expanded(
+                    child: Container(
+                        margin: EdgeInsets.only(left: 10,right: 10),
+                        child: Text((langId==1? cashReceive.value.toString() : cashReceive.value.toString()),style: TextStyle(fontSize: 20)))
+                )
+                ,
+                Container(
+                    width: 120,
+                    decoration: BoxDecoration(border: Border.all(),color: PdfColors.grey400),
+                    child: Text((langId==1?"مبلغ وقدرة: ":"Amount :"),style: TextStyle(fontSize: 15)))
+
+              ]),
+          SizedBox(height: 0.8 * PdfPageFormat.cm),
+          Row(
+              children:[
+
+                Expanded(
+                    child: Container(
+                        margin: EdgeInsets.only(left: 10,right: 10),
+                        child: Text((langId==1? cashReceive.tafqitNameArabic.toString() : cashReceive.tafqitNameEnglish.toString()),style: TextStyle(fontSize: 20)))
+                )
+                ,
+                Container(
+                    width: 120,
+                    decoration: BoxDecoration(border: Border.all(),color: PdfColors.grey400),
+                    child: Text((langId==1?"المبلغ كتابيا: ":"Tafqeet Amount :"),style: TextStyle(fontSize: 15)))
+
+              ]),
+          SizedBox(height: 0.8 * PdfPageFormat.cm),
+          Row(
+              children:[
+
+                Expanded(
+                    child: Container(
+                        margin: EdgeInsets.only(left: 10,right: 10),
+                        child: Text((langId==1? cashReceive.boxCode.toString() : cashReceive.boxCode.toString()),style: TextStyle(fontSize: 20)))
+                )
+                ,
+                Container(
+                    width: 120,
+                    decoration: BoxDecoration(border: Border.all(),color: PdfColors.grey400),
+                    child: Text((langId==1?"طريقة الدفع: ":"Payment Method :"),style: TextStyle(fontSize: 15)))
+
+              ]),
+          SizedBox(height: 0.8 * PdfPageFormat.cm),
+          Row(
+              children:[
+
+                Container(
+                    width: 120,
+                    margin: EdgeInsets.only(left: 10,right: 10),
+                    child: Text((langId==1? "المدير Manager" : "المدير Manager"),style: TextStyle(fontSize: 15))),
+                Container(
+                    width: 120,
+                    margin: EdgeInsets.only(left: 10,right: 10),
+                    child: Text((langId==1? "المحاسب  Accountant" : "المحاسب Accountant"),style: TextStyle(fontSize: 15)))
+                ,
+                Container(
+                    width: 120,
+                    margin: EdgeInsets.only(left: 10,right: 10),
+                    child: Text((langId==1?"المستلم Received By":"المستلم Received By"),style: TextStyle(fontSize: 15)))
+
+              ]),
+          SizedBox(height: 0.8 * PdfPageFormat.cm),
+          Row(
+              children:[
+
+                Container(
+                    margin: EdgeInsets.only(left: 10,right: 10),
+                    width: 120,
+                    child: Text("--------------" ,style: TextStyle(fontSize: 15))),
+                Container(
+                    width: 120,
+                    margin: EdgeInsets.only(left: 10,right: 10),
+                    child: Text("--------------" ,style: TextStyle(fontSize: 15)))
+                ,
+                Container(
+                    width: 120,
+                    margin: EdgeInsets.only(left: 10,right: 10),
+                    child: Text("--------------" ,style: TextStyle(fontSize: 15)))
+
+              ]),
 
         ]);
 //     final headers = [
@@ -339,7 +432,7 @@ class CashReceiveReport {
     TextStyle? titleStyle,
     bool unite = false,
   }) {
-    final style = titleStyle ?? TextStyle(fontWeight: FontWeight.bold);
+    final style = titleStyle ?? TextStyle(fontWeight: FontWeight.bold,fontSize: 20);
 
     return Container(
       width: width,

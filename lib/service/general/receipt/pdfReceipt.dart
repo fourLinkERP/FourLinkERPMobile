@@ -12,7 +12,7 @@ import 'package:pdf/widgets.dart';
 import '../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
 import '../../../data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
 import '../../../utils/utils.dart';
-
+import 'package:zatca_fatoora_flutter/zatca_fatoora_flutter.dart' as fat;
 class pdfReceipt {
   static Future<File> generate(Receipt receipt) async {
     final pdf = Document();
@@ -31,7 +31,7 @@ class pdfReceipt {
         Divider(),
         buildTotal(receipt.invoice),
       ],
-      footer: (context) => buildFooter(receipt.invoice),
+      footer: (context) => buildFooter(receipt),
     ));
 
     return PdfApi.saveDocument(name: 'Receipt.pdf', pdf: pdf);
@@ -78,20 +78,6 @@ class pdfReceipt {
               child: Text(recpt.companyName.toString(),
                   style: TextStyle(
                     fontSize: 20, )))),
-      Directionality(
-          textDirection: TextDirection.rtl,
-          child: Center(
-              child: Text(recpt.companyAddress.toString(),
-                  style: TextStyle(
-                    fontSize: 15, )))),
-
-      Directionality(
-          textDirection: TextDirection.rtl,
-          child: Center(
-              child: Text(recpt.companyPhone.toString(),
-                  style: TextStyle(
-                    fontSize: 18, )))),
-
       Directionality(
           textDirection: TextDirection.rtl,
           child: Center(
@@ -228,9 +214,10 @@ class pdfReceipt {
 
     return Table.fromTextArray(
       headers: headers,
+
       data: data,
       border: null,
-      headerStyle: TextStyle(fontWeight: FontWeight.bold),
+      headerStyle: TextStyle(fontSize: 16),
       headerDecoration: BoxDecoration(color: PdfColors.grey300),
       cellHeight: 30,
       cellAlignments: {
@@ -243,6 +230,8 @@ class pdfReceipt {
       },
     );
   }
+
+
 
   static Widget buildTotal(Invoice invoice) {
 
@@ -263,36 +252,83 @@ class pdfReceipt {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildText(
-                  title: langId==1? "الاجمالي":"Total Amount",
-                  value:  invoice.info.totalAmount.toString(),
-                  unite: true,
-                ),
-                buildText(
-                  title: langId==1? "الخصم":"Discount",
-                  value:  invoice.info.totalDiscount.toString(),
-                  unite: true,
-                ),
-                buildText(
-                  title: langId==1? "الاجمالي قبل الضريبة":"Total Before VAT",
-                  value:  invoice.info.totalBeforeVat.toString(),
-                  unite: true,
-                ),
-                buildText(
-                  title: langId==1? "اجمالي القيمة المضافة":"Total VAT Amount",
-                  value:  invoice.info.totalVatAmount.toString(),
-                  unite: true,
-                ),
+                Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: Center(
+                        child: Text((langId==1? "عدد الاصناف   ":"Total Quantity  ") + invoice.info.totalQty.toString(),
+                            style: TextStyle(
+                              fontSize: 16, )))),
+                Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: Center(
+                        child: Text((langId==1? "الاجمالي   ":"Total Amount  ") + invoice.info.totalAmount.toString(),
+                            style: TextStyle(
+                              fontSize: 16, )))),
+
+                Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: Center(
+                        child: Text((langId==1? "الخصم ":"Discount ") + invoice.info.totalDiscount.toString(),
+                            style: TextStyle(
+                              fontSize: 16, )))),
+                Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: Center(
+                        child: Text((langId==1? "الاجمالي قبل الضريبة ":"Total Before VAT ") + invoice.info.totalBeforeVat.toString(),
+                            style: TextStyle(
+                              fontSize: 16, )))),
+                Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: Center(
+                        child: Text((langId==1? " القيمة المضافة ":" VAT Amount ") + invoice.info.totalVatAmount.toString(),
+                            style: TextStyle(
+                              fontSize: 16, )))),
                 Divider(),
-                buildText(
-                  title: langId==1? "الاجمالي شامل الضريبة":"Total Include VAT",
-                  titleStyle: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
-                 value: invoice.info.totalAfterVat.toString(),
-                 unite: true,
-                ),
+                Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: Center(
+                        child: Text((langId==1? "الصافي ":"Net ") + invoice.info.totalAfterVat.toString(),
+                            style: TextStyle(
+                              fontSize: 16 )))),
+                Divider(),
+                Directionality(
+                    textDirection: TextDirection.rtl,
+                    child: Center(
+                        child: Text((langId==1? " الصافي كتابة ":"Net Tafqeet ") + invoice.info.tafqeetName.toString(),
+                            style: TextStyle(
+                                fontSize: 16 )))),
+
+                // buildText(
+                //
+                //   title: langId==1? "الاجمالي":"Total Amount",
+                //   value:  invoice.info.totalAmount.toString(),
+                //   unite: true,
+                // ),
+                // buildText(
+                //   title: langId==1? "الخصم":"Discount",
+                //   value:  invoice.info.totalDiscount.toString(),
+                //   unite: true,
+                // ),
+                // buildText(
+                //   title: langId==1? "الاجمالي قبل الضريبة":"Total Before VAT",
+                //   value:  invoice.info.totalBeforeVat.toString(),
+                //   unite: true,
+                // ),
+                // buildText(
+                //   title: langId==1? "اجمالي القيمة المضافة":"Total VAT Amount",
+                //   value:  invoice.info.totalVatAmount.toString(),
+                //   unite: true,
+                // ),
+                // Divider(),
+                // buildText(
+                //   title: langId==1? "الاجمالي شامل الضريبة":"Total Include VAT",
+                //   titleStyle: TextStyle(
+                //     fontSize: 12,
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                //  value: invoice.info.totalAfterVat.toString(),
+                //  unite: true,
+                // ),
                 // SizedBox(height: 1 * PdfPageFormat.mm),
                 //  Container(height: 1, color: PdfColors.grey400),
                 // SizedBox(height: 0.5 * PdfPageFormat.mm),
@@ -305,7 +341,7 @@ class pdfReceipt {
     );
   }
 
-  static Widget buildFooter(Invoice invoice) => Column(
+  static Widget buildFooter(Receipt receipt) => Column(
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
       Divider(),
@@ -331,14 +367,29 @@ class pdfReceipt {
               child: Text("Items that need special storage condition",
                   style: TextStyle(
                     fontSize: 18, )))),
-      Container(
-        height: 50,
-        width: 50,
-        child: BarcodeWidget(
-          barcode: Barcode.qrCode(),
-          data: invoice.info.number,
-        ),
-      )
+
+        Row(
+            children:[
+              Container(
+                  child:Expanded(
+                  child: Text(receipt.receiptHeader.companyPhone.toString(),style: TextStyle(fontSize: 15)))),
+              Expanded(
+                  child: Container(
+                  child: Text(receipt.receiptHeader.companyAddress.toString(),style: TextStyle(fontSize: 20)))
+              )
+
+
+            ]),
+        // w
+      // Container(
+      //   height: 50,
+      //   width: 50,
+      //   child: BarcodeWidget(
+      //     barcode: Barcode.qrCode(),
+      //     data: invoice.info.number,
+      //   ),
+      // )
+
       //buildSimpleText(title: 'Paypal', value: invoice.supplier.paymentInfo.toString()),
     ],
   );

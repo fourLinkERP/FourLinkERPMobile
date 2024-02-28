@@ -13,9 +13,10 @@ class PermissionHelper {
     {
       for(var i = 0; i < MenuPermissionList.length; i++) {
 
-        if(MenuPermissionList[i].menuId == menuId)
+        if(MenuPermissionList[i].menuId == menuId && MenuPermissionList[i].allowView)
         {
           isAllowView = MenuPermissionList[i].allowView;
+          return isAllowView;
         }
       }
     }

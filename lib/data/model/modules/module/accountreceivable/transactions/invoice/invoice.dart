@@ -28,6 +28,8 @@ class InvoiceInfo {
   final double totalBeforeVat;
   final double totalVatAmount;
   final double totalAfterVat;
+  final double totalQty;
+  final String tafqeetName;
 
   const InvoiceInfo({
     required this.description,
@@ -38,7 +40,9 @@ class InvoiceInfo {
     required this.totalAmount,
     required this.totalBeforeVat,
     required this.totalVatAmount,
-    required this.totalAfterVat
+    required this.totalAfterVat,
+    this.totalQty=0,
+    this.tafqeetName=""
   });
 }
 

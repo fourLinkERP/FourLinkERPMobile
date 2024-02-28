@@ -341,9 +341,9 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
       receive.receiveTitleDesc=langId==1?'Receipt Voucher':'Receipt Voucher';
 
       receive.companyName=langId==1?' مؤسسة ركن كريز للحلويات':' مؤسسة ركن كريز للحلويات';
-      receive.companyAddress=langId==1?'العنوان : الرياض - ص ب 14922':'العنوان : الرياض - ص ب 14922';
-      receive.companyCommercial= langId==1?'السجل التجاري 450714529009 :CR':'السجل التجاري 450714529009 :CR';
-      receive.companyVat=langId==1?': Number Vat الرقم الضريبى : 302211485800003':': Number Vat الرقم الضريبى : 302211485800003';
+      receive.companyAddress=langId==1?'الرياض - ص ب 14922 ':' الرياض - ص ب 14922';
+      receive.companyCommercial= langId==1?' 450714529009 ':' 450714529009 ';
+      receive.companyVat=langId==1?' 302211485800003 ':' 302211485800003';
 
 
       final pdfFile = await CashReceiveReport.generate(receive);

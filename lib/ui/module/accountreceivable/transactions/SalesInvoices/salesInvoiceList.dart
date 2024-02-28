@@ -1,6 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
+import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/cubit/app_cubit.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/receipt/receipt.dart';
@@ -11,6 +18,8 @@ import 'package:fourlinkmobileapp/service/general/receipt/pdfReceipt.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:widgets_to_image/widgets_to_image.dart';
+import 'package:zatca_fatoora_flutter/zatca_fatoora_flutter.dart';
 import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vendors/vendor.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
@@ -30,7 +39,9 @@ SalesInvoiceHApiService _apiService= SalesInvoiceHApiService();
 SalesInvoiceDApiService _apiDService= SalesInvoiceDApiService();
 //Get SalesInvoiceH List
 
-
+final String companyTitle ="مؤسسة ركن كريز للحلويات";
+final String companyVatNo ="302211485800003";
+final GlobalKey globalKey = GlobalKey();
 class SalesInvoiceHListPage extends StatefulWidget {
   const SalesInvoiceHListPage({ Key? key }) : super(key: key);
 
@@ -57,6 +68,9 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       _founded = _salesInvoices!;
     });
   }
+
+
+
   void getData() async {
     try {
       List<SalesInvoiceH>? futureSalesInvoiceH = await _apiService.getSalesInvoicesH();
@@ -261,6 +275,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
 
       int menuId=6204;
       bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
+      //isAllowPrint = true;
       if(isAllowPrint)
       {
         bool IsReceipt =true;
@@ -301,6 +316,8 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             double totalVatAmount =( invoiceH.totalTax != null) ? invoiceH.totalTax as double : 0;
             double totalAfterVat =( invoiceH.totalNet != null) ? invoiceH.totalNet as double : 0;
             double totalAmount =( invoiceH.totalAfterDiscount != null) ? invoiceH.totalAfterDiscount as double : 0;
+            double totalQty =( invoiceH.totalQty != null) ? invoiceH.totalQty as double : 0;
+            String TafqeetName = langId==1 ?   invoiceH.tafqitNameArabic.toString() : invoiceH.tafqitNameEnglish.toString();
 
             final invoice = Invoice(   //ToDO
                 supplier: Vendor(
@@ -322,66 +339,97 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                   totalVatAmount:  totalVatAmount,
                   totalAfterVat:  totalAfterVat,
                   totalAmount:  totalAmount,
+                  totalQty:  totalQty,
+                  tafqeetName:  TafqeetName,
                 ),
                 items: invoiceItems
 
             );
 
 
-        //     DateTime date = DateTime.parse(invoiceH.salesInvoicesDate.toString());
-        //     final dueDate = date.add(Duration(days: 7));
-        //
-        //     //Get Sales Invoice Details To Create List Of Items
-        //     //getDetailData(invoiceH.id);
-        //     Future<List<SalesInvoiceD>?> futureSalesInvoiceD = _apiDService.getSalesInvoicesD(invoiceH.id);
-        //     _salesInvoicesD = (await futureSalesInvoiceD)!;
-        //
-        //     List<InvoiceItem> invoiceItems=[];
-        //     print('Before Sales Invoicr : ' + invoiceH.id.toString() );
-        //     if(_salesInvoicesD != null)
-        //     {
-        //       print('In Sales Invoicr' );
-        //       print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString() );
-        //       for(var i = 0; i < _salesInvoicesD.length; i++){
-        //         double qty= (_salesInvoicesD[i].displayQty != null) ? _salesInvoicesD[i].displayQty as double : 0;
-        //         //double vat=0;
-        //         double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? _salesInvoicesD[i].displayTotalTaxValue : 0 ;
-        //         //double price =_salesInvoicesD[i].displayPrice! as double;
-        //         double price =( _salesInvoicesD[i].price != null) ? _salesInvoicesD[i].price : 0;
-        //
-        //         InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
-        //             date: date, quantity: qty  , vat: vat  , unitPrice: price );
-        //
-        //         invoiceItems.add(_invoiceItem);
-        //       }
-        //     }
-        //
             String invoiceDate =DateFormat('yyyy-MM-dd hh:mm').format(DateTime.parse(invoiceH.salesInvoicesDate.toString()));
             final receipt = Receipt(   //ToDO
                 receiptHeader: ReceiptHeader(
                   companyName: langId==1?' مؤسسة ركن كريز للحلويات':' مؤسسة ركن كريز للحلويات',
-                  companyAddress: langId==1?'العنوان : الرياض - ص ب 14922':'العنوان : الرياض - ص ب 14922',
-                  companyPhone: langId==1?'Tel No :+966539679540':'Tel No :+966539679540',
                   companyInvoiceTypeName: langId==1?'فاتورة ضريبية مبسطة':'فاتورة ضريبية مبسطة',
                   companyInvoiceTypeName2: langId==1?'Simplified Tax Invoice':'Simplified Tax Invoice',
-                  companyVatNumber: langId==1?': Number Vat الرقم الضريبى : 302211485800003':': Number Vat الرقم الضريبى : 302211485800003',
+                  companyVatNumber: langId==1?'302211485800003':'302211485800003',
                   companyCommercialName: langId==1?'السجل التجاري 450714529009 :CR':'السجل التجاري 450714529009 :CR',
                   companyInvoiceNo: langId==1?'رقم الفاتورة ' + invoiceH.salesInvoicesSerial.toString() :'رقم الفاتورة ' + invoiceH.salesInvoicesSerial.toString(),
-                  companyDate: langId==1?'Date ' + invoiceDate :'Date  ' + invoiceDate,
+                  companyDate: langId==1?'Date :' + invoiceDate : invoiceDate + 'التاريخ :',
+                  companyAddress: langId==1?'العنوان : الرياض - ص ب 14922':'العنوان : الرياض - ص ب 14922',
+                  companyPhone: langId==1?'Tel No :+966539679540':'Tel No :+966539679540'
                 ),
                 invoice: invoice
-        //
          );
-        //
-        //     final pdfFile = await PdfInvoiceReceiptApi.generate(receipt);
-        //     //final pdfFile = await start(receipt);
-        //     //final pdfFile = await PdfInvoiceReceiptApi(receipt);
-        //
-        //     PdfApi.openFile(pdfFile);
 
+
+            // WidgetsToImageController to access widget
+//             WidgetsToImageController controller = WidgetsToImageController();
+//             // to save image bytes of widget
+//             Uint8List bytesImg;
+// //hobaaaaaaaaaaaaaaaaaa
+//             WidgetsToImage(
+//               controller: controller,
+//               child: ZatcaFatoora.simpleQRCode(
+//                 fatooraData:  ZatcaFatooraDataModel(
+//                   businessName: companyTitle,
+//                   vatRegistrationNumber: companyVatNo,
+//                   date: DateTime.now(),
+//                   totalAmountIncludingVat: 50.75,
+//                 ),
+//               ) ,
+//             );
+//
+//             //var xxx = pw.PdfLogo()
+//
+//
+//             final key = GlobalKey();
+//             var tt = RepaintBoundary(
+//                 child: ZatcaFatoora.simpleQRCode(
+//                   fatooraData:  ZatcaFatooraDataModel(
+//                     businessName: "Business name",
+//                     vatRegistrationNumber: "323456789123453",
+//                     date: DateTime.now(),
+//                     totalAmountIncludingVat: 50.75,
+//                   ),
+//                 ) ,);
+//
+//             var tt2 = ZatcaFatoora.simpleQRCode(
+//               fatooraData:  ZatcaFatooraDataModel(
+//                 businessName: "Business name",
+//                 vatRegistrationNumber: "323456789123453",
+//                 date: DateTime.now(),
+//                 totalAmountIncludingVat: 50.75,
+//               ),
+//             );
+//
+//             final boundary = key.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+//             final image = await boundary?.toImage();
+//             final byteData = await image?.toByteData(format: ImageByteFormat.png);
+//             final imageBytes = byteData?.buffer.asUint8List();
+//             print('imageBytes');
+//             print(imageBytes);
+//             print(tt);
+//             print(tt2);
+            //bytesImg = imageBytes as Uint8List;
+            //var _image = Image.memory(imageBytes!);
+
+
+          // final bytesx = await controller.capture();
+          // bytesImg = bytesx as Uint8List;
+          //
+          // var _image = Image.memory(bytesx);
+            // var x = RepaintBoundary(
+            //   key: globalKey,
+            //   child:
+            // );
+            //xxxxxxxxxxxxxxxxxxxxxxx
 
 
             final pdfFile = await pdfReceipt.generate(receipt);
+            //RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
+            ///ui.Image image = await x.toImage(pixelRatio: 3.0);
 
             PdfApi.openFile(pdfFile);
        }
@@ -460,6 +508,12 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       }
     }
 
+  // static Future bytesToImage(Uint8List imgBytes) async{
+  //   ui.Codec codec = await ui.instantiateImageCodec(imgBytes);
+  //   ui.FrameInfo frame = await codec.getNextFrame();
+  //   return frame.image;
+  // }
+
     _deleteItem(BuildContext context,int? id) async {
 
       FN_showToast(context,'not_allowed_to_delete'.tr(),Colors.red);
@@ -498,6 +552,14 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
 
     }
 
+  // Future<void> renderImage() async {
+  //   //Get the render object from context.
+  //   final RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
+  //   //Convert to the image
+  //   final ui.Image image = await boundary.toImage();
+  // }
+
+
     Widget buildSalesInvoices(){
       if(_salesInvoices.isEmpty){
         return const Center(child: CircularProgressIndicator());
@@ -520,7 +582,19 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                         );
                       },
                       child: ListTile(
-                        leading: Image.asset('assets/fitness_app/salesCart.png'),
+                        //leading: Image.asset('assets/fitness_app/salesCart.png'),
+                        leading:  Container(
+                          width: 65,
+                          height: 65,
+                          child: ZatcaFatoora.simpleQRCode(
+                            fatooraData: ZatcaFatooraDataModel(
+                              businessName: companyTitle,
+                              vatRegistrationNumber: companyVatNo,
+                              date:   DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString()),
+                              totalAmountIncludingVat: _salesInvoices[index].totalNet!.toDouble(),
+                            ),
+                          ),
+                        ),
                         title: Text('serial'.tr() + " : " + _salesInvoices[index].salesInvoicesSerial.toString()),
                         subtitle: Column(
                           crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
@@ -635,4 +709,19 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
         );
       }
     }
+
+  // Future<Uint8List> captureWidget() async {
+  //
+  //   final RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
+  //
+  //   final ui.Image image = await boundary.toImage();
+  //
+  //   final ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+  //
+  //   final Uint8List pngBytes = byteData.buffer.asUint8List();
+  //
+  //   return pngBytes;
+  // }
+
+
 }
