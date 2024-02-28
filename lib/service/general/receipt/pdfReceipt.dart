@@ -18,13 +18,16 @@ class pdfReceipt {
     final pdf = Document();
     var arabicFont =
     pw.Font.ttf(await rootBundle.load("assets/fonts/HacenTunisia.ttf"));
+
+    final companyImage = pw.MemoryImage((await rootBundle.load('assets/images/deliciouslogo.jpg')).buffer.asUint8List(),);
+
     pdf.addPage(MultiPage(
       textDirection: TextDirection.rtl,
       theme: pw.ThemeData.withFont(
         base: arabicFont,
       ),
       build: (context) => [
-        buildReceiptHeader(receipt.receiptHeader),
+        buildHeader(receipt,companyImage),
         SizedBox(height: 1 * PdfPageFormat.cm),
         //buildTitle(invoice),
         buildInvoice(receipt.invoice),
@@ -37,35 +40,35 @@ class pdfReceipt {
     return PdfApi.saveDocument(name: 'Receipt.pdf', pdf: pdf);
   }
 
-  // static Widget buildHeader(Receipt receipt) => Column(
-  //   crossAxisAlignment: CrossAxisAlignment.start,
-  //   children: [
-  //     SizedBox(height: 1 * PdfPageFormat.cm),
-  //     Row(
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         buildSupplierAddress(invoice.supplier as Vendor),
-  //         Container(
-  //           height: 50,
-  //           width: 50,
-  //           // child: BarcodeWidget(
-  //           //   barcode: Barcode.qrCode(),
-  //           //   //data: invoice.info.number,
-  //           // ),
-  //         ),
-  //       ],
-  //     ),
-  //     SizedBox(height: 1 * PdfPageFormat.cm),
-  //     Row(
-  //       crossAxisAlignment: CrossAxisAlignment.end,
-  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //       children: [
-  //         //buildCustomerAddress(invoice.customer as Customer),
-  //         //buildInvoiceInfo(invoice.info),
-  //       ],
-  //     ),
-  //   ],
-  // );
+  static Widget buildHeader(Receipt receipt,pw.MemoryImage companyImage) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      SizedBox(height: 1 * PdfPageFormat.cm),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          //buildSupplierAddress(invoice.supplier as Vendor),
+          Container(
+            height: 50,
+            width: 50,
+            // child: BarcodeWidget(
+            //   barcode: Barcode.qrCode(),
+            //   //data: invoice.info.number,
+            // ),
+          ),
+        ],
+      ),
+      SizedBox(height: 1 * PdfPageFormat.cm),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          buildCompanyLogo(receipt,companyImage),
+          buildReceiptHeader(receipt.receiptHeader),
+        ],
+      ),
+    ],
+  );
 
   static Widget buildReceiptHeader(ReceiptHeader recpt) => Column(
 
@@ -118,6 +121,16 @@ class pdfReceipt {
 
 
 
+    ],
+  );
+
+  static Widget buildCompanyLogo(Receipt receipt,pw.MemoryImage companyImage) => Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      pw.Image(companyImage
+          ,width: 220,
+          height: 220),
+      // Text(customer.address.toString()),
     ],
   );
 
