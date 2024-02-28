@@ -7,7 +7,7 @@ import '../../../utils/functions.dart';
 import 'package:flutter/material.dart';
 
 class InvoiceView_eng extends StatelessWidget {
-  Invoice invoice;
+  InvoiceMail invoice;
   InvoiceView_eng({
     required this.invoice,
     Key? key,

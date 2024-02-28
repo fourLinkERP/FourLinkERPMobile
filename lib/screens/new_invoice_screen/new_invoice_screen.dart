@@ -140,7 +140,7 @@ class NewInvoiceScreen extends StatelessWidget {
                                   controller.signature != null &&
                                   controller.paymentInstructions != null &&
                                   controller.itemsList.isNotEmpty) {
-                                Invoice invoice =
+                                InvoiceMail invoice =
                                     controller.generate_preview_invoice();
                                 Get.toNamed("/preview",
                                     arguments: {"invoice": invoice});
@@ -163,7 +163,7 @@ class NewInvoiceScreen extends StatelessWidget {
                                   controller.customer != null &&
                                   controller.signature != null &&
                                   controller.paymentInstructions != null) {
-                                Invoice invoice =
+                                InvoiceMail invoice =
                                     controller.generate_preview_invoice();
                                 Get.find<AllInvoiceController>()
                                     .createNewInvoice(invoice);

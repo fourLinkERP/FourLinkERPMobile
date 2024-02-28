@@ -60,7 +60,7 @@ class InvoiceController extends GetxController {
     });
   }
 
-  Invoice generate_preview_invoice() => Invoice(
+  InvoiceMail generate_preview_invoice() => InvoiceMail(
       id: id,
       date: Functions.formatDate(DateTime.now()),
       from: business!,

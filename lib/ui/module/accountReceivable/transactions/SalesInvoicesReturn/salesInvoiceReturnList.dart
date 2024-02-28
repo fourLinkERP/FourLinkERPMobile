@@ -299,7 +299,6 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
             totalAmount:  totalAmount,
           ),
           items: invoiceItems
-
       );
 
       final pdfFile = await PdfInvoiceApi.generate(invoice);

@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/cubit/app_cubit.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/receipt/receipt.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/transactions/receipt/receipt.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/general/receipt/receiptHeader.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
@@ -22,7 +23,6 @@ import 'package:widgets_to_image/widgets_to_image.dart';
 import 'package:zatca_fatoora_flutter/zatca_fatoora_flutter.dart';
 import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vendors/vendor.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
-import '../../../../../data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceD.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceH.dart';
 import '../../../../../service/general/Pdf/pdf_api.dart';
@@ -37,6 +37,7 @@ import 'package:intl/intl.dart';
 
 SalesInvoiceHApiService _apiService= SalesInvoiceHApiService();
 SalesInvoiceDApiService _apiDService= SalesInvoiceDApiService();
+
 //Get SalesInvoiceH List
 
 final String companyTitle ="مؤسسة ركن كريز للحلويات";
@@ -55,7 +56,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
   List<SalesInvoiceH> _salesInvoicesSearch = [];
   List<SalesInvoiceD> _salesInvoicesD = [];
   List<SalesInvoiceH> _founded = [];
-
+  List<WidgetsToImageController> imageControllers  = [] ;
 
   @override
   void initState() {
@@ -77,6 +78,16 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
 
       if (futureSalesInvoiceH != null) {
         _salesInvoices = futureSalesInvoiceH;
+
+
+        if(_salesInvoices.length >0)
+          {
+            for(var i = 0; i < _salesInvoices.length; i++){
+              {
+                imageControllers.add(new WidgetsToImageController());
+              }
+            }
+          }
 
         if (_salesInvoices.isNotEmpty) {
           _salesInvoices.sort((a, b) =>
@@ -271,7 +282,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       }
 
     }
-    _navigateToPrintScreen (BuildContext context, SalesInvoiceH invoiceH) async {
+    _navigateToPrintScreen (BuildContext context, SalesInvoiceH invoiceH,int index) async {
 
       int menuId=6204;
       bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
@@ -317,6 +328,8 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             double totalAfterVat =( invoiceH.totalNet != null) ? invoiceH.totalNet as double : 0;
             double totalAmount =( invoiceH.totalAfterDiscount != null) ? invoiceH.totalAfterDiscount as double : 0;
             double totalQty =( invoiceH.totalQty != null) ? invoiceH.totalQty as double : 0;
+            double rowsCount =( invoiceH.rowsCount != null) ? double.parse(invoiceH.rowsCount.toString())  : 0;
+            //String TafqeetName = "";
             String TafqeetName = langId==1 ?   invoiceH.tafqitNameArabic.toString() : invoiceH.tafqitNameEnglish.toString();
 
             final invoice = Invoice(   //ToDO
@@ -341,9 +354,9 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                   totalAmount:  totalAmount,
                   totalQty:  totalQty,
                   tafqeetName:  TafqeetName,
+                  rowsCount:  rowsCount
                 ),
                 items: invoiceItems
-
             );
 
 
@@ -351,19 +364,21 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             final receipt = Receipt(   //ToDO
                 receiptHeader: ReceiptHeader(
                   companyName: langId==1?' مؤسسة ركن كريز للحلويات':' مؤسسة ركن كريز للحلويات',
-                  companyInvoiceTypeName: langId==1?'فاتورة ضريبية مبسطة':'فاتورة ضريبية مبسطة',
+                  companyInvoiceTypeName: langId==1?'فاتورة ضريبية مبسطة':'Simplified Tax Invoice',
                   companyInvoiceTypeName2: langId==1?'Simplified Tax Invoice':'Simplified Tax Invoice',
-                  companyVatNumber: langId==1?'302211485800003':'302211485800003',
-                  companyCommercialName: langId==1?'السجل التجاري 450714529009 :CR':'السجل التجاري 450714529009 :CR',
-                  companyInvoiceNo: langId==1?'رقم الفاتورة ' + invoiceH.salesInvoicesSerial.toString() :'رقم الفاتورة ' + invoiceH.salesInvoicesSerial.toString(),
-                  companyDate: langId==1?'Date :' + invoiceDate : invoiceDate + 'التاريخ :',
-                  companyAddress: langId==1?'العنوان : الرياض - ص ب 14922':'العنوان : الرياض - ص ب 14922',
-                  companyPhone: langId==1?'Tel No :+966539679540':'Tel No :+966539679540'
+                  companyVatNumber: langId==1? "الرقم الضريبي  " + '302211485800003':'VAT No  302211485800003',
+                  companyCommercialName: langId==1? 'ترخيص رقم 450714529009':'Registeration No 450714529009',
+                  companyInvoiceNo: langId==1?'رقم الفاتورة ' + invoiceH.salesInvoicesSerial.toString() :'Invoice No  ' + invoiceH.salesInvoicesSerial.toString(),
+                  companyDate: langId==1? "التاريخ  " + invoiceDate  : "Date : " + invoiceDate ,
+                  companyAddress: langId==1?'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
+                  companyPhone: langId==1?'Tel No :+966539679540':'Tel No :+966539679540',
+                  customerName: langId==1? "العميل : " + invoiceH.customerName.toString() : "Customer : " + invoiceH.customerName.toString() ,
                 ),
                 invoice: invoice
          );
 
-
+            print('xOXOXOXO');
+            print(invoice.info.totalQty);
             // WidgetsToImageController to access widget
 //             WidgetsToImageController controller = WidgetsToImageController();
 //             // to save image bytes of widget
@@ -426,12 +441,36 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             // );
             //xxxxxxxxxxxxxxxxxxxxxxx
 
+            final bytesx = await imageControllers[index].capture();
+            var bytesImg = bytesx as Uint8List;
+            //Image _image = Image.memory(bytesx);
 
-            final pdfFile = await pdfReceipt.generate(receipt);
-            //RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
-            ///ui.Image image = await x.toImage(pixelRatio: 3.0);
+
+
+
+            final pdfFile = await pdfReceipt.generate(receipt,bytesImg);
+
 
             PdfApi.openFile(pdfFile);
+
+            //var boundary = globalKey.currentContext!.findRenderObject();
+            ///ui.Image image = await x.toImage(pixelRatio: 3.0);
+            ///
+
+            // final bytesx = await controller.capture();
+            // var bytesImg = bytesx as Uint8List;
+            // print('bytesImg');
+            // print(bytesImg);
+
+            // final boundary = key.currentContext?.findRenderObject() as RenderRepaintBoundary?;
+            // final image = await boundary?.toImage();
+            // final byteData = await image?.toByteData(format: ImageByteFormat.png);
+            // final imageBytes = byteData?.buffer.asUint8List();
+            // print('imageBytes');
+            // print(imageBytes);
+
+
+
        }
        else{
           DateTime date = DateTime.parse(invoiceH.salesInvoicesDate.toString());
@@ -492,7 +531,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                 totalAmount:  totalAmount,
               ),
               items: invoiceItems
-
           );
 
           final pdfFile = await PdfInvoiceApi.generate(invoice);
@@ -586,7 +624,10 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                         leading:  Container(
                           width: 65,
                           height: 65,
-                          child: ZatcaFatoora.simpleQRCode(
+                          child: WidgetsToImage(
+                            controller:imageControllers[index],
+                            child :
+                            ZatcaFatoora.simpleQRCode(
                             fatooraData: ZatcaFatooraDataModel(
                               businessName: companyTitle,
                               vatRegistrationNumber: companyVatNo,
@@ -594,7 +635,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                               totalAmountIncludingVat: _salesInvoices[index].totalNet!.toDouble(),
                             ),
                           ),
-                        ),
+                        )),
                         title: Text('serial'.tr() + " : " + _salesInvoices[index].salesInvoicesSerial.toString()),
                         subtitle: Column(
                           crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
@@ -681,7 +722,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                                           ),
                                           label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                           onPressed: () {
-                                            _navigateToPrintScreen(context,_salesInvoices[index]);
+                                            _navigateToPrintScreen(context,_salesInvoices[index],index);
                                           },
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(

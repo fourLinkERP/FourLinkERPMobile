@@ -1,7 +1,6 @@
 import 'dart:ffi';
 
 import 'package:fourlinkmobileapp/data/model/modules/module/accountPayable/basicInputs/Vendors/vendor.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
 import '../../basicInputs/Customers/customer.dart';
 
 class Invoice {
@@ -14,7 +13,7 @@ class Invoice {
     required this.info,
     required this.supplier,
     required this.customer,
-    required this.items,
+    required this.items ,
   });
 }
 
@@ -30,6 +29,7 @@ class InvoiceInfo {
   final double totalAfterVat;
   final double totalQty;
   final String tafqeetName;
+  final double rowsCount;
 
   const InvoiceInfo({
     required this.description,
@@ -42,7 +42,8 @@ class InvoiceInfo {
     required this.totalVatAmount,
     required this.totalAfterVat,
     this.totalQty=0,
-    this.tafqeetName=""
+    this.tafqeetName="",
+    this.rowsCount=0
   });
 }
 
@@ -63,3 +64,6 @@ class InvoiceItem {
     required this.totalValue,
   });
 }
+
+
+

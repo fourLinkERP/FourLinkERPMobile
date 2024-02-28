@@ -3,7 +3,7 @@ import 'business_model.dart';
 import 'item_model.dart';
 import 'package:flutter/services.dart';
 
-class Invoice {
+class InvoiceMail {
   String id;
   String date;
   Business from;
@@ -12,7 +12,7 @@ class Invoice {
   String paymentInstructions;
   double total;
   ByteData signature;
-  Invoice(
+  InvoiceMail(
       {required this.id,
       required this.date,
       required this.from,

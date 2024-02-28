@@ -8,7 +8,7 @@ class AllInvoiceController extends GetxController {
   // get invoicesList => _invoicesList;
   // get all invoices
   // creeate new invoice
-  void createNewInvoice(Invoice invoice) => _invoicesList.add(invoice);
+  void createNewInvoice(InvoiceMail invoice) => _invoicesList.add(invoice);
   // download inovice
   // delete invoice
 }
