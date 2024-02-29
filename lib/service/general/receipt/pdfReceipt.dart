@@ -5,6 +5,7 @@ import 'package:fourlinkmobileapp/data/model/modules/module/accountPayable/basic
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/transactions/receipt/receipt.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/general/receipt/receiptHeader.dart';
+import 'package:fourlinkmobileapp/helpers/colors.dart';
 import 'package:fourlinkmobileapp/service/general/Pdf/pdf_api.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -34,12 +35,15 @@ class pdfReceipt {
         buildHeader(receipt,companyImage),
         SizedBox(height: 0.2 * PdfPageFormat.cm),
         //buildTitle(invoice),
+        buildInvoiceHeaderCells(receipt.invoice),
         buildInvoice(receipt.invoice),
         Divider(),
-        buildInvoiceNewTotal(receipt.invoice)
+        buildInvoiceNewTotal(receipt.invoice),
+        buildFooter(receipt,barcodeImageArray)
         //buildTotal(receipt.invoice),
       ],
-      footer: (context) => buildFooter(receipt,barcodeImageArray),
+      //footer: (context) => buildFooter(receipt,barcodeImageArray),
+
     ));
 
 
@@ -56,26 +60,71 @@ class pdfReceipt {
     // }));
 
 
-    //   pdf.addPage(
-    //   pw.Page(
-    //       textDirection: TextDirection.rtl,
-    //       theme: pw.ThemeData.withFont(
-    //         base: arabicFont,
-    //       ),
-    //       //pageFormat: PdfPageFormat.roll80,
-    //       build: (pw.Context context) {
-    //
-    //   return pw.Row(
-    //     children: [
-    //       buildHeader(receipt,companyImage),
-    //       // Divider(),
-    //       // pw.Center(
-    //       //   child: buildInvoice(receipt.invoice),
-    //       // )
-    //
-    //     ]
-    //   ); // Center
+      // pdf.addPage(
+      // pw.Page(
+      //   pageFormat: PdfPageFormat.legal,
+      //     textDirection: TextDirection.rtl,
+      //     theme: pw.ThemeData.withFont(
+      //       base: arabicFont,
+      //     ),
+      //     //pageFormat: PdfPageFormat.roll80,
+      //     build: (pw.Context context) {
+      //
+      // return FullPage(
+      //       ignoreMargins: true,
+      //       child:Row (
+      //         children: [
+      //           Text('sssssssssss'),
+      //           Text('sssssssssss1'),
+      //           Text('sssssssssss2'),
+      //
+      //
+      //         ]
+      //       ),
+      // ) ;
+
+          // buildHeader(receipt,companyImage),
+          // buildHeader(receipt,companyImage),
+          // buildHeader(receipt,companyImage),
+          // buildHeader(receipt,companyImage),
+          // buildHeader(receipt,companyImage),
+          // buildHeader(receipt,companyImage),
+          // buildHeader(receipt,companyImage),
+          // buildHeader(receipt,companyImage),
+          // Divider(),
+          // pw.Center(
+          //   child: buildInvoice(receipt.invoice),
+          // )
+
+
+      // Center
     // }));
+
+
+    // pdf.addPage(
+    //   pw.MultiPage(
+    //     textDirection: TextDirection.rtl,
+    //     pageTheme: null,
+    //     header:  buildHeader(receipt,companyImage),
+    //     footer: _buildFooter,
+    //     build: (context) => [
+    //       //Insert to widget
+    //     ],
+    //   ),
+    // );
+    //
+    // pdf.addPage(
+    // pw.MultiPage(
+    // pageTheme:  null,
+    // header: _buildHeader,
+    // footer: _buildFooter,
+    // build: (context) => [
+    // //Insert to widget
+    // ],
+    // ),
+    // );
+
+
 
     return PdfApi.saveDocument(name: 'Receipt.pdf', pdf: pdf);
   }
@@ -237,6 +286,40 @@ class pdfReceipt {
     ],
   );
 
+  static Widget buildInvoiceHeaderCells(Invoice invoice) {
+    var itemNameTitle = langId==1? "الصنف":"Item";
+    var qtyTitle = langId==1? "الكمية":"Quantity";
+    var priceTitle = langId==1? "السعر":"Price";
+    var VatTitle = langId==1? "الضريبة":"VAT";
+    var TotalTitle = langId==1? "الاجمالي":"Total";
+
+    final headers = [
+      itemNameTitle,
+      qtyTitle,
+      priceTitle,
+      VatTitle,
+      TotalTitle
+    ];
+
+    return Table.fromTextArray(
+      headers: headers,
+      data: [],
+      border: null,
+      headerStyle: TextStyle(fontSize: 16),
+      headerDecoration: BoxDecoration(color: PdfColors.grey400),
+      cellHeight: 30,
+      cellAlignments: {
+        0: Alignment.center,
+        //1: Alignment.centerRight,
+        1: Alignment.center,
+        2: Alignment.center,
+        3: Alignment.center,
+        4: Alignment.center,
+      },
+
+    );
+
+  }
   static Widget buildInvoice(Invoice invoice) {
 
     //Headers Titles
@@ -274,11 +357,10 @@ class pdfReceipt {
 
     return Table.fromTextArray(
       headers: headers,
-
       data: data,
       border: null,
-      headerStyle: TextStyle(fontSize: 16),
-      headerDecoration: BoxDecoration(color: PdfColors.grey300),
+      headerStyle: TextStyle(fontSize: 0,height: 0,color: PdfColors.white),
+      headerDecoration: BoxDecoration(color: PdfColors.white),
       cellHeight: 30,
       cellAlignments: {
         0: Alignment.center,
@@ -298,18 +380,14 @@ class pdfReceipt {
     var columnTitle1 = langId==1? "":"";
     var columnTitle2 = langId==1? "":"";
     var columnTitle3 = langId==1? "":"";
-    var columnTitle4 = langId==1? "":"";
-    var columnTitle5 = langId==1? "الاجماليات":"Total";
-    // var priceTitle = langId==1? "السعر":"Price";
-    // var VatTitle = langId==1? "الضريبة":"VAT";
-    // var TotalTitle = langId==1? "الاجمالي":"Total";
+    var columnTitle4 =  langId==1? "الاجماليات":"Total";
+
     //
     final headers = [
       columnTitle1,
       columnTitle2,
       columnTitle3,
       columnTitle4,
-      columnTitle5,
     ];
 
 
@@ -317,44 +395,32 @@ class pdfReceipt {
     List<InvoiceTotal> invoiceTotals= [] ;
     String rowsCountTitle = (langId==1? "عدد الاصناف   ":"Total Items  ");
     String rowsCountValue =invoice.info.rowsCount.toString();
-    InvoiceTotal invoiceTotal1 =InvoiceTotal(totalField1: "",totalField2: "",totalField3: "",totalField4:rowsCountValue ,totalField5:rowsCountTitle );
-    invoiceTotals.add(invoiceTotal1);
-
     String totalQtyTitle = (langId==1? "اجمالي الكمية":"Total Quantity  ");
     String totalQtyValue =invoice.info.totalQty.toString();
-    InvoiceTotal invoiceTotal2 =InvoiceTotal(totalField1: "",totalField2: "",totalField3: "",totalField4:totalQtyValue ,totalField5:totalQtyTitle );
-    invoiceTotals.add(invoiceTotal2);
+    InvoiceTotal invoiceTotal1 =InvoiceTotal(totalField1: totalQtyValue,totalField2: totalQtyTitle,totalField3:rowsCountValue ,totalField4:rowsCountTitle );
+    invoiceTotals.add(invoiceTotal1);
 
     String totalAmountTitle = (langId==1? "الاجمالي":"Total Amount");
     String totalAmountValue =invoice.info.totalAmount.toString();
-    InvoiceTotal invoiceTotal3 =InvoiceTotal(totalField1: "",totalField2: "",totalField3: "",totalField4:totalAmountValue ,totalField5:totalAmountTitle );
-    invoiceTotals.add(invoiceTotal3);
-
-
     String totalDiscountTitle = (langId==1? "الخصم":"Total Discount");
     String totalDiscountValue =invoice.info.totalDiscount.toString();
-    InvoiceTotal invoiceTotal4 =InvoiceTotal(totalField1: "",totalField2: "",totalField3: "",totalField4:totalDiscountValue ,totalField5:totalDiscountTitle );
-    invoiceTotals.add(invoiceTotal4);
+    InvoiceTotal invoiceTotal2 =InvoiceTotal(totalField1: totalDiscountValue,totalField2: totalDiscountTitle, totalField3:totalAmountValue ,totalField4:totalAmountTitle );
+    invoiceTotals.add(invoiceTotal2);
+
 
     String totalBeforeVatTitle = (langId==1? "الاجمالي قبل الضريبة":"Total Before VAT");
     String totalBeforeVatValue =invoice.info.totalBeforeVat.toString();
-    InvoiceTotal invoiceTotal5 =InvoiceTotal(totalField1: "",totalField2: "",totalField3: "",totalField4:totalBeforeVatValue ,totalField5:totalBeforeVatTitle );
-    invoiceTotals.add(invoiceTotal5);
-
     String totalVatAmountTitle = (langId==1? "القيمة المضافة":"Total VAT Amount");
     String totalVatAmountValue =invoice.info.totalVatAmount.toString();
-    InvoiceTotal invoiceTotal6 =InvoiceTotal(totalField1: "",totalField2: "",totalField3: "",totalField4:totalVatAmountValue ,totalField5:totalVatAmountTitle );
-    invoiceTotals.add(invoiceTotal6);
+    InvoiceTotal invoiceTotal3 =InvoiceTotal(totalField1: totalVatAmountValue,totalField2: totalVatAmountTitle, totalField3:totalBeforeVatValue ,totalField4:totalBeforeVatTitle );
+    invoiceTotals.add(invoiceTotal3);
 
     String totalAfterVatTitle = (langId==1? "الصافي":"Net");
     String totalAfterVatValue =invoice.info.totalAfterVat.toString();
-    InvoiceTotal invoiceTotal7 =InvoiceTotal(totalField1: "",totalField2: "",totalField3: "",totalField4:totalAfterVatValue ,totalField5:totalAfterVatTitle );
-    invoiceTotals.add(invoiceTotal7);
-
     String tafqeetNameTitle = (langId==1? "الصافي كتابة":"Net Tafqeet");
     String tafqeetNameValue =invoice.info.tafqeetName.toString();
-    InvoiceTotal invoiceTotal8 =InvoiceTotal(totalField1: "",totalField2: "",totalField3: "",totalField4:tafqeetNameValue ,totalField5:tafqeetNameTitle );
-    invoiceTotals.add(invoiceTotal8);
+    InvoiceTotal invoiceTotal4 =InvoiceTotal(totalField1: tafqeetNameValue,totalField2: tafqeetNameTitle, totalField3:totalAfterVatValue ,totalField4:totalAfterVatTitle );
+    invoiceTotals.add(invoiceTotal4);
 
 
     final data = invoiceTotals.map((item) {
@@ -362,14 +428,12 @@ class pdfReceipt {
       var totalField2 = item.totalField2;
       var totalField3 = item.totalField3;
       var totalField4 = item.totalField4;
-      var totalField5 = item.totalField5;
 
       return [
         totalField1,
         totalField2,
         totalField3,
         totalField4,
-        totalField5,
       ];
     }).toList();
 
@@ -386,7 +450,6 @@ class pdfReceipt {
         1: Alignment.center,
         2: Alignment.center,
         3: Alignment.center,
-        4: Alignment.center,
       },
 
     );
@@ -580,13 +643,11 @@ class InvoiceTotal {
   final String totalField2;
   final String totalField3;
   final String totalField4;
-  final String totalField5;
 
   const InvoiceTotal({
     required this.totalField1,
     required this.totalField2,
     required this.totalField3,
     required this.totalField4,
-    required this.totalField5
   });
 }
