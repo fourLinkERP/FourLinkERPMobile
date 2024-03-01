@@ -35,6 +35,7 @@ class CashReceive {
   String?  companyAddress ;
   String?  companyCommercial ;
   String?  companyVat ;
+  String?  boxName ;
   // String? address;
   // String? Phone1;
   //String image;
@@ -72,7 +73,8 @@ class CashReceive {
     this.companyName='',
     this.companyAddress='',
     this.companyCommercial='',
-    this.companyVat=''
+    this.companyVat='',
+    this.boxName=''
     //image
     });
 
@@ -99,6 +101,7 @@ class CashReceive {
       tafqitNameEnglish: (json['tafqitNameEnglish'] != null) ? json['tafqitNameEnglish'] as String : "",
       targetNameAra: (json['targetNameAra'] != null) ? json['targetNameAra'] as String : "",
       targetNameEng: (json['targetNameEng'] != null) ? json['targetNameEng'] as String : "",
+      boxName: (json['boxName'] != null) ? json['boxName'] as String : "",
 
     );
   }

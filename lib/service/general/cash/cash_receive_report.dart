@@ -254,7 +254,7 @@ class CashReceiveReport {
                 Expanded(
                     child: Container(
                         margin: EdgeInsets.only(left: 10,right: 10),
-                        child: Text((langId==1? cashReceive.boxCode.toString() : cashReceive.boxCode.toString()),style: TextStyle(fontSize: 20)))
+                        child: Text((langId==1? cashReceive.boxName.toString() : cashReceive.boxCode.toString()),style: TextStyle(fontSize: 20)))
                 )
                 ,
                 Container(

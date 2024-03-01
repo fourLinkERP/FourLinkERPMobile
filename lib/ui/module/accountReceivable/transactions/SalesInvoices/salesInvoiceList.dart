@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:core';
+import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ import 'detailSalesInvoiceWidget.dart';
 import 'editSalesInvoiceDataWidget.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
+import 'package:image/image.dart' as img;
 
 SalesInvoiceHApiService _apiService= SalesInvoiceHApiService();
 SalesInvoiceDApiService _apiDService= SalesInvoiceDApiService();
@@ -53,6 +55,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
   List<SalesInvoiceD> _salesInvoicesD = [];
   List<SalesInvoiceH> _founded = [];
   List<WidgetsToImageController> imageControllers  = [] ;
+  List<GlobalKey> imageGlobalKeys  = [] ;
 
   @override
   void initState() {
@@ -81,6 +84,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             for(var i = 0; i < _salesInvoices.length; i++){
               {
                 imageControllers.add(new WidgetsToImageController());
+                imageGlobalKeys.add(new GlobalKey());
               }
             }
           }
@@ -303,12 +307,12 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
               print('In Sales Invoicr' );
               print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString() );
               for(var i = 0; i < _salesInvoicesD.length; i++){
-                double qty= (_salesInvoicesD[i].displayQty != null) ? _salesInvoicesD[i].displayQty as double  : 0;
+                double qty= (_salesInvoicesD[i].displayQty != null) ? double.parse(_salesInvoicesD[i].displayQty.toStringAsFixed(2))  : 0;
                 //double vat=0;
-                double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? _salesInvoicesD[i].displayTotalTaxValue : 0 ;
+                double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? double.parse(_salesInvoicesD[i].displayTotalTaxValue.toStringAsFixed(2)) : 0 ;
                 //double price =_salesInvoicesD[i].displayPrice! as double;
-                double price =( _salesInvoicesD[i].price != null) ? _salesInvoicesD[i].price : 0;
-                double total =( _salesInvoicesD[i].total != null) ? _salesInvoicesD[i].total : 0;
+                double price =( _salesInvoicesD[i].displayPrice != null) ? double.parse(_salesInvoicesD[i].displayTotal.toStringAsFixed(2)) : 0;
+                double total =( _salesInvoicesD[i].displayNetValue != null) ? double.parse(_salesInvoicesD[i].displayNetValue.toStringAsFixed(2)) : 0;
 
                 //InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
                 InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
@@ -318,13 +322,13 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
               }
             }
 
-            double totalDiscount =( invoiceH.totalDiscount != null) ? invoiceH.totalDiscount as double : 0;
-            double totalBeforeVat =( invoiceH.totalValue != null) ? invoiceH.totalValue as double : 0;
-            double totalVatAmount =( invoiceH.totalTax != null) ? invoiceH.totalTax as double : 0;
-            double totalAfterVat =( invoiceH.totalNet != null) ? invoiceH.totalNet as double : 0;
-            double totalAmount =( invoiceH.totalAfterDiscount != null) ? invoiceH.totalAfterDiscount as double : 0;
-            double totalQty =( invoiceH.totalQty != null) ? invoiceH.totalQty as double : 0;
-            double rowsCount =( invoiceH.rowsCount != null) ? double.parse(invoiceH.rowsCount.toString())  : 0;
+            double totalDiscount =( invoiceH.totalDiscount != null) ? double.parse(invoiceH.totalDiscount!.toStringAsFixed(2)) : 0;
+            double totalBeforeVat =( invoiceH.totalValue != null) ? double.parse(invoiceH.totalValue!.toStringAsFixed(2)) : 0;
+            double totalVatAmount =( invoiceH.totalTax != null) ? double.parse(invoiceH.totalTax!.toStringAsFixed(2)) : 0;
+            double totalAfterVat =( invoiceH.totalNet != null) ? double.parse(invoiceH.totalNet!.toStringAsFixed(2)) : 0;
+            double totalAmount =( invoiceH.totalAfterDiscount != null) ? double.parse(invoiceH.totalAfterDiscount!.toStringAsFixed(2)) : 0;
+            double totalQty =( invoiceH.totalQty != null) ? double.parse(invoiceH.totalQty!.toStringAsFixed(2)) : 0;
+            double rowsCount =( invoiceH.rowsCount != null) ? double.parse(invoiceH.rowsCount.toStringAsFixed(2))   : 0;
             //String TafqeetName = "";
             String TafqeetName = langId==1 ?   invoiceH.tafqitNameArabic.toString() : invoiceH.tafqitNameEnglish.toString();
 
@@ -437,16 +441,30 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             // );
             //xxxxxxxxxxxxxxxxxxxxxxx
 
+
+            //hozoooooooooooooo
+
+            print('indexxxxxxxxx');
+            print(index);
             final bytesx = await imageControllers[index].capture();
             var bytesImg = bytesx as Uint8List;
-            //Image _image = Image.memory(bytesx);
 
+            // RenderRepaintBoundary boundary =
+            // imageGlobalKeys[index].currentContext!.findRenderObject() as RenderRepaintBoundary;
+            // var image = await boundary.toImage();
+            // print('image');
+            // print(image);
+            //
+            // ByteData? bytesx = await image.toByteData(format: ImageByteFormat.png);
+            // var bytesImg = bytesx!.buffer.asUint8List();
 
+            // final byteData = await image!.toByteData();
+            // pngBytes = byteData!.buffer.asUint8List();
+            // var xx = File('my_image.jpg').writeAsBytes(pngBytes);
+            // print('pngBytes');
+            // print(pngBytes);
 
-
-            final pdfFile = await pdfReceipt.generate(receipt,bytesImg);
-
-
+            final pdfFile = await pdfReceipt.generate(receipt,bytesImg );
             PdfApi.openFile(pdfFile);
 
             //var boundary = globalKey.currentContext!.findRenderObject();
@@ -542,6 +560,23 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       }
     }
 
+
+  Future <Uint8List> _captureAndSharePng(content, dynamic qrKey) async {
+     Uint8List pngBytes ;
+
+      RenderRepaintBoundary boundary = qrKey.currentContext.findRenderObject();
+      var image = await boundary.toImage();
+      ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
+      pngBytes = byteData!.buffer.asUint8List();
+      // final tempDir = await getExternalStorageDirectory();
+      // final file = await new File('${tempDir.path}/shareqr.png').create();
+      // await file.writeAsBytes(pngBytes);
+      // await Share.shareFiles([file.path], text: content);
+
+
+    return pngBytes;
+  }
+
   // static Future bytesToImage(Uint8List imgBytes) async{
   //   ui.Codec codec = await ui.instantiateImageCodec(imgBytes);
   //   ui.FrameInfo frame = await codec.getNextFrame();
@@ -618,20 +653,37 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                       child: ListTile(
                         //leading: Image.asset('assets/fitness_app/salesCart.png'),
                         leading:  Container(
-                          width: 65,
-                          height: 65,
-                          child: WidgetsToImage(
+                          width: 55,
+                          height: 55,
+                          child:
+                          WidgetsToImage(
                             controller:imageControllers[index],
-                            child :
-                            ZatcaFatoora.simpleQRCode(
-                            fatooraData: ZatcaFatooraDataModel(
-                              businessName: companyTitle,
-                              vatRegistrationNumber: companyVatNo,
-                              date:   DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString()),
-                              totalAmountIncludingVat: _salesInvoices[index].totalNet!.toDouble(),
-                            ),
-                          ),
-                        )),
+                            child :Container(
+                              padding: EdgeInsets.all(1),
+                              color: Colors.white,
+                              child:   ZatcaFatoora.simpleQRCode(
+                                fatooraData: ZatcaFatooraDataModel(
+                                  businessName: companyTitle,
+                                  vatRegistrationNumber: companyVatNo,
+                                  date:   DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString()),
+                                  totalAmountIncludingVat: _salesInvoices[index].totalNet!.toDouble(),
+                                ),
+                              ),
+                            )
+
+                        )
+                        //   RepaintBoundary(
+                        //     key: imageGlobalKeys[index],
+                        //       child:  ZatcaFatoora.simpleQRCode(
+                        //         fatooraData: ZatcaFatooraDataModel(
+                        //           businessName: companyTitle,
+                        //           vatRegistrationNumber: companyVatNo,
+                        //           date:   DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString()),
+                        //           totalAmountIncludingVat: _salesInvoices[index].totalNet!.toDouble(),
+                        //         ),
+                        //       )
+                        //   ),
+                        ),
                         title: Text('serial'.tr() + " : " + _salesInvoices[index].salesInvoicesSerial.toString()),
                         subtitle: Column(
                           crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
@@ -760,5 +812,15 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
   //   return pngBytes;
   // }
 
-
+  static Widget buildBarCode()
+  {
+    return  ZatcaFatoora.simpleQRCode(
+      fatooraData: ZatcaFatooraDataModel(
+        businessName: "Business name",
+        vatRegistrationNumber: "323456789123453",
+        date: DateTime.now(),
+        totalAmountIncludingVat: 50.75,
+      ),
+    );
+  }
 }

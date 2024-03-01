@@ -22,7 +22,6 @@ class SalesInvoiceH {
   double? totalQty ;
   double? totalDiscount ;
   double? totalTax ;
-
   int rowsCount;
   double? invoiceDiscountPercent;
   double? invoiceDiscountValue;
@@ -30,9 +29,17 @@ class SalesInvoiceH {
   double? totalAfterDiscount;
   double? totalBeforeTax ;
   double? totalNet ;
-
   String?  tafqitNameArabic ;
   String?  tafqitNameEnglish ;
+  String?  taxNumber ;
+  String?  recordNumber ;
+  String?  phone1 ;
+  String?  Phone2 ;
+  String?  mobile ;
+  String?  cusGroupsCode ;
+  String?  cusGroupsName ;
+  String?  invoiceTypeCode ;
+  String?  invoiceTypeName ;
 
 
   SalesInvoiceH({
@@ -60,6 +67,16 @@ class SalesInvoiceH {
     this.totalNet,
     this.tafqitNameArabic,
     this.tafqitNameEnglish,
+    this.taxNumber,
+    this.recordNumber,
+    this.phone1,
+    this.Phone2,
+    this.mobile,
+    this.cusGroupsCode,
+    this.cusGroupsName,
+    this.invoiceTypeCode,
+    this.invoiceTypeName,
+
     //image
     });
 
@@ -84,10 +101,20 @@ class SalesInvoiceH {
       totalAfterDiscount: (json['totalAfterDiscount'] !=null) ? json['totalAfterDiscount'].toDouble() : 0,
       totalBeforeTax: (json['totalBeforeTax'] !=null) ? json['totalBeforeTax'].toDouble() : 0,
       totalNet: (json['totalNet'] !=null) ? json['totalNet'].toDouble() : 0,
-
-
       tafqitNameArabic: (json['tafqitNameArabic'] != null) ? json['tafqitNameArabic'] as String : "",
       tafqitNameEnglish: (json['tafqitNameEnglish'] != null) ? json['tafqitNameEnglish'] as String : "",
+      taxNumber: (json['taxNumber'] != null) ? json['taxNumber'] as String : "",
+      recordNumber: (json['recordNumber'] != null) ? json['recordNumber'] as String : "",
+      phone1: (json['phone1'] != null) ? json['phone1'] as String : "",
+      Phone2: (json['Phone2'] != null) ? json['Phone2'] as String : "",
+      mobile: (json['mobile'] != null) ? json['mobile'] as String : "",
+      cusGroupsCode: (json['cusGroupsCode'] != null) ? json['cusGroupsCode'] as String : "",
+      cusGroupsName: (json['cusGroupsName'] != null) ? json['cusGroupsName'] as String : "",
+      invoiceTypeCode: (json['invoiceTypeCode'] != null) ? json['invoiceTypeCode'] as String : "",
+      invoiceTypeName: (json['invoiceTypeName'] != null) ? json['invoiceTypeName'] as String : "",
+
+
+
       // salesManCode: json['salesManCode'] as String,
       // taxGroupCode: json['taxGroupCode'] as String,
       // cusTypesCode: json['cusTypesCode'] as String,

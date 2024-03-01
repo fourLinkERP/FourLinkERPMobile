@@ -1204,7 +1204,8 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 //#region Tafqeet
 
   setTafqeet(String currencyCode, String currencyValue) {
-    //Serial
+
+
     Future<Tafqeet> futureTafqeet = _tafqeetApiService.getTafqeet(
         currencyCode, currencyValue).then((data) {
       Tafqeet tafqeet = data;

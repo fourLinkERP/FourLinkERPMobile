@@ -14,6 +14,7 @@ import '../../../../../common/globals.dart';
       'search': {
         'currencyCode': currencyCode,
         'currencyValue': currencyValue,
+        'applicationCountry': 1    //1 for Application Country Saudi Arabia
       },
     };
 
