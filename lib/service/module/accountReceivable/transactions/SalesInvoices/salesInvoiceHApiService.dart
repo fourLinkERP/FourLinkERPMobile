@@ -41,6 +41,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
     if (response.statusCode == 200) {
       print('Invoice After ');
       List<dynamic> data = jsonDecode(response.body)['data'];
+      print(data);
       List<SalesInvoiceH> list = [];
       if (data.isNotEmpty) {
         list = data.map((item) => SalesInvoiceH.fromJson(item)).toList();

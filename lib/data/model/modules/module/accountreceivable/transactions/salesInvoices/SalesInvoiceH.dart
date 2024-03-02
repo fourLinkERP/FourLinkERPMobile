@@ -31,6 +31,7 @@ class SalesInvoiceH {
   double? totalNet ;
   String?  tafqitNameArabic ;
   String?  tafqitNameEnglish ;
+  String?  tafqeetName ;
   String?  taxNumber ;
   String?  recordNumber ;
   String?  phone1 ;
@@ -67,6 +68,7 @@ class SalesInvoiceH {
     this.totalNet,
     this.tafqitNameArabic,
     this.tafqitNameEnglish,
+    this.tafqeetName,
     this.taxNumber,
     this.recordNumber,
     this.phone1,
@@ -101,8 +103,9 @@ class SalesInvoiceH {
       totalAfterDiscount: (json['totalAfterDiscount'] !=null) ? json['totalAfterDiscount'].toDouble() : 0,
       totalBeforeTax: (json['totalBeforeTax'] !=null) ? json['totalBeforeTax'].toDouble() : 0,
       totalNet: (json['totalNet'] !=null) ? json['totalNet'].toDouble() : 0,
-      tafqitNameArabic: (json['tafqitNameArabic'] != null) ? json['tafqitNameArabic'] as String : "",
+      tafqitNameArabic:  (json['tafqitNameArabic'] != null) ? json['tafqitNameArabic'] as String : "",
       tafqitNameEnglish: (json['tafqitNameEnglish'] != null) ? json['tafqitNameEnglish'] as String : "",
+      tafqeetName: (json['tafqeetName'] != null) ? json['tafqeetName'] as String : "",
       taxNumber: (json['taxNumber'] != null) ? json['taxNumber'] as String : "",
       recordNumber: (json['recordNumber'] != null) ? json['recordNumber'] as String : "",
       phone1: (json['phone1'] != null) ? json['phone1'] as String : "",

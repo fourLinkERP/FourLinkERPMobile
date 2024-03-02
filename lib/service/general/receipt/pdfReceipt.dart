@@ -26,7 +26,7 @@ class pdfReceipt {
     //final barCodeImage = pw.MemoryImage((await rootBundle.load('assets/images/barCodeImage.jpg')).buffer.asUint8List(),);
 
     pdf.addPage(pw.MultiPage(
-      margin: const pw.EdgeInsets.only(top: 3,left: 3,right: 3,bottom: 3),
+      margin: const pw.EdgeInsets.only(top: 1,left: 1,right: 1,bottom: 1),
       //pageFormat: PdfPageFormat.roll57,
       textDirection: pw.TextDirection.rtl,
       theme: pw.ThemeData.withFont(
@@ -34,8 +34,17 @@ class pdfReceipt {
       ),
       build: (context) => [
         buildHeader(receipt, companyImage),
-        pw.SizedBox(height: 0.2 * pdfx.PdfPageFormat.cm),
-        //buildTitle(invoice),
+        pw.Row(
+          mainAxisAlignment: MainAxisAlignment.center ,//Center Row contents horizontally,
+          crossAxisAlignment: CrossAxisAlignment.center, //Center Row contents vertically,
+          children: [
+              Center(
+                child:   Text(receipt.receiptHeader.companyInvoiceTypeName.toString(),style: const TextStyle(fontSize: 15),textAlign: TextAlign.center),
+              )
+          ]
+        ),
+        buildHeader2(receipt, companyImage),
+
         buildInvoiceHeaderCells(receipt.invoice),
         buildInvoice(receipt.invoice),
         pw.Divider(),
@@ -122,29 +131,29 @@ class pdfReceipt {
   static pw.Widget buildHeader(Receipt receipt,pw.MemoryImage companyImage ) => pw.Column(
     crossAxisAlignment: pw.CrossAxisAlignment.start,
     children: [
-      // SizedBox(height: 1 * PdfPageFormat.cm),
-      // Row(
-      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //   children: [
-      //     //buildSupplierAddress(invoice.supplier as Vendor),
-      //     Container(
-      //       height: 50,
-      //       width: 50,
-      //       // child: BarcodeWidget(
-      //       //   barcode: Barcode.qrCode(),
-      //       //   //data: invoice.info.number,
-      //       // ),
-      //     ),
-      //   ],
-      // ),
-      // SizedBox(height: 0.2 * PdfPageFormat.cm),
       pw.Row(
-        crossAxisAlignment: pw.CrossAxisAlignment.end,
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
         children: [
-          pw.Padding(padding:  const EdgeInsets.all(16.0)),
+          //pw.Padding(padding:  const EdgeInsets.only(left: 1,right: 1)),
           buildCompanyLogo(receipt,companyImage),
           buildReceiptHeader(receipt.receiptHeader),
+        ],
+      ),
+      // buildInvoice(receipt.invoice),
+    ],
+  );
+
+  static pw.Widget buildHeader2(Receipt receipt,pw.MemoryImage companyImage ) => pw.Column(
+    crossAxisAlignment: pw.CrossAxisAlignment.start,
+    children: [
+      pw.Row(
+        crossAxisAlignment: pw.CrossAxisAlignment.start,
+        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+        children: [
+          //pw.Padding(padding:  const EdgeInsets.only(left: 1,right: 1)),
+          buildCompanyLogo2(receipt,companyImage),
+          buildReceiptHeader2(receipt.receiptHeader),
         ],
       ),
       // buildInvoice(receipt.invoice),
@@ -154,125 +163,97 @@ class pdfReceipt {
   static pw.Widget buildReceiptHeader(ReceiptHeader recpt) => pw.Column(
     crossAxisAlignment: pw.CrossAxisAlignment.end,
     children: [
-      pw.Padding(padding:  const EdgeInsets.all(4.0)),
+      pw.Padding(padding:  const EdgeInsets.only(top: 3)),
       //Text(recpt.companyName.toString(),   style: TextStyle(fontFamily: 'RobotoMono')),
       Row(
           children:[
             Container(
               alignment: Alignment.centerRight,
                 // flex: 2,
-                child: Text(recpt.companyName.toString(),style: const TextStyle(fontSize: 15))),
+                child: Text(' ${recpt.companyName}',style: const TextStyle(fontSize: 20))),
           ]),
-      // Container(
-      //   // flex: 2,
-      //     child: Container(
-      //         child: Text(recpt.companyInvoiceTypeName.toString(),style: TextStyle(fontSize: 15)))),
-
         Row(
             children:[
               Container(
                 //flex: 2,
                   child: Container(
-                      child: Text(recpt.companyVatNumber.toString(),style: const TextStyle(fontSize: 15)))),
-              //Spacer(),
-              Container(
-                //flex: 2,
-                  child: Text(recpt.companyCommercialName.toString(),style: const TextStyle(fontSize: 15))),
+                      child: Text(' ${recpt.companyVatNumber}',style: const TextStyle(fontSize: 20)))),
             ]),
       Row(
           children:[
             Container(
               //flex: 2,
-                child: Container(
-                    child: Text(recpt.companyInvoiceNo.toString(),style: const TextStyle(fontSize: 15)))),
-            Container(child: Text('---')),
-            Container(
-              //flex: 2,
-                child: Text(recpt.companyDate.toString(),style: const TextStyle(fontSize: 15))),
+                child: Text(' ${recpt.companyCommercialName}',style: const TextStyle(fontSize: 20))),
           ]),
-      Row(
-          children:[
-            Container(
-              //flex: 2,
-                child: Container(
-                    child: Text(recpt.customerName.toString(),style: const TextStyle(fontSize: 15)))),
-            Container(child: Text('---')),
-            Container(
-              //flex: 2,
-                child: Text(recpt.customerMobile.toString(),style: const TextStyle(fontSize: 15))),
-          ]),
-      Row(
-          children:[
-            Container(
-              //flex: 2,
-                child: Container(
-                    child: Text(recpt.customerTaxNo.toString(),style: const TextStyle(fontSize: 15)))),
-            Container(child: Text('---')),
-            Container(
-              //flex: 2,
-                child: Text('',style: const TextStyle(fontSize: 15))),
-          ]),
-      // pw.Directionality(
-      //     textDirection: pw.TextDirection.rtl,
-      //     child: pw.Center(
-      //         child: pw.Text(recpt.companyName.toString(),
-      //             style: pw.TextStyle(
-      //               fontSize: 20, )))),
-      // pw.Directionality(
-      //     textDirection: pw.TextDirection.rtl,
-      //     child: pw.Center(
-      //         child: pw.Text(recpt.companyInvoiceTypeName.toString(),
-      //             style: pw.TextStyle(
-      //               fontSize: 18, )))),
-      // Directionality(
-      //     textDirection: TextDirection.rtl,
-      //     child: Center(
-      //         child: Text(recpt.companyInvoiceTypeName2.toString(),
-      //             style: TextStyle(
-      //               fontSize: 18, )))),
-
-      // pw.Directionality(
-      //     textDirection: pw.TextDirection.rtl,
-      //     child: pw.Center(
-      //         child: pw.Text(recpt.companyVatNumber.toString(),
-      //             style: pw.TextStyle(
-      //               fontSize: 18, )))),
-      // pw.Directionality(
-      //     textDirection: pw.TextDirection.rtl,
-      //     child: pw.Center(
-      //         child: pw.Text(recpt.companyCommercialName.toString(),
-      //             style: pw.TextStyle(
-      //               fontSize: 18, )))),
-      // pw.Directionality(
-      //     textDirection: pw.TextDirection.rtl,
-      //     child: pw.Center(
-      //         child: pw.Text(recpt.companyInvoiceNo.toString(),
-      //             style: pw.TextStyle(
-      //               fontSize: 18, )))),
-      // pw.Directionality(
-      //     textDirection: pw.TextDirection.rtl,
-      //     child: pw.Center(
-      //         child: pw.Text(recpt.companyDate.toString(),
-      //             style: pw.TextStyle(
-      //               fontSize: 18, )))),
-      // pw.Directionality(
-      //     textDirection: pw.TextDirection.rtl,
-      //     child: pw.Center(
-      //         child: pw.Text(recpt.customerName.toString(),
-      //             style: pw.TextStyle(
-      //               fontSize: 18, )))),
-
 
 
     ],
   );
 
-  static pw.Widget buildCompanyLogo(Receipt receipt,pw.MemoryImage companyImage) => pw.Column(
-    crossAxisAlignment: pw.CrossAxisAlignment.start,
+  static pw.Widget buildReceiptHeader2(ReceiptHeader recpt) => pw.Column(
+    crossAxisAlignment: pw.CrossAxisAlignment.end,
     children: [
-      pw.Image(companyImage
-          ,width: 150,
-          height: 150),
+      pw.Padding(padding:  const EdgeInsets.only(top: 1)),
+      //Text(recpt.companyName.toString(),   style: TextStyle(fontFamily: 'RobotoMono')),
+      Row(
+          children:[
+                  Container(
+                      alignment: Alignment.center,
+                      //flex: 2,
+                      child: Container(
+                          child: Text(' ${recpt.companyInvoiceNo}',style: const TextStyle(fontSize: 15),textAlign: TextAlign.left))),
+
+          ]),
+            Row(
+
+            children:[
+            Container(
+            //flex: 2,
+            child: Container(
+            child: Text(' ${recpt.customerName}',style: const TextStyle(fontSize: 15)))),
+           ] ),
+      Row(
+
+          children:[
+            Container(
+              //flex: 2,
+                child: Container(
+                    child: Text(' ${recpt.customerTaxNo}',style: const TextStyle(fontSize: 15)))),
+          ] )
+
+    ],
+  );
+
+  static pw.Widget buildCompanyLogo(Receipt receipt,pw.MemoryImage companyImage) => pw.Column(
+    crossAxisAlignment: pw.CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      pw.Container(
+        padding:  const EdgeInsets.only(top: 10,left: 50),
+        child:
+        pw.Image(companyImage
+            ,width: 160,
+            height: 130),
+      )
+
+
+      // Text(customer.address.toString()),
+    ],
+  );
+
+  static pw.Widget buildCompanyLogo2(Receipt receipt,pw.MemoryImage companyImage) => pw.Column(
+    crossAxisAlignment: pw.CrossAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Row(
+                children:[
+                  Container(
+                    //alignment: Alignment.centerRight,
+                    //flex: 2,
+                      child: Text(' ${receipt.receiptHeader.companyDate}',style: const TextStyle(fontSize: 15),textAlign: TextAlign.right)),
+                ]
+            ),
+
       // Text(customer.address.toString()),
     ],
   );
@@ -320,19 +301,6 @@ class pdfReceipt {
     ],
   );
 
-  static pw.Widget buildTitle(Invoice invoice) => pw.Column(
-    crossAxisAlignment: pw.CrossAxisAlignment.start,
-    children: [
-      pw.Text(
-        'INVOICE',
-        style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold),
-      ),
-      pw.SizedBox(height: 0.8 * pdfx.PdfPageFormat.cm),
-      pw.Text(invoice.info.description),
-      pw.SizedBox(height: 0.8 * pdfx.PdfPageFormat.cm),
-    ],
-  );
-
   static pw.Widget buildInvoiceHeaderCells(Invoice invoice) {
     var itemNameTitle = langId==1? "الصنف":"Item";
     var qtyTitle = langId==1? "الكمية":"Quantity";
@@ -341,11 +309,11 @@ class pdfReceipt {
     var TotalTitle = langId==1? "الاجمالي":"Total";
 
     final headers = [
-      itemNameTitle,
-      qtyTitle,
-      priceTitle,
+      TotalTitle,
       VatTitle,
-      TotalTitle
+      priceTitle,
+      qtyTitle,
+      itemNameTitle,
     ];
 
     return pw.Table.fromTextArray(
@@ -354,7 +322,7 @@ class pdfReceipt {
       border: null,
       headerStyle: const pw.TextStyle(fontSize: 16),
       headerDecoration: const pw.BoxDecoration(color: pdfx.PdfColors.grey400),
-      cellHeight: 20,
+      cellHeight: 14,
       cellAlignments: {
         0: pw.Alignment.center,
         //1: Alignment.centerRight,
@@ -364,11 +332,11 @@ class pdfReceipt {
         4: pw.Alignment.center,
       },
       columnWidths: {
-        0: const FlexColumnWidth(2),
+        0: const FlexColumnWidth(1),
         1: const FlexColumnWidth(1),
         2: const FlexColumnWidth(1),
         3: const FlexColumnWidth(1),
-        4: const FlexColumnWidth(1),
+        4: const FlexColumnWidth(2),
         },
 
     );
@@ -384,11 +352,11 @@ class pdfReceipt {
     var TotalTitle = langId==1? "الاجمالي":"Total";
 
     final headers = [
-      itemNameTitle,
-      qtyTitle,
-      priceTitle,
+      TotalTitle,
       VatTitle,
-      TotalTitle
+      priceTitle,
+      qtyTitle,
+      itemNameTitle,
     ];
     final data = invoice.items.map((item) {
       var unitPrice = item.unitPrice == null ? 0 :item.unitPrice;
@@ -400,12 +368,11 @@ class pdfReceipt {
       var itemName =  item.description ;
 
       return [
-        itemName,
-        //Utils.formatDate(item.date),
-        quantity.toString(),
-        unitPrice.toString(),
-        vat.toString(),
         totalValue.toString(),
+        vat.toString(),
+        unitPrice.toString(),
+        quantity.toString(),
+        itemName,
       ];
     }).toList();
 
@@ -415,7 +382,7 @@ class pdfReceipt {
       border: null,
       headerStyle: const pw.TextStyle(fontSize: 0,height: 0,color: pdfx.PdfColors.white),
       headerDecoration: const pw.BoxDecoration(color: pdfx.PdfColors.white),
-      cellHeight: 15,
+      cellHeight: 14,
       cellAlignments: {
         0: pw.Alignment.center,
         //1: Alignment.centerRight,
@@ -425,11 +392,11 @@ class pdfReceipt {
         4: pw.Alignment.center,
       },
       columnWidths: {
-        0: const FlexColumnWidth(2),
+        0: const FlexColumnWidth(1),
         1: const FlexColumnWidth(1),
         2: const FlexColumnWidth(1),
         3: const FlexColumnWidth(1),
-        4: const FlexColumnWidth(1),
+        4: const FlexColumnWidth(2),
       },
 
     );
@@ -440,7 +407,8 @@ class pdfReceipt {
     var columnTitle1 = langId==1? "":"";
     var columnTitle2 = langId==1? "":"";
     var columnTitle3 = langId==1? "":"";
-    var columnTitle4 =  langId==1? "الاجماليات":"Total";
+    var columnTitle4 = langId==1? "":"";
+    var columnTitle5 =  langId==1? "الاجماليات":"Total";
 
     //
     final headers = [
@@ -448,6 +416,7 @@ class pdfReceipt {
       columnTitle2,
       columnTitle3,
       columnTitle4,
+      columnTitle5
     ];
 
 
@@ -457,16 +426,21 @@ class pdfReceipt {
       border: null,
       headerStyle: const pw.TextStyle(fontSize: 16),
       headerDecoration: const pw.BoxDecoration(color: pdfx.PdfColors.grey400),
-      cellHeight: 20,
+      cellHeight: 14,
       cellAlignments: {
         0: pw.Alignment.center,
-        //1: Alignment.centerRight,
         1: pw.Alignment.center,
         2: pw.Alignment.center,
         3: pw.Alignment.center,
         4: pw.Alignment.center,
       },
-
+      columnWidths: {
+        0: const FlexColumnWidth(1),
+        1: const FlexColumnWidth(3),
+        2: const FlexColumnWidth(1),
+        3: const FlexColumnWidth(1),
+        4: const FlexColumnWidth(1),
+      },
     );
 
   }
@@ -477,7 +451,8 @@ class pdfReceipt {
     var columnTitle1 = langId==1? "":"";
     var columnTitle2 = langId==1? "":"";
     var columnTitle3 = langId==1? "":"";
-    var columnTitle4 =  langId==1? "الاجماليات":"Total";
+    var columnTitle4 = langId==1? "":"";
+    var columnTitle5 =  langId==1? "الاجماليات":"Total";
 
     //
     final headers = [
@@ -485,6 +460,7 @@ class pdfReceipt {
       columnTitle2,
       columnTitle3,
       columnTitle4,
+      columnTitle5,
     ];
 
 
@@ -494,14 +470,14 @@ class pdfReceipt {
     String rowsCountValue =invoice.info.rowsCount.toString();
     String totalQtyTitle = (langId==1? "اجمالي الكمية":"Total Quantity  ");
     String totalQtyValue =invoice.info.totalQty.toString();
-    InvoiceTotal invoiceTotal1 =InvoiceTotal(totalField1: totalQtyValue,totalField2: totalQtyTitle,totalField3:rowsCountValue ,totalField4:rowsCountTitle );
+    InvoiceTotal invoiceTotal1 =InvoiceTotal(totalField1: "",totalField2: totalQtyValue,totalField3: totalQtyTitle,totalField4:rowsCountValue ,totalField5:rowsCountTitle );
     invoiceTotals.add(invoiceTotal1);
 
     String totalAmountTitle = (langId==1? "الاجمالي":"Total Amount");
     String totalAmountValue =invoice.info.totalAmount.toString();
     String totalDiscountTitle = (langId==1? "الخصم":"Total Discount");
     String totalDiscountValue =invoice.info.totalDiscount.toString();
-    InvoiceTotal invoiceTotal2 =InvoiceTotal(totalField1: totalDiscountValue,totalField2: totalDiscountTitle, totalField3:totalAmountValue ,totalField4:totalAmountTitle );
+    InvoiceTotal invoiceTotal2 =InvoiceTotal(totalField1: "",totalField2: totalDiscountValue,totalField3: totalDiscountTitle, totalField4:totalAmountValue ,totalField5:totalAmountTitle );
     invoiceTotals.add(invoiceTotal2);
 
 
@@ -509,14 +485,14 @@ class pdfReceipt {
     String totalBeforeVatValue =invoice.info.totalBeforeVat.toString();
     String totalVatAmountTitle = (langId==1? "القيمة المضافة":"Total VAT Amount");
     String totalVatAmountValue =invoice.info.totalVatAmount.toString();
-    InvoiceTotal invoiceTotal3 =InvoiceTotal(totalField1: totalVatAmountValue,totalField2: totalVatAmountTitle, totalField3:totalBeforeVatValue ,totalField4:totalBeforeVatTitle );
+    InvoiceTotal invoiceTotal3 =InvoiceTotal(totalField1: "",totalField2: totalVatAmountValue,totalField3: totalVatAmountTitle, totalField4:totalBeforeVatValue ,totalField5:totalBeforeVatTitle );
     invoiceTotals.add(invoiceTotal3);
 
     String totalAfterVatTitle = (langId==1? "الصافي":"Net");
     String totalAfterVatValue =invoice.info.totalAfterVat.toString();
     String tafqeetNameTitle = (langId==1? "الصافي كتابة":"Net Tafqeet");
     String tafqeetNameValue =invoice.info.tafqeetName.toString();
-    InvoiceTotal invoiceTotal4 =InvoiceTotal(totalField1: tafqeetNameValue,totalField2: tafqeetNameTitle, totalField3:totalAfterVatValue ,totalField4:totalAfterVatTitle );
+    InvoiceTotal invoiceTotal4 =InvoiceTotal(totalField1: "",totalField2: tafqeetNameValue,totalField3: tafqeetNameTitle, totalField4:totalAfterVatValue ,totalField5:totalAfterVatTitle );
     invoiceTotals.add(invoiceTotal4);
 
 
@@ -525,12 +501,14 @@ class pdfReceipt {
       var totalField2 = item.totalField2;
       var totalField3 = item.totalField3;
       var totalField4 = item.totalField4;
+      var totalField5 = item.totalField5;
 
       return [
         totalField1,
         totalField2,
         totalField3,
         totalField4,
+        totalField5,
       ];
     }).toList();
 
@@ -541,15 +519,22 @@ class pdfReceipt {
       border: null,
       headerStyle: const pw.TextStyle(fontSize: 0,height: 0,color: pdfx.PdfColors.white),
       headerDecoration: const pw.BoxDecoration(color: pdfx.PdfColors.white),
-      cellHeight: 15,
+      cellHeight: 14,
       cellAlignments: {
         0: pw.Alignment.center,
         1: pw.Alignment.center,
         2: pw.Alignment.center,
         3: pw.Alignment.center,
+        4: pw.Alignment.center,
       },
       cellStyle: const pw.TextStyle(fontSize: 14),
-
+      columnWidths: {
+        0: const FlexColumnWidth(1),
+        1: const FlexColumnWidth(3),
+        2: const FlexColumnWidth(1),
+        3: const FlexColumnWidth(1),
+        4: const FlexColumnWidth(1),
+      },
     );
   }
 
@@ -756,11 +741,13 @@ class InvoiceTotal {
   final String totalField2;
   final String totalField3;
   final String totalField4;
+  final String totalField5;
 
   const InvoiceTotal({
     required this.totalField1,
     required this.totalField2,
     required this.totalField3,
     required this.totalField4,
+    required this.totalField5,
   });
 }
