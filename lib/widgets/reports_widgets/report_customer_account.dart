@@ -1,9 +1,13 @@
+import 'dart:ffi';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customerTypes/customerType.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
+import 'package:fourlinkmobileapp/service/general/Pdf/pdf_api.dart';
+import 'package:fourlinkmobileapp/service/module/general/reportUtility/reportUtilityApiService.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
@@ -17,8 +21,10 @@ import '../../helpers/hex_decimal.dart';
 import '../../service/module/general/NextSerial/generalApiService.dart';
 import '../../ui/general/printPage.dart';
 import 'package:intl/intl.dart';
-
+import 'dart:io';
 import '../../ui/module/accountReceivable/transactions/salesInvoices/addSalesInvoiceDataWidget.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 
 NextSerialApiService _nextSerialApiService = NextSerialApiService();
 CustomerApiService _customerApiService= CustomerApiService();
@@ -247,8 +253,9 @@ class _CustomerReportState extends State<CustomerReport> {
                               label: Text('print'.tr(),
                                   style: const TextStyle(color: Colors.white)),
                               onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => Print()));
+                                // Navigator.push(context, MaterialPageRoute(builder: (context) => Print()));
                                 //_navigateToPrintScreen(context,_customers[index]);
+                                printReport("");
                               },
                               style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
@@ -592,6 +599,41 @@ class _CustomerReportState extends State<CustomerReport> {
         // ),
       ),
     );
+  }
+
+  printReport(String criteria){
+    print('hanaaaaaaaaaas2');
+    String menuId="6301";
+
+    //API;
+    ReportUtilityApiService reportUtilityApiService = ReportUtilityApiService();
+    //report
+    final report = reportUtilityApiService.getReportData(
+        menuId,criteria).then((data) async {
+      print('hanaaaaaaaaaas3');
+      print(data);
+
+      final outputFilePath = 'example.pdf';
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File('${dir.path}/$outputFilePath');
+      print('hanaaaaaaaaaas5');
+      await file.writeAsBytes(data);
+      PdfApi.openFile(file);
+
+      // NextSerial nextSerial = data;
+      //
+      // //Date
+      // DateTime now = DateTime.now();
+      // _salesInvoicesDateController.text = DateFormat('yyyy-MM-dd').format(now);
+      //
+      // //print(customers.length.toString());
+      // _salesInvoicesSerialController.text = nextSerial.nextSerial.toString();
+      // return nextSerial;
+    }, onError: (e) {
+      print(e);
+    });
+
+
   }
 
 }
