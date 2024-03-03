@@ -63,7 +63,7 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
 
 
     //Customer Type
-    Future<List<CustomerType>> futureSalesMan = _customerTypeApiService.getCustomerTypes().then((data) {
+    Future<List<CustomerType>> futureCustomerType = _customerTypeApiService.getCustomerTypes().then((data) {
       customerTypes = data;
       //print(customers.length.toString());
       getCustomerTypeData();

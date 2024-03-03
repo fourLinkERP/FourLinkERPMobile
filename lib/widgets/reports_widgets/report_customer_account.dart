@@ -6,7 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customerTypes/customerType.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/salesMen/salesMan.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/branches/branch.dart';
 import 'package:fourlinkmobileapp/service/general/Pdf/pdf_api.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/SalesMen/salesManApiService.dart';
+import 'package:fourlinkmobileapp/service/module/administration/basicInputs/branchApiService.dart';
 import 'package:fourlinkmobileapp/service/module/general/reportUtility/reportUtilityApiService.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -30,8 +34,22 @@ NextSerialApiService _nextSerialApiService = NextSerialApiService();
 CustomerApiService _customerApiService= CustomerApiService();
 CustomerTypeApiService _customerTypeApiService= CustomerTypeApiService();
 UnitApiService _unitsApiService = UnitApiService();
+BranchApiService _branchApiService = BranchApiService();
+SalesManApiService _salesManApiService = SalesManApiService();
 
-
+final startDateController = TextEditingController();
+final endDateController = TextEditingController();
+String? selectedCustomerValue;
+String? selectedCustomerEmail;
+String? selectedTypeValue = "1";
+String? selectedUnitValue;
+String? startDate;
+String? endDate;
+String? salesInvoicesEndDate;
+List<DropdownMenuItem<String>> menuCustomerType = [ ];
+String? customerTypeSelectedValue = null;
+String? branchSelectedValue = null;
+String? salesManSelectedValue = null;
 
 class CustomerReport extends StatefulWidget {
   const CustomerReport({Key? key}) : super(key: key);
@@ -48,27 +66,24 @@ class _CustomerReportState extends State<CustomerReport> {
   List<Customer> customers =[];
   List<Unit> units =[];
   List<CustomerType> customerTypes=[];
+  List<Branch> branches=[];
+  List<SalesMan> salesMen=[];
 
-  String? selectedCustomerValue;
-  String? selectedCustomerEmail;
-  String? selectedTypeValue = "1";
-  String? selectedUnitValue;
-  String? startDate;
-  String? endDate;
-  String? salesInvoicesEndDate;
-  List<DropdownMenuItem<String>> menuCustomerType = [ ];
-  String? customerTypeSelectedValue = null;
+
 
   final _dropdownTypeFormKey = GlobalKey<FormState>();
   final _addFormKey = GlobalKey<FormState>();
   final _dropdownCustomerFormKey = GlobalKey<FormState>();
   final _dropdownCustomerTypeFormKey = GlobalKey<FormState>();
+  final _dropdownBranchFormKey = GlobalKey<FormState>();
+  final _dropdownSalesManFormKey = GlobalKey<FormState>();
   final _salesInvoicesDateController = TextEditingController();
-  final startDateController = TextEditingController();
-  final endDateController = TextEditingController();
+
 
 
   Customer?  customerItem=Customer(customerCode: "",customerNameAra: "",customerNameEng: "",id: 0);
+  Branch?  branchItem=Branch(branchCode: 0,branchNameAra: "",branchNameEng: "",id: 0);
+  SalesMan ?  salesManItem=SalesMan(salesManCode: "",salesManNameAra: "",salesManNameEng: "",id: 0);
 
   String? _dropdownValue ;
   String arabicNameHint = 'arabicNameHint';
@@ -78,24 +93,27 @@ class _CustomerReportState extends State<CustomerReport> {
   @override void initState() {
 
     super.initState();
-    Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
-      customers = data;
-      //print(customers.length.toString());
-      getCustomerData();
-      return customers;
-    }, onError: (e) {
-      print(e);
-    });
 
-    //Customer Type
-    Future<List<CustomerType>> futureSalesMan = _customerTypeApiService.getCustomerTypes().then((data) {
-      customerTypes = data;
-      //print(customers.length.toString());
-      getCustomerTypeData();
-      return customerTypes;
-    }, onError: (e) {
-      print(e);
-    });
+   fillCombos();
+
+    // Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
+    //   customers = data;
+    //   //print(customers.length.toString());
+    //   getCustomerData();
+    //   return customers;
+    // }, onError: (e) {
+    //   print(e);
+    // });
+    //
+    // //Customer Type
+    // Future<List<CustomerType>> futureSalesMan = _customerTypeApiService.getCustomerTypes().then((data) {
+    //   customerTypes = data;
+    //   //print(customers.length.toString());
+    //   getCustomerTypeData();
+    //   return customerTypes;
+    // }, onError: (e) {
+    //   print(e);
+    // });
 
   }
 
@@ -255,7 +273,7 @@ class _CustomerReportState extends State<CustomerReport> {
                               onPressed: () {
                                 // Navigator.push(context, MaterialPageRoute(builder: (context) => Print()));
                                 //_navigateToPrintScreen(context,_customers[index]);
-                                printReport("");
+                                printReport(getCriteria());
                               },
                               style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
@@ -289,7 +307,7 @@ class _CustomerReportState extends State<CustomerReport> {
                     ),*/
                     Row(
                       children: [
-                        Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("start date".tr(),
+                        Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("startDate".tr(),
                             style: const TextStyle(fontWeight: FontWeight.bold))),
                         const SizedBox(width: 15),
                         SizedBox(
@@ -320,7 +338,7 @@ class _CustomerReportState extends State<CustomerReport> {
                     const SizedBox(height: 20.0,),
                     Row(
                       children: [
-                        Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("end date".tr(),
+                        Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("endDate".tr(),
                             style: const TextStyle(fontWeight: FontWeight.bold))),
                         const SizedBox(width: 15),
                         SizedBox(
@@ -458,15 +476,15 @@ class _CustomerReportState extends State<CustomerReport> {
 
                               },
 
-                              filterFn: (instance, filter){
-                                if(instance.cusTypesNameAra!.contains(filter)){
-                                  print(filter);
-                                  return true;
-                                }
-                                else{
-                                  return false;
-                                }
-                              },
+                              // filterFn: (instance, filter){
+                              //   if(instance.cusTypesNameAra!.contains(filter)){
+                              //     print(filter);
+                              //     return true;
+                              //   }
+                              //   else{
+                              //     return false;
+                              //   }
+                              // },
                               dropdownDecoratorProps: DropDownDecoratorProps(
                                 dropdownSearchDecoration: InputDecoration(
                                   labelText: "customerType".tr(),
@@ -479,6 +497,132 @@ class _CustomerReportState extends State<CustomerReport> {
                         ],
                       ),
                     ),
+
+                    //////////////////////
+                    const SizedBox(height: 30.0),
+                    Form(
+                      key: _dropdownBranchFormKey,
+                      child: Row(
+                        children: [
+                          Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("branch".tr(),
+                              style: const TextStyle(fontWeight: FontWeight.bold))),
+                          const SizedBox(width: 15),
+                          SizedBox(
+                            width: 200,
+                            child: DropdownSearch<Branch>(
+                              popupProps: PopupProps.menu(
+                                itemBuilder: (context, item, isSelected) {
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                                    decoration: !isSelected
+                                        ? null
+                                        : BoxDecoration(
+
+                                      border: Border.all(color: Theme.of(context).primaryColor),
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.white,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text((langId==1)? item.branchNameAra.toString():  item.branchNameEng.toString(),
+                                        //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
+                                        textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                    ),
+                                  );
+                                },
+                                showSearchBox: true,
+                              ),
+                              items: branches,
+                              itemAsString: (Branch u) => u.branchNameAra.toString(),
+                              onChanged: (value){
+
+                              },
+
+                              // filterFn: (instance, filter){
+                              //   if(instance.cusTypesNameAra!.contains(filter)){
+                              //     print(filter);
+                              //     return true;
+                              //   }
+                              //   else{
+                              //     return false;
+                              //   }
+                              // },
+                              dropdownDecoratorProps: DropDownDecoratorProps(
+                                dropdownSearchDecoration: InputDecoration(
+                                  labelText: "branch".tr(),
+
+                                ),),
+
+
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    /////////////////////////////
+                    const SizedBox(height: 30.0),
+                    Form(
+                      key: _dropdownSalesManFormKey,
+                      child: Row(
+                        children: [
+                          Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("salesMan".tr(),
+                              style: const TextStyle(fontWeight: FontWeight.bold))),
+                          const SizedBox(width: 15),
+                          SizedBox(
+                            width: 200,
+                            child: DropdownSearch<SalesMan>(
+                              popupProps: PopupProps.menu(
+                                itemBuilder: (context, item, isSelected) {
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                                    decoration: !isSelected
+                                        ? null
+                                        : BoxDecoration(
+
+                                      border: Border.all(color: Theme.of(context).primaryColor),
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.white,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text((langId==1)? item.salesManNameAra.toString():  item.salesManNameEng.toString(),
+                                        //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
+                                        textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                    ),
+                                  );
+                                },
+                                showSearchBox: true,
+                              ),
+                              items: salesMen,
+                              itemAsString: (SalesMan u) => u.salesManNameAra.toString(),
+                              onChanged: (value){
+
+                              },
+
+                              // filterFn: (instance, filter){
+                              //   if(instance.cusTypesNameAra!.contains(filter)){
+                              //     print(filter);
+                              //     return true;
+                              //   }
+                              //   else{
+                              //     return false;
+                              //   }
+                              // },
+                              dropdownDecoratorProps: DropDownDecoratorProps(
+                                dropdownSearchDecoration: InputDecoration(
+                                  labelText: "salesMan".tr(),
+
+                                ),),
+
+
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
                   ],
                 ),
 
@@ -491,26 +635,24 @@ class _CustomerReportState extends State<CustomerReport> {
     );
   }
   getCustomerData() {
-    if (customers != null) {
-      for(var i = 0; i < customers.length; i++){
-        menuCustomers.add(DropdownMenuItem(value: customers[i].customerCode.toString(), child: Text(customers[i].customerNameAra.toString())));
-      }
-    }
+    // if (customers != null) {
+    //   for(var i = 0; i < customers.length; i++){
+    //     menuCustomers.add(DropdownMenuItem(value: customers[i].customerCode.toString(), child: Text(customers[i].customerNameAra.toString())));
+    //   }
+    // }
     setState(() {
-
     });
   }
   getCustomerTypeData() {
-    if (customerTypes != null) {
-      for(var i = 0; i < customerTypes.length; i++){
-        menuCustomerType.add(
-            DropdownMenuItem(
-                value: customerTypes[i].cusTypesCode.toString(),
-                child: Text((langId==1)?  customerTypes[i].cusTypesNameAra.toString() : customerTypes[i].cusTypesNameEng.toString())));
-      }
-    }
+    // if (customerTypes != null) {
+    //   // for(var i = 0; i < customerTypes.length; i++){
+    //   //   menuCustomerType.add(
+    //   //       DropdownMenuItem(
+    //   //           value: customerTypes[i].cusTypesCode.toString(),
+    //   //           child: Text((langId==1)?  customerTypes[i].cusTypesNameAra.toString() : customerTypes[i].cusTypesNameEng.toString())));
+    //   // }
+    // }
     setState(() {
-
     });
   }
 
@@ -521,21 +663,54 @@ class _CustomerReportState extends State<CustomerReport> {
       customers = data;
       //print(customers.length.toString());
       //getCustomerData();
+      setState(() {
+      });
       return customers;
     }, onError: (e) {
       print(e);
     });
 
-    //Units
-    Future<List<Unit>> Units = _unitsApiService.getUnits().then((data) {
-      units = data;
+    //Branches
+    Future<List<Branch>> Branches = _branchApiService.getBranches().then((data) {
+      branches = data;
       //print(customers.length.toString());
       //getItemData();
-      return units;
+      setState(() {
+      });
+      return branches;
+    }, onError: (e) {
+      print(e);
+    });
+
+    //Sales Man
+    Future<List<SalesMan>> SalesMen = _salesManApiService.getSalesMans().then((data) {
+      salesMen = data;
+      //print(customers.length.toString());
+      //getItemData();
+      setState(() {
+      });
+      return salesMen;
+    }, onError: (e) {
+      print(e);
+    });
+
+    //Units
+    Future<List<CustomerType>> futureSalesMan = _customerTypeApiService.getCustomerTypes().then((data) {
+      customerTypes = data;
+      //print(customers.length.toString());
+      getCustomerTypeData();
+      return customerTypes;
     }, onError: (e) {
       print(e);
     });
   }
+
+
+
+
+}
+
+
 
   Widget headLines({required String title}) {
     return Column(
@@ -601,23 +776,28 @@ class _CustomerReportState extends State<CustomerReport> {
     );
   }
 
-  printReport(String criteria){
-    print('hanaaaaaaaaaas2');
-    String menuId="6301";
 
-    //API;
+
+
+
+
+  /////////////////////////////////////////////// Print Report ///////////////////////////////////////////////////////////////////////
+  printReport(String criteria){
+    print('Start Report');
+    String menuId="6301"; //Customer Account Report Menu Id
+    //API Reference
     ReportUtilityApiService reportUtilityApiService = ReportUtilityApiService();
-    //report
+    //report Api
     final report = reportUtilityApiService.getReportData(
         menuId,criteria).then((data) async {
-      print('hanaaaaaaaaaas3');
-      print(data);
+      print('Data Fetched');
+      //print(data);
 
-      final outputFilePath = 'example.pdf';
+      final outputFilePath = 'customerAccountReport.pdf';
       final dir = await getApplicationDocumentsDirectory();
       final file = File('${dir.path}/$outputFilePath');
-      print('hanaaaaaaaaaas5');
       await file.writeAsBytes(data);
+      print('to Print Report');
       PdfApi.openFile(file);
 
       // NextSerial nextSerial = data;
@@ -636,4 +816,79 @@ class _CustomerReportState extends State<CustomerReport> {
 
   }
 
+
+
+
+String getCriteria()
+{
+  String criteria="";
+
+
+  if(startDateController.text.isNotEmpty)
+  {
+    criteria += " And TrxDate >='" + startDateController.text + "' ";
+  }
+
+  if(endDateController.text.isNotEmpty)
+  {
+    criteria += " And TrxDate <='" + endDateController.text + "' ";
+  }
+
+  if(selectedCustomerValue.toString().isNotEmpty)
+  {
+    criteria += " And CustomerCode =N'" + selectedCustomerValue.toString() + "' ";
+  }
+
+  if(selectedTypeValue.toString().isNotEmpty)
+  {
+    criteria += " And CustomerTypeCode =N'" + selectedTypeValue.toString() + "' ";
+  }
+
+  if(branchSelectedValue.toString().isNotEmpty)
+  {
+      criteria += " And BranchCode =N'" + branchSelectedValue.toString() + "' ";
+  }
+
+  if(salesManSelectedValue.toString().isNotEmpty)
+  {
+    criteria += " And SalesManCode =N'" + salesManSelectedValue.toString() + "' ";
+  }
+
+  // let parameter = this.customerBalanceReportForm.value;
+  //
+  // if (parameter != null )
+  // {
+  // let fromDate = this.utilityService.getDateFromDateString(parameter.fromDate);
+  // let toDate = this.utilityService.getDateFromDateString(parameter.toDate);
+  //
+  // if (!this.utilityService.isEmptyValue(fromDate))
+  // {
+  // criteria += " And SalesInvoicesDate >='" + fromDate + "' ";
+  // }
+  //
+  // if (!this.utilityService.isEmptyValue(toDate))
+  // {
+  // criteria += " And SalesInvoicesDate <='" + toDate + "' ";
+  // }
+  //
+  // if (!this.utilityService.isEmptyValue(parameter.fromCustomerCode))
+  // {
+  // criteria += " And CustomerCode >= N'" + parameter.fromCustomerCode + "' ";
+  // }
+  //
+  // if (!this.utilityService.isEmptyValue(parameter.toCustomerCode))
+  // {
+  // criteria += " And CustomerCode <= N'" +  parameter.toCustomerCode  + "' ";
+  // }
+  //
+  // if (!this.utilityService.isEmptyValue(parameter.salesManCode))
+  // {
+  // criteria += " And SalesManCode = N'" + parameter.salesManCode  + "' ";
+  // }
+  // }
+
+  return criteria;
+
 }
+
+
