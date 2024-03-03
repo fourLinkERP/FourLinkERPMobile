@@ -56,18 +56,21 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
     });
   }
   void getData() async {
-    Future<List<SalesInvoiceReturnH>?> futureSalesInvoiceReturnH = _apiReturnService.getSalesInvoiceReturnH().catchError((Error){
+    try{
+      List<SalesInvoiceReturnH>? futureSalesInvoiceReturnH = await _apiReturnService.getSalesInvoiceReturnH();
+      if (futureSalesInvoiceReturnH != null){
+        _salesInvoices = futureSalesInvoiceReturnH;
+        _salesInvoicesSearch = List.from(_salesInvoices);
+
+        if (_salesInvoices.isNotEmpty) {
+          _salesInvoices.sort((a, b) => int.parse(b.salesInvoicesSerial!).compareTo(int.parse(a.salesInvoicesSerial!)));
+          setState(() {
+            _founded = _salesInvoices!;
+          });
+        }
+      }
+    } catch (error){
       AppCubit.get(context).EmitErrorState();
-    });
-    _salesInvoices = (await futureSalesInvoiceReturnH)!;
-    _salesInvoicesSearch = List.from(_salesInvoices);
-    if (_salesInvoices.isNotEmpty) {
-      // Sort the list based on salesInvoicesSerial
-      _salesInvoices.sort((a, b) => int.parse(b.salesInvoicesSerial!).compareTo(int.parse(a.salesInvoicesSerial!)));
-      setState(() {
-        _founded = _salesInvoices!;
-        //String search = '';
-      });
     }
   }
 
@@ -84,10 +87,8 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
     } else {
       setState(() {
         _salesInvoices = List.from(_salesInvoicesSearch!);
-        _salesInvoices = _salesInvoices
-            .where((salesInvoice) =>
-            salesInvoice.customerName!.toLowerCase().contains(search))
-            .toList();
+        _salesInvoices = _salesInvoices.where((salesInvoice) =>
+            salesInvoice.customerName!.toLowerCase().contains(search)).toList();
       });
     }
   }
@@ -95,9 +96,6 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
 
   @override
   Widget build(BuildContext context) {
-    // setState(() {
-    //   getData();
-    // });
 
     return Scaffold(
         appBar: AppBar(
@@ -106,9 +104,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
           title: SizedBox(
             child: Column(
               children: [
-                // SizedBox(
-                //   width: 255,
-                //   child:
+
                 TextField(
                   controller: searchValueController,
                   onChanged: (searchValue) => onSearch(searchValue),
@@ -376,16 +372,11 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Row(
-                                children: [
-                                  Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString())))  ,
-                                ],
-                              )),
-                          Container(height: 20, color: Colors.white30, child: Row(
-                            children: [
-                              Text('customer'.tr() + " : " + _salesInvoices[index].customerName.toString()),
-                            ],
-                          )),
+                              child: Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString())))),
+                          Container(
+                              height: 20,
+                              color: Colors.white30,
+                              child: Text('customer'.tr() + " : " + _salesInvoices[index].customerName.toString())),
                           const SizedBox(width: 5),
                           SizedBox(
                               child: Row(

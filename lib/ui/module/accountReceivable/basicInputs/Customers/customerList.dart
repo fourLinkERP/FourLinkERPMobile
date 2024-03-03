@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:core';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/cubit/app_cubit.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
@@ -11,6 +12,7 @@ import '../../../../../service/module/accountReceivable/basicInputs/Customers/cu
 import 'addCustomerDataWidget.dart';
 import 'detailCustomerWidget.dart';
 import 'editCustomerDataWidget.dart';
+import 'package:flutter/services.dart';
 
 CustomerApiService _apiService = CustomerApiService();
 //Get Customer List
@@ -279,7 +281,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => DetailCustomerWidget(_customers[index])),);
                   },
                   child: ListTile(
-                    leading: Image.asset('assets/fitness_app/clients.png'),
+                    leading: _buildImageWidget(_customers[index].customerImage),
                     title: Text('code'.tr() + " : " + _customers[index].customerCode.toString(),
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
@@ -391,6 +393,23 @@ class _CustomerListPageState extends State<CustomerListPage> {
             }
             ),
       );
+    }
+  }
+
+  Uint8List _base64StringToUint8List(String base64String) {
+    return Uint8List.fromList(base64Decode(base64String));
+  }
+
+  Widget _buildImageWidget(String? base64Image) {
+    if (base64Image != null && base64Image.isNotEmpty) {
+
+      Uint8List uint8List = _base64StringToUint8List(base64Image);
+
+      // Display the image using Image.memory
+      return Image.memory(uint8List, height: 150, width: 57);
+    } else {
+
+      return Image.asset('assets/fitness_app/clients.png', height: 100, width: 57);
     }
   }
 }

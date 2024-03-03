@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -111,7 +112,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
          highlightElevation: 5,
 
         backgroundColor:  Colors.transparent,
-        onPressed: (){
+        onPressed: () async {
           if(_customerNameAraController.text.isEmpty)
           {
             FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
@@ -132,8 +133,13 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
             FN_showToast(context,'please_select_group'.tr() ,Colors.black);
             return;
           }
-
-          api.createCustomer(context,Customer(
+          String base64Image ='';
+          if (customerImage != null) {
+            List<int> imageBytes = await customerImage!.readAsBytes();
+            base64Image = base64Encode(imageBytes);
+            print(base64Image.toString());
+          }
+          await api.createCustomer(context,Customer(
               customerCode: _customerCodeController.text ,
               customerNameAra: _customerNameAraController.text ,
               customerNameEng: _customerNameEngController.text ,
@@ -141,15 +147,16 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
               phone1: _phone1Controller.text ,
               address: _addressController.text,
               customerTypeCode: customerTypeSelectedValue,
-              cusGroupsCode: customerGroupSelectedValue
+              cusGroupsCode: customerGroupSelectedValue,
+              customerImage: base64Image,
+
           ));
 
           Navigator.pop(context);
         },
 
-
           child:Container(
-            // alignment: Alignment.center,s
+            // alignment: Alignment.center,
             decoration: BoxDecoration(
               color: FitnessAppTheme.nearlyDarkBlue,
               gradient: LinearGradient(
@@ -780,5 +787,13 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
     setState (() => this.customerImage = imageTemporary);
 
    }
+   // convertImageIntoBase64String() async {
+   //   final customerImage = this.customerImage;
+   //   if (customerImage != null) {
+   //     List<int> imageBytes = await customerImage.readAsBytes();
+   //     base64Image = base64Encode(imageBytes);
+   //     print(base64Image.toString());
+   //   }
+   // }
 
 }

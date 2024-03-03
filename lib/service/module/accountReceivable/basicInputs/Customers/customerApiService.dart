@@ -127,6 +127,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'customerTypeCode': customer.customerTypeCode,
       'cusGroupsCode': customer.cusGroupsCode,
       'idNo': customer.idNo,
+      'customerImage': customer.customerImage,
       "notActive": false,
       "flgDelete": false,
       "isDeleted": false,
@@ -144,6 +145,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       // 'status': customer.status
     };
 
+    print('save customer: ' + data.toString());
+
     final http.Response response = await http.post(
       Uri.parse(createApi),
       headers: <String, String>{
@@ -152,8 +155,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       },
       body: jsonEncode(data),
     );
-
-
 
     if (response.statusCode == 200) {
 

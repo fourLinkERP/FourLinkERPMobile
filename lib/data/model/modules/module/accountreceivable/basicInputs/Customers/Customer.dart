@@ -13,6 +13,7 @@ class Customer {
   String? cusGroupsCode;
   String? email;
   String? idNo;
+  String? customerImage;
 
 
   Customer({
@@ -28,6 +29,7 @@ class Customer {
     this.cusGroupsCode,
     this.email,
     this.idNo,
+    this.customerImage
     });
 
   factory Customer.fromJson(Map<String, dynamic> json) {
@@ -44,6 +46,7 @@ class Customer {
       phone1: (json['phone1'] != null)?  json['phone1'] as String : "",
       email: (json['email'] != null)?  json['email'] as String : "",
       idNo: (json['idNo'] != null)?  json['idNo'] as String : "",
+      customerImage: (json['customerImage'] != null)?  json['customerImage'] as String : "",
     );
   }
 

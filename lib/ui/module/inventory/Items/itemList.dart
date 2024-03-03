@@ -282,31 +282,19 @@ class _ItemListPageState extends State<ItemListPage> {
                       },
                       child: ListTile(
                         leading: Image.asset('assets/fitness_app/products.png'),
-                        title: Text(
-                            'code'.tr() + " : " + _items[index].itemCode.toString(),
-                          style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        )),
+                        title: Text('code'.tr() + " : " + _items[index].itemCode.toString(),
+                          style: const TextStyle(fontWeight: FontWeight.bold,)),
                         subtitle: Column(
                           children: <Widget>[
-                            Container(height: 20, color: Colors.white30, child: Row(
-                              children: [
-                                Text(
-                                    'arabicName'.tr() + " : " + _items[index].itemNameAra.toString()),
-
-                              ],
-
-                            )),
-                            Container(height: 20, color: Colors.white30, child: Row(
-                              children: [
-
-                                Text(
-                                    'englishName'.tr() + " : " + _items[index].itemNameEng.toString()),
-
-
-                              ],
-
-                            )),
+                            Container(
+                                height: 20,
+                                color: Colors.white30,
+                                child: Text('arabicName'.tr() + " : " + _items[index].itemNameAra.toString())
+                            ),
+                            Container(
+                                height: 20,
+                                color: Colors.white30,
+                                 child: Text('englishName'.tr() + " : " + _items[index].itemNameEng.toString())),
                             const SizedBox(width: 5),
                             Container(
                                 child: Row(

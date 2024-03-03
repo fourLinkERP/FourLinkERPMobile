@@ -752,54 +752,54 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                               ],
                             ),
                           ),
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                            child: Column(
-                              crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameArabic'.tr(),
-                                    style: const TextStyle(fontWeight: FontWeight.bold))),
-                                TextFormField(
-                                  controller: _tafqitNameArabicController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'please_enter_value'.tr();
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  enabled: false,
-                                  onChanged: (value) {},
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                            child: Column(
-                              crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameEnglish'.tr(),
-                                    style: const TextStyle(fontWeight: FontWeight.bold))),
-                                TextFormField(
-                                  controller: _tafqitNameEnglishController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-                                  enabled: false,
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'please_enter_value'.tr();
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  onChanged: (value) {},
-                                ),
-                              ],
-                            ),
-                          ),
+                          // Container(
+                          //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          //   child: Column(
+                          //     crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
+                          //     children: <Widget>[
+                          //       Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameArabic'.tr(),
+                          //           style: const TextStyle(fontWeight: FontWeight.bold))),
+                          //       TextFormField(
+                          //         controller: _tafqitNameArabicController,
+                          //         decoration: const InputDecoration(
+                          //           hintText: '',
+                          //         ),
+                          //         // validator: (value) {
+                          //         //   if (value!.isEmpty) {
+                          //         //     return 'please_enter_value'.tr();
+                          //         //   }
+                          //         //   return null;
+                          //         // },
+                          //         enabled: false,
+                          //         onChanged: (value) {},
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                          // Container(
+                          //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          //   child: Column(
+                          //     crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
+                          //     children: <Widget>[
+                          //       Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameEnglish'.tr(),
+                          //           style: const TextStyle(fontWeight: FontWeight.bold))),
+                          //       TextFormField(
+                          //         controller: _tafqitNameEnglishController,
+                          //         decoration: const InputDecoration(
+                          //           hintText: '',
+                          //         ),
+                          //         enabled: false,
+                          //         // validator: (value) {
+                          //         //   if (value!.isEmpty) {
+                          //         //     return 'please_enter_value'.tr();
+                          //         //   }
+                          //         //   return null;
+                          //         // },
+                          //         onChanged: (value) {},
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                           Container(
                             margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                             child: Row(

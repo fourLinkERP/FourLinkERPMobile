@@ -999,60 +999,60 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                             ],
                           ),
                         ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Row(
-                            children: <Widget>[
-                              Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
-                                  child: Text('tafqitNameArabic'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                width: 230,
-                                child: TextFormField(
-                                  controller: _tafqitNameArabicController,
-                                  decoration: const InputDecoration(
-                                    // hintText: '',
-                                  ),
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'please_enter_value'.tr();
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  enabled: false,
-                                  onChanged: (value) {},
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Row(
-                            children: <Widget>[
-                              Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
-                                  child: Text('tafqitNameEnglish'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                width: 230,
-                                child: TextFormField(
-                                  controller: _tafqitNameEnglishController,
-                                  decoration: const InputDecoration(
-                                    // hintText: '',
-                                  ),
-                                  enabled: false,
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'please_enter_value'.tr();
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  onChanged: (value) {},
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        // Container(
+                        //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        //   child: Row(
+                        //     children: <Widget>[
+                        //       Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
+                        //           child: Text('tafqitNameArabic'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
+                        //       const SizedBox(width: 10),
+                        //       SizedBox(
+                        //         width: 230,
+                        //         child: TextFormField(
+                        //           controller: _tafqitNameArabicController,
+                        //           decoration: const InputDecoration(
+                        //             // hintText: '',
+                        //           ),
+                        //           // validator: (value) {
+                        //           //   if (value!.isEmpty) {
+                        //           //     return 'please_enter_value'.tr();
+                        //           //   }
+                        //           //   return null;
+                        //           // },
+                        //           enabled: false,
+                        //           onChanged: (value) {},
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // Container(
+                        //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        //   child: Row(
+                        //     children: <Widget>[
+                        //       Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
+                        //           child: Text('tafqitNameEnglish'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
+                        //       const SizedBox(width: 10),
+                        //       SizedBox(
+                        //         width: 230,
+                        //         child: TextFormField(
+                        //           controller: _tafqitNameEnglishController,
+                        //           decoration: const InputDecoration(
+                        //             // hintText: '',
+                        //           ),
+                        //           enabled: false,
+                        //           // validator: (value) {
+                        //           //   if (value!.isEmpty) {
+                        //           //     return 'please_enter_value'.tr();
+                        //           //   }
+                        //           //   return null;
+                        //           // },
+                        //           onChanged: (value) {},
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
 
                       ],
                     )
@@ -1608,7 +1608,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
-      //print(customers.length.toString());
+
       getCustomerData();
       return customers;
     }, onError: (e) {
@@ -1618,7 +1618,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     //Items
     Future<List<Item>> Items = _itemsApiService.getReturnItems().then((data) {
       items = data;
-      //print(customers.length.toString());
+
       getItemData();
       return items;
     }, onError: (e) {
@@ -1640,14 +1640,14 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
 //#region Navigate
 
-  _navigateToAddDetailScreen(BuildContext context, String invoiceSerial) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => AddSalesInvoiceDetailDataWidget(invoiceSerial)),
-    );
-    //).then((value) => getData());
-
-  }
+  // _navigateToAddDetailScreen(BuildContext context, String invoiceSerial) async {
+  //   final result = await Navigator.push(
+  //     context,
+  //     MaterialPageRoute(builder: (context) => AddSalesInvoiceDetailDataWidget(invoiceSerial)),
+  //   );
+  //   //).then((value) => getData());
+  //
+  // }
 
 //#endregion
 

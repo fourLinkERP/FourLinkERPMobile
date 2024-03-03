@@ -50,16 +50,6 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
   void initState() {
     // TODO: implement initState
     print('okkkkkkkkkkk');
-    AppCubit.get(context).CheckConnection();
-    Timer(Duration(seconds: 30), () { // <-- Delay here
-      setState(() {
-        if(_cashReceives.isEmpty){
-          isLoading = false;
-        }
-        // <-- Code run after delay
-      });
-    });
-
     getData();
     super.initState();
 
@@ -70,21 +60,21 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
   }
 
   void getData() async {
-    Future<List<CashReceive>?> futureCashReceive = _apiService.getCashReceivesH()
-        .catchError((error){
+    try{
+      List<CashReceive>? futureCashReceiveH = await _apiService.getCashReceivesH();
+      if (futureCashReceiveH != null){
+        _cashReceives = futureCashReceiveH;
+        _cashReceivesSearch = List.from(_cashReceives);
+
+        if (_cashReceives.isNotEmpty) {
+          _cashReceives.sort((a, b) => int.parse(b.trxSerial!).compareTo(int.parse(a.trxSerial!)));
+          setState(() {
+            _founded = _cashReceives!;
+          });
+        }
+      }
+    } catch (error){
       AppCubit.get(context).EmitErrorState();
-    });
-    _cashReceives = (await futureCashReceive)!;
-    _cashReceivesSearch = List.from(_cashReceives);
-    if (_cashReceives.isNotEmpty) {
-      _cashReceives.sort((a, b) => int.parse(b.trxSerial!).compareTo(int.parse(a.trxSerial!)));
-
-      setState(() {
-        _founded = _cashReceives!;
-        String search = '';
-
-      });
-
     }
   }
 
@@ -106,10 +96,6 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      getData();
-    });
-
 
     return Scaffold(
         appBar: AppBar(
@@ -439,24 +425,14 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
-                          Container(height: 20, color: Colors.white30, child: Row(
-                            children: [
-                              Text(
-                                  'date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_cashReceives[index].trxDate.toString())))  ,
-
-                            ],
-
-                          )),
-                          Container(height: 20, color: Colors.white30, child: Row(
-                            children: [
-
-                              Text(
-                                  'cash_target_code'.tr() + " : " + ((langId==1) ?_cashReceives[index].targetNameAra.toString() : _cashReceives[index].targetNameEng.toString())),
-
-
-                            ],
-
-                          )),
+                          Container(
+                              height: 20,
+                              color: Colors.white30,
+                              child: Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_cashReceives[index].trxDate.toString())))),
+                          Container(
+                              height: 20,
+                              color: Colors.white30,
+                              child: Text('cash_target_code'.tr() + " : " + ((langId==1) ?_cashReceives[index].targetNameAra.toString() : _cashReceives[index].targetNameEng.toString()))),
                           const SizedBox(width: 5),
                           Container(
                               child: Row(

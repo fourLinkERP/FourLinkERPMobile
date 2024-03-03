@@ -77,7 +77,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
 
       if (futureSalesInvoiceH != null) {
         _salesInvoices = futureSalesInvoiceH;
-
+        _salesInvoicesSearch = List.from(_salesInvoices);
 
         if(_salesInvoices.length >0)
           {
@@ -102,21 +102,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       AppCubit.get(context).EmitErrorState();
     }
   }
-  // void getData() async {
-  //   Future<List<SalesInvoiceH>?> futureSalesInvoiceH = _apiService.getSalesInvoicesH().catchError((Error){
-  //     AppCubit.get(context).EmitErrorState();
-  //   });
-  //   _salesInvoices = (await futureSalesInvoiceH)!;
-  //   _salesInvoicesSearch = List.from(_salesInvoices);
-  //   if (_salesInvoices.isNotEmpty) {
-  //     // Sort the list based on salesInvoicesSerial
-  //     _salesInvoices.sort((a, b) => int.parse(b.salesInvoicesSerial!).compareTo(int.parse(a.salesInvoicesSerial!)));
-  //     setState(() {
-  //       _founded = _salesInvoices!;
-  //       String search = '';
-  //     });
-  //   }
-  // }
 
   void getDetailData(int? headerId) async {
     Future<List<SalesInvoiceD>?> futureSalesInvoiceD = _apiDService.getSalesInvoicesD(headerId);
@@ -131,10 +116,8 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
     } else {
       setState(() {
         _salesInvoices = List.from(_salesInvoicesSearch!);
-        _salesInvoices = _salesInvoices
-            .where((salesInvoice) =>
-            salesInvoice.customerName!.toLowerCase().contains(search))
-            .toList();
+        _salesInvoices = _salesInvoices.where((salesInvoice) =>
+            salesInvoice.customerName!.toLowerCase().contains(search)).toList();
       });
     }
   }
@@ -142,9 +125,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
 
   @override
   Widget build(BuildContext context) {
-    // setState(() {
-    //   getData();
-    // });
 
     return Scaffold(
         appBar: AppBar(
@@ -153,9 +133,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
           title: SizedBox(
             child: Column(
               children: [
-                // SizedBox(
-                //   width: 255,
-                //   child:
                   TextField(
                     controller: searchValueController,
                     onChanged: (searchValue) => onSearch(searchValue),
@@ -176,13 +153,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
 
                     ),
                   ),
-                //),
-                // IconButton(
-                //   icon: const Icon(Icons.search, size: 25.0, color: Colors.white,),
-                //   onPressed: () {
-                //     onSearch(searchValueController.text.toString());
-                //   },
-                // )
               ],
             ),
           ),
@@ -201,7 +171,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
 
           child: Container(
 
-            // alignment: Alignment.center,s
             decoration: BoxDecoration(
               color: FitnessAppTheme.nearlyDarkBlue,
               gradient: LinearGradient(
@@ -214,8 +183,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
               shape: BoxShape.circle,
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                    color: FitnessAppTheme.nearlyDarkBlue
-                        .withOpacity(0.4),
+                    color: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.4),
                     offset: const Offset(2.0, 14.0),
                     blurRadius: 16.0),
               ],
@@ -228,8 +196,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                 highlightColor: Colors.transparent,
                 focusColor: Colors.transparent,
                 onTap: (){
-                  // widget.addClick;
-                  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSalesInvoiceHDataWidget()));
                   _navigateToAddScreen(context);
                 },
                 child: const Icon(
@@ -242,7 +208,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
           ),
         )
     );
-
   }
 
     _navigateToAddScreen(BuildContext context) async {
@@ -664,7 +629,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                           WidgetsToImage(
                             controller:imageControllers[index],
                             child :Container(
-                              padding: EdgeInsets.all(1),
+                              padding: const EdgeInsets.all(1),
                               color: Colors.white,
                               child:   ZatcaFatoora.simpleQRCode(
                                 fatooraData: ZatcaFatooraDataModel(
@@ -696,16 +661,11 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                             Container(
                                 height: 20,
                                 color: Colors.white30,
-                                child: Row(
-                              children: [
-                                Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString())))  ,
-                              ],
-                            )),
-                            Container(height: 20, color: Colors.white30, child: Row(
-                              children: [
-                                Text('customer'.tr() + " : " + _salesInvoices[index].customerName.toString()),
-                              ],
-                            )),
+                                child: Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString())))),
+                            Container(
+                                height: 20,
+                                color: Colors.white30,
+                                child: Text('customer'.tr() + " : " + _salesInvoices[index].customerName.toString())),
                             const SizedBox(width: 5),
                             SizedBox(
                                 child: Row(

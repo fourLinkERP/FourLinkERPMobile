@@ -1035,57 +1035,57 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
 
 
 
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
-                          child: Row(
-                            children: <Widget>[
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameArabic'.tr()) ),
-                              const SizedBox(width: 10),
-                              SizedBox(
-                                width: 210,
-                                child: TextFormField(
-                                  controller: _tafqitNameArabicController,
-                                  decoration: const InputDecoration(
-                                    // hintText: '',
-                                  ),
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'please_enter_value'.tr();
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  enabled: false,
-                                  onChanged: (value) {},
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: Row(
-                            children: <Widget>[
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameEnglish'.tr()) ),
-                              SizedBox(
-                                width: 210,
-                                child: TextFormField(
-                                  controller: _tafqitNameEnglishController,
-                                  decoration: const InputDecoration(
-                                    // hintText: '',
-                                  ),
-                                  enabled: false,
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'please_enter_value'.tr();
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  onChanged: (value) {},
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
+                        // Container(
+                        //   margin: const EdgeInsets.fromLTRB(0, 20, 0, 10),
+                        //   child: Row(
+                        //     children: <Widget>[
+                        //       Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameArabic'.tr()) ),
+                        //       const SizedBox(width: 10),
+                        //       SizedBox(
+                        //         width: 210,
+                        //         child: TextFormField(
+                        //           controller: _tafqitNameArabicController,
+                        //           decoration: const InputDecoration(
+                        //             // hintText: '',
+                        //           ),
+                        //           // validator: (value) {
+                        //           //   if (value!.isEmpty) {
+                        //           //     return 'please_enter_value'.tr();
+                        //           //   }
+                        //           //   return null;
+                        //           // },
+                        //           enabled: false,
+                        //           onChanged: (value) {},
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // Container(
+                        //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                        //   child: Row(
+                        //     children: <Widget>[
+                        //       Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameEnglish'.tr()) ),
+                        //       SizedBox(
+                        //         width: 210,
+                        //         child: TextFormField(
+                        //           controller: _tafqitNameEnglishController,
+                        //           decoration: const InputDecoration(
+                        //             // hintText: '',
+                        //           ),
+                        //           enabled: false,
+                        //           // validator: (value) {
+                        //           //   if (value!.isEmpty) {
+                        //           //     return 'please_enter_value'.tr();
+                        //           //   }
+                        //           //   return null;
+                        //           // },
+                        //           onChanged: (value) {},
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // )
 
 
                       ],
