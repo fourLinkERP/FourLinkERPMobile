@@ -41,7 +41,20 @@ class pdfReceipt {
               Center(
                 child:   Text(receipt.receiptHeader.companyInvoiceTypeName.toString(),style: const TextStyle(fontSize: 15),textAlign: TextAlign.center),
               )
+
+            //
           ]
+        ),
+        pw.Row(
+            mainAxisAlignment: MainAxisAlignment.center ,//Center Row contents horizontally,
+            crossAxisAlignment: CrossAxisAlignment.center, //Center Row contents vertically,
+            children: [
+              Center(
+                child:   Text(receipt.receiptHeader.salesInvoicesTypeName.toString(),style: const TextStyle(fontSize: 15),textAlign: TextAlign.center),
+              )
+
+              //
+            ]
         ),
         buildHeader2(receipt, companyImage),
 
@@ -475,8 +488,10 @@ class pdfReceipt {
 
     String totalAmountTitle = (langId==1? "الاجمالي":"Total Amount");
     String totalAmountValue =invoice.info.totalAmount.toString();
-    String totalDiscountTitle = (langId==1? "الخصم":"Total Discount");
-    String totalDiscountValue =invoice.info.totalDiscount.toString();
+    //String totalDiscountTitle = (langId==1? "الخصم":"Total Discount");
+    String totalDiscountTitle = "";
+    //String totalDiscountValue =invoice.info.totalDiscount.toString();
+    String totalDiscountValue = "";
     InvoiceTotal invoiceTotal2 =InvoiceTotal(totalField1: "",totalField2: totalDiscountValue,totalField3: totalDiscountTitle, totalField4:totalAmountValue ,totalField5:totalAmountTitle );
     invoiceTotals.add(invoiceTotal2);
 
@@ -659,14 +674,23 @@ class pdfReceipt {
 
 
             ]),
+          pw.Row(
+          children:[
+            pw.Container(
+                height: 10,
+                child: pw.Text('')),
+          ]),
              //pw.Spacer(),
              pw.Row(
-                 crossAxisAlignment: CrossAxisAlignment.end,
-               children: [
-
-                    pw.Image(barcodeImage
-                        ,width: 100,
-                        height: 100),
+                  mainAxisAlignment: MainAxisAlignment.center ,//Center Row contents horizontally,
+                  crossAxisAlignment: CrossAxisAlignment.center, //Center Row contents vertically,
+                  children: [
+                  Center(
+                   child:
+                   pw.Image(barcodeImage
+                       ,width: 140,
+                       height: 140),
+                  )
                ]
              )
           // pw.Center(

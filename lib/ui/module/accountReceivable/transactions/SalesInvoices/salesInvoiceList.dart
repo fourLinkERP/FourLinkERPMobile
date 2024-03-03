@@ -332,7 +332,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             final receipt = Receipt(   //ToDO
                 receiptHeader: ReceiptHeader(
                   companyName: langId==1?'مؤسسة ركن كريز للحلويات':' مؤسسة ركن كريز للحلويات',
-                  companyInvoiceTypeName: (invoiceH.invoiceTypeCode == 1) ?'فاتورة ضريبية':'فاتورة ضريبية مبسطة',
+                  companyInvoiceTypeName: (invoiceH.invoiceTypeCode == "1") ?'فاتورة ضريبية':'فاتورة ضريبية مبسطة',
                   companyInvoiceTypeName2: langId==1?'Simplified Tax Invoice':'Simplified Tax Invoice',
                   companyVatNumber: langId==1? "الرقم الضريبي  " + '302211485800003':'VAT No  302211485800003',
                   companyCommercialName: langId==1? 'ترخيص رقم 450714529009':'Registeration No 450714529009',
@@ -341,7 +341,8 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                   companyAddress: langId==1?'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
                   companyPhone: langId==1?'Tel No :+966539679540':'Tel No :+966539679540',
                   customerName: langId==1? "العميل : " + invoiceH.customerName.toString() : "Customer : " + invoiceH.customerName.toString() ,
-                  customerTaxNo:  langId==1? "الرقم الضريبي  " + invoiceH.taxNumber.toString() :'VAT No ' + invoiceH.taxNumber.toString(),
+                  customerTaxNo:  langId==1? "الرقم الضريبي  " + invoiceH.taxIdentificationNumber.toString() :'VAT No ' + invoiceH.taxIdentificationNumber.toString(),
+                  salesInvoicesTypeName:  (invoiceH.salesInvoicesTypeCode.toString() == "1") ?(langId==1?"فاتورة نقدي" : "Cash Invoice" ) : (langId==1?"فاتورة أجل" : "Credit Invoice" )  ,
                   tafqeetName : tafqeetName
                 ),
                 invoice: invoice

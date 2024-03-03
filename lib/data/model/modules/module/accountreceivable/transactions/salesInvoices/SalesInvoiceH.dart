@@ -41,6 +41,8 @@ class SalesInvoiceH {
   String?  cusGroupsName ;
   String?  invoiceTypeCode ;
   String?  invoiceTypeName ;
+  String?  taxIdentificationNumber ;
+  String?  salesInvoicesTypeName ;
 
 
   SalesInvoiceH({
@@ -78,6 +80,8 @@ class SalesInvoiceH {
     this.cusGroupsName,
     this.invoiceTypeCode,
     this.invoiceTypeName,
+    this.taxIdentificationNumber,
+    this.salesInvoicesTypeName
 
     //image
     });
@@ -115,6 +119,9 @@ class SalesInvoiceH {
       cusGroupsName: (json['cusGroupsName'] != null) ? json['cusGroupsName'] as String : "",
       invoiceTypeCode: (json['invoiceTypeCode'] != null) ? json['invoiceTypeCode'] as String : "",
       invoiceTypeName: (json['invoiceTypeName'] != null) ? json['invoiceTypeName'] as String : "",
+      taxIdentificationNumber: (json['taxIdentificationNumber'] != null) ? json['taxIdentificationNumber'] as String : "",
+      salesInvoicesTypeName: (json['salesInvoicesTypeName'] != null) ? json['salesInvoicesTypeName'] as String : "",
+
 
 
 
