@@ -3,12 +3,15 @@ import 'package:fourlinkmobileapp/data/model/modules/module/administration/basic
 import 'package:fourlinkmobileapp/data/model/modules/module/security/menuPermission.dart';
 
 late bool isLoggedIn=false;
+bool isLive = false;
 
 //Url - Token
 String urlString="http://www.sudokuano.net/api/";
 String reportUrlString="http://Report.15mayclub.com";
-Uri baseUrl = Uri.parse(urlString);
-Uri baseReportUrl = Uri.parse(reportUrlString);
+String urlLiveString = "https://mobileapi.4linkerp.com/swagger/index.html";
+String reportUrlLiveString = "https://mobilereports.4linkerp.com";
+Uri baseUrl = isLive == false ? Uri.parse(urlString) : Uri.parse(urlLiveString);
+Uri baseReportUrl = isLive == false ? Uri.parse(reportUrlString) : Uri.parse(reportUrlLiveString);
 String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImVlYTQzZjIyLTI5MzktNDc4YS04OTcxLWFhM2U2ZWVlYmFhZSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluQHJvb3QuY29tIiwiZnVsbE5hbWUiOiJyb290IEFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InJvb3QiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zdXJuYW1lIjoiQWRtaW4iLCJpcEFkZHJlc3MiOiIxOTcuNDYuNS4xODciLCJ0ZW5hbnQiOiJyb290IiwiaW1hZ2VfdXJsIjoiIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIiLCJleHAiOjE2OTcyMDQ5MDh9.ujU84Q6j0f0m4-i9GsY9uqfNWUWeencI8E6FGO7AGsU";
 String apiUserName="";//Will Set On App Perference
 String apiPassword="";//Will Set On App Perference

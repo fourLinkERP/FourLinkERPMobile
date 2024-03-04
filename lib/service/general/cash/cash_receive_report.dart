@@ -92,7 +92,7 @@ class CashReceiveReport {
     String companyName =  langId==1 ? companyTitle + cashReceive.companyName.toString() : cashReceive.companyName.toString() + companyTitle;
     String companyAddressTitle = langId==1?'العنوان :':'Address : ';
     String companyAddress = langId==1 ? companyAddressTitle + cashReceive.companyAddress.toString() : cashReceive.companyAddress.toString() + companyAddressTitle;
-    String companyCommercialTitle = langId==1?'سجل تجاري رقم :':'Commercial No : ';
+    String companyCommercialTitle = langId==1?'ترخيص رقم :':'Commercial No : ';
     String companyCommercial = langId==1 ? companyCommercialTitle + cashReceive.companyCommercial.toString(): cashReceive.companyCommercial.toString() + companyCommercialTitle;
     String companyVatTitle = langId==1?'الرقم الضريبي :':'VAT No :';
     String companyVat =  langId==1 ? companyVatTitle + cashReceive.companyVat.toString(): cashReceive.companyVat.toString() + companyVatTitle;
