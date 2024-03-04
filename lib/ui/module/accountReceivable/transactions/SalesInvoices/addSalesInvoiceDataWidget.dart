@@ -21,6 +21,7 @@ import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesInvoices/Details/addSalesInvoiceDetailsDataWidget.dart';
 import 'package:fourlinkmobileapp/utils/email.dart';
 import 'package:supercharged/supercharged.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/basicInputs/Customers/addCustomerDataWidget.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/salesInvoiceList.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceH.dart';
@@ -436,7 +437,15 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                     ),
                                   ),
                                   const SizedBox(width: 20),
-
+                                  IconButton(
+                                      onPressed: (){
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddCustomerDataWidget()));
+                                      },
+                                      icon: const Icon(Icons.add, color: Color.fromRGBO(144, 16, 46, 1),),
+                                    iconSize: 30,
+                                    color: const Color.fromRGBO(144, 16, 46, 1),
+                                    disabledColor: const Color.fromRGBO(144, 16, 46, 1),
+                                  )
                                 ],
                               ),
                             ),
