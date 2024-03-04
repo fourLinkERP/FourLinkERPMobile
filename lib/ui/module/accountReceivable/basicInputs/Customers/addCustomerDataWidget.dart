@@ -118,16 +118,16 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
             FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
             return;
           }
-          if(_customerNameEngController.text.isEmpty)
-          {
-            FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
-            return;
-          }
-          if(_phone1Controller.text.isEmpty)
-            {
-              FN_showToast(context,'please_enter_phone'.tr() ,Colors.black);
-              return;
-            }
+          // if(_customerNameEngController.text.isEmpty)
+          // {
+          //   FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
+          //   return;
+          // }
+          // if(_phone1Controller.text.isEmpty)
+          //   {
+          //     FN_showToast(context,'please_enter_phone'.tr() ,Colors.black);
+          //     return;
+          //   }
           if(customerGroupSelectedValue == null)
           {
             FN_showToast(context,'please_select_group'.tr() ,Colors.black);

@@ -276,12 +276,12 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                 //double vat=0;
                 double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? double.parse(_salesInvoicesD[i].displayTotalTaxValue.toStringAsFixed(2)) : 0 ;
                 //double price =_salesInvoicesD[i].displayPrice! as double;
-                double price =( _salesInvoicesD[i].displayPrice != null) ? double.parse(_salesInvoicesD[i].displayTotal.toStringAsFixed(2)) : 0;
+                double price =( _salesInvoicesD[i].displayPrice != null) ? double.parse(_salesInvoicesD[i].displayPrice.toStringAsFixed(2)) : 0;
                 double total =( _salesInvoicesD[i].displayNetValue != null) ? double.parse(_salesInvoicesD[i].displayNetValue.toStringAsFixed(2)) : 0;
 
                 //InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
                 InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
-                    date: date, quantity: qty  , vat: vat  , unitPrice: price , totalValue : total  );
+                    date: date, quantity: qty  , vat: vat  , unitPrice: price , totalValue : total );
 
                 invoiceItems.add(_invoiceItem);
               }
