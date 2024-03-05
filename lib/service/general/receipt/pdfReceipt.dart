@@ -26,7 +26,7 @@ class pdfReceipt {
     //final barCodeImage = pw.MemoryImage((await rootBundle.load('assets/images/barCodeImage.jpg')).buffer.asUint8List(),);
 
     pdf.addPage(pw.MultiPage(
-      margin: const pw.EdgeInsets.only(top: 1,left: 1,right: 1,bottom: 1),
+      margin: const pw.EdgeInsets.only(top: 1,left: 15,right: 15,bottom: 1),
       //pageFormat: PdfPageFormat.roll57,
       textDirection: pw.TextDirection.rtl,
       theme: pw.ThemeData.withFont(
@@ -206,7 +206,7 @@ class pdfReceipt {
   static pw.Widget buildReceiptHeader2(ReceiptHeader recpt) => pw.Column(
     crossAxisAlignment: pw.CrossAxisAlignment.end,
     children: [
-      pw.Padding(padding:  const EdgeInsets.only(top: 1)),
+      pw.Padding(padding:  const EdgeInsets.only(top: 1, left: 10.0, right: 10.0)),
       //Text(recpt.companyName.toString(),   style: TextStyle(fontFamily: 'RobotoMono')),
       Row(
           children:[

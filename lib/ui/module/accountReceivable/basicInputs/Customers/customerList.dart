@@ -247,8 +247,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
     // ).then((value) =>  );
 
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddCustomerDataWidget(),
-    ))
-        .then((value) {
+    )).then((value) {
       getData();
     });
   }
