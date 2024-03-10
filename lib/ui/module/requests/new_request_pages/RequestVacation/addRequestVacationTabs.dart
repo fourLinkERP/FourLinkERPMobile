@@ -35,7 +35,7 @@ class _RequestVacationState extends State<RequestVacation> {
         body: TabBarView(
           children: [
             AddRequestVacation(),
-            //Approvals(),
+            Approvals(),
           ],
         ),
       ),

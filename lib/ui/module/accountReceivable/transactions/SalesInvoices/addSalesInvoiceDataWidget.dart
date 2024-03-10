@@ -438,9 +438,13 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                   ),
                                   const SizedBox(width: 20),
                                   IconButton(
-                                      onPressed: (){
-                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddCustomerDataWidget()));
-                                      },
+                                    onPressed: () async {
+                                      await Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddCustomerDataWidget(),
+                                      )).then((value) {
+                                        getCustomerData();
+                                      });
+                                      setState(() {}); // Trigger a rebuild
+                                    },
                                       icon: const Icon(Icons.add, color: Color.fromRGBO(144, 16, 46, 1),),
                                     iconSize: 30,
                                     color: const Color.fromRGBO(144, 16, 46, 1),
@@ -637,9 +641,9 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
                         Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_qty :'.tr(),
                             style: const TextStyle(fontWeight: FontWeight.bold))),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 20),
                         SizedBox(
-                          width: 85,
+                          width: 100,
                           child: TextFormField(
                             controller: _displayQtyController,
                             decoration: const InputDecoration(
@@ -657,7 +661,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                 style: const TextStyle(fontWeight: FontWeight.bold))),
                             const SizedBox(width: 10),
                             SizedBox(
-                              width: 90,
+                              width: 100,
                               child: TextFormField(
                                 controller: _displayDiscountController,
                                 keyboardType: TextInputType.number,
@@ -721,18 +725,20 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
                             border: TableBorder.all(),
+
+                            headingRowColor: MaterialStateProperty.all(const Color.fromRGBO(144, 16, 46, 1)),
                             columnSpacing: 20,
                             columns: [
-                              DataColumn(label: Text("id".tr()),),
-                              DataColumn(label: Text("name".tr()),),
-                              DataColumn(label: Text("qty".tr()), numeric: true,),
-                              DataColumn(label: Text("price".tr()), numeric: true,),
-                              DataColumn(label: Text("total".tr()), numeric: true,),
-                              DataColumn(label: Text("discount".tr()), numeric: true,),
-                              DataColumn(label: Text("netAfterDiscount".tr()), numeric: true,),
-                              DataColumn(label: Text("vat".tr()), numeric: true,),
-                              DataColumn(label: Text("net".tr()), numeric: true,),
-                              DataColumn(label: Text("action".tr()),),
+                              DataColumn(label: Text("id".tr(),style: const TextStyle(color: Colors.white),),),
+                              DataColumn(label: Text("name".tr(),style: const TextStyle(color: Colors.white),),),
+                              DataColumn(label: Text("qty".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("price".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("total".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("discount".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("netAfterDiscount".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("vat".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("net".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("action".tr(), style: const TextStyle(color: Colors.white),),),
                             ],
                             rows: SalesInvoiceDLst.map((p) =>
                                   DataRow(cells: [
@@ -1285,34 +1291,21 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     }
 
     SalesInvoiceD _salesInvoiceD = SalesInvoiceD();
-    //Item
     _salesInvoiceD.itemCode = selectedItemValue;
     _salesInvoiceD.itemName = selectedItemName;
-    //Qty
     _salesInvoiceD.displayQty = (_displayQtyController.text.isNotEmpty) ? double.parse(_displayQtyController.text) : 0;
     _salesInvoiceD.qty = (_displayQtyController.text.isNotEmpty) ? double.parse(_displayQtyController.text) : 0;
-
-    //Cost Price
-    _salesInvoiceD.costPrice =
-    (_costPriceController.text.isNotEmpty) ? double.parse(_costPriceController.text) : 0;
-
-    //Price
+    _salesInvoiceD.costPrice = (_costPriceController.text.isNotEmpty) ? double.parse(_costPriceController.text) : 0;
     _salesInvoiceD.displayPrice = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
     _salesInvoiceD.price = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
-
-    //Total
     _salesInvoiceD.total = _salesInvoiceD.qty * _salesInvoiceD.price;
     _salesInvoiceD.displayTotal = _salesInvoiceD.displayQty * _salesInvoiceD.displayPrice;
-    //discount
-    _salesInvoiceD.displayDiscountValue =
-    (_displayDiscountController.text.isNotEmpty) ? double.parse(_displayDiscountController.text) : 0;
+    _salesInvoiceD.displayDiscountValue = (_displayDiscountController.text.isNotEmpty) ? double.parse(_displayDiscountController.text) : 0;
     _salesInvoiceD.discountValue = _salesInvoiceD.displayDiscountValue;
-    //Net After Discount
     _salesInvoiceD.netAfterDiscount = _salesInvoiceD.displayTotal - _salesInvoiceD.displayDiscountValue;
     setItemTaxValue(selectedItemValue.toString(), _salesInvoiceD.netAfterDiscount);
     _salesInvoiceD.displayTotalTaxValue = (0.15 * _salesInvoiceD.netAfterDiscount); //(_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
     _salesInvoiceD.totalTaxValue = (_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
-    //Total Net
     _salesInvoiceD.displayNetValue = _salesInvoiceD.netAfterDiscount + _salesInvoiceD.displayTotalTaxValue ;
     _salesInvoiceD.netValue = _salesInvoiceD.netAfterDiscount + _salesInvoiceD.totalTaxValue;
 
@@ -1460,7 +1453,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
   }
 
 //Save
-  saveInvoice(BuildContext context) {
+  saveInvoice(BuildContext context) async {
     print('323434');
     //Items
     if (SalesInvoiceDLst.length <= 0) {
@@ -1492,7 +1485,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     //   return;
     // }
 
-    _salesInvoiceHApiService.createSalesInvoiceH(context, SalesInvoiceH(
+    await _salesInvoiceHApiService.createSalesInvoiceH(context, SalesInvoiceH(
 
       salesInvoicesCase: 1,
       salesInvoicesSerial: _salesInvoicesSerialController.text,
@@ -1639,7 +1632,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     //Units
     Future<List<Unit>> Units = _unitsApiService.getUnits().then((data) {
       units = data;
-      //print(customers.length.toString());
       //getItemData();
       return units;
     }, onError: (e) {

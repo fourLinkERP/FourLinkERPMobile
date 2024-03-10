@@ -19,10 +19,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
   Future<List<SalesInvoiceD>> getSalesInvoicesD(int? headerId) async {
     print('Booter 1 SalesInvoiceD');
     Map data = {
-      // 'CompanyCode': companyCode,
-      // 'BranchCode': branchCode,
-      // 'SalesInvoicesCase': 1, //Sales Invoice Case =1
-      // 'SalesInvoicesTypeCode': '1', //Sales Invoice Type
       'HeaderId': headerId
     };
 

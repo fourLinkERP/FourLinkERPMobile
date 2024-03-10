@@ -111,8 +111,8 @@ class _EditRequestResourcesState extends State<EditRequestResources> {
             Image.asset('assets/images/logowhite2.png', scale: 3,),
             const SizedBox(width: 1,),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0,11,2,0), //apply padding to all four sides
-              child: Text('edit_request_resource'.tr(),style: const TextStyle(color: Colors.white, fontSize: 15.0,),),
+              padding: const EdgeInsets.fromLTRB(0,11,5,5), //apply padding to all four sides
+              child: Text('edit_request_resource'.tr(),style: const TextStyle(color: Colors.white, fontSize: 17.0,),),
             )
           ],
         ),
@@ -122,304 +122,356 @@ class _EditRequestResourcesState extends State<EditRequestResources> {
         key: _addFormKey,
         child: Column(
             children:[
-              const SizedBox(height:20),
               Expanded(
-                  child: ListView(
+                child: ListView(
                     children: [
-                      ListTile(
-                        leading: Text("Document number: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                        title: SizedBox(
-                          width: 200,
-                          height: 45,
-                          child: defaultFormField(
-                            enable: false,
-                            controller: _resourceTrxSerialController,
-                            type: TextInputType.number,
-                            colors: Colors.blueGrey,
-                            //prefix: null,
-                            validate: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'doc number must be non empty';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      ListTile(
-                        leading: Text("Document date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                        trailing: SizedBox(
-                          width: 220,
-                          height: 55,
-                          child: textFormFields(
-                            enable: false,
-                            hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
-                            controller: _resourceTrxDateController,
-                            textInputType: TextInputType.datetime,
-                            onTap: () async {
-                              DateTime? pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1950),
-                                  lastDate: DateTime(2050));
-
-                              if (pickedDate != null) {
-                                _resourceTrxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      ListTile(
-                        leading: Text("Statement number: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                        title: SizedBox(
-                          width: 220,
-                          height: 45,
-                          child: defaultFormField(
-                            controller: _statementNumberController,
-                            label: 'Enter statement number'.tr(),
-                            type: TextInputType.number,
-                            colors: Colors.blueGrey,
-                            //prefix: null,
-                            validate: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'statement number must be non empty';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12,),
-                      ListTile(
-                        leading: Text("Request section: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                        trailing: Container(
-                          width: 220,
-                          height: 55,
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: DropdownSearch<Department>(
-                              popupProps: PopupProps.menu(
-                                itemBuilder: (context, item, isSelected) {
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                                    decoration: !isSelected ? null
-                                        : BoxDecoration(
-
-                                      border: Border.all(color: Theme.of(context).primaryColor),
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.white,
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text((langId==1)? item.departmentNameAra.toString():  item.departmentNameEng.toString(),
-                                        //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
-                                        textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                    ),
-                                  );
-                                },
-                                showSearchBox: true,
-                              ),
-                              items: departments,
-                              itemAsString: (Department u) => u.departmentNameAra.toString(),
-                              onChanged: (value){
-                                //v.text = value!.cusTypesCode.toString();
-                                //print(value!.id);
-                                selectedDepartmentValue =  value!.departmentCode.toString();
-                              },
-                              filterFn: (instance, filter){
-                                if(instance.departmentNameAra!.contains(filter)){
-                                  print(filter);
-                                  return true;
-                                }
-                                else{
-                                  return false;
-                                }
-                              },
-                              dropdownDecoratorProps: const DropDownDecoratorProps(
-                                dropdownSearchDecoration: InputDecoration(
-                                  labelStyle: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                  icon: Icon(Icons.keyboard_arrow_down),
+                      Container(
+                        margin: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                        height: 720,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            Column(
+                              //mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(height: 10),
+                                SizedBox(
+                                  height: 50,
+                                  width: 100,
+                                  child: Text("trxserial".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
                                 ),
-                              ),
-
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12,),
-                      ListTile(
-                        leading: Text("message: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                        trailing: SizedBox(
-                          width: 220,
-                          height: 55,
-                          child: defaultFormField(
-                            controller: _messageTitleController,
-                            label: 'message'.tr(),
-                            type: TextInputType.text,
-                            colors: Colors.blueGrey,
-                            //prefix: null,
-                            validate: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'message must be non empty';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12,),
-                      ListTile(
-                        leading: Text("Cost center: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                        trailing: Container(
-                          width: 220,
-                          height: 55,
-                          decoration: BoxDecoration(
-                            color: Colors.grey,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Center(
-                            child: DropdownSearch<CostCenter>(
-                              popupProps: PopupProps.menu(
-                                itemBuilder: (context, item, isSelected) {
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                                    decoration: !isSelected ? null
-                                        : BoxDecoration(
-
-                                      border: Border.all(color: Theme.of(context).primaryColor),
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.white,
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text((langId==1)? item.costCenterNameAra.toString():  item.costCenterNameEng.toString(),
-                                        textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                    ),
-                                  );
-                                },
-                                showSearchBox: true,
-                              ),
-                              items: costCenters,
-                              itemAsString: (CostCenter u) => u.costCenterNameAra.toString(),
-                              onChanged: (value){
-                                selectedCostCenterValue =  value!.costCenterCode.toString();
-                              },
-                              filterFn: (instance, filter){
-                                if(instance.costCenterNameAra!.contains(filter)){
-                                  print(filter);
-                                  return true;
-                                }
-                                else{
-                                  return false;
-                                }
-                              },
-                              dropdownDecoratorProps: const DropDownDecoratorProps(
-                                dropdownSearchDecoration: InputDecoration(
-                                  labelStyle: TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                  icon: Icon(Icons.keyboard_arrow_down),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 60,
+                                  width: 100,
+                                  child: Text("trxdate".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                 ),
-                              ),
-
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 100,
+                                  child: Text("statement_number".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 100,
+                                  child: Text("department".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 100,
+                                  child: Text("message_title".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 100,
+                                  child: Text("cost_center".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 100,
+                                  child: Text("title".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 100,
+                                  child: Text("required_item".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 100,
+                                  child: Text("reason".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 100,
+                                  child: Text("notes".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                ),
+                              ],
                             ),
-                          ),
+                            const SizedBox(width: 5,),
+                            Column(
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                  width: 210,
+                                  child: defaultFormField(
+                                    enable: false,
+                                    controller: _resourceTrxSerialController,
+                                    type: TextInputType.text,
+                                    colors: Colors.blueGrey,
+                                    //prefix: null,
+                                    validate: (String? value) {
+                                      if (value!.isEmpty) {
+                                        return 'required_field'.tr();
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 60,
+                                  width: 210,
+                                  child: defaultFormField(
+                                    label: 'trxdate'.tr(),
+                                    controller: _resourceTrxDateController,
+                                    onTab: () async {
+                                      DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1950),
+                                          lastDate: DateTime(2050));
+
+                                      if (pickedDate != null) {
+                                        _resourceTrxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                      }
+                                    },
+                                    type: TextInputType.datetime,
+                                    colors: Colors.blueGrey,
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 210,
+                                  child: defaultFormField(
+                                    controller: _statementNumberController,
+                                    type: TextInputType.text,
+                                    colors: Colors.blueGrey,
+                                    //prefix: null,
+                                    validate: (String? value) {
+                                      if (value!.isEmpty) {
+                                        return 'required_field'.tr();
+                                      }
+                                      return null;
+                                    },
+                                    // onSaved: (val) {
+                                    //   vacationRequestMessage = val;
+                                    //   return null;
+                                    // },
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 210,
+                                  // child: Center(),
+                                  child: DropdownSearch<Department>(
+                                    popupProps: PopupProps.menu(
+                                      itemBuilder: (context, item, isSelected) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                                          decoration: !isSelected ? null
+                                              : BoxDecoration(
+
+                                            border: Border.all(color: Theme.of(context).primaryColor),
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: Colors.white,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text((langId==1)? item.departmentNameAra.toString():  item.departmentNameEng.toString(),
+                                              //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
+                                              textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                          ),
+                                        );
+                                      },
+                                      showSearchBox: true,
+                                    ),
+                                    items: departments,
+                                    itemAsString: (Department u) => u.departmentNameAra.toString(),
+                                    onChanged: (value){
+                                      //v.text = value!.cusTypesCode.toString();
+                                      //print(value!.id);
+                                      selectedDepartmentValue =  value!.departmentCode.toString();
+                                    },
+                                    filterFn: (instance, filter){
+                                      if(instance.departmentNameAra!.contains(filter)){
+                                        print(filter);
+                                        return true;
+                                      }
+                                      else{
+                                        return false;
+                                      }
+                                    },
+                                    // dropdownDecoratorProps: const DropDownDecoratorProps(
+                                    //   dropdownSearchDecoration: InputDecoration(
+                                    //     labelStyle: TextStyle(
+                                    //       color: Colors.black,
+                                    //     ),
+                                    //     //icon: Icon(Icons.keyboard_arrow_down),
+                                    //   ),
+                                    // ),
+
+                                  ),
+
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 210,
+                                  child: defaultFormField(
+                                    controller: _messageTitleController,
+                                    type: TextInputType.text,
+                                    colors: Colors.blueGrey,
+                                    //prefix: null,
+                                    validate: (String? value) {
+                                      if (value!.isEmpty) {
+                                        return 'notes must be non empty';
+                                      }
+                                      return null;
+                                    },
+
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 210,
+                                  child: DropdownSearch<CostCenter>(
+                                    selectedItem: null,
+                                    popupProps: PopupProps.menu(
+                                      itemBuilder: (context, item, isSelected) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                                          decoration: !isSelected ? null
+                                              : BoxDecoration(
+
+                                            //border: Border.all(color: Colors.black12),
+                                            color: Colors.grey,
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text((langId==1)? item.costCenterNameAra.toString():  item.costCenterNameEng.toString(),
+                                              //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
+                                              textAlign: langId==1?TextAlign.right:TextAlign.left,
+                                            ),
+
+                                          ),
+                                        );
+                                      },
+                                      showSearchBox: true,
+                                    ),
+                                    items: costCenters,
+                                    itemAsString: (CostCenter u) => u.costCenterNameAra.toString(),
+                                    onChanged: (value){
+                                      //v.text = value!.cusTypesCode.toString();
+                                      //print(value!.id);
+                                      selectedCostCenterValue =  value!.costCenterCode.toString();
+                                    },
+                                    filterFn: (instance, filter){
+                                      if(instance.costCenterNameAra!.contains(filter)){
+                                        print(filter);
+                                        return true;
+                                      }
+                                      else{
+                                        return false;
+                                      }
+                                    },
+                                    // dropdownDecoratorProps: const DropDownDecoratorProps(
+                                    //   dropdownSearchDecoration: InputDecoration(
+                                    //     labelStyle: TextStyle(
+                                    //       color: Colors.black,
+                                    //       backgroundColor: Colors.grey,
+                                    //     ),
+                                    //     //icon: Icon(Icons.keyboard_arrow_down),
+                                    //   ),
+                                    // ),
+
+                                  ),
+
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 210,
+                                  child: defaultFormField(
+                                    controller: _titleController,
+                                    type: TextInputType.text,
+                                    colors: Colors.blueGrey,
+                                    //prefix: null,
+                                    validate: (String? value) {
+                                      if (value!.isEmpty) {
+                                        return 'notes must be non empty';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 210,
+                                  child: defaultFormField(
+                                    controller: _requiredItemController,
+                                    type: TextInputType.text,
+                                    colors: Colors.blueGrey,
+                                    //prefix: null,
+                                    validate: (String? value) {
+                                      if (value!.isEmpty) {
+                                        return 'notes must be non empty';
+                                      }
+                                      return null;
+                                    },
+
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 210,
+                                  child: defaultFormField(
+                                    controller: _reasonController,
+                                    type: TextInputType.text,
+                                    colors: Colors.blueGrey,
+                                    //prefix: null,
+                                    validate: (String? value) {
+                                      if (value!.isEmpty) {
+                                        return 'notes must be non empty';
+                                      }
+                                      return null;
+                                    },
+
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 210,
+                                  child: defaultFormField(
+                                    controller: _noteController,
+                                    label: 'notes'.tr(),
+                                    type: TextInputType.text,
+                                    colors: Colors.blueGrey,
+                                    //prefix: null,
+                                    validate: (String? value) {
+                                      if (value!.isEmpty) {
+                                        return 'notes must be non empty';
+                                      }
+                                      return null;
+                                    },
+
+                                  ),
+                                ),
+
+                              ],
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 12,),
-                      ListTile(
-                        leading: Text("Title: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                        trailing: SizedBox(
-                          width: 220,
-                          height: 55,
-                          child: defaultFormField(
-                            controller: _titleController,
-                            label: 'title'.tr(),
-                            type: TextInputType.text,
-                            colors: Colors.blueGrey,
-                            //prefix: null,
-                            validate: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'subject must be non empty';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12,),
-                      ListTile(
-                        leading: Text("Required item: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                        trailing: SizedBox(
-                          width: 200,
-                          height: 55,
-                          child: defaultFormField(
-                            controller: _requiredItemController,
-                            label: 'Enter'.tr(),
-                            type: TextInputType.text,
-                            colors: Colors.blueGrey,
-                            //prefix: null,
-                            validate: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'conditions must be non empty';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12,),
-                      ListTile(
-                        leading: Text("Reason: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                        trailing: SizedBox(
-                          width: 220,
-                          height: 55,
-                          child: defaultFormField(
-                            controller: _reasonController,
-                            label: 'Enter'.tr(),
-                            type: TextInputType.text,
-                            colors: Colors.blueGrey,
-                            validate: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'reason must be non empty';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12,),
-                      ListTile(
-                        leading: Text("Notes: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                        trailing: SizedBox(
-                          width: 220,
-                          height: 55,
-                          child: defaultFormField(
-                            controller: _noteController,
-                            label: 'Enter'.tr(),
-                            type: TextInputType.text,
-                            colors: Colors.blueGrey,
-                            validate: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'notes must be non empty';
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
+
+                    ]
+                ),
               ),
               const SizedBox(height: 30,),
               SizedBox(

@@ -70,15 +70,22 @@ class _EditGeneralAdditionalRequestState extends State<EditGeneralAdditionalRequ
 
   @override
   void initState() {
-    super.initState();
 
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("WFW_BounsFeeRequestsH", "TrxSerial", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
-      NextSerial nextSerial = data;
-      _additionalRecHTrxSerialController.text = nextSerial.nextSerial.toString();
-      return nextSerial;
-    }, onError: (e) {
-      print(e);
-    });
+
+    // Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("WFW_BounsFeeRequestsH", "TrxSerial", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
+    //   NextSerial nextSerial = data;
+    //   _additionalRecHTrxSerialController.text = nextSerial.nextSerial.toString();
+    //   return nextSerial;
+    // }, onError: (e) {
+    //   print(e);
+    // });
+    id = widget.additionalRequestsH.id!;
+    _additionalRecHTrxSerialController.text = widget.additionalRequestsH.trxSerial!;
+    _additionalRecHTrxDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.additionalRequestsH.trxDate!.toString()));
+    _additionalRecHYearController.text = widget.additionalRequestsH.year.toString();
+    _additionalRecHMonthController.text = widget.additionalRequestsH.month.toString();
+    selectedCostCenterValue = widget.additionalRequestsH.costCenterCode1!;
+    _additionalRecHMessageTitleController.text =  widget.additionalRequestsH.messageTitle!;
 
     Future<List<Employee>> futureEmployees = _employeeApiService.getEmployees().then((data) {
       employees = data;
@@ -98,22 +105,16 @@ class _EditGeneralAdditionalRequestState extends State<EditGeneralAdditionalRequ
       print(e);
     });
 
-    Future<List<AdditionalRequestD>> futureAdditionalRequestD = _additionalRequestDApiService.getAdditionalRequestD(_additionalRecHTrxSerialController.text).then((data) {
+    Future<List<AdditionalRequestD>> futureAdditionalRequestD = _additionalRequestDApiService.getAdditionalRequestD(_additionalRecHTrxSerialController.text.toString()).then((data) {
       additionalRequestDLst = data;
       print('naaaaaaaaaa');
+      print(_additionalRecHTrxSerialController.text.toString());
       print(additionalRequestDLst.length.toString());
-
+      getAdditionalRequestData();
       return additionalRequestDLst;
     }, onError: (e) {
       print(e);
     });
-
-    id = widget.additionalRequestsH.id!;
-    _additionalRecHTrxSerialController.text = widget.additionalRequestsH.trxSerial!;
-    _additionalRecHTrxDateController.text = widget.additionalRequestsH.trxDate!;
-    _additionalRecHYearController.text = widget.additionalRequestsH.year.toString();
-    _additionalRecHMonthController.text = widget.additionalRequestsH.month.toString();
-    selectedCostCenterValue = widget.additionalRequestsH.costCenterCode1.toString();
 
     if(widget.additionalRequestsH.costCenterCode1 != null){
 
@@ -121,6 +122,7 @@ class _EditGeneralAdditionalRequestState extends State<EditGeneralAdditionalRequ
       print('Hello CC' + costCenters.length.toString());
 
     }
+    super.initState();
   }
   DateTime get pickedDate => DateTime.now();
 
@@ -134,8 +136,8 @@ class _EditGeneralAdditionalRequestState extends State<EditGeneralAdditionalRequ
               Image.asset('assets/images/logowhite2.png', scale: 3),
               const SizedBox(width: 1),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 11, 2, 0),
-                child: Text('Edit additional Request'.tr(),
+                padding: const EdgeInsets.fromLTRB(0, 11, 5, 5),
+                child: Text('edit_additional_request'.tr(),
                     style: const TextStyle(color: Colors.white, fontSize: 17.0)),
               )
             ],
@@ -146,440 +148,456 @@ class _EditGeneralAdditionalRequestState extends State<EditGeneralAdditionalRequ
           key: _addFormKey,
           child: Column(
             children: [
-              const SizedBox(height:20),
+              //const SizedBox(height:20),
               Expanded(
                 child: ListView(
                   children: [
-                    ListTile(
-                      leading: Text("Document number: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                      title: SizedBox(
-                        width: 220,
-                        height: 45,
-                        child: defaultFormField(
-                          enable: false,
-                          controller: _additionalRecHTrxSerialController,
-                          type: TextInputType.number,
-                          colors: Colors.blueGrey,
-                          //prefix: null,
-                          validate: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'doc number must be non empty';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    ListTile(
-                      leading: Text("Document date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                      trailing: SizedBox(
-                        width: 220,
-                        height: 55,
-                        child: textFormFields(
-                          enable: false,
-                          hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
-                          controller: _additionalRecHTrxDateController,
-                          onTap: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(1950),
-                                lastDate: DateTime(2050));
-
-                            if (pickedDate != null) {
-                              _additionalRecHTrxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                            }
-                          },
-                          textInputType: TextInputType.datetime,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    ListTile(
-                      leading: Text("Year: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                      title: SizedBox(
-                        width: 220,
-                        height: 45,
-                        child: defaultFormField(
-                          controller: _additionalRecHYearController,
-                          label: 'Enter year'.tr(),
-                          type: TextInputType.number,
-                          colors: Colors.blueGrey,
-                          validate: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'Year must be non empty';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    ListTile(
-                      leading: Text("Month: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                      title: SizedBox(
-                        width: 220,
-                        height: 45,
-                        child: defaultFormField(
-                          controller: _additionalRecHMonthController,
-                          label: 'Enter month'.tr(),
-                          type: TextInputType.number,
-                          colors: Colors.blueGrey,
-                          validate: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'Month must be non empty';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    ListTile(
-                      leading: Text("message title: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                      trailing: SizedBox(
-                        width: 220,
-                        height: 55,
-                        child: defaultFormField(
-                          controller: _additionalRecHMessageTitleController,
-                          label: 'message'.tr(),
-                          type: TextInputType.text,
-                          colors: Colors.blueGrey,
-                          //prefix: null,
-                          validate: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'message must be non empty';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12,),
-                    ListTile(
-                      leading: Text("Cost center: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                      trailing: Container(
-                        width: 220,
-                        height: 55,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: DropdownSearch<CostCenter>(
-                            popupProps: PopupProps.menu(
-                              itemBuilder: (context, item, isSelected) {
-                                return Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 8),
-                                  decoration: !isSelected ? null
-                                      : BoxDecoration(
-
-                                    border: Border.all(color: Theme.of(context).primaryColor),
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.white,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text((langId==1)? item.costCenterNameAra.toString():  item.costCenterNameEng.toString(),
-                                      textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                  ),
-                                );
-                              },
-                              showSearchBox: true,
-                            ),
-                            items: costCenters,
-                            itemAsString: (CostCenter u) => u.costCenterNameAra.toString(),
-                            onChanged: (value){
-                              selectedCostCenterValue =  value!.costCenterCode.toString();
-                            },
-                            filterFn: (instance, filter){
-                              if(instance.costCenterNameAra!.contains(filter)){
-                                print(filter);
-                                return true;
-                              }
-                              else{
-                                return false;
-                              }
-                            },
-                            dropdownDecoratorProps: const DropDownDecoratorProps(
-                              dropdownSearchDecoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                  color: Colors.black,
-                                ),
-                                icon: Icon(Icons.keyboard_arrow_down),
+                    Container(
+                      margin: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                      height: 420,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
+                        children: [
+                          Column(
+                            children: [
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                height: 50,
+                                width: 100,
+                                child: Text("trxserial".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
                               ),
-                            ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 60,
+                                width: 100,
+                                child: Text("trxdate".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 100,
+                                child: Text("year".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 100,
+                                child: Text("month".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 100,
+                                child: Text("message_title".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 100,
+                                child: Text("cost_center".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                              ),
 
+                            ],
                           ),
-                        ),
+                          const SizedBox(width: 5,),
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: 50,
+                                width: 210,
+                                child: defaultFormField(
+                                  enable: false,
+                                  controller: _additionalRecHTrxSerialController,
+                                  type: TextInputType.text,
+                                  colors: Colors.blueGrey,
+                                  //prefix: null,
+                                  validate: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return 'required_field'.tr();
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 60,
+                                width: 210,
+                                child: defaultFormField(
+                                  label: 'trxdate'.tr(),
+                                  controller: _additionalRecHTrxDateController,
+                                  onTab: () async {
+                                    DateTime? pickedDate = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(1950),
+                                        lastDate: DateTime(2050));
+
+                                    if (pickedDate != null) {
+                                      _additionalRecHTrxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                    }
+                                  },
+                                  type: TextInputType.datetime,
+                                  colors: Colors.blueGrey,
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 210,
+                                child: defaultFormField(
+                                  controller: _additionalRecHYearController,
+                                  type: TextInputType.number,
+                                  colors: Colors.blueGrey,
+                                  //prefix: null,
+                                  validate: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return 'required_field'.tr();
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 210,
+                                child: defaultFormField(
+                                  controller: _additionalRecHMonthController,
+                                  type: TextInputType.number,
+                                  colors: Colors.blueGrey,
+                                  //prefix: null,
+                                  validate: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return 'required_field'.tr();
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 210,
+                                child: defaultFormField(
+                                  controller: _additionalRecHMessageTitleController,
+                                  type: TextInputType.text,
+                                  colors: Colors.blueGrey,
+                                  //prefix: null,
+                                  validate: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return 'required_field'.tr();
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 210,
+                                child: DropdownSearch<CostCenter>(
+                                  popupProps: PopupProps.menu(
+                                    itemBuilder: (context, item, isSelected) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                                        decoration: !isSelected ? null
+                                            : BoxDecoration(
+
+                                          border: Border.all(color: Theme.of(context).primaryColor),
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.white,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text((langId==1)? item.costCenterNameAra.toString():  item.costCenterNameEng.toString(),
+                                            textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                        ),
+                                      );
+                                    },
+                                    showSearchBox: true,
+                                  ),
+                                  items: costCenters,
+                                  itemAsString: (CostCenter u) => u.costCenterNameAra.toString(),
+                                  onChanged: (value){
+                                    selectedCostCenter2Value =  value!.costCenterCode.toString();
+                                    selectedCostCenter2Name = (langId==1)? value.costCenterNameAra.toString():  value.costCenterNameEng.toString();
+                                  },
+                                  filterFn: (instance, filter){
+                                    if(instance.costCenterNameAra!.contains(filter)){
+                                      print(filter);
+                                      return true;
+                                    }
+                                    else{
+                                      return false;
+                                    }
+                                  },
+
+                                ),
+                              ),
+
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 20),
                     Container(
                       padding: const EdgeInsets.all(5),
                       color: Colors.pink[50],
                       height: 50,
-                      child: const Text('Employees', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25,),),
+                      child:  Center(child: Text('Employees'.tr(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 25,),)),
                     ),
                     const SizedBox(height: 12),
-                    ListTile(
-                      leading: Text("Additional cost center: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                      trailing: Container(
-                        width: 180,
-                        height: 55,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: DropdownSearch<CostCenter>(
-                            popupProps: PopupProps.menu(
-                              itemBuilder: (context, item, isSelected) {
-                                return Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 8),
-                                  decoration: !isSelected ? null
-                                      : BoxDecoration(
-
-                                    border: Border.all(color: Theme.of(context).primaryColor),
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.white,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text((langId==1)? item.costCenterNameAra.toString():  item.costCenterNameEng.toString(),
-                                      textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                  ),
-                                );
-                              },
-                              showSearchBox: true,
-                            ),
-                            items: costCenters,
-                            itemAsString: (CostCenter u) => u.costCenterNameAra.toString(),
-                            onChanged: (value){
-                              selectedCostCenter2Value =  value!.costCenterCode.toString();
-                              selectedCostCenter2Name = (langId==1)? value.costCenterNameAra.toString():  value.costCenterNameEng.toString();
-                            },
-                            filterFn: (instance, filter){
-                              if(instance.costCenterNameAra!.contains(filter)){
-                                print(filter);
-                                return true;
-                              }
-                              else{
-                                return false;
-                              }
-                            },
-                            dropdownDecoratorProps: const DropDownDecoratorProps(
-                              dropdownSearchDecoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                  color: Colors.black,
-                                ),
-                                icon: Icon(Icons.keyboard_arrow_down),
-                              ),
-                            ),
-
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    ListTile(
-                      leading: Text("Employee: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                      trailing: Container(
-                        width: 220,
-                        height: 55,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: DropdownSearch<Employee>(
-                            popupProps: PopupProps.menu(
-                              itemBuilder: (context, item, isSelected) {
-                                return Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 8),
-                                  decoration: !isSelected ? null
-                                      : BoxDecoration(
-
-                                    border: Border.all(color: Theme.of(context).primaryColor),
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.white,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text((langId==1)? item.empNameAra.toString():  item.empNameEng.toString(),
-                                      textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                  ),
-                                );
-                              },
-                              showSearchBox: true,
-                            ),
-                            items: employees,
-                            itemAsString: (Employee u) => u.empNameAra.toString(),
-                            onChanged: (value){
-                              selectedEmployeeValue =  value!.empCode.toString();
-                              selectedEmployeeName = (langId==1)? value.empNameAra.toString():  value.empNameEng.toString();
-                            },
-                            filterFn: (instance, filter){
-                              if(instance.empNameAra!.contains(filter)){
-                                print(filter);
-                                return true;
-                              }
-                              else{
-                                return false;
-                              }
-                            },
-                            dropdownDecoratorProps: const DropDownDecoratorProps(
-                              dropdownSearchDecoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                  color: Colors.black,
-                                ),
-                                icon: Icon(Icons.keyboard_arrow_down),
-                              ),
-                            ),
-
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12,),
-                    ListTile(
-                      leading: Text("Cost center Emp: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                      trailing: Container(
-                        width: 220,
-                        height: 55,
-                        decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Center(
-                          child: DropdownSearch<CostCenter>(
-                            popupProps: PopupProps.menu(
-                              itemBuilder: (context, item, isSelected) {
-                                return Container(
-                                  margin: const EdgeInsets.symmetric(horizontal: 8),
-                                  decoration: !isSelected ? null
-                                      : BoxDecoration(
-
-                                    border: Border.all(color: Theme.of(context).primaryColor),
-                                    borderRadius: BorderRadius.circular(5),
-                                    color: Colors.white,
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text((langId==1)? item.costCenterNameAra.toString():  item.costCenterNameEng.toString(),
-                                      textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                  ),
-                                );
-                              },
-                              showSearchBox: true,
-                            ),
-                            items: costCenters,
-                            itemAsString: (CostCenter u) => u.costCenterNameAra.toString(),
-                            onChanged: (value){
-                              selectedCostCenter1Value =  value!.costCenterCode.toString();
-                              selectedCostCenter1Name = (langId==1)? value.costCenterNameAra.toString():  value.costCenterNameEng.toString();
-                            },
-                            filterFn: (instance, filter){
-                              if(instance.costCenterNameAra!.contains(filter)){
-                                print(filter);
-                                return true;
-                              }
-                              else{
-                                return false;
-                              }
-                            },
-                            dropdownDecoratorProps: const DropDownDecoratorProps(
-                              dropdownSearchDecoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                  color: Colors.black,
-                                ),
-                                icon: Icon(Icons.keyboard_arrow_down),
-                              ),
-                            ),
-
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    ListTile(
-                      leading: Text("Number of hours: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                      title: SizedBox(
-                        width: 220,
-                        height: 45,
-                        child: defaultFormField(
-                          controller: _additionalRecDHoursController,
-                          label: 'Enter'.tr(),
-                          type: TextInputType.number,
-                          colors: Colors.blueGrey,
-                          //prefix: null,
-                          validate: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'file number must be non empty';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    ListTile(
-                      leading: Text("Reason: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                      trailing: SizedBox(
-                        width: 220,
-                        height: 55,
-                        child: defaultFormField(
-                          controller: _additionalRecDReasonController,
-                          label: 'Enter'.tr(),
-                          type: TextInputType.text,
-                          colors: Colors.blueGrey,
-                          //prefix: null,
-                          validate: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'reason must be non empty';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
+                    Container(
+                      margin: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                      height: 350,
+                      child: ListView(
+                        scrollDirection: Axis.horizontal,
                         children: [
-                          Center(
-                              child: ElevatedButton.icon(
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: Color.fromRGBO(144, 16, 46, 1),
-                                  size: 20.0,
-                                  weight: 10,
-                                ),
-                                label: Text('Add Employee'.tr(),
-                                    style: const TextStyle(color: Color.fromRGBO(144, 16, 46, 1))),
-                                onPressed: () {
-                                  addEmployeeRow();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    padding: const EdgeInsets.all(7),
-                                    backgroundColor: Colors.white,
-                                    foregroundColor: Colors.black,
-                                    elevation: 0,
-                                    side: const BorderSide(
-                                        width: 1,
-                                        color: Color.fromRGBO(144, 16, 46, 1)
-                                    )
-                                ),
-                              )),
+                          Column(
+                            children: [
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                height: 50,
+                                width: 100,
+                                child: Text("additional_cost_center".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 60,
+                                width: 100,
+                                child: Text("employee".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 100,
+                                child: Text("cost_center".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 100,
+                                child: Text("hours_number".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 100,
+                                child: Text("reason".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(width: 5,),
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: 50,
+                                width: 210,
+                                child: DropdownSearch<CostCenter>(
+                                  popupProps: PopupProps.menu(
+                                    itemBuilder: (context, item, isSelected) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                                        decoration: !isSelected ? null
+                                            : BoxDecoration(
 
-                        ]),
+                                          border: Border.all(color: Theme.of(context).primaryColor),
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.white,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text((langId==1)? item.costCenterNameAra.toString():  item.costCenterNameEng.toString(),
+                                            textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                        ),
+                                      );
+                                    },
+                                    showSearchBox: true,
+                                  ),
+                                  items: costCenters,
+                                  itemAsString: (CostCenter u) => u.costCenterNameAra.toString(),
+                                  onChanged: (value){
+                                    selectedCostCenter2Value =  value!.costCenterCode.toString();
+                                    selectedCostCenter2Name = (langId==1)? value.costCenterNameAra.toString():  value.costCenterNameEng.toString();
+                                  },
+                                  filterFn: (instance, filter){
+                                    if(instance.costCenterNameAra!.contains(filter)){
+                                      print(filter);
+                                      return true;
+                                    }
+                                    else{
+                                      return false;
+                                    }
+                                  },
+
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 210,
+                                child: DropdownSearch<Employee>(
+                                  popupProps: PopupProps.menu(
+                                    itemBuilder: (context, item, isSelected) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                                        decoration: !isSelected ? null
+                                            : BoxDecoration(
+
+                                          border: Border.all(color: Theme.of(context).primaryColor),
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.white,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text((langId==1)? item.empNameAra.toString():  item.empNameEng.toString(),
+                                            textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                        ),
+                                      );
+                                    },
+                                    showSearchBox: true,
+                                  ),
+                                  items: employees,
+                                  itemAsString: (Employee u) => u.empNameAra.toString(),
+                                  onChanged: (value){
+                                    selectedEmployeeValue =  value!.empCode.toString();
+                                    selectedEmployeeName = (langId==1)? value.empNameAra.toString():  value.empNameEng.toString();
+                                  },
+                                  filterFn: (instance, filter){
+                                    if(instance.empNameAra!.contains(filter)){
+                                      print(filter);
+                                      return true;
+                                    }
+                                    else{
+                                      return false;
+                                    }
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 210,
+                                child: DropdownSearch<CostCenter>(
+                                  popupProps: PopupProps.menu(
+                                    itemBuilder: (context, item, isSelected) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                                        decoration: !isSelected ? null
+                                            : BoxDecoration(
+
+                                          border: Border.all(color: Theme.of(context).primaryColor),
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.white,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text((langId==1)? item.costCenterNameAra.toString():  item.costCenterNameEng.toString(),
+                                            textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                        ),
+                                      );
+                                    },
+                                    showSearchBox: true,
+                                  ),
+                                  items: costCenters,
+                                  itemAsString: (CostCenter u) => u.costCenterNameAra.toString(),
+                                  onChanged: (value){
+                                    selectedCostCenter1Value =  value!.costCenterCode.toString();
+                                    selectedCostCenter1Name = (langId==1)? value.costCenterNameAra.toString():  value.costCenterNameEng.toString();
+                                  },
+                                  filterFn: (instance, filter){
+                                    if(instance.costCenterNameAra!.contains(filter)){
+                                      print(filter);
+                                      return true;
+                                    }
+                                    else{
+                                      return false;
+                                    }
+                                  },
+                                  // dropdownDecoratorProps: const DropDownDecoratorProps(
+                                  //   dropdownSearchDecoration: InputDecoration(
+                                  //     labelStyle: TextStyle(
+                                  //       color: Colors.black,
+                                  //     ),
+                                  //     icon: Icon(Icons.keyboard_arrow_down),
+                                  //   ),
+                                  // ),
+
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 210,
+                                child: defaultFormField(
+                                  controller: _additionalRecDHoursController,
+                                  type: TextInputType.number,
+                                  colors: Colors.blueGrey,
+                                  validate: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return 'required_field'.tr();
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              SizedBox(
+                                height: 50,
+                                width: 210,
+                                child: defaultFormField(
+                                  controller: _additionalRecDReasonController,
+                                  type: TextInputType.text,
+                                  colors: Colors.blueGrey,
+                                  //prefix: null,
+                                  validate: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return 'required_field'.tr();
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+                    Center(
+                        child: ElevatedButton.icon(
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Color.fromRGBO(144, 16, 46, 1),
+                            size: 20.0,
+                            weight: 10,
+                          ),
+                          label: Text('Add Employee'.tr(),
+                              style: const TextStyle(color: Color.fromRGBO(144, 16, 46, 1))),
+                          onPressed: () {
+                            addEmployeeRow();
+                          },
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              padding: const EdgeInsets.all(7),
+                              backgroundColor: Colors.white,
+                              foregroundColor: Colors.black,
+                              elevation: 0,
+                              side: const BorderSide(
+                                  width: 1,
+                                  color: Color.fromRGBO(144, 16, 46, 1)
+                              )
+                          ),
+                        )),
                     const SizedBox(height: 20),
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -590,8 +608,9 @@ class _EditGeneralAdditionalRequestState extends State<EditGeneralAdditionalRequ
                           DataColumn(label: Text("id".tr()),),
                           DataColumn(label: Text("emp name".tr()),),
                           DataColumn(label: Text("Cost center".tr()),),
-                          DataColumn(label: Text("Additional cost center".tr()),),
-                          DataColumn(label: Text("action".tr()),),
+                          DataColumn(label: Text("additional_cost_center".tr()),),
+                          DataColumn(label: Text("edit".tr()),),
+                          DataColumn(label: Text("delete".tr()),),
                         ],
                         rows: additionalRequestDLst.map((p) =>
                             DataRow(
@@ -599,10 +618,14 @@ class _EditGeneralAdditionalRequestState extends State<EditGeneralAdditionalRequ
                                   DataCell(SizedBox(width: 5, child: Text(p.lineNum.toString()))),
                                   DataCell(SizedBox(width: 50, child: Text(p.empName.toString()))),
                                   DataCell(SizedBox(child: Text(p.costCenterName1.toString()))),
-                                  DataCell(SizedBox(child: Text(p.costCenterName2.toString()))
-                                  ),
+                                  DataCell(SizedBox(child: Text(p.costCenterName2.toString()))),
+                                  DataCell(IconButton(icon: const Icon(Icons.edit, size: 20.0, color: Colors.green,),
+                                    onPressed: () {},
+                                  )),
+                                  DataCell(IconButton(icon: const Icon(Icons.delete, size: 20.0, color: Colors.red,),
+                                    onPressed: () {},
+                                  )),
 
-                                  DataCell(SizedBox(width: 30, child: Image.asset('assets/images/delete.png'))),
                                 ]),
                         ).toList(),
                       ),
@@ -699,6 +722,18 @@ class _EditGeneralAdditionalRequestState extends State<EditGeneralAdditionalRequ
         if(employees[i].empCode == selectedEmployeeValue){
           empItem = employees[employees.indexOf(employees[i])];
         }
+      }
+    }
+    setState(() {
+
+    });
+  }
+  getAdditionalRequestData() {
+    if (additionalRequestDLst.isNotEmpty) {
+      for(var i = 0; i < additionalRequestDLst.length; i++){
+
+        AdditionalRequestD _additionalRequestD = additionalRequestDLst[i];
+        _additionalRequestD.isUpdate=true;
       }
     }
     setState(() {

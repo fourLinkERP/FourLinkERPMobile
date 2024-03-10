@@ -1087,8 +1087,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
   }
 
-  saveCashReceive(BuildContext context) {
-
+  saveCashReceive(BuildContext context) async {
     //Serial
     if(_cashReceiveSerialController.text.isEmpty){
       FN_showToast(context,'please_Set_Invoice_Serial'.tr(),Colors.black);
@@ -1119,7 +1118,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
     }
 
 
-    _cashReceiveApiService.createCashReceive(context,CashReceive(
+    await _cashReceiveApiService.createCashReceive(context,CashReceive(
         trxKind: 1,
         cashTypeCode: selectedTypeCodeValue,
         trxSerial: _cashReceiveSerialController.text,
@@ -1135,6 +1134,8 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
         value:_valueController.text.toDouble(),
         statement: _statementController.text,
         year: financialYearCode.toInt(),
+        descriptionNameArabic: _descriptionNameArabicController.text,
+        descriptionNameEnglish: _descriptionNameEnglishController.text,
         tafqitNameArabic: _tafqitNameArabicController.text,
         tafqitNameEnglish: _tafqitNameEnglishController.text
     ));

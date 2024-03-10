@@ -25,6 +25,14 @@ String transactionId = "";
 int langId = 1; //1-Arabic   2-English
 //Employee
 String empCode = "1";
+String empName = "";
+String jobCode = "";
+String jobName = "";
+String costCenterCode = "";
+String costCenterName = "";
+
+
+
 //Fiancial Year
 String financialYearCode = '2023'; //Will Set On App Perference
 String currentLanguage='ar'; /// it was en

@@ -33,6 +33,7 @@ class AdditionalRequestDApiService {
       },
       body: jsonEncode(data),
     );
+    print("AdditionalRequest : " + data.toString());
 
     if(response.statusCode == 200)
     {

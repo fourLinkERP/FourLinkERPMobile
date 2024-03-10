@@ -11,6 +11,7 @@ import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import '../../../../../cubit/app_cubit.dart';
 import '../../../../../service/general/Pdf/pdf_api.dart';
 import '../../../../../service/general/Pdf/pdf_invoice_api.dart';
 import 'addSalesOfferDataWidget.dart';
@@ -34,6 +35,7 @@ class SalesOfferHListPage extends StatefulWidget {
 class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
 
   List<SalesOfferH> _salesOffers = [];
+  List<SalesOfferH> _salesOffersSearch = [];
   List<SalesOfferD> _salesOffersD = [];
   List<SalesOfferH> _founded = [];
 
@@ -45,21 +47,40 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
     getData();
     super.initState();
 
-
     setState(() {
       _founded = _salesOffers!;
     });
   }
-
+  // void getData() async {
+  //   Future<List<SalesOfferH>?> futureSalesOfferH = _apiService.getSalesOffersH();
+  //   _salesOffers = (await futureSalesOfferH)!;
+  //   if (_salesOffers != null) {
+  //     setState(() {
+  //       _founded = _salesOffers!;
+  //       String search = '';
+  //
+  //     });
+  //   }
+  // }
   void getData() async {
-    Future<List<SalesOfferH>?> futureSalesOfferH = _apiService.getSalesOffersH();
-    _salesOffers = (await futureSalesOfferH)!;
-    if (_salesOffers != null) {
-      setState(() {
-        _founded = _salesOffers!;
-        String search = '';
+    try {
+      List<SalesOfferH>? futureSalesOfferH = await _apiService.getSalesOffersH();
 
-      });
+      if (futureSalesOfferH != null) {
+        _salesOffers = futureSalesOfferH;
+        _salesOffersSearch = List.from(_salesOffers);
+
+        if (_salesOffers.isNotEmpty) {
+          _salesOffers.sort((a, b) =>
+              int.parse(b.offerSerial!).compareTo(int.parse(a.offerSerial!)));
+
+          setState(() {
+            _founded = _salesOffers!;
+          });
+        }
+      }
+    } catch (error) {
+      AppCubit.get(context).EmitErrorState();
     }
   }
 
@@ -85,10 +106,6 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      getData();
-    });
-
 
     return Scaffold(
         appBar: AppBar(
@@ -259,8 +276,6 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
       FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
     }
 
-
-
   }
 
 
@@ -301,9 +316,6 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
     {
       FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
     }
-
-
-
 
   }
 
@@ -445,17 +457,8 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
-                          Container(height: 20, color: Colors.white30, child: Row(
-                            children: [
-                              Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesOffers[index].offerDate.toString()))),
-                            ],
-                          )),
-                          Container(height: 20, color: Colors.white30, child: Row(
-                            children: [
-                              Text('customer'.tr() + " : " + _salesOffers[index].customerName.toString()),
-                            ],
-
-                          )),
+                          Container(height: 20, color: Colors.white30, child: Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesOffers[index].offerDate.toString())))),
+                          Container(height: 20, color: Colors.white30, child: Text('customer'.tr() + " : " + _salesOffers[index].customerName.toString())),
                           const SizedBox(width: 5),
                           SizedBox(
                               child: Row(

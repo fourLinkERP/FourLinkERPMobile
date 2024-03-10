@@ -110,539 +110,522 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      /*appBar: AppBar(
-        centerTitle: true,
-        title: ListTile(
-          leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-          title: Text('Request Advance'.tr(),
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-        ),
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-      ),*/
+
       body: Form(
         key: _addFormKey,
         child: Column(
           children:[
-            const SizedBox(height: 20),
             Expanded(
               child: ListView(
                 children:[
-                  ListTile(
-                    leading: Text("Document number: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    title: SizedBox(
-                      width: 220,
-                      height: 45,
-                      child: defaultFormField(
-                        enable: false,
-                        controller: _advanceTrxSerialController,
-                        type: TextInputType.number,
-                        colors: Colors.blueGrey,
-                        //prefix: null,
-                        validate: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'Doc number must be non empty';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Document date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    trailing: SizedBox(
-                      width: 220,
-                      height: 55,
-                      child: textFormFields(
-                        enable: false,
-                        hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
-                        controller: _advanceTrxDateController,
-                        //hintText: "date".tr(),
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1950),
-                              lastDate: DateTime(2050));
-
-                          if (pickedDate != null) {
-                            _advanceTrxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                          }
-                        },
-                        onSaved: (val) {
-                          vacationDate = val;
-                        },
-                        textInputType: TextInputType.datetime,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Employee: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    trailing: Container(
-                      width: 220,
-                      height: 55,
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                        child: DropdownSearch<Employee>(
-                          popupProps: PopupProps.menu(
-                            itemBuilder: (context, item, isSelected) {
-                              return Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 8),
-                                decoration: !isSelected ? null
-                                    : BoxDecoration(
-
-                                  border: Border.all(color: Theme.of(context).primaryColor),
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text((langId==1)? item.empNameAra.toString():  item.empNameEng.toString(),
-                                    //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
-                                    textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                ),
-                              );
-                            },
-                            showSearchBox: true,
-                          ),
-                          items: employees,
-                          itemAsString: (Employee u) => u.empNameAra.toString(),
-                          onChanged: (value){
-                            //v.text = value!.cusTypesCode.toString();
-                            //print(value!.id);
-                            selectedEmployeeValue =  value!.empCode.toString();
-                          },
-                          filterFn: (instance, filter){
-                            if(instance.empNameAra!.contains(filter)){
-                              print(filter);
-                              return true;
-                            }
-                            else{
-                              return false;
-                            }
-                          },
-                          dropdownDecoratorProps: const DropDownDecoratorProps(
-                            dropdownSearchDecoration: InputDecoration(
-                              labelStyle: TextStyle(
-                                color: Colors.black,
-                              ),
-                              icon: Icon(Icons.keyboard_arrow_down),
+                  Container(
+                    margin: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                    height: 1300,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        Column(
+                          //mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 10),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("trxserial".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
                             ),
-                          ),
-
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Job: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    trailing: Container(
-                      width: 220,
-                      height: 55,
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Center(
-                        child: DropdownSearch<Job>(
-                          popupProps: PopupProps.menu(
-                            itemBuilder: (context, item, isSelected) {
-                              return Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 8),
-                                decoration: !isSelected ? null
-                                    : BoxDecoration(
-
-                                  border: Border.all(color: Theme.of(context).primaryColor),
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text((langId==1)? item.jobNameAra.toString():  item.jobNameEng.toString(),
-                                    //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
-                                    textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                ),
-                              );
-                            },
-                            showSearchBox: true,
-                          ),
-                          items: jobs,
-                          itemAsString: (Job u) => u.jobNameAra.toString(),
-                          onChanged: (value){
-                            //v.text = value!.cusTypesCode.toString();
-                            //print(value!.id);
-                            selectedJobValue =  value!.jobCode.toString();
-                          },
-                          filterFn: (instance, filter){
-                            if(instance.jobNameAra!.contains(filter)){
-                              print(filter);
-                              return true;
-                            }
-                            else{
-                              return false;
-                            }
-                          },
-                          dropdownDecoratorProps: const DropDownDecoratorProps(
-                            dropdownSearchDecoration: InputDecoration(
-                              labelStyle: TextStyle(
-                                color: Colors.black,
-                              ),
-                              icon: Icon(Icons.keyboard_arrow_down),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("trxdate".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                             ),
-                          ),
-
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("employee".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("job".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("main_salary".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("full_salary".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("recruitment_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("contract_period".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("last_advance_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("last_advance_amount".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("required_amount".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("approved_amount".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("start_counting_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("installment_value".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("advance_balance".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("employee_balance".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("reason".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 100,
+                              child: Text("notes".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            ),
+                          ],
                         ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Basic salary: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    title: SizedBox(
-                      width: 220,
-                      height: 45,
-                      child: defaultFormField(
-                        controller: _basicSalaryController,
-                        label: ' main salary'.tr(),
-                        type: TextInputType.number,
-                        colors: Colors.blueGrey,
-                        //prefix: null,
-                        validate: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'main salary must be non empty';
-                          }
-                          return null;
-                        },
-                        onSaved: (val){
-                          basicSalary = val;
-                        }
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Full salary: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    title: SizedBox(
-                      width: 220,
-                      height: 45,
-                      child: defaultFormField(
-                        controller: _fullSalaryController,
-                        label: ' total salary'.tr(),
-                        type: TextInputType.number,
-                        colors: Colors.blueGrey,
-                        //prefix: null,
-                        validate: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'full salary must be non empty';
-                          }
-                          return null;
-                        },
-                          onSaved: (val){
-                            fullSalary = val;
-                          }
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Recruitment date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    trailing: SizedBox(
-                      width: 200,
-                      height: 55,
-                      child: textFormFields(
-                        hintText: 'Select Date'.tr(),
-                        controller: _recruitmentDateController,
-                        //hintText: "date".tr(),
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1950),
-                              lastDate: DateTime(2050));
+                        const SizedBox(width: 5,),
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                enable: false,
+                                controller: _advanceTrxSerialController,
+                                type: TextInputType.text,
+                                colors: Colors.blueGrey,
+                                //prefix: null,
+                                validate: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'required_field'.tr();
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                label: 'trxdate'.tr(),
+                                controller: _advanceTrxDateController,
+                                onTab: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1950),
+                                      lastDate: DateTime(2050));
 
-                          if (pickedDate != null) {
-                            _recruitmentDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                          }
-                        },
-                        onSaved: (val) {
-                          recruitmentDate = val;
-                        },
-                        textInputType: TextInputType.datetime,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Contract period: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    trailing: SizedBox(
-                      width: 220,
-                      height: 55,
-                      child: textFormFields(
-                        hintText: 'Select Date'.tr(),
-                        controller: _contractPeriodController,
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1950),
-                              lastDate: DateTime(2050));
+                                  if (pickedDate != null) {
+                                    _advanceTrxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                  }
+                                },
+                                type: TextInputType.datetime,
+                                colors: Colors.blueGrey,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: DropdownSearch<Employee>(
+                                selectedItem: null,
+                                popupProps: PopupProps.menu(
+                                  itemBuilder: (context, item, isSelected) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                                      decoration: !isSelected ? null
+                                          : BoxDecoration(
 
-                          if (pickedDate != null) {
-                            _contractPeriodController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                          }
-                        },
-                        textInputType: TextInputType.datetime,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Last advance date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    trailing: SizedBox(
-                      width: 200,
-                      height: 55,
-                      child: textFormFields(
-                        hintText: 'Select Date'.tr(),
-                        controller: _latestAdvanceDateController,
-                        //hintText: "date".tr(),
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1950),
-                              lastDate: DateTime(2050));
+                                        border: Border.all(color: Theme.of(context).primaryColor),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text((langId==1)? item.empNameAra.toString():  item.empNameEng.toString(),
+                                          //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
+                                          textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
-                          if (pickedDate != null) {
-                            _latestAdvanceDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                          }
-                        },
-                        onSaved: (val) {
-                          lastAdvanceDate = val;
-                        },
-                        textInputType: TextInputType.datetime,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Last advance amount: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    title: SizedBox(
-                      width: 220,
-                      height: 45,
-                      child: defaultFormField(
-                        controller: _latestAdvanceAmountController,
-                        label: 'Enter '.tr(),
-                        type: TextInputType.number,
-                        colors: Colors.blueGrey,
-                        //prefix: null,
-                        validate: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'amount of last advance must be non empty';
-                          }
-                          return null;
-                        },
-                        onSaved: (val){
-                          latestAdvanceAmount = val;
-                        }
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Required Amount: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    title: SizedBox(
-                      width: 220,
-                      height: 45,
-                      child: defaultFormField(
-                        controller: _amountRequiredOfAdvanceController,
-                        label: 'Enter '.tr(),
-                        type: TextInputType.number,
-                        colors: Colors.blueGrey,
-                        //prefix: null,
-                        validate: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'amount of advance must be non empty';
-                          }
-                          return null;
-                        },
-                        onSaved: (val){
-                          amountRequired = val;
-                        }
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Approved Amount: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    title: SizedBox(
-                      width: 220,
-                      height: 45,
-                      child: defaultFormField(
-                        controller: _approvedAmountOfAdvanceController,
-                        label: 'Enter '.tr(),
-                        type: TextInputType.number,
-                        colors: Colors.blueGrey,
-                        //prefix: null,
-                        validate: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'agreed amount must be non empty';
-                          }
-                          return null;
-                        },
-                          onSaved: (val){
-                            approvedAmount = val;
-                          }
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Start counting date: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    trailing: SizedBox(
-                      width: 200,
-                      height: 55,
-                      child: textFormFields(
-                        hintText: 'Select Date'.tr(),
-                        controller: _lastIncreaseDateController,
-                        //hintText: "date".tr(),
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1950),
-                              lastDate: DateTime(2050));
+                                      ),
+                                    );
+                                  },
+                                  showSearchBox: true,
+                                ),
+                                items: employees,
+                                itemAsString: (Employee u) => u.empNameAra.toString(),
+                                onChanged: (value){
+                                  //v.text = value!.cusTypesCode.toString();
+                                  //print(value!.id);
+                                  selectedEmployeeValue =  value!.empCode.toString();
+                                },
+                                filterFn: (instance, filter){
+                                  if(instance.empNameAra!.contains(filter)){
+                                    print(filter);
+                                    return true;
+                                  }
+                                  else{
+                                    return false;
+                                  }
+                                },
 
-                          if (pickedDate != null) {
-                            _lastIncreaseDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                          }
-                        },
-                        onSaved: (val) {
-                          countingDate = val;
-                        },
-                        textInputType: TextInputType.datetime,
-                      ),
-                    ),
-                  ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: DropdownSearch<Job>(
+                                popupProps: PopupProps.menu(
+                                  itemBuilder: (context, item, isSelected) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                                      decoration: !isSelected ? null
+                                          : BoxDecoration(
 
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Installment value: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    trailing: SizedBox(
-                      width: 200,
-                      height: 45,
-                      child: defaultFormField(
-                        controller: _installmentController,
-                        label: 'value'.tr(),
-                        type: TextInputType.number,
-                        colors: Colors.blueGrey,
-                        //prefix: null,
-                        validate: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'installment value must be non empty';
-                          }
-                          return null;
-                        },
-                        onSaved: (val) {
-                          installmentValue = val;
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Advance balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    trailing: SizedBox(
-                      width: 200,
-                      height: 45,
-                      child: defaultFormField(
-                        controller: _advanceBalanceController,
-                        label: 'value'.tr(),
-                        type: TextInputType.number,
-                        colors: Colors.blueGrey,
-                        //prefix: null,
-                        validate: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'advance balance must be non empty';
-                          }
-                          return null;
-                        },
-                        onSaved: (val) {
-                          advanceBalance = val;
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Employee balance: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    trailing: SizedBox(
-                      width: 200,
-                      height: 45,
-                      child: defaultFormField(
-                        controller: _empBalanceController,
-                        label: 'employee balance'.tr(),
-                        type: TextInputType.number,
-                        colors: Colors.blueGrey,
-                        //prefix: null,
-                        validate: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'employee balance must be non empty';
-                          }
-                          return null;
-                        },
-                        onSaved: (val) {
-                          empBalance = val;
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("The reason: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    trailing: SizedBox(
-                      width: 220,
-                      height: 55,
-                      child: defaultFormField(
-                        controller: _advanceReasonController,
-                        label: 'Enter'.tr(),
-                        type: TextInputType.text,
-                        colors: Colors.blueGrey,
-                        //prefix: null,
-                        validate: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'reason must be non empty';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  ListTile(
-                    leading: Text("Notes: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                    trailing: SizedBox(
-                      width: 195,
-                      height: 55,
-                      child: defaultFormField(
-                        controller: _noteController,
-                        label: 'notes'.tr(),
-                        type: TextInputType.text,
-                        colors: Colors.blueGrey,
-                        //prefix: null,
-                        validate: (String? value) {
-                          if (value!.isEmpty) {
-                            return 'notes must be non empty';
-                          }
-                          return null;
-                        },
-                      ),
+                                        border: Border.all(color: Theme.of(context).primaryColor),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text((langId==1)? item.jobNameAra.toString():  item.jobNameEng.toString(),
+                                          textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                      ),
+                                    );
+                                  },
+                                  showSearchBox: true,
+                                ),
+                                items: jobs,
+                                itemAsString: (Job u) => u.jobNameAra.toString(),
+                                onChanged: (value){
+                                  //v.text = value!.cusTypesCode.toString();
+                                  //print(value!.id);
+                                  selectedJobValue =  value!.jobCode.toString();
+                                },
+                                filterFn: (instance, filter){
+                                  if(instance.jobNameAra!.contains(filter)){
+                                    print(filter);
+                                    return true;
+                                  }
+                                  else{
+                                    return false;
+                                  }
+                                },
+
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                controller: _basicSalaryController,
+                                label: 'message_title'.tr(),
+                                type: TextInputType.number,
+                                colors: Colors.blueGrey,
+                                //prefix: null,
+                                validate: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'required_field'.tr();
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                controller: _fullSalaryController,
+                                label: 'message_title'.tr(),
+                                type: TextInputType.number,
+                                colors: Colors.blueGrey,
+                                validate: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'required_field'.tr();
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                //label: 'from_date'.tr(),
+                                controller: _recruitmentDateController,
+                                onTab: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1950),
+                                      lastDate: DateTime(2050));
+
+                                  if (pickedDate != null) {
+                                    _recruitmentDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                  }
+                                },
+                                type: TextInputType.datetime,
+                                colors: Colors.blueGrey,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                //label: 'to_date'.tr(),
+                                controller: _contractPeriodController,
+                                onTab: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1950),
+                                      lastDate: DateTime(2050));
+
+                                  if (pickedDate != null) {
+                                    _contractPeriodController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                  }
+                                },
+                                type: TextInputType.datetime,
+                                colors: Colors.blueGrey,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                controller: _latestAdvanceDateController,
+                                onTab: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1950),
+                                      lastDate: DateTime(2050));
+
+                                  if (pickedDate != null) {
+                                    _latestAdvanceDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                  }
+                                },
+                                type: TextInputType.datetime,
+                                colors: Colors.blueGrey,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                controller: _latestAdvanceAmountController,
+                                type: TextInputType.number,
+                                colors: Colors.blueGrey,
+                                validate: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'notes must be non empty';
+                                  }
+                                  return null;
+                                },
+
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                controller: _amountRequiredOfAdvanceController,
+                                type: TextInputType.number,
+                                colors: Colors.blueGrey,
+                                validate: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'notes must be non empty';
+                                  }
+                                  return null;
+                                },
+
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                controller: _approvedAmountOfAdvanceController,
+                                type: TextInputType.number,
+                                colors: Colors.blueGrey,
+                                validate: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'notes must be non empty';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                controller: _recruitmentDateController,
+                                onTab: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1950),
+                                      lastDate: DateTime(2050));
+
+                                  if (pickedDate != null) {
+                                    _recruitmentDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                  }
+                                },
+                                type: TextInputType.datetime,
+                                colors: Colors.blueGrey,
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                controller: _installmentController,
+                                type: TextInputType.number,
+                                colors: Colors.blueGrey,
+                                validate: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'installment must be non empty';
+                                  }
+                                  return null;
+                                },
+
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                controller: _advanceBalanceController,
+                                type: TextInputType.number,
+                                colors: Colors.blueGrey,
+                                validate: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'installment must be non empty';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                controller: _empBalanceController,
+                                type: TextInputType.number,
+                                colors: Colors.blueGrey,
+                                validate: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'balance must be non empty';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                controller: _advanceReasonController,
+                                type: TextInputType.text,
+                                colors: Colors.blueGrey,
+                                validate: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'balance must be non empty';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 210,
+                              child: defaultFormField(
+                                controller: _noteController,
+                                type: TextInputType.text,
+                                colors: Colors.blueGrey,
+                                validate: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'note must be non empty';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ]

@@ -26,6 +26,7 @@ import '../../../../../helpers/toast.dart';
 import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
+import '../../../../../utils/permissionHelper.dart';
 //APIS
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
 SalesOffersTypeApiService _salesOfferTypeApiService= SalesOffersTypeApiService();
@@ -75,7 +76,6 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
 
   final SalesOfferHApiService api = SalesOfferHApiService();
   int id = 0;
-
   List<SalesOfferD> salesOfferDLst = <SalesOfferD>[];
   List<SalesOfferD> selected = [];
   List<DropdownMenuItem<String>> menuSalesOfferTypes = [ ];
@@ -816,10 +816,11 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
 
                               DataColumn(label: Text("action".tr()),),
                             ],
-                            rows: salesOfferDLst.map(
-                                  (p) => DataRow(cells: [
-                                DataCell(
-                                    SizedBox(width: 5, child:  Text(p.lineNum.toString()))),
+                            rows: salesOfferDLst.map((p) =>
+                                DataRow(
+                                    cells: [
+                                      DataCell(
+                                          SizedBox(width: 5, child: Text(p.lineNum.toString()))),
                                 // DataCell(
                                 //   Text(p.itemCode.toString()),
                                 // ),
@@ -866,12 +867,11 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                         child: Text(p.displayNetValue.toString()))
                                 ),
 
-                                DataCell(
-                                    SizedBox(
-                                        width: 30, //SET width
-                                        child: Image.asset('assets/images/delete.png'))
-
-                                ),
+                                      DataCell(IconButton(icon: Icon(Icons.delete_forever, size: 30.0, color: Colors.red.shade600,),
+                                        onPressed: () {
+                                          deleteOfferRow(context,p.id);
+                                        },
+                                      )),
                               ]),
                             ).toList(),
                           ),
@@ -1349,10 +1349,6 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     print('Add Product 10');
 
     _salesOfferD.lineNum = lineNum;
-
-
-
-
     salesOfferDLst.add(_salesOfferD);
 
 
@@ -1538,19 +1534,11 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
 
   getSalesOfferData() {
     print('Hobaaz List' + salesOfferDLst.length.toString());
-    if (salesOfferDLst != null) {
+    if (salesOfferDLst.isNotEmpty) {
       for(var i = 0; i < salesOfferDLst.length; i++){
 
         SalesOfferD _salesOfferD=salesOfferDLst[i];
         _salesOfferD.isUpdate=true;
-        // menuCustomers.add(DropdownMenuItem(child: Text(customers[i].customerNameAra.toString()),
-        //     value: customers[i].customerCode.toString()));
-        //
-        // if(customers[i].customerCode == selectedCustomerValue){
-        //   // print('in amr3');
-        //   customerItem = customers[customers.indexOf(customers[i])];
-        //   //selectedCustomerValue = salesOfferTypeItem!.offerTypeCode.toString();
-        // }
 
       }
     }
@@ -1884,7 +1872,42 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
       ],
     );
   }
+  deleteOfferRow(BuildContext context, int? id) async {
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Are you sure?'),
+        content: const Text('This action will permanently delete this data'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+    if (result == null || !result) {
+      return;
+    }
+    int menuId = 6204;
+    bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
 
+    if (isAllowDelete) {
+      setState(() {
+        salesOfferDLst.removeWhere((invoiceD) => invoiceD.id == id);
+        _salesInvoiceDApiService.deleteSalesInvoiceD(context, id);
+        lineNum--;
+        rowsCount--;
+
+      });
+    } else {
+      FN_showToast(context, 'you_dont_have_delete_permission'.tr(), Colors.black);
+    }
+  }
 //#endregion
 
 }

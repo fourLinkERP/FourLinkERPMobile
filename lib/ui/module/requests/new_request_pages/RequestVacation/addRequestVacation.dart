@@ -74,7 +74,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   String? vacationDueDate;
   String? lastSalaryDate;
 
-
+  Employee? employeeItem = Employee(empCode: empCode, empNameAra: "", empNameEng: "", id: 0);
 
   final _vacationRequestSerialController = TextEditingController(); // Serial
   final _vacationRequestTrxDateController = TextEditingController(); // Date
@@ -102,7 +102,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
 
     Future<List<VacationType>> futureVacationType = _vacationTypeApiService.getVacationTypes().then((data) {
       vacationTypes = data;
-      //print(customers.length.toString());
+
       getVacationTypeData();
       return vacationTypes;
     }, onError: (e) {
@@ -153,15 +153,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // /*appBar: AppBar(
-      //     centerTitle: true,
-      //     title: ListTile(
-      //           leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-      //           title: Text('Request Vacation'.tr(),
-      //             style: const TextStyle(color: Colors.white),),
-      //         ),
-      //     backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-      //   ),*/
         body: Form(
           key: _addFormKey,
           child: Column(
@@ -435,7 +426,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                   child: DropdownSearch<Employee>(
                                     selectedItem: null,
                                     popupProps: PopupProps.menu(
-                                      itemBuilder: (context, item, isSelected) {
+                                      itemBuilder: (context, employeeItem, isSelected) {
                                         return Container(
                                           margin: const EdgeInsets.symmetric(horizontal: 8),
                                           decoration: !isSelected ? null
@@ -447,7 +438,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                           ),
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Text((langId==1)? item.empNameAra.toString():  item.empNameEng.toString(),
+                                            child: Text((langId==1)? employeeItem.empNameAra.toString():  employeeItem.empNameEng.toString(),
                                               //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
                                               textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
@@ -461,7 +452,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                     onChanged: (value){
                                       //v.text = value!.cusTypesCode.toString();
                                       //print(value!.id);
-                                      selectedEmployeeValue =  value!.empCode.toString();
+                                      selectedEmployeeValue =  empCode.toString();//value!.empCode.toString();
                                     },
                                     filterFn: (instance, filter){
                                       if(instance.empNameAra!.contains(filter)){
@@ -514,8 +505,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                     items: jobs,
                                     itemAsString: (Job u) => u.jobNameAra.toString(),
                                     onChanged: (value){
-                                      //v.text = value!.cusTypesCode.toString();
-                                      //print(value!.id);
                                       selectedJobValue =  value!.jobCode.toString();
                                     },
                                     filterFn: (instance, filter){

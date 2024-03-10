@@ -182,7 +182,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
 
 
     totalQty =(widget.salesInvoicesH.totalQty != null) ? double.parse(_totalQtyController.text) : 0;
-    rowsCount =(!widget.salesInvoicesH.rowsCount.toString().isEmpty) ? int.parse(_rowsCountController.text) : 0;
+    rowsCount =(widget.salesInvoicesH.rowsCount.toString().isNotEmpty) ? int.parse(_rowsCountController.text) : 0;
     totalDiscount =(widget.salesInvoicesH.totalDiscount != null)? double.parse(_totalDiscountController.text) : 0;
     totalBeforeTax =(widget.salesInvoicesH.totalBeforeTax != null)? double.parse(_totalBeforeTaxController.text) : 0;
     totalTax =(widget.salesInvoicesH.totalTax != null)? double.parse(_totalTaxController.text) : 0;
@@ -755,7 +755,6 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                             columns: [
                               DataColumn(
                                 label: Text("id".tr()),
-
                               ),
                               // DataColumn(
                               //   label: Text("Code"),
