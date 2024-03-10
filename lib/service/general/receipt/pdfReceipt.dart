@@ -318,12 +318,12 @@ class pdfReceipt {
     var itemNameTitle = langId==1? "الصنف":"Item";
     var qtyTitle = langId==1? "الكمية":"Quantity";
     var priceTitle = langId==1? "السعر":"Price";
-    var VatTitle = langId==1? "الضريبة":"VAT";
+    //var VatTitle = langId==1? "الضريبة":"VAT";
     var TotalTitle = langId==1? "الاجمالي":"Total";
 
     final headers = [
       TotalTitle,
-      VatTitle,
+      //VatTitle,
       priceTitle,
       qtyTitle,
       itemNameTitle,
@@ -333,23 +333,23 @@ class pdfReceipt {
       headers: headers,
       data: [],
       border: null,
-      headerStyle: const pw.TextStyle(fontSize: 16),
+      headerStyle: const pw.TextStyle(fontSize: 20),
       headerDecoration: const pw.BoxDecoration(color: pdfx.PdfColors.grey400),
       cellHeight: 14,
       cellAlignments: {
         0: pw.Alignment.center,
         //1: Alignment.centerRight,
+        //1: pw.Alignment.center,
         1: pw.Alignment.center,
         2: pw.Alignment.center,
         3: pw.Alignment.center,
-        4: pw.Alignment.center,
       },
       columnWidths: {
         0: const FlexColumnWidth(1),
+       // 1: const FlexColumnWidth(1),
         1: const FlexColumnWidth(1),
         2: const FlexColumnWidth(1),
-        3: const FlexColumnWidth(1),
-        4: const FlexColumnWidth(2),
+        3: const FlexColumnWidth(3),
         },
 
     );
@@ -361,12 +361,12 @@ class pdfReceipt {
     var itemNameTitle = langId==1? "الصنف":"Item";
     var qtyTitle = langId==1? "الكمية":"Quantity";
     var priceTitle = langId==1? "السعر":"Price";
-    var VatTitle = langId==1? "الضريبة":"VAT";
+    //var VatTitle = langId==1? "الضريبة":"VAT";
     var TotalTitle = langId==1? "الاجمالي":"Total";
 
     final headers = [
       TotalTitle,
-      VatTitle,
+     // VatTitle,
       priceTitle,
       qtyTitle,
       itemNameTitle,
@@ -375,14 +375,14 @@ class pdfReceipt {
       var unitPrice = item.unitPrice == null ? 0 :item.unitPrice;
       //var quantity = 0;
       var quantity = item.quantity == null ? 0 : item.quantity;
-      var vat = item.vat == null ? 0 : item.vat;
+      //var vat = item.vat == null ? 0 : item.vat;
       var totalValue = item.totalValue == null ? 0 : item.totalValue;
       //var total = item.date == null ? 0 : item.total;
       var itemName =  item.description ;
 
       return [
         totalValue.toString(),
-        vat.toString(),
+        //vat.toString(),
         unitPrice.toString(),
         quantity.toString(),
         itemName,
@@ -395,21 +395,22 @@ class pdfReceipt {
       border: null,
       headerStyle: const pw.TextStyle(fontSize: 0,height: 0,color: pdfx.PdfColors.white),
       headerDecoration: const pw.BoxDecoration(color: pdfx.PdfColors.white),
-      cellHeight: 14,
+      cellStyle: const pw.TextStyle(fontSize: 20),
+      cellHeight: 10,
       cellAlignments: {
         0: pw.Alignment.center,
         //1: Alignment.centerRight,
+        //1: pw.Alignment.center,
         1: pw.Alignment.center,
         2: pw.Alignment.center,
         3: pw.Alignment.center,
-        4: pw.Alignment.center,
       },
       columnWidths: {
         0: const FlexColumnWidth(1),
+        //1: const FlexColumnWidth(1),
         1: const FlexColumnWidth(1),
         2: const FlexColumnWidth(1),
-        3: const FlexColumnWidth(1),
-        4: const FlexColumnWidth(2),
+        3: const FlexColumnWidth(3),
       },
 
     );
@@ -439,7 +440,7 @@ class pdfReceipt {
       border: null,
       headerStyle: const pw.TextStyle(fontSize: 16),
       headerDecoration: const pw.BoxDecoration(color: pdfx.PdfColors.grey400),
-      cellHeight: 14,
+      cellHeight: 12,
       cellAlignments: {
         0: pw.Alignment.center,
         1: pw.Alignment.center,
@@ -486,14 +487,14 @@ class pdfReceipt {
     InvoiceTotal invoiceTotal1 =InvoiceTotal(totalField1: "",totalField2: totalQtyValue,totalField3: totalQtyTitle,totalField4:rowsCountValue ,totalField5:rowsCountTitle );
     invoiceTotals.add(invoiceTotal1);
 
-    String totalAmountTitle = (langId==1? "الاجمالي":"Total Amount");
-    String totalAmountValue =invoice.info.totalAmount.toString();
-    //String totalDiscountTitle = (langId==1? "الخصم":"Total Discount");
-    String totalDiscountTitle = "";
-    //String totalDiscountValue =invoice.info.totalDiscount.toString();
-    String totalDiscountValue = "";
-    InvoiceTotal invoiceTotal2 =InvoiceTotal(totalField1: "",totalField2: totalDiscountValue,totalField3: totalDiscountTitle, totalField4:totalAmountValue ,totalField5:totalAmountTitle );
-    invoiceTotals.add(invoiceTotal2);
+    // String totalAmountTitle = (langId==1? "الاجمالي":"Total Amount");
+    // String totalAmountValue =invoice.info.totalAmount.toString();
+    // //String totalDiscountTitle = (langId==1? "الخصم":"Total Discount");
+    // String totalDiscountTitle = "";
+    // //String totalDiscountValue =invoice.info.totalDiscount.toString();
+    // String totalDiscountValue = "";
+    // InvoiceTotal invoiceTotal2 =InvoiceTotal(totalField1: "",totalField2: totalDiscountValue,totalField3: totalDiscountTitle, totalField4:totalAmountValue ,totalField5:totalAmountTitle );
+    // invoiceTotals.add(invoiceTotal2);
 
 
     String totalBeforeVatTitle = (langId==1? "الاجمالي قبل الضريبة":"Total Before VAT");
@@ -535,6 +536,7 @@ class pdfReceipt {
       headerStyle: const pw.TextStyle(fontSize: 0,height: 0,color: pdfx.PdfColors.white),
       headerDecoration: const pw.BoxDecoration(color: pdfx.PdfColors.white),
       cellHeight: 14,
+      cellStyle: const pw.TextStyle(fontSize: 20),
       cellAlignments: {
         0: pw.Alignment.center,
         1: pw.Alignment.center,
@@ -542,7 +544,6 @@ class pdfReceipt {
         3: pw.Alignment.center,
         4: pw.Alignment.center,
       },
-      cellStyle: const pw.TextStyle(fontSize: 14),
       columnWidths: {
         0: const FlexColumnWidth(1),
         1: const FlexColumnWidth(3),
@@ -578,53 +579,53 @@ class pdfReceipt {
                     child: pw.Center(
                         child: pw.Text((langId==1? "عدد الاصناف   ":"Total Items  ") + invoice.info.rowsCount.toString(),
                             style: const pw.TextStyle(
-                              fontSize: 14, )))),
+                              fontSize: 15, )))),
                 pw.Directionality(
                     textDirection: pw.TextDirection.rtl,
                     child: pw.Center(
                         child: pw.Text((langId==1? "اجمالي الكمية":"Total Quantity  ") + invoice.info.totalQty.toString(),
                             style: const pw.TextStyle(
-                              fontSize: 14, )))),
-                pw.Directionality(
-                    textDirection: pw.TextDirection.rtl,
-                    child: pw.Center(
-                        child: pw.Text((langId==1? "الاجمالي   ":"Total Amount  ") + invoice.info.totalAmount.toString(),
-                            style: const pw.TextStyle(
-                              fontSize: 14, )))),
+                              fontSize: 15, )))),
+                // pw.Directionality(
+                //     textDirection: pw.TextDirection.rtl,
+                //     child: pw.Center(
+                //         child: pw.Text((langId==1? "الاجمالي   ":"Total Amount  ") + invoice.info.totalAmount.toString(),
+                //             style: const pw.TextStyle(
+                //               fontSize: 14, )))),
 
                 pw.Directionality(
                     textDirection: pw.TextDirection.rtl,
                     child: pw.Center(
                         child: pw.Text((langId==1? "الخصم ":"Discount ") + invoice.info.totalDiscount.toString(),
                             style: const pw.TextStyle(
-                              fontSize: 14, )))),
+                              fontSize: 15, )))),
                 pw.Directionality(
                     textDirection: pw.TextDirection.rtl,
                     child: pw.Center(
                         child: pw.Text((langId==1? "الاجمالي قبل الضريبة ":"Total Before VAT ") + invoice.info.totalBeforeVat.toString(),
                             style: const pw.TextStyle(
-                              fontSize: 14, )))),
+                              fontSize: 15, )))),
 
                 pw.Directionality(
                     textDirection: pw.TextDirection.rtl,
                     child: pw.Center(
                         child: pw.Text((langId==1? " القيمة المضافة ":" VAT Amount ") + invoice.info.totalVatAmount.toString(),
                             style: const pw.TextStyle(
-                              fontSize: 14, )))),
+                              fontSize: 15, )))),
                 pw.Divider(),
                 pw.Directionality(
                     textDirection: pw.TextDirection.rtl,
                     child: pw.Center(
                         child: pw.Text((langId==1? "الصافي ":"Net ") + invoice.info.totalAfterVat.toString(),
                             style: const pw.TextStyle(
-                              fontSize: 14 )))),
+                              fontSize: 15 )))),
                 pw.Divider(),
                 pw.Directionality(
                     textDirection: pw.TextDirection.rtl,
                     child: pw.Center(
                         child: pw.Text((langId==1? " الصافي كتابة ":"Net Tafqeet ") + invoice.info.tafqeetName.toString(),
                             style: const pw.TextStyle(
-                                fontSize: 14 )))),
+                                fontSize: 15 )))),
 
 
               ],
@@ -688,8 +689,8 @@ class pdfReceipt {
                   Center(
                    child:
                    pw.Image(barcodeImage
-                       ,width: 140,
-                       height: 140),
+                       ,width: 220,
+                       height: 220),
                   )
                ]
              )

@@ -105,10 +105,11 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
   @override
   initState()  {
+    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     super.initState();
     targetCodes=[];
     boxCodes=[];
-
+    setTargetCode("1");
     //Cash Type
     Future<List<CashType>> futureCashType = _cashTypeTypeApiService.getCashTypeTypes().then((data) {
       cashTypes = data;
@@ -145,6 +146,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
       customers = data;
       //print(customers.length.toString());
       getCustomerData();
+      setTargetCode("1");
       return customers;
     }, onError: (e) {
       print(e);
@@ -1063,8 +1065,8 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
   setTargetCode(String targetType) {
 
-    // if(targetType == "1")//Customer
-    //     {
+    if(targetType == "1")//Customer
+        {
       if (customers.isNotEmpty) {
         for(var i = 0; i < customers.length; i++){
           targetCodes.add(TargetCode(code: customers[i].customerCode,nameAra: customers[i].customerNameAra
@@ -1079,7 +1081,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
       //         child: Text(customers[i].customerNameAra.toString())));
       //   }
       // }
-   //  }
+    }
 
     setState(() {
        //cashTargetCodeItem=TargetCode(code: "" ,nameAra: "",nameEng: "",id: 0);

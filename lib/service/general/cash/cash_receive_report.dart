@@ -206,13 +206,13 @@ class CashReceiveReport {
                 Expanded(
                     child: Container(
                         margin: EdgeInsets.only(left: 10,right: 10),
-                        child: Text((langId==1? cashReceive.statement.toString() : cashReceive.statement.toString()),style: TextStyle(fontSize: 20)))
+                        child: Text((langId==1? cashReceive.descriptionNameArabic.toString() : cashReceive.descriptionNameEnglish.toString()),style: const TextStyle(fontSize: 20)))
                 )
                 ,
                 Container(
                     width: 120,
                     decoration: BoxDecoration(border: Border.all(),color: PdfColors.grey400),
-                    child: Text((langId==1?"الوصف: ":"Description :"),style: TextStyle(fontSize: 15)))
+                    child: Text((langId==1?"الوصف: ":"Description :"),style: const TextStyle(fontSize: 15)))
 
               ]),
           SizedBox(height: 0.8 * PdfPageFormat.cm),

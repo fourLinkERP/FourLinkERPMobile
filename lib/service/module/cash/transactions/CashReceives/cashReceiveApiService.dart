@@ -39,6 +39,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       List<CashReceive> list = [];
       if (data != null) {
         list = data.map((item) => CashReceive.fromJson(item)).toList();
+        print(data.toString());
       }
       return  list;
 
@@ -79,7 +80,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'CashTypeCode': cash.cashTypeCode, //Sales Invoice Type
       'trxSerial': cash.trxSerial,
       'trxDate': cash.trxDate,
-      'Year': cash.year,
+      'Year': financialYearCode,
       'RefNo': cash.refNo,
       'Description': cash.description,
       'TargetId': cash.targetId,
@@ -95,7 +96,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'DescriptionEng': cash.descriptionNameEnglish,
       'TafqitNameArabic': cash.tafqitNameArabic,
       'TafqitNameEnglish': cash.tafqitNameEnglish,
-      'addBy': "1"
+      'addBy': empCode
 
     };
     print('Cash Receive Save 1');
@@ -141,7 +142,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'CashTypeCode': cash.cashTypeCode, //Sales Invoice Type
       'trxSerial': cash.trxSerial,
       'trxDate': cash.trxDate,
-      'Year': cash.year,
+      'Year': financialYearCode,
       'RefNo': cash.refNo,
       'Description': cash.description,
       'TargetId': cash.targetId,
