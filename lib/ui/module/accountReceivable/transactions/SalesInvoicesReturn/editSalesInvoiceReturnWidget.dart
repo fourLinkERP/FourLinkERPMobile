@@ -1762,7 +1762,7 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
   //#region Next Serial
   setNextSerial(){
     //Serial
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("AR_SalesInvoicesH", "SalesInvoicesSerial", " And SalesInvoicesCase=2 And SalesInvoicesTypeCode='" + selectedTypeValue.toString() + "'").then((data) {
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("AR_SalesInvoicesH", "SalesInvoicesSerial", " And SalesInvoicesCase=2 ").then((data) {
       NextSerial nextSerial = data;
 
       //Date

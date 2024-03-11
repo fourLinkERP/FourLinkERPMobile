@@ -1228,9 +1228,8 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
   setNextSerial() {
     //Serial
     Future<NextSerial> futureSerial = _nextSerialApiService.getNextSerial(
-        "AR_SalesInvoicesH", "SalesInvoicesSerial",
-        " And SalesInvoicesCase=2 And SalesInvoicesTypeCode='" +
-            selectedTypeValue.toString() + "'").then((data) {
+        "AR_SalesInvoicesH", "SalesInvoicesSerial",     //Table Name - Field Name - Case
+        " And SalesInvoicesCase=2  ").then((data) {     // We Work On On serial Without Type
       NextSerial nextSerial = data;
 
       //Date
@@ -1525,6 +1524,9 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
             netAfterDiscount: _salesInvoiceReturnD.netAfterDiscount,
             displayTotalTaxValue: _salesInvoiceReturnD.displayTotalTaxValue,
             displayNetValue: _salesInvoiceReturnD.displayNetValue,
+            unitCode: _salesInvoiceReturnD.unitCode,
+            netValue: _salesInvoiceReturnD.netValue,
+            netBeforeTax: _salesInvoiceReturnD.netBeforeTax,
             storeCode: "1" // For Now
         ));
       }

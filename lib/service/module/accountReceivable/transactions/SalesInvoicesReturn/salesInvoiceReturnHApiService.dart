@@ -103,7 +103,6 @@ class SalesInvoiceReturnHApiService {
       'totalAfterDiscount': invoice.totalAfterDiscount,
       'totalBeforeTax': invoice.totalBeforeTax,
       'totalValue': invoice.totalValue,
-      'addBy': "1",
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,
@@ -114,8 +113,9 @@ class SalesInvoiceReturnHApiService {
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "confirmed": false
-
+      "confirmed": false,
+      'addBy': empCode,
+      "year" : financialYearCode
 
 
       // 'Year': invoice.year,
@@ -185,7 +185,6 @@ class SalesInvoiceReturnHApiService {
       'totalAfterDiscount': invoice.totalAfterDiscount,
       'totalBeforeTax': invoice.totalBeforeTax,
       'totalValue': invoice.totalValue,
-      'addBy': "1",
       "confirmed": false,
       "isActive": true,
       "isBlocked": false,
@@ -195,7 +194,8 @@ class SalesInvoiceReturnHApiService {
       "isSynchronized": false,
       "isSystem": false,
       "notActive": false,
-      "flgDelete": false
+      "flgDelete": false,
+      'editBy': empCode,
     };
 
     String apiUpdate =updateApi + id.toString();

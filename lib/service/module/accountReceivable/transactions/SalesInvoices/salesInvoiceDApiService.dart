@@ -123,7 +123,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'SalesInvoicesCase': 1, //Sales Invoice Case =1
       'SalesInvoicesTypeCode': invoice.salesInvoicesTypeCode, //Sales Invoice Type
       'salesInvoicesSerial': invoice.salesInvoicesSerial,
-      'year': invoice.year,
       'lineNum': invoice.lineNum,
       'itemCode': invoice.itemCode,
       'unitCode': invoice.unitCode,
@@ -152,13 +151,15 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "confirmed": false
-
+      "confirmed": false ,
+      'addBy': empCode,
+      "year" : financialYearCode
       // 'age': customer.age,
       // 'address': customer.address,
       // 'city': customer.city,
       // 'country': customer.country,
       // 'status': customer.status
+
     };
 
     print('Start Create D' );
@@ -221,6 +222,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'totalTaxValue': invoice.totalTaxValue,
       'netAfterDiscount': invoice.netAfterDiscount,
       'displayNetValue': invoice.displayNetValue,
+      'netValue': invoice.netValue,
+      'netBeforeTax': invoice.netBeforeTax,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,

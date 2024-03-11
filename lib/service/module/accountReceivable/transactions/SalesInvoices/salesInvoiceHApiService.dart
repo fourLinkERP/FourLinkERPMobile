@@ -104,7 +104,6 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       'totalAfterDiscount': invoice.totalAfterDiscount,
       'totalBeforeTax': invoice.totalBeforeTax,
       'totalValue': invoice.totalValue,
-      'addBy': "1",
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,
@@ -115,7 +114,9 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "confirmed": false
+      "confirmed": false,
+      'addBy': empCode,
+      "year" : financialYearCode
 
 
 
@@ -186,7 +187,6 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       'totalAfterDiscount': invoice.totalAfterDiscount,
       'totalBeforeTax': invoice.totalBeforeTax,
       'totalValue': invoice.totalValue,
-      'addBy': "1",
       "confirmed": false,
       "isActive": true,
       "isBlocked": false,
@@ -196,7 +196,8 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "isSynchronized": false,
       "isSystem": false,
       "notActive": false,
-      "flgDelete": false
+      "flgDelete": false,
+      'editBy': empCode,
     };
 
     String apiUpdate =updateApi + id.toString();

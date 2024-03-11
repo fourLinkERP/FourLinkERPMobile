@@ -25,9 +25,49 @@ class pdfReceipt {
     final barcodeImage = pw.MemoryImage(barcodeImageArray  );
     //final barCodeImage = pw.MemoryImage((await rootBundle.load('assets/images/barCodeImage.jpg')).buffer.asUint8List(),);
 
-    pdf.addPage(pw.MultiPage(
+
+    // pdf.addPage(
+    //   Page(
+    //     pageFormat: pdfx.PdfPageFormat.roll80,
+    //     orientation: vert,
+    //     build: (Context context) => pw.Row(
+    //       children:
+    //         [
+    //               buildHeader(receipt, companyImage),
+    //               pw.Row(
+    //                 mainAxisAlignment: MainAxisAlignment.center ,//Center Row contents horizontally,
+    //                 crossAxisAlignment: CrossAxisAlignment.center, //Center Row contents vertically,
+    //                 children: [
+    //                     Center(
+    //                       child:   Text(receipt.receiptHeader.companyInvoiceTypeName.toString(),style: const TextStyle(fontSize: 15),textAlign: TextAlign.center),
+    //                     )
+    //
+    //                   //
+    //                 ]
+    //               ),
+    //               pw.Row(
+    //                   mainAxisAlignment: MainAxisAlignment.center ,//Center Row contents horizontally,
+    //                   crossAxisAlignment: CrossAxisAlignment.center, //Center Row contents vertically,
+    //                   children: [
+    //                     Center(
+    //                       child:   Text(receipt.receiptHeader.salesInvoicesTypeName.toString(),style: const TextStyle(fontSize: 15),textAlign: TextAlign.center),
+    //                     )
+    //
+    //                     //
+    //                   ]
+    //               ),
+    //               buildHeader2(receipt, companyImage),
+    //
+    //         ]
+    //     ),
+    //   ),
+    // );
+
+
+    pdf.addPage(
+        pw.MultiPage(
       margin: const pw.EdgeInsets.only(top: 1,left: 15,right: 15,bottom: 1),
-      //pageFormat: PdfPageFormat.roll57,
+      pageFormat: pdfx.PdfPageFormat.letter,
       textDirection: pw.TextDirection.rtl,
       theme: pw.ThemeData.withFont(
         base: arabicFont,
@@ -84,32 +124,30 @@ class pdfReceipt {
     // }));
 
 
-      // pdf.addPage(
-      // pw.Page(
-      //   pageFormat: PdfPageFormat.legal,
-      //     textDirection: TextDirection.rtl,
-      //     theme: pw.ThemeData.withFont(
-      //       base: arabicFont,
-      //     ),
-      //     //pageFormat: PdfPageFormat.roll80,
-      //     build: (pw.Context context) {
-      //
-      // return FullPage(
-      //       ignoreMargins: true,
-      //       child:Row (
-      //         children: [
-      //           Text('sssssssssss'),
-      //           Text('sssssssssss1'),
-      //           Text('sssssssssss2'),
-      //
-      //
-      //         ]
-      //       ),
-      // ) ;
-
-
-
-      // Center
+    //   pdf.addPage(
+    //   pw.Page(
+    //     pageFormat: pdfx.PdfPageFormat.legal,
+    //       textDirection: TextDirection.rtl,
+    //       theme: pw.ThemeData.withFont(
+    //         base: arabicFont,
+    //       ),
+    //       //pageFormat: PdfPageFormat.roll80,
+    //       build: (pw.Context context) {
+    //
+    //   return FullPage(
+    //         ignoreMargins: true,
+    //         child:Row (
+    //           children: [
+    //             Text('sssssssssss'),
+    //             Text('sssssssssss1'),
+    //             Text('sssssssssss2'),
+    //
+    //
+    //           ]
+    //         ),
+    //   ) ;
+    //
+    //
     // }));
 
 
@@ -421,16 +459,15 @@ class pdfReceipt {
     var columnTitle1 = langId==1? "":"";
     var columnTitle2 = langId==1? "":"";
     var columnTitle3 = langId==1? "":"";
-    var columnTitle4 = langId==1? "":"";
-    var columnTitle5 =  langId==1? "الاجماليات":"Total";
+    var columnTitle4 =  langId==1? "الاجماليات":"Total";
+
 
     //
     final headers = [
       columnTitle1,
       columnTitle2,
       columnTitle3,
-      columnTitle4,
-      columnTitle5
+      columnTitle4
     ];
 
 
@@ -445,15 +482,13 @@ class pdfReceipt {
         0: pw.Alignment.center,
         1: pw.Alignment.center,
         2: pw.Alignment.center,
-        3: pw.Alignment.center,
-        4: pw.Alignment.center,
+        3: pw.Alignment.center
       },
       columnWidths: {
         0: const FlexColumnWidth(1),
-        1: const FlexColumnWidth(3),
+        1: const FlexColumnWidth(1),
         2: const FlexColumnWidth(1),
-        3: const FlexColumnWidth(1),
-        4: const FlexColumnWidth(1),
+        3: const FlexColumnWidth(1)
       },
     );
 
@@ -465,16 +500,15 @@ class pdfReceipt {
     var columnTitle1 = langId==1? "":"";
     var columnTitle2 = langId==1? "":"";
     var columnTitle3 = langId==1? "":"";
-    var columnTitle4 = langId==1? "":"";
-    var columnTitle5 =  langId==1? "الاجماليات":"Total";
+    var columnTitle4 = langId==1? "الاجماليات":"Total";
+
 
     //
     final headers = [
       columnTitle1,
       columnTitle2,
       columnTitle3,
-      columnTitle4,
-      columnTitle5,
+      columnTitle4
     ];
 
 
@@ -484,7 +518,7 @@ class pdfReceipt {
     String rowsCountValue =invoice.info.rowsCount.toString();
     String totalQtyTitle = (langId==1? "اجمالي الكمية":"Total Quantity  ");
     String totalQtyValue =invoice.info.totalQty.toString();
-    InvoiceTotal invoiceTotal1 =InvoiceTotal(totalField1: "",totalField2: totalQtyValue,totalField3: totalQtyTitle,totalField4:rowsCountValue ,totalField5:rowsCountTitle );
+    InvoiceTotal invoiceTotal1 =InvoiceTotal( totalField1: totalQtyValue,totalField2: totalQtyTitle,totalField3:rowsCountValue ,totalField4:rowsCountTitle );
     invoiceTotals.add(invoiceTotal1);
 
     // String totalAmountTitle = (langId==1? "الاجمالي":"Total Amount");
@@ -501,15 +535,23 @@ class pdfReceipt {
     String totalBeforeVatValue =invoice.info.totalBeforeVat.toString();
     String totalVatAmountTitle = (langId==1? "القيمة المضافة":"Total VAT Amount");
     String totalVatAmountValue =invoice.info.totalVatAmount.toString();
-    InvoiceTotal invoiceTotal3 =InvoiceTotal(totalField1: "",totalField2: totalVatAmountValue,totalField3: totalVatAmountTitle, totalField4:totalBeforeVatValue ,totalField5:totalBeforeVatTitle );
+    InvoiceTotal invoiceTotal3 =InvoiceTotal( totalField1: totalVatAmountValue,totalField2: totalVatAmountTitle, totalField3:totalBeforeVatValue ,totalField4:totalBeforeVatTitle );
     invoiceTotals.add(invoiceTotal3);
 
     String totalAfterVatTitle = (langId==1? "الصافي":"Net");
     String totalAfterVatValue =invoice.info.totalAfterVat.toString();
+    // String tafqeetNameTitle = (langId==1? "الصافي كتابة":"Net Tafqeet");
+    // String tafqeetNameValue =invoice.info.tafqeetName.toString();
+    InvoiceTotal invoiceTotal4 =InvoiceTotal( totalField1: "",totalField2: "", totalField3:totalAfterVatValue ,totalField4:totalAfterVatTitle );
+    invoiceTotals.add(invoiceTotal4);
+
+
+    // String totalAfterVatTitle = (langId==1? "الصافي":"Net");
+    // String totalAfterVatValue =invoice.info.totalAfterVat.toString();
     String tafqeetNameTitle = (langId==1? "الصافي كتابة":"Net Tafqeet");
     String tafqeetNameValue =invoice.info.tafqeetName.toString();
-    InvoiceTotal invoiceTotal4 =InvoiceTotal(totalField1: "",totalField2: tafqeetNameValue,totalField3: tafqeetNameTitle, totalField4:totalAfterVatValue ,totalField5:totalAfterVatTitle );
-    invoiceTotals.add(invoiceTotal4);
+    InvoiceTotal invoiceTotal5 =InvoiceTotal( totalField1: "",totalField2: "", totalField3:tafqeetNameValue ,totalField4:tafqeetNameTitle );
+    invoiceTotals.add(invoiceTotal5);
 
 
     final data = invoiceTotals.map((item) {
@@ -517,14 +559,14 @@ class pdfReceipt {
       var totalField2 = item.totalField2;
       var totalField3 = item.totalField3;
       var totalField4 = item.totalField4;
-      var totalField5 = item.totalField5;
+
 
       return [
         totalField1,
         totalField2,
         totalField3,
         totalField4,
-        totalField5,
+
       ];
     }).toList();
 
@@ -541,15 +583,14 @@ class pdfReceipt {
         0: pw.Alignment.center,
         1: pw.Alignment.center,
         2: pw.Alignment.center,
-        3: pw.Alignment.center,
-        4: pw.Alignment.center,
+        3: pw.Alignment.center
       },
       columnWidths: {
         0: const FlexColumnWidth(1),
-        1: const FlexColumnWidth(3),
+        1: const FlexColumnWidth(2),
         2: const FlexColumnWidth(1),
-        3: const FlexColumnWidth(1),
-        4: const FlexColumnWidth(1),
+        3: const FlexColumnWidth(2),
+
       },
     );
   }
@@ -766,13 +807,13 @@ class InvoiceTotal {
   final String totalField2;
   final String totalField3;
   final String totalField4;
-  final String totalField5;
+
 
   const InvoiceTotal({
     required this.totalField1,
     required this.totalField2,
     required this.totalField3,
     required this.totalField4,
-    required this.totalField5,
+
   });
 }

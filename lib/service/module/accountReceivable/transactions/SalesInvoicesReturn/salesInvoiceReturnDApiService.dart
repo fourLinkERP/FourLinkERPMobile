@@ -142,6 +142,8 @@ class SalesInvoiceReturnDApiService {
       'totalTaxValue': invoice.totalTaxValue,
       'netAfterDiscount': invoice.netAfterDiscount,
       'displayNetValue': invoice.displayNetValue,
+      'netValue': invoice.netValue,
+      'netBeforeTax': invoice.netBeforeTax,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,

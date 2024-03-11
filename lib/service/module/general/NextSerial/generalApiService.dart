@@ -25,6 +25,7 @@ import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart
 
 
     print('NextSerials 2');
+    print(criteria);
     final http.Response response = await http.post(
       Uri.parse(serialApi),
       headers: <String, String>{

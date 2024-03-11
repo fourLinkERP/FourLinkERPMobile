@@ -1768,7 +1768,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
   //#region Next Serial
     setNextSerial(){
       //Serial
-      Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("AR_SalesInvoicesH", "SalesInvoicesSerial", " And SalesInvoicesCase=1 And SalesInvoicesTypeCode='" + selectedTypeValue.toString() + "'").then((data) {
+      Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("AR_SalesInvoicesH", "SalesInvoicesSerial", " And SalesInvoicesCase=1 '").then((data) {
         NextSerial nextSerial = data;
 
         //Date
