@@ -198,6 +198,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "notActive": false,
       "flgDelete": false,
       'editBy': empCode,
+      'invoiceQRCode': invoice.invoiceQRCode,
     };
 
     String apiUpdate =updateApi + id.toString();

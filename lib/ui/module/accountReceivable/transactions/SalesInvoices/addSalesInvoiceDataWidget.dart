@@ -1,5 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/setup/salesInvoiceTypes/salesInvoiceType.dart'; // *
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceD.dart';
@@ -23,6 +24,8 @@ import 'package:fourlinkmobileapp/utils/email.dart';
 import 'package:supercharged/supercharged.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/basicInputs/Customers/addCustomerDataWidget.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/salesInvoiceList.dart';
+import 'package:widgets_to_image/widgets_to_image.dart';
+import 'package:zatca_fatoora_flutter/zatca_fatoora_flutter.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceH.dart';
 import '../../../../../helpers/toast.dart';
@@ -65,7 +68,7 @@ double totalBeforeTax = 0;
 double totalTax = 0;
 double totalAfterDiscount = 0;
 double totalNet = 0;
-
+WidgetsToImageController WidgetImage=new WidgetsToImageController();
 bool isLoading = true;  //*
 
 
@@ -175,7 +178,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     totalAfterDiscount = 0;
     totalBeforeTax = 0;
     totalNet = 0;
-
+    _salesInvoicesDateController.text = DateTime.now().toString();
     print('generalSetupSalesInvoicesTypeCode >> $generalSetupSalesInvoicesTypeCode');
     if (generalSetupSalesInvoicesTypeCode.toString().isNotEmpty) {
       selectedTypeValue = generalSetupSalesInvoicesTypeCode;
@@ -1016,6 +1019,22 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                             ],
                           ),
                         ),
+                        WidgetsToImage(
+                            controller:WidgetImage,
+                            child :Container(
+                              padding: const EdgeInsets.all(1),
+                              color: Colors.white,
+                              child:   ZatcaFatoora.simpleQRCode(
+                                fatooraData: ZatcaFatooraDataModel(
+                                  businessName: companyTitle,
+                                  vatRegistrationNumber: companyVatNo,
+                                  date:   DateTime.parse(_salesInvoicesDateController.text),
+                                  totalAmountIncludingVat: totalNet,
+                                ),
+                              ),
+                            )
+
+                        )
                         // Container(
                         //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         //   child: Row(
@@ -1478,6 +1497,9 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       return;
     }
 
+    final bytesx = await WidgetImage.capture();
+    var InvoiceQRCode = bytesx as Uint8List;
+
     // //Currency
     // if(currencyCodeSelectedValue == null || currencyCodeSelectedValue!.isEmpty){
     //   FN_showToast(context,'Please Set Currency',Colors.black);
@@ -1503,7 +1525,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       totalBeforeTax: (_totalBeforeTaxController.text.isNotEmpty) ? _totalBeforeTaxController.text.toDouble() : 0,
       tafqitNameArabic: _tafqitNameArabicController.text,
       tafqitNameEnglish: _tafqitNameEnglishController.text,
-
+        invoiceQRCode: InvoiceQRCode
     ));
 
     //Save Footer For Now

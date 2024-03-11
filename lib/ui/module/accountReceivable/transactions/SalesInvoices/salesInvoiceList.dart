@@ -40,7 +40,7 @@ SalesInvoiceDApiService _apiDService= SalesInvoiceDApiService();
 
 final String companyTitle ="مؤسسة ركن كريز للحلويات";
 final String companyVatNo ="302211485800003";
-final GlobalKey globalKey = GlobalKey();
+//final GlobalKey globalKey = GlobalKey();
 class SalesInvoiceHListPage extends StatefulWidget {
   const SalesInvoiceHListPage({ Key? key }) : super(key: key);
 

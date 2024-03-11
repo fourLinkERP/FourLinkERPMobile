@@ -1,4 +1,6 @@
 //import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 
 Color lColor = const Color(0xffE4E5E6);
@@ -43,6 +45,7 @@ class SalesInvoiceH {
   String?  invoiceTypeName ;
   String?  taxIdentificationNumber ;
   String?  salesInvoicesTypeName ;
+  Uint8List?  invoiceQRCode ;
 
 
   SalesInvoiceH({
@@ -81,7 +84,8 @@ class SalesInvoiceH {
     this.invoiceTypeCode,
     this.invoiceTypeName,
     this.taxIdentificationNumber,
-    this.salesInvoicesTypeName
+    this.salesInvoicesTypeName,
+    this.invoiceQRCode
 
     //image
     });
@@ -121,6 +125,7 @@ class SalesInvoiceH {
       invoiceTypeName: (json['invoiceTypeName'] != null) ? json['invoiceTypeName'] as String : "",
       taxIdentificationNumber: (json['taxIdentificationNumber'] != null) ? json['taxIdentificationNumber'] as String : "",
       salesInvoicesTypeName: (json['salesInvoicesTypeName'] != null) ? json['salesInvoicesTypeName'] as String : "",
+      invoiceQRCode: (json['invoiceQRCode'] != null) ? json['invoiceQRCode'] as Uint8List : null,
 
 
 

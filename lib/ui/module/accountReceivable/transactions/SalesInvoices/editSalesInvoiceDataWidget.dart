@@ -1,5 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/setup/salesInvoiceTypes/salesInvoiceType.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceD.dart';
@@ -18,8 +19,11 @@ import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/SalesInvoices/salesInvoiceHApiService.dart';
 import 'package:fourlinkmobileapp/service/module/general/inventoryOperation/inventoryOperationApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
+import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesInvoices/salesInvoiceList.dart';
 import 'package:fourlinkmobileapp/utils/email.dart';
 import 'package:supercharged/supercharged.dart';
+import 'package:widgets_to_image/widgets_to_image.dart';
+import 'package:zatca_fatoora_flutter/zatca_fatoora_flutter.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceH.dart';
 import '../../../../../helpers/toast.dart';
@@ -64,6 +68,8 @@ double  totalBeforeTax = 0;
 double  totalTax = 0;
 double  totalAfterDiscount = 0;
 double  totalNet = 0;
+WidgetsToImageController WidgetImage=new WidgetsToImageController();
+
 class EditSalesInvoiceHDataWidget extends StatefulWidget {
   EditSalesInvoiceHDataWidget(this.salesInvoicesH);
 
@@ -1038,7 +1044,22 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                             ),
                           ],
                         ),
+                        WidgetsToImage(
+                            controller:WidgetImage,
+                            child :Container(
+                              padding: const EdgeInsets.all(1),
+                              color: Colors.white,
+                              child:   ZatcaFatoora.simpleQRCode(
+                                fatooraData: ZatcaFatooraDataModel(
+                                  businessName: companyTitle,
+                                  vatRegistrationNumber: companyVatNo,
+                                  date:   DateTime.parse(_salesInvoicesDateController.text),
+                                  totalAmountIncludingVat: totalNet,
+                                ),
+                              ),
+                            )
 
+                        )
 
 
                         // Container(
@@ -1316,7 +1337,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     });
   }
 
-  saveInvoice(BuildContext context) {
+  saveInvoice(BuildContext context) async {
 
     //Items
     if(salesInvoiceDLst.isEmpty || salesInvoiceDLst.length <=0){
@@ -1348,6 +1369,9 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     //   return;
     // }
 
+    final bytesx = await WidgetImage.capture();
+    var InvoiceQRCode = bytesx as Uint8List;
+
     _salesInvoiceHApiService.updateSalesInvoiceH(context,id,SalesInvoiceH(
 
       salesInvoicesCase: 1,
@@ -1365,6 +1389,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
       totalValue:(_totalValueController.text.isNotEmpty)?  _totalValueController.text.toDouble():0 ,
       totalAfterDiscount:(_totalAfterDiscountController.text.isNotEmpty)?  _totalAfterDiscountController.text.toDouble():0 ,
       totalBeforeTax:(_totalBeforeTaxController.text.isNotEmpty)?  _totalBeforeTaxController.text.toDouble():0 ,
+       invoiceQRCode: InvoiceQRCode
 
     ));
 
