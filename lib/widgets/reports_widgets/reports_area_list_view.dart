@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/ui/module/accountPayable/vendors/vendorlist.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/basicInputs/salesman/old/salesmanlist.dart';
 import 'package:fourlinkmobileapp/ui/module/inventory/product/productslist.dart';
-import 'package:fourlinkmobileapp/widgets/reports_widgets/report_customer_account.dart';
+import 'package:fourlinkmobileapp/ui/module/accountReceivable/reports/rptCustomerAccountsSummary.dart';
 import '../../theme/fitness_app_theme.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+
+import '../../ui/module/accountReceivable/reports/rptDailySales.dart';
 
 class ReportsAreaListView extends StatefulWidget {
   const ReportsAreaListView(
@@ -29,7 +31,7 @@ class _ReportsAreaListViewState extends State<ReportsAreaListView>
 
   List<String> areaListDataTitle = <String>[
     'customeraccountreport'.tr(),
-    'vendoraccountreport'.tr(),
+    'dailySalesreport'.tr(),
     'itemcardreport'.tr(),
     'accountreports'.tr(),
   ];
@@ -84,6 +86,7 @@ class _ReportsAreaListViewState extends State<ReportsAreaListView>
                         text: areaListDataTitle[index],
                         animation: animation,
                         animationController: animationController!,
+                        index:index
                       );
                     },
                   ),
@@ -110,13 +113,14 @@ class AreaView extends StatelessWidget {
     this.text,
     this.animationController,
     this.animation,
+    this.index
   }) : super(key: key);
 
   final String? imagepath;
   final String? text;
   final AnimationController? animationController;
   final Animation<double>? animation;
-
+  final int? index;
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -151,28 +155,27 @@ class AreaView extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                   splashColor: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.2),
                   onTap: () {
-                    if(imagepath == 'assets/fitness_app/report.png')
+                    //if(imagepath == 'assets/fitness_app/report.png')
+                    if(text == 'customeraccountreport'.tr())
                     {
                       print('okz1');
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerReport()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RptCustomerAccountsSummary()));
                     }
-                    else if(imagepath == 'assets/fitness_app/report.png')
+                    else if(text == 'dailySalesreport'.tr())
+                    //else if(imagepath == 'assets/fitness_app/report.png')
                     {
                       print('okz2');
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) =>
-                      //             CustomerListPage()));
-                    }
-                    else  if(imagepath == 'assets/fitness_app/report.png')
-                    {
-                      print('okz3');
                       Navigator.push(
                           context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  VendorListPage()));
+                          MaterialPageRoute( builder: (context) => RptDailySales()));
+                    }
+                    else if(text == 'dailySalesreport'.tr())
+                    //else  if(imagepath == 'assets/fitness_app/report.png')
+                    {
+                      print('okz3');
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute( builder: (context) => RptDailySales()));
                     }
                     else if(imagepath == 'assets/fitness_app/report.png')
                     {

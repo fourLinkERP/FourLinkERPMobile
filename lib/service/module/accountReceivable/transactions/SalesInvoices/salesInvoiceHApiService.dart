@@ -116,7 +116,8 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "flgDelete": false,
       "confirmed": false,
       'addBy': empCode,
-      "year" : financialYearCode
+      "year" : financialYearCode,
+      "invoiceQRCode": invoice.invoiceQRCode,
 
 
 
@@ -141,6 +142,8 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
     );
 
     print('save invoice 2');
+    print('createApi');
+    print(createApi);
 
     if (response.statusCode == 200) {
 
@@ -198,6 +201,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "notActive": false,
       "flgDelete": false,
       'editBy': empCode,
+      //,
       'invoiceQRCode': invoice.invoiceQRCode,
     };
 

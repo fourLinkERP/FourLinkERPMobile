@@ -98,7 +98,8 @@
     "purchaseinvoice":"Purchase Invoice",
     "salesOrder":"Sales Order",
     "generaltransaction":"Account Transaction",
-    "customeraccountreport":"Customer Account",
+    "customeraccountreport":"Customer Account Summary",
+    "dailySalesreport": "Daily Sales",
     "vendoraccountreport":"Vendor Account",
     "itemcardreport":"Item Card",
     "accountreports":"Account Summary",
@@ -482,5 +483,6 @@
     "customerGroup": "Customer Group",
     "customer_image": "Customer Image",
     "item_type": "Item Type",
-    "Setting Requests": "Setting Requests"
+    "Setting Requests": "Setting Requests",
+    "noDataToPrint": "No Data To Print"
 }

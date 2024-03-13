@@ -8,25 +8,27 @@ import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/ba
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/salesMen/salesMan.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/branches/branch.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/general/report/formulas.dart';
+import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/service/general/Pdf/pdf_api.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/SalesMen/salesManApiService.dart';
 import 'package:fourlinkmobileapp/service/module/administration/basicInputs/branchApiService.dart';
 import 'package:fourlinkmobileapp/service/module/general/reportUtility/reportUtilityApiService.dart';
-import '../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
+import '../../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
-import '../../../../../service/module/accountReceivable/basicInputs/CustomerTypes/customerTypeApiService.dart';
+import '../../../../../../service/module/accountReceivable/basicInputs/CustomerTypes/customerTypeApiService.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/inventory/basicInputs/units/units.dart';
 import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/units/unitApiService.dart';
-import '../../data/model/modules/module/accountReceivable/setup/salesInvoiceTypes/salesInvoiceType.dart';
-import '../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceH.dart';
-import '../../data/model/modules/module/general/nextSerial/nextSerial.dart';
-import '../../helpers/hex_decimal.dart';
-import '../../service/module/general/NextSerial/generalApiService.dart';
-import '../../ui/general/printPage.dart';
+import '../../../../data/model/modules/module/accountReceivable/setup/salesInvoiceTypes/salesInvoiceType.dart';
+import '../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceH.dart';
+import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
+import '../../../../helpers/hex_decimal.dart';
+import '../../../../service/module/general/NextSerial/generalApiService.dart';
+import '../../../general/printPage.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
-import '../../ui/module/accountReceivable/transactions/salesInvoices/addSalesInvoiceDataWidget.dart';
+import '../transactions/salesInvoices/addSalesInvoiceDataWidget.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -41,7 +43,7 @@ final startDateController = TextEditingController();
 final endDateController = TextEditingController();
 String? selectedCustomerValue;
 String? selectedCustomerEmail;
-String? selectedTypeValue = "1";
+String? selectedTypeValue = "";
 String? selectedUnitValue;
 String? startDate;
 String? endDate;
@@ -51,16 +53,15 @@ String? customerTypeSelectedValue = null;
 String? branchSelectedValue = null;
 String? salesManSelectedValue = null;
 
-class CustomerReport extends StatefulWidget {
-  const CustomerReport({Key? key}) : super(key: key);
 
-
+class RptCustomerAccountsSummary extends StatefulWidget {
+  const RptCustomerAccountsSummary({Key? key}) : super(key: key);
 
   @override
-  State<CustomerReport> createState() => _CustomerReportState();
+  State<RptCustomerAccountsSummary> createState() => RptCustomerAccountsSummaryState();
 }
 
-class _CustomerReportState extends State<CustomerReport> {
+class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> {
 
   List<DropdownMenuItem<String>> menuCustomers = [ ];
   List<Customer> customers =[];
@@ -80,7 +81,6 @@ class _CustomerReportState extends State<CustomerReport> {
   final _salesInvoicesDateController = TextEditingController();
 
 
-
   Customer?  customerItem=Customer(customerCode: "",customerNameAra: "",customerNameEng: "",id: 0);
   Branch?  branchItem=Branch(branchCode: 0,branchNameAra: "",branchNameEng: "",id: 0);
   SalesMan ?  salesManItem=SalesMan(salesManCode: "",salesManNameAra: "",salesManNameEng: "",id: 0);
@@ -95,25 +95,6 @@ class _CustomerReportState extends State<CustomerReport> {
     super.initState();
 
    fillCombos();
-
-    // Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
-    //   customers = data;
-    //   //print(customers.length.toString());
-    //   getCustomerData();
-    //   return customers;
-    // }, onError: (e) {
-    //   print(e);
-    // });
-    //
-    // //Customer Type
-    // Future<List<CustomerType>> futureSalesMan = _customerTypeApiService.getCustomerTypes().then((data) {
-    //   customerTypes = data;
-    //   //print(customers.length.toString());
-    //   getCustomerTypeData();
-    //   return customerTypes;
-    // }, onError: (e) {
-    //   print(e);
-    // });
 
   }
 
@@ -170,7 +151,7 @@ class _CustomerReportState extends State<CustomerReport> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 11, 2, 0),
               //apply padding to all four sides
-              child: Text('customer_report'.tr(),
+              child: Text('customeraccountreport'.tr(),
                 style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),),
             )
           ],
@@ -273,7 +254,7 @@ class _CustomerReportState extends State<CustomerReport> {
                               onPressed: () {
                                 // Navigator.push(context, MaterialPageRoute(builder: (context) => Print()));
                                 //_navigateToPrintScreen(context,_customers[index]);
-                                printReport(getCriteria());
+                                printReport(context , getCriteria());
                               },
                               style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
@@ -782,33 +763,45 @@ class _CustomerReportState extends State<CustomerReport> {
 
 
   /////////////////////////////////////////////// Print Report ///////////////////////////////////////////////////////////////////////
-  printReport(String criteria){
+  printReport(BuildContext context ,String criteria){
     print('Start Report');
+    print(criteria);
     String menuId="6301"; //Customer Account Report Menu Id
     //API Reference
     ReportUtilityApiService reportUtilityApiService = ReportUtilityApiService();
+
+    List<Formulas>  formulasList ;
+    //Formula
+    formulasList = [
+      new Formulas(columnName: 'companyName',columnValue: companyName) ,
+      new Formulas(columnName: 'branchName',columnValue: branchName)
+    ];
+    //;
+    //;
+
+
+    //criteria="";
     //report Api
     final report = reportUtilityApiService.getReportData(
-        menuId,criteria).then((data) async {
+      menuId, criteria, formulasList).then((data) async {
       print('Data Fetched');
-      //print(data);
 
       final outputFilePath = 'customerAccountReport.pdf';
       final dir = await getApplicationDocumentsDirectory();
       final file = File('${dir.path}/$outputFilePath');
       await file.writeAsBytes(data);
-      print('to Print Report');
-      PdfApi.openFile(file);
 
-      // NextSerial nextSerial = data;
-      //
-      // //Date
-      // DateTime now = DateTime.now();
-      // _salesInvoicesDateController.text = DateFormat('yyyy-MM-dd').format(now);
-      //
-      // //print(customers.length.toString());
-      // _salesInvoicesSerialController.text = nextSerial.nextSerial.toString();
-      // return nextSerial;
+      if(file.lengthSync() > 0)
+      {
+        print('to Print Report');
+        PdfApi.openFile(file);
+      }
+      else
+      {
+        print('No Data To Print');
+        FN_showToast(context,'noDataToPrint'.tr() ,Colors.black);
+      }
+
     }, onError: (e) {
       print(e);
     });
@@ -824,32 +817,32 @@ String getCriteria()
   String criteria="";
 
 
-  if(startDateController.text.isNotEmpty)
+  if(startDateController.text.isNotEmpty && startDateController != null)
   {
     criteria += " And TrxDate >='" + startDateController.text + "' ";
   }
 
-  if(endDateController.text.isNotEmpty)
+  if(endDateController.text.isNotEmpty && endDateController != null)
   {
     criteria += " And TrxDate <='" + endDateController.text + "' ";
   }
 
-  if(selectedCustomerValue.toString().isNotEmpty)
+  if(selectedCustomerValue.toString().isNotEmpty && selectedCustomerValue != null)
   {
     criteria += " And CustomerCode =N'" + selectedCustomerValue.toString() + "' ";
   }
 
-  if(selectedTypeValue.toString().isNotEmpty)
+  if(selectedTypeValue.toString().isNotEmpty && selectedTypeValue != null)
   {
     criteria += " And CustomerTypeCode =N'" + selectedTypeValue.toString() + "' ";
   }
 
-  if(branchSelectedValue.toString().isNotEmpty)
+  if(branchSelectedValue.toString().isNotEmpty && branchSelectedValue != null)
   {
       criteria += " And BranchCode =N'" + branchSelectedValue.toString() + "' ";
   }
 
-  if(salesManSelectedValue.toString().isNotEmpty)
+  if(salesManSelectedValue.toString().isNotEmpty && salesManSelectedValue != null)
   {
     criteria += " And SalesManCode =N'" + salesManSelectedValue.toString() + "' ";
   }

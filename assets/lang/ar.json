@@ -81,6 +81,7 @@
     "salesOrder": "امر بيع",
     "generaltransaction": "قيود اليومية",
     "customeraccountreport": "كشف حساب عميل",
+    "dailySalesreport": "يومية المبيعات",
     "vendoraccountreport": "كشف حساب مورد",
     "itemcardreport": "كارت الصنف",
     "accountreports": "الحسابات تفصيلي",
@@ -570,7 +571,8 @@
     "notes": "ملاحظات",
     "Setting Requests": "اعدادات الطلبات",
     "edit_request_salary": "تعديل طلب زيادة راتب",
-    "edit_additional_request": "تعديل طلب اضافي"
+    "edit_additional_request": "تعديل طلب اضافي",
+    "noDataToPrint": "لا يوجد بيانات لطباعتها"
 
 
 }
