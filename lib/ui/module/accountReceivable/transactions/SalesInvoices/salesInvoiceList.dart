@@ -269,7 +269,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             print('Before Sales Invoicr : ' + invoiceH.id.toString() );
             if(_salesInvoicesD != null)
             {
-              print('In Sales Invoicr' );
+              print('In Sales Invoice' );
               print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString() );
               for(var i = 0; i < _salesInvoicesD.length; i++){
                 double qty= (_salesInvoicesD[i].displayQty != null) ? double.parse(_salesInvoicesD[i].displayQty.toStringAsFixed(2))  : 0;

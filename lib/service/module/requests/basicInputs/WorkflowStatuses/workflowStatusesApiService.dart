@@ -1,28 +1,32 @@
 import 'dart:convert';
-import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
+import '../../../../../data/model/modules/module/requests/basicInputs/WorkflowStatuses/workflowStatuses.dart';
 
- class EmployeeApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/employees/search';
-  String createApi= baseUrl.toString()  + 'v1/employees';
-  String updateApi= baseUrl.toString()  + 'v1/employees/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/employees/';
-  String getByIdApi= baseUrl.toString()  + 'v1/employees/';  // Add ID For Get
+class StatusesApiService {
 
-  Future<List<Employee>>  getEmployees() async {
+  String searchApi= baseUrl.toString()  + 'v1/workflowstatuses/search';
+  String createApi= baseUrl.toString()  + 'v1/workflowstatuses';
+  String updateApi= baseUrl.toString()  + 'v1/workflowstatuses/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + 'v1/workflowstatuses/';
+  String getByIdApi= baseUrl.toString()  + 'v1/workflowstatuses/';  // Add ID For Get
 
+  Future<List<Status>>  getStatuses() async {
+
+    print('Status 1');
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      'Search':{
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode
+      }
     };
 
-    print('Employee 1');
+    print('Status 2');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -32,58 +36,24 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       body: jsonEncode(data),
     );
 
-
+    print('Status 4');
     if (response.statusCode == 200) {
-      print('Employee 2');
+      print('Status 5');
       List<dynamic> data = jsonDecode(response.body)['data'];
-      List<Employee> list = [];
-      if (data.isNotEmpty) {
-        list = data.map((item) => Employee.fromJson(item)).toList();
+      List<Status> list = [];
+      if (data != null) {
+        list = data.map((status) => Status.fromJson(status)).toList();
       }
-      print('Employee 3');
+      print(list.toString());
       return  list;
 
     } else {
-      print('Employee Failed');
-      throw "Failed to load Employee list";
-    }
-  }
-  Future<List<Employee>>  getEmployeesFiltrated(String employeeCode) async {
-
-    Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode,
-      'EmpCode': employeeCode
-    };
-
-    print('Employee 1');
-    final http.Response response = await http.post(
-      Uri.parse(searchApi),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token'
-      },
-      body: jsonEncode(data),
-    );
-
-
-    if (response.statusCode == 200) {
-      print('EmployeeFiltrated 2');
-      List<dynamic> data = jsonDecode(response.body)['data'];
-      List<Employee> list = [];
-      if (data.isNotEmpty) {
-        list = data.map((item) => Employee.fromJson(item)).toList();
-      }
-      print('Employee 3');
-      return  list;
-
-    } else {
-      print('Employee Failed');
-      throw "Failed to load Employee list";
+      print('status Failure');
+      throw "Failed to load status list";
     }
   }
 
-  Future<Employee> getEmployeeById(int id) async {
+  Future<Status> getStatusById(int id) async {
 
     var data = {
       // "id": id
@@ -100,20 +70,20 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
     if (response.statusCode == 200) {
 
-      return Employee.fromJson(json.decode(response.body));
+      return Status.fromJson(json.decode(response.body));
 
     } else {
       throw Exception('Failed to load a case');
     }
   }
 
-  Future<int> createEmployee(BuildContext context ,Employee employee) async {
+  Future<int> createStatus(BuildContext context ,Status status) async {
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'empCode': employee.empCode,
-      'empNameAra': employee.empNameAra,
-      'empNameEng': employee.empNameEng,
+      'workFlowStatusCode': status.workFlowStatusCode,
+      'workFlowStatusNameAra': status.workFlowStatusNameAra,
+      'workFlowStatusNameEng': status.workFlowStatusNameEng
 
     };
 
@@ -127,6 +97,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     );
 
 
+
     if (response.statusCode == 200) {
 
       FN_showToast(context,'save_success'.tr() ,Colors.black);
@@ -135,23 +106,22 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
     } else {
-      throw Exception('Failed to post Employee');
+      throw Exception('Failed to post status');
     }
 
     return  0;
   }
 
-  Future<int> updateEmployee(BuildContext context ,int id, Employee employee) async {
+  Future<int> updateStatus(BuildContext context ,int id, Status status) async {
 
     print('Start Update');
 
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'empCode': employee.empCode,
-      'empNameAra': employee.empNameAra,
-      'empNameEng': employee.empNameEng,
-
+      'workFlowStatusCode': status.workFlowStatusCode,
+      'workFlowStatusNameAra': status.workFlowStatusNameAra,
+      'workFlowStatusNameEng': status.workFlowStatusNameEng
     };
 
     String apiUpdate =updateApi + id.toString();
@@ -164,10 +134,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after ' );
     if (response.statusCode == 200) {
-
-      print('Start Update done ' );
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
@@ -179,7 +146,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     return 0;
   }
 
-  Future<void> deleteEmployee(BuildContext context ,int? id) async {
+  Future<void> deleteStatus(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
     print('url' + apiDel);
@@ -200,7 +167,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);
     } else {
-      throw "Failed to delete a customer.";
+      throw "Failed to delete a status.";
     }
   }
 

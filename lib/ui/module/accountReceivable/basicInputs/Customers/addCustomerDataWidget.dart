@@ -110,7 +110,6 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
         tooltip: 'save',
         elevation: 5,
          highlightElevation: 5,
-
         backgroundColor:  Colors.transparent,
         onPressed: () async {
           if(_customerNameAraController.text.isEmpty)

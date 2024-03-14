@@ -59,7 +59,6 @@ class LoginService {
         print('B server_failed');
       }
 
-     // print('Status : ' + response.statusCode.toString() );
      // throw Exception('Failed to post cases');
     }
 

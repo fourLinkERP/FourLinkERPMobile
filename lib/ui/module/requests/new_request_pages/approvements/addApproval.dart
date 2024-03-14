@@ -1,16 +1,19 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/service/module/requests/basicInputs/WorkflowStatuses/workflowStatusesApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Levels/Level.dart';
+import '../../../../../data/model/modules/module/requests/basicInputs/WorkflowStatuses/workflowStatuses.dart';
 import '../../../../../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
 import '../../../../../service/module/accounts/basicInputs/Levels/levelApiService.dart';
 
 //APIs
 EmployeeApiService _employeeApiService = EmployeeApiService();
 LevelApiService _levelApiService = LevelApiService();
+StatusesApiService _statusesApiService = StatusesApiService();
 
 
 class AddApproval extends StatefulWidget {
@@ -24,12 +27,15 @@ class _AddApprovalState extends State<AddApproval> {
 
   List<Employee> employees = [];
   List<Level> levels = [];
+  List<Status> statuses = [];
 
   List<DropdownMenuItem<String>> menuEmployees = [];
   List<DropdownMenuItem<String>> menuLevels = [];
+  List<DropdownMenuItem<String>> menuStatuses = [];
 
   String? selectedEmployeeValue = null;
   String? selectedLevelValue = null;
+  String? selectedStatusValue = null;
 
   final statusController = TextEditingController();
   final notesController =  TextEditingController();
@@ -52,6 +58,15 @@ class _AddApprovalState extends State<AddApproval> {
 
       getLevelsData();
       return levels;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<Status>> futureStatuses = _statusesApiService.getStatuses().then((data) {
+      statuses = data;
+
+      getStatusesData();
+      return statuses;
     }, onError: (e) {
       print(e);
     });
@@ -79,16 +94,16 @@ class _AddApprovalState extends State<AddApproval> {
                   children: [
                     const SizedBox(height:20),
                     ListTile(
-                      leading: Text("Employee: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                      leading: Text("employee".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                       trailing: Container(
                         width: 220,
                         height: 55,
                         decoration: BoxDecoration(
-                          color: Colors.grey,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Center(
                           child: DropdownSearch<Employee>(
+                            selectedItem: null,
                             popupProps: PopupProps.menu(
                               itemBuilder: (context, item, isSelected) {
                                 return Container(
@@ -126,14 +141,14 @@ class _AddApprovalState extends State<AddApproval> {
                                 return false;
                               }
                             },
-                            dropdownDecoratorProps: const DropDownDecoratorProps(
-                              dropdownSearchDecoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                  color: Colors.black,
-                                ),
-                                icon: Icon(Icons.keyboard_arrow_down),
-                              ),
-                            ),
+                            // dropdownDecoratorProps: const DropDownDecoratorProps(
+                            //   dropdownSearchDecoration: InputDecoration(
+                            //     labelStyle: TextStyle(
+                            //       color: Colors.black,
+                            //     ),
+                            //     icon: Icon(Icons.keyboard_arrow_down),
+                            //   ),
+                            // ),
 
                           ),
                         ),
@@ -141,16 +156,16 @@ class _AddApprovalState extends State<AddApproval> {
                     ),
                     const SizedBox(height: 12,),
                     ListTile(
-                      leading: Text("Level: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                      leading: Text("level".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                       trailing: Container(
                         width: 220,
                         height: 55,
                         decoration: BoxDecoration(
-                          color: Colors.grey,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Center(
                           child: DropdownSearch<Level>(
+                            selectedItem: null,
                             popupProps: PopupProps.menu(
                               itemBuilder: (context, item, isSelected) {
                                 return Container(
@@ -185,14 +200,14 @@ class _AddApprovalState extends State<AddApproval> {
                                 return false;
                               }
                             },
-                            dropdownDecoratorProps: const DropDownDecoratorProps(
-                              dropdownSearchDecoration: InputDecoration(
-                                labelStyle: TextStyle(
-                                  color: Colors.black,
-                                ),
-                                icon: Icon(Icons.keyboard_arrow_down),
-                              ),
-                            ),
+                            // dropdownDecoratorProps: const DropDownDecoratorProps(
+                            //   dropdownSearchDecoration: InputDecoration(
+                            //     labelStyle: TextStyle(
+                            //       color: Colors.black,
+                            //     ),
+                            //     icon: Icon(Icons.keyboard_arrow_down),
+                            //   ),
+                            // ),
 
                           ),
                         ),
@@ -200,22 +215,53 @@ class _AddApprovalState extends State<AddApproval> {
                     ),
                     const SizedBox(height: 12,),
                     ListTile(
-                      leading: Text("Status: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                      trailing: SizedBox(
-                        width: 200,
+                      leading: Text("status".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                      trailing: Container(
+                        width: 220,
                         height: 55,
-                        child: defaultFormField(
-                          controller: statusController,
-                          label: 'status'.tr(),
-                          type: TextInputType.text,
-                          colors: Colors.blueGrey,
-                          //prefix: null,
-                          validate: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'status must be non empty';
-                            }
-                            return null;
-                          },
+                        decoration: BoxDecoration(
+                          //color: Colors.grey,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Center(
+                          child: DropdownSearch<Status>(
+                            selectedItem: null,
+                            popupProps: PopupProps.menu(
+                              itemBuilder: (context, item, isSelected) {
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: !isSelected ? null : BoxDecoration(
+                                    border: Border.all(color: Theme.of(context).primaryColor),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text((langId==1)? item.workFlowStatusNameAra.toString():  item.workFlowStatusNameEng.toString(),
+                                      //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
+                                      textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                  ),
+                                );
+                              },
+                              showSearchBox: true,
+                            ),
+                            items: statuses,
+                            itemAsString: (Status u) => u.workFlowStatusNameAra.toString(),
+                            onChanged: (value){
+                              selectedStatusValue =  value!.workFlowStatusCode.toString();
+                            },
+                            filterFn: (instance, filter){
+                              if(instance.workFlowStatusNameAra!.contains(filter)){
+                                print(filter);
+                                return true;
+                              }
+                              else{
+                                return false;
+                              }
+                            },
+
+                          ),
                         ),
                       ),
                     ),
@@ -293,6 +339,21 @@ class _AddApprovalState extends State<AddApproval> {
             value: levels[i].levelCode.toString(),
             child: Text((langId==1)? levels[i].levelNameAra.toString() : levels[i].levelNameEng.toString())
             ),
+        );
+      }
+    }
+    setState(() {
+
+    });
+  }
+  getStatusesData() {
+    if (statuses.isNotEmpty) {
+      for(var i = 0; i < statuses.length; i++){
+        menuStatuses.add(
+          DropdownMenuItem(
+              value: statuses[i].workFlowStatusCode.toString(),
+              child: Text((langId==1)? statuses[i].workFlowStatusNameAra.toString() : statuses[i].workFlowStatusNameEng.toString())
+          ),
         );
       }
     }

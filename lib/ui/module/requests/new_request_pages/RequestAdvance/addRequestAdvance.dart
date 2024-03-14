@@ -71,6 +71,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
   final _advanceBalanceController = TextEditingController();
   final _installmentController = TextEditingController();
   final _advanceReasonController = TextEditingController();
+  final _startCountingDateController = TextEditingController();
   final _noteController = TextEditingController();
 
   @override
@@ -377,7 +378,6 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               width: 210,
                               child: defaultFormField(
                                 controller: _basicSalaryController,
-                                label: 'message_title'.tr(),
                                 type: TextInputType.number,
                                 colors: Colors.blueGrey,
                                 //prefix: null,
@@ -395,7 +395,6 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               width: 210,
                               child: defaultFormField(
                                 controller: _fullSalaryController,
-                                label: 'message_title'.tr(),
                                 type: TextInputType.number,
                                 colors: Colors.blueGrey,
                                 validate: (String? value) {
@@ -526,7 +525,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               height: 50,
                               width: 210,
                               child: defaultFormField(
-                                controller: _recruitmentDateController,
+                                controller: _startCountingDateController,
                                 onTab: () async {
                                   DateTime? pickedDate = await showDatePicker(
                                       context: context,
@@ -535,7 +534,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                                       lastDate: DateTime(2050));
 
                                   if (pickedDate != null) {
-                                    _recruitmentDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                    _startCountingDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                                   }
                                 },
                                 type: TextInputType.datetime,
@@ -750,6 +749,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
       advanceBalance: _advanceBalanceController.text.toInt(),
       installmentValue: _installmentController.text.toInt(),
       advanceReason: _advanceReasonController.text,
+      calculatedDate: _startCountingDateController.text,
       notes: _noteController.text,
       latestAdvanceDate: _latestAdvanceDateController.text,
       latestIncreaseDate: _lastIncreaseDateController.text,

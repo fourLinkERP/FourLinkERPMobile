@@ -49,6 +49,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   List<VacationType> vacationTypes = [];
   List<Department> departments = [];
   List<Employee> employees = [];
+
   List<Job> jobs = [];
   List<CostCenter> costCenters =[];
 
@@ -59,7 +60,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   List<DropdownMenuItem<String>> menuCostCenters = [];
   List<DropdownMenuItem<String>> menuJobs = [];
 
-
   String? selectedEmployeeValue = null;
   String? selectedDepartmentValue = null;
   String? selectedJobValue = null;
@@ -69,12 +69,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   final VacationRequestsApiService api = VacationRequestsApiService();
   final _addFormKey = GlobalKey<FormState>();
 
-  String? fromDate;
-  String? toDate;
-  String? vacationDueDate;
-  String? lastSalaryDate;
-
-  Employee? employeeItem = Employee(empCode: empCode, empNameAra: "", empNameEng: "", id: 0);
+  Employee employeeItem = Employee(empCode: empCode );
 
   final _vacationRequestSerialController = TextEditingController(); // Serial
   final _vacationRequestTrxDateController = TextEditingController(); // Date
@@ -109,7 +104,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
       print(e);
     });
 
-    Future<List<Employee>> futureEmployees = _employeeApiService.getEmployees().then((data) {
+    Future<List<Employee>> futureEmployees = _employeeApiService.getEmployeesFiltrated(empCode).then((data) {
       employees = data;
 
       getEmployeesData();
@@ -424,7 +419,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                   width: 210,
                                   // child: Center(),
                                   child: DropdownSearch<Employee>(
-                                    selectedItem: null,
+                                    selectedItem: employeeItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, employeeItem, isSelected) {
                                         return Container(

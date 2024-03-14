@@ -3,12 +3,12 @@ import 'package:fourlinkmobileapp/data/model/modules/module/administration/basic
 import 'package:fourlinkmobileapp/data/model/modules/module/security/menuPermission.dart';
 
 late bool isLoggedIn=false;
-bool isLive = false;
+bool isLive = true;
 
 //Url - Token
 String urlString="http://www.sudokuano.net/api/";
 String reportUrlString="http://Report.15mayclub.com";
-String urlLiveString = "https://mobileapi.4linkerp.com/swagger/index.html";
+String urlLiveString = "https://mobileapi.4linkerp.com/api/";
 String reportUrlLiveString = "https://mobilereports.4linkerp.com";
 Uri baseUrl = isLive == false ? Uri.parse(urlString) : Uri.parse(urlLiveString);
 Uri baseReportUrl = isLive == false ? Uri.parse(reportUrlString) : Uri.parse(reportUrlLiveString);
@@ -32,7 +32,6 @@ String jobCode = "";
 String jobName = "";
 String costCenterCode = "";
 String costCenterName = "";
-
 
 
 //Fiancial Year

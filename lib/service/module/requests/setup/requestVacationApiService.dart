@@ -35,14 +35,14 @@ class VacationRequestsApiService {
 
     if(response.statusCode == 200)
     {
-      //print('VacationRequests success1');
+      print('VacationRequests success1');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<VacationRequests> list = [];
       if(data.isNotEmpty)
         {
           list = data.map((item) => VacationRequests.fromJson(item)).toList(); //VacationRequests.fromJson
         }
-      //print('VacationRequests success 2');
+      print('VacationRequests success 2');
       return list;
     }
     else {

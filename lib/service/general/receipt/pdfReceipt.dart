@@ -62,12 +62,12 @@ class pdfReceipt {
     //     ),
     //   ),
     // );
-
+    pdfx.PdfPageFormat pageFormat = pdfx.PdfPageFormat.roll80.copyWith(height: 1300.0, width: 600.0);
 
     pdf.addPage(
         pw.MultiPage(
-      margin: const pw.EdgeInsets.only(top: 1,left: 15,right: 15,bottom: 1),
-      pageFormat: pdfx.PdfPageFormat.letter,
+      margin: const pw.EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 1),
+      pageFormat: pageFormat,
       textDirection: pw.TextDirection.rtl,
       theme: pw.ThemeData.withFont(
         base: arabicFont,
@@ -79,7 +79,7 @@ class pdfReceipt {
           crossAxisAlignment: CrossAxisAlignment.center, //Center Row contents vertically,
           children: [
               Center(
-                child:   Text(receipt.receiptHeader.companyInvoiceTypeName.toString(),style: const TextStyle(fontSize: 15),textAlign: TextAlign.center),
+                child:   Text(receipt.receiptHeader.companyInvoiceTypeName.toString(),style: const TextStyle(fontSize: 16),textAlign: TextAlign.center),
               )
 
             //
@@ -90,7 +90,7 @@ class pdfReceipt {
             crossAxisAlignment: CrossAxisAlignment.center, //Center Row contents vertically,
             children: [
               Center(
-                child:   Text(receipt.receiptHeader.salesInvoicesTypeName.toString(),style: const TextStyle(fontSize: 15),textAlign: TextAlign.center),
+                child:   Text(receipt.receiptHeader.salesInvoicesTypeName.toString(),style: const TextStyle(fontSize: 16),textAlign: TextAlign.center),
               )
 
               //
@@ -252,7 +252,7 @@ class pdfReceipt {
                       alignment: Alignment.center,
                       //flex: 2,
                       child: Container(
-                          child: Text(' ${recpt.companyInvoiceNo}',style: const TextStyle(fontSize: 15),textAlign: TextAlign.left))),
+                          child: Text(' ${recpt.companyInvoiceNo}',style: const TextStyle(fontSize: 18),textAlign: TextAlign.left))),
 
           ]),
             Row(
@@ -261,7 +261,7 @@ class pdfReceipt {
             Container(
             //flex: 2,
             child: Container(
-            child: Text(' ${recpt.customerName}',style: const TextStyle(fontSize: 15)))),
+            child: Text(' ${recpt.customerName}',style: const TextStyle(fontSize: 20)))),
            ] ),
       Row(
 
@@ -269,7 +269,7 @@ class pdfReceipt {
             Container(
               //flex: 2,
                 child: Container(
-                    child: Text(' ${recpt.customerTaxNo}',style: const TextStyle(fontSize: 15)))),
+                    child: Text(' ${recpt.customerTaxNo}',style: const TextStyle(fontSize: 20)))),
           ] )
 
     ],
@@ -371,7 +371,7 @@ class pdfReceipt {
       headers: headers,
       data: [],
       border: null,
-      headerStyle: const pw.TextStyle(fontSize: 20),
+      headerStyle: const pw.TextStyle(fontSize: 18),
       headerDecoration: const pw.BoxDecoration(color: pdfx.PdfColors.grey400),
       cellHeight: 14,
       cellAlignments: {
@@ -433,7 +433,7 @@ class pdfReceipt {
       border: null,
       headerStyle: const pw.TextStyle(fontSize: 0,height: 0,color: pdfx.PdfColors.white),
       headerDecoration: const pw.BoxDecoration(color: pdfx.PdfColors.white),
-      cellStyle: const pw.TextStyle(fontSize: 20),
+      cellStyle: const pw.TextStyle(fontSize: 18),
       cellHeight: 10,
       cellAlignments: {
         0: pw.Alignment.center,
@@ -475,7 +475,7 @@ class pdfReceipt {
       headers: headers,
       data: [],
       border: null,
-      headerStyle: const pw.TextStyle(fontSize: 16),
+      headerStyle: const pw.TextStyle(fontSize: 18),
       headerDecoration: const pw.BoxDecoration(color: pdfx.PdfColors.grey400),
       cellHeight: 12,
       cellAlignments: {
@@ -578,7 +578,7 @@ class pdfReceipt {
       headerStyle: const pw.TextStyle(fontSize: 0,height: 0,color: pdfx.PdfColors.white),
       headerDecoration: const pw.BoxDecoration(color: pdfx.PdfColors.white),
       cellHeight: 14,
-      cellStyle: const pw.TextStyle(fontSize: 20),
+      cellStyle: const pw.TextStyle(fontSize: 18),
       cellAlignments: {
         0: pw.Alignment.center,
         1: pw.Alignment.center,
@@ -588,7 +588,7 @@ class pdfReceipt {
       columnWidths: {
         0: const FlexColumnWidth(1),
         1: const FlexColumnWidth(2),
-        2: const FlexColumnWidth(1),
+        2: const FlexColumnWidth(3),
         3: const FlexColumnWidth(2),
 
       },
@@ -730,8 +730,8 @@ class pdfReceipt {
                   Center(
                    child:
                    pw.Image(barcodeImage
-                       ,width: 220,
-                       height: 220),
+                       ,width: 180,
+                       height: 180),
                   )
                ]
              )

@@ -34,33 +34,56 @@ class _RequestVacationListState extends State<RequestVacationList> {
 
   bool isLoading = true;
   List<VacationRequests> vacationRequests = [];
+  List<VacationRequests> vacationRequestsFiltered = [];
   List<VacationRequests> _founded = [];
 
   @override
   void initState() {
-    // TODO: implement initState
     print('okkkkkkkkkkk');
-    AppCubit.get(context).CheckConnection();
-    Timer(const Duration(seconds: 30), () { // <-- Delay here
-      setState(() {
-        if(vacationRequests.isEmpty){
-          isLoading = false;
-        }
-        // <-- Code run after delay
-      });
-    });
+    // AppCubit.get(context).CheckConnection();
+    // setState(() {
+    //   filterListByEmployeeCode();
+    //   if(vacationRequests.isEmpty){
+    //     isLoading = false;
+    //   }
+    //   // <-- Code run after delay
+    // });
+    // Timer(const Duration(seconds: 30), () { // <-- Delay here
+    //   setState(() {
+    //     //filterListByEmployeeCode();
+    //     if(vacationRequests.isEmpty){
+    //       isLoading = false;
+    //     }
+    //     // <-- Code run after delay
+    //   });
+    // });
 
     getData();
+    //filterListByEmployeeCode();
     super.initState();
     setState(() {
+      //filterListByEmployeeCode();
       _founded = vacationRequests;
+    });
+  }
+  void filterListByEmployeeCode() {
+    setState(() {
+      vacationRequests.forEach((element) {
+        if(element.empCode == empCode){
+          vacationRequestsFiltered.add(element);
+          print(vacationRequestsFiltered.length);
+          print('++++++++++++++++++++++' + vacationRequestsFiltered.toString());
+          return;
+        }
+      });
+
     });
   }
 
   @override
   Widget build(BuildContext context) {
     setState(() {
-      getData();
+      filterListByEmployeeCode();
     });
 
     return Scaffold(
@@ -224,7 +247,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
       return const Center(child: Text('no internet connection'));
 
     }
-    else if(vacationRequests.isEmpty && AppCubit.get(context).Conection==true){
+    else if(vacationRequestsFiltered.isEmpty && AppCubit.get(context).Conection==true){
       return const Center(child: CircularProgressIndicator());
     }else{
       //print("Success..................");
@@ -233,17 +256,17 @@ class _RequestVacationListState extends State<RequestVacationList> {
         color: const Color.fromRGBO(240, 242, 246,1),// Main Color
 
         child: ListView.builder(
-            itemCount: vacationRequests.isEmpty ? 0 : vacationRequests.length,
+            itemCount: vacationRequestsFiltered.isEmpty ? 0 : vacationRequestsFiltered.length,
             itemBuilder: (BuildContext context, int index) {
               return
                 Card(
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRequestVacation(vacationRequests[index])),);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailRequestVacation(vacationRequestsFiltered[index])),);
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/vacation.png'),
-                      title: Text('serial'.tr() + " : " + vacationRequests[index].trxSerial.toString()),
+                      title: Text('serial'.tr() + " : " + vacationRequestsFiltered[index].trxSerial.toString()),
 
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
@@ -253,14 +276,14 @@ class _RequestVacationListState extends State<RequestVacationList> {
                               color: Colors.white30,
                               child: Row(
                                 children: [
-                                  Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(vacationRequests[index].trxDate.toString())))  ,
+                                  Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(vacationRequestsFiltered[index].trxDate.toString())))  ,
 
                                 ],
 
                               )),
                           Container(height: 20, color: Colors.white30, child: Row(
                             children: [
-                              Text('employee'.tr() + " : " + vacationRequests[index].empName.toString()),
+                              Text('employee'.tr() + " : " + vacationRequestsFiltered[index].empName.toString()),
                             ],
 
                           )),
@@ -278,7 +301,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
                                         ),
                                         label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
                                         onPressed: () {
-                                          _navigateToEditScreen(context,vacationRequests[index]);
+                                          _navigateToEditScreen(context,vacationRequestsFiltered[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -306,7 +329,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
                                         ),
                                         label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                          _deleteItem(context,vacationRequests[index].id);
+                                          _deleteItem(context,vacationRequestsFiltered[index].id);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -371,7 +394,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
       getData();
     }
     setState(() {
-      vacationRequests = _founded.where((VacationRequests) =>
+      vacationRequestsFiltered = _founded.where((VacationRequests) =>
           VacationRequests.trxSerial!.toLowerCase().contains(search)).toList();
     });
   }
