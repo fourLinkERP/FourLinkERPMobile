@@ -12,6 +12,8 @@ import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
+import '../../../../../data/model/modules/module/requests/basicInputs/settingRequests/SettingRequestH.dart';
+import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 
@@ -21,7 +23,9 @@ EmployeeApiService _employeeApiService = EmployeeApiService();
 GroupApiService _groupApiService = GroupApiService();
 
 class AddReqDetails extends StatefulWidget {
-  const AddReqDetails({Key? key}) : super(key: key);
+  AddReqDetails(this.settingReqH);
+
+  final SettingRequestH settingReqH;
 
   @override
   State<AddReqDetails> createState() => _AddReqDetailsState();
@@ -29,6 +33,7 @@ class AddReqDetails extends StatefulWidget {
 
 class _AddReqDetailsState extends State<AddReqDetails> {
 
+  List<SettingRequestH> settingRequestHLst = [];
   List<SettingRequestD> settingRequestDLst = <SettingRequestD>[];
   List<SettingRequestD> selected = [];
   List<Employee> employees = [];
@@ -100,316 +105,303 @@ class _AddReqDetailsState extends State<AddReqDetails> {
               children:[
                 const SizedBox(height:20),
                 Expanded(
-                    child: ListView(
+                  child: ListView(
                       children: [
-                        ListTile(
-                          leading: Text('level'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          title: SizedBox(
-                            width: 180,
-                            height: 45,
-                            child: defaultFormField(
-                              //enable: false,
-                              controller: _levelsController,
-                              type: TextInputType.number,
-                              colors: Colors.blueGrey,
-                              //prefix: null,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'field_cannot_be_empty'.tr();;
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12,),
-                        ListTile(
-                          leading: Text('group'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: Container(
-                            width: 220,
-                            height: 55,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Center(
-                              child: DropdownSearch<UserGroup>(
-                                popupProps: PopupProps.menu(
-                                  itemBuilder: (context, item, isSelected) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                                      decoration: !isSelected ? null
-                                          : BoxDecoration(
-
-                                        border: Border.all(color: Theme.of(context).primaryColor),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.white,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text((langId==1)? item.groupNameAra.toString():  item.groupNameEng.toString(),
-                                          textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                      ),
-                                    );
-                                  },
-                                  showSearchBox: true,
-                                ),
-                                items: groups,
-                                itemAsString: (UserGroup u) => u.groupNameAra.toString(),
-                                onChanged: (value){
-                                  selectedGroupValue =  value!.groupId.toString();
-                                },
-                                filterFn: (instance, filter){
-                                  if(instance.groupNameAra!.contains(filter)){
-                                    print(filter);
-                                    return true;
-                                  }
-                                  else{
-                                    return false;
-                                  }
-                                },
-                                dropdownDecoratorProps: const DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelStyle: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                    icon: Icon(Icons.keyboard_arrow_down),
+                        Container(
+                          margin: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
+                          height: 780,
+                          child: ListView(
+                            scrollDirection: Axis.horizontal,
+                            children: [
+                              Column(
+                                //mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const SizedBox(height: 10),
+                                  SizedBox(
+                                    height: 50,
+                                    width: 100,
+                                    child: Text("level".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
                                   ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        // more than 20 days
-                        ListTile(
-                          leading: Text('employee'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: Container(
-                            width: 220,
-                            height: 55,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Center(
-                              child: DropdownSearch<Employee>(
-                                popupProps: PopupProps.menu(
-                                  itemBuilder: (context, item, isSelected) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                                      decoration: !isSelected ? null
-                                          : BoxDecoration(
-
-                                        border: Border.all(color: Theme.of(context).primaryColor),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.white,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text((langId==1)? item.empNameAra.toString():  item.empNameEng.toString(),
-                                          textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                      ),
-                                    );
-                                  },
-                                  showSearchBox: true,
-                                ),
-                                items: employees,
-                                itemAsString: (Employee u) => u.empNameAra.toString(),
-                                onChanged: (value){
-                                  selectedEmployeeValue =  value!.empCode.toString();
-                                  //selectedEmployeeName = (langId==1)? value.empNameAra.toString():  value.empNameEng.toString();
-                                },
-                                filterFn: (instance, filter){
-                                  if(instance.empNameAra!.contains(filter)){
-                                    print(filter);
-                                    return true;
-                                  }
-                                  else{
-                                    return false;
-                                  }
-                                },
-                                dropdownDecoratorProps: const DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelStyle: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                    icon: Icon(Icons.keyboard_arrow_down),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 50,
+                                    width: 100,
+                                    child: Text("group".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                   ),
-                                ),
-
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        ListTile(
-                          leading: Text("alternative_employee".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: Container(
-                            width: 220,
-                            height: 55,
-                            decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Center(
-                              child: DropdownSearch<Employee>(
-                                popupProps: PopupProps.menu(
-                                  itemBuilder: (context, item, isSelected) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                                      decoration: !isSelected ? null
-                                          : BoxDecoration(
-
-                                        border: Border.all(color: Theme.of(context).primaryColor),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.white,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text((langId==1)? item.empNameAra.toString():  item.empNameEng.toString(),
-                                          textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                      ),
-                                    );
-                                  },
-                                  showSearchBox: true,
-                                ),
-                                items: employees,
-                                itemAsString: (Employee u) => u.empNameAra.toString(),
-                                onChanged: (value){
-                                  selectedAlternativeEmployeeValue =  value!.empCode.toString();
-                                  //selectedEmployeeName = (langId==1)? value.empNameAra.toString():  value.empNameEng.toString();
-                                },
-                                filterFn: (instance, filter){
-                                  if(instance.empNameAra!.contains(filter)){
-                                    print(filter);
-                                    return true;
-                                  }
-                                  else{
-                                    return false;
-                                  }
-                                },
-                                dropdownDecoratorProps: const DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelStyle: TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                    icon: Icon(Icons.keyboard_arrow_down),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 50,
+                                    width: 100,
+                                    child: Text("creator_employee".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                   ),
-                                ),
-
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 50,
+                                    width: 100,
+                                    child: Text("alternative_employee".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 100,
+                                    child: Text("email_receivers".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 100,
+                                    child: Text("sms_receivers".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 100,
+                                    child: Text("whatsapp_receivers".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 100,
+                                    child: Text("descriptionNameArabic".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 100,
+                                    child: Text("descriptionNameEnglish".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  ),
+                                ],
                               ),
-                            ),
+                              const SizedBox(width: 5,),
+                              Column(
+                                children: [
+                                  SizedBox(
+                                    height: 50,
+                                    width: 210,
+                                    child: defaultFormField(
+                                      enable: true,
+                                      controller: _levelsController,
+                                      type: TextInputType.text,
+                                      colors: Colors.blueGrey,
+                                      //prefix: null,
+                                      validate: (String? value) {
+                                        if (value!.isEmpty) {
+                                          return 'required_field'.tr();
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 50,
+                                    width: 210,
+                                    child: Center(
+                                      child: DropdownSearch<UserGroup>(
+                                        popupProps: PopupProps.menu(
+                                          itemBuilder: (context, item, isSelected) {
+                                            return Container(
+                                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                                              decoration: !isSelected ? null
+                                                  : BoxDecoration(
+
+                                                border: Border.all(color: Theme.of(context).primaryColor),
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: Colors.white,
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text((langId==1)? item.groupNameAra.toString():  item.groupNameEng.toString(),
+                                                  textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                              ),
+                                            );
+                                          },
+                                          showSearchBox: true,
+                                        ),
+                                        items: groups,
+                                        itemAsString: (UserGroup u) => u.groupNameAra.toString(),
+                                        onChanged: (value){
+                                          selectedGroupValue =  value!.groupId.toString();
+                                        },
+                                        filterFn: (instance, filter){
+                                          if(instance.groupNameAra!.contains(filter)){
+                                            print(filter);
+                                            return true;
+                                          }
+                                          else{
+                                            return false;
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 50,
+                                    width: 210,
+                                    child: Center(
+                                      child: DropdownSearch<Employee>(
+                                        popupProps: PopupProps.menu(
+                                          itemBuilder: (context, item, isSelected) {
+                                            return Container(
+                                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                                              decoration: !isSelected ? null
+                                                  : BoxDecoration(
+
+                                                border: Border.all(color: Theme.of(context).primaryColor),
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: Colors.white,
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text((langId==1)? item.empNameAra.toString():  item.empNameEng.toString(),
+                                                  textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                              ),
+                                            );
+                                          },
+                                          showSearchBox: true,
+                                        ),
+                                        items: employees,
+                                        itemAsString: (Employee u) => u.empNameAra.toString(),
+                                        onChanged: (value){
+                                          selectedEmployeeValue =  value!.empCode.toString();
+                                          //selectedEmployeeName = (langId==1)? value.empNameAra.toString():  value.empNameEng.toString();
+                                        },
+                                        filterFn: (instance, filter){
+                                          if(instance.empNameAra!.contains(filter)){
+                                            print(filter);
+                                            return true;
+                                          }
+                                          else{
+                                            return false;
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 50,
+                                    width: 210,
+                                    child: Center(
+                                      child: DropdownSearch<Employee>(
+                                        popupProps: PopupProps.menu(
+                                          itemBuilder: (context, item, isSelected) {
+                                            return Container(
+                                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                                              decoration: !isSelected ? null
+                                                  : BoxDecoration(
+
+                                                border: Border.all(color: Theme.of(context).primaryColor),
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: Colors.white,
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text((langId==1)? item.empNameAra.toString():  item.empNameEng.toString(),
+                                                  textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                              ),
+                                            );
+                                          },
+                                          showSearchBox: true,
+                                        ),
+                                        items: employees,
+                                        itemAsString: (Employee u) => u.empNameAra.toString(),
+                                        onChanged: (value){
+                                          selectedAlternativeEmployeeValue =  value!.empCode.toString();
+                                          //selectedEmployeeName = (langId==1)? value.empNameAra.toString():  value.empNameEng.toString();
+                                        },
+                                        filterFn: (instance, filter){
+                                          if(instance.empNameAra!.contains(filter)){
+                                            print(filter);
+                                            return true;
+                                          }
+                                          else{
+                                            return false;
+                                          }
+                                        },
+
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 210,
+                                    child: defaultFormField(
+                                      controller: _emailReceiversController,
+                                      label: 'email_receivers'.tr(),
+                                      type: TextInputType.text,
+                                      colors: Colors.blueGrey,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 210,
+                                    child: defaultFormField(
+                                      controller: _smsReceiversController,
+                                      label: 'sms_receivers'.tr(),
+                                      type: TextInputType.text,
+                                      colors: Colors.blueGrey,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 210,
+                                    child: defaultFormField(
+                                      controller: _whatsappReceiversController,
+                                      label: 'whatsapp_receivers'.tr(),
+                                      type: TextInputType.number,
+                                      colors: Colors.blueGrey,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 210,
+                                    child: defaultFormField(
+                                      controller: _descriptionAraController,
+                                      type: TextInputType.text,
+                                      colors: Colors.blueGrey,
+                                      validate: (String? value) {
+                                        if (value!.isEmpty) {
+                                          return 'description must be non empty';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 210,
+                                    child: defaultFormField(
+                                      controller: _descriptionEngController,
+                                      type: TextInputType.text,
+                                      colors: Colors.blueGrey,
+                                      validate: (String? value) {
+                                        if (value!.isEmpty) {
+                                          return 'description must be non empty';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+
+                                  ),
+
+                                ],
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 12),
-                        ListTile(
-                          leading: Text('email_receivers'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: SizedBox(
-                            width: 200,
-                            height: 55,
-                            child: defaultFormField(
-                              controller: _emailReceiversController,
-                              label: 'email_receivers'.tr(),
-                              type: TextInputType.text,
-                              colors: Colors.blueGrey,
-                              //prefix: null,
-                              // validate: (String? value) {
-                              //   if (value!.isEmpty) {
-                              //     return 'name must be non empty';
-                              //   }
-                              //   return null;
-                              // },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12,),
-                        ListTile(
-                          leading: Text('sms_receivers'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: SizedBox(
-                            width: 200,
-                            height: 55,
-                            child: defaultFormField(
-                              controller: _smsReceiversController,
-                              label: 'sms_receivers'.tr(),
-                              type: TextInputType.text,
-                              colors: Colors.blueGrey,
-                              //prefix: null,
-                              // validate: (String? value) {
-                              //   if (value!.isEmpty) {
-                              //     return 'name must be non empty';
-                              //   }
-                              //   return null;
-                              // },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12,),
-                        ListTile(
-                          leading: Text('whatsapp_receivers'.tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: SizedBox(
-                            width: 220,
-                            height: 55,
-                            child: defaultFormField(
-                              controller: _whatsappReceiversController,
-                              label: 'whatsapp_receivers'.tr(),
-                              type: TextInputType.number,
-                              colors: Colors.blueGrey,
-                              //prefix: null,
-                              // validate: (String? value) {
-                              //   if (value!.isEmpty) {
-                              //     return 'num of levels must be non empty';
-                              //   }
-                              //   return null;
-                              // },
-                            ),
-                          ),
-                        ),
-                        // to have some of
-                        const SizedBox(height: 12,),
-                        ListTile(
-                          leading: Text("Description Ara: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: SizedBox(
-                            width: 220,
-                            height: 55,
-                            child: defaultFormField(
-                              controller: _descriptionAraController,
-                              label: 'Enter'.tr(),
-                              type: TextInputType.text,
-                              colors: Colors.blueGrey,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'description must be non empty';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 12,),
-                        ListTile(
-                          leading: Text("Description Eng: ".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                          trailing: SizedBox(
-                            width: 220,
-                            height: 55,
-                            child: defaultFormField(
-                              controller: _descriptionEngController,
-                              label: 'Enter'.tr(),
-                              type: TextInputType.text,
-                              colors: Colors.blueGrey,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'description must be non empty';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
+
+                      ]
+                  ),
                 ),
                 const SizedBox(height: 30,),
                 SizedBox(
@@ -427,7 +419,7 @@ class _AddReqDetailsState extends State<AddReqDetails> {
                         ),
                       ),
                       onPressed: () {
-                        //saveResourceRequest(context);
+                        saveSettingRequestD(context);
                       },
                       child: Text('Save'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
                     ),
@@ -511,5 +503,38 @@ class _AddReqDetailsState extends State<AddReqDetails> {
     }, onError: (e) {
       print(e);
     });
+  }
+  saveSettingRequestD(BuildContext context)
+  {
+    if (selectedEmployeeValue!.isEmpty) {
+      FN_showToast(context, 'please set employee'.tr(), Colors.red);
+      return;
+    }
+
+    if (selectedAlternativeEmployeeValue!.isEmpty) {
+      FN_showToast(context, 'please set alternative'.tr(), Colors.red);
+      return;
+    }
+    if (selectedGroupValue == null) {
+      FN_showToast(context, 'please set a value'.tr(), Colors.red);
+      return;
+    }
+
+    api.createSettingRequestD(context, SettingRequestD(
+
+      settingRequestCode: widget.settingReqH.settingRequestCode,
+      lineNum: lineNum,
+      levels: int.parse(_levelsController.text),
+      groupCode: int.parse(selectedGroupValue!),
+      empCode: selectedEmployeeValue,
+      alternativeEmpCode: selectedAlternativeEmployeeValue,
+      emailReceivers: _emailReceiversController.text,
+      smsReceivers: _smsReceiversController.text,
+      whatsappReceivers: _whatsappReceiversController.text,
+      descriptionAra: _descriptionAraController.text,
+      descriptionEng: _descriptionEngController.text,
+    ));
+     lineNum++;
+    Navigator.pop(context,true );
   }
 }

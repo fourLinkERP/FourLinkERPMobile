@@ -341,7 +341,7 @@ class _RequestResourceListState extends State<RequestResourceList> {
       print('Error ${Error}');
       AppCubit.get(context).EmitErrorState();
     });
-    print('xxxx1 before list');
+    //print('xxxx1 before list');
     resourceRequests = (await futureResourceRequests)!;
     print('xxxx2 len ' + resourceRequests.length.toString());
     if (resourceRequests.isNotEmpty) {

@@ -568,11 +568,30 @@
     "to_date": "الى تاريخ",
     "vacation_type": "نوع الاجازة",
     "notes": "ملاحظات",
-    "Setting Requests": "اعدادات الطلبات",
+    "setting_requests": "اعدادات الطلبات",
     "edit_request_salary": "تعديل طلب زيادة راتب",
     "edit_additional_request": "تعديل طلب اضافي",
-    "noDataToPrint": "لا يوجد بيانات لطباعتها"
-
+    "noDataToPrint": "لا يوجد بيانات لطباعتها",
+    "searchSettingRequests": "بحث اعدادات الطلبات",
+    "request_code": "كود الطلب",
+    "request_type": "نوع الطلب",
+    "request_name_ara": "اسم الطلب عربي",
+    "request_name_eng": "اسم الطلب انجليزي",
+    "num_of_levels": "عدد المستويات",
+    "request_department": "قسم الطلب",
+    "send_email": "الايميل",
+    "related_transaction": "الشاشة المرتبطة",
+    "approval_procedure": "شاشة اجراء الموافقات",
+    "Setting Requests": "اعدادات الطلبات",
+    "add_setting_request_details": "انشاء تفاصيل اعدادات الطلب",
+    "creator_employee": "القائم بالتعميد",
+    "group": "المجموعة",
+    "alternative_employee": "البديل",
+    "email_receivers": "مستقبلي البريد الالكتروني",
+    "sms_receivers": "مستقبلي رسائل نصية",
+    "whatsapp_receivers": "مستقبلي رسائل واتساب",
+    "edit_setting_requests": "تعديل اعدادات الطلبات",
+    "add_vacation_request": "اضافة طلب اجازة"
 
 }
 

@@ -3,10 +3,12 @@ import 'package:fourlinkmobileapp/data/model/modules/module/administration/basic
 import 'package:fourlinkmobileapp/data/model/modules/module/security/menuPermission.dart';
 
 late bool isLoggedIn=false;
-bool isLive = true;
+bool isLive = false;
 
 //Url - Token
-String urlString="http://www.sudokuano.net/api/";
+String urlString = "http://webapi.4linkerp.com/api/";
+//String urlString = "https://kreazmobileapi.4linkerp.com/api/";
+//String urlString="http://www.sudokuano.net/api/";
 String reportUrlString="http://Report.15mayclub.com";
 String urlLiveString = "https://mobileapi.4linkerp.com/api/";
 String reportUrlLiveString = "https://mobilereports.4linkerp.com";
@@ -23,6 +25,7 @@ String branchName='فرع تست';
 // RequestTypeCode & TransactionId
 String requestTypeCode = "";
 String transactionId = "";
+int lineNumber = 1;
 //Language
 int langId = 1; //1-Arabic   2-English
 //Employee

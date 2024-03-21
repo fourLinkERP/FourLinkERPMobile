@@ -36,7 +36,7 @@ class _AddAdditionalRequestState extends State<AddAdditionalRequest> {
         body: TabBarView(
           children: [
             GeneralAddReqTab(),
-            Approvals(),
+            //Approvals(),
           ],
         ),
       ),

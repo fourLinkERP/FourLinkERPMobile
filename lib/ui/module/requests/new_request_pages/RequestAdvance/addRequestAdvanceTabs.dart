@@ -36,7 +36,7 @@ class _RequestAdvanceState extends State<RequestAdvance> {
         body: TabBarView(
           children: [
             AddRequestAdvance(),
-            Approvals(),
+           // Approvals(),
           ],
         ),
       ),

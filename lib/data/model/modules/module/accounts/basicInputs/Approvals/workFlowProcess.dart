@@ -7,6 +7,9 @@ class WorkFlowProcess{
   String? levelCode;
   String? empCode;
   String? empName;
+  String? alternativeEmpCode;
+  String? alternativeEmpName;
+  int? workFlowTransactionId;
   String? requestTypeCode;
   String? workFlowStatusCode;
   String? workFlowStatusName;
@@ -16,6 +19,9 @@ class WorkFlowProcess{
     this.trxDate,
     this.empCode,
     this.empName,
+    this.alternativeEmpCode,
+    this.alternativeEmpName,
+    this.workFlowTransactionId,
     this.levelCode,
     this.notes,
     this.requestTypeCode,
@@ -29,6 +35,9 @@ class WorkFlowProcess{
       levelCode: (json['levelCode'] != null) ? json['levelCode'] as String : " ",
       empCode: (json['empCode'] != null) ? json['empCode'] as String : " ",
       empName: (json['empName'] != null) ? json['empName'] as String : " ",
+      workFlowTransactionId: (json['workFlowTransactionId'] != null) ? json['workFlowTransactionId'] as int : 0,
+      alternativeEmpCode: (json['alternativeEmpCode'] != null) ? json['alternativeEmpCode'] as String : " ",
+      alternativeEmpName: (json['alternativeEmpName'] != null) ? json['alternativeEmpName'] as String : " ",
       workFlowStatusCode: (json['workFlowStatusCode'] != null) ? json['workFlowStatusCode'] as String : " ",
       workFlowStatusName: (json['workFlowStatusName'] != null) ? json['workFlowStatusName'] as String : " ",
       notes: (json['notes'] != null) ? json['notes'] as String : " ",

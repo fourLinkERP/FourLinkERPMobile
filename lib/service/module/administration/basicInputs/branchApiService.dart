@@ -11,7 +11,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<List<Branch>>  getBranches() async {
 
-    String searchApi= 'http://www.sudokuano.net/api/v1/branches/loginsearch';
+    String searchApi= 'http://webapi.4linkerp.com/api/v1/branches/loginsearch';
 
     Map data = {
       'CompanyCode': companyCode

@@ -2,8 +2,6 @@ import 'dart:async';
 
 import'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVacation/detailRequestVacation.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVacation/editRequestVacation.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVacation/addRequestVacationTabs.dart';
 import 'dart:core';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -17,6 +15,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../../helpers/toast.dart';
 import '../../../../../utils/permissionHelper.dart';
+import 'addRequestVacation.dart';
 import 'editRequestVacationTabs.dart';
 
 
@@ -34,20 +33,13 @@ class _RequestVacationListState extends State<RequestVacationList> {
 
   bool isLoading = true;
   List<VacationRequests> vacationRequests = [];
-  List<VacationRequests> vacationRequestsFiltered = [];
+ // List<VacationRequests> vacationRequestsFiltered = [];
   List<VacationRequests> _founded = [];
 
   @override
   void initState() {
     print('okkkkkkkkkkk');
-    // AppCubit.get(context).CheckConnection();
-    // setState(() {
-    //   filterListByEmployeeCode();
-    //   if(vacationRequests.isEmpty){
-    //     isLoading = false;
-    //   }
-    //   // <-- Code run after delay
-    // });
+    AppCubit.get(context).CheckConnection();
     // Timer(const Duration(seconds: 30), () { // <-- Delay here
     //   setState(() {
     //     //filterListByEmployeeCode();
@@ -66,25 +58,27 @@ class _RequestVacationListState extends State<RequestVacationList> {
       _founded = vacationRequests;
     });
   }
-  void filterListByEmployeeCode() {
-    setState(() {
+  List<VacationRequests> filterListByEmployeeCode() {
+    List<VacationRequests> filteredList = [];
+
+    if (empCode == "1" || empCode == "11" || empCode == "10") {
+      filteredList = vacationRequests;
+    } else {
       vacationRequests.forEach((element) {
-        if(element.empCode == empCode){
-          vacationRequestsFiltered.add(element);
-          print(vacationRequestsFiltered.length);
-          print('++++++++++++++++++++++' + vacationRequestsFiltered.toString());
-          return;
+        if (element.empCode == empCode) {
+          filteredList.add(element);
         }
       });
+    }
 
-    });
+    return filteredList;
   }
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      filterListByEmployeeCode();
-    });
+    // setState(() {
+    //   filterListByEmployeeCode();
+    // });
 
     return Scaffold(
       appBar: AppBar(
@@ -170,14 +164,15 @@ class _RequestVacationListState extends State<RequestVacationList> {
   }
   _navigateToAddScreen(BuildContext context) async {
 
-    // CircularProgressIndicator();
-    int menuId=45201;
-    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    // int menuId=45201;
+    // bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     // if(isAllowAdd)
     // {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => RequestVacation(),
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddRequestVacation(),
       )).then((value) {
-        getData();
+        if (value != null && value == true) {
+          getData();
+        }
       });
     // }
     // else
@@ -190,53 +185,54 @@ class _RequestVacationListState extends State<RequestVacationList> {
 
     int menuId=45201;
     bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
-    if(isAllowEdit)
-    {
+    // if(isAllowEdit)
+    // {
 
       final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
           //EditRequestVacation(requests)),).then((value) => getData());
           EditRequestVacationTabs(requests)),).then((value) => getData());
 
-    }
-    else
-    {
-      FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
-    }
+    // }
+    // else
+    // {
+    //   FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
+    // }
 
   }
   _deleteItem(BuildContext context,int? id) async {
+    FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
 
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Are you sure?'),
-        content: const Text('This action will permanently delete this data'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );
-    if (result == null || !result) {
-      return;
-    }
-
-    int menuId=45201;
-    bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
-    if(isAllowDelete)
-    {
-      var res = _apiService.deleteVacationRequest(context,id).then((value) => getData());
-    }
-    else
-    {
-      FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
-    }
+    // final result = await showDialog<bool>(
+    //   context: context,
+    //   builder: (context) => AlertDialog(
+    //     title: const Text('Are you sure?'),
+    //     content: const Text('This action will permanently delete this data'),
+    //     actions: [
+    //       TextButton(
+    //         onPressed: () => Navigator.pop(context, false),
+    //         child: const Text('Cancel'),
+    //       ),
+    //       TextButton(
+    //         onPressed: () => Navigator.pop(context, true),
+    //         child: const Text('Delete'),
+    //       ),
+    //     ],
+    //   ),
+    // );
+    // if (result == null || !result) {
+    //   return;
+    // }
+    //
+    // int menuId=45201;
+    // bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
+    // if(isAllowDelete)
+    // {
+    //   var res = _apiService.deleteVacationRequest(context,id).then((value) => getData());
+    // }
+    // else
+    // {
+    //   FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
+    // }
   }
 
   Widget buildVacationRequests(){
@@ -247,9 +243,15 @@ class _RequestVacationListState extends State<RequestVacationList> {
       return const Center(child: Text('no internet connection'));
 
     }
-    else if(vacationRequestsFiltered.isEmpty && AppCubit.get(context).Conection==true){
-      return const Center(child: CircularProgressIndicator());
-    }else{
+    // else if(vacationRequestsFiltered.isEmpty && AppCubit.get(context).Conection==true){
+    //   return const Center(child: CircularProgressIndicator());
+    // }
+    List<VacationRequests>? vacationRequestsFiltered = filterListByEmployeeCode();
+
+    if (vacationRequestsFiltered.isEmpty) {
+      return Center(child: CircularProgressIndicator());
+    }
+    else{
       //print("Success..................");
       return Container(
         margin: const EdgeInsets.only(top: 5,),
@@ -386,15 +388,13 @@ class _RequestVacationListState extends State<RequestVacationList> {
     }
   }
 
-
   onSearch(String search) {
-
     if(search.isEmpty)
     {
       getData();
     }
     setState(() {
-      vacationRequestsFiltered = _founded.where((VacationRequests) =>
+      vacationRequests = _founded.where((VacationRequests) =>
           VacationRequests.trxSerial!.toLowerCase().contains(search)).toList();
     });
   }
@@ -406,8 +406,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
     if (vacationRequests.isNotEmpty) {
       setState(() {
         _founded = vacationRequests;
-        String search = '';
-
+        filterListByEmployeeCode();
       });
     }
   }

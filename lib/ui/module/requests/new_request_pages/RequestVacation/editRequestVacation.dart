@@ -142,33 +142,38 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
     _vacationRequestNoteController.text = widget.requests.notes!;
     _vacationRequestLastSalaryDateController.text = widget.requests.latestVacationDate!;
     _vacationRequestDueDateController.text = widget.requests.vacationDueDate!;
+    selectedVacationTypeValue = widget.requests.vacationTypeCode!;
+    selectedDepartmentValue = widget.requests.departmentCode!;
+    selectedCostCenterValue = widget.requests.costCenterCode1!;
+    selectedEmployeeValue = widget.requests.empCode!;
+    selectedJobValue = widget.requests.jobCode!;
 
-    if(widget.requests.vacationTypeCode != null){
-      selectedVacationTypeValue = widget.requests.vacationTypeCode!;
-
-      print('Hello VT ' + vacationTypes.length.toString());
-    }
-    if(widget.requests.departmentCode != null){
-      selectedDepartmentValue = widget.requests.departmentCode!;
-
-      print('Hello DP' + departments.length.toString());
-      print('Hello selectedDepartmentValue' + selectedDepartmentValue.toString());
-    }
-    if(widget.requests.costCenterCode1 != null){
-      selectedCostCenterValue = widget.requests.costCenterCode1!;
-
-      print('Hello CC' + costCenters.length.toString());
-    }
-    if(widget.requests.empCode != null){
-      selectedEmployeeValue = widget.requests.empCode!;
-
-      print('Hello EM' + employees.length.toString());
-    }
-    if(widget.requests.jobCode != null){
-      selectedJobValue = widget.requests.jobCode!;
-
-      print('Hello EM' + jobs.length.toString());
-    }
+    // if(widget.requests.vacationTypeCode != null){
+    //   selectedVacationTypeValue = widget.requests.vacationTypeCode!;
+    //
+    //   print('Hello VT ' + vacationTypes.length.toString());
+    // }
+    // if(widget.requests.departmentCode != null){
+    //
+    //
+    //   print('Hello DP' + departments.length.toString());
+    //   print('Hello selectedDepartmentValue' + selectedDepartmentValue.toString());
+    // }
+    // if(widget.requests.costCenterCode1 != null){
+    //
+    //
+    //   print('Hello CC' + costCenters.length.toString());
+    // }
+    // if(widget.requests.empCode != null){
+    //
+    //
+    //   print('Hello EM' + employees.length.toString());
+    // }
+    // if(widget.requests.jobCode != null){
+    //
+    //
+    //   print('Hello EM' + jobs.length.toString());
+    // }
     super.initState();
   }
 
@@ -177,21 +182,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar:AppBar(
-      //   centerTitle: true,
-      //   title: Row(
-      //     crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
-      //     children: [
-      //       Image.asset('assets/images/logowhite2.png', scale: 3,),
-      //       const SizedBox(width: 1,),
-      //       Padding(
-      //         padding: const EdgeInsets.fromLTRB(0,11,2,0), //apply padding to all four sides
-      //         child: Text('edit_request_vacation'.tr(),style: const TextStyle(color: Colors.white, fontSize: 15.0,),),
-      //       )
-      //     ],
-      //   ),
-      //   backgroundColor: const Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
-      // ),
         body: Form(
           key: _addFormKey,
           child: Column(

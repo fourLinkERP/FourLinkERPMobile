@@ -35,7 +35,7 @@ class _RequestSalaryState extends State<RequestSalary> {
         body: TabBarView(
           children: [
             AddRequestSalary(),
-            Approvals(),
+            //Approvals(),
           ],
         ),
       ),

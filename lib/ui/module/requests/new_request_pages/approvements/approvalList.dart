@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/approvements/addApproval.dart';
@@ -8,17 +6,44 @@ import 'package:intl/intl.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../cubit/app_states.dart';
+import '../../../../../data/model/modules/module/accounts/basicInputs/Approvals/workFlowProcess.dart';
+import '../../../../../data/model/modules/module/requests/setup/vacationRequest.dart';
 import '../../../../../helpers/hex_decimal.dart';
+import '../../../../../service/module/requests/setup/Approvals/workFlowProcessApiService.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 
+WorkFlowProcessApiService _apiService = WorkFlowProcessApiService();
+
 class Approvals extends StatefulWidget {
-  const Approvals({Key? key}) : super(key: key);
+
+  Approvals(this.vacationRequest);
+  VacationRequests vacationRequest;
 
   @override
-  State<Approvals> createState() => _ApprovalsState();
+  State<Approvals> createState() => ApprovalsState(vacationRequest);
 }
 
-class _ApprovalsState extends State<Approvals> {
+class ApprovalsState extends State<Approvals> {
+  late VacationRequests vacationRequest;
+
+  ApprovalsState(VacationRequests requests) {
+    this.vacationRequest = requests;
+  }
+
+  WorkFlowProcess? process = WorkFlowProcess(empCode: "",levelCode: "");
+  List<WorkFlowProcess> processes = <WorkFlowProcess>[];
+  List<WorkFlowProcess> _founded = [];
+
+  @override
+  void initState() {
+    AppCubit.get(context).CheckConnection();
+
+    getData();
+    super.initState();
+    setState(() {
+      _founded = processes;
+    });
+  }
 
   DateTime get pickedDate => DateTime.now();
 
@@ -83,17 +108,17 @@ class _ApprovalsState extends State<Approvals> {
       return const Center(child: Text('no internet connection'));
 
     }
-    // else if(vacationRequests.isEmpty && AppCubit.get(context).Connection==true){
-    //   return const Center(child: CircularProgressIndicator());
-    // }
+    else if(processes.isEmpty && AppCubit.get(context).Conection==true){
+      return const Center(child: CircularProgressIndicator());
+    }
     else{
-      //print("Success..................");
+      print("Success to load approvals............");
       return Container(
         margin: const EdgeInsets.only(top: 5,),
         color: const Color.fromRGBO(240, 242, 246,1),// Main Color
 
         child: ListView.builder(
-            itemCount: 0, //vacationRequests.isEmpty ? 0 : vacationRequests.length,
+            itemCount: 1,
             itemBuilder: (BuildContext context, int index) {
               return
                 Card(
@@ -103,9 +128,8 @@ class _ApprovalsState extends State<Approvals> {
                       // );
                     },
                     child: ListTile(
-                      leading: Image.asset('assets/fitness_app/vacation.png'),
-                      title: Text('serial'.tr() + " : 1" ),
-                        //  + vacationRequests[index].trxSerial.toString()),
+                      //leading: Image.asset('assets/fitness_app/vacation.png'),
+                      title: Text('serial'.tr() + " : " + processes[index].id.toString()),
 
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
@@ -115,14 +139,12 @@ class _ApprovalsState extends State<Approvals> {
                               color: Colors.white30,
                               child: Row(
                                 children: [
-                                  Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(pickedDate)),
-                                    //  DateFormat('yyyy-MM-dd').format(DateTime.parse(vacationRequests[index].trxDate.toString())))  ,
+                                  Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(processes[index].trxDate.toString())))  ,
                                 ],
                               )),
                           Container(height: 20, color: Colors.white30, child: Row(
                             children: [
-                              Text('employee'.tr() + " : Admin" ),
-                                 // + vacationRequests[index].empName.toString()),
+                              Text('employee'.tr() + " : " + processes[index].empName.toString()),
                             ],
 
                           )),
@@ -231,7 +253,7 @@ class _ApprovalsState extends State<Approvals> {
     // bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     // if(isAllowAdd)
     // {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddApproval()),);
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddApproval(vacationRequest)),);
           //.then((value) {
         //getData();
       //}
@@ -285,4 +307,18 @@ class _ApprovalsState extends State<Approvals> {
   //     });
   //   }
   // }
+  void getData() async {
+    Future<WorkFlowProcess>? futureWorkflowProcess =
+    _apiService.get2WorkFlowProcess("2", widget.vacationRequest.id!).catchError((Error){
+      print('Error ${Error}');
+      AppCubit.get(context).EmitErrorState();
+    });
+    print("+++++++++----" + widget.vacationRequest.id.toString());
+    process = (await futureWorkflowProcess)!;
+    print("empCode: "+ process!.empCode.toString() + "  level: "+ process!.levelCode.toString());
+    if (processes.isNotEmpty) {
+      setState(() {
+      });
+    }
+  }
 }

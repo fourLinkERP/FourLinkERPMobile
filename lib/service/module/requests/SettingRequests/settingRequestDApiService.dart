@@ -16,12 +16,12 @@ class SettingRequestDApiService {
   String deleteApi = baseUrl.toString() + 'v1/workflowsettingrequestdetails/';
   String getByIdApi = baseUrl.toString() + 'v1/workflowsettingrequestdetails/'; // Add ID For Get
 
-  Future<List<SettingRequestD>> getSettingRequestD (String? trxSerial) async {
+  Future<List<SettingRequestD>> getSettingRequestD (String? settingRequestCode) async {
     Map data = {
       'Search': {
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
-        'TrxSerial': trxSerial
+        'SettingRequestCode': settingRequestCode
       }
 
     };
@@ -82,6 +82,7 @@ class SettingRequestDApiService {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
       'settingRequestCode': addSettingRequestD.settingRequestCode,
+      'lineNum': addSettingRequestD.lineNum,
       'levels':addSettingRequestD.levels,
       'groupCode': addSettingRequestD.groupCode,
       'empCode': addSettingRequestD.empCode,

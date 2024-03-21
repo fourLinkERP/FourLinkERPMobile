@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:dio/dio.dart';
@@ -9,7 +10,7 @@ import '../../data/model/auth/Login.dart';
 
 class LoginService {
   final Dio _dio = Dio();
-  String BASE_URL='http://www.sudokuano.net/api/tokens/';
+  String BASE_URL= baseUrl.toString() + 'tokens/';
   //String BASE_URL= baseUrl.toString()  + 'tokens/';
   //password ='123Pa$$word!'
 
@@ -33,8 +34,11 @@ class LoginService {
     print('B start running 3');
     if (response.statusCode == 200) {
       print('B 4');
+      final login = Login.fromJson(json.decode(response.body));
+      empCode = login.empCode!;
+      print('empCode: '+ empCode);
       FN_showToast(context,'login_success'.tr(),Colors.black);
-      return Login.fromJson(json.decode(response.body));
+      return login;
     } else {
       print('B 5');
 

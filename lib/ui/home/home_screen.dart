@@ -8,7 +8,7 @@ import '../../screens/business/dashboard.dart';
 import '../../theme/fitness_app_theme.dart';
 import '../../widgets/bottom_navigation_view/bottom_bar_view.dart';
 import '../../widgets/navigationDrawer/navigationDrawer.dart';
- 
+
 
 class HomeScreen extends StatefulWidget {
 

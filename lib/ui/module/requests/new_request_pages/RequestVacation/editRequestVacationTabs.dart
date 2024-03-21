@@ -45,7 +45,7 @@ class EditRequestVacationTabsState extends State<EditRequestVacationTabs> {
         body: TabBarView(
           children: [
             EditRequestVacation(_requests),
-            Approvals(),
+            Approvals(_requests),
           ],
         ),
       ),

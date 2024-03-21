@@ -11,9 +11,13 @@ import 'package:fourlinkmobileapp/ui/home/home_screen.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../theme/app_theme.dart';
 import '../../ui/module/requests/generalList/ReqistsList.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
+import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/Employees/employeeApiService.dart';
 //import '../../ui/setting/send_email.dart';
 import 'createDrawerBodyItem.dart';
 import 'createDrawerHeader.dart';
+
+EmployeeApiService _employeeApiService = EmployeeApiService();
 
 class navigationDrawer extends StatefulWidget {
 
@@ -23,11 +27,30 @@ class navigationDrawer extends StatefulWidget {
 }
 
 class _navigationDrawerState extends State<navigationDrawer> {
+
+  List<Employee> employees = <Employee>[];
+
+  Employee employeeItem = Employee(empCode: empCode, empNameAra: empName,empNameEng: empName );
+
+  @override
+  initState() {
+    Future<List<Employee>> futureEmployees = _employeeApiService.getEmployeesFiltrated(empCode).then((data) {
+      employees = data;
+      print('employees:  ' + employees.toString());
+      return employees;
+    }, onError: (e) {
+      print(e);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
 
+
     var brightness = MediaQuery.of(context).platformBrightness;
     bool isLightMode = brightness == Brightness.light;
+
     return Drawer(
 
       backgroundColor: isLightMode ? AppTheme.white : AppTheme.nearlyBlack,
@@ -35,7 +58,7 @@ class _navigationDrawerState extends State<navigationDrawer> {
         scrollDirection: Axis.vertical,
         padding: EdgeInsets.zero,
         children: <Widget>[
-          createDrawerHeader(),
+          createDrawerHeader(employeeItem.empNameEng!),
           createDrawerBodyItem(
             icon: Icons.home,
             text: 'home'.tr(),

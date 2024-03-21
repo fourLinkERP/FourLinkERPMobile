@@ -1,23 +1,31 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Approvals/workFlowProcess.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/vacationRequest.dart';
 import 'package:fourlinkmobileapp/service/module/requests/basicInputs/WorkflowStatuses/workflowStatusesApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
+import '../../../../../cubit/app_cubit.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Levels/Level.dart';
 import '../../../../../data/model/modules/module/requests/basicInputs/WorkflowStatuses/workflowStatuses.dart';
+import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
 import '../../../../../service/module/accounts/basicInputs/Levels/levelApiService.dart';
+import '../../../../../service/module/requests/setup/Approvals/workFlowProcessApiService.dart';
+import 'package:intl/intl.dart';
 
 //APIs
 EmployeeApiService _employeeApiService = EmployeeApiService();
 LevelApiService _levelApiService = LevelApiService();
 StatusesApiService _statusesApiService = StatusesApiService();
-
+WorkFlowProcessApiService _apiService = WorkFlowProcessApiService();
 
 class AddApproval extends StatefulWidget {
-  const AddApproval({Key? key}) : super(key: key);
+  AddApproval(this.vacationRequest);
+
+  final VacationRequests vacationRequest;
 
   @override
   State<AddApproval> createState() => _AddApprovalState();
@@ -37,17 +45,22 @@ class _AddApprovalState extends State<AddApproval> {
   String? selectedLevelValue = null;
   String? selectedStatusValue = null;
 
+  final WorkFlowProcessApiService api = WorkFlowProcessApiService();
   final statusController = TextEditingController();
   final notesController =  TextEditingController();
   final _addFormKey = GlobalKey<FormState>();
+  WorkFlowProcess? process = WorkFlowProcess(empCode: "",alternativeEmpCode: "",levelCode: "");
+  Employee employeeItem = Employee(empCode: empCode, empNameAra: empName,empNameEng: empName );
+  //Level levelItem = Level(levelCode: empCode, empNameAra: empName,empNameEng: empName );
+
 
   @override
   void initState() {
+    getData();
     super.initState();
-    Future<List<Employee>> futureEmployees = _employeeApiService.getEmployees().then((data) {
+    Future<List<Employee>> futureEmployees = _employeeApiService.getEmployeesFiltrated(empCode).then((data) {
       employees = data;
-
-      getEmployeesData();
+      //getEmployeesData();
       return employees;
     }, onError: (e) {
       print(e);
@@ -103,7 +116,8 @@ class _AddApprovalState extends State<AddApproval> {
                         ),
                         child: Center(
                           child: DropdownSearch<Employee>(
-                            selectedItem: null,
+                            enabled: false,
+                            selectedItem: (process!.empCode == empCode || process!.alternativeEmpCode == empCode)? employeeItem : null,
                             popupProps: PopupProps.menu(
                               itemBuilder: (context, item, isSelected) {
                                 return Container(
@@ -165,7 +179,9 @@ class _AddApprovalState extends State<AddApproval> {
                         ),
                         child: Center(
                           child: DropdownSearch<Level>(
-                            selectedItem: null,
+                            enabled: false,
+                            selectedItem: (process!.empCode == empCode || process!.alternativeEmpCode == empCode)?
+                            Level(levelCode: process!.levelCode, levelNameAra: process!.levelCode,levelNameEng: process!.levelCode) : null,
                             popupProps: PopupProps.menu(
                               itemBuilder: (context, item, isSelected) {
                                 return Container(
@@ -302,7 +318,7 @@ class _AddApprovalState extends State<AddApproval> {
                             ),
                           ),
                           onPressed: () {
-                            // saveVacationRequest(context);
+                            saveWorkflowProcess(context);
                           },
                           child: Text('Save'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
                         ),
@@ -316,6 +332,19 @@ class _AddApprovalState extends State<AddApproval> {
         ),
       ),
     );
+  }
+  void getData() async {
+    Future<WorkFlowProcess>? futureWorkflowProcess =
+    _apiService.get2WorkFlowProcess("2", widget.vacationRequest.id!).catchError((Error){
+      AppCubit.get(context).EmitErrorState();
+    });
+    print("+++++++++----" + widget.vacationRequest.id.toString());
+    process = (await futureWorkflowProcess)!;
+    print("empCode: "+ process!.empCode.toString() + "  level: "+ process!.levelCode.toString());
+    if(process!.empCode == empCode || process!.alternativeEmpCode == empCode){
+      selectedEmployeeValue = empCode;
+      selectedLevelValue = process!.levelCode;
+    }
   }
   getEmployeesData() {
     if (employees.isNotEmpty) {
@@ -360,5 +389,35 @@ class _AddApprovalState extends State<AddApproval> {
     setState(() {
 
     });
+  }
+  saveWorkflowProcess(BuildContext context)
+  {
+    if (selectedEmployeeValue == null) {
+      FN_showToast(context, 'please set employee'.tr(), Colors.red);
+      return;
+    }
+
+    if (selectedLevelValue == null) {
+      FN_showToast(context, 'please set a level'.tr(), Colors.red);
+      return;
+    }
+    if (selectedStatusValue == null) {
+      FN_showToast(context, 'please set a status'.tr(), Colors.red);
+      return;
+    }
+    if (notesController.text.isEmpty) {
+      FN_showToast(context, 'please write a note'.tr(), Colors.red);
+      return;
+    }
+
+    api.createWorkFlowProcess(context, WorkFlowProcess(
+      workFlowTransactionId: widget.vacationRequest.id,
+      trxDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+      levelCode: selectedLevelValue,
+      empCode: selectedEmployeeValue,
+      workFlowStatusCode: selectedStatusValue,
+      notes: notesController.text,
+    ));
+    Navigator.pop(context,true);
   }
 }

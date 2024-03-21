@@ -2,26 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/setting_requests/Details/detailsList.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/setting_requests/EditSettingRequests/editSettingRequests.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../data/model/modules/module/requests/basicInputs/settingRequests/SettingRequestH.dart';
 import '../../../../../service/module/requests/SettingRequests/settingRequestHApiService.dart';
 
-//API
-SettingRequestHApiService _apiService = SettingRequestHApiService();
 
 class EditSettingRequestTabs extends StatefulWidget {
-   EditSettingRequestTabs(this.settingRequestH);
 
-  final SettingRequestH settingRequestH;
+   EditSettingRequestTabs(this.settingRequestH);
+   SettingRequestH settingRequestH;
 
   @override
-  State<EditSettingRequestTabs> createState() => _EditSettingRequestTabsState();
+  State<EditSettingRequestTabs> createState() => EditSettingRequestTabsState(settingRequestH);
 }
 
-class _EditSettingRequestTabsState extends State<EditSettingRequestTabs> {
-
+class EditSettingRequestTabsState extends State<EditSettingRequestTabs> {
   late SettingRequestH settingRequest;
+
+  EditSettingRequestTabsState(SettingRequestH requests) {
+    this.settingRequest = requests;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class _EditSettingRequestTabsState extends State<EditSettingRequestTabs> {
           centerTitle: true,
           title:ListTile(
             leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-            title: Text('Setting Request'.tr(),
+            title: Text('edit_setting_requests'.tr(),
               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
           ),
           bottom: TabBar(
@@ -47,8 +47,8 @@ class _EditSettingRequestTabsState extends State<EditSettingRequestTabs> {
         body: TabBarView(
           children: [
             //_navigateToEditScreen(context,settingRequestsH),
-            EditSettingRequests( settingRequest),
-            DetailsList(),
+            EditSettingRequests(settingRequest),
+            DetailsList(settingRequest),
           ],
         ),
       ),

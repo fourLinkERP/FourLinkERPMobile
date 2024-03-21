@@ -60,7 +60,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   List<DropdownMenuItem<String>> menuCostCenters = [];
   List<DropdownMenuItem<String>> menuJobs = [];
 
-  String? selectedEmployeeValue = null;
+  String? selectedEmployeeValue = empCode;
   String? selectedDepartmentValue = null;
   String? selectedJobValue = null;
   String? selectedVacationTypeValue = null;
@@ -69,7 +69,10 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   final VacationRequestsApiService api = VacationRequestsApiService();
   final _addFormKey = GlobalKey<FormState>();
 
-  Employee employeeItem = Employee(empCode: empCode );
+  Employee employeeItem = Employee(empCode: empCode, empNameAra: empName,empNameEng: empName );
+  CostCenter costCenterItem = CostCenter(costCenterCode: costCenterCode, costCenterNameAra: costCenterName,
+      costCenterNameEng: costCenterName );
+  Job jobItem = Job(jobCode: jobCode, jobNameAra: jobName,jobNameEng: jobName);
 
   final _vacationRequestSerialController = TextEditingController(); // Serial
   final _vacationRequestTrxDateController = TextEditingController(); // Date
@@ -105,9 +108,10 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
     });
 
     Future<List<Employee>> futureEmployees = _employeeApiService.getEmployeesFiltrated(empCode).then((data) {
+      print("empCode in addVacation: " + empCode);
       employees = data;
-
-      getEmployeesData();
+      print('employees:  ' + employees.toString());
+      //getEmployeesData();
       return employees;
     }, onError: (e) {
       print(e);
@@ -148,11 +152,22 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: ListTile(
+            leading: Image.asset('assets/images/logowhite2.png', scale: 3),
+            title: Text(
+              'add_vacation_request'.tr(),
+              style: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+        ),
         body: Form(
           key: _addFormKey,
           child: Column(
             children: [
-              //const SizedBox(height: 20),
               Expanded(
                 child: ListView(
                     children: [
@@ -165,7 +180,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                             Column(
                               //mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const SizedBox(height: 20),
+                                const SizedBox(height: 10),
                                 SizedBox(
                                   height: 50,
                                   width: 100,
@@ -304,22 +319,19 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                   height: 50,
                                   width: 210,
                                   child: DropdownSearch<CostCenter>(
-                                     selectedItem: null,
+                                     selectedItem: costCenterItem,
                                       popupProps: PopupProps.menu(
                                         itemBuilder: (context, item, isSelected) {
                                           return Container(
                                             margin: const EdgeInsets.symmetric(horizontal: 8),
                                             decoration: !isSelected ? null
                                                 : BoxDecoration(
-
-                                              //border: Border.all(color: Colors.black12),
                                               color: Colors.grey,
                                               borderRadius: BorderRadius.circular(10),
                                             ),
                                             child: Padding(
                                               padding: const EdgeInsets.all(8.0),
                                               child: Text((langId==1)? item.costCenterNameAra.toString():  item.costCenterNameEng.toString(),
-                                                //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
                                                 textAlign: langId==1?TextAlign.right:TextAlign.left,
                                               ),
 
@@ -331,8 +343,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                       items: costCenters,
                                       itemAsString: (CostCenter u) => u.costCenterNameAra.toString(),
                                       onChanged: (value){
-                                        //v.text = value!.cusTypesCode.toString();
-                                        //print(value!.id);
                                         selectedCostCenterValue =  value!.costCenterCode.toString();
                                       },
                                       filterFn: (instance, filter){
@@ -344,15 +354,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                           return false;
                                         }
                                       },
-                                      // dropdownDecoratorProps: const DropDownDecoratorProps(
-                                      //   dropdownSearchDecoration: InputDecoration(
-                                      //     labelStyle: TextStyle(
-                                      //       color: Colors.black,
-                                      //       backgroundColor: Colors.grey,
-                                      //     ),
-                                      //     //icon: Icon(Icons.keyboard_arrow_down),
-                                      //   ),
-                                      // ),
 
                                     ),
 
@@ -401,14 +402,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                           return false;
                                         }
                                       },
-                                      // dropdownDecoratorProps: const DropDownDecoratorProps(
-                                      //   dropdownSearchDecoration: InputDecoration(
-                                      //     labelStyle: TextStyle(
-                                      //       color: Colors.black,
-                                      //     ),
-                                      //     //icon: Icon(Icons.keyboard_arrow_down),
-                                      //   ),
-                                      // ),
 
                                     ),
 
@@ -475,6 +468,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                   width: 210,
                                   // child: Center(),
                                   child: DropdownSearch<Job>(
+                                    selectedItem: jobItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
@@ -732,18 +726,18 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
 
     });
   }
-  getEmployeesData() {
-    if (employees.isNotEmpty) {
-      for(var i = 0; i < employees.length; i++){
-        menuEmployees.add(DropdownMenuItem(
-            value: employees[i].empCode.toString(),
-            child: Text((langId==1)? employees[i].empNameAra.toString() : employees[i].empNameEng.toString())));
-      }
-    }
-    setState(() {
-
-    });
-  }
+  // getEmployeesData() {
+  //   if (employees.isNotEmpty) {
+  //     for(var i = 0; i < employees.length; i++){
+  //       menuEmployees.add(DropdownMenuItem(
+  //           value: employees[i].empCode.toString(),
+  //           child: Text((langId==1)? employees[i].empNameAra.toString() : employees[i].empNameEng.toString())));
+  //     }
+  //   }
+  //   setState(() {
+  //
+  //   });
+  // }
 
   getJobsData() {
     if (jobs.isNotEmpty) {

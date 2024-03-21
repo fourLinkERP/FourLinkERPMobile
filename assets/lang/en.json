@@ -483,6 +483,19 @@
     "customerGroup": "Customer Group",
     "customer_image": "Customer Image",
     "item_type": "Item Type",
+    "setting_requests": "Setting Requests",
+    "noDataToPrint": "No Data To Print",
+    "request_code": "Request code",
     "Setting Requests": "Setting Requests",
-    "noDataToPrint": "No Data To Print"
+    "request_type": "Request type",
+    "request_name_ara": "Request name Arabic",
+    "request_name_eng": "Request name English",
+    "num_of_levels": "Number of levels",
+    "request_department": "Request department",
+    "send_email": "Email to",
+    "related_transaction": "Related transaction",
+    "approval_procedure": "Approval procedure",
+    "add_setting_request_details": "Add setting request details",
+    "edit_setting_requests": "Edit setting requests",
+    "add_vacation_request":"Add vacation request"
 }

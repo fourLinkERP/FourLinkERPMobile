@@ -3,17 +3,16 @@ import 'dart:async';
 import'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/requests/basicInputs/settingRequests/SettingRequestH.dart';
 import 'package:fourlinkmobileapp/service/module/requests/SettingRequests/settingRequestHApiService.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/setting_requests/AddSettingRequests/addSettingRequestTabs.dart';
-//import 'package:fourlinkmobileapp/ui/module/requests/setting_requests/EditSettingRequests/editSettingRequestTabs.dart';
+//import 'package:fourlinkmobileapp/ui/module/requests/setting_requests/AddSettingRequests/addSettingRequestTabs.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/setting_requests/EditSettingRequests/editSettingRequestTabs.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../../common/globals.dart';
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../cubit/app_states.dart';
 import '../../../../../helpers/hex_decimal.dart';
-//import '../../../../../helpers/toast.dart';
 import '../../../../../theme/fitness_app_theme.dart';
-import '../EditSettingRequests/editSettingRequests.dart';
+import '../AddSettingRequests/addSettingRequest.dart';
 
 //API
 SettingRequestHApiService _apiService = SettingRequestHApiService();
@@ -33,17 +32,7 @@ class _SettingRequestListState extends State<SettingRequestList> {
 
   @override
   void initState() {
-    // // TODO: implement initState
-    // print('okkkkkkkkkkk');
-    // AppCubit.get(context).CheckConnection();
-    // Timer(const Duration(seconds: 30), () { // <-- Delay here
-    //   setState(() {
-    //     if(settingRequestsH.isEmpty){
-    //       isLoading = false;
-    //     }
-    //     // <-- Code run after delay
-    //   });
-    // });
+    AppCubit.get(context).CheckConnection();
 
     getData();
     super.initState();
@@ -54,10 +43,6 @@ class _SettingRequestListState extends State<SettingRequestList> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      getData();
-    });
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -154,11 +139,8 @@ class _SettingRequestListState extends State<SettingRequestList> {
       return const Center(child: CircularProgressIndicator());
     }
     else{
-      print("Success..................");
       return Container(
-        // child: Center(
-        //   child: Text("List is Empty", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.grey),),
-        // ),
+
         margin: const EdgeInsets.only(top: 5,),
         color: const Color.fromRGBO(240, 242, 246,1),// Main Color
 
@@ -173,7 +155,7 @@ class _SettingRequestListState extends State<SettingRequestList> {
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/setting-request.jpeg'),
-                      title: Text('Code'.tr() + " : " + settingRequestsH[index].settingRequestCode.toString()),
+                      title: Text('code'.tr() + " : " + settingRequestsH[index].settingRequestCode.toString()),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
@@ -183,7 +165,8 @@ class _SettingRequestListState extends State<SettingRequestList> {
                               color: Colors.white30,
                               child: Row(
                                 children: [
-                                  Text('Request name'.tr() + " : " + settingRequestsH[index].settingRequestNameAra.toString()),
+                                  Text('request_type'.tr() + " : " + settingRequestsH[index].settingRequestNameAra.toString()),
+
                                 ],
                               )),
                           Container(
@@ -191,7 +174,7 @@ class _SettingRequestListState extends State<SettingRequestList> {
                             color: Colors.white30,
                             child: Row(
                               children: [
-                                Text('Number of levels:'.tr() + " : "+ settingRequestsH[index].numberOfLevels.toString()),
+                                Text('num_of_levels'.tr() + " : "+ settingRequestsH[index].numberOfLevels.toString()),
                               ],
                             )),
                         const SizedBox(width: 5),
@@ -295,7 +278,7 @@ class _SettingRequestListState extends State<SettingRequestList> {
   }
   _navigateToAddScreen(BuildContext context) async {
 
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSettingRequestTabs(),
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSettingRequest(),
       )).then((value) {
         getData();
       });
@@ -304,7 +287,7 @@ class _SettingRequestListState extends State<SettingRequestList> {
   _navigateToEditScreen (BuildContext context, SettingRequestH settingRequests) async {
 
       final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-          EditSettingRequests(settingRequests)),).then((value) => getData());
+          EditSettingRequestTabs(settingRequests)),).then((value) => getData());
 
   }
 
@@ -323,14 +306,10 @@ class _SettingRequestListState extends State<SettingRequestList> {
       print('Error ${Error}');
       AppCubit.get(context).EmitErrorState();
     });
-    print('xxxx1 before list');
     settingRequestsH = (await futureSettingRequests)!;
-    print('xxxx2 len ' + settingRequestsH.length.toString());
     if (settingRequestsH.isNotEmpty) {
       setState(() {
-        print('xxxx after state');
         _founded = settingRequestsH!;
-        String search = '';
 
       });
     }

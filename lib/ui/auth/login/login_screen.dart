@@ -447,6 +447,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   onTap: () async {
                                     //final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                                     //sharedPreferences.setString('email', _emailController.text);
+                                    //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
                                     startQuickLogin();
                                   },
                                   child: Text(

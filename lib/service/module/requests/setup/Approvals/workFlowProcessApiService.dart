@@ -49,7 +49,7 @@ class WorkFlowProcessApiService {
     }
   }
 
-  Future<WorkFlowProcess> get2WorkFlowProcess() async {
+  Future<WorkFlowProcess> get2WorkFlowProcess(String requestTypeCode, int transactionId) async {
     var data = {
       'Search': {
         'CompanyCode': companyCode,
@@ -82,8 +82,9 @@ class WorkFlowProcessApiService {
       'trxDate' : workFlowProcess.trxDate,
       'empCode': workFlowProcess.empCode,
       'WorkFlowStatusCode': workFlowProcess.workFlowStatusCode,
-      'workFlowStatusName': workFlowProcess.workFlowStatusName,
-      'empName': workFlowProcess.empName ,
+      'workFlowTransactionId': workFlowProcess.workFlowTransactionId,
+      //'requestTypeCode': workFlowProcess.requestTypeCode,
+      'levelCode': workFlowProcess.levelCode,
       'notes': workFlowProcess.notes,
       "confirmed": false,
       "isActive": true,
@@ -120,7 +121,7 @@ class WorkFlowProcessApiService {
     } else {
       print('save request Error');
       FN_showToast(context,'couldn not save '.tr() ,Colors.black);
-      throw Exception('Failed to post salary increase request');
+      throw Exception('Failed to post process request');
     }
   }
 

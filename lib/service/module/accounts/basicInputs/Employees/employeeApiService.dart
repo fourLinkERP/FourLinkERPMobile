@@ -6,6 +6,8 @@ import '../../../../../common/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
+import '../../../../../common/globals.dart';
+
 
  class EmployeeApiService {
 
@@ -49,11 +51,12 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     }
   }
   Future<List<Employee>>  getEmployeesFiltrated(String employeeCode) async {
-
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode,
-      'EmpCode': employeeCode
+      'Search': {
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode,
+        'EmpCode': employeeCode
+      }
     };
 
     print('Employee 1');
@@ -66,13 +69,21 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       body: jsonEncode(data),
     );
 
-
     if (response.statusCode == 200) {
       print('EmployeeFiltrated 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
+      // print('data: '+ data.toString());
+      // print('data length: '+ data.length.toString());
       List<Employee> list = [];
       if (data.isNotEmpty) {
-        list = data.map((item) => Employee.fromJson(item)).toList();
+        final employee = Employee.fromJson(data[0]);
+        empName = employee.empName!;
+        costCenterCode = employee.costCenterCode!;
+        costCenterName = employee.costCenterName!;
+        jobCode = employee.jobCode.toString();
+        jobName = employee.jobName!;
+
+        list = [employee];
       }
       print('Employee 3');
       return  list;

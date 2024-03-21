@@ -20,7 +20,7 @@ class _AddSettingRequestTabsState extends State<AddSettingRequestTabs> {
           centerTitle: true,
           title:ListTile(
             leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-            title: Text('Setting Request'.tr(),
+            title: Text('setting_requests'.tr(),
               style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
           ),
           bottom: TabBar(
@@ -35,7 +35,6 @@ class _AddSettingRequestTabsState extends State<AddSettingRequestTabs> {
         body: TabBarView(
           children: [
             AddSettingRequest(),
-            DetailsList(),
           ],
         ),
       ),

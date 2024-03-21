@@ -35,7 +35,7 @@ class _RequestResourcesState extends State<RequestResources> {
         body: TabBarView(
           children: [
             AddRequestResources(),
-            Approvals(),
+            //Approvals(),
           ],
         ),
       ),
