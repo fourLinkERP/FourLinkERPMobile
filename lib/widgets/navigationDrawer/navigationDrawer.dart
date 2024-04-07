@@ -33,7 +33,8 @@ class _navigationDrawerState extends State<navigationDrawer> {
   Employee employeeItem = Employee(empCode: empCode, empNameAra: empName,empNameEng: empName );
 
   @override
-  initState() {
+  void initState() {
+    super.initState();
     Future<List<Employee>> futureEmployees = _employeeApiService.getEmployeesFiltrated(empCode).then((data) {
       employees = data;
       print('employees:  ' + employees.toString());
@@ -41,7 +42,6 @@ class _navigationDrawerState extends State<navigationDrawer> {
     }, onError: (e) {
       print(e);
     });
-    super.initState();
   }
 
   @override
@@ -59,6 +59,7 @@ class _navigationDrawerState extends State<navigationDrawer> {
         padding: EdgeInsets.zero,
         children: <Widget>[
           createDrawerHeader(employeeItem.empNameEng!),
+
           createDrawerBodyItem(
             icon: Icons.home,
             text: 'home'.tr(),

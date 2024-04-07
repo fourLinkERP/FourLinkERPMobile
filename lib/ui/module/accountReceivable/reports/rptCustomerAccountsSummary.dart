@@ -109,38 +109,38 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-        },
-        child: Container(
-          decoration: BoxDecoration(
-            color: FitnessAppTheme.nearlyDarkBlue,
-            gradient: LinearGradient(
-                colors: [
-                  FitnessAppTheme.nearlyDarkBlue,
-                  HexColor('#6A88E5'),
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight),
-            shape: BoxShape.circle,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: FitnessAppTheme.nearlyDarkBlue
-                      .withOpacity(0.4),
-                  offset: const Offset(2.0, 14.0),
-                  blurRadius: 16.0),
-            ],
-          ),
-          child: const Material(
-            color: Colors.transparent,
-            child: Icon(
-              Icons.data_saver_on,
-              color: FitnessAppTheme.white,
-              size: 46,
-            ),
-          ),
-        ),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //   },
+      //   child: Container(
+      //     decoration: BoxDecoration(
+      //       color: FitnessAppTheme.nearlyDarkBlue,
+      //       gradient: LinearGradient(
+      //           colors: [
+      //             FitnessAppTheme.nearlyDarkBlue,
+      //             HexColor('#6A88E5'),
+      //           ],
+      //           begin: Alignment.topLeft,
+      //           end: Alignment.bottomRight),
+      //       shape: BoxShape.circle,
+      //       boxShadow: <BoxShadow>[
+      //         BoxShadow(
+      //             color: FitnessAppTheme.nearlyDarkBlue
+      //                 .withOpacity(0.4),
+      //             offset: const Offset(2.0, 14.0),
+      //             blurRadius: 16.0),
+      //       ],
+      //     ),
+      //     child: const Material(
+      //       color: Colors.transparent,
+      //       child: Icon(
+      //         Icons.data_saver_on,
+      //         color: FitnessAppTheme.white,
+      //         size: 46,
+      //       ),
+      //     ),
+      //   ),
+      // ),
 
       appBar: AppBar(
         centerTitle: true,
@@ -149,10 +149,10 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
             Image.asset('assets/images/logowhite2.png', scale: 3,),
             const SizedBox(width: 1,),
             Padding(
-              padding: const EdgeInsets.fromLTRB(0, 11, 2, 0),
+              padding: const EdgeInsets.fromLTRB(0, 11, 2, 10),
               //apply padding to all four sides
               child: Text('customeraccountreport'.tr(),
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),),
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.0),),
             )
           ],
         ),
@@ -172,120 +172,74 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
                 child: Column(
                   crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
                   children: [
-                    Center(
-                      child: Row(
-                        children: [
-                          const SizedBox(height: 20.0),
-                          Form(
-                              key: _dropdownTypeFormKey,
-                              child: Row(
-                                children: [
-                                  Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('report_name :'.tr(),
-                                      style: const TextStyle(fontWeight: FontWeight.bold))),
-                                  const SizedBox(width: 10),
-                                  SizedBox(
-                                    width: 140,
-                                    child: DropdownSearch<SalesInvoiceType>(
-                                      validator: (value) => value == null ? "select_a_Type".tr() : null,
-                                      selectedItem: salesInvoiceTypeItem,
-                                      popupProps: PopupProps.menu(
-                                        itemBuilder: (context, item, isSelected) {
-                                          return Container(
-                                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                                            decoration: !isSelected ? null :
-                                            BoxDecoration(
-                                              border: Border.all(color: Theme.of(context).primaryColor),
-                                              borderRadius: BorderRadius.circular(5),
-                                              color: Colors.white,
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text((langId == 1) ? item.salesInvoicesTypeNameAra.toString() : item.salesInvoicesTypeNameEng.toString()),
-                                            ),
-                                          );
-                                        },
-                                        showSearchBox: true,
-                                      ),
-                                      enabled: true,
-                                      items: salesInvoiceTypes,
-                                      itemAsString: (SalesInvoiceType u) =>
-                                      (langId == 1) ? u.salesInvoicesTypeNameAra.toString() : u.salesInvoicesTypeNameEng.toString(),
-
-                                      onChanged: (value) {
-
-                                      },
-
-                                      filterFn: (instance, filter) {
-                                        if ((langId == 1) ? instance.salesInvoicesTypeNameAra!.contains(filter) : instance.salesInvoicesTypeNameEng!.contains(filter)) {
-                                          print(filter);
-                                          return true;
-                                        }
-                                        else {
-                                          return false;
-                                        }
-                                      },
-                                      dropdownDecoratorProps: const DropDownDecoratorProps(
-                                        dropdownSearchDecoration: InputDecoration(
-                                          //labelText: "type".tr(),
-
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                          ),
-
-                          const SizedBox(width: 20.0),
-
-                          SizedBox(
-                            //margin: const EdgeInsets.only(left: 50.0,),
-                            width: 75,
-                            height: 35,
-                            child: ElevatedButton.icon(
-                              icon: const Icon(
-                                Icons.print,
-                                color: Colors.white,
-                                size: 15.0,
-                                weight: 5,
-                              ),
-                              label: Text('print'.tr(),
-                                  style: const TextStyle(color: Colors.white)),
-                              onPressed: () {
-                                // Navigator.push(context, MaterialPageRoute(builder: (context) => Print()));
-                                //_navigateToPrintScreen(context,_customers[index]);
-                                printReport(context , getCriteria());
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                  padding: const EdgeInsets.only(left: 5, right: 5,),
-                                  backgroundColor: Colors.green,
-                                  foregroundColor: Colors.green,
-                                  elevation: 0,
-                                  side: const BorderSide(width: 1, color: Colors.green)),
-                            ),
-                          ),
-
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 30.0,),
-                    /*
-                    * Container(
-                      margin: const EdgeInsets.only(left: 5.0, top: 10.0,),
-                      width: 120,
-                      height: 40,
-                      child: MaterialButton(
-                        color: const Color.fromRGBO(144, 16, 46, 1),
-                          onPressed: _showDataPicker,
-                        child: const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Start date', style: TextStyle(color: Colors.white),),
-                        ),
-                      ),
-                    ),*/
+                    // Center(
+                    //   child: Row(
+                    //     children: [
+                    //       const SizedBox(height: 20.0),
+                    //       // Form(
+                    //       //     key: _dropdownTypeFormKey,
+                    //       //     child: Row(
+                    //       //       children: [
+                    //       //         Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('report_name :'.tr(),
+                    //       //             style: const TextStyle(fontWeight: FontWeight.bold))),
+                    //       //         const SizedBox(width: 10),
+                    //       //         SizedBox(
+                    //       //           width: 140,
+                    //       //           child: DropdownSearch<SalesInvoiceType>(
+                    //       //             validator: (value) => value == null ? "select_a_Type".tr() : null,
+                    //       //             selectedItem: salesInvoiceTypeItem,
+                    //       //             popupProps: PopupProps.menu(
+                    //       //               itemBuilder: (context, item, isSelected) {
+                    //       //                 return Container(
+                    //       //                   margin: const EdgeInsets.symmetric(horizontal: 8),
+                    //       //                   decoration: !isSelected ? null :
+                    //       //                   BoxDecoration(
+                    //       //                     border: Border.all(color: Theme.of(context).primaryColor),
+                    //       //                     borderRadius: BorderRadius.circular(5),
+                    //       //                     color: Colors.white,
+                    //       //                   ),
+                    //       //                   child: Padding(
+                    //       //                     padding: const EdgeInsets.all(8.0),
+                    //       //                     child: Text((langId == 1) ? item.salesInvoicesTypeNameAra.toString() : item.salesInvoicesTypeNameEng.toString()),
+                    //       //                   ),
+                    //       //                 );
+                    //       //               },
+                    //       //               showSearchBox: true,
+                    //       //             ),
+                    //       //             enabled: true,
+                    //       //             items: salesInvoiceTypes,
+                    //       //             itemAsString: (SalesInvoiceType u) =>
+                    //       //             (langId == 1) ? u.salesInvoicesTypeNameAra.toString() : u.salesInvoicesTypeNameEng.toString(),
+                    //       //
+                    //       //             onChanged: (value) {
+                    //       //
+                    //       //             },
+                    //       //
+                    //       //             filterFn: (instance, filter) {
+                    //       //               if ((langId == 1) ? instance.salesInvoicesTypeNameAra!.contains(filter) : instance.salesInvoicesTypeNameEng!.contains(filter)) {
+                    //       //                 print(filter);
+                    //       //                 return true;
+                    //       //               }
+                    //       //               else {
+                    //       //                 return false;
+                    //       //               }
+                    //       //             },
+                    //       //             dropdownDecoratorProps: const DropDownDecoratorProps(
+                    //       //               dropdownSearchDecoration: InputDecoration(
+                    //       //                 //labelText: "type".tr(),
+                    //       //
+                    //       //               ),
+                    //       //             ),
+                    //       //           ),
+                    //       //         ),
+                    //       //       ],
+                    //       //     )
+                    //       // ),
+                    //
+                    //     ],
+                    //   ),
+                    // ),
+                    const SizedBox(height: 10.0,),
                     Row(
                       children: [
                         Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("startDate".tr(),
@@ -416,8 +370,6 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
                     ),
                     const SizedBox(height: 30.0),
 
-
-
                     Form(
                       key: _dropdownCustomerTypeFormKey,
                       child: Row(
@@ -426,7 +378,7 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
                               style: const TextStyle(fontWeight: FontWeight.bold))),
                           const SizedBox(width: 15),
                           SizedBox(
-                            width: 200,
+                            width: 180,
                             child: DropdownSearch<CustomerType>(
                               popupProps: PopupProps.menu(
                                 itemBuilder: (context, item, isSelected) {
@@ -601,6 +553,38 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                    const SizedBox(height: 30.0),
+                    Center(
+                      child: SizedBox(
+                        //margin: const EdgeInsets.only(left: 50.0,),
+                        width: 150,
+                        height: 50,
+                        child: ElevatedButton.icon(
+                          icon: const Icon(
+                            Icons.print,
+                            color: Colors.white,
+                            size: 15.0,
+                            weight: 5,
+                          ),
+                          label: Text('print'.tr(),
+                              style: const TextStyle(color: Colors.white)),
+                          onPressed: () {
+                            // Navigator.push(context, MaterialPageRoute(builder: (context) => Print()));
+                            //_navigateToPrintScreen(context,_customers[index]);
+                            printReport(context , getCriteria());
+                          },
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              padding: const EdgeInsets.only(left: 5, right: 5,),
+                              backgroundColor: Colors.blueGrey,
+                              foregroundColor: Colors.blueGrey,
+                              elevation: 0,
+                              side: const BorderSide(width: 1, color: Colors.blueGrey)),
+                        ),
                       ),
                     ),
 

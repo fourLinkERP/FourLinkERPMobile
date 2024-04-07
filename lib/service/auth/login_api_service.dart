@@ -10,7 +10,7 @@ import '../../data/model/auth/Login.dart';
 
 class LoginService {
   final Dio _dio = Dio();
-  String BASE_URL= baseUrl.toString() + 'tokens/';
+  String BASE_URL= 'http://webapi.4linkerp.com/api/tokens';
   //String BASE_URL= baseUrl.toString()  + 'tokens/';
   //password ='123Pa$$word!'
 

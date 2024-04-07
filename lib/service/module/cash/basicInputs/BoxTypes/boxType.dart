@@ -16,8 +16,10 @@ import '../../../../../common/globals.dart';
   Future<List<BoxType>>  getBoxTypes() async {
 
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      'Search': {
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode
+      }
     };
 
     final http.Response response = await http.post(
@@ -30,17 +32,14 @@ import '../../../../../common/globals.dart';
     );
 
     if (response.statusCode == 200) {
-      print('Boxtype 2');
+      print('BoxType 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<BoxType> list = [];
       if (data != null) {
         list = data.map((item) => BoxType.fromJson(item)).toList();
       }
-      print('Boxtype 3');
+      print('BoxType 3');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => Customer.fromJson(data))
-      //     .toList();
     } else {
       print('Boxtype Failed');
       throw "Failed to load CashType list";

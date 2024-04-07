@@ -40,21 +40,10 @@ class _RequestVacationListState extends State<RequestVacationList> {
   void initState() {
     print('okkkkkkkkkkk');
     AppCubit.get(context).CheckConnection();
-    // Timer(const Duration(seconds: 30), () { // <-- Delay here
-    //   setState(() {
-    //     //filterListByEmployeeCode();
-    //     if(vacationRequests.isEmpty){
-    //       isLoading = false;
-    //     }
-    //     // <-- Code run after delay
-    //   });
-    // });
 
     getData();
-    //filterListByEmployeeCode();
     super.initState();
     setState(() {
-      //filterListByEmployeeCode();
       _founded = vacationRequests;
     });
   }
@@ -404,6 +393,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
     });
     vacationRequests = (await futureVacationRequests)!;
     if (vacationRequests.isNotEmpty) {
+      vacationRequests.sort((a, b) => int.parse(b.trxSerial!).compareTo(int.parse(a.trxSerial!)));
       setState(() {
         _founded = vacationRequests;
         filterListByEmployeeCode();

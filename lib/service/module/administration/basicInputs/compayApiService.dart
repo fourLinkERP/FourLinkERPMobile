@@ -11,7 +11,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<List<Company>> getCompanys() async {
 
-    String searchApi= 'http://www.sudokuano.net/api/v1/companies/loginsearch';
+    String searchApi= 'http://webapi.4linkerp.com/api/v1/companies/loginsearch';
     //String searchApi= baseUrl.toString()  + 'v1/companies/loginsearch';
 
     Map data = {

@@ -15,7 +15,7 @@ SettingRequestDApiService _apiService = SettingRequestDApiService();
 class DetailsList extends StatefulWidget {
 
   DetailsList(this.settingRequestH);
-  SettingRequestH settingRequestH;
+  final SettingRequestH settingRequestH;
 
   @override
   State<DetailsList> createState() => DetailsListState(settingRequestH);

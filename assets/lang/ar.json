@@ -591,7 +591,8 @@
     "sms_receivers": "مستقبلي رسائل نصية",
     "whatsapp_receivers": "مستقبلي رسائل واتساب",
     "edit_setting_requests": "تعديل اعدادات الطلبات",
-    "add_vacation_request": "اضافة طلب اجازة"
+    "add_vacation_request": "اضافة طلب اجازة",
+    "workFlow": "الطلبات"
 
 }
 

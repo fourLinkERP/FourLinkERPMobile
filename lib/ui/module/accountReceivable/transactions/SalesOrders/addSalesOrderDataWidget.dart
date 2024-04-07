@@ -28,16 +28,16 @@ import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 //APIS
-NextSerialApiService _nextSerialApiService=new NextSerialApiService();
-SalesOrdersTypeApiService _salesOrderTypeApiService=new SalesOrdersTypeApiService();
-SalesOrderHApiService _salesOrderHApiService=new SalesOrderHApiService();
-SalesOrderDApiService _salesOrderDApiService=new SalesOrderDApiService();
-CustomerApiService _customerApiService=new CustomerApiService();
-ItemApiService _itemsApiService = new ItemApiService();
-UnitApiService _unitsApiService = new UnitApiService();
-TafqeetApiService _tafqeetApiService=new TafqeetApiService();
-SalesInvoiceDApiService _salesInvoiceDApiService=new SalesInvoiceDApiService();
-InventoryOperationApiService _inventoryOperationApiService = new InventoryOperationApiService();
+NextSerialApiService _nextSerialApiService= NextSerialApiService();
+SalesOrdersTypeApiService _salesOrderTypeApiService= SalesOrdersTypeApiService();
+SalesOrderHApiService _salesOrderHApiService= SalesOrderHApiService();
+SalesOrderDApiService _salesOrderDApiService= SalesOrderDApiService();
+CustomerApiService _customerApiService= CustomerApiService();
+ItemApiService _itemsApiService = ItemApiService();
+UnitApiService _unitsApiService = UnitApiService();
+TafqeetApiService _tafqeetApiService= TafqeetApiService();
+SalesInvoiceDApiService _salesInvoiceDApiService= SalesInvoiceDApiService();
+InventoryOperationApiService _inventoryOperationApiService =  InventoryOperationApiService();
 
 //List Models
 List<Customer> customers=[];
@@ -165,7 +165,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     Future<List<SalesOrderType>> futureSalesOrderType = _salesOrderTypeApiService.getSalesOrdersTypes().then((data) {
       salesOrderTypes = data;
       print('in in in 1 ');
-      getSalesOrderTypeData();
+      //getSalesOrderTypeData();
       return salesOrderTypes;
     }, onError: (e) {
       print(e);
@@ -1217,27 +1217,27 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     });
   }
 
-  getSalesOrderTypeData() {
-    if (salesOrderTypes != null) {
-      for(var i = 0; i < salesOrderTypes.length; i++){
-        menuSalesOrderTypes.add(DropdownMenuItem(value: salesOrderTypes[i].sellOrdersTypeCode.toString(), child: Text(salesOrderTypes[i].
-        sellOrdersTypeNameAra.toString())));
-        if(salesOrderTypes[i].sellOrdersTypeCode == "1"){
-          // print('in amr3');
-          salesOrderTypeItem = salesOrderTypes[salesOrderTypes.indexOf(salesOrderTypes[i])];
-          // print('in amr4');
-          // print(customerTypeItem );
-        }
-
-      }
-
-      selectedTypeValue = "1";
-      setNextSerial();
-    }
-    setState(() {
-
-    });
-  }
+  // getSalesOrderTypeData() {
+  //   if (salesOrderTypes != null) {
+  //     for(var i = 0; i < salesOrderTypes.length; i++){
+  //       menuSalesOrderTypes.add(DropdownMenuItem(value: salesOrderTypes[i].sellOrdersTypeCode.toString(), child: Text(salesOrderTypes[i].
+  //       sellOrdersTypeNameAra.toString())));
+  //       if(salesOrderTypes[i].sellOrdersTypeCode == "1"){
+  //         // print('in amr3');
+  //         salesOrderTypeItem = salesOrderTypes[salesOrderTypes.indexOf(salesOrderTypes[i])];
+  //         // print('in amr4');
+  //         // print(customerTypeItem );
+  //       }
+  //
+  //     }
+  //
+  //     selectedTypeValue = "1";
+  //     setNextSerial();
+  //   }
+  //   setState(() {
+  //
+  //   });
+  // }
 
 
 

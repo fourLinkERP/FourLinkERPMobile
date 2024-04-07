@@ -423,25 +423,25 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                 ),
                               ),
+                              // Container(
+                              //   margin: const EdgeInsets.fromLTRB(10, 20, 10, 20),
+                              //   //child: Text('Don\'t have an account? Create'),
+                              //   child: Text.rich(TextSpan(children: [
+                              //     TextSpan(text: 'dont_have_account'.tr()),
+                              //     TextSpan(
+                              //       text: 'sign_up'.tr(),
+                              //       recognizer: TapGestureRecognizer()
+                              //         ..onTap = () {
+                              //         //Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen()));
+                              //         },
+                              //       style: TextStyle(
+                              //           fontWeight: FontWeight.bold,
+                              //           color: Theme.of(context).primaryColorLight),
+                              //     ),
+                              //   ])),
+                              // ),
                               Container(
-                                margin: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                                //child: Text('Don\'t have an account? Create'),
-                                child: Text.rich(TextSpan(children: [
-                                  TextSpan(text: 'dont_have_account'.tr()),
-                                  TextSpan(
-                                    text: 'sign_up'.tr(),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {
-                                      //Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen()));
-                                      },
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Theme.of(context).primaryColorLight),
-                                  ),
-                                ])),
-                              ),
-                              Container(
-                                margin: const EdgeInsets.fromLTRB(50, 0, 0, 20),
+                                margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
                                 alignment: Alignment.center,
                                 child: GestureDetector(
                                   onTap: () async {
@@ -502,10 +502,9 @@ class _LoginScreenState extends State<LoginScreen> {
   //Set Company General Setup
   setCompanyGeneralSetup() {
     //Company Setup
-    Future<
-        CompanyGeneralSetup> futureCompanyGeneralSetup = _CompanyGeneralSetupGeneralSetupApiService
+    Future<CompanyGeneralSetup> futureCompanyGeneralSetup = _CompanyGeneralSetupGeneralSetupApiService
         .getCompanyGeneralSetupGeneralSetups().then((data) {
-      print('Berfore Set CompanyGeneralSetupData');
+      print('Before Set CompanyGeneralSetupData');
       CompanyGeneralSetupData = data;
       print(CompanyGeneralSetupData);
       if (CompanyGeneralSetupData != null) {
@@ -655,9 +654,13 @@ class _LoginScreenState extends State<LoginScreen> {
       //Token
       if (log.token!.isNotEmpty) {
         token = log.token!;
+        if (baseUrl.toString().isEmpty){      // Edited for Log in without entering URL in settings
+          baseUrl =  Uri.parse("http://webapi.4linkerp.com/api/");
+        }
         String url = baseUrl.toString(); // Default APi Add By Nasr
+
         if (url.isEmpty) {
-          String urlString = "http://www.sudokuano.net/api/"; // Default APi Add By Nasr
+          String urlString = "http://webapi.4linkerp.com/api/"; // Default APi Add By Nasr
           baseUrl = Uri.parse(urlString);
         }
 
@@ -703,7 +706,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       String url = baseUrl.toString(); // Default APi Add By Nasr
       if (url.isEmpty) {
-        String urlString = "http://www.sudokuano.net/api/"; // Default APi Add By Nasr
+        String urlString = "http://webapi.4linkerp.com/api/";  //"http://www.sudokuano.net/api/"; // Default APi Add By Nasr
         baseUrl = Uri.parse(urlString);
       }
 

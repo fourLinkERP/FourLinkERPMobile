@@ -24,8 +24,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
         'HeaderId': headerId
       }
     };
-
-    print('Booter 2');
     print('Booter 2 ' + data.toString());
     final http.Response response = await http.post(
       Uri.parse(searchApi),

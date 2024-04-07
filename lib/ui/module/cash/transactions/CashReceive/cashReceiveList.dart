@@ -52,8 +52,6 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
     print('okkkkkkkkkkk');
     getData();
     super.initState();
-
-
     setState(() {
       _founded = _cashReceives!;
     });
@@ -397,12 +395,10 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
     if(State is AppErrorState){
       return const Center(child: Text('no data'));
     }
-    if(AppCubit.get(context).Conection==false){
-      return const Center(child: Text('no internet connection'));
-    }
-   else if(_cashReceives.isEmpty&&AppCubit.get(context).Conection==true){
+    if(_cashReceives.isEmpty){
       return const Center(child: CircularProgressIndicator());
-    }else{
+    }
+    else{
       return Container(
         color: const Color.fromRGBO(240, 242, 246,1), // Main Color
         child: ListView.builder(

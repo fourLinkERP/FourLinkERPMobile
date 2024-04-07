@@ -18,12 +18,13 @@ import 'screens/notifications/notificationPage.dart';
 import 'ui/profile/profile_screen.dart';
 import 'package:fourlinkmobileapp/routes/pageRoute.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 main() async {
 
-
   // if your flutter > 1.7.8 :  ensure flutter activated
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   //Current Language
 
 

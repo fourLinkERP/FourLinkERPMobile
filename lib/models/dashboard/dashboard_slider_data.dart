@@ -52,7 +52,7 @@ class DashboardSliderListData {
     ),
     DashboardSliderListData(
       imagePath: 'assets/fitness_app/newtruck.png',
-      titleTxt: 'HR'.tr(),
+      titleTxt: 'workFlow'.tr(),
       kacl: 0,
       meals: <String>['', ''],
       startColor: '#6F72CA',

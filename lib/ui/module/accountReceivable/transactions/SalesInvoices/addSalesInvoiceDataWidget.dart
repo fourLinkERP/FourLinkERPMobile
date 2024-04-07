@@ -1497,8 +1497,8 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       return;
     }
 
-    final bytesx = await WidgetImage.capture();
-    var InvoiceQRCode = bytesx as Uint8List;
+    // final bytesx = await WidgetImage.capture();
+    // var InvoiceQRCode = bytesx as Uint8List;
 
     // //Currency
     // if(currencyCodeSelectedValue == null || currencyCodeSelectedValue!.isEmpty){
@@ -1525,7 +1525,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       totalBeforeTax: (_totalBeforeTaxController.text.isNotEmpty) ? _totalBeforeTaxController.text.toDouble() : 0,
       tafqitNameArabic: _tafqitNameArabicController.text,
       tafqitNameEnglish: _tafqitNameEnglishController.text,
-        invoiceQRCode: InvoiceQRCode
+       // invoiceQRCode: InvoiceQRCode
     ));
 
     //Save Footer For Now
@@ -1588,10 +1588,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
           DropdownMenuItem(value: salesInvoiceTypes[i].salesInvoicesTypeCode.toString(), child: Text(salesInvoiceTypes[i].
           salesInvoicesTypeNameAra.toString())));
       if (salesInvoiceTypes[i].salesInvoicesTypeCode == selectedTypeValue) {
-        // print('in amr3');
         salesInvoiceTypeItem = salesInvoiceTypes[salesInvoiceTypes.indexOf(salesInvoiceTypes[i])];
-        // print('in amr4');
-        // print(customerTypeItem );
       }
     }
     //selectedTypeValue = "1";

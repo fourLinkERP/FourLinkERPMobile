@@ -80,6 +80,7 @@ class VacationRequestsApiService {
       'trxSerial': request.trxSerial,
       'trxDate' : request.trxDate,
       'messageTitle': request.messageTitle,
+      'requestTypeCode': request.requestTypeCode,
       'costCenterCode1': request.costCenterCode1,
       'departmentCode': request.departmentCode,
       'empCode': request.empCode,

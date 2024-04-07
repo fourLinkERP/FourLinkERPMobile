@@ -199,17 +199,27 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                             Column(
                               //mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const SizedBox(height: 10,),
+                                //const SizedBox(height: 10,),
                                 SizedBox(
                                   height: 50,
                                   width: 100,
-                                  child: Text("trxserial".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
+                                  child: Row(
+                                    children: [
+                                      Text("trxserial".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
                                   height: 60,
                                   width: 100,
-                                  child: Text("trxdate".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Row(
+                                    children: [
+                                      Text("trxdate".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
@@ -221,43 +231,73 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                 SizedBox(
                                   height: 50,
                                   width: 100,
-                                  child: Text("cost_center".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Row(
+                                    children: [
+                                      Text("cost_center".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                // SizedBox(
+                                //   height: 50,
+                                //   width: 100,
+                                //   child: Text("department".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                // ),
+                                // const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 100,
+                                  child: Row(
+                                    children: [
+                                      Text("employee".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
                                   height: 50,
                                   width: 100,
-                                  child: Text("department".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Row(
+                                    children: [
+                                      Text("job".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
                                   height: 50,
                                   width: 100,
-                                  child: Text("employee".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                                ),
-                                const SizedBox(height: 20),
-                                SizedBox(
-                                  height: 50,
-                                  width: 100,
-                                  child: Text("job".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Row(
+                                    children: [
+                                      Text("vacation_type".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
                                   height: 60,
                                   width: 100,
-                                  child: Text("from_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Row(
+                                    children: [
+                                      Text("from_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
                                   height: 60,
                                   width: 100,
-                                  child: Text("to_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                                ),
-                                const SizedBox(height: 20),
-                                SizedBox(
-                                  height: 50,
-                                  width: 100,
-                                  child: Text("vacation_type".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Row(
+                                    children: [
+                                      Text("to_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
@@ -293,6 +333,7 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                   height: 60,
                                   width: 210,
                                   child: defaultFormField(
+                                    enable: false,
                                     label: 'trxdate'.tr(),
                                     controller: _vacationRequestTrxDateController,
                                     onTab: () async {
@@ -303,7 +344,7 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                           lastDate: DateTime(2050));
 
                                       if (pickedDate != null) {
-                                        _vacationRequestTrxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                        _vacationRequestTrxDateController.text = DateFormat("yyyy-MM-dd").format(pickedDate);
                                       }
                                     },
                                     type: TextInputType.datetime,
@@ -378,77 +419,67 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                         return false;
                                       }
                                     },
-                                    // dropdownDecoratorProps: const DropDownDecoratorProps(
-                                    //   dropdownSearchDecoration: InputDecoration(
-                                    //     labelStyle: TextStyle(
-                                    //       color: Colors.black,
-                                    //       backgroundColor: Colors.grey,
-                                    //     ),
-                                    //     //icon: Icon(Icons.keyboard_arrow_down),
-                                    //   ),
-                                    // ),
-
                                   ),
 
                                 ),
                                 const SizedBox(height: 20),
-                                SizedBox(
-                                  height: 50,
-                                  width: 210,
-                                  // child: Center(),
-                                  child: DropdownSearch<Department>(
-                                    selectedItem: departmentItem,
-                                    popupProps: PopupProps.menu(
-                                      itemBuilder: (context, item, isSelected) {
-                                        return Container(
-                                          margin: const EdgeInsets.symmetric(horizontal: 8),
-                                          decoration: !isSelected ? null
-                                              : BoxDecoration(
-
-                                            border: Border.all(color: Theme.of(context).primaryColor),
-                                            borderRadius: BorderRadius.circular(5),
-                                            color: Colors.white,
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(5.0),
-                                            child: Text((langId==1)? item.departmentNameAra.toString():  item.departmentNameEng.toString(),
-                                              //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
-                                              textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                          ),
-                                        );
-                                      },
-                                      showSearchBox: true,
-                                    ),
-                                    items: departments,
-                                    itemAsString: (Department u) => u.departmentNameAra.toString(),
-                                    onChanged: (value){
-                                      //v.text = value!.cusTypesCode.toString();
-                                      //print(value!.id);
-                                      selectedDepartmentValue =  value!.departmentCode.toString();
-                                    },
-                                    filterFn: (instance, filter){
-                                      if(instance.departmentNameAra!.contains(filter)){
-                                        print(filter);
-                                        return true;
-                                      }
-                                      else{
-                                        return false;
-                                      }
-                                    },
-                                    // dropdownDecoratorProps: const DropDownDecoratorProps(
-                                    //   dropdownSearchDecoration: InputDecoration(
-                                    //     labelStyle: TextStyle(
-                                    //       color: Colors.black,
-                                    //     ),
-                                    //     //icon: Icon(Icons.keyboard_arrow_down),
-                                    //   ),
-                                    // ),
-
-                                  ),
-
-                                ),
-                                const SizedBox(height: 20),
+                                // SizedBox(
+                                //   height: 50,
+                                //   width: 210,
+                                //   // child: Center(),
+                                //   child: DropdownSearch<Department>(
+                                //     selectedItem: departmentItem,
+                                //     popupProps: PopupProps.menu(
+                                //       itemBuilder: (context, item, isSelected) {
+                                //         return Container(
+                                //           margin: const EdgeInsets.symmetric(horizontal: 8),
+                                //           decoration: !isSelected ? null
+                                //               : BoxDecoration(
+                                //
+                                //             border: Border.all(color: Theme.of(context).primaryColor),
+                                //             borderRadius: BorderRadius.circular(5),
+                                //             color: Colors.white,
+                                //           ),
+                                //           child: Padding(
+                                //             padding: const EdgeInsets.all(5.0),
+                                //             child: Text((langId==1)? item.departmentNameAra.toString():  item.departmentNameEng.toString(),
+                                //               //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
+                                //               textAlign: langId==1?TextAlign.right:TextAlign.left,),
+                                //
+                                //           ),
+                                //         );
+                                //       },
+                                //       showSearchBox: true,
+                                //     ),
+                                //     items: departments,
+                                //     itemAsString: (Department u) => u.departmentNameAra.toString(),
+                                //     onChanged: (value){
+                                //       //v.text = value!.cusTypesCode.toString();
+                                //       //print(value!.id);
+                                //       selectedDepartmentValue =  value!.departmentCode.toString();
+                                //     },
+                                //     filterFn: (instance, filter){
+                                //       if(instance.departmentNameAra!.contains(filter)){
+                                //         print(filter);
+                                //         return true;
+                                //       }
+                                //       else{
+                                //         return false;
+                                //       }
+                                //     },
+                                //     // dropdownDecoratorProps: const DropDownDecoratorProps(
+                                //     //   dropdownSearchDecoration: InputDecoration(
+                                //     //     labelStyle: TextStyle(
+                                //     //       color: Colors.black,
+                                //     //     ),
+                                //     //     //icon: Icon(Icons.keyboard_arrow_down),
+                                //     //   ),
+                                //     // ),
+                                //
+                                //   ),
+                                //
+                                // ),
+                                // const SizedBox(height: 20),
                                 SizedBox(
                                   height: 50,
                                   width: 210,
@@ -500,9 +531,51 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                 SizedBox(
                                   height: 50,
                                   width: 210,
-                                  // child: Center(),
                                   child: DropdownSearch<Job>(
                                     selectedItem: jobItem,
+                                    popupProps: PopupProps.menu(
+                                      itemBuilder: (context, item, isSelected) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                                          decoration: !isSelected ? null
+                                              : BoxDecoration(
+                                            border: Border.all(color: Theme.of(context).primaryColor),
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: Colors.white,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: Text((langId==1)? item.jobNameAra.toString():  item.jobNameEng.toString(),
+                                              textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                          ),
+                                        );
+                                      },
+                                      showSearchBox: true,
+                                    ),
+                                    items: jobs,
+                                    itemAsString: (Job u) => u.jobNameAra.toString(),
+                                    onChanged: (value){
+                                      selectedJobValue =  value!.jobCode.toString();
+                                    },
+                                    filterFn: (instance, filter){
+                                      if(instance.jobNameAra!.contains(filter)){
+                                        print(filter);
+                                        return true;
+                                      }
+                                      else{
+                                        return false;
+                                      }
+                                    },
+
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 210,
+                                  child: DropdownSearch<VacationType>(
+                                    selectedItem: vacationTypeItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
@@ -515,8 +588,8 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                             color: Colors.white,
                                           ),
                                           child: Padding(
-                                            padding: const EdgeInsets.all(10.0),
-                                            child: Text((langId==1)? item.jobNameAra.toString():  item.jobNameEng.toString(),
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text((langId==1)? item.vacationTypeNameAra.toString():  item.vacationTypeNameEng.toString(),
                                               //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
                                               textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
@@ -525,15 +598,14 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                       },
                                       showSearchBox: true,
                                     ),
-                                    items: jobs,
-                                    itemAsString: (Job u) => u.jobNameAra.toString(),
+                                    items: vacationTypes,
+                                    itemAsString: (VacationType u) => u.vacationTypeNameAra.toString(),
                                     onChanged: (value){
-                                      //v.text = value!.cusTypesCode.toString();
-                                      //print(value!.id);
-                                      selectedJobValue =  value!.jobCode.toString();
+
+                                      selectedVacationTypeValue =  value!.vacationTypeCode.toString();
                                     },
                                     filterFn: (instance, filter){
-                                      if(instance.jobNameAra!.contains(filter)){
+                                      if(instance.vacationTypeNameAra!.contains(filter)){
                                         print(filter);
                                         return true;
                                       }
@@ -586,54 +658,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                     },
                                     type: TextInputType.datetime,
                                     colors: Colors.blueGrey,
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                                SizedBox(
-                                  height: 50,
-                                  width: 210,
-
-                                  child: DropdownSearch<VacationType>(
-                                    selectedItem: vacationTypeItem,
-                                    popupProps: PopupProps.menu(
-                                      itemBuilder: (context, item, isSelected) {
-                                        return Container(
-                                          margin: const EdgeInsets.symmetric(horizontal: 8),
-                                          decoration: !isSelected ? null
-                                              : BoxDecoration(
-
-                                            border: Border.all(color: Theme.of(context).primaryColor),
-                                            borderRadius: BorderRadius.circular(5),
-                                            color: Colors.white,
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text((langId==1)? item.vacationTypeNameAra.toString():  item.vacationTypeNameEng.toString(),
-                                              //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
-                                              textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                          ),
-                                        );
-                                      },
-                                      showSearchBox: true,
-                                    ),
-                                    items: vacationTypes,
-                                    itemAsString: (VacationType u) => u.vacationTypeNameAra.toString(),
-                                    onChanged: (value){
-                                      //v.text = value!.cusTypesCode.toString();
-                                      //print(value!.id);
-                                      selectedVacationTypeValue =  value!.vacationTypeCode.toString();
-                                    },
-                                    filterFn: (instance, filter){
-                                      if(instance.vacationTypeNameAra!.contains(filter)){
-                                        print(filter);
-                                        return true;
-                                      }
-                                      else{
-                                        return false;
-                                      }
-                                    },
-
                                   ),
                                 ),
                                 const SizedBox(height: 20),

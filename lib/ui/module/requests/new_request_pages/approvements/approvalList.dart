@@ -17,7 +17,7 @@ WorkFlowProcessApiService _apiService = WorkFlowProcessApiService();
 class Approvals extends StatefulWidget {
 
   Approvals(this.vacationRequest);
-  VacationRequests vacationRequest;
+  final VacationRequests vacationRequest;
 
   @override
   State<Approvals> createState() => ApprovalsState(vacationRequest);
@@ -30,8 +30,8 @@ class ApprovalsState extends State<Approvals> {
     this.vacationRequest = requests;
   }
 
-  WorkFlowProcess? process = WorkFlowProcess(empCode: "",levelCode: "");
-  List<WorkFlowProcess> processes = <WorkFlowProcess>[];
+  //WorkFlowProcess? process = WorkFlowProcess(empCode: "",levelCode: "");
+  List<WorkFlowProcess> processes = [];
   List<WorkFlowProcess> _founded = [];
 
   @override
@@ -118,7 +118,7 @@ class ApprovalsState extends State<Approvals> {
         color: const Color.fromRGBO(240, 242, 246,1),// Main Color
 
         child: ListView.builder(
-            itemCount: 1,
+            itemCount: processes.isEmpty ? 0 : processes.length,
             itemBuilder: (BuildContext context, int index) {
               return
                 Card(
@@ -144,98 +144,104 @@ class ApprovalsState extends State<Approvals> {
                               )),
                           Container(height: 20, color: Colors.white30, child: Row(
                             children: [
-                              Text('employee'.tr() + " : " + processes[index].empName.toString()),
+                              Text('level'.tr() + " : " + processes[index].levelCode.toString()),
                             ],
 
                           )),
-                          const SizedBox(width: 5),
-                          SizedBox(
-                              child: Row(
-                                children: <Widget>[
-                                  Center(
-                                      child: ElevatedButton.icon(
-                                        icon: const Icon(
-                                          Icons.edit,
-                                          color: Colors.white,
-                                          size: 20.0,
-                                          weight: 10,
-                                        ),
-                                        label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
-                                        onPressed: () {
-                                           _navigateToEditScreen(context);
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(5),
-                                            ),
-                                            padding: const EdgeInsets.all(7),
-                                            backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
-                                            foregroundColor: Colors.black,
-                                            elevation: 0,
-                                            side: const BorderSide(
-                                                width: 1,
-                                                color: Color.fromRGBO(0, 136, 134, 1)
-                                            )
-                                        ),
-                                      )
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Center(
-                                      child: ElevatedButton.icon(
-                                        icon: const Icon(
-                                          Icons.delete,
-                                          color: Colors.white,
-                                          size: 20.0,
-                                          weight: 10,
-                                        ),
-                                        label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
-                                        onPressed: () {
-                                         // _deleteItem(context,vacationRequests[index].id);
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(5),
-                                            ),
-                                            padding: const EdgeInsets.all(7),
-                                            backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-                                            foregroundColor: Colors.black,
-                                            elevation: 0,
-                                            side: const BorderSide(
-                                                width: 1,
-                                                color: Color.fromRGBO(144, 16, 46, 1)
-                                            )
-                                        ),
-                                      )),
-                                  const SizedBox(width: 5),
-                                  Center(
-                                      child: ElevatedButton.icon(
-                                        icon: const Icon(
-                                          Icons.print,
-                                          color: Colors.white,
-                                          size: 20.0,
-                                          weight: 10,
-                                        ),
-                                        label: Text('print'.tr(),style:const TextStyle(color: Colors.white,)),
-                                        onPressed: () {
-                                          // _navigateToPrintScreen(context,_salesInvoices[index]);
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(5),
-                                            ),
-                                            padding: const EdgeInsets.all(7),
-                                            backgroundColor: Colors.black87,
-                                            foregroundColor: Colors.black,
-                                            elevation: 0,
-                                            side: const BorderSide(
-                                                width: 1,
-                                                color: Colors.black87
-                                            )
-                                        ),
-                                      )),
+                          Container(height: 20, color: Colors.white30, child: Row(
+                            children: [
+                              Text('employee'.tr() + " : " + processes[index].actionEmpName.toString()),
+                            ],
 
-                                ],
-                              ))
+                          )),
+                          const SizedBox(height: 10),
+                          // SizedBox(
+                          //     child: Row(
+                          //       children: <Widget>[
+                          //         Center(
+                          //             child: ElevatedButton.icon(
+                          //               icon: const Icon(
+                          //                 Icons.edit,
+                          //                 color: Colors.white,
+                          //                 size: 20.0,
+                          //                 weight: 10,
+                          //               ),
+                          //               label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
+                          //               onPressed: () {
+                          //                  _navigateToEditScreen(context);
+                          //               },
+                          //               style: ElevatedButton.styleFrom(
+                          //                   shape: RoundedRectangleBorder(
+                          //                     borderRadius: BorderRadius.circular(5),
+                          //                   ),
+                          //                   padding: const EdgeInsets.all(7),
+                          //                   backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
+                          //                   foregroundColor: Colors.black,
+                          //                   elevation: 0,
+                          //                   side: const BorderSide(
+                          //                       width: 1,
+                          //                       color: Color.fromRGBO(0, 136, 134, 1)
+                          //                   )
+                          //               ),
+                          //             )
+                          //         ),
+                          //         const SizedBox(width: 5),
+                          //         Center(
+                          //             child: ElevatedButton.icon(
+                          //               icon: const Icon(
+                          //                 Icons.delete,
+                          //                 color: Colors.white,
+                          //                 size: 20.0,
+                          //                 weight: 10,
+                          //               ),
+                          //               label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
+                          //               onPressed: () {
+                          //                // _deleteItem(context,vacationRequests[index].id);
+                          //               },
+                          //               style: ElevatedButton.styleFrom(
+                          //                   shape: RoundedRectangleBorder(
+                          //                     borderRadius: BorderRadius.circular(5),
+                          //                   ),
+                          //                   padding: const EdgeInsets.all(7),
+                          //                   backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+                          //                   foregroundColor: Colors.black,
+                          //                   elevation: 0,
+                          //                   side: const BorderSide(
+                          //                       width: 1,
+                          //                       color: Color.fromRGBO(144, 16, 46, 1)
+                          //                   )
+                          //               ),
+                          //             )),
+                          //         const SizedBox(width: 5),
+                          //         Center(
+                          //             child: ElevatedButton.icon(
+                          //               icon: const Icon(
+                          //                 Icons.print,
+                          //                 color: Colors.white,
+                          //                 size: 20.0,
+                          //                 weight: 10,
+                          //               ),
+                          //               label: Text('print'.tr(),style:const TextStyle(color: Colors.white,)),
+                          //               onPressed: () {
+                          //                 // _navigateToPrintScreen(context,_salesInvoices[index]);
+                          //               },
+                          //               style: ElevatedButton.styleFrom(
+                          //                   shape: RoundedRectangleBorder(
+                          //                     borderRadius: BorderRadius.circular(5),
+                          //                   ),
+                          //                   padding: const EdgeInsets.all(7),
+                          //                   backgroundColor: Colors.black87,
+                          //                   foregroundColor: Colors.black,
+                          //                   elevation: 0,
+                          //                   side: const BorderSide(
+                          //                       width: 1,
+                          //                       color: Colors.black87
+                          //                   )
+                          //               ),
+                          //             )),
+                          //
+                          //       ],
+                          //     ))
                         ],
                       ),
                     ),
@@ -308,16 +314,16 @@ class ApprovalsState extends State<Approvals> {
   //   }
   // }
   void getData() async {
-    Future<WorkFlowProcess>? futureWorkflowProcess =
-    _apiService.get2WorkFlowProcess("2", widget.vacationRequest.id!).catchError((Error){
+    Future<List<WorkFlowProcess>?> futureWorkflowProcess =
+    _apiService.getWorkFlowProcesses("2", widget.vacationRequest.id!).catchError((Error){
       print('Error ${Error}');
       AppCubit.get(context).EmitErrorState();
     });
     print("+++++++++----" + widget.vacationRequest.id.toString());
-    process = (await futureWorkflowProcess)!;
-    print("empCode: "+ process!.empCode.toString() + "  level: "+ process!.levelCode.toString());
+    processes = (await futureWorkflowProcess)!;
     if (processes.isNotEmpty) {
       setState(() {
+        _founded = processes;
       });
     }
   }

@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/setup/salesOrderTypes/salesOrderType.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
+
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -10,7 +10,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
  class SalesOrdersTypeApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/sellorderstypes/searchData';
+  String searchApi= baseUrl.toString()  + 'v1/sellorderstypes/searchdata';
   String createApi= baseUrl.toString()  + 'v1/sellorderstypes';
   String updateApi= baseUrl.toString()  + 'v1/sellorderstypes/';  // Add ID For Edit
   String deleteApi= baseUrl.toString()  + 'v1/sellorderstypes/';
@@ -41,14 +41,12 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       print('SalesOrderType 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesOrderType> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => SalesOrderType.fromJson(item)).toList();
       }
       print('SalesOrderType 3');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => Customer.fromJson(data))
-      //     .toList();
+
     } else {
       print('SalesOrderType Failed');
       throw "Failed to load SalesOrderType list";

@@ -497,5 +497,6 @@
     "approval_procedure": "Approval procedure",
     "add_setting_request_details": "Add setting request details",
     "edit_setting_requests": "Edit setting requests",
-    "add_vacation_request":"Add vacation request"
+    "add_vacation_request":"Add vacation request",
+    "workFlow": "Workflow"
 }

@@ -17,11 +17,9 @@ import '../../../../../common/globals.dart';
   Future<List<SalesInvoiceType>>  getSalesInvoicesTypes() async {
 
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode,
-      'EmpCode': empCode,
       'Search':{
-        'EmpCode':empCode
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode
       }
     };
 

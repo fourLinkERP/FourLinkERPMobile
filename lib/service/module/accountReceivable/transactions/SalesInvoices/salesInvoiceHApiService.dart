@@ -22,7 +22,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       'Search':{
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
-        'SalesInvoicesCase': 1
+        //'SalesInvoicesCase': 1
       } //Sales Invoice Case =1
       // 'SalesInvoicesTypeCode': '1', //Sales Invoice Type
     };
@@ -115,7 +115,6 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": false,
-      'addBy': empCode,
       "year" : financialYearCode,
       "invoiceQRCode": invoice.invoiceQRCode,
 

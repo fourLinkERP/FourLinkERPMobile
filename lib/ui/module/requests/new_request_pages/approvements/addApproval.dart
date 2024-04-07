@@ -411,7 +411,8 @@ class _AddApprovalState extends State<AddApproval> {
     }
 
     api.createWorkFlowProcess(context, WorkFlowProcess(
-      workFlowTransactionId: widget.vacationRequest.id,
+      workFlowTransactionsId: widget.vacationRequest.id,
+      requestTypeCode: "2",    //widget.vacationRequest.requestTypeCode,
       trxDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
       levelCode: selectedLevelValue,
       empCode: selectedEmployeeValue,

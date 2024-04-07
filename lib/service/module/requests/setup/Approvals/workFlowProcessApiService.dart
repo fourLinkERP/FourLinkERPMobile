@@ -13,11 +13,13 @@ class WorkFlowProcessApiService {
   String createApi = baseUrl.toString() + 'v1/workflowprocess';
   String search2Api = baseUrl.toString() + 'v1/workflowprocess/processworkflow'; // Add ID For Get
 
-  Future<List<WorkFlowProcess>> getWorkFlowProcesses () async {
+  Future<List<WorkFlowProcess>> getWorkFlowProcesses (String requestTypeCode, int transactionId) async {
     Map data = {
       'Search': {
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
+        'RequestTypeCode': requestTypeCode,
+        'WorkFlowTransactionsId': transactionId
       }
 
     };
@@ -55,7 +57,7 @@ class WorkFlowProcessApiService {
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
         'RequestTypeCode': requestTypeCode,
-        'TransactionId': transactionId,
+        'WorkFlowTransactionsId': transactionId,
       }
     };
 
@@ -82,8 +84,8 @@ class WorkFlowProcessApiService {
       'trxDate' : workFlowProcess.trxDate,
       'empCode': workFlowProcess.empCode,
       'WorkFlowStatusCode': workFlowProcess.workFlowStatusCode,
-      'workFlowTransactionId': workFlowProcess.workFlowTransactionId,
-      //'requestTypeCode': workFlowProcess.requestTypeCode,
+      'WorkFlowTransactionsId': workFlowProcess.workFlowTransactionsId,
+      'requestTypeCode': workFlowProcess.requestTypeCode,
       'levelCode': workFlowProcess.levelCode,
       'notes': workFlowProcess.notes,
       "confirmed": false,

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "82852354045",
+    "project_id": "link-erp",
+    "storage_bucket": "link-erp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:82852354045:android:fd62229c65a0138d1b6b94",
+        "android_client_info": {
+          "package_name": "com.example.fourlinkmobileapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmItthMDxU9TVf5A6xnCbk4EvwS38qnXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

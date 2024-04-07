@@ -20,8 +20,10 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
   Future<List<SalesMan>>  getSalesMans() async {
     print('Sales Man 1');
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      'Search': {
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode
+      }
     };
 
     //print('B 2');

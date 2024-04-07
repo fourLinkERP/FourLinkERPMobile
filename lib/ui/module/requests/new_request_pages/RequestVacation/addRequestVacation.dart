@@ -21,6 +21,8 @@ import '../../../../../common/globals.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/accounts/basicInputs/Jobs/jobApiService.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 // APIs
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
@@ -81,10 +83,10 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   final _vacationRequestMessageController = TextEditingController();
   final _vacationRequestNoteController = TextEditingController();
 
-
   @override
   initState() {
     super.initState();
+    _vacationRequestMessageController.text = "Request vacation".tr();
     //fetchData();
     Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("WFW_EmployeeVacationRequests", "TrxSerial", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
       NextSerial nextSerial = data;
@@ -180,65 +182,110 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                             Column(
                               //mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const SizedBox(height: 10),
+                                //const SizedBox(height: 10),
                                 SizedBox(
                                   height: 50,
                                   width: 100,
-                                  child: Text("trxserial".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
+                                  child: Row(
+                                    children: [
+                                      Text("trxserial".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
                                   height: 50,
                                   width: 100,
-                                  child: Text("trxdate".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Row(
+                                    children: [
+                                      Text("trxdate".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
+
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
                                   height: 50,
                                   width: 100,
-                                  child: Text("message_title".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Row(
+                                    children: [
+                                      Text("message_title".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
                                   height: 50,
                                   width: 100,
-                                  child: Text("cost_center".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Row(
+                                    children: [
+                                      Text("cost_center".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                // SizedBox(
+                                //   height: 50,
+                                //   width: 100,
+                                //   child: Text("department".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                // ),
+                                // const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 100,
+                                  child: Row(
+                                    children: [
+                                      Text("employee".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
                                   height: 50,
                                   width: 100,
-                                  child: Text("department".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Row(
+                                    children: [
+                                      Text("job".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
                                   height: 50,
                                   width: 100,
-                                  child: Text("employee".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Row(
+                                    children: [
+                                      Text("vacation_type".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
                                   height: 50,
                                   width: 100,
-                                  child: Text("job".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Row(
+                                    children: [
+                                      Text("from_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
                                   height: 50,
                                   width: 100,
-                                  child: Text("from_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                                ),
-                                const SizedBox(height: 20),
-                                SizedBox(
-                                  height: 50,
-                                  width: 100,
-                                  child: Text("to_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                                ),
-                                const SizedBox(height: 20),
-                                SizedBox(
-                                  height: 50,
-                                  width: 100,
-                                  child: Text("vacation_type".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  child: Row(
+                                    children: [
+                                      Text("to_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                      Text("*".tr(), style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.red),),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
@@ -274,7 +321,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                   height: 50,
                                   width: 210,
                                   child: defaultFormField(
-
+                                    enable: false,
                                     label: 'trxdate'.tr(),
                                     controller: _vacationRequestTrxDateController,
                                     onTab: () async {
@@ -319,6 +366,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                   height: 50,
                                   width: 210,
                                   child: DropdownSearch<CostCenter>(
+                                    enabled: false,
                                      selectedItem: costCenterItem,
                                       popupProps: PopupProps.menu(
                                         itemBuilder: (context, item, isSelected) {
@@ -359,59 +407,59 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
 
                                 ),
                                 const SizedBox(height: 20),
-                                SizedBox(
-                                  height: 50,
-                                  width: 210,
-                                  // child: Center(),
-                                  child: DropdownSearch<Department>(
-                                      popupProps: PopupProps.menu(
-                                        itemBuilder: (context, item, isSelected) {
-                                          return Container(
-                                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                                            decoration: !isSelected ? null
-                                                : BoxDecoration(
-
-                                              border: Border.all(color: Theme.of(context).primaryColor),
-                                              borderRadius: BorderRadius.circular(5),
-                                              color: Colors.white,
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text((langId==1)? item.departmentNameAra.toString():  item.departmentNameEng.toString(),
-                                                //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
-                                                textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                            ),
-                                          );
-                                        },
-                                        showSearchBox: true,
-                                      ),
-                                      items: departments,
-                                      itemAsString: (Department u) => u.departmentNameAra.toString(),
-                                      onChanged: (value){
-                                        //v.text = value!.cusTypesCode.toString();
-                                        //print(value!.id);
-                                        selectedDepartmentValue =  value!.departmentCode.toString();
-                                      },
-                                      filterFn: (instance, filter){
-                                        if(instance.departmentNameAra!.contains(filter)){
-                                          print(filter);
-                                          return true;
-                                        }
-                                        else{
-                                          return false;
-                                        }
-                                      },
-
-                                    ),
-
-                                ),
-                                const SizedBox(height: 20),
+                                // SizedBox(
+                                //   height: 50,
+                                //   width: 210,
+                                //   // child: Center(),
+                                //   child: DropdownSearch<Department>(
+                                //       popupProps: PopupProps.menu(
+                                //         itemBuilder: (context, item, isSelected) {
+                                //           return Container(
+                                //             margin: const EdgeInsets.symmetric(horizontal: 8),
+                                //             decoration: !isSelected ? null
+                                //                 : BoxDecoration(
+                                //
+                                //               border: Border.all(color: Theme.of(context).primaryColor),
+                                //               borderRadius: BorderRadius.circular(5),
+                                //               color: Colors.white,
+                                //             ),
+                                //             child: Padding(
+                                //               padding: const EdgeInsets.all(8.0),
+                                //               child: Text((langId==1)? item.departmentNameAra.toString():  item.departmentNameEng.toString(),
+                                //                 //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
+                                //                 textAlign: langId==1?TextAlign.right:TextAlign.left,),
+                                //
+                                //             ),
+                                //           );
+                                //         },
+                                //         showSearchBox: true,
+                                //       ),
+                                //       items: departments,
+                                //       itemAsString: (Department u) => u.departmentNameAra.toString(),
+                                //       onChanged: (value){
+                                //
+                                //         selectedDepartmentValue =  value!.departmentCode.toString();
+                                //       },
+                                //       filterFn: (instance, filter){
+                                //         if(instance.departmentNameAra!.contains(filter)){
+                                //           print(filter);
+                                //           return true;
+                                //         }
+                                //         else{
+                                //           return false;
+                                //         }
+                                //       },
+                                //
+                                //     ),
+                                //
+                                // ),
+                                // const SizedBox(height: 20),
                                 SizedBox(
                                   height: 50,
                                   width: 210,
                                   // child: Center(),
                                   child: DropdownSearch<Employee>(
+                                    enabled: false,
                                     selectedItem: employeeItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, employeeItem, isSelected) {
@@ -451,15 +499,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                         return false;
                                       }
                                     },
-                                    // dropdownDecoratorProps: const DropDownDecoratorProps(
-                                    //   dropdownSearchDecoration: InputDecoration(
-                                    //     labelStyle: TextStyle(
-                                    //       color: Colors.black,
-                                    //     ),
-                                    //     //icon: Icon(Icons.keyboard_arrow_down),
-                                    //   ),
-                                    // ),
-
                                   ),
                                 ),
                                 const SizedBox(height: 20),
@@ -468,6 +507,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                   width: 210,
                                   // child: Center(),
                                   child: DropdownSearch<Job>(
+                                    enabled: false,
                                     selectedItem: jobItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
@@ -505,59 +545,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                         return false;
                                       }
                                     },
-                                    // dropdownDecoratorProps: const DropDownDecoratorProps(
-                                    //   dropdownSearchDecoration: InputDecoration(
-                                    //     labelStyle: TextStyle(
-                                    //       color: Colors.black,
-                                    //     ),
-                                    //     //icon: Icon(Icons.keyboard_arrow_down),
-                                    //   ),
-                                    // ),
 
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                                SizedBox(
-                                  height: 50,
-                                  width: 210,
-                                  child: defaultFormField(
-                                    label: 'from_date'.tr(),
-                                    controller: _fromDateController,
-                                    onTab: () async {
-                                      DateTime? pickedDate = await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime(1950),
-                                          lastDate: DateTime(2050));
-
-                                      if (pickedDate != null) {
-                                        _fromDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                      }
-                                    },
-                                    type: TextInputType.datetime,
-                                    colors: Colors.blueGrey,
-                                  ),
-                                ),
-                                const SizedBox(height: 20),
-                                SizedBox(
-                                  height: 50,
-                                  width: 210,
-                                  child: defaultFormField(
-                                    label: 'to_date'.tr(),
-                                    controller: _toDateController,
-                                    onTab: () async {
-                                      DateTime? pickedDate = await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime(1950),
-                                          lastDate: DateTime(2050));
-
-                                      if (pickedDate != null) {
-                                        _toDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                      }
-                                    },
-                                    type: TextInputType.datetime,
-                                    colors: Colors.blueGrey,
                                   ),
                                 ),
                                 const SizedBox(height: 20),
@@ -621,6 +609,51 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                   height: 50,
                                   width: 210,
                                   child: defaultFormField(
+                                    label: 'from_date'.tr(),
+                                    controller: _fromDateController,
+                                    onTab: () async {
+                                      DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1950),
+                                          lastDate: DateTime(2050));
+
+                                      if (pickedDate != null) {
+                                        _fromDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                      }
+                                    },
+                                    type: TextInputType.datetime,
+                                    colors: Colors.blueGrey,
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  height: 50,
+                                  width: 210,
+                                  child: defaultFormField(
+                                    label: 'to_date'.tr(),
+                                    controller: _toDateController,
+                                    onTab: () async {
+                                      DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1950),
+                                          lastDate: DateTime(2050));
+
+                                      if (pickedDate != null) {
+                                        _toDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                      }
+                                    },
+                                    type: TextInputType.datetime,
+                                    colors: Colors.blueGrey,
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+
+                                SizedBox(
+                                  height: 50,
+                                  width: 210,
+                                  child: defaultFormField(
                                     controller: _vacationRequestNoteController,
                                     label: 'notes'.tr(),
                                     type: TextInputType.text,
@@ -632,12 +665,8 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                       }
                                       return null;
                                     },
-
                                   ),
                                 ),
-
-
-
                               ],
                             ),
                           ],
@@ -662,8 +691,10 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                         borderRadius: BorderRadius.circular(80),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       saveVacationRequest(context);
+                      // final fcmToken = await FirebaseMessaging.instance.getToken();
+                      // print("device token: +" + fcmToken! + "+");
                     },
                     child: Text('Save'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
                   ),
@@ -797,28 +828,9 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
       return;
     }
 
-    // if (selectedVacationTypeValue == null || selectedVacationTypeValue!.isEmpty) {
-    //        FN_showToast(context, 'please set vacation type'.tr(), Colors.black);
-    //        return;
-    //      }
-    // // if (selectedJobValue == null || selectedJobValue!.isEmpty) {
-    // //   FN_showToast(context, 'please set a job'.tr(), Colors.black);
-    // //   return;
-    // // }
-    // if (selectedCostCenterValue == null || selectedCostCenterValue!.isEmpty) {
-    //   FN_showToast(context, 'please set cost center value'.tr(), Colors.black);
-    //   return;
-    // }
-    // if (selectedEmployeeValue == null || selectedEmployeeValue!.isEmpty) {
-    //   FN_showToast(context, 'please set cost employee value'.tr(), Colors.black);
-    //   return;
-    // }
-    // if (selectedDepartmentValue == null || selectedDepartmentValue!.isEmpty) {
-    //   FN_showToast(context, 'please set a department'.tr(), Colors.black);
-    //   return;
-    // }
     api.createVacationRequest(context, VacationRequests(
         costCenterCode1: selectedCostCenterValue,
+        requestTypeCode: "2",
         empCode: selectedEmployeeValue,
         jobCode: selectedJobValue,
         vacationTypeCode: selectedVacationTypeValue,

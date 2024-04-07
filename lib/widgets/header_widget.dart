@@ -169,17 +169,17 @@ class _HeaderWidgetState extends State<HeaderWidget> {
     showModalBottomSheet(
         context: context,
         builder: (builder){
-          return new Container(
+          return Container(
             height: 900.0,
             color: Colors.transparent, //could change this to Color(0xFF737373),
             //so you don't have to change MaterialApp canvasColor
-            child: new Container(
-                decoration: new BoxDecoration(
+            child: Container(
+                decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: new BorderRadius.only(
+                    borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(10.0),
                         topRight: const Radius.circular(10.0))),
-                child: new Center(
+                child: Center(
                   child: LoginSettingPage(),
                 )),
           );

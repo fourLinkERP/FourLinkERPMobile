@@ -63,7 +63,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
     print('okkkkkkkkkkk');
     getData();
     super.initState();
-
     setState(() {
       _founded = _salesInvoices!;
     });

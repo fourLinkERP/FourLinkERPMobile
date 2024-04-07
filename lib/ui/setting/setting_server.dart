@@ -96,7 +96,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                 // decoration: ThemeHelper().inputBoxDecorationShaddow(),
                                 child: defaultFormField(
                                   controller: _APiController,
-                                  label: 'http://www.sudokuano.net/api/'.tr(),
+                                  label: 'http://webapi.4linkerp.com/api/'.tr(),
                                   type: TextInputType.emailAddress,
                                   colors: Colors.blueGrey,
                                   prefix: Icons.link,
@@ -243,8 +243,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                               ),
                               const SizedBox(height: 10.0),
                               Container(
-                                decoration:
-                                ThemeHelper().buttonBoxDecoration(context),
+                                decoration: ThemeHelper().buttonBoxDecoration(context),
                                 child: ElevatedButton(
                                   style: ThemeHelper().buttonStyle(),
 
