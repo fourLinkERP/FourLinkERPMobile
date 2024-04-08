@@ -117,6 +117,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "confirmed": false,
       "year" : financialYearCode,
       "invoiceQRCode": invoice.invoiceQRCode,
+      "addBy": empCode,
 
 
 
@@ -128,7 +129,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       // 'TaxGroupCode': invoice.taxGroupCode,
     };
 
-    print('save invoice 1');
+    print('save invoice 1>>');
     print('save ' + data.toString());
 
     final http.Response response = await http.post(

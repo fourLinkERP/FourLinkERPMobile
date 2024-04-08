@@ -654,6 +654,9 @@ class _LoginScreenState extends State<LoginScreen> {
       //Token
       if (log.token!.isNotEmpty) {
         token = log.token!;
+        empCode = log.empCode!; // Nasr Add This
+        print('xxxxxxxxxxxxo');
+        print(empCode);
         if (baseUrl.toString().isEmpty){      // Edited for Log in without entering URL in settings
           baseUrl =  Uri.parse("http://webapi.4linkerp.com/api/");
         }

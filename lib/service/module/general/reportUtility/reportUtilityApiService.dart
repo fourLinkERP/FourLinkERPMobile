@@ -33,6 +33,8 @@ import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart
 
     print('ReportApi 2');
     print(data);
+    print('ReportApi 2 Url---');
+    print(reportApi);
     final http.Response response = await http.post(
       Uri.parse(reportApi),
       headers: <String, String>{

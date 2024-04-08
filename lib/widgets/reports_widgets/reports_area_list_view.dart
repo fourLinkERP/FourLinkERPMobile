@@ -25,15 +25,15 @@ class _ReportsAreaListViewState extends State<ReportsAreaListView>
   List<String> areaListData = <String>[
     'assets/fitness_app/report.png',
     'assets/fitness_app/report.png',
-    'assets/fitness_app/report.png',
-    'assets/fitness_app/report.png',
+    // 'assets/fitness_app/report.png',
+    // 'assets/fitness_app/report.png',
   ];
 
   List<String> areaListDataTitle = <String>[
     'customeraccountreport'.tr(),
     'dailySalesreport'.tr(),
-    'itemcardreport'.tr(),
-    'accountreports'.tr(),
+    // 'itemcardreport'.tr(),
+    // 'accountreports'.tr(),
   ];
 
   @override
