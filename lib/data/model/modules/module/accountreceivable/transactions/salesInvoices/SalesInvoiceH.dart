@@ -18,6 +18,7 @@ class SalesInvoiceH {
   String? customerCode ;
   String? customerName ;
   String? currencyCode ;
+  double? currencyRate ;
   String? salesInvoicesDate ;
   String? salesManCode ;
   String? taxGroupCode ;
@@ -58,6 +59,7 @@ class SalesInvoiceH {
     this.customerCode,
     this.customerName,
     this.currencyCode,
+    this.currencyRate,
     this.salesInvoicesDate,
     this.salesManCode,
     this.taxGroupCode,
@@ -102,7 +104,7 @@ class SalesInvoiceH {
       salesInvoicesDate: (json['salesInvoicesDate'] != null) ? json['salesInvoicesDate'] as String:pickedDate,
       totalQty: (json['totalQty'] !=null) ? json['totalQty'].toDouble() : 0,
       totalDiscount: (json['totalDiscount'] !=null) ? json['totalDiscount'].toDouble() : 0,
-
+      currencyRate: (json['currencyRate'] !=null) ? json['currencyRate'].toDouble() : 0,
       rowsCount: (json['rowsCount']  != null) ? json['rowsCount'] as int:0,
       totalTax: (json['totalTax'] !=null) ? json['totalTax'].toDouble() : 0,
       invoiceDiscountPercent: (json['invoiceDiscountPercent'] !=null) ? json['invoiceDiscountPercent'].toDouble() : 0,

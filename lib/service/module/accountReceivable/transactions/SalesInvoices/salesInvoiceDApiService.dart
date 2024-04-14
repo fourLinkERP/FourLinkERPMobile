@@ -173,7 +173,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     );
 
     print('Start Create D2' );
-    print('save ' + data.toString());
+    print('save details: ' + data.toString());
 
     if (response.statusCode == 200) {
 

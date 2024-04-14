@@ -91,7 +91,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
   String? selectedCustomerValue = null;
   String? selectedCustomerEmail = null;
-  String? selectedTypeValue = "1";
+  String? selectedTypeValue = null;
   String? selectedItemValue = null;
   String? selectedItemName = null;
   String? selectedUnitValue = null;
@@ -496,7 +496,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                           //_displayQtyController.text = "1";
                                           changeItemUnit(selectedItemValue.toString());
                                           selectedUnitValue = "1";
-                                          String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                          String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                           setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
 
 
@@ -1478,6 +1478,11 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       FN_showToast(context, 'please_Insert_One_Item_At_Least'.tr(), Colors.black);
       return;
     }
+    if(selectedTypeValue == null)
+      {
+        FN_showToast(context, 'please_Set_Invoice_Type'.tr(), Colors.black);
+        return;
+      }
 
     //Serial
     if (_salesInvoicesSerialController.text.isEmpty) {
@@ -1513,6 +1518,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       salesInvoicesTypeCode: selectedTypeValue.toString(),
       salesInvoicesDate: _salesInvoicesDateController.text,
       customerCode: selectedCustomerValue.toString(),
+      currencyRate: 1,
       totalQty: (_totalQtyController.text.isNotEmpty) ? _totalQtyController.text.toDouble() : 0,
       totalTax: (_totalTaxController.text.isNotEmpty) ? _totalTaxController.text.toDouble() : 0,
       totalDiscount: (_totalDiscountController.text.isNotEmpty) ? _totalDiscountController.text.toDouble() : 0,

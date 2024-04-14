@@ -68,7 +68,7 @@ double  totalBeforeTax = 0;
 double  totalTax = 0;
 double  totalAfterDiscount = 0;
 double  totalNet = 0;
-WidgetsToImageController WidgetImage=new WidgetsToImageController();
+WidgetsToImageController WidgetImage= WidgetsToImageController();
 
 class EditSalesInvoiceHDataWidget extends StatefulWidget {
   EditSalesInvoiceHDataWidget(this.salesInvoicesH);
@@ -272,7 +272,6 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                     child: Column(
                       crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
                       children: <Widget>[
-                        const SizedBox(height: 20),
 
                         Form(
                             key: _dropdownTypeFormKey,
@@ -1836,7 +1835,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     });
 
     //Items
-    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
+    Future<List<Item>> Items = _itemsApiService.getReturnItems().then((data) {
       items = data;
       //print(customers.length.toString());
       //getItemData();
