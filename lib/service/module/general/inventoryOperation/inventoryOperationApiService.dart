@@ -10,7 +10,7 @@ import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart
 
  class InventoryOperationApiService {
 
-  String inventoryOperationApi= baseUrl.toString()  + 'v1/inventoryOperations/getInventoryOperation';
+  String inventoryOperationApi= baseUrl.toString()  + '/api/v1/inventoryOperations/getInventoryOperation';
 
   Future<InventoryOperation>  getItemQty(String? itemCode,String? displayUnitCode,int? displayQty) async {
 

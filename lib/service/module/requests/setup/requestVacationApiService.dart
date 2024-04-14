@@ -9,11 +9,11 @@ import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/vacat
 
 class VacationRequestsApiService {
 
-  String searchApi = baseUrl.toString() + 'v1/workflowvacationrequests/search';
-  String createApi = baseUrl.toString() + 'v1/workflowvacationrequests';
-  String updateApi = baseUrl.toString() + 'v1/workflowvacationrequests/'; // Add ID For Edit
-  String deleteApi = baseUrl.toString() + 'v1/workflowvacationrequests/';
-  String getByIdApi = baseUrl.toString() + 'v1/workflowvacationrequests/'; // Add ID For Get
+  String searchApi = baseUrl.toString() + '/api/v1/workflowvacationrequests/search';
+  String createApi = baseUrl.toString() + '/api/v1/workflowvacationrequests';
+  String updateApi = baseUrl.toString() + '/api/v1/workflowvacationrequests/'; // Add ID For Edit
+  String deleteApi = baseUrl.toString() + '/api/v1/workflowvacationrequests/';
+  String getByIdApi = baseUrl.toString() + '/api/v1/workflowvacationrequests/'; // Add ID For Get
 
   Future<List<VacationRequests>> getVacationRequests () async {
     Map data = {

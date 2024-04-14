@@ -9,11 +9,11 @@ import '../../../../../data/model/modules/module/requests/setup/additionalReques
 
 class AdditionalRequestHApiService {
 
-  String searchApi = baseUrl.toString() + 'v1/workflowadditionalrequestheaders/search';
-  String createApi = baseUrl.toString() + 'v1/workflowadditionalrequestheaders';
-  String updateApi = baseUrl.toString() + 'v1/workflowadditionalrequestheaders/'; // Add ID For Edit
-  String deleteApi = baseUrl.toString() + 'v1/workflowadditionalrequestheaders/';
-  String getByIdApi = baseUrl.toString() + 'v1/workflowadditionalrequestheaders/'; // Add ID For Get
+  String searchApi = baseUrl.toString() + '/api/v1/workflowadditionalrequestheaders/search';
+  String createApi = baseUrl.toString() + '/api/v1/workflowadditionalrequestheaders';
+  String updateApi = baseUrl.toString() + '/api/v1/workflowadditionalrequestheaders/'; // Add ID For Edit
+  String deleteApi = baseUrl.toString() + '/api/v1/workflowadditionalrequestheaders/';
+  String getByIdApi = baseUrl.toString() + '/api/v1/workflowadditionalrequestheaders/'; // Add ID For Get
 
   Future<List<AdditionalRequestH>> getAdditionalRequestH () async {
     Map data = {

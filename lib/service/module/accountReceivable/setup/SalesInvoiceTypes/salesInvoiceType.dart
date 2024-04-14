@@ -7,12 +7,12 @@ import '../../../../../common/globals.dart';
 
  class SalesInvoicesTypeApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/salesInvoicesTypes/searchData';
-  String searchReturnApi= baseUrl.toString()  + 'v1/salesInvoicesTypes/searchdata';
-  String createApi= baseUrl.toString()  + 'v1/salesInvoicesTypes';
-  String updateApi= baseUrl.toString()  + 'v1/salesInvoicesTypes/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/salesInvoicesTypes/';
-  String getByIdApi= baseUrl.toString()  + 'v1/salesInvoicesTypes/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/salesInvoicesTypes/searchData';
+  String searchReturnApi= baseUrl.toString()  + '/api/v1/salesInvoicesTypes/searchdata';
+  String createApi= baseUrl.toString()  + '/api/v1/salesInvoicesTypes';
+  String updateApi= baseUrl.toString()  + '/api/v1/salesInvoicesTypes/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/salesInvoicesTypes/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/salesInvoicesTypes/';  // Add ID For Get
 
   Future<List<SalesInvoiceType>>  getSalesInvoicesTypes() async {
 

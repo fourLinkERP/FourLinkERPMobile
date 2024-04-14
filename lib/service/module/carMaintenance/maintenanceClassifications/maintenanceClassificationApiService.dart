@@ -11,11 +11,11 @@ import '../../../../data/model/modules/module/carMaintenance/maintenanceClassifi
 
 class MaintenanceClassificationApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/maintenanceclassifications/search';
-  String createApi= baseUrl.toString()  + 'v1/maintenanceclassifications';
-  String updateApi= baseUrl.toString()  + 'v1/maintenanceclassifications/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/maintenanceclassifications/';
-  String getByIdApi= baseUrl.toString()  + 'v1/maintenanceclassifications/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/maintenanceclassifications/search';
+  String createApi= baseUrl.toString()  + '/api/v1/maintenanceclassifications';
+  String updateApi= baseUrl.toString()  + '/api/v1/maintenanceclassifications/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/maintenanceclassifications/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/maintenanceclassifications/';  // Add ID For Get
 
   Future<List<MaintenanceClassification>>  getMaintenanceClassifications() async {
 

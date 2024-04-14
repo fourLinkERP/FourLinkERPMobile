@@ -10,11 +10,11 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/ItemTypes
 
 class ItemTypeApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/itemtypes/searchdata';
-  String createApi= baseUrl.toString()  + 'v1/itemtypes';
-  String updateApi= baseUrl.toString()  + 'v1/itemtypes/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/itemtypes/';
-  String getByIdApi= baseUrl.toString()  + 'v1/itemtypes/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/itemtypes/searchdata';
+  String createApi= baseUrl.toString()  + '/api/v1/itemtypes';
+  String updateApi= baseUrl.toString()  + '/api/v1/itemtypes/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/itemtypes/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/itemtypes/';  // Add ID For Get
 
   Future<List<ItemType>>  getItemTypes(int lang) async {
 

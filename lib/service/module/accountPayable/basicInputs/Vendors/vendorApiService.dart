@@ -12,11 +12,11 @@ import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vend
 
  class VendorApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/vendors/searchData';
-  String createApi= baseUrl.toString()  + 'v1/vendors';
-  String updateApi= baseUrl.toString()  + 'v1/vendors/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/vendors/';
-  String getByIdApi= baseUrl.toString()  + 'v1/vendors/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/vendors/searchData';
+  String createApi= baseUrl.toString()  + '/api/v1/vendors';
+  String updateApi= baseUrl.toString()  + '/api/v1/vendors/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/vendors/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/vendors/';  // Add ID For Get
 
   Future<List<Vendor>?>  getVendors() async {
 

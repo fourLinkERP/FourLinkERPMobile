@@ -9,11 +9,11 @@ import '../../../../data/model/modules/module/carMaintenance/malfunctions/malfun
 
 class MalfunctionApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/malfunctions/search';
-  String createApi= baseUrl.toString()  + 'v1/malfunctions';
-  String updateApi= baseUrl.toString()  + 'v1/malfunctions/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/malfunctions/';
-  String getByIdApi= baseUrl.toString()  + 'v1/malfunctions/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/malfunctions/search';
+  String createApi= baseUrl.toString()  + '/api/v1/malfunctions';
+  String updateApi= baseUrl.toString()  + '/api/v1/malfunctions/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/malfunctions/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/malfunctions/';  // Add ID For Get
 
   Future<List<Malfunction>>  getMalfunctions() async {
 

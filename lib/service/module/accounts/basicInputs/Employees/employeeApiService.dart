@@ -11,11 +11,11 @@ import '../../../../../common/globals.dart';
 
  class EmployeeApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/employees/search';
-  String createApi= baseUrl.toString()  + 'v1/employees';
-  String updateApi= baseUrl.toString()  + 'v1/employees/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/employees/';
-  String getByIdApi= baseUrl.toString()  + 'v1/employees/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/employees/search';
+  String createApi= baseUrl.toString()  + '/api/v1/employees';
+  String updateApi= baseUrl.toString()  + '/api/v1/employees/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/employees/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/employees/';  // Add ID For Get
 
   Future<List<Employee>>  getEmployees() async {
 

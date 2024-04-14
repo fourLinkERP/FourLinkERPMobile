@@ -7,11 +7,11 @@ import '../../../../../common/globals.dart';
 
  class BoxTypeApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/boxtypes/searchData';
-  String createApi= baseUrl.toString()  + 'v1/boxtypes';
-  String updateApi= baseUrl.toString()  + 'v1/boxtypes/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/boxtypes/';
-  String getByIdApi= baseUrl.toString()  + 'v1/boxtypes/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/boxtypes/searchData';
+  String createApi= baseUrl.toString()  + '/api/v1/boxtypes';
+  String updateApi= baseUrl.toString()  + '/api/v1/boxtypes/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/boxtypes/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/boxtypes/';  // Add ID For Get
 
   Future<List<BoxType>>  getBoxTypes() async {
 

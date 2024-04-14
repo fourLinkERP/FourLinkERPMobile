@@ -12,7 +12,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<List<CompanyGeneralSetup>>  getCompanyGeneralSetupGeneralSetup() async {
 
-    String searchApi= baseUrl.toString()  + 'v1/companyGeneralSetups/search';
+    String searchApi= baseUrl.toString()  + '/api/v1/companyGeneralSetups/search';
 
     Map data = {
 
@@ -49,7 +49,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<CompanyGeneralSetup> getCompanyGeneralSetupGeneralSetupsById(int id) async {
 
-    String getByIdApi= baseUrl.toString()  + 'v1/companyGeneralSetups/';  // Add ID For Get
+    String getByIdApi= baseUrl.toString()  + '/api/v1/companyGeneralSetups/';  // Add ID For Get
     var data = {
       // "id": id
     };
@@ -74,7 +74,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<int> createCompanyGeneralSetupGeneralSetup(BuildContext context ,CompanyGeneralSetup company) async {
 
-    String createApi= baseUrl.toString()  + 'v1/companyGeneralSetups';
+    String createApi= baseUrl.toString()  + '/api/v1/companyGeneralSetups';
 
     Map data = {
       // 'CompanyGeneralSetupCode': companyCode,
@@ -114,7 +114,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<int> updateCompanyGeneralSetupGeneralSetup(BuildContext context ,int id, CompanyGeneralSetup company) async {
 
-    String updateApi= baseUrl.toString()  + 'v1/companyGeneralSetups/';  // Add ID For Edit
+    String updateApi= baseUrl.toString()  + '/api/v1/companyGeneralSetups/';  // Add ID For Edit
     print('Start Update');
 
     Map data = {
@@ -150,7 +150,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<void> deleteCompanyGeneralSetupGeneralSetup(BuildContext context ,int? id) async {
 
-    String deleteApi= baseUrl.toString()  + 'v1/companyGeneralSetups/';
+    String deleteApi= baseUrl.toString()  + '/api/v1/companyGeneralSetups/';
 
     String apiDel=deleteApi + id.toString();
 
@@ -181,7 +181,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
   //Worker
   Future<CompanyGeneralSetup> getCompanyGeneralSetupGeneralSetups( ) async {
 
-    String getByIdApi= baseUrl.toString()  + 'v1/companyGeneralSetups/searchcompanygeneralsetup';  // Add ID For Get
+    String getByIdApi= baseUrl.toString()  + '/api/v1/companyGeneralSetups/searchcompanygeneralsetup';  // Add ID For Get
     var data = {
       // "id": id
     };
@@ -207,7 +207,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
   //Worker
   Future<EmailSetting> getCompanyGeneralSetupEmailSettings( ) async {
 
-    String getByIdApi= baseUrl.toString()  + 'v1/companyGeneralSetups/getcompanygeneralsetupemailsetting';  // Add ID For Get
+    String getByIdApi= baseUrl.toString()  + '/api/v1/companyGeneralSetups/getcompanygeneralsetupemailsetting';  // Add ID For Get
     var data = {
       // "id": id
     };

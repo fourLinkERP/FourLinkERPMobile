@@ -9,11 +9,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 class PriorityApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/workflowpriorities/search';
-  String createApi= baseUrl.toString()  + 'v1/workflowpriorities';
-  String updateApi= baseUrl.toString()  + 'v1/workflowpriorities/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/workflowpriorities/';
-  String getByIdApi= baseUrl.toString()  + 'v1/workflowpriorities/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/workflowpriorities/search';
+  String createApi= baseUrl.toString()  + '/api/v1/workflowpriorities';
+  String updateApi= baseUrl.toString()  + '/api/v1/workflowpriorities/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/workflowpriorities/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/workflowpriorities/';  // Add ID For Get
 
   Future<List<Priority>>  getPriorities() async {
 

@@ -9,11 +9,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
  
  class CashReceiveApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/cashtransactionheaders/searchData';
-  String createApi= baseUrl.toString()  + 'v1/cashtransactionheaders';
-  String updateApi= baseUrl.toString()  + 'v1/cashtransactionheaders/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/cashtransactionheaders/';
-  String getByIdApi= baseUrl.toString()  + 'v1/cashtransactionheaders/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/cashtransactionheaders/searchData';
+  String createApi= baseUrl.toString()  + '/api/v1/cashtransactionheaders';
+  String updateApi= baseUrl.toString()  + '/api/v1/cashtransactionheaders/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/cashtransactionheaders/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/cashtransactionheaders/';  // Add ID For Get
 
   Future<List<CashReceive>?> getCashReceivesH() async {
 

@@ -658,13 +658,14 @@ class _LoginScreenState extends State<LoginScreen> {
         print('xxxxxxxxxxxxo');
         print(empCode);
         if (baseUrl.toString().isEmpty){      // Edited for Log in without entering URL in settings
-          baseUrl =  Uri.parse("http://webapi.4linkerp.com/api/");
+          baseUrl =  Uri.parse( urlString + "/api/");
         }
         String url = baseUrl.toString(); // Default APi Add By Nasr
 
         if (url.isEmpty) {
-          String urlString = "http://webapi.4linkerp.com/api/"; // Default APi Add By Nasr
-          baseUrl = Uri.parse(urlString);
+          String urlString1 = urlString + "/api/"; // Default APi Add By Nasr
+          //String urlString = "http://webapi.4linkerp.com/api/"; // Default APi Add By Nasr
+          baseUrl = Uri.parse(urlString1);
         }
 
 
@@ -709,8 +710,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
       String url = baseUrl.toString(); // Default APi Add By Nasr
       if (url.isEmpty) {
-        String urlString = "http://webapi.4linkerp.com/api/";  //"http://www.sudokuano.net/api/"; // Default APi Add By Nasr
-        baseUrl = Uri.parse(urlString);
+        String urlString1 = urlString +"/api/";  //"http://www.sudokuano.net/api/"; // Default APi Add By Nasr
+        //String urlString = "http://webapi.4linkerp.com/api/";  //"http://www.sudokuano.net/api/"; // Default APi Add By Nasr
+        baseUrl = Uri.parse(urlString1);
       }
 
       //checkUserGroupData

@@ -6,7 +6,7 @@ import '../../../../../common/globals.dart';
 
  class TafqeetApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/tafqeet/tafqitcurrency';
+  String searchApi= baseUrl.toString()  + '/api/v1/tafqeet/tafqitcurrency';
 
   Future<Tafqeet> getTafqeet(String currencyCode,String currencyValue) async {
 

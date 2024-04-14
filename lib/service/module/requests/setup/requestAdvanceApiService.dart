@@ -8,11 +8,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 class AdvanceRequestApiService {
 
-  String searchApi = baseUrl.toString() + 'v1/workflowadvancerequests/search';
-  String createApi = baseUrl.toString() + 'v1/workflowadvancerequests';
-  String updateApi = baseUrl.toString() + 'v1/workflowadvancerequests/'; // Add ID For Edit
-  String deleteApi = baseUrl.toString() + 'v1/workflowadvancerequests/';
-  String getByIdApi = baseUrl.toString() + 'v1/workflowadvancerequests/'; // Add ID For Get
+  String searchApi = baseUrl.toString() + '/api/v1/workflowadvancerequests/search';
+  String createApi = baseUrl.toString() + '/api/v1/workflowadvancerequests';
+  String updateApi = baseUrl.toString() + '/api/v1/workflowadvancerequests/'; // Add ID For Edit
+  String deleteApi = baseUrl.toString() + '/api/v1/workflowadvancerequests/';
+  String getByIdApi = baseUrl.toString() + '/api/v1/workflowadvancerequests/'; // Add ID For Get
 
   Future<List<AdvanceRequests>> getAdvanceRequests () async {
     Map data = {

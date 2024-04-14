@@ -106,7 +106,7 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
               itemNameAra: _itemNameAraController.text ,
               itemNameEng: _itemNameEngController.text,
               itemTypeCode: int.parse(selectedItemTypeValue!),
-              defaultSellPrice: int.parse(_itemSellPriceController.text),
+              defaultSellPrice: double.parse(_itemSellPriceController.text),
               defaultUniteCode: selectedUnitValue
 
           ));

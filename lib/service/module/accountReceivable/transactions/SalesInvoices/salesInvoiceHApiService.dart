@@ -10,11 +10,11 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
 
  class SalesInvoiceHApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/salesinvoiceheaders/searchData';
-  String createApi= baseUrl.toString()  + 'v1/salesinvoiceheaders';
-  String updateApi= baseUrl.toString()  + 'v1/salesinvoiceheaders/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/salesinvoiceheaders/';
-  String getByIdApi= baseUrl.toString()  + 'v1/salesinvoiceheaders/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/salesinvoiceheaders/searchData';
+  String createApi= baseUrl.toString()  + '/api/v1/salesinvoiceheaders';
+  String updateApi= baseUrl.toString()  + '/api/v1/salesinvoiceheaders/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/salesinvoiceheaders/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/salesinvoiceheaders/';  // Add ID For Get
 
   Future<List<SalesInvoiceH>?> getSalesInvoicesH() async {
 

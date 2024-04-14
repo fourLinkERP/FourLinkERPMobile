@@ -11,11 +11,11 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
 
  class SalesOrderDApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/sellorderdetails/searchData';
-  String createApi= baseUrl.toString()  + 'v1/sellorderdetails';
-  String updateApi= baseUrl.toString()  + 'v1/sellorderdetails/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/sellorderdetails/';
-  String getByIdApi= baseUrl.toString()  + 'v1/sellorderdetails/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/sellorderdetails/searchData';
+  String createApi= baseUrl.toString()  + '/api/v1/sellorderdetails';
+  String updateApi= baseUrl.toString()  + '/api/v1/sellorderdetails/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/sellorderdetails/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/sellorderdetails/';  // Add ID For Get
 
   Future<List<SalesOrderD>> getSalesOrdersD(int? headerId) async {
 

@@ -9,11 +9,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
  class JobApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/jobs/search';
-  String createApi= baseUrl.toString()  + 'v1/jobs';
-  String updateApi= baseUrl.toString()  + 'v1/jobs/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/jobs/';
-  String getByIdApi= baseUrl.toString()  + 'v1/jobs/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/jobs/search';
+  String createApi= baseUrl.toString()  + '/api/v1/jobs';
+  String updateApi= baseUrl.toString()  + '/api/v1/jobs/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/jobs/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/jobs/';  // Add ID For Get
 
   Future<List<Job>>  getJobs() async {
 

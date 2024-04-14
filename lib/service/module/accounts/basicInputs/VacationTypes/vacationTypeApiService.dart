@@ -10,11 +10,11 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/VacationTy
 
  class VacationTypeApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/vacationtypes/search';
-  String createApi= baseUrl.toString()  + 'v1/vacationtypes';
-  String updateApi= baseUrl.toString()  + 'v1/vacationtypes/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/vacationtypes/';
-  String getByIdApi= baseUrl.toString()  + 'v1/vacationtypes/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/vacationtypes/search';
+  String createApi= baseUrl.toString()  + '/api/v1/vacationtypes';
+  String updateApi= baseUrl.toString()  + '/api/v1/vacationtypes/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/vacationtypes/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/vacationtypes/';  // Add ID For Get
 
   Future<List<VacationType>>  getVacationTypes() async {
 

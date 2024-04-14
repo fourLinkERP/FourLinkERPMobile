@@ -10,11 +10,11 @@ import '../../../../../data/model/modules/module/requests/basicInputs/WorkflowSt
 
 class StatusesApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/workflowstatuses/search';
-  String createApi= baseUrl.toString()  + 'v1/workflowstatuses';
-  String updateApi= baseUrl.toString()  + 'v1/workflowstatuses/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/workflowstatuses/';
-  String getByIdApi= baseUrl.toString()  + 'v1/workflowstatuses/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/workflowstatuses/search';
+  String createApi= baseUrl.toString()  + '/api/v1/workflowstatuses';
+  String updateApi= baseUrl.toString()  + '/api/v1/workflowstatuses/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/workflowstatuses/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/workflowstatuses/';  // Add ID For Get
 
   Future<List<Status>>  getStatuses() async {
 

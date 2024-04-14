@@ -9,11 +9,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
  class CostCenterApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/costcenters/search';
-  String createApi= baseUrl.toString()  + 'v1/costcenters';
-  String updateApi= baseUrl.toString()  + 'v1/costcenters/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/costcenters/';
-  String getByIdApi= baseUrl.toString()  + 'v1/costcenters/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/costcenters/search';
+  String createApi= baseUrl.toString()  + '/api/v1/costcenters';
+  String updateApi= baseUrl.toString()  + '/api/v1/costcenters/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/costcenters/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/costcenters/';  // Add ID For Get
 
   Future<List<CostCenter>>  getCostCenters() async {
 

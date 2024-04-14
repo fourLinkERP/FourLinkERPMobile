@@ -7,11 +7,11 @@ import '../../../../../common/globals.dart';
 
  class CashTargetTypeApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/cashtargettypes/searchData';
-  String createApi= baseUrl.toString()  + 'v1/cashtargettypes';
-  String updateApi= baseUrl.toString()  + 'v1/cashtargettypes/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/cashtargettypes/';
-  String getByIdApi= baseUrl.toString()  + 'v1/cashtargettypes/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/cashtargettypes/searchData';
+  String createApi= baseUrl.toString()  + '/api/v1/cashtargettypes';
+  String updateApi= baseUrl.toString()  + '/api/v1/cashtargettypes/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/cashtargettypes/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/cashtargettypes/';  // Add ID For Get
 
   Future<List<CashTargetType>>  getCashTargetTypes() async {
 

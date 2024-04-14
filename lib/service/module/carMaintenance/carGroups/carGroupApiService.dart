@@ -9,11 +9,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 class CarGroupApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/cargroups/search';
-  String createApi= baseUrl.toString()  + 'v1/cargroups';
-  String updateApi= baseUrl.toString()  + 'v1/cargroups/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/cargroups/';
-  String getByIdApi= baseUrl.toString()  + 'v1/cargroups/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/cargroups/search';
+  String createApi= baseUrl.toString()  + '/api/v1/cargroups';
+  String updateApi= baseUrl.toString()  + '/api/v1/cargroups/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/cargroups/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/cargroups/';  // Add ID For Get
 
   Future<List<CarGroup>>  getCarGroups() async {
 

@@ -9,11 +9,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
  class DepartmentApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/departments/search';
-  String createApi= baseUrl.toString()  + 'v1/departments';
-  String updateApi= baseUrl.toString()  + 'v1/departments/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/departments/';
-  String getByIdApi= baseUrl.toString()  + 'v1/departments/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/departments/search';
+  String createApi= baseUrl.toString()  + '/api/v1/departments';
+  String updateApi= baseUrl.toString()  + '/api/v1/departments/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/departments/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/departments/';  // Add ID For Get
 
   Future<List<Department>>  getDepartments() async {
 

@@ -8,11 +8,11 @@ import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart
 
  class NextSerialApiService {
 
-  String serialApi= baseUrl.toString()  + 'v1/generals/getnextserial';
-  // String createApi= baseUrl.toString()  + 'v1/generals';
-  // String updateApi= baseUrl.toString()  + 'v1/generals/';  // Add ID For Edit
-  // String deleteApi= baseUrl.toString()  + 'v1/generals/';
-  // String getByIdApi= baseUrl.toString()  + 'v1/generals/';  // Add ID For Get
+  String serialApi= baseUrl.toString()  + '/api/v1/generals/getnextserial';
+  // String createApi= baseUrl.toString()  + '/api/v1/generals';
+  // String updateApi= baseUrl.toString()  + '/api/v1/generals/';  // Add ID For Edit
+  // String deleteApi= baseUrl.toString()  + '/api/v1/generals/';
+  // String getByIdApi= baseUrl.toString()  + '/api/v1/generals/';  // Add ID For Get
 
   Future<NextSerial>  getNextSerial(String? tableName,String? keyName,String? criteria) async {
 

@@ -10,11 +10,11 @@ import '../../../../data/model/modules/module/carMaintenance/paymentMethods/paym
 
 class PaymentMethodApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/paymentmethods/search';
-  String createApi= baseUrl.toString()  + 'v1/paymentmethods';
-  String updateApi= baseUrl.toString()  + 'v1/paymentmethods/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/paymentmethods/';
-  String getByIdApi= baseUrl.toString()  + 'v1/paymentmethods/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/paymentmethods/search';
+  String createApi= baseUrl.toString()  + '/api/v1/paymentmethods';
+  String updateApi= baseUrl.toString()  + '/api/v1/paymentmethods/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/paymentmethods/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/paymentmethods/';  // Add ID For Get
 
   Future<List<PaymentMethod>>  getPaymentMethods() async {
 

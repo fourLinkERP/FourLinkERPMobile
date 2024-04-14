@@ -10,11 +10,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
  class SalesInvoiceDApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/salesinvoicedetails/searchData';
-  String createApi= baseUrl.toString()  + 'v1/salesinvoicedetails';
-  String updateApi= baseUrl.toString()  + 'v1/salesinvoicedetails/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/salesinvoicedetails/';
-  String getByIdApi= baseUrl.toString()  + 'v1/salesinvoicedetails/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/salesinvoicedetails/searchData';
+  String createApi= baseUrl.toString()  + '/api/v1/salesinvoicedetails';
+  String updateApi= baseUrl.toString()  + '/api/v1/salesinvoicedetails/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/salesinvoicedetails/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/salesinvoicedetails/';  // Add ID For Get
 
   Future<List<SalesInvoiceD>> getSalesInvoicesD(int? headerId) async {
     print('Booter 1 SalesInvoiceD');

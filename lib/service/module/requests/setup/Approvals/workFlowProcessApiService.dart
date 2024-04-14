@@ -9,9 +9,9 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Approvals/
 
 class WorkFlowProcessApiService {
 
-  String searchApi = baseUrl.toString() + 'v1/workflowprocess/search';
-  String createApi = baseUrl.toString() + 'v1/workflowprocess';
-  String search2Api = baseUrl.toString() + 'v1/workflowprocess/processworkflow'; // Add ID For Get
+  String searchApi = baseUrl.toString() + '/api/v1/workflowprocess/search';
+  String createApi = baseUrl.toString() + '/api/v1/workflowprocess';
+  String search2Api = baseUrl.toString() + '/api/v1/workflowprocess/processworkflow'; // Add ID For Get
 
   Future<List<WorkFlowProcess>> getWorkFlowProcesses (String requestTypeCode, int transactionId) async {
     Map data = {

@@ -11,13 +11,15 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<List<Branch>>  getBranches() async {
 
-    String searchApi= 'http://webapi.4linkerp.com/api/v1/branches/loginsearch';
+    String searchApi= baseUrl.toString() + '/api/v1/branches/loginsearch';
+    //String searchApi= 'http://webapi.4linkerp.com/api/v1/branches/loginsearch';
 
     Map data = {
       'CompanyCode': companyCode
     };
 
     print('Branch 11');
+    print(searchApi);
     print(data);
     final http.Response response = await http.post(
       Uri.parse(searchApi),
@@ -56,7 +58,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       // "id": id
     };
 
-    String getByIdApi= baseUrl.toString()  + 'v1/branches/';  // Add ID For Get
+    String getByIdApi= baseUrl.toString()  + '/api/v1/branches/';  // Add ID For Get
     String apiGet=getByIdApi + id.toString();
 
     var response = await http.post(Uri.parse(apiGet),
@@ -77,7 +79,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<int> createBranch(BuildContext context ,Branch branch) async {
 
-    String createApi= baseUrl.toString()  + 'v1/branches';
+    String createApi= baseUrl.toString()  + '/api/v1/branches';
 
     Map data = {
       'CompanyCode': companyCode,
@@ -116,7 +118,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<int> updateBranch(BuildContext context ,int id, Branch branch) async {
 
-    String updateApi= baseUrl.toString()  + 'v1/branches/';  // Add ID For Edit
+    String updateApi= baseUrl.toString()  + '/api/v1/branches/';  // Add ID For Edit
 
     Map data = {
       'CompanyCode': companyCode,
@@ -152,7 +154,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<void> deleteBranch(BuildContext context ,int? id) async {
 
-    String deleteApi= baseUrl.toString()  + 'v1/branches/';
+    String deleteApi= baseUrl.toString()  + '/api/v1/branches/';
     String apiDel=deleteApi + id.toString();
     print('url' + apiDel);
     var data = {

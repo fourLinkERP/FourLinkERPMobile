@@ -7,11 +7,11 @@ import '../../../../../common/globals.dart';
 
  class CashBankBranchApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/cashbankbranches/searchData';
-  String createApi= baseUrl.toString()  + 'v1/cashbankbranches';
-  String updateApi= baseUrl.toString()  + 'v1/cashbankbranches/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/cashbankbranches/';
-  String getByIdApi= baseUrl.toString()  + 'v1/cashbankbranches/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/cashbankbranches/searchData';
+  String createApi= baseUrl.toString()  + '/api/v1/cashbankbranches';
+  String updateApi= baseUrl.toString()  + '/api/v1/cashbankbranches/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/cashbankbranches/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/cashbankbranches/';  // Add ID For Get
 
   Future<List<CashBankBranch>>  getCashBankBranches() async {
 

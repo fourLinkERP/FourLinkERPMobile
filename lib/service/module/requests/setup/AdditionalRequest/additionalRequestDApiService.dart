@@ -9,11 +9,11 @@ import '../../../../../data/model/modules/module/requests/setup/additionalReques
 
 class AdditionalRequestDApiService {
 
-  String searchApi = baseUrl.toString() + 'v1/workflowadditionalrequestdetails/search';
-  String createApi = baseUrl.toString() + 'v1/workflowadditionalrequestdetails';
-  String updateApi = baseUrl.toString() + 'v1/workflowadditionalrequestdetails/'; // Add ID For Edit
-  String deleteApi = baseUrl.toString() + 'v1/workflowadditionalrequestdetails/';
-  String getByIdApi = baseUrl.toString() + 'v1/workflowadditionalrequestdetails/'; // Add ID For Get
+  String searchApi = baseUrl.toString() + '/api/v1/workflowadditionalrequestdetails/search';
+  String createApi = baseUrl.toString() + '/api/v1/workflowadditionalrequestdetails';
+  String updateApi = baseUrl.toString() + '/api/v1/workflowadditionalrequestdetails/'; // Add ID For Edit
+  String deleteApi = baseUrl.toString() + '/api/v1/workflowadditionalrequestdetails/';
+  String getByIdApi = baseUrl.toString() + '/api/v1/workflowadditionalrequestdetails/'; // Add ID For Get
 
   Future<List<AdditionalRequestD>> getAdditionalRequestD (String? trxSerial) async {
     Map data = {

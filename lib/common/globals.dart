@@ -6,15 +6,22 @@ late bool isLoggedIn=false;
 bool isLive = false;
 
 //Url - Token
-String urlString = "http://webapi.4linkerp.com/api/";
-//String urlString = "https://kreazmobileapi.4linkerp.com/api/";
-//String urlString="http://www.sudokuano.net/api/";
-String reportUrlString = "http://webreport.4linkerp.com";
-//String reportUrlString="http://Report.15mayclub.com";
-String urlLiveString = "http://mobileapi.4linkerp.com/api/";
-String reportUrlLiveString = "http://webreport.4linkerp.com";
-Uri baseUrl = isLive == false ? Uri.parse(urlString) : Uri.parse(urlLiveString);
-Uri baseReportUrl = isLive == false ? Uri.parse(reportUrlString) : Uri.parse(reportUrlLiveString);
+String urlString = "http://kraezapi.4linkweb.com:8092";
+//String urlString = "http://webapi.4linkerp.com";
+//String urlString = "https://kreazmobileapi.4linkerp.com";
+//String urlString="http://www.sudokuano.net";
+//String urlString="http://kraezapi.4linkweb.com:8092";
+//String urlString="http://Report.15mayclub.com";
+String reportUrlString = "http://kraezreports.4linkweb.com:8094";
+//String reportUrlString = "http://webreport.4linkerp.com";
+//String reportUrlString = "http://mobileapi.4linkerp.com";
+//String reportUrlString = "http://kraezreports.4linkweb.com:8094";
+//String reportUrlString = "http://webreport.4linkerp.com";;
+
+Uri baseUrl =  Uri.parse(urlString);
+//Uri baseUrl = isLive == false ? Uri.parse(urlString) : Uri.parse(urlLiveString);
+Uri baseReportUrl = Uri.parse(reportUrlString);
+//Uri baseReportUrl = isLive == false ? Uri.parse(reportUrlString) : Uri.parse(reportUrlLiveString);
 String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImVlYTQzZjIyLTI5MzktNDc4YS04OTcxLWFhM2U2ZWVlYmFhZSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluQHJvb3QuY29tIiwiZnVsbE5hbWUiOiJyb290IEFkbWluIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZSI6InJvb3QiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9zdXJuYW1lIjoiQWRtaW4iLCJpcEFkZHJlc3MiOiIxOTcuNDYuNS4xODciLCJ0ZW5hbnQiOiJyb290IiwiaW1hZ2VfdXJsIjoiIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbW9iaWxlcGhvbmUiOiIiLCJleHAiOjE2OTcyMDQ5MDh9.ujU84Q6j0f0m4-i9GsY9uqfNWUWeencI8E6FGO7AGsU";
 String apiUserName="";//Will Set On App Perference
 String apiPassword="";//Will Set On App Perference

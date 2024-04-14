@@ -11,8 +11,9 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<List<Company>> getCompanys() async {
 
-    String searchApi= 'http://webapi.4linkerp.com/api/v1/companies/loginsearch';
-    //String searchApi= baseUrl.toString()  + 'v1/companies/loginsearch';
+    String searchApi= baseUrl.toString() + '/api/v1/companies/loginsearch';
+    //String searchApi= 'http://webapi.4linkerp.com/api/v1/companies/loginsearch';
+    //String searchApi= baseUrl.toString()  + '/api/v1/companies/loginsearch';
 
     Map data = {
       'CompanyCode': companyCode,
@@ -50,7 +51,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<Company> getCompanyById(int id) async {
 
-    String getByIdApi= baseUrl.toString()  + 'v1/companys/';  // Add ID For Get
+    String getByIdApi= baseUrl.toString()  + '/api/v1/companys/';  // Add ID For Get
     var data = {
       // "id": id
     };
@@ -75,7 +76,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<int> createCompany(BuildContext context ,Company company) async {
 
-    String createApi= baseUrl.toString()  + 'v1/companys';
+    String createApi= baseUrl.toString()  + '/api/v1/companys';
 
     Map data = {
       'CompanyCode': companyCode,
@@ -115,7 +116,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<int> updateCompany(BuildContext context ,int id, Company company) async {
 
-    String updateApi= baseUrl.toString()  + 'v1/companys/';  // Add ID For Edit
+    String updateApi= baseUrl.toString()  + '/api/v1/companys/';  // Add ID For Edit
     print('Start Update');
 
     Map data = {
@@ -151,7 +152,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<void> deleteCompany(BuildContext context ,int? id) async {
 
-    String deleteApi= baseUrl.toString()  + 'v1/companys/';
+    String deleteApi= baseUrl.toString()  + '/api/v1/companys/';
 
     String apiDel=deleteApi + id.toString();
 

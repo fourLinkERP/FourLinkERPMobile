@@ -8,11 +8,11 @@ import '../../../../data/model/modules/module/requests/setup/resourceRequests.da
 
 class ResourceRequestApiService{
 
-  String searchApi = baseUrl.toString() + 'v1/workflowresourcerequirementrequests/search';
-  String createApi = baseUrl.toString() + 'v1/workflowresourcerequirementrequests';
-  String updateApi = baseUrl.toString() + 'v1/workflowresourcerequirementrequests/'; // Add ID For Edit
-  String deleteApi = baseUrl.toString() + 'v1/workflowresourcerequirementrequests/';
-  String getByIdApi = baseUrl.toString() + 'v1/workflowresourcerequirementrequests/'; // Add ID For Get
+  String searchApi = baseUrl.toString() + '/api/v1/workflowresourcerequirementrequests/search';
+  String createApi = baseUrl.toString() + '/api/v1/workflowresourcerequirementrequests';
+  String updateApi = baseUrl.toString() + '/api/v1/workflowresourcerequirementrequests/'; // Add ID For Edit
+  String deleteApi = baseUrl.toString() + '/api/v1/workflowresourcerequirementrequests/';
+  String getByIdApi = baseUrl.toString() + '/api/v1/workflowresourcerequirementrequests/'; // Add ID For Get
 
   Future<List<ResourceRequests>> getResourceRequests () async {
     Map data = {

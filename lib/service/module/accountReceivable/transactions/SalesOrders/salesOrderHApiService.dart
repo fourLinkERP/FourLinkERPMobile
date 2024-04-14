@@ -17,11 +17,11 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
  
  class SalesOrderHApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/sellorderheaders/searchData';
-  String createApi= baseUrl.toString()  + 'v1/sellorderheaders';
-  String updateApi= baseUrl.toString()  + 'v1/sellorderheaders/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/sellorderheaders/';
-  String getByIdApi= baseUrl.toString()  + 'v1/sellorderheaders/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/sellorderheaders/searchData';
+  String createApi= baseUrl.toString()  + '/api/v1/sellorderheaders';
+  String updateApi= baseUrl.toString()  + '/api/v1/sellorderheaders/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/sellorderheaders/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/sellorderheaders/';  // Add ID For Get
 
   Future<List<SalesOrderH>?> getSalesOrdersH() async {
 

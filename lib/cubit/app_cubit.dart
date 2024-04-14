@@ -53,7 +53,7 @@ void emitState(){
 
      await CacheHelper.getString('API').then((value) =>
      {
-       urlString = (value != null)? value.toString() : ""
+       //urlString = (value != null)? value.toString() : ""
      });
 
      await CacheHelper.getString('financialYearCode').then((value) =>

@@ -7,7 +7,7 @@ class Item {
   String?  itemNameEng;
   String? defaultUniteCode;
   int?  itemTypeCode;
-  int ? defaultSellPrice;
+  double ? defaultSellPrice;
 
   // String? cusTypesCode,cusTypesName;
   //String image;
@@ -34,7 +34,7 @@ class Item {
       itemNameEng: (json['itemNameEng'] != null) ? json['itemNameEng'] as String:" ",
       itemTypeCode: (json['itemTypeCode'] != null) ? json['itemTypeCode'] as int: 0,
       defaultUniteCode: (json['defaultUniteCode'] != null) ? json['defaultUniteCode'] as String:" ",
-      defaultSellPrice: (json['defaultSellPrice'] != null) ? json['defaultSellPrice'] as int: 0,
+      defaultSellPrice: (json['defaultSellPrice'] != null) ?  json['defaultSellPrice'].toDouble() : 0.0,
       // cusTypesName: json['cusTypesName'] as String,
       // taxIdentificationNumber: json['taxIdentificationNumber'] as String,
       // address: json['address'] as String,

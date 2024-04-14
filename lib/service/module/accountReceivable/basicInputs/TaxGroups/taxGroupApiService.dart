@@ -10,11 +10,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
  class TaxGroupApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/taxGroupHeader/searchData';
-  String createApi= baseUrl.toString()  + 'v1/taxGroupHeader';
-  String updateApi= baseUrl.toString()  + 'v1/taxGroupHeader/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/taxGroupHeader/';
-  String getByIdApi= baseUrl.toString()  + 'v1/taxGroupHeader/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/taxGroupHeader/searchData';
+  String createApi= baseUrl.toString()  + '/api/v1/taxGroupHeader';
+  String updateApi= baseUrl.toString()  + '/api/v1/taxGroupHeader/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/taxGroupHeader/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/taxGroupHeader/';  // Add ID For Get
 
   Future<List<TaxGroup>>  getTaxGroups() async {
 

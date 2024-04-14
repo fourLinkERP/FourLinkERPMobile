@@ -9,11 +9,11 @@ import '../../../../data/model/modules/module/requests/basicInputs/settingReques
 
 class SettingRequestHApiService {
 
-  String searchApi = baseUrl.toString() + 'v1/workflowsettingrequestheaders/search';
-  String createApi = baseUrl.toString() + 'v1/workflowsettingrequestheaders';
-  String updateApi = baseUrl.toString() + 'v1/workflowsettingrequestheaders/'; // Add ID For Edit
-  String deleteApi = baseUrl.toString() + 'v1/workflowsettingrequestheaders/';
-  String getByIdApi = baseUrl.toString() + 'v1/workflowsettingrequestheaders/'; // Add ID For Get
+  String searchApi = baseUrl.toString() + '/api/v1/workflowsettingrequestheaders/search';
+  String createApi = baseUrl.toString() + '/api/v1/workflowsettingrequestheaders';
+  String updateApi = baseUrl.toString() + '/api/v1/workflowsettingrequestheaders/'; // Add ID For Edit
+  String deleteApi = baseUrl.toString() + '/api/v1/workflowsettingrequestheaders/';
+  String getByIdApi = baseUrl.toString() + '/api/v1/workflowsettingrequestheaders/'; // Add ID For Get
 
   Future<List<SettingRequestH>> getSettingRequestH () async {
     Map data = {

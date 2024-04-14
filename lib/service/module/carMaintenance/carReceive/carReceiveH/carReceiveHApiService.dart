@@ -8,11 +8,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 class CarReceiveHApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/carreceivecarheaders/search';
-  String createApi= baseUrl.toString()  + 'v1/carreceivecarheaders';
-  String updateApi= baseUrl.toString()  + 'v1/carreceivecarheaders/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/carreceivecarheaders/';
-  String getByIdApi= baseUrl.toString()  + 'v1/carreceivecarheaders/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/carreceivecarheaders/search';
+  String createApi= baseUrl.toString()  + '/api/v1/carreceivecarheaders';
+  String updateApi= baseUrl.toString()  + '/api/v1/carreceivecarheaders/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/carreceivecarheaders/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/carreceivecarheaders/';  // Add ID For Get
 
   Future<List<CarReceiveH>>  getCarReceiveH() async {
 

@@ -9,11 +9,11 @@ import '../../../../../data/model/modules/module/carMaintenance/carReceive/carRe
 
 class CarReceiveD2ApiService {
 
-  String searchApi = baseUrl.toString() + 'v1/carreceivecardetail2s/search';
-  String createApi = baseUrl.toString() + 'v1/carreceivecardetail2s';
-  String updateApi = baseUrl.toString() + 'v1/carreceivecardetail2s/'; // Add ID For Edit
-  String deleteApi = baseUrl.toString() + 'v1/carreceivecardetail2s/';
-  String getByIdApi = baseUrl.toString() + 'v1/carreceivecardetail2s/'; // Add ID For Get
+  String searchApi = baseUrl.toString() + '/api/v1/carreceivecardetail2s/search';
+  String createApi = baseUrl.toString() + '/api/v1/carreceivecardetail2s';
+  String updateApi = baseUrl.toString() + '/api/v1/carreceivecardetail2s/'; // Add ID For Edit
+  String deleteApi = baseUrl.toString() + '/api/v1/carreceivecardetail2s/';
+  String getByIdApi = baseUrl.toString() + '/api/v1/carreceivecardetail2s/'; // Add ID For Get
 
   Future<List<CarReceiveD2s>> getCarReceiveD2s () async {
     Map data = {

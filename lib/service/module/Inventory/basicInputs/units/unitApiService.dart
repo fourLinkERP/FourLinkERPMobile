@@ -12,11 +12,11 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/units/uni
 
  class UnitApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/units/searchData';
-  String createApi= baseUrl.toString()  + 'v1/units';
-  String updateApi= baseUrl.toString()  + 'v1/units/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/units/';
-  String getByIdApi= baseUrl.toString()  + 'v1/units/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/units/searchData';
+  String createApi= baseUrl.toString()  + '/api/v1/units';
+  String updateApi= baseUrl.toString()  + '/api/v1/units/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/units/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/units/';  // Add ID For Get
 
   Future<List<Unit>>  getUnits() async {
 

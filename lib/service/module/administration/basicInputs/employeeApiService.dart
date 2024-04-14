@@ -13,7 +13,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<List<Employee>>  getEmployees() async {
 
-    String searchApi= baseUrl.toString()  + 'v1/employees/search';
+    String searchApi= baseUrl.toString()  + '/api/v1/employees/search';
 
     Map data = {
       'CompanyCode': companyCode,
@@ -51,7 +51,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<Employee> getEmployeeById(int id) async {
 
-    String getByIdApi= baseUrl.toString()  + 'v1/employees/';  // Add ID For Get
+    String getByIdApi= baseUrl.toString()  + '/api/v1/employees/';  // Add ID For Get
     var data = {
       // "id": id
     };
@@ -76,8 +76,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<EmployeeGroupStatus> checkUserGroupData(String empCode) async {
 
-    String getByIdApi= baseUrl.toString()  + 'v1/employees/checkUserGroupData';  // Add ID For Get
+    String getByIdApi= baseUrl.toString()  + '/api/v1/employees/checkUserGroupData';  // Add ID For Get
     print('checkUserGroupData URL : ' + getByIdApi );
+
+    print('token : ' );
+    print('token : ' + token.toString() );
     var data = {
       'Search': {
         'empCode':empCode,
@@ -107,7 +110,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<int> createEmployee(BuildContext context ,Employee employee) async {
 
-    String createApi= baseUrl.toString()  + 'v1/employees';
+    String createApi= baseUrl.toString()  + '/api/v1/employees';
 
     Map data = {
       'CompanyCode': companyCode,
@@ -147,7 +150,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<int> updateEmployee(BuildContext context ,int id, Employee employee) async {
 
-    String updateApi= baseUrl.toString()  + 'v1/employees/';  // Add ID For Edit
+    String updateApi= baseUrl.toString()  + '/api/v1/employees/';  // Add ID For Edit
     print('Start Update');
 
     Map data = {
@@ -185,7 +188,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<void> deleteEmployee(BuildContext context ,int? id) async {
 
-    String deleteApi= baseUrl.toString()  + 'v1/employees/';
+    String deleteApi= baseUrl.toString()  + '/api/v1/employees/';
     String apiDel=deleteApi + id.toString();
     print('url' + apiDel);
     var data = {
@@ -212,7 +215,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<List<MenuPermission>>  getEmployeePermission(String empCode) async {
 
-    String searchApi= baseUrl.toString()  + 'v1/employees/getEmployeePermission';
+    String searchApi= baseUrl.toString()  + '/api/v1/employees/getEmployeePermission';
 
     Map data = {
       'Search': {

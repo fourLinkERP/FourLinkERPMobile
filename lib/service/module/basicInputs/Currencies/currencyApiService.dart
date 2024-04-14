@@ -11,11 +11,11 @@ import '../../../../data/model/modules/module/basicInput/Currencies/currencyH.da
 
  class CurrencyHApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/currencyHeaders/searchData';
-  String createApi= baseUrl.toString()  + 'v1/currencyHeaders';
-  String updateApi= baseUrl.toString()  + 'v1/currencyHeaders/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/currencyHeaders/';
-  String getByIdApi= baseUrl.toString()  + 'v1/currencyHeaders/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/currencyHeaders/searchData';
+  String createApi= baseUrl.toString()  + '/api/v1/currencyHeaders';
+  String updateApi= baseUrl.toString()  + '/api/v1/currencyHeaders/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/currencyHeaders/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/currencyHeaders/';  // Add ID For Get
 
   Future<List<CurrencyH>>  getCurrencyHs() async {
 

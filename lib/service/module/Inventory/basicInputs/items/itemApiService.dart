@@ -11,12 +11,12 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
 
  class ItemApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/items/searchdata';
-  String searchReturnApi= baseUrl.toString()  + 'v1/items/searchdata';
-  String createApi= baseUrl.toString()  + 'v1/items';
-  String updateApi= baseUrl.toString()  + 'v1/items/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/items/';
-  String getByIdApi= baseUrl.toString()  + 'v1/items/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/items/searchdata';
+  String searchReturnApi= baseUrl.toString()  + '/api/v1/items/searchdata';
+  String createApi= baseUrl.toString()  + '/api/v1/items';
+  String updateApi= baseUrl.toString()  + '/api/v1/items/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/items/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/items/';  // Add ID For Get
 
   Future<List<Item>>  getItems() async {
 

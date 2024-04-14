@@ -10,11 +10,11 @@ import '../../../../../data/model/modules/module/accountreceivable/transactions/
 
 class SalesInvoiceReturnDApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/salesinvoicereturndetails/search';
-  String createApi= baseUrl.toString()  + 'v1/salesinvoicereturndetails';
-  String updateApi= baseUrl.toString()  + 'v1/salesinvoicereturndetails/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/salesinvoicereturndetails/';
-  String getByIdApi= baseUrl.toString()  + 'v1/salesinvoicereturndetails/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/salesinvoicereturndetails/search';
+  String createApi= baseUrl.toString()  + '/api/v1/salesinvoicereturndetails';
+  String updateApi= baseUrl.toString()  + '/api/v1/salesinvoicereturndetails/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/salesinvoicereturndetails/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/salesinvoicereturndetails/';  // Add ID For Get
 
   Future<List<SalesInvoiceReturnD>> getSalesInvoiceReturnD(int? headerId) async {
     print('Booter 1 SalesInvoiceReturnD');
@@ -56,7 +56,7 @@ class SalesInvoiceReturnDApiService {
 
   Future<double>  getItemSellPriceData(String? ItemCode,String? UnitCode,String? tableName,String? criteria) async {
 
-    String sellItemApi = baseUrl.toString()  + 'v1/salesinvoicedetails/' + "searchItemSellPriceData";
+    String sellItemApi = baseUrl.toString()  + '/api/v1/salesinvoicedetails/' + "searchItemSellPriceData";
     print('ItemSellPriceData 1');
     Map data = {
       'ItemCode': ItemCode,

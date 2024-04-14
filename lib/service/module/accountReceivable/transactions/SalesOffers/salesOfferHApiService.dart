@@ -11,11 +11,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
  class SalesOfferHApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/salesofferheaders/searchData';
-  String createApi= baseUrl.toString()  + 'v1/salesofferheaders';
-  String updateApi= baseUrl.toString()  + 'v1/salesofferheaders/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/salesofferheaders/';
-  String getByIdApi= baseUrl.toString()  + 'v1/salesofferheaders/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/salesofferheaders/searchData';
+  String createApi= baseUrl.toString()  + '/api/v1/salesofferheaders';
+  String updateApi= baseUrl.toString()  + '/api/v1/salesofferheaders/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/salesofferheaders/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/salesofferheaders/';  // Add ID For Get
 
   Future<List<SalesOfferH>?> getSalesOffersH() async {
 

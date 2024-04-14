@@ -10,11 +10,11 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Menus/Menu
 
 class MenuApiService {
 
-  String searchApi= baseUrl.toString()  + 'v1/menus/search';
-  String createApi= baseUrl.toString()  + 'v1/menus';
-  String updateApi= baseUrl.toString()  + 'v1/menus/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + 'v1/menus/';
-  String getByIdApi= baseUrl.toString()  + 'v1/menus/';  // Add ID For Get
+  String searchApi= baseUrl.toString()  + '/api/v1/menus/search';
+  String createApi= baseUrl.toString()  + '/api/v1/menus';
+  String updateApi= baseUrl.toString()  + '/api/v1/menus/';  // Add ID For Edit
+  String deleteApi= baseUrl.toString()  + '/api/v1/menus/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/menus/';  // Add ID For Get
 
   Future<List<Menu>>  getMenus() async {
 
