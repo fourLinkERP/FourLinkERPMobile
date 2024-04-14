@@ -91,6 +91,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       'CustomerCode': invoice.customerCode,
       'SalesManCode': invoice.salesManCode,
       'CurrencyCode': invoice.currencyCode,
+      'CurrencyRate': invoice.currencyRate,
       'TaxGroupCode': invoice.taxGroupCode,
       'totalNet': invoice.totalNet,
       'totalQty': invoice.totalQty,
