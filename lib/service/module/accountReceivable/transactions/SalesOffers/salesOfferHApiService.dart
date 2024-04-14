@@ -103,7 +103,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'totalAfterDiscount': invoice.totalAfterDiscount,
       'totalBeforeTax': invoice.totalBeforeTax,
       'totalValue': invoice.totalValue,
-      'addBy': "1"
+      'addBy': empUserId
 
 
       // 'Year': invoice.year,
@@ -175,7 +175,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'totalAfterDiscount': invoice.totalAfterDiscount,
       'totalBeforeTax': invoice.totalBeforeTax,
       'totalValue': invoice.totalValue,
-      'addBy': "1"
+      'addBy': empUserId
     };
 
     String apiUpdate =updateApi + id.toString();

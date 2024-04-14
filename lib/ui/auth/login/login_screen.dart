@@ -635,6 +635,22 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  setEmployeeData() {
+    //Set Menu Permission
+   _EmployeeApiService
+        .getEmployeeByEmpCode(empCode).then((data) {
+      print('Berfore Set Empz Data');
+      empUserCode = data.userCode!;
+      empUserId = data.userId!;
+      print('After Set Empz Data');
+      print(empUserId);
+
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
+
   //Start Login
   startLogin(bool isLive) async {
     print(branchCodeSelectedValue);
@@ -680,6 +696,7 @@ class _LoginScreenState extends State<LoginScreen> {
           setMenuPermissions();
           setCompanyGeneralSetup();
           setCompanyGeneralEmailSetup();
+          setEmployeeData();
           print('Yes :');
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
         }
@@ -726,6 +743,7 @@ class _LoginScreenState extends State<LoginScreen> {
         setMenuPermissions();
         setCompanyGeneralSetup();
         setCompanyGeneralEmailSetup();
+        setEmployeeData();
         print('Yes :');
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
       }

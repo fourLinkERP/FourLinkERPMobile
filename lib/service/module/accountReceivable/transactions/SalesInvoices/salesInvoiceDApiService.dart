@@ -152,7 +152,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": false ,
-      'addBy': empCode,
+      'addBy': empUserId,
       "year" : financialYearCode
       // 'age': customer.age,
       // 'address': customer.address,

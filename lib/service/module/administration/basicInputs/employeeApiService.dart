@@ -49,6 +49,54 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     }
   }
 
+  Future<Employee> getEmployeeByEmpCode(String empCode) async {
+
+    String searchApi= baseUrl.toString()  + '/api/v1/employees/search';
+    var data = {
+      "search":{
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode,
+        'empCode': empCode
+      }
+    };
+
+    String apiGet= searchApi;
+
+    print('Employee 1');
+    final http.Response response = await http.post(
+      Uri.parse(searchApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(data),
+    );
+
+
+    if (response.statusCode == 200) {
+      print('Employee 2');
+      List<dynamic> data = jsonDecode(response.body)['data'];
+      List<Employee> list = [];
+       Employee  emp ;
+      if (data != null) {
+        list = data.map((item) => Employee.fromJson(item)).toList();
+      }
+      print('Employee 3');
+      emp= list[0];
+      return  emp;
+      // return await json.decode(res.body)['data']
+      //     .map((data) => Employee.fromJson(data))
+      //     .toList();
+    } else {
+      print('Employee Failed');
+      throw "Failed to load employee list";
+    }
+
+
+
+  }
+
+
   Future<Employee> getEmployeeById(int id) async {
 
     String getByIdApi= baseUrl.toString()  + '/api/v1/employees/';  // Add ID For Get

@@ -117,7 +117,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "confirmed": false,
       "year" : financialYearCode,
       "invoiceQRCode": invoice.invoiceQRCode,
-      "addBy": empCode,
+      "addBy": empUserId,
 
 
 

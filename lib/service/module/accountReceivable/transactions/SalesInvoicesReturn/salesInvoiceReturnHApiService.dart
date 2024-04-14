@@ -114,7 +114,7 @@ class SalesInvoiceReturnHApiService {
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": false,
-      'addBy': empCode,
+      'addBy': empUserId,
       "year" : financialYearCode
 
 

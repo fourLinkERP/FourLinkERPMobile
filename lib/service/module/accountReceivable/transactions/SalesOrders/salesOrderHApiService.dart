@@ -107,7 +107,7 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
       'totalAfterDiscount': order.totalAfterDiscount,
       'totalBeforeTax': order.totalBeforeTax,
       'totalValue': order.totalValue,
-      'addBy': "1"
+      'addBy': empUserId
 
     };
 
@@ -167,7 +167,7 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
       'totalAfterDiscount': order.totalAfterDiscount,
       'totalBeforeTax': order.totalBeforeTax,
       'totalValue': order.totalValue,
-      'addBy': "1"
+      'addBy': empUserId
     };
 
     String apiUpdate =updateApi + id.toString();

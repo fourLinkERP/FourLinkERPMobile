@@ -5,7 +5,9 @@ class Employee {
   String? empCode ;
   String? empNameAra ;
   String?  empNameEng;
- 
+  String?  userCode;
+  String?  userId;
+
 
 
 
@@ -13,7 +15,9 @@ class Employee {
     this.empCode ,
     this.empNameAra,
     this.empNameEng,
-  
+    this.userCode,
+    this.userId,
+
     //image
     });
 
@@ -23,7 +27,9 @@ class Employee {
       empCode: json['empCode'] as String,
       empNameAra: json['empNameAra'] as String,
       empNameEng: json['empNameEng'] as String,
- 
+      userCode: json['userCode'] as String,
+      userId: json['userId'] as String,
+
     );
   }
 

@@ -28,8 +28,8 @@ String apiPassword="";//Will Set On App Perference
 //Company And Branch
 int companyCode = 1;//Will Set On App Perference
 int branchCode = 1; //Will Set On App Perference
-String companyName='شركة تست';
-String branchName='فرع تست';
+String companyName='Test Company';
+String branchName='Test Branch';
 // RequestTypeCode & TransactionId
 String requestTypeCode = "";
 String transactionId = "";
@@ -38,6 +38,8 @@ int lineNumber = 1;
 int langId = 1; //1-Arabic   2-English
 //Employee
 String empCode = "1";
+String empUserCode = "A3ddsdwewewq";
+String empUserId = "Admin";
 String empName = "";
 String jobCode = "";
 String jobName = "";

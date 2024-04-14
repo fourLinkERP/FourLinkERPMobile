@@ -103,10 +103,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'DescriptionEng': cash.descriptionNameEnglish,
       'TafqitNameArabic': cash.tafqitNameArabic,
       'TafqitNameEnglish': cash.tafqitNameEnglish,
-      'addBy': empCode
+      'addBy': empUserId
 
     };
     print('Cash Receive Save 1');
+    print(createApi);
     print(data);
     final http.Response response = await http.post(
       Uri.parse(createApi),
