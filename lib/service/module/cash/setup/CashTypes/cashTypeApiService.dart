@@ -25,6 +25,8 @@ import '../../../../../common/globals.dart';
       // }
     };
 
+    print('ZOZOZO');
+    print(searchApi);
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{

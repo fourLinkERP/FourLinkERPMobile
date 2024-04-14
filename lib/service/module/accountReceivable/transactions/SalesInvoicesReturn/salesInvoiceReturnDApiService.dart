@@ -78,6 +78,7 @@ class SalesInvoiceReturnDApiService {
     );
 
     print('ItemSellPriceData 4');
+    print(data);
     if (response.statusCode == 200) {
       print('ItemSellPriceData 5');
       print('ItemSellPriceData ' + (json.decode(response.body)).toDouble().toString());

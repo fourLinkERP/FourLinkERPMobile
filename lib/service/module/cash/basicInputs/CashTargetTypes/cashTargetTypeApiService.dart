@@ -29,6 +29,9 @@ import '../../../../../common/globals.dart';
       body: jsonEncode(data),
     );
 
+    print('cashtargettypes');
+    print(searchApi);
+    print(data);
 
     if (response.statusCode == 200) {
       print('cashtargettypes 2');

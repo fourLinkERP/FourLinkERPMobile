@@ -105,7 +105,6 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
   @override
   initState()  {
-    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     super.initState();
     targetCodes=[];
     boxCodes=[];

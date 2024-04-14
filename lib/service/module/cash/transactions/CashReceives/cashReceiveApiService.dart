@@ -21,6 +21,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
        'TrxKind': '1', //Sales Invoice Type
+      'Search':{
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode,
+        'TrxKind': '1', //Sales Invoice Type
+      }
     };
 
     //print('Cash Receive 1');
@@ -33,7 +38,9 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       body: jsonEncode(data),
     );
 
-    //print('Cash Receive 2');
+    print('Cash Receive List');
+    print(searchApi);
+    print(data);
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<CashReceive> list = [];

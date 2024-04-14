@@ -636,7 +636,7 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
                                           selectedUnitName = (langId==1) ? value!.unitNameAra.toString() : value!.unitNameEng.toString();
 
                                           if(selectedUnitValue != null && selectedItemValue != null){
-                                            String criteria=" And CompanyCode=" + companyCode.toString() + " And BranchCode=" + branchCode.toString() + " And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'" + selectedTypeValue.toString() +  "'";
+                                            String criteria=" And CompanyCode=" + companyCode.toString() +  " And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'" + selectedTypeValue.toString() +  "'";
                                             //Item Price
                                             setItemPrice(selectedItemValue.toString(),selectedUnitValue.toString(),criteria);
                                             //Factor
