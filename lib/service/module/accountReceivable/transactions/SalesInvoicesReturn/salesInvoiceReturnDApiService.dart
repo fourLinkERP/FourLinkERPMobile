@@ -124,7 +124,6 @@ class SalesInvoiceReturnDApiService {
       'SalesInvoicesCase': 2, //Sales Invoice Case =2
       'SalesInvoicesTypeCode': invoice.salesInvoicesTypeCode, //Sales Invoice Type
       'salesInvoicesSerial': invoice.salesInvoicesSerial,
-      'year': invoice.year,
       'lineNum': invoice.lineNum,
       'itemCode': invoice.itemCode,
       'unitCode': invoice.unitCode,
@@ -145,6 +144,8 @@ class SalesInvoiceReturnDApiService {
       'displayNetValue': invoice.displayNetValue,
       'netValue': invoice.netValue,
       'netBeforeTax': invoice.netBeforeTax,
+      'year': financialYearCode,
+      'addBy': empUserId,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,
@@ -155,7 +156,7 @@ class SalesInvoiceReturnDApiService {
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "confirmed": false
+      "confirmed": true
 
     };
 

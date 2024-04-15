@@ -115,7 +115,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "confirmed": false,
+      "confirmed": true,
       "year" : financialYearCode,
       "invoiceQRCode": invoice.invoiceQRCode,
       "addBy": empUserId,

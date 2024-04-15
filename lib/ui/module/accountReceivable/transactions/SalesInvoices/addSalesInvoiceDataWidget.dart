@@ -1311,6 +1311,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     SalesInvoiceD _salesInvoiceD = SalesInvoiceD();
     _salesInvoiceD.itemCode = selectedItemValue;
     _salesInvoiceD.itemName = selectedItemName;
+    _salesInvoiceD.unitCode = selectedUnitValue;
     _salesInvoiceD.displayQty = (_displayQtyController.text.isNotEmpty) ? double.parse(_displayQtyController.text) : 0;
     _salesInvoiceD.qty = (_displayQtyController.text.isNotEmpty) ? double.parse(_displayQtyController.text) : 0;
     _salesInvoiceD.costPrice = (_costPriceController.text.isNotEmpty) ? double.parse(_costPriceController.text) : 0;
@@ -1439,24 +1440,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       totalBeforeTax += row.netAfterDiscount;
       totalPrice  += row.netAfterDiscount;
     }
-    // void recalculateHeaderParameters() {
-    //   _salesInvoiceH.totalValue = 0;
-    //   // Calculate totalValue based on the remaining rows
-    //   for (var row in SalesInvoiceDLst) {
-    //     _salesInvoiceH.totalValue += row.displayTotal;
-    //   }
-    //
-    //   // Calculate tafqitNameArabic and tafqitNameEnglish based on your logic
-    //   // ...
-    //
-    //   // Update your controllers or other widgets if needed
-    //   _totalValueController.text = _salesInvoiceH.totalValue.toString();
-    //   _tafqitNameArabicController.text = _salesInvoiceH.tafqitNameArabic;
-    //   _tafqitNameEnglishController.text = _salesInvoiceH.tafqitNameEnglish;
-    // }
-
-    // Calculate invoiceDiscountPercent and invoiceDiscountValue based on your logic
-    // ...
 
     // Update your controllers or other widgets if needed
     _totalQtyController.text = totalQty.toString();
@@ -1504,6 +1487,8 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
     // final bytesx = await WidgetImage.capture();
     // var InvoiceQRCode = bytesx as Uint8List;
+    // print(InvoiceQRCode.toString());
+    // print('Size of Uint8List: ${InvoiceQRCode.length} bytes');
 
     // //Currency
     // if(currencyCodeSelectedValue == null || currencyCodeSelectedValue!.isEmpty){
@@ -1531,7 +1516,8 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       totalBeforeTax: (_totalBeforeTaxController.text.isNotEmpty) ? _totalBeforeTaxController.text.toDouble() : 0,
       tafqitNameArabic: _tafqitNameArabicController.text,
       tafqitNameEnglish: _tafqitNameEnglishController.text,
-       // invoiceQRCode: InvoiceQRCode
+       year: 2024,
+       //invoiceQRCode: InvoiceQRCode
     ));
 
     //Save Footer For Now
@@ -1563,6 +1549,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
             unitCode: _salesInvoiceD.unitCode,
             netValue: _salesInvoiceD.netValue,
             netBeforeTax: _salesInvoiceD.netBeforeTax,
+            year: 2024,
             storeCode: "1" // For Now
         ));
       }

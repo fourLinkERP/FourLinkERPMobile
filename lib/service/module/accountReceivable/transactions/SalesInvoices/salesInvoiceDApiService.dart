@@ -151,7 +151,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "confirmed": false ,
+      "confirmed": true,
       'addBy': empUserId,
       "year" : financialYearCode
       // 'age': customer.age,
@@ -204,7 +204,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'SalesInvoicesCase': 1, //Sales Invoice Case =1
       'SalesInvoicesTypeCode': invoice.salesInvoicesTypeCode,
       'salesInvoicesSerial': invoice.salesInvoicesSerial,
-      'year': invoice.year,
+      'year': financialYearCode,
       'lineNum': invoice.lineNum,
       'itemCode': invoice.itemCode,
       'unitCode': invoice.unitCode,

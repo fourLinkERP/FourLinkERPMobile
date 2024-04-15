@@ -223,7 +223,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                               Container(
                                 child: defaultFormField(
                                   controller: _FinancialyearController,
-                                  label: '2023'.tr(),
+                                  label: '2024'.tr(),
                                   type: TextInputType.number,
                                   colors: Colors.blueGrey,
                                   prefix: Icons.numbers,

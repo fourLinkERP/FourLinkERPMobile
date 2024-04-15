@@ -472,7 +472,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                           _displayQtyController.text = "1";
                                           changeItemUnit(selectedItemValue.toString());
                                           selectedUnitValue = "1";
-                                          String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                          String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                           setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
 
 
@@ -553,7 +553,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
 
                                           if (selectedUnitValue != null &&
                                               selectedItemValue != null) {
-                                            String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=2 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                            String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=2 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                             //Item Price
                                             setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
                                             //Factor
@@ -1273,7 +1273,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     //Item
     _salesInvoiceReturnD.itemCode = selectedItemValue;
     _salesInvoiceReturnD.itemName = selectedItemName;
-    //Qty
+    _salesInvoiceReturnD.unitCode = selectedUnitValue;
     _salesInvoiceReturnD.displayQty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
     _salesInvoiceReturnD.qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
 
@@ -1444,7 +1444,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
   }
 
 //Save
-  saveInvoice(BuildContext context) {
+  saveInvoice(BuildContext context) async {
     print('323434');
     //Items
     if (SalesInvoiceReturnDLst.length <= 0) {
@@ -1476,13 +1476,14 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     //   return;
     // }
 
-    _salesInvoiceReturnHApiService.createSalesInvoiceReturnH(context, SalesInvoiceReturnH(
+    await _salesInvoiceReturnHApiService.createSalesInvoiceReturnH(context, SalesInvoiceReturnH(
 
       salesInvoicesCase: 2,
       salesInvoicesSerial: _salesInvoicesSerialController.text,
       salesInvoicesTypeCode: selectedTypeValue.toString(),
       salesInvoicesDate: _salesInvoicesDateController.text,
       customerCode: selectedCustomerValue.toString(),
+      currencyRate: 1,
       totalQty: (_totalQtyController.text.isNotEmpty) ? _totalQtyController.text.toDouble() : 0,
       totalTax: (_totalTaxController.text.isNotEmpty) ? _totalTaxController.text.toDouble() : 0,
       totalDiscount: (_totalDiscountController.text.isNotEmpty) ? _totalDiscountController.text.toDouble() : 0,

@@ -58,7 +58,7 @@ void emitState(){
 
      await CacheHelper.getString('financialYearCode').then((value) =>
      {
-       financialYearCode = (value != null)? value.toString() : "2020"
+       financialYearCode = (value != null)? value.toString() : "2024"
      });
      //
      // await CacheHelper.getInt('CompanyCode').then((value) =>

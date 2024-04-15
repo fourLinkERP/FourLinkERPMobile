@@ -90,6 +90,7 @@ class SalesInvoiceReturnHApiService {
       'CustomerCode': invoice.customerCode,
       'SalesManCode': invoice.salesManCode,
       'CurrencyCode': invoice.currencyCode,
+      'CurrencyRate': invoice.currencyRate,
       'TaxGroupCode': invoice.taxGroupCode,
       'totalNet': invoice.totalNet,
       'totalQty': invoice.totalQty,
@@ -103,6 +104,7 @@ class SalesInvoiceReturnHApiService {
       'totalAfterDiscount': invoice.totalAfterDiscount,
       'totalBeforeTax': invoice.totalBeforeTax,
       'totalValue': invoice.totalValue,
+      "year" : financialYearCode,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,
@@ -113,9 +115,8 @@ class SalesInvoiceReturnHApiService {
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "confirmed": false,
+      "confirmed": true,
       'addBy': empUserId,
-      "year" : financialYearCode
 
 
       // 'Year': invoice.year,

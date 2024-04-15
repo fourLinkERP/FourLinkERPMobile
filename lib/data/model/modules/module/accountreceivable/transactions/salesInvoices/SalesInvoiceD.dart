@@ -91,7 +91,8 @@ class SalesInvoiceD {
       displayNetValue: json['displayNetValue'] != null ?  json['displayNetValue'].toDouble() : 0.0,
       netValue: json['netValue'] != null ?  json['netValue'].toDouble() : 0.0,
       netAfterDiscount: json['netAfterDiscount'] != null ?  json['netAfterDiscount'].toDouble() : 0.0,
-      invoiceDiscountValue: json['invoiceDiscountValue'] != null ?  json['invoiceDiscountValue'].toDouble() : 0.0
+      invoiceDiscountValue: json['invoiceDiscountValue'] != null ?  json['invoiceDiscountValue'].toDouble() : 0.0,
+      year: (json['year']) != null ? json['year'] : 2024
 
     );
   }
