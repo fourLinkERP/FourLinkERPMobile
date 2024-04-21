@@ -558,7 +558,6 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                                 const TextStyle(fontSize: 14, color: Colors.white))),
                         onPressed: () {
                           _showPicker(context: context);
-                          //saveInvoice(context);
 
                         },
                         child: Text('customer_image'.tr(), style: const TextStyle(color: Colors.white)),

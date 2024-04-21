@@ -17,10 +17,17 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
   String deleteApi= baseUrl.toString()  + '/api/v1/sellorderdetails/';
   String getByIdApi= baseUrl.toString()  + '/api/v1/sellorderdetails/';  // Add ID For Get
 
-  Future<List<SalesOrderD>> getSalesOrdersD(int? headerId) async {
+  Future<List<SalesOrderD>> getSalesOrdersD(int? headerId,String? serial) async {
 
     Map data = {
-      'HeaderId': headerId
+
+      // 'SellOrdersSerial': serial,
+      // 'SellOrdersTypeCode':"1",
+      'HeaderId': headerId,
+      'Search':{
+        'SellOrdersSerial': serial,
+        'SellOrdersTypeCode':"1",
+      }
     };
 
      print('B 2');
@@ -43,9 +50,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       }
       print('B 1 Finish');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => SalesOrder.fromJson(data))
-      //     .toList();
+
     } else {
       throw "Failed to load customer list";
     }
@@ -98,14 +103,23 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       'displayTotalTaxValue': order.displayTotalTaxValue,
       'totalTaxValue': order.totalTaxValue,
       'netAfterDiscount': order.netAfterDiscount,
-      'displayNetValue': order.displayNetValue
-      // 'age': customer.age,
-      // 'address': customer.address,
-      // 'city': customer.city,
-      // 'country': customer.country,
-      // 'status': customer.status
+      'displayNetValue': order.displayNetValue,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSynchronized": false,
+      "isSystem": false,
+      "notActive": false,
+      "postedToGL": false,
+      "flgDelete": false,
+      "confirmed": true,
+      "Year" : financialYearCode,
+
     };
 
+    print("save orderD: " + data.toString());
     final http.Response response = await http.post(
       Uri.parse(createApi),
       headers: <String, String>{

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -68,7 +70,7 @@ double totalBeforeTax = 0;
 double totalTax = 0;
 double totalAfterDiscount = 0;
 double totalNet = 0;
-WidgetsToImageController WidgetImage=new WidgetsToImageController();
+WidgetsToImageController WidgetImage= WidgetsToImageController();
 bool isLoading = true;  //*
 
 
@@ -487,9 +489,9 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                           showSearchBox: true,
 
                                         ),
-
                                         items: items,
                                         itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
+
                                         onChanged: (value) {
                                           selectedItemValue = value!.itemCode.toString();
                                           selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
@@ -498,15 +500,12 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                           selectedUnitValue = "1";
                                           String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                           setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
-
-
                                           //Factor
                                           int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                           setItemQty(
                                               selectedItemValue.toString(),
                                               selectedUnitValue.toString(), qty
                                           );
-
                                           //Cost Price
                                           setItemCostPrice(selectedItemValue.toString(), "1", 0, _salesInvoicesDateController.text);
                                         },
@@ -668,7 +667,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                               child: TextFormField(
                                 controller: _displayDiscountController,
                                 keyboardType: TextInputType.number,
-                                //hintText: 'discount'.tr(),
                                 onSaved: (val) {
                                   discount = val;
                                 },
@@ -681,7 +679,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                   if (_displayQtyController.text.isNotEmpty) {
                                     qtyVal = double.parse(_displayQtyController.text);
                                   }
-                                  //print('toGetUnittotal');
                                   var total = qtyVal * price;
                                   setMaxDiscount(double.parse(value), total, empCode);
                                 },
@@ -975,22 +972,44 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                           ],
                         ),
                         const SizedBox(height: 20),
+                        // WidgetsToImage(
+                        //     controller:WidgetImage,
+                        //     child :Container(
+                        //       padding: const EdgeInsets.all(1),
+                        //       color: Colors.white,
+                        //       child:   ZatcaFatoora.simpleQRCode(
+                        //         fatooraData: ZatcaFatooraDataModel(
+                        //           businessName: companyTitle,
+                        //           vatRegistrationNumber: companyVatNo,
+                        //           date:   DateTime.parse(_salesInvoicesDateController.text),
+                        //           totalAmountIncludingVat: totalPrice,
+                        //           vat: totalTax,
+                        //         ),
+                        //       ),
+                        //     )
+                        //
+                        // ),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Row(
                             children: <Widget>[
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameArabic'.tr(),
-                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
+                                  child: Text('tafqitNameArabic'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
                               const SizedBox(width: 10),
-
                               SizedBox(
-                                width: 206,
+                                width: 230,
                                 child: TextFormField(
-                                  controller: _descriptionNameArabicController,
+                                  controller: _tafqitNameArabicController,
                                   decoration: const InputDecoration(
-                                    hintText: '',
+                                    // hintText: '',
                                   ),
-
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'please_enter_value'.tr();
+                                  //   }
+                                  //   return null;
+                                  // },
+                                  enabled: false,
                                   onChanged: (value) {},
                                 ),
                               ),
@@ -998,97 +1017,32 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Row(
                             children: <Widget>[
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameEnglish'.tr(),
-                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
+                                  child: Text('tafqitNameEnglish'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
                               const SizedBox(width: 10),
-
                               SizedBox(
-                                width: 200,
+                                width: 230,
                                 child: TextFormField(
-                                  controller: _descriptionNameEnglishController,
+                                  controller: _tafqitNameEnglishController,
                                   decoration: const InputDecoration(
-                                    hintText: '',
+                                    // hintText: '',
                                   ),
-
+                                  enabled: false,
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'please_enter_value'.tr();
+                                  //   }
+                                  //   return null;
+                                  // },
                                   onChanged: (value) {},
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        WidgetsToImage(
-                            controller:WidgetImage,
-                            child :Container(
-                              padding: const EdgeInsets.all(1),
-                              color: Colors.white,
-                              child:   ZatcaFatoora.simpleQRCode(
-                                fatooraData: ZatcaFatooraDataModel(
-                                  businessName: companyTitle,
-                                  vatRegistrationNumber: companyVatNo,
-                                  date:   DateTime.parse(_salesInvoicesDateController.text),
-                                  totalAmountIncludingVat: totalNet,
-                                ),
-                              ),
-                            )
-
-                        )
-                        // Container(
-                        //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        //   child: Row(
-                        //     children: <Widget>[
-                        //       Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
-                        //           child: Text('tafqitNameArabic'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
-                        //       const SizedBox(width: 10),
-                        //       SizedBox(
-                        //         width: 230,
-                        //         child: TextFormField(
-                        //           controller: _tafqitNameArabicController,
-                        //           decoration: const InputDecoration(
-                        //             // hintText: '',
-                        //           ),
-                        //           // validator: (value) {
-                        //           //   if (value!.isEmpty) {
-                        //           //     return 'please_enter_value'.tr();
-                        //           //   }
-                        //           //   return null;
-                        //           // },
-                        //           enabled: false,
-                        //           onChanged: (value) {},
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // Container(
-                        //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        //   child: Row(
-                        //     children: <Widget>[
-                        //       Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
-                        //           child: Text('tafqitNameEnglish'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
-                        //       const SizedBox(width: 10),
-                        //       SizedBox(
-                        //         width: 230,
-                        //         child: TextFormField(
-                        //           controller: _tafqitNameEnglishController,
-                        //           decoration: const InputDecoration(
-                        //             // hintText: '',
-                        //           ),
-                        //           enabled: false,
-                        //           // validator: (value) {
-                        //           //   if (value!.isEmpty) {
-                        //           //     return 'please_enter_value'.tr();
-                        //           //   }
-                        //           //   return null;
-                        //           // },
-                        //           onChanged: (value) {},
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
 
                       ],
                     )
@@ -1104,20 +1058,14 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
 // Item Units - Change Item Units
   changeItemUnit(String itemCode) {
-    //Units
     units = [];
     Future<List<Unit>> Units = _unitsApiService.getItemUnit(itemCode).then((data) {
-
       units = data;
       if(data.isNotEmpty){
-
         unitItem = data[0];
         setItemPrice;
-
       }
-      setState(() {
-
-      });
+      setState(() {});
       return units;
     }, onError: (e) {
       print(e);
@@ -1144,7 +1092,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
         double netTotal = nextAfterDiscount + tax;
         _netAftertaxController.text = netTotal.toString();
       });
-
 
       return inventoryOperation;
     }, onError: (e) {
@@ -1410,8 +1357,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
         // Recalculate the parameters based on the remaining rows
         recalculateParameters();
 
-
-
         // Trigger a rebuild
         setState(() {});
       }
@@ -1484,6 +1429,14 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       FN_showToast(context, 'please_Set_Customer'.tr(), Colors.black);
       return;
     }
+    final bytesx = await WidgetImage.capture();
+    var InvoiceQRCode = bytesx as Uint8List;
+    String base64String ='';
+    if (InvoiceQRCode != null) {
+      base64String = base64Encode(InvoiceQRCode);
+
+      print(base64String.toString());
+    }
 
     // final bytesx = await WidgetImage.capture();
     // var InvoiceQRCode = bytesx as Uint8List;
@@ -1517,7 +1470,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       tafqitNameArabic: _tafqitNameArabicController.text,
       tafqitNameEnglish: _tafqitNameEnglishController.text,
        year: 2024,
-       //invoiceQRCode: InvoiceQRCode
+        invoiceQRCodeBase64: base64String
     ));
 
     //Save Footer For Now

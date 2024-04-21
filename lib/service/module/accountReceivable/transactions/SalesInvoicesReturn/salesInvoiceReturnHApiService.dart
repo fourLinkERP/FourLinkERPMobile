@@ -117,6 +117,7 @@ class SalesInvoiceReturnHApiService {
       "flgDelete": false,
       "confirmed": true,
       'addBy': empUserId,
+      'InvoiceQRCodeBase64': invoice.invoiceQRCodeBase64
 
 
       // 'Year': invoice.year,
@@ -197,6 +198,7 @@ class SalesInvoiceReturnHApiService {
       "notActive": false,
       "flgDelete": false,
       'editBy': empCode,
+      'InvoiceQRCodeBase64' : invoice.invoiceQRCodeBase64
     };
 
     String apiUpdate =updateApi + id.toString();

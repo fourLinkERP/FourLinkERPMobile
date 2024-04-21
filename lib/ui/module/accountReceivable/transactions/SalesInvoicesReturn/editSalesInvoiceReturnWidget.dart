@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
@@ -18,6 +21,8 @@ import 'package:fourlinkmobileapp/service/module/general/inventoryOperation/inve
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/utils/email.dart';
 import 'package:supercharged/supercharged.dart';
+import 'package:widgets_to_image/widgets_to_image.dart';
+import 'package:zatca_fatoora_flutter/zatca_fatoora_flutter.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceReturnH.dart';
 import '../../../../../helpers/toast.dart';
@@ -26,6 +31,7 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/accountReceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnDApiService.dart';
 import '../../../../../service/module/accountReceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnHApiService.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
+import '../SalesInvoices/salesInvoiceList.dart';
 
 //APIS
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
@@ -63,6 +69,8 @@ double  totalBeforeTax = 0;
 double  totalTax = 0;
 double  totalAfterDiscount = 0;
 double  totalNet = 0;
+WidgetsToImageController WidgetImage= WidgetsToImageController();
+
 class EditSalesInvoiceReturnHWidget extends StatefulWidget {
   EditSalesInvoiceReturnHWidget(this.salesInvoiceReturnH);
 
@@ -1032,6 +1040,22 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
                             ),
                           ],
                         ),
+                        WidgetsToImage(
+                            controller:WidgetImage,
+                            child :Container(
+                              padding: const EdgeInsets.all(1),
+                              color: Colors.white,
+                              child:   ZatcaFatoora.simpleQRCode(
+                                fatooraData: ZatcaFatooraDataModel(
+                                  businessName: companyTitle,
+                                  vatRegistrationNumber: companyVatNo,
+                                  date:   DateTime.parse(_salesInvoicesDateController.text),
+                                  totalAmountIncludingVat: totalNet,
+                                  vat: totalTax,
+                                ),
+                              ),
+                            )
+                        )
 
 
 
@@ -1200,43 +1224,17 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
 
 
     SalesInvoiceReturnD _salesInvoiceReturnD= SalesInvoiceReturnD();
-    //print('Add Product 1');
-    //Item
     _salesInvoiceReturnD.itemCode= selectedItemValue;
     _salesInvoiceReturnD.itemName= selectedItemName;
-    //print('Add Product 2');
-    //Qty
-    _salesInvoiceReturnD.displayQty= (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
-    _salesInvoiceReturnD.qty= (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
-
-    //print('Add Product 2 - display Qty ' + _salesInvoiceReturnD.displayQty.toString());
-    //print('Add Product 2 -  Qty ' + _salesInvoiceReturnD.qty.toString());
-
-    //Cost Price
-    //print('Add Product 3');
-    _salesInvoiceReturnD.costPrice= (!_costPriceController.text.isEmpty)?  double.parse(_costPriceController.text):0;
-
-    //print('Add Product 3 - costPrice ' + _salesInvoiceReturnD.costPrice.toString());
-
-    //print('Add Product 4');
-    //Price
-    _salesInvoiceReturnD.displayPrice= (!_displayPriceController.text.isEmpty) ?  double.parse(_displayPriceController.text) : 0 ;
-    _salesInvoiceReturnD.price = (!_displayPriceController.text.isEmpty) ? double.parse(_displayPriceController.text) : 0;
-
-    //print('Add Product 4 - costPrice ' + _salesInvoiceReturnD.displayPrice.toString());
-    //print('Add Product 4 - costPrice ' + _salesInvoiceReturnD.price.toString());
-
-
-    //print('Add Product 5');
-    //Total
+    _salesInvoiceReturnD.displayQty= (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+    _salesInvoiceReturnD.qty= (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+    _salesInvoiceReturnD.costPrice= (_costPriceController.text.isNotEmpty)?  double.parse(_costPriceController.text):0;
+    _salesInvoiceReturnD.displayPrice= (_displayPriceController.text.isNotEmpty) ?  double.parse(_displayPriceController.text) : 0 ;
+    _salesInvoiceReturnD.price = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
     _salesInvoiceReturnD.total = _salesInvoiceReturnD.qty * _salesInvoiceReturnD.price ;
     _salesInvoiceReturnD.displayTotal= _salesInvoiceReturnD.displayQty * _salesInvoiceReturnD.displayPrice ;
-    //print('Add Product 6');
-    //discount
-    _salesInvoiceReturnD.displayDiscountValue = (!_displayDiscountController.text.isEmpty) ?  double.parse(_displayDiscountController.text) : 0 ;
+    _salesInvoiceReturnD.displayDiscountValue = (_displayDiscountController.text.isNotEmpty) ?  double.parse(_displayDiscountController.text) : 0 ;
     _salesInvoiceReturnD.discountValue= _salesInvoiceReturnD.displayDiscountValue ;
-    //print('Add Product 7');
-    //Net After Discount
     _salesInvoiceReturnD.netAfterDiscount= _salesInvoiceReturnD.displayTotal - _salesInvoiceReturnD.displayDiscountValue;
     //print('Add Product 8');
     //netBeforeTax
@@ -1310,7 +1308,7 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
     });
   }
 
-  saveInvoice(BuildContext context) {
+  saveInvoice(BuildContext context) async {
 
     //Items
     if(salesInvoiceReturnDLst.isEmpty || salesInvoiceReturnDLst.length <=0){
@@ -1341,8 +1339,16 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
     //   FN_showToast(context,'Please Set Currency',Colors.black);
     //   return;
     // }
+    final bytesx = await WidgetImage.capture();
+    var InvoiceQRCode = bytesx as Uint8List;
+    String base64String ='';
+    if (InvoiceQRCode != null) {
+      base64String = base64Encode(InvoiceQRCode);
 
-    _salesInvoiceReturnHApiService.updateSalesInvoiceReturnH(context,id,SalesInvoiceReturnH(
+      print(base64String.toString());
+    }
+
+    await _salesInvoiceReturnHApiService.updateSalesInvoiceReturnH(context,id,SalesInvoiceReturnH(
 
       salesInvoicesCase: 2,
       salesInvoicesSerial: _salesInvoicesSerialController.text,
@@ -1359,7 +1365,7 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
       totalValue:(_totalValueController.text.isNotEmpty)?  _totalValueController.text.toDouble():0 ,
       totalAfterDiscount:(_totalAfterDiscountController.text.isNotEmpty)?  _totalAfterDiscountController.text.toDouble():0 ,
       totalBeforeTax:(_totalBeforeTaxController.text.isNotEmpty)?  _totalBeforeTaxController.text.toDouble():0 ,
-
+        invoiceQRCodeBase64: base64String
     ));
 
     //Save Footer For Now

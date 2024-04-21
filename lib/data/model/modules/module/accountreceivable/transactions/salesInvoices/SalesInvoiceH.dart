@@ -46,7 +46,7 @@ class SalesInvoiceH {
   String?  invoiceTypeName ;
   String?  taxIdentificationNumber ;
   String?  salesInvoicesTypeName ;
-  Uint8List?  invoiceQRCode ;
+  String?  invoiceQRCodeBase64 ;
 
 
   SalesInvoiceH({
@@ -87,7 +87,7 @@ class SalesInvoiceH {
     this.invoiceTypeName,
     this.taxIdentificationNumber,
     this.salesInvoicesTypeName,
-    this.invoiceQRCode
+    this.invoiceQRCodeBase64
 
     //image
     });
@@ -127,7 +127,7 @@ class SalesInvoiceH {
       invoiceTypeName: (json['invoiceTypeName'] != null) ? json['invoiceTypeName'] as String : "",
       taxIdentificationNumber: (json['taxIdentificationNumber'] != null) ? json['taxIdentificationNumber'] as String : "",
       salesInvoicesTypeName: (json['salesInvoicesTypeName'] != null) ? json['salesInvoicesTypeName'] as String : "",
-      invoiceQRCode: (json['invoiceQRCode'] != null) ? json['invoiceQRCode'] as Uint8List : null,
+      invoiceQRCodeBase64: (json['invoiceQRCodeBase64'] != null) ? json['invoiceQRCodeBase64'] as String : "",
 
 
 

@@ -42,8 +42,6 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    print('okkkkkkkkkkk');
     AppCubit.get(context).CheckConnection();
     Timer(const Duration(seconds: 30), () { // <-- Delay here
       setState(() {
@@ -77,8 +75,8 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     }
   }
 
-  void getDetailData(int? headerId) async {
-    Future<List<SalesOrderD>?> futureSalesOrderD = _apiDService.getSalesOrdersD(headerId);
+  void getDetailData(int? id, String? serial) async {
+    Future<List<SalesOrderD>?> futureSalesOrderD = _apiDService.getSalesOrdersD(id, serial);
     _salesOrdersD = (await futureSalesOrderD)!;
 
   }
@@ -425,9 +423,6 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
 
 
   Widget BuildsalesOrders(){
-    if(State is AppErrorState){
-      return const Center(child: Text('no data'));
-    }
     if(AppCubit.get(context).Conection==false){
       return const Center(child: Text('no internet connection'));
     }

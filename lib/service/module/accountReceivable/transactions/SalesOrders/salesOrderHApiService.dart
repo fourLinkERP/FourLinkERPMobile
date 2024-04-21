@@ -31,7 +31,6 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
        'SellOrdersTypeCode': '1', //Sales Invoice Type
     };
 
-    print('Sales Order 1');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -41,19 +40,14 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
       body: jsonEncode(data),
     );
 
-    print('Sales Order 2');
     if (response.statusCode == 200) {
-      print('Sales Order 3');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesOrderH> list = [];
       if (data != null) {
         list = data.map((item) => SalesOrderH.fromJson(item)).toList();
       }
-      print('Sales Order 4');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => SalesOrder.fromJson(data))
-      //     .toList();
+
     } else {
       throw "Failed to load order list";
     }
@@ -89,7 +83,6 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
       'BranchCode': branchCode,
       'SellOrdersTypeCode': order.sellOrdersTypeCode, //Sales Invoice Type
       'SellOrdersSerial': order.sellOrdersSerial,
-      'Year': order.year,
       'CustomerCode': order.customerCode,
       'CurrencyCode': order.currencyCode,
       'SellOrdersDate': order.sellOrdersDate,
@@ -107,10 +100,23 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
       'totalAfterDiscount': order.totalAfterDiscount,
       'totalBeforeTax': order.totalBeforeTax,
       'totalValue': order.totalValue,
-      'addBy': empUserId
+      'addBy': empUserId,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSynchronized": false,
+      "isSystem": false,
+      "notActive": false,
+      "postedToGL": false,
+      "flgDelete": false,
+      "confirmed": true,
+      "Year" : financialYearCode,
 
     };
 
+    print("save orderH: " + data.toString());
     final http.Response response = await http.post(
       Uri.parse(createApi),
       headers: <String, String>{

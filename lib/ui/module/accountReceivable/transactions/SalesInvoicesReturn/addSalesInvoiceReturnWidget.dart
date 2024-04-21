@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
@@ -20,6 +23,8 @@ import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/Sales
 import 'package:fourlinkmobileapp/utils/email.dart';
 import 'package:supercharged/supercharged.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/salesInvoiceList.dart';
+import 'package:widgets_to_image/widgets_to_image.dart';
+import 'package:zatca_fatoora_flutter/zatca_fatoora_flutter.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceReturnH.dart';
 import '../../../../../data/model/modules/module/accountreceivable/transactions/salesInvoices/SalesInvoiceReturnD.dart';
@@ -65,6 +70,7 @@ double totalBeforeTax = 0;
 double totalTax = 0;
 double totalAfterDiscount = 0;
 double totalNet = 0;
+WidgetsToImageController WidgetImage= WidgetsToImageController();
 
 bool isLoading = true;  //*
 
@@ -175,6 +181,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     totalAfterDiscount = 0;
     totalBeforeTax = 0;
     totalNet = 0;
+    _salesInvoicesDateController.text = DateTime.now().toString();
 
     print('generalSetupSalesInvoicesTypeCode >> $generalSetupSalesInvoicesTypeCode');
     if (generalSetupSalesInvoicesTypeCode.toString().isNotEmpty) {
@@ -997,6 +1004,23 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                             ],
                           ),
                         ),
+                        WidgetsToImage(
+                            controller:WidgetImage,
+                            child :Container(
+                              padding: const EdgeInsets.all(1),
+                              color: Colors.white,
+                              child:   ZatcaFatoora.simpleQRCode(
+                                fatooraData: ZatcaFatooraDataModel(
+                                  businessName: companyTitle,
+                                  vatRegistrationNumber: companyVatNo,
+                                  date:   DateTime.parse(_salesInvoicesDateController.text),
+                                  totalAmountIncludingVat: totalNet,
+                                  vat: int.parse(_taxController.text),
+                                ),
+                              ),
+                            )
+
+                        )
                         // Container(
                         //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         //   child: Row(
@@ -1469,6 +1493,14 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
       FN_showToast(context, 'please_Set_Customer'.tr(), Colors.black);
       return;
     }
+    final bytesx = await WidgetImage.capture();
+    var InvoiceQRCode = bytesx as Uint8List;
+    String base64String ='';
+    if (InvoiceQRCode != null) {
+      base64String = base64Encode(InvoiceQRCode);
+
+      print(base64String.toString());
+    }
 
     // //Currency
     // if(currencyCodeSelectedValue == null || currencyCodeSelectedValue!.isEmpty){
@@ -1496,6 +1528,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
       totalBeforeTax: (_totalBeforeTaxController.text.isNotEmpty) ? _totalBeforeTaxController.text.toDouble() : 0,
       tafqitNameArabic: _tafqitNameArabicController.text,
       tafqitNameEnglish: _tafqitNameEnglishController.text,
+        invoiceQRCodeBase64: base64String
 
     ));
 
@@ -1529,6 +1562,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
             netValue: _salesInvoiceReturnD.netValue,
             netBeforeTax: _salesInvoiceReturnD.netBeforeTax,
             storeCode: "1" // For Now
+
         ));
       }
     }

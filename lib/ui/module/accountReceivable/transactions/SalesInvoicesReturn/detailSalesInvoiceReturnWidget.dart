@@ -36,7 +36,7 @@ class _DetailSalesInvoiceReturnHWidgetState extends State<DetailSalesInvoiceRetu
               child: Container(
                   padding: const EdgeInsets.only(top: 20.0, left: 0.0, bottom: 0.0),
                   width: 400,
-                  height: 500,
+                  //height: 500,
                   child: Column(
                     children: <Widget>[
                       Container(
@@ -76,111 +76,63 @@ class _DetailSalesInvoiceReturnHWidgetState extends State<DetailSalesInvoiceRetu
                         ),
                       ),
                       const SizedBox(height: 20.0),
-                      // Container(
-                      //   margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                      //   child: Column(
-                      //     children: <Widget>[
-                      //       Text('englishName'.tr() + ':' + widget.salesInvoiceReturnH.customerNameAra.toString()  , style: TextStyle(color: Colors.black.withOpacity(0.8))),
-                      //     ],
-                      //   ),
-                      // ),
-                      // Container(
-                      //   margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                      //   child: Column(
-                      //     children: <Widget>[
-                      //       Text('taxIdentificationNumber'.tr() + ':' + widget.salesInvoiceReturnH.taxIdentificationNumber.toString()  , style: TextStyle(color: Colors.black.withOpacity(0.8))),
-                      //     ],
-                      //   ),
-                      // ),
-                      // Container(
-                      //   margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                      //   child: Column(
-                      //     children: <Widget>[
-                      //       Text('address'.tr() + ':' + widget.salesInvoiceReturnH.address.toString()  , style: TextStyle(color: Colors.black.withOpacity(0.8))),
-                      //     ],
-                      //   ),
-                      // ),
-                      // Container(
-                      //   margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                      //   child: Column(
-                      //     children: <Widget>[
-                      //       Text('phone'.tr() + ':' + widget.salesInvoiceReturnH.address.toString()  , style: TextStyle(color: Colors.black.withOpacity(0.8))),
-                      //     ],
-                      //   ),
-                      // ),
-                      // Container(
-                      //   margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                      //   child: Column(
-                      //     children: <Widget>[
-                      //       Text('Status:', style: TextStyle(color: Colors.black.withOpacity(0.8))),
-                      //       Text(widget.salesInvoiceReturnH.customerNameAra.toString(), style: Theme.of(context).textTheme.titleLarge)
-                      //     ],
-                      //   ),
-                      // ),
-                      // Container(
-                      //   margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                      //   child: Column(
-                      //     children: <Widget>[
-                      //       Text('Update Date:', style: TextStyle(color: Colors.black.withOpacity(0.8))),
-                      //       Text(widget.salesInvoiceReturnH.customerNameAra.toString(), style: Theme.of(context).textTheme.titleLarge)
-                      //     ],
-                      //   ),
-                      // ),
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(40, 15, 0, 10),
-                        child: Row(
-                          children: <Widget>[
-                            Container(
-                              height: 55,
-                              width: 115,
-                              child: ElevatedButton.icon(
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
-                                  size: 22.0,
+                      Center(
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
+                          child: Row(
+                            children: <Widget>[
+                              Container(
+                                height: 55,
+                                width: 115,
+                                child: ElevatedButton.icon(
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                    size: 22.0,
 
-                                ),
-                                label: const Text('Edit', style: TextStyle(color: Colors.white, fontSize: 18.0)),
-                                onPressed: () {
-                                  _navigateToEditScreen(context, widget.salesInvoiceReturnH);
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  label:  Text('edit'.tr(), style: const TextStyle(color: Colors.white, fontSize: 18.0)),
+                                  onPressed: () {
+                                    _navigateToEditScreen(context, widget.salesInvoiceReturnH);
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20.0),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 45),
-                            Container(
-                              height: 55,
-                              width: 115,
-                              child: ElevatedButton.icon(
-                                icon: const Icon(
-                                  Icons.delete,
-                                  color: Colors.white,
-                                  size: 22.0,
-                                ),
-                                label: Text('delete'.tr(),
-                                    style: const TextStyle(color: Colors.white, fontSize: 16.0)),
-                                onPressed: () {
-                                  _confirmDialog();
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(210, 10, 46, 1)),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
+                              const SizedBox(width: 45),
+                              Container(
+                                height: 55,
+                                width: 115,
+                                child: ElevatedButton.icon(
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                    size: 22.0,
+                                  ),
+                                  label: Text('delete'.tr(),
+                                      style: const TextStyle(color: Colors.white, fontSize: 16.0)),
+                                  onPressed: () {
+                                    _confirmDialog();
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(210, 10, 46, 1)),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20.0),
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            )
-                            //_confirmDialog();
-                          ],
+                              )
+                              //_confirmDialog();
+                            ],
+                          ),
                         ),
                       ),
                     ],

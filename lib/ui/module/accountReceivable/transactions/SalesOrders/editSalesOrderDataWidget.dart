@@ -77,6 +77,7 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
   final SalesOrderHApiService api = SalesOrderHApiService();
 
   int id = 0;
+  String serial = "";
   List<SalesOrderD> salesOrderDLst = <SalesOrderD>[];
   List<SalesOrderD> selected = [];
   List<DropdownMenuItem<String>> menuSalesOrderTypes = [ ];
@@ -164,19 +165,12 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
     totalAfterDiscount = 0;
     totalNet = 0;
 
-    print('Ohz2');
+    serial = widget.salesOrdersH.sellOrdersSerial!;
     id = widget.salesOrdersH.id!;
-    print('Ohz0');
     _salesOrdersSerialController.text = widget.salesOrdersH.sellOrdersSerial!;
-    print('Ohz00');
     _salesOrdersDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.salesOrdersH.sellOrdersDate!.toString()));
-    print('Ohz000');
     selectedCustomerValue = (widget.salesOrdersH.customerCode != null) ?widget.salesOrdersH.customerCode.toString() : "";
-    print('Ohz0000');
     selectedTypeValue = (widget.salesOrdersH.sellOrdersTypeCode!=null) ? widget.salesOrdersH.sellOrdersTypeCode.toString() : "";
-    print('Ohz00000');
-    //_totalController.text = (widget.salesOrdersH.totalNet!=null) ? widget.salesOrdersH.totalNet.toString() : "";
-    print('Ohz00000');
 
     _totalQtyController.text = widget.salesOrdersH.totalQty.toString();
     _rowsCountController.text = widget.salesOrdersH.rowsCount.toString();
@@ -197,7 +191,6 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
     summeryTotal =(widget.salesOrdersH.totalNet != null)? double.parse(_totalNetController.text) : 0;
     setTafqeet("1" ,summeryTotal.toString());
 
-    print('Ohz3');
     //Sales Invoice Type
     Future<List<SalesOrderType>> futureSalesOrderType = _salesOrderTypeApiService.getSalesOrdersTypes().then((data) {
       salesOrderTypes = data;
@@ -229,12 +222,8 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
     });
 
     //Sales Invoice Details
-    Future<List<SalesOrderD>> futureSalesOrder = _salesOrderDApiService.getSalesOrdersD(id).then((data) {
+    Future<List<SalesOrderD>> futureSalesOrder = _salesOrderDApiService.getSalesOrdersD(id ,serial).then((data) {
       salesOrderDLst = data;
-      //print('hobaaaaaaaaaaaz');
-      //print('hobaaaaaaaaaaaz ' + id.toString());
-     // print('hobaaaaaaaaaaaz ' + salesOrderDLst.length.toString());
-      //print(customers.length.toString());
       getSalesOrderData();
       return salesOrderDLst;
     }, onError: (e) {

@@ -31,7 +31,7 @@ class SalesInvoiceReturnH {
   double? totalAfterDiscount;
   double? totalBeforeTax ;
   double? totalNet ;
-
+  String? invoiceQRCodeBase64;
   String?  tafqitNameArabic ;
   String?  tafqitNameEnglish ;
 
@@ -63,6 +63,7 @@ class SalesInvoiceReturnH {
     this.totalNet,
     this.tafqitNameArabic,
     this.tafqitNameEnglish,
+    this.invoiceQRCodeBase64,
     //image
   });
 
@@ -90,6 +91,7 @@ class SalesInvoiceReturnH {
       currencyRate: (json['currencyRate'] !=null) ? json['currencyRate'].toDouble() : 0,
       tafqitNameArabic: (json['tafqitNameArabic'] != null) ? json['tafqitNameArabic'] as String : "",
       tafqitNameEnglish: (json['tafqitNameEnglish'] != null) ? json['tafqitNameEnglish'] as String : "",
+      invoiceQRCodeBase64: (json['invoiceQRCodeBase64'] != null) ? json['invoiceQRCodeBase64'] as String : "",
       // salesManCode: json['salesManCode'] as String,
       // taxGroupCode: json['taxGroupCode'] as String,
       // cusTypesCode: json['cusTypesCode'] as String,

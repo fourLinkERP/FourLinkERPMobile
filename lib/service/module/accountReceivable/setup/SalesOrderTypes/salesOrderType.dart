@@ -38,13 +38,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
     if (response.statusCode == 200) {
-      print('SalesOrderType 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesOrderType> list = [];
       if (data.isNotEmpty) {
         list = data.map((item) => SalesOrderType.fromJson(item)).toList();
       }
-      print('SalesOrderType 3');
       return  list;
 
     } else {
@@ -52,6 +50,5 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       throw "Failed to load SalesOrderType list";
     }
   }
-
 
 }

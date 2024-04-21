@@ -76,6 +76,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
 
   final SalesOfferHApiService api = SalesOfferHApiService();
   int id = 0;
+  String serial = "";
   List<SalesOfferD> salesOfferDLst = <SalesOfferD>[];
   List<SalesOfferD> selected = [];
   List<DropdownMenuItem<String>> menuSalesOfferTypes = [ ];
@@ -161,6 +162,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     totalNet = 0;
 
     id = widget.salesOffersH.id!;
+    serial = widget.salesOffersH.offerSerial!;
     _offerSerialController.text = widget.salesOffersH.offerSerial!;
     _offerDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.salesOffersH.offerDate!.toString()));
     selectedCustomerValue = widget.salesOffersH.customerCode!;
@@ -210,7 +212,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     });
 
     //Items
-    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
+    Future<List<Item>> Items = _itemsApiService.getReturnItems().then((data) {
       items = data;
       //print(customers.length.toString());
       getItemData();
@@ -220,7 +222,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     });
 
     //Sales Invoice Details
-    Future<List<SalesOfferD>> futureSalesOffer = _salesOfferDApiService.getSalesOffersD(id).then((data) {
+    Future<List<SalesOfferD>> futureSalesOffer = _salesOfferDApiService.getSalesOffersD(serial).then((data) {
       salesOfferDLst = data;
       print('hobaaaaaaaaaaaz');
       //print(customers.length.toString());

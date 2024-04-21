@@ -31,6 +31,7 @@ class SalesOfferH {
   double? totalNet ;
   String?  tafqitNameArabic ;
   String?  tafqitNameEnglish ;
+  String? storeCode;
   // String? address;
   // String? Phone1;
   //String image;
@@ -61,6 +62,7 @@ class SalesOfferH {
     this.totalNet,
     this.tafqitNameArabic,
     this.tafqitNameEnglish,
+    this.storeCode
     //image
     });
 
@@ -84,6 +86,7 @@ class SalesOfferH {
       totalNet: (json['totalNet'] !=null) ? json['totalNet'].toDouble() : 0,
       tafqitNameArabic: (json['tafqitNameArabic'] != null) ? json['tafqitNameArabic'] as String : "",
       tafqitNameEnglish: (json['tafqitNameEnglish'] != null) ? json['tafqitNameEnglish'] as String : "",
+      storeCode: (json['storeCode'] != null) ? json['storeCode'] as String : "1",
       // offerDate: json['offerDate'] as String,
 
 

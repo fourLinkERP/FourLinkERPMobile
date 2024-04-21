@@ -82,8 +82,8 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
           {
             for(var i = 0; i < _salesInvoices.length; i++){
               {
-                imageControllers.add(new WidgetsToImageController());
-                imageGlobalKeys.add(new GlobalKey());
+                imageControllers.add(WidgetsToImageController());
+                imageGlobalKeys.add(GlobalKey());
               }
             }
           }
@@ -637,6 +637,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                                   vatRegistrationNumber: companyVatNo,
                                   date:   DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString()),
                                   totalAmountIncludingVat: _salesInvoices[index].totalNet!.toDouble(),
+                                  vat: _salesInvoices[index].totalTax!,
                                 ),
                               ),
                             )
@@ -785,6 +786,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
         vatRegistrationNumber: "323456789123453",
         date: DateTime.now(),
         totalAmountIncludingVat: 50.75,
+        vat: 0.15,
       ),
     );
   }

@@ -8,6 +8,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:widgets_to_image/widgets_to_image.dart';
+import 'package:zatca_fatoora_flutter/zatca_fatoora_flutter.dart';
 import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vendors/vendor.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
@@ -28,7 +30,6 @@ SalesInvoiceReturnHApiService _apiReturnService= SalesInvoiceReturnHApiService()
 SalesInvoiceReturnDApiService _apiReturnDService= SalesInvoiceReturnDApiService();
 //Get SalesInvoiceH List
 
-
 class SalesInvoiceReturnHListPage extends StatefulWidget {
   const SalesInvoiceReturnHListPage({ Key? key }) : super(key: key);
 
@@ -42,6 +43,10 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
   List<SalesInvoiceReturnH> _salesInvoicesSearch = [];
   List<SalesInvoiceReturnD> _salesInvoicesD = [];
   List<SalesInvoiceReturnH> _founded = [];
+  List<WidgetsToImageController> imageControllers  = [] ;
+  List<GlobalKey> imageGlobalKeys  = [] ;
+  String companyTitle ="مؤسسة ركن كريز للحلويات";
+  String companyVatNo ="302211485800003";
 
 
   @override
@@ -61,6 +66,16 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
       if (futureSalesInvoiceReturnH != null){
         _salesInvoices = futureSalesInvoiceReturnH;
         _salesInvoicesSearch = List.from(_salesInvoices);
+
+        if(_salesInvoices.length >0)
+        {
+          for(var i = 0; i < _salesInvoices.length; i++){
+            {
+              imageControllers.add(WidgetsToImageController());
+              imageGlobalKeys.add(GlobalKey());
+            }
+          }
+        }
 
         if (_salesInvoices.isNotEmpty) {
           _salesInvoices.sort((a, b) => int.parse(b.salesInvoicesSerial!).compareTo(int.parse(a.salesInvoicesSerial!)));
@@ -364,7 +379,27 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                       Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceReturnHWidget(_salesInvoices[index])),);
                     },
                     child: ListTile(
-                      leading: Image.asset('assets/fitness_app/salesCart.png'),
+                      leading: SizedBox(
+                        width: 55,
+                        height: 55,
+                        child: WidgetsToImage(
+                            controller:imageControllers[index],
+                            child :Container(
+                              padding: const EdgeInsets.all(1),
+                              color: Colors.white,
+                              child:   ZatcaFatoora.simpleQRCode(
+                                fatooraData: ZatcaFatooraDataModel(
+                                  businessName: companyTitle,
+                                  vatRegistrationNumber: companyVatNo,
+                                  date:   DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString()),
+                                  totalAmountIncludingVat: _salesInvoices[index].totalNet!.toDouble(),
+                                  vat: _salesInvoices[index].totalNet!,
+                                ),
+                              ),
+                            )
+
+                        ),
+                      ),
                       title: Text('serial'.tr() + " : " + _salesInvoices[index].salesInvoicesSerial.toString()),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,

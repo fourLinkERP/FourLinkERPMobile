@@ -27,6 +27,7 @@ import '../../../../../helpers/toast.dart';
 import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
+import '../../basicInputs/Customers/addCustomerDataWidget.dart';
 //APIS
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
 SalesOrdersTypeApiService _salesOrderTypeApiService= SalesOrdersTypeApiService();
@@ -85,7 +86,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   String? selectedTypeValue = "1";
   String? selectedItemValue = null;
   String? selectedItemName = null;
-  String? selectedUnitValue = null;
+  String? selectedUnitValue = "1";
   String? selectedUnitName = null;
   String? price = null;
   String? qty = null;
@@ -146,7 +147,6 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     super.initState();
 
     lineNum=1;
-
     productPrice = 0;
     productQuantity = 0;
     productTotal = 0;
@@ -164,8 +164,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     //Sales Invoice Type
     Future<List<SalesOrderType>> futureSalesOrderType = _salesOrderTypeApiService.getSalesOrdersTypes().then((data) {
       salesOrderTypes = data;
-      print('in in in 1 ');
-      //getSalesOrderTypeData();
+      getSalesOrderTypeData();
       return salesOrderTypes;
     }, onError: (e) {
       print(e);
@@ -175,7 +174,6 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
-      //print(customers.length.toString());
       getCustomerData();
       return customers;
     }, onError: (e) {
@@ -183,9 +181,8 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     });
 
     //Items
-    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
+    Future<List<Item>> Items = _itemsApiService.getReturnItems().then((data) {
       items = data;
-      //print(customers.length.toString());
       getItemData();
       return items;
     }, onError: (e) {
@@ -209,15 +206,11 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
         tooltip: 'save',
         elevation: 5,
         highlightElevation: 5,
-
         backgroundColor:  Colors.transparent,
         onPressed: (){
           saveInvoice(context);
         },
-
-
         child:Container(
-          // alignment: Alignment.center,s
           decoration: BoxDecoration(
             color: FitnessAppTheme.nearlyDarkBlue,
             gradient: LinearGradient(
@@ -230,8 +223,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
             shape: BoxShape.circle,
             boxShadow: <BoxShadow>[
               BoxShadow(
-                  color: FitnessAppTheme.nearlyDarkBlue
-                      .withOpacity(0.4),
+                  color: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.4),
                   offset: const Offset(2.0, 14.0),
                   blurRadius: 16.0),
             ],
@@ -276,7 +268,6 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                     child: Column(
                       crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
                       children: <Widget>[
-                        const SizedBox(height: 20),
                          Form(
                             key: _dropdownTypeFormKey,
                             child: Column(
@@ -286,7 +277,6 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
 
                                 DropdownSearch<SalesOrderType>(
                                   validator: (value) => value == null ? "select_a_Type".tr() : null,
-
                                   selectedItem: salesOrderTypeItem,
                                   popupProps: PopupProps.menu(
 
@@ -386,74 +376,85 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                             ),
                           ],
                         ),
-
                         const SizedBox(height: 20),
 
-                        Form(
-                            key: _dropdownCustomerFormKey,
-                            child: Row(
-                              children: [
-                                Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Customer: ".tr(),
-                                    style: const TextStyle(fontWeight: FontWeight.bold))),
-                                const SizedBox(width: 10),
-
-                                SizedBox(
-                                  width: 220,
-                                  child: DropdownSearch<Customer>(
-                                    selectedItem: null,
-                                    popupProps: PopupProps.menu(
-                                      itemBuilder: (context, item, isSelected) {
-                                        return Container(
-                                          margin: const EdgeInsets.symmetric(horizontal: 8),
-                                          decoration: !isSelected
-                                              ? null
-                                              : BoxDecoration(
-
-                                            border: Border.all(color: Colors.black12),
-                                            borderRadius: BorderRadius.circular(5),
-                                            color: Colors.white,
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text((langId==1)? item.customerNameAra.toString() : item.customerNameEng.toString()),
-                                          ),
-                                        );
-                                      },
-                                      showSearchBox: true,
-                                    ),
-
-                                    items: customers,
-                                    itemAsString: (Customer u) => (langId==1)? u.customerNameAra.toString() : u.customerNameEng.toString(),
-
-                                    onChanged: (value){
-                                      //v.text = value!.cusTypesCode.toString();
-                                      //print(value!.id);
-                                      selectedCustomerValue = value!.customerCode.toString();
-                                    },
-
-                                    filterFn: (instance, filter){
-                                      if((langId==1)? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)){
-                                        print(filter);
-                                        return true;
-                                      }
-                                      else{
-                                        return false;
-                                      }
-                                    },
-                                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                                      dropdownSearchDecoration: InputDecoration(
-
-                                      ),),
-
-                                  ),
-                                ),
-                              ],
-                            )),
-
-                        const SizedBox(height: 20),
-
-                        Row(
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Form(
+                              key: _dropdownCustomerFormKey,
+                              child: Row(
+                                children: [
+                                  Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Customer: ".tr(),
+                                      style: const TextStyle(fontWeight: FontWeight.bold))),
+                                  const SizedBox(width: 10),
+                                  SizedBox(
+                                    width: 200,
+                                    child: DropdownSearch<Customer>(
+                                      selectedItem: null,
+                                      popupProps: PopupProps.menu(
+
+                                        itemBuilder: (context, item, isSelected) {
+                                          return Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 8),
+                                            decoration: !isSelected ? null : BoxDecoration(
+                                              border: Border.all(color: Colors.black12),
+                                              borderRadius: BorderRadius.circular(5),
+                                              color: Colors.white,
+                                            ),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8.0),
+                                              child: Text((langId == 1) ? item.customerNameAra.toString() : item.customerNameEng.toString()),
+                                            ),
+                                          );
+                                        },
+                                        showSearchBox: true,
+
+                                      ),
+
+                                      items: customers,
+                                      itemAsString: (Customer u) =>
+                                      (langId == 1) ? u.customerNameAra.toString() : u.customerNameEng.toString(),
+                                      onChanged: (value) {
+                                        selectedCustomerValue = value!.customerCode.toString();
+                                      },
+
+                                      filterFn: (instance, filter) {
+                                        if ((langId == 1) ? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)) {
+                                          print(filter);
+                                          return true;
+                                        }
+                                        else {
+                                          return false;
+                                        }
+                                      },
+                                      dropdownDecoratorProps: const DropDownDecoratorProps(
+                                        dropdownSearchDecoration: InputDecoration(
+                                          //labelText: 'Select'.tr(),
+
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 20),
+                                  IconButton(
+                                    onPressed: () async {
+                                      await Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddCustomerDataWidget(),
+                                      )).then((value) {
+                                        getCustomerData();
+                                      });
+                                      setState(() {}); // Trigger a rebuild
+                                    },
+                                    icon: const Icon(Icons.add, color: Color.fromRGBO(144, 16, 46, 1),),
+                                    iconSize: 30,
+                                    color: const Color.fromRGBO(144, 16, 46, 1),
+                                    disabledColor: const Color.fromRGBO(144, 16, 46, 1),
+                                  )
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 20),
                             Form(
                                 key: _dropdownItemFormKey,
                                 child: Row(
@@ -462,73 +463,76 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                                         style: const TextStyle(fontWeight: FontWeight.bold))),
                                     const SizedBox(width: 10),
                                     SizedBox(
-                                      width: 90,
+                                      width: 200,
                                       child: DropdownSearch<Item>(
                                         selectedItem: itemItem,
                                         popupProps: PopupProps.menu(
                                           itemBuilder: (context, item, isSelected) {
                                             return Container(
                                               margin: const EdgeInsets.symmetric(horizontal: 8),
-                                              decoration: !isSelected
-                                                  ? null
-                                                  : BoxDecoration(
-
+                                              decoration: !isSelected ? null :
+                                              BoxDecoration(
                                                 border: Border.all(color: Colors.black12),
                                                 borderRadius: BorderRadius.circular(5),
                                                 color: Colors.white,
                                               ),
                                               child: Padding(
                                                 padding: const EdgeInsets.all(8.0),
-                                                child: Text((langId==1)? item.itemNameAra.toString() : item.itemNameEng.toString()),
+                                                child: Text((langId == 1) ? item.itemNameAra.toString() : item.itemNameEng.toString()),
                                               ),
                                             );
                                           },
                                           showSearchBox: true,
 
                                         ),
-
                                         items: items,
-                                        itemAsString: (Item u) => (langId==1)? u.itemNameAra.toString() : u.itemNameEng.toString(),
+                                        itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
 
-                                        onChanged: (value){
+                                        onChanged: (value) {
                                           selectedItemValue = value!.itemCode.toString();
-                                          selectedItemName = (langId==1) ? value!.itemNameAra.toString() : value!.itemNameEng.toString();
-                                          _displayQtyController.text="1";
+                                          selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
+                                          //_displayQtyController.text = "1";
                                           changeItemUnit(selectedItemValue.toString());
-
+                                          selectedUnitValue = "1";
+                                          String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                          setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
                                           //Factor
-                                          int qty=(_displayQtyController.text !=null)? int.parse(_displayQtyController.text):0;
-                                          setItemQty(selectedItemValue.toString(),selectedUnitValue.toString(), qty);
-
+                                          int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+                                          setItemQty(
+                                              selectedItemValue.toString(),
+                                              selectedUnitValue.toString(), qty
+                                          );
+                                          //Cost Price
+                                          setItemCostPrice(selectedItemValue.toString(), "1", 0, _salesOrdersDateController.text);
                                         },
 
-                                        filterFn: (instance, filter){
-                                          if((langId==1)? instance.itemNameAra!.contains(filter) : instance.itemNameEng!.contains(filter)){
+                                        filterFn: (instance, filter) {
+                                          if ((langId == 1) ? instance.itemNameAra!.contains(filter) : instance.itemNameEng!.contains(filter)) {
                                             print(filter);
                                             return true;
                                           }
-                                          else{
+                                          else {
                                             return false;
                                           }
                                         },
                                         dropdownDecoratorProps: const DropDownDecoratorProps(
                                           dropdownSearchDecoration: InputDecoration(
-
-                                          ),),
+                                            //labelText: 'item_name'.tr(),
+                                          ),
+                                        ),
 
                                       ),
                                     ),
 
-                                    // ElevatedButton(
-                                    //     onPressed: () {
-                                    //       if (_dropdownFormKey.currentState!.validate()) {
-                                    //         //valid flow
-                                    //       }
-                                    //     },
-                                    //     child: Text("Submit"))
                                   ],
-                                )),
-                            const SizedBox(width: 15),
+                                )
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 15),
+                        Row(
+                          children: [
                             Form(
                                 key: _dropdownUnitFormKey,
                                 child: Row(
@@ -544,118 +548,113 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                                           itemBuilder: (context, item, isSelected) {
                                             return Container(
                                               margin: const EdgeInsets.symmetric(horizontal: 8),
-                                              decoration: !isSelected
-                                                  ? null
+                                              decoration: !isSelected ? null
                                                   : BoxDecoration(
-
                                                 border: Border.all(color: Colors.black12),
                                                 borderRadius: BorderRadius.circular(5),
                                                 color: Colors.white,
                                               ),
                                               child: Padding(
                                                 padding: const EdgeInsets.all(8.0),
-                                                child: Text((langId==1)? item.unitNameAra.toString() : item.unitNameEng.toString()),
+                                                child: Text((langId == 1) ? item.unitNameAra.toString() : item.unitNameEng.toString()),
                                               ),
                                             );
                                           },
                                           showSearchBox: true,
 
                                         ),
-
                                         items: units,
-                                        itemAsString: (Unit u) => (langId==1)? u.unitNameAra.toString() : u.unitNameEng.toString(),
-
-                                        onChanged: (value){
+                                        itemAsString: (Unit u) => (langId == 1) ? u.unitNameAra.toString() : u.unitNameEng.toString(),
+                                        onChanged: (value) {
                                           selectedUnitValue = value!.unitCode.toString();
-                                          selectedUnitName = (langId==1) ? value!.unitNameAra.toString() : value!.unitNameEng.toString();
+                                          selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
 
-                                          if(selectedUnitValue != null && selectedItemValue != null){
-                                            String criteria=" And CompanyCode=" + companyCode.toString() +   " And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'" + selectedTypeValue.toString() +  "'";
+                                          if (selectedUnitValue != null &&
+                                              selectedItemValue != null) {
+                                            String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                             //Item Price
-                                            setItemPrice(selectedItemValue.toString(),selectedUnitValue.toString(),criteria);
+                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
                                             //Factor
-                                            int qty=(_displayQtyController.text !=null)? int.parse(_displayQtyController.text):0;
-                                            setItemQty(selectedItemValue.toString(),selectedUnitValue.toString(), qty);
-
+                                            int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+                                            setItemQty(selectedItemValue.toString(), selectedUnitValue.toString(), qty);
                                           }
                                         },
 
-                                        filterFn: (instance, filter){
-                                          if((langId==1)? instance.unitNameAra!.contains(filter) : instance.unitNameEng!.contains(filter)){
+                                        filterFn: (instance, filter) {
+                                          if ((langId == 1)
+                                              ? instance.unitNameAra!.contains(
+                                              filter)
+                                              : instance.unitNameEng!.contains(
+                                              filter)) {
                                             print(filter);
                                             return true;
                                           }
-                                          else{
+                                          else {
                                             return false;
                                           }
                                         },
                                         dropdownDecoratorProps: const DropDownDecoratorProps(
                                           dropdownSearchDecoration: InputDecoration(
+                                            //labelText: 'unit_name'.tr(),
 
-                                          ),),
+                                          ),
+                                        ),
 
                                       ),
                                     ),
 
-                                    // ElevatedButton(
-                                    //     onPressed: () {
-                                    //       if (_dropdownFormKey.currentState!.validate()) {
-                                    //         //valid flow
-                                    //       }
-                                    //     },
-                                    //     child: Text("Submit"))
                                   ],
-                                )),
+                                )
+                            ),
+                            const SizedBox(width: 20),
+                            Row(
+                              children: [
+                                Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_price :'.tr(),
+                                    style: const TextStyle(fontWeight: FontWeight.bold))),
+                                const SizedBox(width: 10),
+                                SizedBox(
+                                  width: 90,
+                                  child: TextFormField(
+                                      keyboardType: TextInputType.number,
+                                      controller: _displayPriceController,
+                                      //hintText: "price".tr(),
+                                      enabled: true,  /// open just for now
+                                      onSaved: (val) {
+                                        //price = val;
+                                      },
+                                      //textInputType: TextInputType.number,
+                                      onChanged: (value) {
+                                        calcTotalPriceRow();
+                                      }
+                                  ),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                         const SizedBox(height: 20),
 
                         Row(
                           children: [
-                            Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_price :'.tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold))),
-                            const SizedBox(width: 10),
-                            SizedBox(
-                              width: 100,
-                              child: TextFormField(
-                                controller: _displayPriceController,
-                                //hintText: "price".tr(),
-                                enabled: false,
-                                onSaved: (val) {
-                                  //price = val;
-                                },
-                                //textInputType: TextInputType.number,
-                                onChanged: (value){
-                                  calcTotalPriceRow();
-                                },
-                              ),
-                            ),
-                            const SizedBox(width: 10),
+
                             Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_qty :'.tr(),
                                 style: const TextStyle(fontWeight: FontWeight.bold))),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 20),
                             SizedBox(
                               width: 100,
                               child: TextFormField(
                                 controller: _displayQtyController,
                                 decoration: const InputDecoration(
-
+                                  //hintText:  'display_qty'.tr(),
                                 ),
                                 enabled: true,
                                 keyboardType: TextInputType.number,
                                 onChanged: (value) {
-
                                   calcTotalPriceRow();
-
                                 },
                               ),
                             ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        Row(
-                          children: [
-
+                            const SizedBox(width: 20),
                             Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('discount :'.tr(),
                                 style: const TextStyle(fontWeight: FontWeight.bold))),
                             const SizedBox(width: 10),
@@ -664,44 +663,36 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                               child: TextFormField(
                                 controller: _displayDiscountController,
                                 keyboardType: TextInputType.number,
-                                //hintText: 'discount'.tr(),
                                 onSaved: (val) {
                                   discount = val;
                                 },
                                 onChanged: (value) {
-
-                                  double price=0;
-                                  if(!_priceController.text.isEmpty)
-                                  {
-                                    price=double.parse(_priceController.text);
+                                  double price = 0;
+                                  if (_priceController.text.isNotEmpty) {
+                                    price = double.parse(_priceController.text);
                                   }
-
-                                  double qtyVal=0;
-                                  if(!_displayQtyController.text.isEmpty)
-                                  {
-                                    qtyVal=double.parse(_displayQtyController.text);
+                                  double qtyVal = 0;
+                                  if (_displayQtyController.text.isNotEmpty) {
+                                    qtyVal = double.parse(_displayQtyController.text);
                                   }
-
-                                  print('toGetUnittotal');
                                   var total = qtyVal * price;
-                                  setMaxDiscount(double.parse(value), total , empCode );
-
+                                  setMaxDiscount(double.parse(value), total, empCode);
                                 },
                               ),
                             ),
                           ],
                         ),
-
                         const SizedBox(height: 20),
-                        Row(children: [
-                          Center(
-                              child: ElevatedButton.icon(
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: Color.fromRGBO(144, 16, 46, 1),
-                                  size: 20.0,
-                                  weight: 10,
-                                ),
+                        Row(
+                            children: [
+                              Center(
+                                  child: ElevatedButton.icon(
+                                    icon: const Icon(
+                                      Icons.edit,
+                                      color: Color.fromRGBO(144, 16, 46, 1),
+                                      size: 20.0,
+                                      weight: 10,
+                                    ),
                                 label: Text('add_product'.tr(),style:const TextStyle(color: Color.fromRGBO(144, 16, 46, 1)) ),
                                 onPressed: () {
                                   addInvoiceRow() ;
@@ -739,119 +730,45 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                         const SizedBox(height: 20),
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
-
                           child: DataTable(
                             border: TableBorder.all(),
+
+                            headingRowColor: MaterialStateProperty.all(const Color.fromRGBO(144, 16, 46, 1)),
                             columnSpacing: 20,
                             columns: [
-                              DataColumn(
-                                label: Text("id".tr()),
-
-                              ),
-                              // DataColumn(
-                              //   label: Text("Code"),
-                              // ),
-                              DataColumn(
-                                label: Text("name".tr()),
-                              ),
-                              DataColumn(
-                                label: Text("qty".tr()),
-                                numeric: true,
-                              ),
-                              DataColumn(
-                                label: Text("price".tr()),
-                                numeric: true,
-                              ),
-                              DataColumn(
-                                label: Text("total".tr()),
-                                numeric: true,
-                              ),
-                              DataColumn(
-                                label: Text("discount".tr()),
-                                numeric: true,
-                              ),
-                              DataColumn(
-                                label: Text("netAfterDiscount".tr()),
-                                numeric: true,
-                              ),
-                              DataColumn(
-                                label: Text("vat".tr()),
-                                numeric: true,
-                              ),
-
-                              DataColumn(
-                                label: Text("net".tr()),
-                                numeric: true,
-                              ),
-                              DataColumn(
-                                label: Text("action".tr()),
-                              ),
+                              DataColumn(label: Text("id".tr(),style: const TextStyle(color: Colors.white),),),
+                              DataColumn(label: Text("name".tr(),style: const TextStyle(color: Colors.white),),),
+                              DataColumn(label: Text("qty".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("price".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("total".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("discount".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("netAfterDiscount".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("vat".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("net".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("action".tr(), style: const TextStyle(color: Colors.white),),),
                             ],
-                            rows: SalesOrderDLst.map(
-                                  (p) => DataRow(cells: [
-                                DataCell(
-                                    Container(
-                                        width: 5, //SET width
-                                        child:  Text(p.lineNum.toString()))
-
-                                ),
-                                // DataCell(
-                                //   Text(p.itemCode.toString()),
-                                // ),
-                                DataCell(
-                                    Container(
-                                        width: 50, //SET width
-                                        child: Text(p.itemName.toString()))
-                                ),
-                                DataCell(
-                                    Container(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayQty.toString()))
-                                ),
-                                DataCell(
-                                    Container(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayPrice.toString()))
-
-                                ),
-                                DataCell(
-                                    Container(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayTotal.toString()))
-
-                                ),
-                                DataCell(
-                                    Container(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayDiscountValue.toString()))
-                                ),
-                                DataCell(
-                                    Container(
-                                      //width: 15, //SET width
-                                        child: Text(p.netAfterDiscount.toString()))
-                                ),
-                                DataCell(
-                                    Container(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayTotalTaxValue.toString()))
-                                ),
-                                DataCell(
-                                    Container(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayNetValue.toString()))
-                                ),
-
-                                DataCell(
-                                    Container(
-                                        width: 30, //SET width
-                                        child: Image.asset('assets/images/delete.png'))
-
-                                ),
-                              ]),
+                            rows: SalesOrderDLst.map((p) =>
+                                DataRow(cells: [
+                                  DataCell(SizedBox(width: 5, child: Text(p.lineNum.toString()))),
+                                  DataCell(SizedBox(width: 50, child: Text(p.itemName.toString()))),
+                                  DataCell(SizedBox(child: Text(p.displayQty.toString()))),
+                                  DataCell(SizedBox(child: Text(p.displayPrice.toString()))),
+                                  DataCell(SizedBox(child: Text(p.displayTotal.toString()))),
+                                  DataCell(SizedBox(child: Text(p.displayDiscountValue.toString()))),
+                                  DataCell(SizedBox(child: Text(p.netAfterDiscount.toString()))),
+                                  DataCell(SizedBox(child: Text(p.displayTotalTaxValue.toString()))),
+                                  DataCell(SizedBox(child: Text(p.displayNetValue.toString()))),
+                                  DataCell(IconButton(icon: Icon(Icons.delete_forever, size: 30.0, color: Colors.red.shade600,),
+                                    onPressed: () {
+                                      deleteInvoiceRow(context,p.lineNum);
+                                      calcTotalPriceRow();
+                                    },
+                                  )),
+                                ]),
                             ).toList(),
                           ),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         Row(
                           children: [
                             Row(
@@ -873,7 +790,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                                 ),
                               ],
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 20),
                             Row(
                               children: [
                                 Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('rowsCount'.tr(),
@@ -892,49 +809,6 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                                   ),
                                 ),
                               ],
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 20),
-                        Row(
-                          children: [
-                            Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountPercent'.tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold))),
-                            const SizedBox(width: 10),
-                            SizedBox(
-                              width: 150,
-                              child: TextFormField(
-                                controller: _invoiceDiscountPercentController,
-                                // hintText: "invoiceDiscountPercent".tr(),
-                                enabled: true,
-                                onChanged: (value){
-
-                                },
-                                keyboardType: TextInputType.number,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-
-                        Row(
-                          children: [
-                            Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountValue'.tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold))),
-                            const SizedBox(width: 10),
-                            SizedBox(
-                              width: 150,
-                              child: TextFormField(
-                                enabled: true,
-                                controller: _invoiceDiscountValueController,
-                                // hintText: "invoiceDiscountValue".tr(),
-
-                                onChanged: (value){
-
-                                },
-                                keyboardType: TextInputType.number,
-                              ),
                             ),
                           ],
                         ),
@@ -1216,28 +1090,27 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
 
     });
   }
+  getSalesOrderTypeData() {
+    if (salesOrderTypes != null) {
+      for(var i = 0; i < salesOrderTypes.length; i++){
+        menuSalesOrderTypes.add(DropdownMenuItem(value: salesOrderTypes[i].sellOrdersTypeCode.toString(), child: Text(salesOrderTypes[i].
+        sellOrdersTypeNameAra.toString())));
+        if(salesOrderTypes[i].sellOrdersTypeCode == "1"){
+          // print('in amr3');
+          salesOrderTypeItem = salesOrderTypes[salesOrderTypes.indexOf(salesOrderTypes[i])];
+          // print('in amr4');
+          // print(customerTypeItem );
+        }
 
-  // getSalesOrderTypeData() {
-  //   if (salesOrderTypes != null) {
-  //     for(var i = 0; i < salesOrderTypes.length; i++){
-  //       menuSalesOrderTypes.add(DropdownMenuItem(value: salesOrderTypes[i].sellOrdersTypeCode.toString(), child: Text(salesOrderTypes[i].
-  //       sellOrdersTypeNameAra.toString())));
-  //       if(salesOrderTypes[i].sellOrdersTypeCode == "1"){
-  //         // print('in amr3');
-  //         salesOrderTypeItem = salesOrderTypes[salesOrderTypes.indexOf(salesOrderTypes[i])];
-  //         // print('in amr4');
-  //         // print(customerTypeItem );
-  //       }
-  //
-  //     }
-  //
-  //     selectedTypeValue = "1";
-  //     setNextSerial();
-  //   }
-  //   setState(() {
-  //
-  //   });
-  // }
+      }
+
+      selectedTypeValue = "1";
+      setNextSerial();
+    }
+    setState(() {
+
+    });
+  }
 
 
 
@@ -1262,7 +1135,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   // }
 
 
-  saveInvoice(BuildContext context) {
+  saveInvoice(BuildContext context) async {
 
     //Items
     if(SalesOrderDLst == null || SalesOrderDLst.length <=0){
@@ -1294,7 +1167,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     //   return;
     // }
 
-    _salesOrderHApiService.createSalesOrderH(context,SalesOrderH(
+    await _salesOrderHApiService.createSalesOrderH(context,SalesOrderH(
 
       sellOrdersSerial: _salesOrdersSerialController.text,
       sellOrdersTypeCode: selectedTypeValue,
@@ -1458,6 +1331,8 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     //Item
     _salesOrderD.itemCode= selectedItemValue;
     _salesOrderD.itemName= selectedItemName;
+    _salesOrderD.unitCode= selectedUnitValue;
+    _salesOrderD.unitName= selectedUnitName;
     //print('Add Product 2');
     //Qty
     _salesOrderD.displayQty= (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
@@ -1611,14 +1486,15 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
 //#region Business Function
 
   // Item Units - Change Item Units
-  changeItemUnit(String itemCode){
-    //Units
-    units=[];
+  changeItemUnit(String itemCode) {
+    units = [];
     Future<List<Unit>> Units = _unitsApiService.getItemUnit(itemCode).then((data) {
       units = data;
-      setState(() {
-
-      });
+      if(data.isNotEmpty){
+        unitItem = data[0];
+        setItemPrice;
+      }
+      setState(() {});
       return units;
     }, onError: (e) {
       print(e);
@@ -1788,7 +1664,77 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   }
 
 //#endregion
+  void deleteInvoiceRow(BuildContext context, int? lineNum) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Are you sure?'),
+        content: const Text('This action will permanently delete this data'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
 
+    if (confirmed!) {
+      // Find the index of the row with the given lineNum
+      int indexToRemove = SalesOrderDLst.indexWhere((p) => p.lineNum == lineNum);
+
+      if (indexToRemove != -1) {
+        // Remove the row
+        SalesOrderDLst.removeAt(indexToRemove);
+
+        // Recalculate the parameters based on the remaining rows
+        recalculateParameters();
+
+        // Trigger a rebuild
+        setState(() {});
+      }
+    }
+  }
+  void recalculateParameters() {
+    //SalesInvoiceH _salesInvoiceH = SalesInvoiceH();
+    totalQty = 0;
+    totalTax = 0;
+    totalDiscount = 0;
+    rowsCount = SalesOrderDLst.length;
+    totalNet = 0;
+    totalPrice = 0;
+    totalBeforeTax = 0;
+    totalAfterDiscount = 0;
+    totalBeforeTax = 0;
+    //_salesInvoiceH.tafqitNameArabic = _tafqitNameArabicController.text;
+    //_salesInvoiceH.tafqitNameEnglish = _tafqitNameEnglishController.text;
+
+    for (var row in SalesOrderDLst) {
+      lineNum += row.lineNum!;
+      totalQty += row.displayQty;
+      totalTax += row.displayTotalTaxValue;
+      totalDiscount += row.displayDiscountValue;
+      totalNet += row.displayNetValue;
+      totalAfterDiscount += row.netAfterDiscount;
+      totalBeforeTax += row.netAfterDiscount;
+      totalPrice  += row.netAfterDiscount;
+    }
+
+    // Update your controllers or other widgets if needed
+    _totalQtyController.text = totalQty.toString();
+    _totalTaxController.text = totalTax.toString();
+    _totalDiscountController.text = totalDiscount.toString();
+    _rowsCountController.text = rowsCount.toString();
+    _totalNetController.text = totalNet.toString();
+    _totalAfterDiscountController.text = totalAfterDiscount.toString();
+    _totalBeforeTaxController.text = totalBeforeTax.toString();
+    _totalValueController.text = totalPrice.toString();
+    setTafqeet("2", _totalNetController.text);
+  }
 
 //#region General Widgets - To Be Moved To General Locations
 

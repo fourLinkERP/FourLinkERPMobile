@@ -117,7 +117,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "flgDelete": false,
       "confirmed": true,
       "year" : financialYearCode,
-      "invoiceQRCode": invoice.invoiceQRCode,
+      "InvoiceQRCodeBase64": invoice.invoiceQRCodeBase64,
       "addBy": empUserId,
 
 
@@ -203,7 +203,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "flgDelete": false,
       'editBy': empCode,
       //,
-      'invoiceQRCode': invoice.invoiceQRCode,
+      'InvoiceQRCodeBase64': invoice.invoiceQRCodeBase64,
     };
 
     String apiUpdate =updateApi + id.toString();

@@ -55,7 +55,6 @@ import '../../../../../common/globals.dart';
     Map data = {
       'Search':{
         'CompanyCode': companyCode,
-        'BranchCode': branchCode,
         'SalesInvoicesCase':2
       }
     };

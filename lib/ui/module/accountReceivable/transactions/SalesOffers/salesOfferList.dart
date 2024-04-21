@@ -84,8 +84,8 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
     }
   }
 
-  void getDetailData(int? headerId) async {
-    Future<List<SalesOfferD>?> futureSalesOfferD = _apiDService.getSalesOffersD(headerId);
+  void getDetailData(String? serial) async {
+    Future<List<SalesOfferD>?> futureSalesOfferD = _apiDService.getSalesOffersD(serial);
     _salesOffersD = (await futureSalesOfferD)!;
 
   }

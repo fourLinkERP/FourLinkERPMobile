@@ -103,6 +103,16 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'totalAfterDiscount': invoice.totalAfterDiscount,
       'totalBeforeTax': invoice.totalBeforeTax,
       'totalValue': invoice.totalValue,
+      'storeCode': invoice.storeCode,
+      "confirmed": true,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSystem": false,
+      "notActive": false,
+      "flgDelete": false,
       'addBy': empUserId
 
 

@@ -28,7 +28,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       }
     };
 
-    //print('Cash Receive 1');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{

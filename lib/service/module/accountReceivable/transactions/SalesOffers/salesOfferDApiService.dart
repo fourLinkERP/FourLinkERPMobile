@@ -17,12 +17,15 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
   String deleteApi= baseUrl.toString()  + '/api/v1/salesOfferDetails/';
   String getByIdApi= baseUrl.toString()  + '/api/v1/salesOfferDetails/';  // Add ID For Get
 
-  Future<List<SalesOfferD>> getSalesOffersD(int? headerId) async {
+  Future<List<SalesOfferD>> getSalesOffersD(String? serial) async {
     print('Booter 1');
     Map data = {
-      'Search':{
-        'HeaderId': headerId
-      }
+        'OfferSerial': serial,
+        'OfferTypeCode':"1",
+        'Search':{
+          'OfferSerial': serial,
+          'OfferTypeCode':"1",
+        }
     };
     print('Booter 2 ' + data.toString());
     final http.Response response = await http.post(
@@ -43,11 +46,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
         list = data.map((item) => SalesOfferD.fromJson(item)).toList();
       }
       print('Booter 4OAOA' + list.length.toString());
-      //print('B 1 Finish');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => SalesOffer.fromJson(data))
-      //     .toList();
+
     } else {
       print('Booter Error');
       throw "Failed to load customer list";
@@ -103,7 +103,16 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'isSynchronized': false ,
       'PostedToGL': false,
       'netAfterDiscount': invoice.netAfterDiscount,
-      'displayNetValue': invoice.displayNetValue
+      'displayNetValue': invoice.displayNetValue,
+      "confirmed": true,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSystem": false,
+      "notActive": false,
+      "flgDelete": false,
 
       // 'age': customer.age,
       // 'address': customer.address,
@@ -113,6 +122,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     };
 
     print('Start Create D' );
+    print("offerD save: " + data.toString());
     final http.Response response = await http.post(
       Uri.parse(createApi),
       headers: <String, String>{
@@ -124,7 +134,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
     print('Start Create D2' );
-    print(data);
     if (response.statusCode == 200) {
 
       //print('B 1');

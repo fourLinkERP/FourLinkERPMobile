@@ -89,7 +89,7 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
   String? selectedTypeValue = "1";
   String? selectedItemValue = null;
   String? selectedItemName = null;
-  String? selectedUnitValue = null;
+  String? selectedUnitValue = "1";
   String? selectedUnitName = null;
   String? price = null;
   String? qty = null;
@@ -146,6 +146,8 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
   initState()  {
     super.initState();
 
+    //Reset Values
+    lineNum = 1;
     productPrice = 0;
     productQuantity = 0;
     productTotal = 0;
@@ -157,8 +159,11 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
     totalQty = 0;
     rowsCount = 0;
     totalDiscount = 0;
-    totalBeforeTax = 0;
     totalTax = 0;
+    totalPrice = 0;
+    totalAfterDiscount = 0;
+    totalBeforeTax = 0;
+    totalNet = 0;
 
     //Sales Invoice Type
     Future<List<SalesOfferType>> futureSalesOfferType = _salesOfferTypeApiService.getSalesOffersTypes().then((data) {
@@ -486,7 +491,7 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                                       //_displayQtyController.text = "1";
                                       changeItemUnit(selectedItemValue.toString());
                                       selectedUnitValue = "1";
-                                      String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                      String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                       setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
 
 
@@ -562,9 +567,8 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                                           selectedUnitValue = value!.unitCode.toString();
                                           selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
 
-                                          if (selectedUnitValue != null &&
-                                              selectedItemValue != null) {
-                                            String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                          if (selectedUnitValue != null && selectedItemValue != null) {
+                                            String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                             //Item Price
                                             setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
                                             //Factor
@@ -786,47 +790,6 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                     ),
 
                     const SizedBox(height: 15),
-                    Row(
-                      children: [
-                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountPercent'.tr(),
-                            style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 150,
-                          child: TextFormField(
-                            controller: _invoiceDiscountPercentController,
-                            // hintText: "invoiceDiscountPercent".tr(),
-                            enabled: true,
-                            onChanged: (value){
-
-                            },
-                            keyboardType: TextInputType.number,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-                    Row(
-                      children: [
-                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountValue'.tr(),
-                            style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 150,
-                          child: TextFormField(
-                            enabled: true,
-                            controller: _invoiceDiscountValueController,
-                            // hintText: "invoiceDiscountValue".tr(),
-
-                            onChanged: (value){
-
-                            },
-                            keyboardType: TextInputType.number,
-                          ),
-                        ),
-                      ],
-                    ),
-                        const SizedBox(height: 15),
 
                     Row(
                       children: [
@@ -1050,7 +1013,7 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
   //
   // }
 
-    saveInvoice(BuildContext context) {
+    saveInvoice(BuildContext context) async {
 
     //Items
       if(SalesOfferDLst == null || SalesOfferDLst.length <=0){
@@ -1082,22 +1045,26 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
       //   return;
       // }
 
-      _salesOfferHApiService.createSalesOfferH(context,SalesOfferH(
+      await _salesOfferHApiService.createSalesOfferH(context,SalesOfferH(
 
         offerSerial: _offerSerialController.text,
         offerTypeCode:  selectedTypeValue.toString(),
         offerDate: _offerDateController.text,
         customerCode: selectedCustomerValue.toString() ,
-        totalQty:(!_totalQtyController.text.isEmpty)?  _totalQtyController.text.toDouble():0 ,
-        totalTax:(!_totalTaxController.text.isEmpty)?  _totalTaxController.text.toDouble():0 ,
-        totalDiscount:(!_totalDiscountController.text.isEmpty)?  _totalDiscountController.text.toDouble():0 ,
-        rowsCount:(rowsCount != null && rowsCount >0 )? rowsCount :0 ,
-        totalNet:(!_totalNetController.text.isEmpty)?  _totalNetController.text.toDouble():0 ,
-        invoiceDiscountPercent:(!_invoiceDiscountPercentController.text.isEmpty)?  _invoiceDiscountPercentController.text.toDouble():0 ,
-        invoiceDiscountValue:(!_invoiceDiscountValueController.text.isEmpty)?  _invoiceDiscountValueController.text.toDouble():0 ,
-        totalValue:(!_totalValueController.text.isEmpty)?  _totalValueController.text.toDouble():0 ,
-        totalAfterDiscount:(!_totalAfterDiscountController.text.isEmpty)?  _totalAfterDiscountController.text.toDouble():0 ,
-        totalBeforeTax:(!_totalBeforeTaxController.text.isEmpty)?  _totalBeforeTaxController.text.toDouble():0 ,
+        currencyCode: "1",
+        totalQty:(_totalQtyController.text.isNotEmpty)?  _totalQtyController.text.toDouble():0 ,
+        totalTax:(_totalTaxController.text.isNotEmpty)?  _totalTaxController.text.toDouble():0 ,
+        totalDiscount:(_totalDiscountController.text.isNotEmpty)?  _totalDiscountController.text.toDouble():0 ,
+        rowsCount:(rowsCount >0 )? rowsCount :0 ,
+        totalNet:(_totalNetController.text.isNotEmpty)?  _totalNetController.text.toDouble():0 ,
+        invoiceDiscountPercent:(_invoiceDiscountPercentController.text.isNotEmpty)?  _invoiceDiscountPercentController.text.toDouble():0 ,
+        invoiceDiscountValue:(_invoiceDiscountValueController.text.isNotEmpty)?  _invoiceDiscountValueController.text.toDouble():0 ,
+        totalValue:(_totalValueController.text.isNotEmpty)?  _totalValueController.text.toDouble():0 ,
+        totalAfterDiscount:(_totalAfterDiscountController.text.isNotEmpty)?  _totalAfterDiscountController.text.toDouble():0 ,
+        totalBeforeTax:(_totalBeforeTaxController.text.isNotEmpty)?  _totalBeforeTaxController.text.toDouble():0 ,
+        tafqitNameArabic: _tafqitNameArabicController.text,
+        tafqitNameEnglish: _tafqitNameEnglishController.text,
+          storeCode: "1"
         //salesManCode: salesOffersSerial,
         // currencyCode: "1",
         // taxGroupCode: "1",
@@ -1105,19 +1072,16 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
 
       //Save Footer For Now
 
-      print('Outz');
       for(var i = 0; i < SalesOfferDLst.length; i++){
-        print('Inz');
         SalesOfferD _salesOfferD=SalesOfferDLst[i];
         if(_salesOfferD.isUpdate == false)
           {
-            print('Inz2');
             //Add
             _salesOfferDApiService.createSalesOfferD(context,SalesOfferD(
- 
               offerSerial: _offerSerialController.text,
               offerTypeCode: selectedTypeValue,
               itemCode: _salesOfferD.itemCode,
+              unitCode: _salesOfferD.unitCode,
               lineNum: _salesOfferD.lineNum,
               price: _salesOfferD.price,
               displayPrice: _salesOfferD.price,
@@ -1131,6 +1095,7 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
               netAfterDiscount: _salesOfferD.netAfterDiscount,
               displayTotalTaxValue: _salesOfferD.displayTotalTaxValue,
               displayNetValue: _salesOfferD.displayNetValue,
+              year: int.parse(financialYearCode),
               storeCode: "1" // For Now
             ));
 
@@ -1143,200 +1108,95 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
     }
 
 
-    addInvoiceRow() {
-
-    // print('hontaaaaaaaaa');
-    //
-    // //Item
-    // if(selectedItemValue == null || selectedItemValue!.isEmpty){
-    //   FN_showToast(context,'please_enter_item'.tr(),Colors.black);
-    //   return;
-    // }
-    // //Price
-    // if(_priceController.text.isEmpty){
-    //   FN_showToast(context,'please_enter_Price'.tr(),Colors.black);
-    //   return;
-    // }
-    //
-    // //Quantity
-    // if(_qtyController.text.isEmpty){
-    //   FN_showToast(context,'please_enter_quantity'.tr(),Colors.black);
-    //   return;
-    // }
-    //
-    //    productPrice = (_priceController.text.isEmpty) ? 0 : double.parse(_priceController.text);
-    //    productQuantity = (_qtyController.text.isEmpty) ? 0 : int.parse(_qtyController.text);
-    //    productTotal = productPrice * productQuantity;
-    //    productDiscount = (_discountController.text.isEmpty) ? 0 : double.parse(_discountController.text);
-    //    productTotalAfterDiscount = (productTotal - productDiscount);
-    //    productVat = (_vatController.text.isEmpty) ? 0 : double.parse(_vatController.text);
-    //    productTotalAfterVat = (productTotalAfterDiscount + productVat);
-    //
-    //    print(' productTotalAfterVat ' + productTotalAfterVat.toString());
-    //
-    //    SalesOfferD _salesOfferD= new SalesOfferD();
-    //    _salesOfferD.itemCode= selectedItemValue;
-    //    // var item = items.firstWhere((element) => element.itemCode == selectedItemValue) ;
-    //    // _salesOfferD.itemName=item.itemNameAra.toString();
-    //    _salesOfferD.itemName= selectedItemName;
-    //    _salesOfferD.qty= productQuantity;
-    //    _salesOfferD.displayQty= productQuantity;
-    //    _salesOfferD.price = productPrice;
-    //    _salesOfferD.displayPrice= productPrice;
-    //    _salesOfferD.displayTotalTaxValue = productVat;
-    //    _salesOfferD.totalTaxValue = productVat;
-    //    _salesOfferD.discountValue = productDiscount;
-    //    _salesOfferD.displayDiscountValue = productDiscount;
-    //    _salesOfferD.displayTotal = productTotalAfterVat;
-    //    _salesOfferD.total = productTotalAfterVat;
-    //    _salesOfferD.isUpdate = false;
-    //
-    //    _salesOfferD.lineNum = lineNum;
-    //
-    //    SalesOfferDLst.add(_salesOfferD);
-    //
-    //     totalQty += productQuantity;
-    //     rowsCount += 1;
-    //     totalDiscount += productDiscount;
-    //     totalBeforeTax += (productPrice * productQuantity) - productDiscount  ;
-    //     totalTax += productVat;
-    //     summeryTotal += productTotalAfterVat;
-    //     _totalQtyController.text = totalQty.toString();
-    //     _rowsCountController.text = rowsCount.toString();
-    //     _totalDiscountController.text = totalDiscount.toString();
-    //     _totalBeforeTaxController.text = totalBeforeTax.toString();
-    //     _totalTaxController.text = totalTax.toString();
-    //     _totalController.text = summeryTotal.toString();
-    //     setTafqeet("1" ,_totalController.text);
-    //
-    //    lineNum++;
-    //
-    //    //FN_showToast(context,'login_success'.tr(),Colors.black);
-    //    FN_showToast(context,'add_Item_Done'.tr(),Colors.black);
-    //
-    //    setState(() {
-    //      _priceController.text= "";
-    //      _qtyController.text ="";
-    //      _discountController.text ="" ;
-    //      _vatController.text ="";
-    //      itemItem=Item(itemCode: "",itemNameAra: "",itemNameEng: "",id: 0);
-    //      unitItem=Unit(unitCode: "",unitNameAra: "",unitNameEng: "",id: 0);
-    //      selectedItemValue="";
-    //      selectedUnitValue="";
-    //    });
-
-
-      if(selectedItemValue == null || selectedItemValue!.isEmpty){
-        FN_showToast(context,'please_enter_item'.tr(),Colors.black);
-        return;
-      }
-      //Price
-      if(_displayPriceController.text.isEmpty){
-        FN_showToast(context,'please_enter_Price'.tr(),Colors.black);
-        return;
-      }
-
-      //Quantity
-      if(_displayQtyController.text.isEmpty){
-        FN_showToast(context,'please_enter_quantity'.tr(),Colors.black);
-        return;
-      }
-
-
-      if(selectedItemValue == null || selectedItemValue!.isEmpty){
-        FN_showToast(context,'please_enter_item'.tr(),Colors.black);
-        return;
-      }
-      //Price
-      if(_displayPriceController.text.isEmpty){
-        FN_showToast(context,'please_enter_Price'.tr(),Colors.black);
-        return;
-      }
-
-      //Quantity
-      if(_displayQtyController.text.isEmpty){
-        FN_showToast(context,'please_enter_quantity'.tr(),Colors.black);
-        return;
-      }
-
-
-      SalesOfferD _salesOfferD= SalesOfferD();
-      //Item
-      _salesOfferD.itemCode= selectedItemValue;
-      _salesOfferD.itemName= selectedItemName;
-      //Qty
-      _salesOfferD.displayQty= (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
-      _salesOfferD.qty= (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
-      //Cost Price
-      _salesOfferD.costPrice= (!_costPriceController.text.isEmpty)?  double.parse(_costPriceController.text):0;
-      //Price
-      _salesOfferD.displayPrice= (!_displayPriceController.text.isEmpty) ?  double.parse(_displayPriceController.text) : 0 ;
-      _salesOfferD.price = (!_displayPriceController.text.isEmpty) ? double.parse(_displayPriceController.text) : 0;
-      //Total
-      _salesOfferD.total = _salesOfferD.qty * _salesOfferD.price ;
-      _salesOfferD.displayTotal= _salesOfferD.displayQty * _salesOfferD.displayPrice ;
-      //discount
-      _salesOfferD.displayDiscountValue = (!_displayDiscountController.text.isEmpty) ?  double.parse(_displayDiscountController.text) : 0 ;
-      _salesOfferD.discountValue= _salesOfferD.displayDiscountValue ;
-      //Net After Discount
-      _salesOfferD.netAfterDiscount= _salesOfferD.displayTotal - _salesOfferD.displayDiscountValue;
-      setItemTaxValue(selectedItemValue.toString(),_salesOfferD.netAfterDiscount);
-      _salesOfferD.displayTotalTaxValue = (!_taxController.text.isEmpty) ? double.parse(_taxController.text) : 0;
-      _salesOfferD.totalTaxValue = (!_taxController.text.isEmpty) ?  double.parse(_taxController.text) : 0;
-      //Total Net
-      _salesOfferD.displayNetValue = _salesOfferD.netAfterDiscount + _salesOfferD.displayTotalTaxValue;
-      _salesOfferD.netValue= _salesOfferD.netAfterDiscount + _salesOfferD.totalTaxValue;
-
-      print('Add Product 10');
-
-      _salesOfferD.lineNum = lineNum;
-      SalesOfferDLst.add(_salesOfferD);
-
-      totalQty += _salesOfferD.displayQty;
-      totalPrice += _salesOfferD.displayPrice;
-      totalDiscount += _salesOfferD.displayDiscountValue;
-
-      rowsCount += 1;
-      totalAfterDiscount  = (totalQty * totalPrice) - totalDiscount;
-      totalBeforeTax = totalAfterDiscount;
-      totalTax += _salesOfferD.displayTotalTaxValue;
-      totalNet = totalBeforeTax+ totalTax;
-
-      _totalQtyController.text = totalQty.toString();
-      _totalDiscountController.text = totalDiscount.toString();
-      _totalValueController.text = totalPrice.toString();
-      _rowsCountController.text = rowsCount.toString();
-      _totalAfterDiscountController.text = totalAfterDiscount.toString();
-      _totalBeforeTaxController.text = totalBeforeTax.toString();
-      _totalTaxController.text = totalTax.toString();
-      _totalNetController.text = totalNet.toString();
-      setTafqeet("2" ,_totalNetController.text);
-
-      lineNum++;
-
-      FN_showToast(context,'add_Item_Done'.tr(),Colors.black);
-
-      setState(() {
-        _priceController.text= "";
-        _qtyController.text ="";
-        _discountController.text ="" ;
-        _costPriceController.text ="" ;
-        _taxController.text ="";
-        _qtyController.text="";
-        _displayQtyController.text="";
-        _displayTotalController.text="";
-        _displayDiscountController.text="";
-        _netAfterDiscountController.text="";
-        _netAftertaxController.text="";
-        _displayPriceController.text="";
-        itemItem=Item(itemCode: "",itemNameAra: "",itemNameEng: "",id: 0);
-        unitItem=Unit(unitCode: "",unitNameAra: "",unitNameEng: "",id: 0);
-        selectedItemValue="";
-        selectedUnitValue="";
-      });
-
-
+  addInvoiceRow() {
+    //Item
+    if (selectedItemValue == null || selectedItemValue!.isEmpty) {
+      FN_showToast(context, 'please_enter_item'.tr(), Colors.black);
+      return;
     }
+    //Price
+    if (_displayPriceController.text.isEmpty) {
+      FN_showToast(context, 'please_enter_Price'.tr(), Colors.black);
+      return;
+    }
+
+    //Quantity
+    if (_displayQtyController.text.isEmpty) {
+      FN_showToast(context, 'please_enter_quantity'.tr(), Colors.black);
+      return;
+    }
+
+    SalesOfferD _salesOfferD = SalesOfferD();
+    _salesOfferD.itemCode = selectedItemValue;
+    _salesOfferD.itemName = selectedItemName;
+    _salesOfferD.unitCode = selectedUnitValue;
+    _salesOfferD.displayQty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+    _salesOfferD.qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+    _salesOfferD.costPrice = (_costPriceController.text.isNotEmpty) ? double.parse(_costPriceController.text) : 0;
+    _salesOfferD.displayPrice = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
+    _salesOfferD.price = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
+    _salesOfferD.total = _salesOfferD.qty * _salesOfferD.price;
+    _salesOfferD.displayTotal = _salesOfferD.displayQty * _salesOfferD.displayPrice;
+    _salesOfferD.displayDiscountValue = (_displayDiscountController.text.isNotEmpty) ? double.parse(_displayDiscountController.text) : 0;
+    _salesOfferD.discountValue = _salesOfferD.displayDiscountValue;
+    _salesOfferD.netAfterDiscount = _salesOfferD.displayTotal - _salesOfferD.displayDiscountValue;
+    setItemTaxValue(selectedItemValue.toString(), _salesOfferD.netAfterDiscount);
+    _salesOfferD.displayTotalTaxValue = (0.15 * _salesOfferD.netAfterDiscount); //(_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
+    _salesOfferD.totalTaxValue = (_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
+    _salesOfferD.displayNetValue = _salesOfferD.netAfterDiscount + _salesOfferD.displayTotalTaxValue ;
+    _salesOfferD.netValue = _salesOfferD.netAfterDiscount + _salesOfferD.totalTaxValue;
+
+    print('Add Product 10');
+
+    _salesOfferD.lineNum = lineNum;
+
+    SalesOfferDLst.add(_salesOfferD);
+
+    totalQty += _salesOfferD.displayQty;
+    totalPrice +=  _salesOfferD.total ;
+    totalDiscount += _salesOfferD.displayDiscountValue;
+
+    rowsCount += 1;
+    totalAfterDiscount = totalPrice - totalDiscount;
+    totalBeforeTax = totalAfterDiscount;
+    totalTax += _salesOfferD.displayTotalTaxValue;
+    totalNet = totalBeforeTax + totalTax;
+
+    _totalQtyController.text = totalQty.toString();
+    _totalDiscountController.text = totalDiscount.toString();
+    _totalValueController.text = totalPrice.toString();
+    _rowsCountController.text = rowsCount.toString();
+    _totalAfterDiscountController.text = totalAfterDiscount.toString();
+    _totalBeforeTaxController.text = totalBeforeTax.toString();
+    _totalTaxController.text = totalTax.toString();
+    _totalNetController.text = totalNet.toString();
+    setTafqeet("2", _totalNetController.text);
+
+    //
+    lineNum++;
+
+    //FN_showToast(context,'login_success'.tr(),Colors.black);
+    FN_showToast(context, 'add_Item_Done'.tr(), Colors.black);
+
+    setState(() {
+      _priceController.text = "";
+      _qtyController.text = "";
+      _discountController.text = "";
+      _costPriceController.text = "";
+      _taxController.text = "";
+      _qtyController.text = "";
+      _displayQtyController.text = "";
+      _displayTotalController.text = "";
+      _displayDiscountController.text = "";
+      _netAfterDiscountController.text = "";
+      _netAftertaxController.text = "";
+      _displayPriceController.text = "";
+      itemItem = Item(itemCode: "", itemNameAra: "", itemNameEng: "", id: 0);
+      unitItem = Unit(unitCode: "", unitNameAra: "", unitNameEng: "", id: 0);
+      selectedItemValue = "";
+      selectedUnitValue = "";
+    });
+  }
 
   //#region Calc
 
