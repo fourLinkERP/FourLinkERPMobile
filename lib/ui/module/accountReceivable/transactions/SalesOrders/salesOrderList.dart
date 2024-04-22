@@ -14,12 +14,18 @@ import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/Sales
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/editSalesOrderDataWidget.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-//import 'package:pdf/pdf.dart';
-//import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
 
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../cubit/app_states.dart';
+import '../../../../../data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
+import '../../../../../data/model/modules/module/accountReceivable/transactions/receipt/receipt.dart';
+import '../../../../../data/model/modules/module/general/receipt/receiptHeader.dart';
+import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vendors/vendor.dart';
+import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
+import 'package:fourlinkmobileapp/service/general/receipt/pdfReceipt.dart';
+
+import '../../../../../service/general/Pdf/pdf_api.dart';
 
 SalesOrderHApiService _apiService=new SalesOrderHApiService();
 SalesOrderDApiService _apiDService=new SalesOrderDApiService();
@@ -307,117 +313,116 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     }
   }
 
-  _navigateToPrintScreen (BuildContext context, SalesOrderH invoiceH) async {
+  _navigateToPrintScreen (BuildContext context, SalesOrderH orderH,int index) async {
 
-    // DateTime date = DateTime.parse(invoiceH.sellOrdersDate.toString());
-    // final dueDate = date.add(Duration(days: 7));
-    //
-    // //Get Sales Invoice Details To Create List Of Items
-    // getDetailData(invoiceH.id);
-    // List<InvoiceItem> invoiceItems=[];
-    // print('Before Sales Invoicr' );
-    // if(_salesOrdersD != null)
-    // {
-    //   print('In Sales Invoicr' );
-    //   //print('_salesOrdersD >> ' + _salesOrdersD.length.toString() );
-    //   for(var i = 0; i < _salesOrdersD.length; i++){
-    //     int qty=_salesOrdersD[i].displayQty as int;
-    //     //double vat=0;
-    //     var vat=_salesOrdersD[i].displayTotalTaxValue ;
-    //     //double price =_salesOrdersD[i].displayPrice! as double;
-    //     double price =0;
-    //
-    //     print('_salesOrdersD >> ' + qty.toString() );
-    //     // print('_salesOrdersD >> ' + vat.toString() );
-    //     // print('_salesOrdersD >> ' + price.toString() );
-    //
-    //     InvoiceItem _invoiceItem=new InvoiceItem
-    //       (description: _salesOrdersD[i].itemName.toString(),
-    //         date: date, quantity: qty  , vat: vat  ,
-    //         unitPrice: price );
-    //
-    //     invoiceItems.add(_invoiceItem);
-    //   }
-    // }
-    //
-    // //print('invoiceItems >> ' + invoiceItems.length.toString() );
-    //
-    // final invoice = Invoice(   //ToDO
-    //   supplier: Vendor(
-    //     vendorNameAra: 'Sarah Field',
-    //     address1: 'Sarah Street 9, Beijing, China',
-    //     paymentInfo: 'https://paypal.me/sarahfieldzz',
-    //   ),
-    //   customer: Customer(
-    //     customerNameAra: invoiceH.customerName,
-    //     address: 'Apple Street, Cupertino, CA 95014', //ToDO
-    //   ),
-    //   info: InvoiceInfo(
-    //     date: date,
-    //     dueDate: dueDate,
-    //     description: 'My description...',
-    //     number: invoiceH.sellOrdersSerial.toString() ,
-    //   ),
-    //   //items: invoiceItems
-    //   items:
-    //   [
-    //     InvoiceItem(
-    //       description: 'Coffee',
-    //       date: DateTime.now(),
-    //       quantity: 3,
-    //       vat: 0.19,
-    //       unitPrice: 5.99,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Water',
-    //       date: DateTime.now(),
-    //       quantity: 8,
-    //       vat: 0.19,
-    //       unitPrice: 0.99,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Orange',
-    //       date: DateTime.now(),
-    //       quantity: 3,
-    //       vat: 0.19,
-    //       unitPrice: 2.99,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Apple',
-    //       date: DateTime.now(),
-    //       quantity: 8,
-    //       vat: 0.19,
-    //       unitPrice: 3.99,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Mango',
-    //       date: DateTime.now(),
-    //       quantity: 1,
-    //       vat: 0.19,
-    //       unitPrice: 1.59,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Blue Berries',
-    //       date: DateTime.now(),
-    //       quantity: 5,
-    //       vat: 0.19,
-    //       unitPrice: 0.99,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Lemon',
-    //       date: DateTime.now(),
-    //       quantity: 4,
-    //       vat: 0.19,
-    //       unitPrice: 1.29,
-    //     ),
-    //   ]
-    //   ,
-    // );
-    //
-    // final pdfFile = await PdfInvoiceApi.generate(invoice);
-    //
-    // PdfApi.openFile(pdfFile);
+    int menuId=6204;
+    bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
+    //isAllowPrint = true;
+    if(isAllowPrint)
+    {
+      bool IsReceipt =true;
+      if(IsReceipt)
+      {
+        DateTime date = DateTime.parse(orderH.sellOrdersDate.toString());
+        final dueDate = date.add(Duration(days: 7));
 
+        //Get Sales Invoice Details To Create List Of Items
+        //getDetailData(orderH.id);
+        Future<List<SalesOrderD>?> futureSalesOrderD = _apiDService.getSalesOrdersD(orderH.id,orderH.sellOrdersSerial);
+        _salesOrdersD = (await futureSalesOrderD)!;
+
+        List<InvoiceItem> invoiceItems=[];
+        print('Before Sales offer : ' + orderH.id.toString() );
+        if(_salesOrdersD != null)
+        {
+          print('In Sales Offer' );
+          print('_salesOrdersD >> ' + _salesOrdersD.length.toString() );
+          for(var i = 0; i < _salesOrdersD.length; i++){
+            double qty= (_salesOrdersD[i].displayQty != null) ? double.parse(_salesOrdersD[i].displayQty.toStringAsFixed(2))  : 0;
+            //double vat=0;
+            double vat=(_salesOrdersD[i].displayTotalTaxValue != null) ? double.parse(_salesOrdersD[i].displayTotalTaxValue.toStringAsFixed(2)) : 0 ;
+            //double price =_salesOrdersD[i].displayPrice! as double;
+            double price =( _salesOrdersD[i].displayPrice != null) ? double.parse(_salesOrdersD[i].displayPrice.toStringAsFixed(2)) : 0;
+            double total =( _salesOrdersD[i].displayNetValue != null) ? double.parse(_salesOrdersD[i].displayNetValue.toStringAsFixed(2)) : 0;
+
+            InvoiceItem _invoiceItem= InvoiceItem(description: _salesOrdersD[i].itemName.toString(),
+                date: date, quantity: qty  , vat: vat  , unitPrice: price , totalValue : total );
+
+            invoiceItems.add(_invoiceItem);
+          }
+        }
+
+        double totalDiscount =( orderH.totalDiscount != null) ? double.parse(orderH.totalDiscount!.toStringAsFixed(2)) : 0;
+        double totalBeforeVat =( orderH.totalValue != null) ? double.parse(orderH.totalValue!.toStringAsFixed(2)) : 0;
+        double totalVatAmount =( orderH.totalTax != null) ? double.parse(orderH.totalTax!.toStringAsFixed(2)) : 0;
+        double totalAfterVat =( orderH.totalNet != null) ? double.parse(orderH.totalNet!.toStringAsFixed(2)) : 0;
+        double totalAmount =( orderH.totalAfterDiscount != null) ? double.parse(orderH.totalAfterDiscount!.toStringAsFixed(2)) : 0;
+        double totalQty =( orderH.totalQty != null) ? double.parse(orderH.totalQty!.toStringAsFixed(2)) : 0;
+        double rowsCount =( orderH.rowsCount != null) ? double.parse(orderH.rowsCount!.toStringAsFixed(2))   : 0;
+        //String TafqeetName = "";
+        String tafqeetName =  orderH.tafqitNameArabic.toString();
+
+        print('taftaf');
+        print(tafqeetName);
+
+        final invoice = Invoice(   //ToDO
+            supplier: Vendor(
+              vendorNameAra: 'Sarah Field',
+              address1: 'Sarah Street 9, Beijing, China',
+              paymentInfo: 'https://paypal.me/sarahfieldzz',
+            ),
+            customer: Customer(
+              customerNameAra: orderH.customerName,
+              address: 'Apple Street, Cupertino, CA 95014', //ToDO
+            ),
+            info: InvoiceInfo(
+                date: date,
+                dueDate: dueDate,
+                description: 'My description...',
+                number: orderH.sellOrdersSerial.toString() ,
+                totalDiscount:  totalDiscount,
+                totalBeforeVat:  totalBeforeVat,
+                totalVatAmount:  totalVatAmount,
+                totalAfterVat:  totalAfterVat,
+                totalAmount:  totalAmount,
+                totalQty:  totalQty,
+                tafqeetName:  tafqeetName,
+                rowsCount:  rowsCount
+            ),
+            items: invoiceItems
+        );
+
+
+        String invoiceDate =DateFormat('yyyy-MM-dd hh:mm').format(DateTime.parse(orderH.sellOrdersDate.toString()));
+        final receipt = Receipt(   //ToDO
+            receiptHeader: ReceiptHeader(
+                companyName: langId==1?'مؤسسة ركن كريز للحلويات':' مؤسسة ركن كريز للحلويات',
+                companyInvoiceTypeName: (orderH.sellOrdersTypeCode == "1") ?'أمر بيع':'أمر بيع',
+                companyInvoiceTypeName2: langId==1?'Simplified Tax Order':'Simplified Tax Order',
+                companyVatNumber: langId==1? "الرقم الضريبي  " + '302211485800003':'VAT No  302211485800003',
+                companyCommercialName: langId==1? 'ترخيص رقم 450714529009':'Registeration No 450714529009',
+                companyInvoiceNo: langId==1?'رقم أمر البيع ' + orderH.sellOrdersSerial.toString() :'Order No  ' + orderH.sellOrdersSerial.toString(),
+                companyDate: langId==1? "التاريخ  " + invoiceDate  : "Date : " + invoiceDate ,
+                companyAddress: langId==1?'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
+                companyPhone: langId==1?'Tel No :+966539679540':'Tel No :+966539679540',
+                customerName: langId==1? "العميل : " + orderH.customerName.toString() : "Customer : " + orderH.customerName.toString() ,
+                //customerTaxNo:  langId==1? "الرقم الضريبي  " + orderH.taxIdentificationNumber.toString() :'VAT No ' + orderH.taxIdentificationNumber.toString(),
+                salesInvoicesTypeName:  (orderH.sellOrdersTypeCode.toString() == "1") ?(langId==1?"أمر بيع" : "Sales order" ) : (langId==1?"أمر بيع" : "Sales order" )  ,
+                tafqeetName : tafqeetName
+            ),
+            invoice: invoice
+        );
+
+        final pdfFile = await pdfReceipt.generateOffer(receipt);
+        PdfApi.openFile(pdfFile);
+      }
+      else{
+      }
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
+    }
   }
 
 
@@ -533,7 +538,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
                                         ),
                                         label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                          _navigateToPrintScreen(context,_salesOrders[index]);
+                                          _navigateToPrintScreen(context,_salesOrders[index],index);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(

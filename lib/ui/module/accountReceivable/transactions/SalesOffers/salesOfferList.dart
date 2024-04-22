@@ -1,5 +1,6 @@
 import 'dart:core';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/transactions/salesOffers/salesOffeD.dart';
@@ -11,12 +12,19 @@ import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:widgets_to_image/widgets_to_image.dart';
 import '../../../../../cubit/app_cubit.dart';
+import '../../../../../data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
+import '../../../../../data/model/modules/module/accountReceivable/transactions/receipt/receipt.dart';
+import '../../../../../data/model/modules/module/general/receipt/receiptHeader.dart';
 import '../../../../../service/general/Pdf/pdf_api.dart';
 import '../../../../../service/general/Pdf/pdf_invoice_api.dart';
+import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vendors/vendor.dart';
+import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
 import 'addSalesOfferDataWidget.dart';
 import 'detailSalesOfferWidget.dart';
 import 'editSalesOfferDataWidget.dart';
+import 'package:fourlinkmobileapp/service/general/receipt/pdfReceipt.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
@@ -38,6 +46,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
   List<SalesOfferH> _salesOffersSearch = [];
   List<SalesOfferD> _salesOffersD = [];
   List<SalesOfferH> _founded = [];
+  List<WidgetsToImageController> imageControllers  = [] ;
 
 
   @override
@@ -319,116 +328,116 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
 
   }
 
-  _navigateToPrintScreen (BuildContext context, SalesOfferH invoiceH) async {
+  _navigateToPrintScreen (BuildContext context, SalesOfferH offerH,int index) async {
 
-    // // DateTime date = DateTime.parse(invoiceH.salesOffersDate.toString());
-    // // final dueDate = date.add(Duration(days: 7));
-    // //
-    // // //Get Sales Invoice Details To Create List Of Items
-    // // getDetailData(invoiceH.id);
-    // // List<InvoiceItem> invoiceItems=[];
-    // // print('Before Sales Invoicr' );
-    // // if(_salesOffersD != null)
-    // // {
-    // //   print('In Sales Invoicr' );
-    // //   //print('_salesOffersD >> ' + _salesOffersD.length.toString() );
-    // //   for(var i = 0; i < _salesOffersD.length; i++){
-    // //     int qty=_salesOffersD[i].displayQty as int;
-    // //     //double vat=0;
-    // //     var vat=_salesOffersD[i].displayTotalTaxValue ;
-    // //     //double price =_salesOffersD[i].displayPrice! as double;
-    // //     double price =0;
-    // //
-    // //     print('_salesOffersD >> ' + qty.toString() );
-    // //     // print('_salesOffersD >> ' + vat.toString() );
-    // //     // print('_salesOffersD >> ' + price.toString() );
-    // //
-    // //     InvoiceItem _invoiceItem=new InvoiceItem
-    // //       (description: _salesOffersD[i].itemName.toString(),
-    // //         date: date, quantity: qty  , vat: vat  ,
-    // //         unitPrice: price );
-    // //
-    // //     invoiceItems.add(_invoiceItem);
-    // //   }
-    // }
-    //
-    // //print('invoiceItems >> ' + invoiceItems.length.toString() );
-    //
-    // final invoice = Invoice(   //ToDO
-    //   supplier: Vendor(
-    //     vendorNameAra: 'Sarah Field',
-    //     address1: 'Sarah Street 9, Beijing, China',
-    //     paymentInfo: 'https://paypal.me/sarahfieldzz',
-    //   ),
-    //   customer: Customer(
-    //     customerNameAra: invoiceH.customerName,
-    //     address: 'Apple Street, Cupertino, CA 95014', //ToDO
-    //   ),
-    //   info: InvoiceInfo(
-    //     date: date,
-    //     dueDate: dueDate,
-    //     description: 'My description...',
-    //     number: invoiceH.offerSerial.toString() ,
-    //   ),
-    //   //items: invoiceItems
-    //   items:
-    //   [
-    //     InvoiceItem(
-    //       description: 'Coffee',
-    //       date: DateTime.now(),
-    //       quantity: 3,
-    //       vat: 0.19,
-    //       unitPrice: 5.99,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Water',
-    //       date: DateTime.now(),
-    //       quantity: 8,
-    //       vat: 0.19,
-    //       unitPrice: 0.99,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Orange',
-    //       date: DateTime.now(),
-    //       quantity: 3,
-    //       vat: 0.19,
-    //       unitPrice: 2.99,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Apple',
-    //       date: DateTime.now(),
-    //       quantity: 8,
-    //       vat: 0.19,
-    //       unitPrice: 3.99,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Mango',
-    //       date: DateTime.now(),
-    //       quantity: 1,
-    //       vat: 0.19,
-    //       unitPrice: 1.59,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Blue Berries',
-    //       date: DateTime.now(),
-    //       quantity: 5,
-    //       vat: 0.19,
-    //       unitPrice: 0.99,
-    //     ),
-    //     InvoiceItem(
-    //       description: 'Lemon',
-    //       date: DateTime.now(),
-    //       quantity: 4,
-    //       vat: 0.19,
-    //       unitPrice: 1.29,
-    //     ),
-    //   ]
-    //   ,
-    // );
-    //
-    // final pdfFile = await PdfInvoiceApi.generate(invoice);
-    //
-    // PdfApi.openFile(pdfFile);
+    int menuId=6204;
+    bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
+    //isAllowPrint = true;
+    if(isAllowPrint)
+    {
+      bool IsReceipt =true;
+      if(IsReceipt)
+      {
+        DateTime date = DateTime.parse(offerH.offerDate.toString());
+        final dueDate = date.add(Duration(days: 7));
+
+        //Get Sales Invoice Details To Create List Of Items
+        //getDetailData(offerH.id);
+        Future<List<SalesOfferD>?> futureSalesOfferD = _apiDService.getSalesOffersD(offerH.offerSerial);
+        _salesOffersD = (await futureSalesOfferD)!;
+
+        List<InvoiceItem> invoiceItems=[];
+        print('Before Sales offer : ' + offerH.id.toString() );
+        if(_salesOffersD != null)
+        {
+          print('In Sales Offer' );
+          print('_salesOffersD >> ' + _salesOffersD.length.toString() );
+          for(var i = 0; i < _salesOffersD.length; i++){
+            double qty= (_salesOffersD[i].displayQty != null) ? double.parse(_salesOffersD[i].displayQty.toStringAsFixed(2))  : 0;
+            //double vat=0;
+            double vat=(_salesOffersD[i].displayTotalTaxValue != null) ? double.parse(_salesOffersD[i].displayTotalTaxValue.toStringAsFixed(2)) : 0 ;
+            //double price =_salesOffersD[i].displayPrice! as double;
+            double price =( _salesOffersD[i].displayPrice != null) ? double.parse(_salesOffersD[i].displayPrice.toStringAsFixed(2)) : 0;
+            double total =( _salesOffersD[i].displayNetValue != null) ? double.parse(_salesOffersD[i].displayNetValue.toStringAsFixed(2)) : 0;
+
+            InvoiceItem _invoiceItem= InvoiceItem(description: _salesOffersD[i].itemName.toString(),
+                date: date, quantity: qty  , vat: vat  , unitPrice: price , totalValue : total );
+
+            invoiceItems.add(_invoiceItem);
+          }
+        }
+
+        double totalDiscount =( offerH.totalDiscount != null) ? double.parse(offerH.totalDiscount!.toStringAsFixed(2)) : 0;
+        double totalBeforeVat =( offerH.totalValue != null) ? double.parse(offerH.totalValue!.toStringAsFixed(2)) : 0;
+        double totalVatAmount =( offerH.totalTax != null) ? double.parse(offerH.totalTax!.toStringAsFixed(2)) : 0;
+        double totalAfterVat =( offerH.totalNet != null) ? double.parse(offerH.totalNet!.toStringAsFixed(2)) : 0;
+        double totalAmount =( offerH.totalAfterDiscount != null) ? double.parse(offerH.totalAfterDiscount!.toStringAsFixed(2)) : 0;
+        double totalQty =( offerH.totalQty != null) ? double.parse(offerH.totalQty!.toStringAsFixed(2)) : 0;
+        double rowsCount =( offerH.rowsCount != null) ? double.parse(offerH.rowsCount!.toStringAsFixed(2))   : 0;
+        //String TafqeetName = "";
+        String tafqeetName =  offerH.tafqitNameArabic.toString();
+
+        print('taftaf');
+        print(tafqeetName);
+
+        final invoice = Invoice(   //ToDO
+            supplier: Vendor(
+              vendorNameAra: 'Sarah Field',
+              address1: 'Sarah Street 9, Beijing, China',
+              paymentInfo: 'https://paypal.me/sarahfieldzz',
+            ),
+            customer: Customer(
+              customerNameAra: offerH.customerName,
+              address: 'Apple Street, Cupertino, CA 95014', //ToDO
+            ),
+            info: InvoiceInfo(
+                date: date,
+                dueDate: dueDate,
+                description: 'My description...',
+                number: offerH.offerSerial.toString() ,
+                totalDiscount:  totalDiscount,
+                totalBeforeVat:  totalBeforeVat,
+                totalVatAmount:  totalVatAmount,
+                totalAfterVat:  totalAfterVat,
+                totalAmount:  totalAmount,
+                totalQty:  totalQty,
+                tafqeetName:  tafqeetName,
+                rowsCount:  rowsCount
+            ),
+            items: invoiceItems
+        );
+
+
+        String invoiceDate =DateFormat('yyyy-MM-dd hh:mm').format(DateTime.parse(offerH.offerDate.toString()));
+        final receipt = Receipt(   //ToDO
+            receiptHeader: ReceiptHeader(
+                companyName: langId==1?'مؤسسة ركن كريز للحلويات':' مؤسسة ركن كريز للحلويات',
+                companyInvoiceTypeName: (offerH.offerTypeCode == "1") ?'عرض سعر':'عرض سعر',
+                companyInvoiceTypeName2: langId==1?'Simplified Tax Offer':'Simplified Tax Offer',
+                companyVatNumber: langId==1? "الرقم الضريبي  " + '302211485800003':'VAT No  302211485800003',
+                companyCommercialName: langId==1? 'ترخيص رقم 450714529009':'Registeration No 450714529009',
+                companyInvoiceNo: langId==1?'رقم عرض السعر ' + offerH.offerSerial.toString() :'Offer No  ' + offerH.offerSerial.toString(),
+                companyDate: langId==1? "التاريخ  " + invoiceDate  : "Date : " + invoiceDate ,
+                companyAddress: langId==1?'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
+                companyPhone: langId==1?'Tel No :+966539679540':'Tel No :+966539679540',
+                customerName: langId==1? "العميل : " + offerH.customerName.toString() : "Customer : " + offerH.customerName.toString() ,
+                customerTaxNo:  langId==1? "الرقم الضريبي  " + offerH.taxIdentificationNumber.toString() :'VAT No ' + offerH.taxIdentificationNumber.toString(),
+                salesInvoicesTypeName:  (offerH.offerTypeCode.toString() == "1") ?(langId==1?"عرض سعر" : "Sales offer" ) : (langId==1?"عرض سعر" : "Sales offer" )  ,
+                tafqeetName : tafqeetName
+            ),
+            invoice: invoice
+        );
+
+        final pdfFile = await pdfReceipt.generateOffer(receipt);
+        PdfApi.openFile(pdfFile);
+      }
+      else{
+      }
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
+    }
   }
 
    Widget BuildsalesOffers(){
@@ -527,7 +536,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                                         ),
                                         label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                          _navigateToPrintScreen(context,_salesOffers[index]);
+                                          _navigateToPrintScreen(context,_salesOffers[index],index);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(

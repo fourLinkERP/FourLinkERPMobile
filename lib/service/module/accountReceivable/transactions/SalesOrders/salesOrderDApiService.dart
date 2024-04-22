@@ -86,7 +86,6 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       'BranchCode': branchCode,
       'SellOrdersTypeCode': order.sellOrdersTypeCode, //Sales Invoice Type
       'SellOrdersSerial': order.sellOrdersSerial,
-      'year': order.year,
       'lineNum': order.lineNum,
       'itemCode': order.itemCode,
       'unitCode': order.unitCode,
@@ -142,7 +141,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
 
 
     } else {
-      throw Exception('Failed to post sales Invoice');
+      throw Exception('Failed to post sell order');
     }
 
     return  0;

@@ -145,8 +145,8 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   @override
   initState()  {
     super.initState();
-
-    lineNum=1;
+    //Reset Values
+    lineNum = 1;
     productPrice = 0;
     productQuantity = 0;
     productTotal = 0;
@@ -158,8 +158,11 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     totalQty = 0;
     rowsCount = 0;
     totalDiscount = 0;
-    totalBeforeTax = 0;
     totalTax = 0;
+    totalPrice = 0;
+    totalAfterDiscount = 0;
+    totalBeforeTax = 0;
+    totalNet = 0;
 
     //Sales Invoice Type
     Future<List<SalesOrderType>> futureSalesOrderType = _salesOrderTypeApiService.getSalesOrdersTypes().then((data) {
@@ -1173,16 +1176,16 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
       sellOrdersTypeCode: selectedTypeValue,
       sellOrdersDate: _salesOrdersDateController.text,
       customerCode: selectedCustomerValue ,
-      totalQty:(!_totalQtyController.text.isEmpty)?  _totalQtyController.text.toDouble():0 ,
-      totalTax:(!_totalTaxController.text.isEmpty)?  _totalTaxController.text.toDouble():0 ,
-      totalDiscount:(!_totalDiscountController.text.isEmpty)?  _totalDiscountController.text.toDouble():0 ,
+      totalQty:(_totalQtyController.text.isNotEmpty)?  _totalQtyController.text.toDouble():0 ,
+      totalTax:(_totalTaxController.text.isNotEmpty)?  _totalTaxController.text.toDouble():0 ,
+      totalDiscount:(_totalDiscountController.text.isNotEmpty)?  _totalDiscountController.text.toDouble():0 ,
       rowsCount:(rowsCount != null && rowsCount >0 )? rowsCount :0 ,
-      totalNet:(!_totalNetController.text.isEmpty)?  _totalNetController.text.toDouble():0 ,
-      invoiceDiscountPercent:(!_invoiceDiscountPercentController.text.isEmpty)?  _invoiceDiscountPercentController.text.toDouble():0 ,
-      invoiceDiscountValue:(!_invoiceDiscountValueController.text.isEmpty)?  _invoiceDiscountValueController.text.toDouble():0 ,
-      totalValue:(!_totalValueController.text.isEmpty)?  _totalValueController.text.toDouble():0 ,
-      totalAfterDiscount:(!_totalAfterDiscountController.text.isEmpty)?  _totalAfterDiscountController.text.toDouble():0 ,
-      totalBeforeTax:(!_totalBeforeTaxController.text.isEmpty)?  _totalBeforeTaxController.text.toDouble():0 ,
+      totalNet:(_totalNetController.text.isNotEmpty)?  _totalNetController.text.toDouble():0 ,
+      invoiceDiscountPercent:(_invoiceDiscountPercentController.text.isNotEmpty)?  _invoiceDiscountPercentController.text.toDouble():0 ,
+      invoiceDiscountValue:(_invoiceDiscountValueController.text.isNotEmpty)?  _invoiceDiscountValueController.text.toDouble():0 ,
+      totalValue:(_totalValueController.text.isNotEmpty)?  _totalValueController.text.toDouble():0 ,
+      totalAfterDiscount:(_totalAfterDiscountController.text.isNotEmpty)?  _totalAfterDiscountController.text.toDouble():0 ,
+      totalBeforeTax:(_totalBeforeTaxController.text.isNotEmpty)?  _totalBeforeTaxController.text.toDouble():0 ,
       //salesManCode: sellOrdersSerial,
       // currencyCode: "1",
       // taxGroupCode: "1",
@@ -1201,6 +1204,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
           sellOrdersSerial: _salesOrdersSerialController.text,
           sellOrdersTypeCode: selectedTypeValue,
           itemCode: _salesOrderD.itemCode,
+          unitCode: _salesOrderD.unitCode,
           lineNum: _salesOrderD.lineNum,
           price: _salesOrderD.price,
           displayPrice: _salesOrderD.displayPrice,
@@ -1217,191 +1221,65 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
           storeCode: "1" // For Now
         ));
 
-
-
       }
     }
-
-
-
     Navigator.pop(context) ;
   }
 
 
   addInvoiceRow() {
-
-    // print('hontaaaaaaaaa');
-    //
-    // //Item
-    // if(selectedItemValue == null || selectedItemValue!.isEmpty){
-    //   FN_showToast(context,'please_enter_item'.tr(),Colors.black);
-    //   return;
-    // }
-    // //Price
-    // if(_priceController.text.isEmpty){
-    //   FN_showToast(context,'please_enter_Price'.tr(),Colors.black);
-    //   return;
-    // }
-    //
-    // //Quantity
-    // if(_qtyController.text.isEmpty){
-    //   FN_showToast(context,'please_enter_quantity'.tr(),Colors.black);
-    //   return;
-    // }
-    //
-    // productPrice = (_priceController.text.isEmpty) ? 0 : double.parse(_priceController.text);
-    // productQuantity = (_qtyController.text.isEmpty) ? 0 : int.parse(_qtyController.text);
-    // productTotal = productPrice * productQuantity;
-    // productDiscount = (_discountController.text.isEmpty) ? 0 : double.parse(_discountController.text);
-    // productTotalAfterDiscount = (productTotal - productDiscount);
-    // productVat = (_vatController.text.isEmpty) ? 0 : double.parse(_vatController.text);
-    // productTotalAfterVat = (productTotalAfterDiscount + productVat);
-    //
-    // print(' productTotalAfterVat ' + productTotalAfterVat.toString());
-    //
-    // SalesOrderD _salesOrderD= new SalesOrderD();
-    // _salesOrderD.itemCode= selectedItemValue;
-    // // var item = items.firstWhere((element) => element.itemCode == selectedItemValue) ;
-    // // _salesOrderD.itemName=item.itemNameAra.toString();
-    // _salesOrderD.itemName= selectedItemName;
-    // _salesOrderD.qty= productQuantity;
-    // _salesOrderD.displayQty= productQuantity;
-    // _salesOrderD.price = productPrice;
-    // _salesOrderD.displayPrice= productPrice;
-    // _salesOrderD.displayTotalTaxValue = productVat;
-    // _salesOrderD.totalTaxValue = productVat;
-    // _salesOrderD.discountValue = productDiscount;
-    // _salesOrderD.displayDiscountValue = productDiscount;
-    // _salesOrderD.displayTotal = productTotalAfterVat;
-    // _salesOrderD.total = productTotalAfterVat;
-    //
-    // _salesOrderD.lineNum = lineNum;
-    //
-    // SalesOrderDLst.add(_salesOrderD);
-    //
-    // totalQty += productQuantity;
-    // rowsCount += 1;
-    // totalDiscount += productDiscount;
-    // totalBeforeTax += (productPrice * productQuantity) - productDiscount  ;
-    // totalTax += productVat;
-    // summeryTotal += productTotalAfterVat;
-    // _totalQtyController.text = totalQty.toString();
-    // _rowsCountController.text = rowsCount.toString();
-    // _totalDiscountController.text = totalDiscount.toString();
-    // _totalBeforeTaxController.text = totalBeforeTax.toString();
-    // _totalTaxController.text = totalTax.toString();
-    // _totalController.text = summeryTotal.toString();
-    // setTafqeet("1" ,_totalController.text);
-    //
-    // lineNum++;
-    //
-    // //FN_showToast(context,'login_success'.tr(),Colors.black);
-    // FN_showToast(context,'add_Item_Done'.tr(),Colors.black);
-    //
-    // setState(() {
-    //   _priceController.text= "";
-    //   _qtyController.text ="";
-    //   _discountController.text ="" ;
-    //   _vatController.text ="";
-    //   itemItem=Item(itemCode: "",itemNameAra: "",itemNameEng: "",id: 0);
-    //   unitItem=Unit(unitCode: "",unitNameAra: "",unitNameEng: "",id: 0);
-    //   selectedItemValue="";
-    //   selectedUnitValue="";
-    // });
-
-    if(selectedItemValue == null || selectedItemValue!.isEmpty){
-      FN_showToast(context,'please_enter_item'.tr(),Colors.black);
+    //Item
+    if (selectedItemValue == null || selectedItemValue!.isEmpty) {
+      FN_showToast(context, 'please_enter_item'.tr(), Colors.black);
       return;
     }
     //Price
-    if(_displayPriceController.text.isEmpty){
-      FN_showToast(context,'please_enter_Price'.tr(),Colors.black);
+    if (_displayPriceController.text.isEmpty) {
+      FN_showToast(context, 'please_enter_Price'.tr(), Colors.black);
       return;
     }
 
     //Quantity
-    if(_displayQtyController.text.isEmpty){
-      FN_showToast(context,'please_enter_quantity'.tr(),Colors.black);
+    if (_displayQtyController.text.isEmpty) {
+      FN_showToast(context, 'please_enter_quantity'.tr(), Colors.black);
       return;
     }
 
-
-    SalesOrderD _salesOrderD= new SalesOrderD();
-    //print('Add Product 1');
-    //Item
-    _salesOrderD.itemCode= selectedItemValue;
-    _salesOrderD.itemName= selectedItemName;
-    _salesOrderD.unitCode= selectedUnitValue;
-    _salesOrderD.unitName= selectedUnitName;
-    //print('Add Product 2');
-    //Qty
-    _salesOrderD.displayQty= (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
-    _salesOrderD.qty= (!_displayQtyController.text.isEmpty) ? int.parse(_displayQtyController.text) : 0;
-
-    //print('Add Product 2 - display Qty ' + _salesOrderD.displayQty.toString());
-    //print('Add Product 2 -  Qty ' + _salesOrderD.qty.toString());
-
-    //Cost Price
-    //print('Add Product 3');
-    _salesOrderD.costPrice= (!_costPriceController.text.isEmpty)?  double.parse(_costPriceController.text):0;
-
-    //print('Add Product 3 - costPrice ' + _salesOrderD.costPrice.toString());
-
-    //print('Add Product 4');
-    //Price
-    _salesOrderD.displayPrice= (!_displayPriceController.text.isEmpty) ?  double.parse(_displayPriceController.text) : 0 ;
-    _salesOrderD.price = (!_displayPriceController.text.isEmpty) ? double.parse(_displayPriceController.text) : 0;
-
-    //print('Add Product 4 - costPrice ' + _salesOrderD.displayPrice.toString());
-    //print('Add Product 4 - costPrice ' + _salesOrderD.price.toString());
-
-
-    //print('Add Product 5');
-    //Total
-    _salesOrderD.total = _salesOrderD.qty * _salesOrderD.price ;
-    _salesOrderD.displayTotal= _salesOrderD.displayQty * _salesOrderD.displayPrice ;
-    //print('Add Product 6');
-    //discount
-    _salesOrderD.displayDiscountValue = (!_displayDiscountController.text.isEmpty) ?  double.parse(_displayDiscountController.text) : 0 ;
-    _salesOrderD.discountValue= _salesOrderD.displayDiscountValue ;
-    //print('Add Product 7');
-    //Net After Discount
-    _salesOrderD.netAfterDiscount= _salesOrderD.displayTotal - _salesOrderD.displayDiscountValue;
-    //print('Add Product 8');
-    //netBeforeTax
-
-    //Vat
-    //Tax Value
-    //print('Add Product 9');
-    setItemTaxValue(selectedItemValue.toString(),_salesOrderD.netAfterDiscount);
-    _salesOrderD.displayTotalTaxValue = (!_taxController.text.isEmpty) ? double.parse(_taxController.text) : 0;
-    _salesOrderD.totalTaxValue = (!_taxController.text.isEmpty) ?  double.parse(_taxController.text) : 0;
-    //Total Net
-    _salesOrderD.displayNetValue = _salesOrderD.netAfterDiscount + _salesOrderD.displayTotalTaxValue;
-    _salesOrderD.netValue= _salesOrderD.netAfterDiscount + _salesOrderD.totalTaxValue;
-
+    SalesOrderD _salesOrderD = SalesOrderD();
+    _salesOrderD.itemCode = selectedItemValue;
+    _salesOrderD.itemName = selectedItemName;
+    _salesOrderD.unitCode = selectedUnitValue;
+    _salesOrderD.displayQty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+    _salesOrderD.qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+    _salesOrderD.costPrice = (_costPriceController.text.isNotEmpty) ? double.parse(_costPriceController.text) : 0;
+    _salesOrderD.displayPrice = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
+    _salesOrderD.price = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
+    _salesOrderD.total = _salesOrderD.qty * _salesOrderD.price;
+    _salesOrderD.displayTotal = _salesOrderD.displayQty * _salesOrderD.displayPrice;
+    _salesOrderD.displayDiscountValue = (_displayDiscountController.text.isNotEmpty) ? double.parse(_displayDiscountController.text) : 0;
+    _salesOrderD.discountValue = _salesOrderD.displayDiscountValue;
+    _salesOrderD.netAfterDiscount = _salesOrderD.displayTotal - _salesOrderD.displayDiscountValue;
+    setItemTaxValue(selectedItemValue.toString(), _salesOrderD.netAfterDiscount);
+    _salesOrderD.displayTotalTaxValue = (0.15 * _salesOrderD.netAfterDiscount); //(_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
+    _salesOrderD.totalTaxValue = (_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
+    _salesOrderD.displayNetValue = _salesOrderD.netAfterDiscount + _salesOrderD.displayTotalTaxValue ;
+    _salesOrderD.netValue = _salesOrderD.netAfterDiscount + _salesOrderD.totalTaxValue;
 
     print('Add Product 10');
 
     _salesOrderD.lineNum = lineNum;
 
-
-
-
     SalesOrderDLst.add(_salesOrderD);
 
-
-
     totalQty += _salesOrderD.displayQty;
-    totalPrice += _salesOrderD.displayPrice;
+    totalPrice +=  _salesOrderD.total ;
     totalDiscount += _salesOrderD.displayDiscountValue;
 
     rowsCount += 1;
-    totalAfterDiscount  = (totalQty * totalPrice) - totalDiscount;
+    totalAfterDiscount = totalPrice - totalDiscount;
     totalBeforeTax = totalAfterDiscount;
     totalTax += _salesOrderD.displayTotalTaxValue;
-    totalNet = totalBeforeTax+ totalTax;
-    //summeryTotal += productTotalAfterVat;
+    totalNet = totalBeforeTax + totalTax;
 
     _totalQtyController.text = totalQty.toString();
     _totalDiscountController.text = totalDiscount.toString();
@@ -1411,33 +1289,32 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     _totalBeforeTaxController.text = totalBeforeTax.toString();
     _totalTaxController.text = totalTax.toString();
     _totalNetController.text = totalNet.toString();
-    setTafqeet("2" ,_totalNetController.text);
+    setTafqeet("2", _totalNetController.text);
 
     //
     lineNum++;
 
     //FN_showToast(context,'login_success'.tr(),Colors.black);
-    FN_showToast(context,'add_Item_Done'.tr(),Colors.black);
+    FN_showToast(context, 'add_Item_Done'.tr(), Colors.black);
 
     setState(() {
-      _priceController.text= "";
-      _qtyController.text ="";
-      _discountController.text ="" ;
-      _costPriceController.text ="" ;
-      _taxController.text ="";
-      _qtyController.text="";
-      _displayQtyController.text="";
-      _displayTotalController.text="";
-      _displayDiscountController.text="";
-      _netAfterDiscountController.text="";
-      _netAftertaxController.text="";
-      _displayPriceController.text="";
-      itemItem=Item(itemCode: "",itemNameAra: "",itemNameEng: "",id: 0);
-      unitItem=Unit(unitCode: "",unitNameAra: "",unitNameEng: "",id: 0);
-      selectedItemValue="";
-      selectedUnitValue="";
+      _priceController.text = "";
+      _qtyController.text = "";
+      _discountController.text = "";
+      _costPriceController.text = "";
+      _taxController.text = "";
+      _qtyController.text = "";
+      _displayQtyController.text = "";
+      _displayTotalController.text = "";
+      _displayDiscountController.text = "";
+      _netAfterDiscountController.text = "";
+      _netAftertaxController.text = "";
+      _displayPriceController.text = "";
+      itemItem = Item(itemCode: "", itemNameAra: "", itemNameEng: "", id: 0);
+      unitItem = Unit(unitCode: "", unitNameAra: "", unitNameEng: "", id: 0);
+      selectedItemValue = "";
+      selectedUnitValue = "";
     });
-
   }
 
   //#region Calc

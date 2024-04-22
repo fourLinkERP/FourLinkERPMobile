@@ -179,6 +179,127 @@ class pdfReceipt {
     return PdfApi.saveDocument(name: 'Receipt.pdf', pdf: pdf);
   }
 
+  static Future<File> generateOffer(Receipt receipt) async {
+    final pdf = pw.Document();
+    var arabicFont =
+    pw.Font.ttf(await rootBundle.load("assets/fonts/HacenTunisia.ttf"));
+    final companyImage = pw.MemoryImage((await rootBundle.load('assets/images/deliciouslogo.jpg')).buffer.asUint8List(),);
+
+    pdfx.PdfPageFormat pageFormat = pdfx.PdfPageFormat.roll80.copyWith(height: 1000.0, width: 600.0);
+
+    pdf.addPage(
+        pw.MultiPage(
+          margin: const pw.EdgeInsets.only(top: 10,left: 15,right: 15,bottom: 1),
+          pageFormat: pageFormat,
+          textDirection: pw.TextDirection.rtl,
+          theme: pw.ThemeData.withFont(
+            base: arabicFont,
+          ),
+          build: (context) => [
+            buildHeader(receipt, companyImage),
+            pw.Row(
+                mainAxisAlignment: MainAxisAlignment.center ,//Center Row contents horizontally,
+                crossAxisAlignment: CrossAxisAlignment.center, //Center Row contents vertically,
+                children: [
+                  Center(
+                    child:   Text(receipt.receiptHeader.companyInvoiceTypeName.toString(),style: const TextStyle(fontSize: 16),textAlign: TextAlign.center),
+                  )
+
+                  //
+                ]
+            ),
+            pw.Row(
+                mainAxisAlignment: MainAxisAlignment.center ,//Center Row contents horizontally,
+                crossAxisAlignment: CrossAxisAlignment.center, //Center Row contents vertically,
+                children: [
+                  Center(
+                    child:   Text(receipt.receiptHeader.salesOffersTypeName.toString(),style: const TextStyle(fontSize: 16),textAlign: TextAlign.center),
+                  )
+
+                  //
+                ]
+            ),
+            buildHeader2(receipt, companyImage),
+
+            buildInvoiceHeaderCells(receipt.invoice),
+            buildInvoice(receipt.invoice),
+            pw.Divider(),
+            buildInvoiceNewTotalHeader(receipt.invoice),
+            buildInvoiceNewTotal(receipt.invoice),
+            //buildTotal(receipt.invoice),
+          ],
+          //footer: (context) => buildFooter(receipt,barcodeImageArray),
+
+        ));
+
+
+    //   pdf.addPage(
+    //   pw.Page(
+    //       textDirection: TextDirection.rtl,
+    //       theme: pw.ThemeData.withFont(
+    //         base: arabicFont,
+    //       ),
+    //       //pageFormat: PdfPageFormat.roll80,
+    //       build: (pw.Context context) {
+    //
+    //   return buildFooter(receipt,barcodeImageArray); // Center
+    // }));
+
+
+    //   pdf.addPage(
+    //   pw.Page(
+    //     pageFormat: pdfx.PdfPageFormat.legal,
+    //       textDirection: TextDirection.rtl,
+    //       theme: pw.ThemeData.withFont(
+    //         base: arabicFont,
+    //       ),
+    //       //pageFormat: PdfPageFormat.roll80,
+    //       build: (pw.Context context) {
+    //
+    //   return FullPage(
+    //         ignoreMargins: true,
+    //         child:Row (
+    //           children: [
+    //             Text('sssssssssss'),
+    //             Text('sssssssssss1'),
+    //             Text('sssssssssss2'),
+    //
+    //
+    //           ]
+    //         ),
+    //   ) ;
+    //
+    //
+    // }));
+
+
+    // pdf.addPage(
+    //   pw.MultiPage(
+    //     textDirection: TextDirection.rtl,
+    //     pageTheme: null,
+    //     header:  buildHeader(receipt,companyImage),
+    //     footer: _buildFooter,
+    //     build: (context) => [
+    //       //Insert to widget
+    //     ],
+    //   ),
+    // );
+    //
+    // pdf.addPage(
+    // pw.MultiPage(
+    // pageTheme:  null,
+    // header: _buildHeader,
+    // footer: _buildFooter,
+    // build: (context) => [
+    // //Insert to widget
+    // ],
+    // ),
+    // );
+
+
+
+    return PdfApi.saveDocument(name: 'Receipt.pdf', pdf: pdf);
+  }
   static pw.Widget buildHeader(Receipt receipt,pw.MemoryImage companyImage ) => pw.Column(
     crossAxisAlignment: pw.CrossAxisAlignment.start,
     children: [
