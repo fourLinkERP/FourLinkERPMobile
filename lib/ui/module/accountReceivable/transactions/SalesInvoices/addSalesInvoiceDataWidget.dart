@@ -972,23 +972,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                           ],
                         ),
                         const SizedBox(height: 20),
-                        // WidgetsToImage(
-                        //     controller:WidgetImage,
-                        //     child :Container(
-                        //       padding: const EdgeInsets.all(1),
-                        //       color: Colors.white,
-                        //       child:   ZatcaFatoora.simpleQRCode(
-                        //         fatooraData: ZatcaFatooraDataModel(
-                        //           businessName: companyTitle,
-                        //           vatRegistrationNumber: companyVatNo,
-                        //           date:   DateTime.parse(_salesInvoicesDateController.text),
-                        //           totalAmountIncludingVat: totalPrice,
-                        //           vat: totalTax,
-                        //         ),
-                        //       ),
-                        //     )
-                        //
-                        // ),
                         Container(
                           margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Row(
@@ -1017,7 +1000,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                           child: Row(
                             children: <Widget>[
                               Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
@@ -1042,6 +1025,23 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                               ),
                             ],
                           ),
+                        ),
+                        WidgetsToImage(
+                            controller:WidgetImage,
+                            child :Container(
+                              padding: const EdgeInsets.all(1),
+                              color: Colors.white,
+                              child:   ZatcaFatoora.simpleQRCode(
+                                fatooraData: ZatcaFatooraDataModel(
+                                  businessName: companyTitle,
+                                  vatRegistrationNumber: companyVatNo,
+                                  date:   DateTime.parse(_salesInvoicesDateController.text),
+                                  totalAmountIncludingVat: totalPrice,
+                                  vat: totalTax,
+                                ),
+                              ),
+                            )
+                        
                         ),
 
                       ],
