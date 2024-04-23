@@ -960,22 +960,71 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                           ],
                         ),
                         const SizedBox(height: 20),
+                        // Container(
+                        //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                        //   child: Row(
+                        //     children: <Widget>[
+                        //       Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameArabic'.tr(),
+                        //           style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                        //       const SizedBox(width: 10),
+
+                        //       SizedBox(
+                        //         width: 206,
+                        //         child: TextFormField(
+                        //           controller: _descriptionNameArabicController,
+                        //           decoration: const InputDecoration(
+                        //             hintText: '',
+                        //           ),
+
+                        //           onChanged: (value) {},
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // Container(
+                        //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                        //   child: Row(
+                        //     children: <Widget>[
+                        //       Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameEnglish'.tr(),
+                        //           style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                        //       const SizedBox(width: 10),
+
+                        //       SizedBox(
+                        //         width: 200,
+                        //         child: TextFormField(
+                        //           controller: _descriptionNameEnglishController,
+                        //           decoration: const InputDecoration(
+                        //             hintText: '',
+                        //           ),
+
+                        //           onChanged: (value) {},
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                         Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Row(
                             children: <Widget>[
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameArabic'.tr(),
-                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
+                                  child: Text('tafqitNameArabic'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
                               const SizedBox(width: 10),
-
                               SizedBox(
-                                width: 206,
+                                width: 230,
                                 child: TextFormField(
-                                  controller: _descriptionNameArabicController,
+                                  controller: _tafqitNameArabicController,
                                   decoration: const InputDecoration(
-                                    hintText: '',
+                                    // hintText: '',
                                   ),
-
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'please_enter_value'.tr();
+                                  //   }
+                                  //   return null;
+                                  // },
+                                  enabled: false,
                                   onChanged: (value) {},
                                 ),
                               ),
@@ -986,18 +1035,23 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                           margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                           child: Row(
                             children: <Widget>[
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameEnglish'.tr(),
-                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
+                                  child: Text('tafqitNameEnglish'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
                               const SizedBox(width: 10),
-
                               SizedBox(
-                                width: 200,
+                                width: 230,
                                 child: TextFormField(
-                                  controller: _descriptionNameEnglishController,
+                                  controller: _tafqitNameEnglishController,
                                   decoration: const InputDecoration(
-                                    hintText: '',
+                                    // hintText: '',
                                   ),
-
+                                  enabled: false,
+                                  // validator: (value) {
+                                  //   if (value!.isEmpty) {
+                                  //     return 'please_enter_value'.tr();
+                                  //   }
+                                  //   return null;
+                                  // },
                                   onChanged: (value) {},
                                 ),
                               ),
@@ -1015,66 +1069,12 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                   vatRegistrationNumber: companyVatNo,
                                   date:   DateTime.parse(_salesInvoicesDateController.text),
                                   totalAmountIncludingVat: totalNet,
-                                  vat: int.parse(_taxController.text),
+                                  vat: totalTax,
                                 ),
                               ),
                             )
 
-                        )
-                        // Container(
-                        //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        //   child: Row(
-                        //     children: <Widget>[
-                        //       Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
-                        //           child: Text('tafqitNameArabic'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
-                        //       const SizedBox(width: 10),
-                        //       SizedBox(
-                        //         width: 230,
-                        //         child: TextFormField(
-                        //           controller: _tafqitNameArabicController,
-                        //           decoration: const InputDecoration(
-                        //             // hintText: '',
-                        //           ),
-                        //           // validator: (value) {
-                        //           //   if (value!.isEmpty) {
-                        //           //     return 'please_enter_value'.tr();
-                        //           //   }
-                        //           //   return null;
-                        //           // },
-                        //           enabled: false,
-                        //           onChanged: (value) {},
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // Container(
-                        //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        //   child: Row(
-                        //     children: <Widget>[
-                        //       Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
-                        //           child: Text('tafqitNameEnglish'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
-                        //       const SizedBox(width: 10),
-                        //       SizedBox(
-                        //         width: 230,
-                        //         child: TextFormField(
-                        //           controller: _tafqitNameEnglishController,
-                        //           decoration: const InputDecoration(
-                        //             // hintText: '',
-                        //           ),
-                        //           enabled: false,
-                        //           // validator: (value) {
-                        //           //   if (value!.isEmpty) {
-                        //           //     return 'please_enter_value'.tr();
-                        //           //   }
-                        //           //   return null;
-                        //           // },
-                        //           onChanged: (value) {},
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
+                        ),
 
                       ],
                     )
