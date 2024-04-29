@@ -1,4 +1,4 @@
-//import 'dart:io';
+
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
@@ -149,22 +149,3 @@ class SalesInvoiceH {
     return 'Trans{id: $id, name: $salesInvoicesSerial }';
   }
 }
-
-
-
-
-// Our demo Branchs
-
-// List<Customer> demoBranches = [
-//   Customer(
-//       id: 1,
-//       name: "Maadi - Branch",
-//       description: descriptionData
-//   ),
-//   Customer(
-//       id: 2,
-//       name: "Tahrir - Branch",
-//       description: descriptionData
-//   )
-// ];
-

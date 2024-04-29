@@ -46,7 +46,7 @@
     "enter_company_english_name": "ادخل اسم الشركة الانجليزي",
     "database_url_name": "رابط قاعدة البيانات",
     "enter_database_url_name": "ادخل رابط قاعدة البيانات",
-    "add_database_url": "اضافة",
+    "add_database_url": "تسجيل",
     "cancel_database_url": "الغاء",
     "api_url": "مسار Api",
     "api_user": "اسم المستخدم ",
@@ -329,7 +329,7 @@
     "cash_target_code": "اسم المستفيد",
     "select_a_box_Code": "من فضلك ادخل اسم الجهة",
     "select_a_cash_target_Code": "من فضلك ادخل اسم المستفيد",
-    "Financial year": "العام المالي",
+    "financial_year": "العام المالي",
     "company_name": "اسم الشركه",
     "netAfterDiscount": "الصافي بعد الخصم",
     "netAfterDiscount :": "الصافي بعد الخصم :",
@@ -593,7 +593,12 @@
     "edit_setting_requests": "تعديل اعدادات الطلبات",
     "add_vacation_request": "اضافة طلب اجازة",
     "workFlow": "الطلبات",
-    "please_Set_Invoice_Type": "برجاء اختيار نوع الفاتورة"
+    "please_Set_Invoice_Type": "برجاء اختيار نوع الفاتورة",
+    "test": "اختيار",
+    "company": "الشركة",
+    "receive_permission": "إذن استلام",
+    "searchReceivePermission": "بحث إذن استلام",
+    "receive_goods": "استلام بضائع"
 
 }
 

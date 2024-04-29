@@ -6,14 +6,14 @@ late bool isLoggedIn=false;
 bool isLive = false;
 
 //Url - Token
-String urlString = "http://kraezapi.4linkweb.com:8092";
-//String urlString = "http://webapi.4linkerp.com";
+//String urlString = "http://kraezapi.4linkweb.com:8092";
+String urlString = "http://webapi.4linkerp.com";
 //String urlString = "https://kreazmobileapi.4linkerp.com";
 //String urlString="http://www.sudokuano.net";
 //String urlString="http://kraezapi.4linkweb.com:8092";
 //String urlString="http://Report.15mayclub.com";
-String reportUrlString = "http://kraezreports.4linkweb.com:8094";
-//String reportUrlString = "http://webreport.4linkerp.com";
+//String reportUrlString = "http://kraezreports.4linkweb.com:8094";
+String reportUrlString = "http://webreport.4linkerp.com";
 //String reportUrlString = "http://mobileapi.4linkerp.com";
 //String reportUrlString = "http://kraezreports.4linkweb.com:8094";
 //String reportUrlString = "http://webreport.4linkerp.com";;
@@ -28,8 +28,8 @@ String apiPassword="";//Will Set On App Perference
 //Company And Branch
 int companyCode = 1;//Will Set On App Perference
 int branchCode = 1; //Will Set On App Perference
-String companyName='Test Company';
-String branchName='Test Branch';
+String companyName= '';  //'Test Company';
+String branchName= '';  //'Test Branch';
 // RequestTypeCode & TransactionId
 String requestTypeCode = "";
 String transactionId = "";
@@ -47,8 +47,8 @@ String costCenterCode = "";
 String costCenterName = "";
 
 
-//Fiancial Year
-String financialYearCode = "2024"; //Will Set On App Perference
+//Financial Year
+String financialYearCode = "2024"; //Will Set On App Preference
 String currentLanguage='ar'; /// it was en
 //Date
 DateTime date =DateTime.now();
@@ -73,3 +73,4 @@ var reportsArabicDesc='يمكنك دائما استخدام التقاريرال
 var reportsEnglishDesc='You can always use the different reports to explore transactions result.';
 String generalSetupSalesInvoicesTypeCode='';
 String generalSetupSalesInvoicesReturnTypeCode='';
+

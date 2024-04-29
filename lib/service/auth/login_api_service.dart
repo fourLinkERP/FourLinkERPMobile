@@ -17,10 +17,11 @@ class LoginService {
 
   Future<Login> logApi2(BuildContext context ,String email, String password ) async {
 
-    //print('B 1');
     Map data = {
       'UserNameOrEmail': email,
-      'Password': password
+      'Password': password,
+      //'FinancialYear': financialYear,
+      //'CompanyCode': companyCode,
     };
     //print('B 2');
     final http.Response response = await http.post(

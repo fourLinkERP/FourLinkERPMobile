@@ -1,13 +1,7 @@
 import 'dart:convert';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/setup/salesOfferTypes/salesOfferType.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
-import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
-import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/helpers/toast.dart';
-
 
  class SalesOffersTypeApiService {
 

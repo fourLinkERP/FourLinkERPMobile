@@ -9,6 +9,8 @@ import 'package:fourlinkmobileapp/ui/module/cash/transactions/CashReceive/cashRe
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
   import 'package:localize_and_translate/localize_and_translate.dart';
 
+import '../ui/module/accountreceivable/transactions/ReceivePermission/receivePermissionList.dart';
+
 class MainTransactions extends StatelessWidget {
 
   List<String> areaListData = <String>[
@@ -34,8 +36,8 @@ class MainTransactions extends StatelessWidget {
         'assets/fitness_app/quotion.png',
         'assets/fitness_app/inventory.png',
         'assets/fitness_app/accounting.png',
-        'assets/fitness_app/sales_portion.png',
         'assets/fitness_app/accounting.png',
+        'assets/fitness_app/receive_goods.png',
       ];
       List<String> areaListDataTitle = <String>[
         'salesinvoice'.tr(),
@@ -43,8 +45,8 @@ class MainTransactions extends StatelessWidget {
         'sales_Qution'.tr(),
         'salesOrder'.tr(),
         'cash_receipt'.tr(),
-        'generaltransaction'.tr(),
         'purchaseinvoice'.tr(),
+        'receive_permission'.tr(),
 
       ];
 
@@ -111,22 +113,14 @@ class MainTransactions extends StatelessWidget {
               }
               else if(areaListData[index] == 'assets/fitness_app/salesReturnCart.png') // Invoice
                   {
-                //print('okz1');
-                //areaListData[index] == Image.asset('assets/fitness_app/salesReturnCart.png', scale: 4,).toString();
-
-                int menuId=6204;
-                bool isAllowView = PermissionHelper.checkViewPermission(menuId);
-                if(isAllowView)
-                {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => SalesInvoiceReturnHListPage()));
-                }
-                else
-                {
-                  FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
-                }
-
-              }
-              else if(areaListData[index]  == 'assets/fitness_app/quotion.png') //Quotion
+                        int menuId = 6204;
+                        bool isAllowView = PermissionHelper.checkViewPermission(menuId);
+                        if (isAllowView) {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SalesInvoiceReturnHListPage()));
+                        } else {
+                          FN_showToast(context, 'you_dont_have_view_permission'.tr(), Colors.black);
+                        }
+                      } else if(areaListData[index]  == 'assets/fitness_app/quotion.png') //Quotion
               {
                 //print('okz2');
 
@@ -144,7 +138,6 @@ class MainTransactions extends StatelessWidget {
               }
               else  if(areaListData[index]  == 'assets/fitness_app/inventory.png')//Orders
               {
-                //print('okz3');
 
                 int menuId=6203;
                 bool isAllowView = PermissionHelper.checkViewPermission(menuId);
@@ -157,11 +150,9 @@ class MainTransactions extends StatelessWidget {
                   FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                 }
 
-
               }
               else if(areaListData[index] == 'assets/fitness_app/accounting.png')//Cash
               {
-                //print('okz4');
                 int menuId=3203;
                 bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                 if(isAllowView)
@@ -187,7 +178,19 @@ class MainTransactions extends StatelessWidget {
                   FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                 }
               }
-
+              else if(areaListData[index] == 'assets/fitness_app/receive_goods.png')
+                  {
+                int menuId=7206;
+                bool isAllowView = PermissionHelper.checkViewPermission(menuId);
+                if(isAllowView)
+                {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ReceivePermissionHListPage()));
+                }
+                else
+                {
+                  FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                }
+              }
             },
             child: Column(
               children: <Widget>[

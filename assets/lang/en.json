@@ -360,8 +360,8 @@
     "cash_target_code": "Target Code",
     "select_a_box_Code": "Please Enter Box Code",
     "select_a_cash_target_Code": "Please Enter Target Code",
-    "Financial year": "Financial year",
-    "company_name": "company name",
+    "financial_year": "Financial year",
+    "company_name": "Company name",
     "netAfterDiscount": "Net After Discount",
     "netAfterDiscount :": "Net After Discount :",
     "netAfterTax": "Net After Tax",
@@ -499,5 +499,12 @@
     "edit_setting_requests": "Edit setting requests",
     "add_vacation_request":"Add vacation request",
     "workFlow": "Workflow",
-    "please_Set_Invoice_Type": "please set invoice type"
+    "please_Set_Invoice_Type": "please set invoice type",
+    "test": "Test",
+    "company": "Company",
+    "api": "API",
+    "report_api": "Report API",
+    "receive_permission": "Receive Permission",
+    "searchReceivePermission": "Search receive permission",
+    "receive_goods": "Receive goods"
 }

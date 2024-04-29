@@ -6,18 +6,20 @@ import '../../../../../common/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
+import 'package:flutter/cupertino.dart';
+
 
  class CompanyApiService {
 
-  Future<List<Company>> getCompanys() async {
+  Future<List<Company>> getCompanies(String apiSearch) async {
 
-    String searchApi= baseUrl.toString() + '/api/v1/companies/loginsearch';
+    String searchApi= apiSearch;    //baseUrl.toString() + '/api/v1/companies/loginsearch';
     //String searchApi= 'http://webapi.4linkerp.com/api/v1/companies/loginsearch';
     //String searchApi= baseUrl.toString()  + '/api/v1/companies/loginsearch';
 
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      // 'CompanyCode': companyCode,
+      // 'BranchCode': branchCode
     };
 
     print('Company 1');

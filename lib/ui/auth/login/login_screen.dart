@@ -82,8 +82,6 @@ class _LoginScreenState extends State<LoginScreen> {
     Future<List<Branch>> futureBranch = _branchApiService.getBranches().then((
         data) {
       branches = data;
-      //print(customers.length.toString());
-      //getSalesInvoiceTypeData();
       setState(() {
 
       });
@@ -115,12 +113,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: const TextStyle(
                             fontSize: 20,
                             color: Color.fromRGBO(144, 16, 46, 1),
-                            //color: Colors.black,
                             fontWeight: FontWeight.bold),
                       ),
-                      const Text(
-                        '',
-                        style: TextStyle(color: Colors.grey),
+                      const SizedBox(height: 10.0),
+                      Text(
+                         companyName,
+                        style: const TextStyle(
+                            color: Color.fromRGBO(144, 16, 46, 1),
+                            fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 30.0),
                       Form(
