@@ -18,7 +18,7 @@ import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vend
   String deleteApi= baseUrl.toString()  + '/api/v1/vendors/';
   String getByIdApi= baseUrl.toString()  + '/api/v1/vendors/';  // Add ID For Get
 
-  Future<List<Vendor>?>  getVendors() async {
+  Future<List<Vendor>>  getVendors() async {
 
     Map data = {
       'CompanyCode': companyCode,

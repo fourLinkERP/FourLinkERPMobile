@@ -388,69 +388,81 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
 
                         const SizedBox(height: 15),
 
-                  Form(
-                      key: _dropdownCustomerFormKey,
-                      child: Row(
-                        children: [
-                          Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Customer: ".tr(),
-                              style: const TextStyle(fontWeight: FontWeight.bold))),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            width: 200,
-                            child: DropdownSearch<Customer>(
-                              selectedItem: null,
-                              popupProps: PopupProps.menu(
-
-                                itemBuilder: (context, item, isSelected) {
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                                    decoration: !isSelected
-                                        ? null
-                                        : BoxDecoration(
-
-                                      border: Border.all(color: Colors.black12),
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.white,
+                        Form(
+                            key: _dropdownCustomerFormKey,
+                            child: Row(
+                              children: [
+                                Align(
+                                    alignment: langId == 1
+                                        ? Alignment.bottomRight
+                                        : Alignment.bottomLeft,
+                                    child: Text("Customer: ".tr(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold))),
+                                const SizedBox(width: 10),
+                                SizedBox(
+                                  width: 200,
+                                  child: DropdownSearch<Customer>(
+                                    selectedItem: null,
+                                    popupProps: PopupProps.menu(
+                                      itemBuilder: (context, item, isSelected) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 8),
+                                          decoration: !isSelected
+                                              ? null
+                                              : BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.black12),
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                  color: Colors.white,
+                                                ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text((langId == 1)
+                                                ? item.customerNameAra
+                                                    .toString()
+                                                : item.customerNameEng
+                                                    .toString()),
+                                          ),
+                                        );
+                                      },
+                                      showSearchBox: true,
                                     ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text((langId==1)? item.customerNameAra.toString() : item.customerNameEng.toString()),
+                                    items: customers,
+                                    itemAsString: (Customer u) => (langId == 1)
+                                        ? u.customerNameAra.toString()
+                                        : u.customerNameEng.toString(),
+                                    onChanged: (value) {
+                                      //v.text = value!.cusTypesCode.toString();
+                                      //print(value!.id);
+                                      selectedCustomerValue =
+                                          value!.customerCode.toString();
+                                    },
+                                    filterFn: (instance, filter) {
+                                      if ((langId == 1)
+                                          ? instance.customerNameAra!
+                                              .contains(filter)
+                                          : instance.customerNameEng!
+                                              .contains(filter)) {
+                                        print(filter);
+                                        return true;
+                                      } else {
+                                        return false;
+                                      }
+                                    },
+                                    dropdownDecoratorProps:
+                                        const DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                          // labelText: 'customer'.tr(),
+
+                                          ),
                                     ),
-                                  );
-                                },
-                                showSearchBox: true,
-
-                              ),
-
-                              items: customers,
-                              itemAsString: (Customer u) => (langId==1)? u.customerNameAra.toString() : u.customerNameEng.toString(),
-
-                              onChanged: (value){
-                                //v.text = value!.cusTypesCode.toString();
-                                //print(value!.id);
-                                selectedCustomerValue = value!.customerCode.toString();
-                              },
-
-                              filterFn: (instance, filter){
-                                if((langId==1)? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)){
-                                  print(filter);
-                                  return true;
-                                }
-                                else{
-                                  return false;
-                                }
-                              },
-                              dropdownDecoratorProps: const DropDownDecoratorProps(
-                                dropdownSearchDecoration: InputDecoration(
-                                 // labelText: 'customer'.tr(),
-
-                                ),),
-
-                            ),
-                          ),
-                        ],
-                      )),
-
+                                  ),
+                                ),
+                              ],
+                            )),
                         const SizedBox(height: 20),
                         Form(
                             key: _dropdownItemFormKey,

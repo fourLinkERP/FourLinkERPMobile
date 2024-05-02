@@ -272,7 +272,7 @@
     "price":  " Price",
     "display_price :":  " Price :",
     "qty":  " Quantity",
-    "display_qty :":  " Quantity :",
+    "display_qty":  " Quantity",
     "vat":  "Tax",
     "vat :": "Tax :",
     "add_product":  "Add Product",
@@ -318,7 +318,7 @@
     "delete": "Delete",
     "product_code": "Product Code : ",
     "product_price": "Product Price : ",
-    "unit_name": "Unit name",
+    "Unit_name": "Unit name",
     "Unit name :": "Unit name :",
     "product_name_arabic": "Product arabic name : ",
     "product_name_english": "Product english name : ",
@@ -506,6 +506,16 @@
     "report_api": "Report API",
     "receive_permission": "Receive Permission",
     "searchReceivePermission": "Search receive permission",
-    "receive_goods": "Receive goods"
+    "receive_goods": "Receive goods",
+    "vendor": "Vendor",
+    "stockSalesMan": "SalesMan",
+    "store": "Store",
+    "container_num": "Container number",
+    "container_type": "Container Type",
+    "carton_num": "Carton number",
+    "carton_size": "Total carton size",
+    "contract_num": "Contract Number",
+    "total_carton_num": "Total carton number",
+    "total_carton_size": "Total carton size"
 
 }
