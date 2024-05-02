@@ -646,8 +646,9 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                         Row(
                           children: [
 
-                            Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_qty :'.tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold))),
+                            SizedBox(
+                              width: 60,
+                                child: Text('display_qty'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
                             const SizedBox(width: 20),
                             SizedBox(
                               width: 100,
@@ -664,8 +665,9 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                               ),
                             ),
                             const SizedBox(width: 30),
-                            Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('discount :'.tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold))),
+                            SizedBox(
+                              width: 60,
+                                child: Text('discount :'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
                             const SizedBox(width: 10),
                             SizedBox(
                               width: 90,

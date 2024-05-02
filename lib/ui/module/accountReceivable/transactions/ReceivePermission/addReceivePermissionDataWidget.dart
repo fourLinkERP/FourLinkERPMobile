@@ -11,6 +11,7 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
 import '../../../../../data/model/modules/module/accountreceivable/basicInputs/Stores/store.dart';
+import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../data/model/modules/module/inventory/basicInputs/items/items.dart';
 import '../../../../../data/model/modules/module/inventory/basicInputs/units/units.dart';
 import '../../../../../helpers/hex_decimal.dart';
@@ -496,7 +497,7 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
                       child: Row(
                         children: <Widget>[
                           Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
-                              child: Text('${'notes'.tr()} :',style: const TextStyle(fontWeight: FontWeight.bold))),
+                              child: Text('notes'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
                           const SizedBox(width: 10),
                           SizedBox(
                             height: 70,
@@ -922,6 +923,22 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
   }
 
   fillCompos(){
+
+      //Serial
+      Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("TBL_StockH", "TrxSerial", " And TrxTypeCode='" + selectedStockTypeValue.toString() + "'").then((data) {
+        NextSerial nextSerial = data;
+
+        //Date
+        DateTime now = DateTime.now();
+        _stockDateController.text =DateFormat('yyyy-MM-dd').format(now);
+
+        //print(customers.length.toString());
+        _stockSerialController.text = nextSerial.nextSerial.toString();
+        return nextSerial;
+      }, onError: (e) {
+        print(e);
+      });
+
     //Vendors
     Future<List<Vendors>> futureVendor = _vendorApiService.getVendors().then((data) {
       vendors = data;
