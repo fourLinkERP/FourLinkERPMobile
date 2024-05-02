@@ -15,13 +15,14 @@ class LoginService {
   //String BASE_URL= baseUrl.toString()  + 'tokens/';
   //password ='123Pa$$word!'
 
-  Future<Login> logApi2(BuildContext context ,String email, String password ) async {
+  Future<Login> logApi2(BuildContext context ,String email, String password, int branchLogCode ) async {
 
     Map data = {
       'UserNameOrEmail': email,
       'Password': password,
-      //'FinancialYear': financialYear,
-      //'CompanyCode': companyCode,
+      'FinancialYear': financialYearCode,
+      'CompanyCode': companyCode,
+      'BranchCode' : branchLogCode
     };
     //print('B 2');
     final http.Response response = await http.post(
@@ -32,6 +33,7 @@ class LoginService {
       },
       body: jsonEncode(data),
     );
+    print("Login data: " + data.toString());
 
     print('B start running 3');
     if (response.statusCode == 200) {

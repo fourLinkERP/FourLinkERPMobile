@@ -44,26 +44,6 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
     super.initState();
 
     //Company
-    // Future<List<Company>> futureBranch = _companyApiService.getCompanies(searchCompanies).then((data) {
-    //   companies = data;
-    //
-    //   if (companies != null) {
-    //     for(var i = 0; i < companies.length; i++){
-    //
-    //       if(companyCode != null){
-    //         if(companies[i].companyCode == companyCode){
-    //           companyItem = companies[companies.indexOf(companies[i])];
-    //         }
-    //
-    //       }
-    //
-    //     }
-    //   }
-    //   setState(() {});
-    //   return companies;
-    // }, onError: (e) {
-    //   print(e);
-    // });
 
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
@@ -103,7 +83,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                         Container(
                                           child: defaultFormField(
                                             controller: _APiController,
-                                            label: 'http://webapi.4linkerp.com'.tr(),
+                                            label: 'api'.tr(),
                                             type: TextInputType.emailAddress,
                                             colors: Colors.blueGrey,
                                             prefix: Icons.link,
@@ -119,7 +99,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                         Container(
                                           child: defaultFormField(
                                             controller: _APiReportController,
-                                            label: 'http://webreport.4linkerp.com'.tr(),
+                                            label: 'report_api'.tr(),
                                             type: TextInputType.emailAddress,
                                             colors: Colors.blueGrey,
                                             prefix: Icons.link,
@@ -140,30 +120,25 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                     width: 80,
                                     child: ElevatedButton(
                                       onPressed: () async {
-                                        if(_APiController.text == urlString){
-                                          searchCompanies = _APiController.text + '/api/v1/companies/loginsearch';
-                                          Future<List<Company>> futureBranch = _companyApiService.getCompanies(searchCompanies).then((data) {
-                                            companies = data;
+                                        searchCompanies = _APiController.text + '/api/v1/companies/loginsearch';
+                                        print("Entered API: " + searchCompanies);
+                                        Future<List<Company>> futureBranch = _companyApiService.getCompanies(searchCompanies).then((data) {
+                                          companies = data;
 
-                                            if (companies != null) {
-                                              for(var i = 0; i < companies.length; i++){
-
-                                                if(companyCode != null){
-                                                  if(companies[i].companyCode == companyCode){
-                                                    companyItem = companies[companies.indexOf(companies[i])];
-                                                  }
-                                                }
-                                              }
-                                            }
-                                            setState(() {});
-                                            return companies;
-                                          }, onError: (e) {
-                                            print(e);
+                                          return companies;
+                                        }, onError: (e) {
+                                          print(e);
+                                        });
+                                        bool result = await _companyApiService.checkApiValidity(searchCompanies);
+                                        if (result == true) {
+                                          setState(() {
+                                            isLinked = true; // Enable the dropdown
                                           });
-                                          isLinked = true;
-                                        }
-                                        else{
-                                          FN_showToast(context, "Server error, please check link", Colors.red);
+                                        } else {
+                                          setState(() {
+                                            isLinked = false; // Disable the dropdown
+                                            FN_showToast(context, "Server error, please check link", Colors.red);
+                                          });
                                         }
                                       },
                                       style: ElevatedButton.styleFrom(
@@ -213,9 +188,15 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                 items: companies,
                                 itemAsString: (Company u) => (langId==1)? u.companyNameAra.toString() : u.companyNameAra.toString(),
                                 onChanged: (value){
-                                  selectedCompanyCode = int.parse(value!.companyCode.toString());
-                                  selectedCompanyName = value.companyNameAra!;
-                                  CacheHelper.putString('companyCode', value.companyCode);
+
+                                  selectedCompanyCode =0;
+                                  if(value !!= null && value.companyCode != null)
+                                    {
+                                      selectedCompanyCode = int.parse(value!.companyCode.toString());
+                                      selectedCompanyName = value.companyNameAra!;
+                                    }
+
+                                  //CacheHelper.putString('companyCode', selectedCompanyCode);
                                 },
 
                                 filterFn: (instance, filter){
@@ -350,38 +331,15 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                       return;
                                     }
                                     CacheHelper.putString('API', _APiController.text);
-                                    CacheHelper.putString('Report API', _APiReportController.text);
+                                    CacheHelper.putString('REPORT_API', _APiReportController.text);
                                     CacheHelper.putString('EMAIL', _emailController.text);
                                     CacheHelper.putString('PASS', _passwordController.text);
                                     CacheHelper.putInt('CompanyCode', selectedCompanyCode);
-                                    CacheHelper.putString('financialYearCode', _FinancialyearController.text);
+                                    CacheHelper.putString('CompanyName', selectedCompanyName);
+                                    CacheHelper.putString('FinancialYearCode', _FinancialyearController.text);
                                     FN_showToast(context,'save_success'.tr() ,Colors.black);
                                     companyName = selectedCompanyName;
 
-                                    /*       Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                homePage()));*/
-
-
-                                    /*            await ApiService()
-                                        .loginUser(User(
-                                        email: _emailController.text,
-                                        password: _passwordController.text))
-                                        .then((data) {
-                                      if (data.access_token!.isNotEmpty) {
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProfilePage()));
-                                      } else {
-                                        showAlert(
-                                            context: context, title: data.msg);
-                                      }
-                                      ;
-                                    });*/
 
                                     //After successful login we will redirect to profile page. Let's create profile page now
                                   },

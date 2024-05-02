@@ -662,11 +662,11 @@ class _LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-
+    int branchLoginCode = int.parse(branchCodeSelectedValue!);
     if (isLive) {
       // Live
       Login log = await _LoginService.logApi2(context, _emailController.text,
-          _passwordController.text);
+          _passwordController.text, branchLoginCode);
 
       //Token
       if (log.token!.isNotEmpty) {
@@ -717,7 +717,7 @@ class _LoginScreenState extends State<LoginScreen> {
     print('TTT To GO');
     Login log = await _LoginService.logApi2(
         context, _emailController.text,
-        _passwordController.text);
+        _passwordController.text,branchCode);
     print('TTT To GO 1');
     if (log.token!.isNotEmpty) {
       print('TTT To GO 2');

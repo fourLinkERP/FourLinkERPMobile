@@ -598,7 +598,8 @@
     "company": "الشركة",
     "receive_permission": "إذن استلام",
     "searchReceivePermission": "بحث إذن استلام",
-    "receive_goods": "استلام بضائع"
-
+    "receive_goods": "استلام بضائع",
+    "api": "API",
+    "report_api": "Report API"
 }
 

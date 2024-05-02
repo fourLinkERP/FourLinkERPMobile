@@ -50,6 +50,28 @@ import 'package:flutter/cupertino.dart';
       throw "Failed to load company list";
     }
   }
+  Future<bool> checkApiValidity(String apiUrl) async {
+    Map data = {
+    };
+    try {
+      final http.Response response = await http.post(
+          Uri.parse(apiUrl),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': 'Bearer $token'
+        },
+        body: jsonEncode(data),
+      );
+      if(response.statusCode == 200)
+        {
+          return true;
+        }
+      return false;
+    } catch (e) {
+      print("Error: $e");
+      return false;
+    }
+  }
 
   Future<Company> getCompanyById(int id) async {
 

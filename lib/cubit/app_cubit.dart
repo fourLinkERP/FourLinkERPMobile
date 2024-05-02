@@ -40,36 +40,65 @@ void emitState(){
 
    GetData()async{
 
+    print('Start Cubit Data');
      await CacheHelper.getString('EMAIL').then((value) =>
      {
-       apiUserName=(value != null)? value.toString() : "http://www.sudokuano.net/api/"
+       apiUserName=(value != null)? value.toString() : "" //Edit by Rahma "http://www.sudokuano.net/api/"
      });
+    print('apiUserName Var1');
+    print(apiUserName);
 
      await CacheHelper.getString('PASS').then((value) =>
      {
        apiPassword=(value != null)? value.toString() : ""
      });
+    print('apiUserPass Var1');
+    print(apiPassword);
 
 
      await CacheHelper.getString('API').then((value) =>
      {
-       //urlString = (value != null)? value.toString() : ""
+       urlString = (value != null)? value.toString() : ""
      });
 
-     await CacheHelper.getString('financialYearCode').then((value) =>
+    await CacheHelper.getString('REPORT_API').then((value) =>
+    {
+      reportUrlString = (value != null)? value.toString() : ""
+    });
+
+
+    print('apiAPI Var1');
+    print(urlString);
+
+     await CacheHelper.getString('FinancialYearCode').then((value) =>
      {
        financialYearCode = (value != null)? value.toString() : "2024"
      });
-     //
-     // await CacheHelper.getInt('CompanyCode').then((value) =>
-     // {
-     //   companyCode=((value != null)? value  : 2020)
-     // });
+
+    print('FinancialYearCode Var1');
+    print(financialYearCode);
+
+
+     await CacheHelper.getInt('CompanyCode').then((value) =>
+     {
+       companyCode= (value != null)? value  : 1
+     });
+    print('CompanyCode Var1');
+    print(companyCode);
+
+    await CacheHelper.getString('CompanyName').then((value) =>
+    {
+      companyName = (value != null)? value.toString() : ""
+    });
+
+    print('CompanyName Var1');
+    print(companyName);
 
     // pass=(await  CacheHelper.getDate('PASS'))!;
     // Api=(await CacheHelper.getDate('API'))!;
     // Financialyear=(await CacheHelper.getDate('FY'))!;
     // companyName=(await CacheHelper.getDate('company name'))!;
+    print('Cubit Done');
     emit(AppChangeState());
   }
 
