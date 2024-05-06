@@ -51,8 +51,6 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    print('okkkkkkkkkkk');
     getData();
     super.initState();
 
@@ -445,7 +443,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
       return const Center(child: CircularProgressIndicator());
     }else{
       return Container(
-        color: Color.fromRGBO(240, 242, 246,1), // Main Color
+        color: const Color.fromRGBO(240, 242, 246,1), // Main Color
         child: ListView.builder(
             itemCount: _salesOffers == null ? 0 : _salesOffers.length,
             itemBuilder: (BuildContext context, int index) {

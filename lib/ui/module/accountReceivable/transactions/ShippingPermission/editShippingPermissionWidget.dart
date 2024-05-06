@@ -1,39 +1,39 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/receivePermission/ReceivePermissionD.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/receivePermission/ReceivePermissionH.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/shippingPermission/ShippingPermissionD.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/shippingPermission/ShippingPermissionH.dart';
 import 'package:supercharged/supercharged.dart';
 
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
+import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/salesMen/salesMan.dart';
 import '../../../../../data/model/modules/module/accountreceivable/basicInputs/ClearanceContainerTypes/clearanceContainerType.dart';
 import '../../../../../data/model/modules/module/accountreceivable/basicInputs/Stores/store.dart';
-import '../../../../../data/model/modules/module/accountreceivable/basicInputs/Vendors/vendor.dart';
-import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../data/model/modules/module/inventory/basicInputs/items/items.dart';
 import '../../../../../data/model/modules/module/inventory/basicInputs/units/units.dart';
 import '../../../../../helpers/hex_decimal.dart';
-import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/Inventory/basicInputs/items/itemApiService.dart';
 import '../../../../../service/module/Inventory/basicInputs/units/unitApiService.dart';
+import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/ClearanceContainerTypes/clearanceContainerTypeApiService.dart';
+import '../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/SalesMen/salesManApiService.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Stores/storesApiService.dart';
-import '../../../../../service/module/accountReceivable/basicInputs/Vendors/vendorsApiService.dart';
-import '../../../../../service/module/accountReceivable/transactions/ReceivePermissions/receivePermissionDApiService.dart';
-import '../../../../../service/module/accountReceivable/transactions/ReceivePermissions/receivePermissionHApiService.dart';
+import '../../../../../service/module/accountReceivable/transactions/ShippingPermission/shippingPermissionDApiService.dart';
+import '../../../../../service/module/accountReceivable/transactions/ShippingPermission/shippingPermissionHApiService.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
+import '../../../../../helpers/toast.dart';
 import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import '../../../../../theme/fitness_app_theme.dart';
 
+import '../../../../../theme/fitness_app_theme.dart';
 
 //APIs
 NextSerialApiService _nextSerialApiService = NextSerialApiService();
-VendorsApiService _vendorApiService = VendorsApiService();
-ReceivePermissionHApiService _receivePermissionHApiService= ReceivePermissionHApiService();
-ReceivePermissionDApiService _receivePermissionDApiService= ReceivePermissionDApiService();
+CustomerApiService _customerApiService = CustomerApiService();
+ShippingPermissionHApiService _shippingPermissionHApiService= ShippingPermissionHApiService();
+ShippingPermissionDApiService _shippingPermissionDApiService= ShippingPermissionDApiService();
 SalesManApiService _salesManApiService= SalesManApiService();
 StoresApiService _storesApiService= StoresApiService();
 ClearanceContainerTypesApiService _clearanceContainerTypesApiService= ClearanceContainerTypesApiService();
@@ -41,7 +41,7 @@ ItemApiService _itemsApiService = ItemApiService();
 UnitApiService _unitsApiService = UnitApiService();
 
 //List Models
-List<Vendors> vendors=[];
+List<Customer> customers=[];
 List<SalesMan> salesMen=[];
 List<ClearanceContainerType> containerTypes=[];
 List<Stores> stores=[];
@@ -59,24 +59,24 @@ int  rowsCount = 0;
 double  totalPrice = 0;
 double  totalNet = 0;
 
-class EditReceivePermissionHDataWidget extends StatefulWidget {
-  EditReceivePermissionHDataWidget(this.receiveH);
+class EditShippingPermissionDataWidget extends StatefulWidget {
+  EditShippingPermissionDataWidget(this.shippingH);
 
-  final ReceivePermissionH receiveH;
+  final ShippingPermissionH shippingH;
 
   @override
-  _EditReceivePermissionHDataWidgetState createState() => _EditReceivePermissionHDataWidgetState();
+  _EditShippingPermissionDataWidgetState createState() => _EditShippingPermissionDataWidgetState();
 }
 
-class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermissionHDataWidget> {
-  _EditReceivePermissionHDataWidgetState();
+class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissionDataWidget> {
+  _EditShippingPermissionDataWidgetState();
 
-  final ReceivePermissionHApiService api = ReceivePermissionHApiService();
+  final ShippingPermissionHApiService api = ShippingPermissionHApiService();
   int id = 0;
-  List<ReceivePermissionD> receiveDLst = <ReceivePermissionD>[];
-  List<ReceivePermissionD> selected = [];
+  List<ShippingPermissionD> shippingDLst = <ShippingPermissionD>[];
+  List<ShippingPermissionD> selected = [];
 
-  String? selectedSupplierValue = "";
+  String? selectedCustomerValue = "";
   String? selectedStockTypeValue = "1";
   String? selectedSalesManValue = null;
   String? selectedContainerValue = null;
@@ -92,7 +92,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
   final _addFormKey = GlobalKey<FormState>();
 
   //Header
-  final _dropdownVendorFormKey = GlobalKey<FormState>();
+  final _dropdownCustomerFormKey = GlobalKey<FormState>();
   final _dropdownSalesManFormKey = GlobalKey<FormState>();
   final _dropdownStoreFormKey = GlobalKey<FormState>();
   final _dropdownContainerTypeFormKey = GlobalKey<FormState>();
@@ -114,7 +114,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
   final _totalCartonSizeController = TextEditingController();
   final _notesController = TextEditingController();
 
-  Vendors? vendorItem = Vendors(vendorCode: "", vendorNameAra: "", vendorNameEng: "", id: 0);
+  Customer? customerItem = Customer(customerCode: "", customerNameAra: "", customerNameEng: "", id: 0);
   Item?  itemItem=Item(itemCode: "",itemNameAra: "",itemNameEng: "",id: 0);
   Unit?  unitItem=Unit(unitCode: "",unitNameAra: "",unitNameEng: "",id: 0);
 
@@ -132,20 +132,20 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
     totalPrice = 0;
     totalNet = 0;
 
-    id = widget.receiveH.id!;
-    _stockSerialController.text = widget.receiveH.trxSerial!;
-    _stockDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.receiveH.trxDate!.toString()));
-    selectedSupplierValue = widget.receiveH.targetCode!;
-    selectedSalesManValue = widget.receiveH.salesManCode!;
-    _totalCartonNumberController.text = widget.receiveH.totalShippmentCount.toString();
-    _totalCartonSizeController.text = widget.receiveH.totalShippmentWeightCount.toString();
-    _notesController.text = widget.receiveH.notes!;
-    selectedStoreValue = widget.receiveH.storeCode;
-    selectedContainerValue = widget.receiveH.containerTypeCode;
-    _containerNumberController.text = widget.receiveH.containerNo.toString();
+    id = widget.shippingH.id!;
+    _stockSerialController.text = widget.shippingH.trxSerial!;
+    _stockDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.shippingH.trxDate!.toString()));
+    selectedCustomerValue = widget.shippingH.customerCode!;
+    selectedSalesManValue = widget.shippingH.salesManCode!;
+    _totalCartonNumberController.text = widget.shippingH.totalShippmentCount.toString();
+    _totalCartonSizeController.text = widget.shippingH.totalShippmentWeightCount.toString();
+    _notesController.text = widget.shippingH.notes!;
+    selectedStoreValue = widget.shippingH.storeCode;
+    selectedContainerValue = widget.shippingH.containerTypeCode;
+    _containerNumberController.text = widget.shippingH.containerNo.toString();
 
-    totalQty =(widget.receiveH.totalQty != null) ? double.parse(_totalQtyController.text) : 0;
-    rowsCount =(widget.receiveH.rowsCount != null) ? int.parse(_rowsCountController.text) : 0;
+    totalQty =(widget.shippingH.totalQty != null) ? double.parse(_totalQtyController.text) : 0;
+    rowsCount =(widget.shippingH.rowsCount != null) ? int.parse(_rowsCountController.text) : 0;
 
     fillCompos();
     super.initState();
@@ -161,7 +161,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
 
         backgroundColor:  Colors.transparent,
         onPressed: (){
-          saveReceive(context);
+          saveShipping(context);
         },
 
         child:Container(
@@ -200,7 +200,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
             const SizedBox(width: 1),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 11, 2, 0),
-              child: Text('receive_goods'.tr(),
+              child: Text('shipping_goods'.tr(),
                   style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0)),
             )
           ],
@@ -262,17 +262,17 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Form(
-                            key: _dropdownVendorFormKey,
+                            key: _dropdownCustomerFormKey,
                             child: Row(
                               children: [
                                 SizedBox(
                                     width: 70,
-                                    child: Text('${"vendor".tr()} :', style: const TextStyle(fontWeight: FontWeight.bold))),
+                                    child: Text('${"customer".tr()} :', style: const TextStyle(fontWeight: FontWeight.bold))),
                                 const SizedBox(width: 10),
                                 SizedBox(
                                   width: 200,
-                                  child: DropdownSearch<Vendors>(
-                                    selectedItem: null,
+                                  child: DropdownSearch<Customer>(
+                                    selectedItem: customerItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
@@ -287,7 +287,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                                           ),
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Text((langId==1)? item.vendorNameAra.toString() : item.vendorNameEng.toString()),
+                                            child: Text((langId==1)? item.customerNameAra.toString() : item.customerNameEng.toString()),
                                           ),
                                         );
                                       },
@@ -295,16 +295,16 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
 
                                     ),
 
-                                    items: vendors,
-                                    itemAsString: (Vendors u) => (langId==1)? u.vendorNameAra.toString() : u.vendorNameEng.toString(),
+                                    items: customers,
+                                    itemAsString: (Customer u) => (langId==1)? u.customerNameAra.toString() : u.customerNameEng.toString(),
 
                                     onChanged: (value){
-                                      selectedSupplierValue = value!.vendorCode.toString();
+                                      selectedCustomerValue = value!.customerCode.toString();
                                     },
 
                                     filterFn: (instance, filter){
-                                      if (instance.vendorNameAra != null && instance.vendorNameEng != null) {
-                                        (langId == 1) ? instance.vendorNameAra?.contains(filter) : instance.vendorNameEng?.contains(filter);
+                                      if (instance.customerNameAra != null && instance.customerNameEng != null) {
+                                        (langId == 1) ? instance.customerNameAra?.contains(filter) : instance.customerNameEng?.contains(filter);
                                         return true;
                                       } else {
                                         return false; // Return false if either vendorNameAra or vendorNameEng is null
@@ -358,7 +358,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                                     itemAsString: (SalesMan u) => (langId==1)? u.salesManNameAra.toString() : u.salesManNameEng.toString(),
 
                                     onChanged: (value){
-                                      selectedSupplierValue = value!.salesManCode.toString();
+                                      selectedSalesManValue = value!.salesManCode.toString();
                                     },
 
                                     filterFn: (instance, filter){
@@ -417,7 +417,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                                     itemAsString: (Stores u) => (langId==1)? u.storeNameAra.toString() : u.storeNameEng.toString(),
 
                                     onChanged: (value){
-                                      selectedSupplierValue = value!.storeCode.toString();
+                                      selectedStoreValue = value!.storeCode.toString();
                                     },
 
                                     filterFn: (instance, filter){
@@ -769,7 +769,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                                 ),
                                 label: Text('add_product'.tr(),style:const TextStyle(color: Color.fromRGBO(144, 16, 46, 1)) ),
                                 onPressed: () {
-                                  addReceiveRow() ;
+                                  addShippingRow() ;
                                 },
                                 style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
@@ -807,7 +807,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                           DataColumn(label: Text("total".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
                           DataColumn(label: Text("contract_num".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
                         ],
-                        rows: receiveDLst.map((p) =>
+                        rows: shippingDLst.map((p) =>
                             DataRow(cells: [
                               DataCell(SizedBox(width: 5, child: Text(p.lineNum.toString()))),
                               DataCell(SizedBox(width: 50, child: Text(p.itemName.toString()))),
@@ -903,14 +903,13 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
 
     );
   }
+  getShippingPermissionData() {
+    print('ShippingD List${shippingDLst.length}');
+    if (shippingDLst.isNotEmpty) {
+      for(var i = 0; i < shippingDLst.length; i++){
 
-  getReceivePermissionData() {
-    print('ReceiveD List' + receiveDLst.length.toString());
-    if (receiveDLst.isNotEmpty) {
-      for(var i = 0; i < receiveDLst.length; i++){
-
-        ReceivePermissionD _receiveD = receiveDLst[i];
-        _receiveD.isUpdate=true;
+        ShippingPermissionD _shippingD = shippingDLst[i];
+        _shippingD.isUpdate=true;
 
       }
     }
@@ -918,6 +917,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
 
     });
   }
+
   fillCompos(){
 
     //Serial
@@ -935,11 +935,11 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
       print(e);
     });
 
-    //Vendors
-    Future<List<Vendors>> futureVendor = _vendorApiService.getVendors().then((data) {
-      vendors = data;
+    //Customers
+    Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
+      customers = data;
 
-      return vendors;
+      return customers;
     }, onError: (e) {
       print(e);
     });
@@ -978,15 +978,16 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
     }, onError: (e) {
       print(e);
     });
-    Future<List<ReceivePermissionD>> futureReceiveD = _receivePermissionDApiService.getReceivePermissionD(id).then((data) {
-      receiveDLst = data;
-      print('success ReceiveD---------');
-      getReceivePermissionData();
-      return receiveDLst;
+    Future<List<ShippingPermissionD>> futureShippingD = _shippingPermissionDApiService.getShippingPermissionD(id).then((data) {
+      shippingDLst = data;
+      print('success ShippingD---------');
+      getShippingPermissionData();
+      return shippingDLst;
     }, onError: (e) {
       print(e);
     });
   }
+
   Widget textFormFields({controller, hintText,onTap, onSaved, textInputType,enable})  {
     return TextFormField(
       controller: controller,
@@ -1021,17 +1022,17 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
     );
   }
 
-  saveReceive(BuildContext context) async {
+  saveShipping(BuildContext context) async {
 
     //Items
-    if(receiveDLst == null || receiveDLst.length <=0){
+    if(shippingDLst == null || shippingDLst.length <=0){
       FN_showToast(context,'please_Insert_One_Item_At_Least'.tr(),Colors.black);
       return;
     }
 
     //Serial
     if(_stockSerialController.text.isEmpty){
-      FN_showToast(context,'please_Set_Receive_Serial'.tr(),Colors.black);
+      FN_showToast(context,'please_Set_Shipping_Serial'.tr(),Colors.black);
       return;
     }
 
@@ -1042,17 +1043,17 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
     }
 
     //Supplier
-    if(selectedSupplierValue == null || selectedSupplierValue!.isEmpty){
+    if(selectedCustomerValue == null || selectedCustomerValue!.isEmpty){
       FN_showToast(context,'please_Set_Supplier'.tr(),Colors.black);
       return;
     }
 
-    await _receivePermissionHApiService.updateReceivePermissionH(context,id,ReceivePermissionH(
+    await _shippingPermissionHApiService.updateShippingPermissionH(context,id,ShippingPermissionH(
 
       trxSerial: _stockSerialController.text,
       trxTypeCode:  "1",
       trxDate: _stockDateController.text,
-      targetCode: selectedSupplierValue.toString() ,
+      customerCode: selectedCustomerValue.toString() ,
       salesManCode: selectedSalesManValue.toString(),
       storeCode: selectedStoreValue.toString(),
       containerTypeCode: selectedContainerValue.toString(),
@@ -1071,12 +1072,12 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
 
     //Save Footer For Now
 
-    for(var i = 0; i < receiveDLst.length; i++){
-      ReceivePermissionD _receiveD = receiveDLst[i];
+    for(var i = 0; i < shippingDLst.length; i++){
+      ShippingPermissionD _receiveD = shippingDLst[i];
       if(_receiveD.isUpdate == false)
       {
         //Add
-        _receivePermissionDApiService.createReceivePermissionD(context,ReceivePermissionD(
+        _shippingPermissionDApiService.createShippingPermissionD(context,ShippingPermissionD(
             trxSerial: _stockSerialController.text,
             trxTypeCode: "1",
             itemCode: _receiveD.itemCode,
@@ -1101,7 +1102,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
     Navigator.pop(context) ;
   }
 
-  addReceiveRow() {
+  addShippingRow() {
     //Item
     if (selectedItemValue == null || selectedItemValue!.isEmpty) {
       FN_showToast(context, 'please_enter_item'.tr(), Colors.black);
@@ -1118,7 +1119,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
       return;
     }
 
-    ReceivePermissionD _receiveD = ReceivePermissionD();
+    ShippingPermissionD _receiveD = ShippingPermissionD();
     _receiveD.itemCode = selectedItemValue;
     _receiveD.itemName = selectedItemName;
     _receiveD.unitCode = selectedUnitValue;
@@ -1139,7 +1140,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
 
     _receiveD.lineNum = lineNum;
 
-    receiveDLst.add(_receiveD);
+    shippingDLst.add(_receiveD);
 
     totalCartonNumber += _receiveD.shippmentCount;
     totalCartonSize += _receiveD.shippmentWeightCount;
@@ -1189,5 +1190,4 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
       print(e);
     });
   }
-
 }

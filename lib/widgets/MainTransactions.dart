@@ -10,6 +10,7 @@ import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
   import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../ui/module/accountreceivable/transactions/ReceivePermission/receivePermissionList.dart';
+import '../ui/module/accountreceivable/transactions/ShippingPermission/shippingPermissionList.dart';
 
 class MainTransactions extends StatelessWidget {
 
@@ -38,6 +39,7 @@ class MainTransactions extends StatelessWidget {
         'assets/fitness_app/accounting.png',
         'assets/fitness_app/accounting.png',
         'assets/fitness_app/receive_goods.png',
+        'assets/fitness_app/shipping.png'
       ];
       List<String> areaListDataTitle = <String>[
         'salesinvoice'.tr(),
@@ -47,6 +49,7 @@ class MainTransactions extends StatelessWidget {
         'cash_receipt'.tr(),
         'purchaseinvoice'.tr(),
         'receive_permission'.tr(),
+        'shipping_permission'.tr()
 
       ];
 
@@ -185,6 +188,19 @@ class MainTransactions extends StatelessWidget {
                 if(isAllowView)
                 {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => ReceivePermissionHListPage()));
+                }
+                else
+                {
+                  FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                }
+              }
+              else if(areaListData[index] == 'assets/fitness_app/shipping.png')
+              {
+                int menuId=6206;
+                bool isAllowView = PermissionHelper.checkViewPermission(menuId);
+                if(isAllowView)
+                {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ShippingPermissionHListPage()));
                 }
                 else
                 {

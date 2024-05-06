@@ -516,6 +516,9 @@
     "carton_size": "Total carton size",
     "contract_num": "Contract Number",
     "total_carton_num": "Total carton number",
-    "total_carton_size": "Total carton size"
+    "total_carton_size": "Total carton size",
+    "shipping_permission": "Shipping Permission",
+    "searchShippingPermission": "search shipping permission",
+    "shipping_goods": "Shipping Goods"
 
 }

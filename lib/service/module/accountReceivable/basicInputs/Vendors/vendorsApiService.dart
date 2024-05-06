@@ -15,8 +15,10 @@ class VendorsApiService{
   Future<List<Vendors>>  getVendors() async {
 
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      'Search':{
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode
+      }
     };
 
     final http.Response response = await http.post(

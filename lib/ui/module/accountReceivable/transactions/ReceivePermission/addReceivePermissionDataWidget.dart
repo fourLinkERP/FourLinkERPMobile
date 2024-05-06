@@ -4,10 +4,13 @@ import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/ba
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/salesMen/salesMan.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/basicInputs/ClearanceContainerTypes/clearanceContainerType.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/receivePermission/ReceivePermissionD.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/receivePermission/ReceivePermissionH.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Vendors/vendorsApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/SalesMen/salesManApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Stores/storesApiService.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/ReceivePermissions/receivePermissionHApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:supercharged/supercharged.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
 import '../../../../../data/model/modules/module/accountreceivable/basicInputs/Stores/store.dart';
@@ -15,9 +18,11 @@ import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.d
 import '../../../../../data/model/modules/module/inventory/basicInputs/items/items.dart';
 import '../../../../../data/model/modules/module/inventory/basicInputs/units/units.dart';
 import '../../../../../helpers/hex_decimal.dart';
+import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/Inventory/basicInputs/items/itemApiService.dart';
 import '../../../../../service/module/Inventory/basicInputs/units/unitApiService.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/ClearanceContainerTypes/clearanceContainerTypeApiService.dart';
+import '../../../../../service/module/accountReceivable/transactions/ReceivePermissions/receivePermissionDApiService.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import 'package:intl/intl.dart';
@@ -26,6 +31,8 @@ import 'package:intl/intl.dart';
 //APIs
 NextSerialApiService _nextSerialApiService = NextSerialApiService();
 VendorsApiService _vendorApiService = VendorsApiService();
+ReceivePermissionHApiService _receivePermissionHApiService= ReceivePermissionHApiService();
+ReceivePermissionDApiService _receivePermissionDApiService= ReceivePermissionDApiService();
 SalesManApiService _salesManApiService= SalesManApiService();
 StoresApiService _storesApiService= StoresApiService();
 ClearanceContainerTypesApiService _clearanceContainerTypesApiService= ClearanceContainerTypesApiService();
@@ -52,17 +59,19 @@ double  totalPrice = 0;
 double  totalNet = 0;
 
 class AddReceivePermissionHDataWidget extends StatefulWidget {
-  const AddReceivePermissionHDataWidget({Key? key}) : super(key: key);
+  AddReceivePermissionHDataWidget();
 
   @override
-  State<AddReceivePermissionHDataWidget> createState() => _AddReceivePermissionHDataWidgetState();
+  _AddReceivePermissionHDataWidgetState createState() => _AddReceivePermissionHDataWidgetState();
 }
 
 class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHDataWidget> {
+  _AddReceivePermissionHDataWidgetState();
 
   List<ReceivePermissionD> receiveDLst = <ReceivePermissionD>[];
-
-  String? selectedVendorValue = null;
+  List<ReceivePermissionD> selected = [];
+  
+  String? selectedSupplierValue = null;
   String? selectedStockTypeValue = "1";
   String? selectedSalesManValue = null;
   String? selectedContainerValue = null;
@@ -75,6 +84,8 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
   String? qty = null;
   String? total = null;
   final _addFormKey = GlobalKey<FormState>();
+
+  final ReceivePermissionHApiService api = ReceivePermissionHApiService();
 
   //Header
   final _dropdownVendorFormKey = GlobalKey<FormState>();
@@ -90,6 +101,7 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
   final _containerNumberController = TextEditingController();
   final _cartonNumberController = TextEditingController();
   final _cartonSizeController = TextEditingController();
+  final _contractNumberController = TextEditingController();
   final _totalQtyController = TextEditingController();
   final _rowsCountController = TextEditingController();
   final _totalValueController = TextEditingController();
@@ -128,7 +140,7 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
 
         backgroundColor:  Colors.transparent,
         onPressed: (){
-
+          saveReceive(context);
         },
 
         child:Container(
@@ -266,7 +278,7 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
                                     itemAsString: (Vendors u) => (langId==1)? u.vendorNameAra.toString() : u.vendorNameEng.toString(),
 
                                     onChanged: (value){
-                                      selectedVendorValue = value!.vendorCode.toString();
+                                      selectedSupplierValue = value!.vendorCode.toString();
                                     },
 
                                     filterFn: (instance, filter){
@@ -325,7 +337,7 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
                                     itemAsString: (SalesMan u) => (langId==1)? u.salesManNameAra.toString() : u.salesManNameEng.toString(),
 
                                     onChanged: (value){
-                                      selectedVendorValue = value!.salesManCode.toString();
+                                      selectedSalesManValue = value!.salesManCode.toString();
                                     },
 
                                     filterFn: (instance, filter){
@@ -384,7 +396,7 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
                                     itemAsString: (Stores u) => (langId==1)? u.storeNameAra.toString() : u.storeNameEng.toString(),
 
                                     onChanged: (value){
-                                      selectedVendorValue = value!.storeCode.toString();
+                                      selectedStoreValue = value!.storeCode.toString();
                                     },
 
                                     filterFn: (instance, filter){
@@ -499,19 +511,19 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
                           Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
                               child: Text('notes'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
                           const SizedBox(width: 10),
-                          SizedBox(
-                            height: 70,
-                            width: 250,
-                            child: defaultFormField(
-                              controller: _notesController,
-                              type: TextInputType.text,
-                              colors: Colors.blueGrey,
-                              validate: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'notes must be non empty';
-                                }
-                                return null;
-                              },
+                          Expanded(
+                            child: SizedBox(
+                              child: defaultFormField(
+                                controller: _notesController,
+                                type: TextInputType.text,
+                                colors: Colors.blueGrey,
+                                validate: (String? value) {
+                                  if (value!.isEmpty) {
+                                    return 'notes must be non empty';
+                                  }
+                                  return null;
+                                },
+                              ),
                             ),
                           ),
                         ],
@@ -718,7 +730,7 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
                               width: 100,
                               child: TextFormField(
                                 keyboardType: TextInputType.number,
-                                controller: _cartonNumberController,
+                                controller: _contractNumberController,
                                 enabled: true,
                               ),
                             ),
@@ -736,7 +748,7 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
                                 ),
                                 label: Text('add_product'.tr(),style:const TextStyle(color: Color.fromRGBO(144, 16, 46, 1)) ),
                                 onPressed: () {
-                                  //addInvoiceRow() ;
+                                  addReceiveRow() ;
                                 },
                                 style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
@@ -779,9 +791,9 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
                               DataCell(SizedBox(width: 5, child: Text(p.lineNum.toString()))),
                               DataCell(SizedBox(width: 50, child: Text(p.itemName.toString()))),
                               DataCell(SizedBox(child: Text(p.displayQty.toString()))),
-                              DataCell(SizedBox(child: Text(p.displayPrice.toString()))),
-                              DataCell(SizedBox(child: Text(p.cartonNumber.toString()))),
-                              DataCell(SizedBox(child: Text(p.displayTotal.toString()))),
+                              DataCell(SizedBox(child: Text(p.shippmentCount.toString()))),
+                              DataCell(SizedBox(child: Text(p.total.toString()))),
+                              DataCell(SizedBox(child: Text(p.contractNumber.toString()))),
 
                             ]),
                         ).toList(),
@@ -870,6 +882,158 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
 
     );
   }
+  saveReceive(BuildContext context) async {
+
+    //Items
+    if(receiveDLst == null || receiveDLst.length <=0){
+      FN_showToast(context,'please_Insert_One_Item_At_Least'.tr(),Colors.black);
+      return;
+    }
+
+    //Serial
+    if(_stockSerialController.text.isEmpty){
+      FN_showToast(context,'please_Set_Receive_Serial'.tr(),Colors.black);
+      return;
+    }
+
+    //Date
+    if(_stockDateController.text.isEmpty){
+      FN_showToast(context,'please_Set_Date'.tr(),Colors.black);
+      return;
+    }
+
+    //Supplier
+    if(selectedSupplierValue == null || selectedSupplierValue!.isEmpty){
+      FN_showToast(context,'please_Set_Supplier'.tr(),Colors.black);
+      return;
+    }
+
+    // //Currency
+    // if(currencyCodeSelectedValue == null || currencyCodeSelectedValue!.isEmpty){
+    //   FN_showToast(context,'Please Set Currency',Colors.black);
+    //   return;
+    // }
+
+    await _receivePermissionHApiService.createReceivePermissionH(context,ReceivePermissionH(
+
+        trxSerial: _stockSerialController.text,
+        trxTypeCode:  "1",
+        trxDate: _stockDateController.text,
+        targetCode: selectedSupplierValue.toString() ,
+        salesManCode: selectedSalesManValue.toString(),
+        storeCode: selectedStoreValue.toString(),
+        containerTypeCode: selectedContainerValue.toString(),
+        containerNo: _containerNumberController.text.toInt(),
+        totalShippmentCount: _totalCartonNumberController.text.toInt(),
+        totalShippmentWeightCount: _totalCartonSizeController.text.toInt(),
+        notes: _notesController.text,
+        currencyCode: "1",
+        totalQty:(_totalQtyController.text.isNotEmpty)?  _totalQtyController.text.toDouble():0 ,
+        rowsCount:(rowsCount >0 )? rowsCount :0 ,
+        totalNet:(_totalNetController.text.isNotEmpty)?  _totalNetController.text.toDouble():0 ,
+        totalValue:(_totalValueController.text.isNotEmpty)?  _totalValueController.text.toDouble():0 ,
+        taxGroupCode: "1",
+    ));
+
+    //Save Footer For Now
+
+    for(var i = 0; i < receiveDLst.length; i++){
+      ReceivePermissionD _receiveD = receiveDLst[i];
+      if(_receiveD.isUpdate == false)
+      {
+        //Add
+        _receivePermissionDApiService.createReceivePermissionD(context,ReceivePermissionD(
+            trxSerial: _stockSerialController.text,
+            trxTypeCode: "1",
+            itemCode: _receiveD.itemCode,
+            unitCode: _receiveD.unitCode,
+            lineNum: _receiveD.lineNum,
+            price: 0,
+            displayPrice: 0,
+            total: _receiveD.total,
+            displayQty: _receiveD.displayQty,
+            contractNumber: _receiveD.contractNumber,
+            shippmentCount: _receiveD.shippmentCount,
+            shippmentWeightCount: _receiveD.shippmentWeightCount,
+            displayTotal: _receiveD.total,
+            displayNetValue: _receiveD.displayNetValue,
+            year: int.parse(financialYearCode),
+            storeCode: selectedStoreValue // For Now
+        ));
+      }
+    }
+
+    Navigator.pop(context) ;
+  }
+
+
+  addReceiveRow() {
+    //Item
+    if (selectedItemValue == null || selectedItemValue!.isEmpty) {
+      FN_showToast(context, 'please_enter_item'.tr(), Colors.black);
+      return;
+    }
+
+    //Quantity
+    if (_qtyController.text.isEmpty) {
+      FN_showToast(context, 'please_enter_quantity'.tr(), Colors.black);
+      return;
+    }
+
+    ReceivePermissionD _receiveD = ReceivePermissionD();
+    _receiveD.itemCode = selectedItemValue;
+    _receiveD.itemName = selectedItemName;
+    _receiveD.unitCode = selectedUnitValue;
+    _receiveD.displayQty = (_qtyController.text.isNotEmpty) ? int.parse(_qtyController.text) : 0;
+    _receiveD.costPrice =  0;
+    _receiveD.displayPrice = 0;
+    _receiveD.price = 0;
+    _receiveD.displayTotal = 0;
+    _receiveD.displayNetValue = 0;
+    _receiveD.netValue = 0;
+    total = (int.parse(_qtyController.text) * int.parse(_cartonNumberController.text)).toString();
+    _receiveD.total = double.parse(total!);
+    _receiveD.shippmentCount = (_cartonNumberController.text.isNotEmpty) ? int.parse(_cartonNumberController.text) : 0;
+    _receiveD.shippmentWeightCount = (_cartonSizeController.text.isNotEmpty) ? int.parse(_cartonSizeController.text) : 0;
+    _receiveD.contractNumber = (_contractNumberController.text.isNotEmpty) ? int.parse(_contractNumberController.text) : 0;
+
+    print('Add Product 10');
+
+    _receiveD.lineNum = lineNum;
+
+    receiveDLst.add(_receiveD);
+
+    totalCartonNumber += _receiveD.shippmentCount;
+    totalCartonSize += _receiveD.shippmentWeightCount;
+    totalQty += _receiveD.displayQty;
+
+    rowsCount += 1;
+
+
+    _totalQtyController.text = totalQty.toString();
+    _totalCartonNumberController.text = totalCartonNumber.toString();
+    _totalCartonSizeController.text = totalCartonSize.toString();
+    //_totalValueController.text = "0";
+    _rowsCountController.text = rowsCount.toString();
+    //_totalNetController.text = totalNet.toString();
+
+    //
+    lineNum++;
+
+    FN_showToast(context, 'add_Item_Done'.tr(), Colors.black);
+
+    setState(() {
+      _qtyController.text = "";
+      _cartonNumberController.text = "";
+      _cartonSizeController.text = "";
+      _contractNumberController.text = "";
+      itemItem = Item(itemCode: "", itemNameAra: "", itemNameEng: "", id: 0);
+      unitItem = Unit(unitCode: "", unitNameAra: "", unitNameEng: "", id: 0);
+      selectedItemValue = "";
+      selectedUnitValue = "";
+    });
+  }
+  
   Widget textFormFields({controller, hintText,onTap, onSaved, textInputType,enable})  {
     return TextFormField(
       controller: controller,

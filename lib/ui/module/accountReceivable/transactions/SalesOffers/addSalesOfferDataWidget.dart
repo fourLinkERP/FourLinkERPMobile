@@ -1018,14 +1018,7 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
 
     });
   }
-  // _navigateToAddDetailScreen (BuildContext context, String invoiceSerial) async {
-  //   final result = await Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => AddSalesOfferDetailDataWidget(invoiceSerial)),
-  //   );
-  //   //).then((value) => getData());
-  //
-  // }
+
 
     saveInvoice(BuildContext context) async {
 

@@ -1,39 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/receivePermission/ReceivePermissionD.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/receivePermission/ReceivePermissionH.dart';
-import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/ReceivePermissions/receivePermissionDApiService.dart';
-import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/ReceivePermissions/receivePermissionHApiService.dart';
-import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/ReceivePermission/detailReceivePermissionWidget.dart';
-import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/ReceivePermission/editReceivePermissionDataWidger.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
-
-import '../../../../../common/globals.dart';
-import '../../../../../cubit/app_cubit.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/shippingPermission/ShippingPermissionD.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/shippingPermission/ShippingPermissionH.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/ShippingPermission/shippingPermissionDApiService.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/ShippingPermission/shippingPermissionHApiService.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/ShippingPermission/addShippingPermissionWidget.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/ShippingPermission/editShippingPermissionWidget.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
+import '../../../../../common/globals.dart';
+import '../../../../../cubit/app_cubit.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import '../../../../../utils/permissionHelper.dart';
-import 'addReceivePermissionDataWidget.dart';
 import 'package:intl/intl.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 
 //APIs
-ReceivePermissionHApiService _apiService = ReceivePermissionHApiService();
-ReceivePermissionDApiService _apiDService = ReceivePermissionDApiService();
+ShippingPermissionHApiService _apiService = ShippingPermissionHApiService();
+ShippingPermissionDApiService _apiDService = ShippingPermissionDApiService();
 
-class ReceivePermissionHListPage extends StatefulWidget {
-  const ReceivePermissionHListPage({Key? key}) : super(key: key);
+class ShippingPermissionHListPage extends StatefulWidget {
+  const ShippingPermissionHListPage({Key? key}) : super(key: key);
 
   @override
-  State<ReceivePermissionHListPage> createState() => _ReceivePermissionHListPageState();
+  State<ShippingPermissionHListPage> createState() => _ShippingPermissionHListPageState();
 }
 
-class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage> {
+class _ShippingPermissionHListPageState extends State<ShippingPermissionHListPage> {
 
-  List<ReceivePermissionH> _receivePermissions = [];
-  List<ReceivePermissionH> _receivePermissionsSearch = [];
-  List<ReceivePermissionD> _receivePermissionsD = [];
-  List<ReceivePermissionH> _founded = [];
-
+  List<ShippingPermissionH> _shippingPermissions = [];
+  List<ShippingPermissionH> _shippingPermissionsSearch = [];
+  List<ShippingPermissionD> _shippingPermissionsD = [];
+  List<ShippingPermissionH> _founded = [];
 
   @override
   void initState() {
@@ -41,23 +38,23 @@ class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage>
     super.initState();
 
     setState(() {
-      _founded = _receivePermissions!;
+      _founded = _shippingPermissions!;
     });
   }
   void getData() async {
     try {
-      List<ReceivePermissionH>? futureReceiveH = await _apiService.getReceivePermissionsH();
+      List<ShippingPermissionH>? futureReceiveH = await _apiService.getShippingPermissionsH();
 
       if (futureReceiveH != null) {
-        _receivePermissions = futureReceiveH;
-        _receivePermissionsSearch = List.from(_receivePermissions);
+        _shippingPermissions = futureReceiveH;
+        _shippingPermissionsSearch = List.from(_shippingPermissions);
 
-        if (_receivePermissions.isNotEmpty) {
-          _receivePermissions.sort((a, b) =>
+        if (_shippingPermissions.isNotEmpty) {
+          _shippingPermissions.sort((a, b) =>
               int.parse(b.trxSerial!).compareTo(int.parse(a.trxSerial!)));
 
           setState(() {
-            _founded = _receivePermissions!;
+            _founded = _shippingPermissions!;
           });
         }
       }
@@ -67,21 +64,21 @@ class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage>
   }
 
   void getDetailData(int? headerId) async {
-    Future<List<ReceivePermissionD>?> futureReceiveD = _apiDService.getReceivePermissionD(headerId);
-    _receivePermissionsD = (await futureReceiveD)!;
+    Future<List<ShippingPermissionD>?> futureReceiveD = _apiDService.getShippingPermissionD(headerId);
+    _shippingPermissionsD = (await futureReceiveD)!;
 
   }
 
   void onSearch(String search) {
     if (search.isEmpty) {
       setState(() {
-        _receivePermissions = List.from(_receivePermissionsSearch!);
+        _shippingPermissions = List.from(_shippingPermissionsSearch!);
       });
     } else {
       setState(() {
-        _receivePermissions = List.from(_receivePermissionsSearch!);
-        _receivePermissions = _receivePermissions.where((receiveH) =>
-            receiveH.trxSerial!.toLowerCase().contains(search)).toList();
+        _shippingPermissions = List.from(_shippingPermissionsSearch!);
+        _shippingPermissions = _shippingPermissions.where((shippingH) =>
+            shippingH.trxSerial!.toLowerCase().contains(search)).toList();
       });
     }
   }
@@ -90,36 +87,36 @@ class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
-        title: SizedBox(
-          child: Column(
-            children: [
-              TextField(
-                controller: searchValueController,
-                onChanged: (searchValue) => onSearch(searchValue),
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.all(0),
-                  prefixIcon: const Icon(Icons.search, color: Colors.black26,),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    borderSide: BorderSide.none,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
+          title: SizedBox(
+            child: Column(
+              children: [
+                TextField(
+                  controller: searchValueController,
+                  onChanged: (searchValue) => onSearch(searchValue),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: const EdgeInsets.all(0),
+                    prefixIcon: const Icon(Icons.search, color: Colors.black26,),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(50),
+                      borderSide: BorderSide.none,
+                    ),
+                    hintStyle: const TextStyle(
+                        fontSize: 16,
+                        color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
+                    ),
+                    hintText: "searchShippingPermission".tr(),
                   ),
-                  hintStyle: const TextStyle(
-                      fontSize: 16,
-                      color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
-                  ),
-                  hintText: "searchReceivePermission".tr(),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
-      body: buildReceives(),
+        body: buildShipping(),
         floatingActionButton: FloatingActionButton(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(90.0))
@@ -170,9 +167,8 @@ class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage>
         )
     );
   }
-
-  Widget buildReceives(){
-    if(_receivePermissions.isEmpty){
+  Widget buildShipping(){
+    if(_shippingPermissions.isEmpty){
       return const Center(child: CircularProgressIndicator());
     }
     else{
@@ -180,31 +176,30 @@ class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage>
         color: const Color.fromRGBO(240, 242, 246,1),// Main Color
 
         child: ListView.builder(
-            itemCount: _receivePermissions.isEmpty ? 0 : _receivePermissions.length,
+            itemCount: _shippingPermissions.isEmpty ? 0 : _shippingPermissions.length,
             itemBuilder: (BuildContext context, int index) {
               return
                 Card(
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context, MaterialPageRoute(builder: (context) => DetailReceivePermissionWidget(_receivePermissions[index])),
-                      );
+                      // Navigator.push(
+                      //   context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_shippingPermissions[index])),
+                      // );
                     },
                     child: ListTile(
-                      //leading: Image.asset('assets/fitness_app/salesCart.png'),
                       leading: Image.asset('assets/fitness_app/quotion.png'),
-                      title: Text('serial'.tr() + " : " + _receivePermissions[index].trxSerial.toString()),
+                      title: Text('serial'.tr() + " : " + _shippingPermissions[index].trxSerial.toString()),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_receivePermissions[index].trxDate.toString())))),
+                              child: Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_shippingPermissions[index].trxDate.toString())))),
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Text('vendor'.tr() + " : " + _receivePermissions[index].targetName.toString())),
+                              child: Text('vendor'.tr() + " : " + _shippingPermissions[index].customerName.toString())),
                           const SizedBox(width: 5),
                           SizedBox(
                               child: Row(
@@ -219,7 +214,7 @@ class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage>
                                         ),
                                         label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
                                         onPressed: () {
-                                          _navigateToEditScreen(context,_receivePermissions[index]);
+                                          _navigateToEditScreen(context,_shippingPermissions[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -247,7 +242,7 @@ class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage>
                                         ),
                                         label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                          _deleteItem(context,_receivePermissions[index].id);
+                                          _deleteItem(context,_shippingPermissions[index].id);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -274,7 +269,7 @@ class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage>
                                         ),
                                         label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                          _navigateToPrintScreen(context,_receivePermissions[index],index);
+                                          _navigateToPrintScreen(context,_shippingPermissions[index],index);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -304,11 +299,11 @@ class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage>
   }
 
   _navigateToAddScreen(BuildContext context) async {
-    int menuId=7206;
+    int menuId=6206;
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if(isAllowAdd)
     {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddReceivePermissionHDataWidget(),
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddShippingPermissionDataWidget(),
       ));
       //     .then((value) {
       //   getData();
@@ -320,16 +315,16 @@ class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage>
     }
   }
 
-  _navigateToEditScreen (BuildContext context, ReceivePermissionH receiveH) async {
+  _navigateToEditScreen (BuildContext context, ShippingPermissionH shippingH) async {
 
-    int menuId=7206;
+    int menuId=6206;
     bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
     if(isAllowEdit)
     {
 
       final result = await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => EditReceivePermissionHDataWidget(receiveH)),
+        MaterialPageRoute(builder: (context) => EditShippingPermissionDataWidget(shippingH)),
       ).then((value) => getData());
 
     }
@@ -364,11 +359,11 @@ class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage>
       return;
     }
 
-    int menuId=7206;
+    int menuId=6206;
     bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
     if(isAllowDelete)
     {
-      var res = _apiService.deleteReceivePermissionH(context,id).then((value) => getData());
+      var res = _apiService.deleteShippingPermissionH(context,id).then((value) => getData());
     }
     else
     {
@@ -377,7 +372,7 @@ class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage>
 
   }
 
-  _navigateToPrintScreen (BuildContext context, ReceivePermissionH receiveH,int index) async {
+  _navigateToPrintScreen (BuildContext context, ShippingPermissionH receiveH,int index) async {
     //   int menuId=7206;
     //   bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
     //   //isAllowPrint = true;

@@ -610,6 +610,9 @@
     "carton_size": "اجمالي حجم الكراتين",
     "contract_num": "رقم العقد",
     "total_carton_num": "اجمالي عدد الكراتين",
-    "total_carton_size": "اجمالي حجم الكراتين"
+    "total_carton_size": "اجمالي حجم الكراتين",
+    "shipping_permission": "إذن شحن",
+    "searchShippingPermission": "بحث إذن شحن",
+    "shipping_goods": "شحن بضائع"
 }
 

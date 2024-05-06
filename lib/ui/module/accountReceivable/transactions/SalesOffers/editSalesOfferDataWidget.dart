@@ -1901,7 +1901,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     if (isAllowDelete) {
       setState(() {
         salesOfferDLst.removeWhere((invoiceD) => invoiceD.id == id);
-        _salesInvoiceDApiService.deleteSalesInvoiceD(context, id);
+        _salesOfferDApiService.deleteSalesOfferD(context, id);
         lineNum--;
         rowsCount--;
 
