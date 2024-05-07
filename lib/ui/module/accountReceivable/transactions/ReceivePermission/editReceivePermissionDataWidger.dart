@@ -10,7 +10,6 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
 import '../../../../../data/model/modules/module/accountreceivable/basicInputs/ClearanceContainerTypes/clearanceContainerType.dart';
 import '../../../../../data/model/modules/module/accountreceivable/basicInputs/Stores/store.dart';
 import '../../../../../data/model/modules/module/accountreceivable/basicInputs/Vendors/vendor.dart';
-import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../data/model/modules/module/inventory/basicInputs/items/items.dart';
 import '../../../../../data/model/modules/module/inventory/basicInputs/units/units.dart';
 import '../../../../../helpers/hex_decimal.dart';
@@ -23,14 +22,12 @@ import '../../../../../service/module/accountReceivable/basicInputs/Stores/store
 import '../../../../../service/module/accountReceivable/basicInputs/Vendors/vendorsApiService.dart';
 import '../../../../../service/module/accountReceivable/transactions/ReceivePermissions/receivePermissionDApiService.dart';
 import '../../../../../service/module/accountReceivable/transactions/ReceivePermissions/receivePermissionHApiService.dart';
-import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 
 
 //APIs
-NextSerialApiService _nextSerialApiService = NextSerialApiService();
 VendorsApiService _vendorApiService = VendorsApiService();
 ReceivePermissionHApiService _receivePermissionHApiService= ReceivePermissionHApiService();
 ReceivePermissionDApiService _receivePermissionDApiService= ReceivePermissionDApiService();
@@ -50,10 +47,10 @@ List<Unit> units=[];
 
 int lineNum=1;
 int productQuantity = 0;
-int cartonNumber = 0;
-int totalCartonNumber = 0;
-int productTotalCartonSize = 0;
-int totalCartonSize = 0;
+int shipmentNumber = 0;
+int totalShipmentNumber = 0;
+int productTotalShipmentSize = 0;
+int totalShipmentSize = 0;
 double  totalQty = 0;
 int  rowsCount = 0;
 double  totalPrice = 0;
@@ -103,30 +100,33 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
   final _stockDateController = TextEditingController();
   final _qtyController = TextEditingController();
   final _containerNumberController = TextEditingController();
-  final _cartonNumberController = TextEditingController();
-  final _cartonSizeController = TextEditingController();
+  final _shipmentNumberController = TextEditingController();
+  final _shipmentSizeController = TextEditingController();
   final _contractNumberController = TextEditingController();
   final _totalQtyController = TextEditingController();
   final _rowsCountController = TextEditingController();
   final _totalValueController = TextEditingController();
   final _totalNetController = TextEditingController();
-  final _totalCartonNumberController = TextEditingController();
-  final _totalCartonSizeController = TextEditingController();
+  final _totalShipmentNumberController = TextEditingController();
+  final _totalShipmentSizeController = TextEditingController();
   final _notesController = TextEditingController();
 
+  ClearanceContainerType? clearanceContainerItem = ClearanceContainerType(containerTypeCode: "", containerTypeNameAra: "",containerTypeNameEng: "",id: 0);
   Vendors? vendorItem = Vendors(vendorCode: "", vendorNameAra: "", vendorNameEng: "", id: 0);
+  SalesMan? salesManItem = SalesMan(salesManCode: "", salesManNameAra: "", salesManNameEng: "", id: 0);
+  Stores? storeItem = Stores(storeCode: "", storeNameAra: "", storeNameEng: "", id: 0);
   Item?  itemItem=Item(itemCode: "",itemNameAra: "",itemNameEng: "",id: 0);
   Unit?  unitItem=Unit(unitCode: "",unitNameAra: "",unitNameEng: "",id: 0);
 
   @override
   initState() {
 
-    lineNum=1;
+    //lineNum=1;
     productQuantity = 0;
-    cartonNumber = 0;
-    totalCartonNumber = 0;
-    productTotalCartonSize = 0;
-    totalCartonSize = 0;
+    shipmentNumber = 0;
+    totalShipmentNumber = 0;
+    productTotalShipmentSize = 0;
+    totalShipmentSize = 0;
     totalQty = 0;
     rowsCount = 0;
     totalPrice = 0;
@@ -137,15 +137,16 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
     _stockDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.receiveH.trxDate!.toString()));
     selectedSupplierValue = widget.receiveH.targetCode!;
     selectedSalesManValue = widget.receiveH.salesManCode!;
-    _totalCartonNumberController.text = widget.receiveH.totalShippmentCount.toString();
-    _totalCartonSizeController.text = widget.receiveH.totalShippmentWeightCount.toString();
+    _totalShipmentNumberController.text = widget.receiveH.totalShippmentCount.toString();
+    _totalShipmentSizeController.text = widget.receiveH.totalShippmentWeightCount.toString();
     _notesController.text = widget.receiveH.notes!;
     selectedStoreValue = widget.receiveH.storeCode;
     selectedContainerValue = widget.receiveH.containerTypeCode;
     _containerNumberController.text = widget.receiveH.containerNo.toString();
-
-    totalQty =(widget.receiveH.totalQty != null) ? double.parse(_totalQtyController.text) : 0;
-    rowsCount =(widget.receiveH.rowsCount != null) ? int.parse(_rowsCountController.text) : 0;
+    _totalQtyController.text = widget.receiveH.totalQty.toString();
+    _rowsCountController.text = widget.receiveH.rowsCount.toString();
+    totalQty = widget.receiveH.totalQty!;
+    rowsCount = widget.receiveH.rowsCount!;
 
     fillCompos();
     super.initState();
@@ -272,7 +273,8 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                                 SizedBox(
                                   width: 200,
                                   child: DropdownSearch<Vendors>(
-                                    selectedItem: null,
+                                    validator: (value) => value == null ? "select_a_Type".tr() : null,
+                                    selectedItem: vendorItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
@@ -331,7 +333,8 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                                 SizedBox(
                                   width: 200,
                                   child: DropdownSearch<SalesMan>(
-                                    selectedItem: null,
+                                    validator: (value) => value == null ? "select_a_Type".tr() : null,
+                                    selectedItem: salesManItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
@@ -391,7 +394,8 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                                 SizedBox(
                                   width: 200,
                                   child: DropdownSearch<Stores>(
-                                    selectedItem: null,
+                                    validator: (value) => value == null ? "select_a_Type".tr() : null,
+                                    selectedItem: storeItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
@@ -472,7 +476,8 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                                 SizedBox(
                                   width: 100,
                                   child: DropdownSearch<ClearanceContainerType>(
-                                    selectedItem: null,
+                                    validator: (value) => value == null ? "select_a_Type".tr() : null,
+                                    selectedItem: clearanceContainerItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
@@ -704,14 +709,14 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                         Row(
                           children: [
                             SizedBox(
-                                width: 50,
-                                child: Text('carton_num'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
-                            const SizedBox(width: 10),
+                                width: 65,
+                                child: Text('shipment_num'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
+                            const SizedBox(width: 5),
                             SizedBox(
                               width: 90,
                               child: TextFormField(
                                 keyboardType: TextInputType.number,
-                                controller: _cartonNumberController,
+                                controller: _shipmentNumberController,
                                 enabled: true,
                               ),
                             ),
@@ -722,14 +727,14 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                           children: [
                             SizedBox(
                                 width: 70,
-                                child: Text('carton_size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))
+                                child: Text('shipment_size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 5),
                             SizedBox(
-                              width: 90,
+                              width: 85,
                               child: TextFormField(
                                 keyboardType: TextInputType.number,
-                                controller: _cartonSizeController,
+                                controller: _shipmentSizeController,
                                 enabled: true,
                               ),
                             ),
@@ -803,7 +808,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                           DataColumn(label: Text("id".tr(),style: const TextStyle(color: Colors.white),),),
                           DataColumn(label: Text("name".tr(),style: const TextStyle(color: Colors.white),),),
                           DataColumn(label: Text("qty".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
-                          DataColumn(label: Text("carton_num".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                          DataColumn(label: Text("shipment_num".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
                           DataColumn(label: Text("total".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
                           DataColumn(label: Text("contract_num".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
                         ],
@@ -813,7 +818,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                               DataCell(SizedBox(width: 50, child: Text(p.itemName.toString()))),
                               DataCell(SizedBox(child: Text(p.displayQty.toString()))),
                               DataCell(SizedBox(child: Text(p.shippmentCount.toString()))),
-                              DataCell(SizedBox(child: Text(p.total.toString()))),
+                              DataCell(SizedBox(child: Text(p.shippmentWeightCount.toString()))),
                               DataCell(SizedBox(child: Text(p.contractNumber.toString()))),
 
                             ]),
@@ -861,14 +866,14 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                     Row(
                       children: [
                         SizedBox(
-                            width: 130,
-                            child: Text('total_carton_num'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
+                            width: 150,
+                            child: Text('total_shipment_num'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
                         const SizedBox(width: 10),
                         SizedBox(
                           width: 130,
                           child: TextFormField(
                             keyboardType: TextInputType.number,
-                            controller: _totalCartonNumberController,
+                            controller: _totalShipmentNumberController,
                             enabled: false,
                           ),
                         ),
@@ -878,15 +883,15 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                     Row(
                       children: [
                         SizedBox(
-                            width: 130,
-                            child: Text('total_carton_size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))
+                            width: 150,
+                            child: Text('total_shipment_size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))
                         ),
                         const SizedBox(width: 10),
                         SizedBox(
                           width: 130,
                           child: TextFormField(
                             keyboardType: TextInputType.number,
-                            controller: _totalCartonSizeController,
+                            controller: _totalShipmentSizeController,
                             enabled: false,
                           ),
                         ),
@@ -920,25 +925,11 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
   }
   fillCompos(){
 
-    //Serial
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("TBL_StockH", "TrxSerial", " And TrxTypeCode='" + selectedStockTypeValue.toString() + "'").then((data) {
-      NextSerial nextSerial = data;
-
-      //Date
-      DateTime now = DateTime.now();
-      _stockDateController.text =DateFormat('yyyy-MM-dd').format(now);
-
-      //print(customers.length.toString());
-      _stockSerialController.text = nextSerial.nextSerial.toString();
-      return nextSerial;
-    }, onError: (e) {
-      print(e);
-    });
-
     //Vendors
     Future<List<Vendors>> futureVendor = _vendorApiService.getVendors().then((data) {
       vendors = data;
 
+      getVendorData();
       return vendors;
     }, onError: (e) {
       print(e);
@@ -949,6 +940,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
     Future<List<SalesMan>> futureSalesMan = _salesManApiService.getSalesMans().then((data) {
       salesMen = data;
 
+      getSalesManData();
       return salesMen;
     }, onError: (e) {
       print(e);
@@ -957,6 +949,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
     Future<List<Stores>> futureStore = _storesApiService.getStores().then((data) {
       stores = data;
 
+      getStoresData();
       return stores;
     }, onError: (e) {
       print(e);
@@ -965,6 +958,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
     Future<List<ClearanceContainerType>> futureContainerType = _clearanceContainerTypesApiService.getClearanceContainerTypes().then((data) {
       containerTypes = data;
 
+      getClearanceContainerTypeData();
       return containerTypes;
     }, onError: (e) {
       print(e);
@@ -1057,8 +1051,8 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
       storeCode: selectedStoreValue.toString(),
       containerTypeCode: selectedContainerValue.toString(),
       containerNo: _containerNumberController.text.toInt(),
-      totalShippmentCount: _totalCartonNumberController.text.toInt(),
-      totalShippmentWeightCount: _totalCartonSizeController.text.toInt(),
+      totalShippmentCount: _totalShipmentNumberController.text.toInt(),
+      totalShippmentWeightCount: _totalShipmentSizeController.text.toInt(),
       notes: _notesController.text,
       currencyCode: "1",
       totalQty:(_totalQtyController.text.isNotEmpty)?  _totalQtyController.text.toDouble():0 ,
@@ -1113,7 +1107,7 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
       FN_showToast(context, 'please_enter_quantity'.tr(), Colors.black);
       return;
     }
-    if (_cartonNumberController.text.isEmpty) {
+    if (_shipmentNumberController.text.isEmpty) {
       FN_showToast(context, 'please_enter_shippment_number'.tr(), Colors.black);
       return;
     }
@@ -1129,10 +1123,10 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
     _receiveD.displayTotal = 0;
     _receiveD.displayNetValue = 0;
     _receiveD.netValue = 0;
-    total = (int.parse(_qtyController.text) * int.parse(_cartonNumberController.text)).toString();
+    total = (int.parse(_qtyController.text) * int.parse(_shipmentNumberController.text)).toString();
     _receiveD.total = double.parse(total!);
-    _receiveD.shippmentCount = (_cartonNumberController.text.isNotEmpty) ? int.parse(_cartonNumberController.text) : 0;
-    _receiveD.shippmentWeightCount = (_cartonSizeController.text.isNotEmpty) ? int.parse(_cartonSizeController.text) : 0;
+    _receiveD.shippmentCount = (_shipmentNumberController.text.isNotEmpty) ? int.parse(_shipmentNumberController.text) : 0;
+    _receiveD.shippmentWeightCount = (_shipmentSizeController.text.isNotEmpty) ? int.parse(_shipmentSizeController.text) : 0;
     _receiveD.contractNumber = (_contractNumberController.text.isNotEmpty) ? int.parse(_contractNumberController.text) : 0;
 
     print('Add Product 10');
@@ -1141,16 +1135,16 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
 
     receiveDLst.add(_receiveD);
 
-    totalCartonNumber += _receiveD.shippmentCount;
-    totalCartonSize += _receiveD.shippmentWeightCount;
+    totalShipmentNumber += _receiveD.shippmentCount;
+    totalShipmentSize += _receiveD.shippmentWeightCount;
     totalQty += _receiveD.displayQty;
 
     rowsCount += 1;
 
 
     _totalQtyController.text = totalQty.toString();
-    _totalCartonNumberController.text = totalCartonNumber.toString();
-    _totalCartonSizeController.text = totalCartonSize.toString();
+    _totalShipmentNumberController.text = totalShipmentNumber.toString();
+    _totalShipmentSizeController.text = totalShipmentSize.toString();
     //_totalValueController.text = "0";
     _rowsCountController.text = rowsCount.toString();
     //_totalNetController.text = totalNet.toString();
@@ -1162,8 +1156,8 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
 
     setState(() {
       _qtyController.text = "";
-      _cartonNumberController.text = "";
-      _cartonSizeController.text = "";
+      _shipmentNumberController.text = "";
+      _shipmentSizeController.text = "";
       _contractNumberController.text = "";
       itemItem = Item(itemCode: "", itemNameAra: "", itemNameEng: "", id: 0);
       unitItem = Unit(unitCode: "", unitNameAra: "", unitNameEng: "", id: 0);
@@ -1189,5 +1183,53 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
       print(e);
     });
   }
+  getVendorData() {
+    if (vendors != null) {
+      for(var i = 0; i < vendors.length; i++){
+        if(vendors[i].vendorCode == selectedSupplierValue){
+          vendorItem = vendors[vendors.indexOf(vendors[i])];
+        }
+      }
+    }
+    setState(() {
 
+    });
+  }
+  getClearanceContainerTypeData() {
+    if (containerTypes != null) {
+      for(var i = 0; i < containerTypes.length; i++){
+        if(containerTypes[i].containerTypeCode == selectedContainerValue){
+          clearanceContainerItem = containerTypes[containerTypes.indexOf(containerTypes[i])];
+          //selectedCustomerValue = salesInvoiceTypeItem!.salesInvoicesTypeCode.toString();
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
+  getStoresData() {
+    if (stores != null) {
+      for(var i = 0; i < stores.length; i++){
+        if(stores[i].storeCode == selectedStoreValue){
+          storeItem = stores[stores.indexOf(stores[i])];
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
+  getSalesManData(){
+    if (salesMen != null) {
+      for(var i = 0; i < salesMen.length; i++){
+        if(salesMen[i].salesManCode == selectedSalesManValue){
+          salesManItem = salesMen[salesMen.indexOf(salesMen[i])];
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
 }

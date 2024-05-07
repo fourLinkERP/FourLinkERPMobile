@@ -187,7 +187,7 @@ class _ShippingPermissionHListPageState extends State<ShippingPermissionHListPag
                       // );
                     },
                     child: ListTile(
-                      leading: Image.asset('assets/fitness_app/quotion.png'),
+                      leading: Image.asset('assets/fitness_app/shipping.png'),
                       title: Text('serial'.tr() + " : " + _shippingPermissions[index].trxSerial.toString()),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
@@ -199,7 +199,7 @@ class _ShippingPermissionHListPageState extends State<ShippingPermissionHListPag
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Text('vendor'.tr() + " : " + _shippingPermissions[index].customerName.toString())),
+                              child: Text('customer'.tr() + " : " + _shippingPermissions[index].targetName.toString())),
                           const SizedBox(width: 5),
                           SizedBox(
                               child: Row(
@@ -304,10 +304,9 @@ class _ShippingPermissionHListPageState extends State<ShippingPermissionHListPag
     if(isAllowAdd)
     {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddShippingPermissionDataWidget(),
-      ));
-      //     .then((value) {
-      //   getData();
-      // });
+      )).then((value) {
+        getData();
+      });
     }
     else
     {

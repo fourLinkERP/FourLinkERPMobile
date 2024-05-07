@@ -192,7 +192,7 @@ class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage>
                     },
                     child: ListTile(
                       //leading: Image.asset('assets/fitness_app/salesCart.png'),
-                      leading: Image.asset('assets/fitness_app/quotion.png'),
+                      leading: Image.asset('assets/fitness_app/receive_goods.png'),
                       title: Text('serial'.tr() + " : " + _receivePermissions[index].trxSerial.toString()),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
@@ -309,10 +309,9 @@ class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage>
     if(isAllowAdd)
     {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddReceivePermissionHDataWidget(),
-      ));
-      //     .then((value) {
-      //   getData();
-      // });
+      )).then((value) {
+        getData();
+      });
     }
     else
     {

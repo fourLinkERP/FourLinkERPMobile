@@ -15,7 +15,6 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/units/uni
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../service/module/Inventory/basicInputs/items/itemApiService.dart';
 import '../../../../../service/module/Inventory/basicInputs/units/unitApiService.dart';
-import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/ClearanceContainerTypes/clearanceContainerTypeApiService.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/SalesMen/salesManApiService.dart';
@@ -50,10 +49,10 @@ List<Unit> units=[];
 
 int lineNum=1;
 int productQuantity = 0;
-int cartonNumber = 0;
-int totalCartonNumber = 0;
-int productTotalCartonSize = 0;
-int totalCartonSize = 0;
+int shippingNumber = 0;
+int totalShippingNumber = 0;
+int productTotalShippingSize = 0;
+int totalShippingSize = 0;
 double  totalQty = 0;
 int  rowsCount = 0;
 double  totalPrice = 0;
@@ -103,30 +102,33 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
   final _stockDateController = TextEditingController();
   final _qtyController = TextEditingController();
   final _containerNumberController = TextEditingController();
-  final _cartonNumberController = TextEditingController();
-  final _cartonSizeController = TextEditingController();
+  final _shippingNumberController = TextEditingController();
+  final _shippingSizeController = TextEditingController();
   final _contractNumberController = TextEditingController();
   final _totalQtyController = TextEditingController();
   final _rowsCountController = TextEditingController();
   final _totalValueController = TextEditingController();
   final _totalNetController = TextEditingController();
-  final _totalCartonNumberController = TextEditingController();
-  final _totalCartonSizeController = TextEditingController();
+  final _totalShippingNumberController = TextEditingController();
+  final _totalShippingSizeController = TextEditingController();
   final _notesController = TextEditingController();
 
-  Customer? customerItem = Customer(customerCode: "", customerNameAra: "", customerNameEng: "", id: 0);
+  ClearanceContainerType? clearanceContainerItem = ClearanceContainerType(containerTypeCode: "", containerTypeNameAra: "",containerTypeNameEng: "",id: 0);
+  SalesMan? salesManItem = SalesMan(salesManCode: "", salesManNameAra: "", salesManNameEng: "", id: 0);
+  Stores? storeItem = Stores(storeCode: "", storeNameAra: "", storeNameEng: "", id: 0);
+  Customer? customerItem =Customer(customerCode: "",customerNameAra: "",customerNameEng: "",id: 0);
   Item?  itemItem=Item(itemCode: "",itemNameAra: "",itemNameEng: "",id: 0);
   Unit?  unitItem=Unit(unitCode: "",unitNameAra: "",unitNameEng: "",id: 0);
 
   @override
   initState() {
 
-    lineNum=1;
+   // lineNum=1;
     productQuantity = 0;
-    cartonNumber = 0;
-    totalCartonNumber = 0;
-    productTotalCartonSize = 0;
-    totalCartonSize = 0;
+    shippingNumber = 0;
+    totalShippingNumber = 0;
+    productTotalShippingSize = 0;
+    totalShippingSize = 0;
     totalQty = 0;
     rowsCount = 0;
     totalPrice = 0;
@@ -135,17 +137,18 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
     id = widget.shippingH.id!;
     _stockSerialController.text = widget.shippingH.trxSerial!;
     _stockDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.shippingH.trxDate!.toString()));
-    selectedCustomerValue = widget.shippingH.customerCode!;
+    selectedCustomerValue = widget.shippingH.targetCode!;
     selectedSalesManValue = widget.shippingH.salesManCode!;
-    _totalCartonNumberController.text = widget.shippingH.totalShippmentCount.toString();
-    _totalCartonSizeController.text = widget.shippingH.totalShippmentWeightCount.toString();
+    _totalShippingNumberController.text = widget.shippingH.totalShippmentCount.toString();
+    _totalShippingSizeController.text = widget.shippingH.totalShippmentWeightCount.toString();
     _notesController.text = widget.shippingH.notes!;
     selectedStoreValue = widget.shippingH.storeCode;
+    _totalQtyController.text = widget.shippingH.totalQty.toString();
+    _rowsCountController.text = widget.shippingH.rowsCount.toString();
     selectedContainerValue = widget.shippingH.containerTypeCode;
     _containerNumberController.text = widget.shippingH.containerNo.toString();
-
-    totalQty =(widget.shippingH.totalQty != null) ? double.parse(_totalQtyController.text) : 0;
-    rowsCount =(widget.shippingH.rowsCount != null) ? int.parse(_rowsCountController.text) : 0;
+    totalQty = widget.shippingH.totalQty!;
+    rowsCount = widget.shippingH.rowsCount!;
 
     fillCompos();
     super.initState();
@@ -331,7 +334,8 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
                                 SizedBox(
                                   width: 200,
                                   child: DropdownSearch<SalesMan>(
-                                    selectedItem: null,
+                                    validator: (value) => value == null ? "select_a_Type".tr() : null,
+                                    selectedItem: salesManItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
@@ -391,7 +395,8 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
                                 SizedBox(
                                   width: 200,
                                   child: DropdownSearch<Stores>(
-                                    selectedItem: null,
+                                    validator: (value) => value == null ? "select_a_Type".tr() : null,
+                                    selectedItem: storeItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
@@ -472,7 +477,8 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
                                 SizedBox(
                                   width: 100,
                                   child: DropdownSearch<ClearanceContainerType>(
-                                    selectedItem: null,
+                                    validator: (value) => value == null ? "select_a_Type".tr() : null,
+                                    selectedItem: clearanceContainerItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
@@ -704,14 +710,14 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
                         Row(
                           children: [
                             SizedBox(
-                                width: 50,
-                                child: Text('carton_num'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
-                            const SizedBox(width: 10),
+                                width: 65,
+                                child: Text('shipment_num'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
+                            const SizedBox(width: 5),
                             SizedBox(
                               width: 90,
                               child: TextFormField(
                                 keyboardType: TextInputType.number,
-                                controller: _cartonNumberController,
+                                controller: _shippingNumberController,
                                 enabled: true,
                               ),
                             ),
@@ -722,14 +728,14 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
                           children: [
                             SizedBox(
                                 width: 70,
-                                child: Text('carton_size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))
+                                child: Text('shipment_size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))
                             ),
-                            const SizedBox(width: 10),
+                            const SizedBox(width: 5),
                             SizedBox(
-                              width: 90,
+                              width: 85,
                               child: TextFormField(
                                 keyboardType: TextInputType.number,
-                                controller: _cartonSizeController,
+                                controller: _shippingSizeController,
                                 enabled: true,
                               ),
                             ),
@@ -803,7 +809,7 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
                           DataColumn(label: Text("id".tr(),style: const TextStyle(color: Colors.white),),),
                           DataColumn(label: Text("name".tr(),style: const TextStyle(color: Colors.white),),),
                           DataColumn(label: Text("qty".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
-                          DataColumn(label: Text("carton_num".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                          DataColumn(label: Text("shipping_num".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
                           DataColumn(label: Text("total".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
                           DataColumn(label: Text("contract_num".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
                         ],
@@ -813,7 +819,7 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
                               DataCell(SizedBox(width: 50, child: Text(p.itemName.toString()))),
                               DataCell(SizedBox(child: Text(p.displayQty.toString()))),
                               DataCell(SizedBox(child: Text(p.shippmentCount.toString()))),
-                              DataCell(SizedBox(child: Text(p.total.toString()))),
+                              DataCell(SizedBox(child: Text(p.shippmentWeightCount.toString()))),
                               DataCell(SizedBox(child: Text(p.contractNumber.toString()))),
 
                             ]),
@@ -861,14 +867,14 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
                     Row(
                       children: [
                         SizedBox(
-                            width: 130,
-                            child: Text('total_carton_num'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
+                            width: 150,
+                            child: Text('total_shipment_num'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
                         const SizedBox(width: 10),
                         SizedBox(
                           width: 130,
                           child: TextFormField(
                             keyboardType: TextInputType.number,
-                            controller: _totalCartonNumberController,
+                            controller: _totalShippingNumberController,
                             enabled: false,
                           ),
                         ),
@@ -878,15 +884,15 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
                     Row(
                       children: [
                         SizedBox(
-                            width: 130,
-                            child: Text('total_carton_size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))
+                            width: 150,
+                            child: Text('total_shipment_size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))
                         ),
                         const SizedBox(width: 10),
                         SizedBox(
                           width: 130,
                           child: TextFormField(
                             keyboardType: TextInputType.number,
-                            controller: _totalCartonSizeController,
+                            controller: _totalShippingSizeController,
                             enabled: false,
                           ),
                         ),
@@ -920,25 +926,11 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
 
   fillCompos(){
 
-    //Serial
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("TBL_StockH", "TrxSerial", " And TrxTypeCode='" + selectedStockTypeValue.toString() + "'").then((data) {
-      NextSerial nextSerial = data;
-
-      //Date
-      DateTime now = DateTime.now();
-      _stockDateController.text =DateFormat('yyyy-MM-dd').format(now);
-
-      //print(customers.length.toString());
-      _stockSerialController.text = nextSerial.nextSerial.toString();
-      return nextSerial;
-    }, onError: (e) {
-      print(e);
-    });
-
     //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
 
+      getCustomerData();
       return customers;
     }, onError: (e) {
       print(e);
@@ -949,6 +941,7 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
     Future<List<SalesMan>> futureSalesMan = _salesManApiService.getSalesMans().then((data) {
       salesMen = data;
 
+      getSalesManData();
       return salesMen;
     }, onError: (e) {
       print(e);
@@ -957,6 +950,7 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
     Future<List<Stores>> futureStore = _storesApiService.getStores().then((data) {
       stores = data;
 
+      getStoresData();
       return stores;
     }, onError: (e) {
       print(e);
@@ -965,6 +959,7 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
     Future<List<ClearanceContainerType>> futureContainerType = _clearanceContainerTypesApiService.getClearanceContainerTypes().then((data) {
       containerTypes = data;
 
+      getClearanceContainerTypeData();
       return containerTypes;
     }, onError: (e) {
       print(e);
@@ -1053,13 +1048,13 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
       trxSerial: _stockSerialController.text,
       trxTypeCode:  "1",
       trxDate: _stockDateController.text,
-      customerCode: selectedCustomerValue.toString() ,
+      targetCode: selectedCustomerValue.toString() ,
       salesManCode: selectedSalesManValue.toString(),
       storeCode: selectedStoreValue.toString(),
       containerTypeCode: selectedContainerValue.toString(),
       containerNo: _containerNumberController.text.toInt(),
-      totalShippmentCount: _totalCartonNumberController.text.toInt(),
-      totalShippmentWeightCount: _totalCartonSizeController.text.toInt(),
+      totalShippmentCount: _totalShippingNumberController.text.toInt(),
+      totalShippmentWeightCount: _totalShippingSizeController.text.toInt(),
       notes: _notesController.text,
       currencyCode: "1",
       totalQty:(_totalQtyController.text.isNotEmpty)?  _totalQtyController.text.toDouble():0 ,
@@ -1114,44 +1109,44 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
       FN_showToast(context, 'please_enter_quantity'.tr(), Colors.black);
       return;
     }
-    if (_cartonNumberController.text.isEmpty) {
+    if (_shippingNumberController.text.isEmpty) {
       FN_showToast(context, 'please_enter_shippment_number'.tr(), Colors.black);
       return;
     }
 
-    ShippingPermissionD _receiveD = ShippingPermissionD();
-    _receiveD.itemCode = selectedItemValue;
-    _receiveD.itemName = selectedItemName;
-    _receiveD.unitCode = selectedUnitValue;
-    _receiveD.displayQty = (_qtyController.text.isNotEmpty) ? int.parse(_qtyController.text) : 0;
-    _receiveD.costPrice =  0;
-    _receiveD.displayPrice = 0;
-    _receiveD.price = 0;
-    _receiveD.displayTotal = 0;
-    _receiveD.displayNetValue = 0;
-    _receiveD.netValue = 0;
-    total = (int.parse(_qtyController.text) * int.parse(_cartonNumberController.text)).toString();
-    _receiveD.total = double.parse(total!);
-    _receiveD.shippmentCount = (_cartonNumberController.text.isNotEmpty) ? int.parse(_cartonNumberController.text) : 0;
-    _receiveD.shippmentWeightCount = (_cartonSizeController.text.isNotEmpty) ? int.parse(_cartonSizeController.text) : 0;
-    _receiveD.contractNumber = (_contractNumberController.text.isNotEmpty) ? int.parse(_contractNumberController.text) : 0;
+    ShippingPermissionD _shippingD = ShippingPermissionD();
+    _shippingD.itemCode = selectedItemValue;
+    _shippingD.itemName = selectedItemName;
+    _shippingD.unitCode = selectedUnitValue;
+    _shippingD.displayQty = (_qtyController.text.isNotEmpty) ? int.parse(_qtyController.text) : 0;
+    _shippingD.costPrice =  0;
+    _shippingD.displayPrice = 0;
+    _shippingD.price = 0;
+    _shippingD.displayTotal = 0;
+    _shippingD.displayNetValue = 0;
+    _shippingD.netValue = 0;
+    total = (int.parse(_qtyController.text) * int.parse(_shippingNumberController.text)).toString();
+    _shippingD.total = double.parse(total!);
+    _shippingD.shippmentCount = (_shippingNumberController.text.isNotEmpty) ? int.parse(_shippingNumberController.text) : 0;
+    _shippingD.shippmentWeightCount = (_shippingSizeController.text.isNotEmpty) ? int.parse(_shippingSizeController.text) : 0;
+    _shippingD.contractNumber = (_contractNumberController.text.isNotEmpty) ? int.parse(_contractNumberController.text) : 0;
 
     print('Add Product 10');
 
-    _receiveD.lineNum = lineNum;
+    _shippingD.lineNum = lineNum;
 
-    shippingDLst.add(_receiveD);
+    shippingDLst.add(_shippingD);
 
-    totalCartonNumber += _receiveD.shippmentCount;
-    totalCartonSize += _receiveD.shippmentWeightCount;
-    totalQty += _receiveD.displayQty;
+    totalShippingNumber += _shippingD.shippmentCount;
+    totalShippingSize += _shippingD.shippmentWeightCount;
+    totalQty += _shippingD.displayQty;
 
     rowsCount += 1;
 
 
     _totalQtyController.text = totalQty.toString();
-    _totalCartonNumberController.text = totalCartonNumber.toString();
-    _totalCartonSizeController.text = totalCartonSize.toString();
+    _totalShippingNumberController.text = totalShippingNumber.toString();
+    _totalShippingSizeController.text = totalShippingSize.toString();
     //_totalValueController.text = "0";
     _rowsCountController.text = rowsCount.toString();
     //_totalNetController.text = totalNet.toString();
@@ -1163,8 +1158,8 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
 
     setState(() {
       _qtyController.text = "";
-      _cartonNumberController.text = "";
-      _cartonSizeController.text = "";
+      _shippingNumberController.text = "";
+      _shippingSizeController.text = "";
       _contractNumberController.text = "";
       itemItem = Item(itemCode: "", itemNameAra: "", itemNameEng: "", id: 0);
       unitItem = Unit(unitCode: "", unitNameAra: "", unitNameEng: "", id: 0);
@@ -1188,6 +1183,56 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
       return units;
     }, onError: (e) {
       print(e);
+    });
+  }
+  getCustomerData() {
+    if (customers != null) {
+      for(var i = 0; i < customers.length; i++){
+        if(customers[i].customerCode == selectedCustomerValue){
+          customerItem = customers[customers.indexOf(customers[i])];
+          //selectedCustomerValue = salesInvoiceTypeItem!.salesInvoicesTypeCode.toString();
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
+  getClearanceContainerTypeData() {
+    if (containerTypes != null) {
+      for(var i = 0; i < containerTypes.length; i++){
+        if(containerTypes[i].containerTypeCode == selectedContainerValue){
+          clearanceContainerItem = containerTypes[containerTypes.indexOf(containerTypes[i])];
+          //selectedCustomerValue = salesInvoiceTypeItem!.salesInvoicesTypeCode.toString();
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
+  getStoresData() {
+    if (stores != null) {
+      for(var i = 0; i < stores.length; i++){
+        if(stores[i].storeCode == selectedStoreValue){
+          storeItem = stores[stores.indexOf(stores[i])];
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
+  getSalesManData(){
+    if (salesMen != null) {
+      for(var i = 0; i < salesMen.length; i++){
+        if(salesMen[i].salesManCode == selectedSalesManValue){
+          salesManItem = salesMen[salesMen.indexOf(salesMen[i])];
+        }
+      }
+    }
+    setState(() {
+
     });
   }
 }

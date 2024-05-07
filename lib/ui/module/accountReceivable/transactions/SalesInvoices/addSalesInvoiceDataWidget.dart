@@ -71,7 +71,7 @@ double totalTax = 0;
 double totalAfterDiscount = 0;
 double totalNet = 0;
 WidgetsToImageController WidgetImage= WidgetsToImageController();
-bool isLoading = true;  //*
+bool isLoading = true;
 
 
 class AddSalesInvoiceHDataWidget extends StatefulWidget {

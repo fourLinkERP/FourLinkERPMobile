@@ -45,7 +45,7 @@ class _DetailShippingPermissionWidgetState extends State<DetailShippingPermissio
                             Text('Date'.tr() + ' : ' + widget.shippingH.trxDate.toString()  ,
                                 style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black.withOpacity(0.8))),
                             const SizedBox(height: 20.0),
-                            Text('customer'.tr() + ' : ' + widget.shippingH.customerName.toString()  ,
+                            Text('customer'.tr() + ' : ' + widget.shippingH.targetName.toString()  ,
                                 style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black.withOpacity(0.8))),
                             const SizedBox(height: 20.0),
                             Text('store'.tr() + ' : ' + widget.shippingH.storeName.toString()  ,
