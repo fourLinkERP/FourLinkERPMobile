@@ -17,13 +17,13 @@ class DetailSalesOfferHWidget extends StatefulWidget {
 class _DetailSalesOfferHWidgetState extends State<DetailSalesOfferHWidget> {
   _DetailSalesOfferHWidgetState();
 
-  SalesOfferHApiService api =new SalesOfferHApiService();
+  SalesOfferHApiService api = SalesOfferHApiService();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Details'),
+        title: const Text('Details'),
       ),
       body: SingleChildScrollView(
         child: Container(

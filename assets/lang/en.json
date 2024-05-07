@@ -512,13 +512,19 @@
     "store": "Store",
     "container_num": "Container number",
     "container_type": "Container Type",
-    "carton_num": "Carton number",
-    "carton_size": "Total carton size",
+    "shipment_num": "Shipment number",
+    "shipment_size": "Total shipment size",
     "contract_num": "Contract Number",
-    "total_carton_num": "Total carton number",
-    "total_carton_size": "Total carton size",
+    "total_shipment_num": "Total shipment number",
+    "total_shipment_size": "Total shipment size",
     "shipping_permission": "Shipping Permission",
     "searchShippingPermission": "search shipping permission",
-    "shipping_goods": "Shipping Goods"
+    "shipping_goods": "Shipping Goods",
+    "please_enter_contract_number": "please enter contract number",
+    "please_enter_shipment_number": "please enter shipment number",
+    "please_enter_quantity": "please enter quantity",
+    "please_Set_Serial": "please set Serial",
+    "please_Set_Supplier": "please set supplier",
+    "please_set_customer": "please set customer"
 
 }

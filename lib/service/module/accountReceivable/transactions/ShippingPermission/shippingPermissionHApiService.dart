@@ -7,7 +7,7 @@ import '../../../../../common/globals.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 class ShippingPermissionHApiService{
-  String searchApi= baseUrl.toString()  + '/api/v1/stockheaders/search';
+  String searchApi= baseUrl.toString()  + '/api/v1/stockheaders/searchdata';
   String createApi= baseUrl.toString()  + '/api/v1/stockheaders';
   String updateApi= baseUrl.toString()  + '/api/v1/stockheaders/';
   String deleteApi= baseUrl.toString()  + '/api/v1/stockheaders/';
@@ -83,10 +83,10 @@ class ShippingPermissionHApiService{
       'TrxTypeCode': "1",
       'TrxSerial': shippingH.trxSerial,
       'TrxDate': shippingH.trxDate,
-      'CustomerCode': shippingH.customerCode,
+      'TargetCode': shippingH.targetCode,
+      'TargetType': 'CUS',
       'SalesManCode': shippingH.salesManCode,
       'CurrencyCode': shippingH.currencyCode,
-      //'CurrencyRate': shippingH.currencyRate,
       'TaxGroupCode': shippingH.taxGroupCode,
       'totalNet': shippingH.totalNet,
       'totalQty': shippingH.totalQty,
@@ -163,10 +163,10 @@ class ShippingPermissionHApiService{
       'TrxTypeCode': "1",
       'TrxSerial': shippingH.trxSerial,
       'TrxDate': shippingH.trxDate,
-      'CustomerCode': shippingH.customerCode,
+      'TargetCode': shippingH.targetCode,
+      'TargetType': 'CUS',
       'SalesManCode': shippingH.salesManCode,
       'CurrencyCode': shippingH.currencyCode,
-      //'CurrencyRate': shippingH.currencyRate,
       'TaxGroupCode': shippingH.taxGroupCode,
       'totalNet': shippingH.totalNet,
       'totalQty': shippingH.totalQty,
@@ -174,15 +174,12 @@ class ShippingPermissionHApiService{
       'totalValue': shippingH.totalValue,
       'containerTypeCode': shippingH.containerTypeCode,
       'containerNo': shippingH.containerNo,
+      'totalShippmentCount': shippingH.totalShippmentCount,
+      'totalShippmentWeightCount': shippingH.totalShippmentWeightCount,
       'notes': shippingH.notes,
       'storeCode': shippingH.storeCode,
       "year" : financialYearCode,
-      //"InvoiceQRCodeBase64": invoice.invoiceQRCodeBase64,
-      //"addBy": empUserId,
-      // "allowDownpayment": true,
-
-
-      "confirmed": false,
+      "confirmed": true,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,

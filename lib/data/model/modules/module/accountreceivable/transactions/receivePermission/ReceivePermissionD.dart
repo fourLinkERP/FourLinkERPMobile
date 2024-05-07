@@ -32,6 +32,7 @@ class ReceivePermissionD{
   ReceivePermissionD({
     this.id,
     this.trxSerial,
+    this.trxDate,
     this.trxTypeCode,
     this.year,
     this.storeCode,

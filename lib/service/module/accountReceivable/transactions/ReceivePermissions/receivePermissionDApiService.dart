@@ -9,7 +9,7 @@ import '../../../../../data/model/modules/module/accountreceivable/transactions/
 
 class ReceivePermissionDApiService{
 
-  String searchApi= baseUrl.toString()  + '/api/v1/stockdetails/search';
+  String searchApi= baseUrl.toString()  + '/api/v1/stockdetails/searchdata';
   String createApi= baseUrl.toString()  + '/api/v1/stockdetails';
   String updateApi= baseUrl.toString()  + '/api/v1/stockdetails/';
   String deleteApi= baseUrl.toString()  + '/api/v1/stockdetails/';
@@ -18,13 +18,11 @@ class ReceivePermissionDApiService{
   Future<List<ReceivePermissionD>> getReceivePermissionD(int? headerId) async {
     print('Booter 1 ReceivePermissionD');
     Map data = {
-      'Search':{
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
         'TrxCase': 2,
         'TrxKind': 3,
-        'Id': headerId
-      }
+        'headerId': headerId
     };
 
     print('Booter 2 ReceivePermissionD');

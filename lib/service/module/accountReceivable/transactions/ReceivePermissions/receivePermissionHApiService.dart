@@ -7,7 +7,7 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../data/model/modules/module/accountreceivable/transactions/receivePermission/ReceivePermissionH.dart';
 
 class ReceivePermissionHApiService{
-  String searchApi= baseUrl.toString()  + '/api/v1/stockheaders/search';
+  String searchApi= baseUrl.toString()  + '/api/v1/stockheaders/searchdata';
   String createApi= baseUrl.toString()  + '/api/v1/stockheaders';
   String updateApi= baseUrl.toString()  + '/api/v1/stockheaders/';
   String deleteApi= baseUrl.toString()  + '/api/v1/stockheaders/';
@@ -84,6 +84,7 @@ class ReceivePermissionHApiService{
       'TrxSerial': receiveH.trxSerial,
       'TrxDate': receiveH.trxDate,
       'TargetCode': receiveH.targetCode,
+      'TargetType': 'VEN',
       'SalesManCode': receiveH.salesManCode,
       'CurrencyCode': receiveH.currencyCode,
       //'CurrencyRate': receiveH.currencyRate,
@@ -164,9 +165,9 @@ class ReceivePermissionHApiService{
       'TrxSerial': receiveH.trxSerial,
       'TrxDate': receiveH.trxDate,
       'TargetCode': receiveH.targetCode,
+      'TargetType': 'VEN',
       'SalesManCode': receiveH.salesManCode,
       'CurrencyCode': receiveH.currencyCode,
-      //'CurrencyRate': receiveH.currencyRate,
       'TaxGroupCode': receiveH.taxGroupCode,
       'totalNet': receiveH.totalNet,
       'totalQty': receiveH.totalQty,
@@ -174,15 +175,12 @@ class ReceivePermissionHApiService{
       'totalValue': receiveH.totalValue,
       'containerTypeCode': receiveH.containerTypeCode,
       'containerNo': receiveH.containerNo,
+      'totalShippmentCount': receiveH.totalShippmentCount,
+      'totalShippmentWeightCount': receiveH.totalShippmentWeightCount,
       'notes': receiveH.notes,
       'storeCode': receiveH.storeCode,
       "year" : financialYearCode,
-      //"InvoiceQRCodeBase64": invoice.invoiceQRCodeBase64,
-      //"addBy": empUserId,
-      // "allowDownpayment": true,
-
-
-      "confirmed": false,
+      "confirmed": true,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,
@@ -198,7 +196,7 @@ class ReceivePermissionHApiService{
 
     String apiUpdate =updateApi + id.toString();
     print('Start Update apiUpdate ' + apiUpdate );
-
+    print('Start Update Receive: ' + data.toString());
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data)
         ,headers: {

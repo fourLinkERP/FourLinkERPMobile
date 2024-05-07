@@ -606,13 +606,18 @@
     "store": "المخزن",
     "container_num": "رقم الحاوية",
     "container_type": "نوع الحاوية",
-    "carton_num": "عدد الكراتين",
-    "carton_size": "اجمالي حجم الكراتين",
+    "shipment_num": "عدد الكراتين",
+    "shipment_size": "اجمالي حجم الكراتين",
     "contract_num": "رقم العقد",
-    "total_carton_num": "اجمالي عدد الكراتين",
-    "total_carton_size": "اجمالي حجم الكراتين",
+    "total_shipment_num": "اجمالي عدد الكراتين",
+    "total_shipment_size": "اجمالي حجم الكراتين",
     "shipping_permission": "إذن شحن",
     "searchShippingPermission": "بحث إذن شحن",
-    "shipping_goods": "شحن بضائع"
+    "shipping_goods": "شحن بضائع",
+    "please_enter_contract_number": "من فضلك اخل رقم العقد",
+    "please_enter_shipment_number": "من فضلك ادخل عدد الكراتين",
+    "please_Set_Serial": "من فضلك حدد المسلسل",
+    "please_Set_Supplier": "من فضلك اختر المصنع",
+    "please_set_customer": "من فضلك اختر العميل"
 }
 

@@ -21,7 +21,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'HeaderId': headerId
     };
 
-    print('Booter 2 SalesInvoiceD');
     print('Booter 2  SalesInvoiceD' + data.toString());
     final http.Response response = await http.post(
       Uri.parse(searchApi),

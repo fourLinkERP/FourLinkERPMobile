@@ -9,7 +9,7 @@ import '../../../../../data/model/modules/module/accountreceivable/transactions/
 
 class ShippingPermissionDApiService{
 
-  String searchApi= baseUrl.toString()  + '/api/v1/stockdetails/search';
+  String searchApi= baseUrl.toString()  + '/api/v1/stockdetails/searchdata';
   String createApi= baseUrl.toString()  + '/api/v1/stockdetails';
   String updateApi= baseUrl.toString()  + '/api/v1/stockdetails/';
   String deleteApi= baseUrl.toString()  + '/api/v1/stockdetails/';
@@ -18,13 +18,11 @@ class ShippingPermissionDApiService{
   Future<List<ShippingPermissionD>> getShippingPermissionD(int? headerId) async {
     print('Booter 1 ShippingPermissionD');
     Map data = {
-      'Search':{
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
         'TrxCase': 1,
         'TrxKind': 7,
-        'Id': headerId
-      }
+        'headerId': headerId
     };
 
     print('Booter 2 ShippingPermissionD');

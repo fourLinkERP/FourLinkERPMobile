@@ -9,6 +9,7 @@ class ReceivePermissionH{
  int? year;
  String? targetCode;
  String? targetName;
+ String? targetType;
  String? currencyCode;  // need to be reviewed
  String? salesManCode;
  String? salesManName;
@@ -38,6 +39,7 @@ class ReceivePermissionH{
   this.trxDate,
   this.year,
   this.targetCode,
+  this.targetType,
   this.containerNo,
   this.currencyCode,
   this.rowsCount,
@@ -64,6 +66,7 @@ class ReceivePermissionH{
    rowsCount: (json['rowsCount']  != null) ? json['rowsCount'] as int:0,
    targetCode: (json['targetCode'] !=null) ? json['targetCode'] as String : "",
    targetName: (json['targetName'] !=null) ? json['targetName'] as String : "",
+   targetType: (json['targetType'] !=null) ? json['targetType'] as String : "",
    currencyCode: (json['currencyCode'] !=null) ? json['currencyCode'] as String : "1",
    totalValue: (json['totalValue'] !=null) ? json['totalValue'].toDouble() : 0,
    salesManCode: (json['salesManCode'] !=null) ? json['salesManCode'] as String : "",
@@ -71,10 +74,12 @@ class ReceivePermissionH{
    totalNet: (json['totalNet'] !=null) ? json['totalNet'].toDouble() : 0,
    taxGroupCode: (json['taxGroupCode'] != null) ? json['taxGroupCode'] as String : "",
    containerTypeCode: (json['containerTypeCode'] != null) ? json['containerTypeCode'] as String : "",
+   containerNo: (json['containerNo'] != null) ? json['containerNo'] as int : 0,
    notes: (json['notes'] != null) ? json['notes'] as String : "",
    storeCode: (json['storeCode'] != null) ? json['storeCode'] as String : "1",
    storeName: (json['storeName'] != null) ? json['storeName'] as String : "",
    totalShippmentCount: (json['totalShippmentCount'] != null) ? json['totalShippmentCount'] as int : 0,
+   totalShippmentWeightCount: (json['totalShippmentWeightCount'] != null) ? json['totalShippmentWeightCount'] as int : 0,
 
   );
  }

@@ -7,8 +7,9 @@ class ShippingPermissionH{
   int? trxCase;
   int? trxKind;
   int? year;
-  String? customerCode;
-  String? customerName;
+  String? targetCode;
+  String? targetName;
+  String? targetType;
   String? currencyCode;  // need to be reviewed
   String? salesManCode;
   String? salesManName;
@@ -37,12 +38,13 @@ class ShippingPermissionH{
     this.notes,
     this.trxDate,
     this.year,
-    this.customerCode,
+    this.targetCode,
     this.containerNo,
     this.currencyCode,
     this.rowsCount,
     this.salesManName,
-    this.customerName,
+    this.targetName,
+    this.targetType,
     this.taxGroupCode,
     this.totalQty,
     this.totalShippmentCount,
@@ -62,8 +64,9 @@ class ShippingPermissionH{
       totalQty: (json['totalQty'] !=null) ? json['totalQty'].toDouble() : 0,
       year: (json['year'] !=null) ? json['year'] as int : 2024,
       rowsCount: (json['rowsCount']  != null) ? json['rowsCount'] as int:0,
-      customerCode: (json['customerCode'] !=null) ? json['customerCode'] as String : "",
-      customerName: (json['customerName'] !=null) ? json['customerName'] as String : "",
+      targetCode: (json['targetCode'] !=null) ? json['targetCode'] as String : "",
+      targetName: (json['targetName'] !=null) ? json['targetName'] as String : "",
+      targetType: (json['targetType'] !=null) ? json['targetType'] as String : "CUS",
       currencyCode: (json['currencyCode'] !=null) ? json['currencyCode'] as String : "1",
       totalValue: (json['totalValue'] !=null) ? json['totalValue'].toDouble() : 0,
       salesManCode: (json['salesManCode'] !=null) ? json['salesManCode'] as String : "",
@@ -71,10 +74,12 @@ class ShippingPermissionH{
       totalNet: (json['totalNet'] !=null) ? json['totalNet'].toDouble() : 0,
       taxGroupCode: (json['taxGroupCode'] != null) ? json['taxGroupCode'] as String : "",
       containerTypeCode: (json['containerTypeCode'] != null) ? json['containerTypeCode'] as String : "",
+      containerNo: (json['containerNo'] != null) ? json['containerNo'] as int : 0,
       notes: (json['notes'] != null) ? json['notes'] as String : "",
       storeCode: (json['storeCode'] != null) ? json['storeCode'] as String : "1",
       storeName: (json['storeName'] != null) ? json['storeName'] as String : "",
       totalShippmentCount: (json['totalShippmentCount'] != null) ? json['totalShippmentCount'] as int : 0,
+      totalShippmentWeightCount: (json['totalShippmentWeightCount'] != null) ? json['totalShippmentWeightCount'] as int : 0,
 
     );
   }
