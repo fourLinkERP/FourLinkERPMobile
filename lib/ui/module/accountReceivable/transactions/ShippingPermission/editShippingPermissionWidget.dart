@@ -21,7 +21,6 @@ import '../../../../../service/module/accountReceivable/basicInputs/SalesMen/sal
 import '../../../../../service/module/accountReceivable/basicInputs/Stores/storesApiService.dart';
 import '../../../../../service/module/accountReceivable/transactions/ShippingPermission/shippingPermissionDApiService.dart';
 import '../../../../../service/module/accountReceivable/transactions/ShippingPermission/shippingPermissionHApiService.dart';
-import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 import '../../../../../helpers/toast.dart';
 import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -29,7 +28,6 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 
 //APIs
-NextSerialApiService _nextSerialApiService = NextSerialApiService();
 CustomerApiService _customerApiService = CustomerApiService();
 ShippingPermissionHApiService _shippingPermissionHApiService= ShippingPermissionHApiService();
 ShippingPermissionDApiService _shippingPermissionDApiService= ShippingPermissionDApiService();
@@ -809,7 +807,7 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
                           DataColumn(label: Text("id".tr(),style: const TextStyle(color: Colors.white),),),
                           DataColumn(label: Text("name".tr(),style: const TextStyle(color: Colors.white),),),
                           DataColumn(label: Text("qty".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
-                          DataColumn(label: Text("shipping_num".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                          DataColumn(label: Text("shipment_num".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
                           DataColumn(label: Text("total".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
                           DataColumn(label: Text("contract_num".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
                         ],
@@ -864,40 +862,40 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
                     ),
                     const SizedBox(height: 15),
 
-                    Row(
-                      children: [
-                        SizedBox(
-                            width: 150,
-                            child: Text('total_shipment_num'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 130,
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: _totalShippingNumberController,
-                            enabled: false,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        SizedBox(
-                            width: 150,
-                            child: Text('total_shipment_size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))
-                        ),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 130,
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: _totalShippingSizeController,
-                            enabled: false,
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   children: [
+                    //     SizedBox(
+                    //         width: 150,
+                    //         child: Text('total_shipment_num'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
+                    //     const SizedBox(width: 10),
+                    //     SizedBox(
+                    //       width: 130,
+                    //       child: TextFormField(
+                    //         keyboardType: TextInputType.number,
+                    //         controller: _totalShippingNumberController,
+                    //         enabled: false,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // const SizedBox(height: 20),
+                    // Row(
+                    //   children: [
+                    //     SizedBox(
+                    //         width: 150,
+                    //         child: Text('total_shipment_size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))
+                    //     ),
+                    //     const SizedBox(width: 10),
+                    //     SizedBox(
+                    //       width: 130,
+                    //       child: TextFormField(
+                    //         keyboardType: TextInputType.number,
+                    //         controller: _totalShippingSizeController,
+                    //         enabled: false,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     const SizedBox(height: 25),
                   ],
                 ),
@@ -1099,18 +1097,22 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
 
   addShippingRow() {
     //Item
+    //Item
     if (selectedItemValue == null || selectedItemValue!.isEmpty) {
       FN_showToast(context, 'please_enter_item'.tr(), Colors.black);
       return;
     }
-
     //Quantity
     if (_qtyController.text.isEmpty) {
       FN_showToast(context, 'please_enter_quantity'.tr(), Colors.black);
       return;
     }
+    if (_contractNumberController.text.isEmpty) {
+      FN_showToast(context, 'please_enter_contract_number'.tr(), Colors.black);
+      return;
+    }
     if (_shippingNumberController.text.isEmpty) {
-      FN_showToast(context, 'please_enter_shippment_number'.tr(), Colors.black);
+      FN_showToast(context, 'please_enter_shipment_number'.tr(), Colors.black);
       return;
     }
 

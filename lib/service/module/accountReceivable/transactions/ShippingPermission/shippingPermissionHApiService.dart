@@ -156,6 +156,7 @@ class ShippingPermissionHApiService{
     print('Start Update');
 
     Map data = {
+      'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
       'TrxCase': 1,
@@ -203,7 +204,7 @@ class ShippingPermissionHApiService{
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after ' );
+    print('Start Update after');
     if (response.statusCode == 200) {
       print('Start Update done ' );
       FN_showToast(context,'update_success'.tr() ,Colors.black);

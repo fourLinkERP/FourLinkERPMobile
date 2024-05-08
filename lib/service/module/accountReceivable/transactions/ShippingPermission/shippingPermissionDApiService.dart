@@ -115,7 +115,17 @@ class ShippingPermissionDApiService{
       "flgDelete": false,
       "confirmed": true,
       "addBy": "1",
-      "year" : financialYearCode
+      "year" : financialYearCode,
+      "bonus": 0,
+      "displayBonus": 0,
+      "taxPositionCode": 0,
+      "technicianCode": "",
+      "sellPrice": 0,
+      "genType": "",
+      "genSerial": "",
+      "genCode": 0,
+      "postedCost": true,
+      "lastPurchasePrice": 0
 
 
     };

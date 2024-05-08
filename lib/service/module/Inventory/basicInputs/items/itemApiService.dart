@@ -36,7 +36,7 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
       },
       body: jsonEncode(data),
     );
-
+    print("Items Api: " + searchApi);
     print('Items 4');
     if (response.statusCode == 200) {
       print('Items 5');

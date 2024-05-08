@@ -192,6 +192,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'taxIdentificationNumber': customer.taxIdentificationNumber,
       'address': customer.address,
       'idNo': customer.idNo,
+      'customerImage': customer.customerImage,
       'Phone1': customer.phone1,
       "confirmed": false,
       "isActive": true,

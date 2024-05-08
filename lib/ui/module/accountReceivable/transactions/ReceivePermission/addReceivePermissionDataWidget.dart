@@ -982,10 +982,17 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
       FN_showToast(context, 'please_enter_item'.tr(), Colors.black);
       return;
     }
-
     //Quantity
     if (_qtyController.text.isEmpty) {
       FN_showToast(context, 'please_enter_quantity'.tr(), Colors.black);
+      return;
+    }
+    if (_contractNumberController.text.isEmpty) {
+      FN_showToast(context, 'please_enter_contract_number'.tr(), Colors.black);
+      return;
+    }
+    if (_shipmentNumberController.text.isEmpty) {
+      FN_showToast(context, 'please_enter_shipment_number'.tr(), Colors.black);
       return;
     }
 
@@ -1114,6 +1121,9 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
     Future<List<Vendors>> futureVendor = _vendorApiService.getVendors().then((data) {
       vendors = data;
 
+      setState(() {
+
+      });
       return vendors;
     }, onError: (e) {
       print(e);
@@ -1149,6 +1159,9 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
     Future<List<Item>> futureItems = _itemsApiService.getItems().then((data) {
       items = data;
 
+      setState(() {
+
+      });
       return items;
     }, onError: (e) {
       print(e);

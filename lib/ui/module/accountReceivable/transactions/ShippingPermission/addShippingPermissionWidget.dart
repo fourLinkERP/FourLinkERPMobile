@@ -1135,6 +1135,9 @@ class _AddShippingPermissionDataWidgetState extends State<AddShippingPermissionD
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
 
+      setState(() {
+
+      });
       return customers;
     }, onError: (e) {
       print(e);
@@ -1145,6 +1148,9 @@ class _AddShippingPermissionDataWidgetState extends State<AddShippingPermissionD
     Future<List<SalesMan>> futureSalesMan = _salesManApiService.getSalesMans().then((data) {
       salesMen = data;
 
+      setState(() {
+
+      });
       return salesMen;
     }, onError: (e) {
       print(e);
@@ -1153,6 +1159,9 @@ class _AddShippingPermissionDataWidgetState extends State<AddShippingPermissionD
     Future<List<Stores>> futureStore = _storesApiService.getStores().then((data) {
       stores = data;
 
+      setState(() {
+
+      });
       return stores;
     }, onError: (e) {
       print(e);
@@ -1161,6 +1170,9 @@ class _AddShippingPermissionDataWidgetState extends State<AddShippingPermissionD
     Future<List<ClearanceContainerType>> futureContainerType = _clearanceContainerTypesApiService.getClearanceContainerTypes().then((data) {
       containerTypes = data;
 
+      setState(() {
+
+      });
       return containerTypes;
     }, onError: (e) {
       print(e);
@@ -1170,6 +1182,9 @@ class _AddShippingPermissionDataWidgetState extends State<AddShippingPermissionD
     Future<List<Item>> futureItems = _itemsApiService.getItems().then((data) {
       items = data;
 
+      setState(() {
+
+      });
       return items;
     }, onError: (e) {
       print(e);

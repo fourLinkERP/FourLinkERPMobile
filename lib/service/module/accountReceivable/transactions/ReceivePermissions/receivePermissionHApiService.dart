@@ -157,6 +157,7 @@ class ReceivePermissionHApiService{
     print('Start Update');
 
     Map data = {
+      'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
       'TrxCase': 2,
