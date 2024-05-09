@@ -863,40 +863,40 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
                     ),
                     const SizedBox(height: 15),
 
-                    Row(
-                      children: [
-                        SizedBox(
-                            width: 150,
-                            child: Text('total_shipment_num'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 130,
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: _totalShipmentNumberController,
-                            enabled: false,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        SizedBox(
-                            width: 150,
-                            child: Text('total_shipment_size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))
-                        ),
-                        const SizedBox(width: 10),
-                        SizedBox(
-                          width: 130,
-                          child: TextFormField(
-                            keyboardType: TextInputType.number,
-                            controller: _totalShipmentSizeController,
-                            enabled: false,
-                          ),
-                        ),
-                      ],
-                    ),
+                    // Row(
+                    //   children: [
+                    //     SizedBox(
+                    //         width: 150,
+                    //         child: Text('total_shipment_num'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
+                    //     const SizedBox(width: 10),
+                    //     SizedBox(
+                    //       width: 130,
+                    //       child: TextFormField(
+                    //         keyboardType: TextInputType.number,
+                    //         controller: _totalShipmentNumberController,
+                    //         enabled: false,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    // const SizedBox(height: 20),
+                    // Row(
+                    //   children: [
+                    //     SizedBox(
+                    //         width: 150,
+                    //         child: Text('total_shipment_size'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))
+                    //     ),
+                    //     const SizedBox(width: 10),
+                    //     SizedBox(
+                    //       width: 130,
+                    //       child: TextFormField(
+                    //         keyboardType: TextInputType.number,
+                    //         controller: _totalShipmentSizeController,
+                    //         enabled: false,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                     const SizedBox(height: 25),
                   ],
                 ),
@@ -1101,14 +1101,17 @@ class _EditReceivePermissionHDataWidgetState extends State<EditReceivePermission
       FN_showToast(context, 'please_enter_item'.tr(), Colors.black);
       return;
     }
-
     //Quantity
     if (_qtyController.text.isEmpty) {
       FN_showToast(context, 'please_enter_quantity'.tr(), Colors.black);
       return;
     }
+    if (_contractNumberController.text.isEmpty) {
+      FN_showToast(context, 'please_enter_contract_number'.tr(), Colors.black);
+      return;
+    }
     if (_shipmentNumberController.text.isEmpty) {
-      FN_showToast(context, 'please_enter_shippment_number'.tr(), Colors.black);
+      FN_showToast(context, 'please_enter_shipment_number'.tr(), Colors.black);
       return;
     }
 
