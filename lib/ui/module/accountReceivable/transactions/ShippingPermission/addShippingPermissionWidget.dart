@@ -924,11 +924,6 @@ class _AddShippingPermissionDataWidgetState extends State<AddShippingPermissionD
       return;
     }
 
-    // //Currency
-    // if(currencyCodeSelectedValue == null || currencyCodeSelectedValue!.isEmpty){
-    //   FN_showToast(context,'Please Set Currency',Colors.black);
-    //   return;
-    // }
 
     await _shippingPermissionHApiService.createShippingPermissionH(context,ShippingPermissionH(
 
@@ -942,11 +937,10 @@ class _AddShippingPermissionDataWidgetState extends State<AddShippingPermissionD
       salesManCode: selectedSalesManValue.toString(),
       storeCode: selectedStoreValue.toString(),
       containerTypeCode: selectedContainerValue.toString(),
-      containerNo: _containerNumberController.text.toInt(),
-      totalShippmentCount: _totalShipmentNumberController.text.toInt(),
-      totalShippmentWeightCount: _totalShipmentSizeController.text.toInt(),
+      containerNo: (_containerNumberController.text.isEmpty) ? 0 : int.parse(_containerNumberController.text),
+      totalShippmentCount: (_totalShipmentNumberController.text.isEmpty) ? 0 : int.parse(_totalShipmentNumberController.text),
+      totalShippmentWeightCount: (_totalShipmentSizeController.text.isEmpty) ? 0 : int.parse(_totalShipmentSizeController.text),
       notes: _notesController.text,
-      currencyCode: "1",
       totalQty:(_totalQtyController.text.isNotEmpty)?  _totalQtyController.text.toDouble():0 ,
       rowsCount:(rowsCount >0 )? rowsCount :0 ,
       totalNet:(_totalNetController.text.isNotEmpty)?  _totalNetController.text.toDouble():0 ,
@@ -1117,7 +1111,7 @@ class _AddShippingPermissionDataWidgetState extends State<AddShippingPermissionD
   fillCompos(){
 
     //Serial
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("TBL_StockH", "TrxSerial", " And TrxCase='1' And TrxKind='7' And TrxTypeCode='" + selectedStockTypeValue.toString() + "'").then((data) {
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("TBL_StockH", "TrxSerial", " And TrxCase='2' And TrxKind='3' And TrxTypeCode='" + selectedStockTypeValue.toString() + "'").then((data) {
       NextSerial nextSerial = data;
 
       //Date

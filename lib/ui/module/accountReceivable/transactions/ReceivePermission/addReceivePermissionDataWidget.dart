@@ -931,11 +931,10 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
         salesManCode: selectedSalesManValue.toString(),
         storeCode: selectedStoreValue.toString(),
         containerTypeCode: selectedContainerValue.toString(),
-        containerNo: int.parse(_containerNumberController.text),
-        totalShippmentCount: int.parse(_totalShipmentNumberController.text),
-        totalShippmentWeightCount: int.parse(_totalShipmentSizeController.text),
+        containerNo: (_containerNumberController.text.isEmpty) ? 0 :  int.parse(_containerNumberController.text),
+        totalShippmentCount: (_totalShipmentNumberController.text.isEmpty) ? 0 : int.parse(_totalShipmentNumberController.text),
+        totalShippmentWeightCount: (_totalShipmentSizeController.text.isEmpty) ? 0 :int.parse(_totalShipmentSizeController.text),
         notes: _notesController.text,
-        currencyCode: "1",
         totalQty:(_totalQtyController.text.isNotEmpty)?  _totalQtyController.text.toDouble():0 ,
         rowsCount:(rowsCount >0 )? rowsCount :0 ,
         totalNet:(_totalNetController.text.isNotEmpty)?  _totalNetController.text.toDouble():0 ,
@@ -1105,7 +1104,7 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
   fillCompos(){
 
       //Serial
-      Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("TBL_StockH", "TrxSerial", " And TrxCase='2' And TrxKind='3' And TrxTypeCode='" + selectedStockTypeValue.toString() + "'").then((data) {
+      Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("TBL_StockH", "TrxSerial", " And TrxCase='1' And TrxKind='7' And TrxTypeCode='" + selectedStockTypeValue.toString() + "'").then((data) {
         NextSerial nextSerial = data;
 
         DateTime now = DateTime.now();

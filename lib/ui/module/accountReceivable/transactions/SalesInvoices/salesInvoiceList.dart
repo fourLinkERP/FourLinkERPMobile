@@ -265,7 +265,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             _salesInvoicesD = (await futureSalesInvoiceD)!;
 
             List<InvoiceItem> invoiceItems=[];
-            print('Before Sales Invoicr : ' + invoiceH.id.toString() );
+            print('Before Sales Invoice : ' + invoiceH.id.toString() );
             if(_salesInvoicesD != null)
             {
               print('In Sales Invoice' );

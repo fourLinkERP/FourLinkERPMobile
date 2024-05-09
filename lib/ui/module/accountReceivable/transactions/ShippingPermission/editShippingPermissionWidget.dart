@@ -1054,7 +1054,6 @@ class _EditShippingPermissionDataWidgetState extends State<EditShippingPermissio
       totalShippmentCount: _totalShippingNumberController.text.toInt(),
       totalShippmentWeightCount: _totalShippingSizeController.text.toInt(),
       notes: _notesController.text,
-      currencyCode: "1",
       totalQty:(_totalQtyController.text.isNotEmpty)?  _totalQtyController.text.toDouble():0 ,
       rowsCount:(rowsCount >0 )? rowsCount :0 ,
       totalNet:(_totalNetController.text.isNotEmpty)?  _totalNetController.text.toDouble():0 ,
