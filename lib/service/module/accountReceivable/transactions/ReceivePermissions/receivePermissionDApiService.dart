@@ -20,8 +20,8 @@ class ReceivePermissionDApiService{
     Map data = {
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
-        'TrxCase': 2,
-        'TrxKind': 3,
+        'TrxCase': 1,
+        'TrxKind': 7,
         'headerId': headerId
     };
 
@@ -83,11 +83,11 @@ class ReceivePermissionDApiService{
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'TrxCase': 2,
+      'TrxCase': 1,
       'TrxTypeCode': "1",
       'TrxSerial': receiveD.trxSerial,
       'TrxDate': receiveD.trxDate,
-      'TrxKind': 3,
+      'TrxKind': 7,
       'lineNum': receiveD.lineNum,
       'itemCode': receiveD.itemCode,
       'unitCode': receiveD.unitCode,
@@ -164,11 +164,11 @@ class ReceivePermissionDApiService{
       'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'TrxCase': 2,
+      'TrxCase': 1,
       'TrxTypeCode': "1",
       'TrxSerial': receiveD.trxSerial,
       'TrxDate': receiveD.trxDate,
-      'TrxKind': 3,
+      'TrxKind': 7,
       'lineNum': receiveD.lineNum,
       'itemCode': receiveD.itemCode,
       'unitCode': receiveD.unitCode,

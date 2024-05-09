@@ -20,8 +20,8 @@ class ShippingPermissionDApiService{
     Map data = {
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
-        'TrxCase': 1,
-        'TrxKind': 7,
+        'TrxCase': 2,
+        'TrxKind': 3,
         'headerId': headerId
     };
 
@@ -85,11 +85,11 @@ class ShippingPermissionDApiService{
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'TrxCase': 1,
+      'TrxCase': 2,
       'TrxTypeCode': "1",
       'TrxSerial': shippingD.trxSerial,
       'TrxDate': shippingD.trxDate,
-      'TrxKind': 7,
+      'TrxKind': 3,
       'lineNum': shippingD.lineNum,
       'itemCode': shippingD.itemCode,
       'unitCode': shippingD.unitCode,
@@ -165,11 +165,11 @@ class ShippingPermissionDApiService{
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'TrxCase': 1,
+      'TrxCase': 2,
       'TrxTypeCode': "1",
       'TrxSerial': shippingD.trxSerial,
       'TrxDate': shippingD.trxDate,
-      'TrxKind': 7,
+      'TrxKind': 3,
       'lineNum': shippingD.lineNum,
       'itemCode': shippingD.itemCode,
       'unitCode': shippingD.unitCode,

@@ -19,8 +19,8 @@ class ShippingPermissionHApiService{
       'Search':{
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
-        'TrxCase': 1,
-        'TrxKind': 7
+        'TrxCase': 2,
+        'TrxKind': 3
       }
     };
 
@@ -78,15 +78,16 @@ class ShippingPermissionHApiService{
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'TrxCase': 1,
-      'TrxKind': 7,
+      'TrxCase': 2,
+      'TrxKind': 3,
       'TrxTypeCode': "1",
       'TrxSerial': shippingH.trxSerial,
       'TrxDate': shippingH.trxDate,
       'TargetCode': shippingH.targetCode,
       'TargetType': 'CUS',
       'SalesManCode': shippingH.salesManCode,
-      'CurrencyCode': shippingH.currencyCode,
+      'CurrencyCode': 1,
+      'CurrencyRate': 1,
       'TaxGroupCode': shippingH.taxGroupCode,
       'totalNet': shippingH.totalNet,
       'totalQty': shippingH.totalQty,
@@ -159,8 +160,8 @@ class ShippingPermissionHApiService{
       'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'TrxCase': 1,
-      'TrxKind': 7,
+      'TrxCase': 2,
+      'TrxKind': 3,
       'TrxTypeCode': "1",
       'TrxSerial': shippingH.trxSerial,
       'TrxDate': shippingH.trxDate,
@@ -168,6 +169,7 @@ class ShippingPermissionHApiService{
       'TargetType': 'CUS',
       'SalesManCode': shippingH.salesManCode,
       'CurrencyCode': shippingH.currencyCode,
+      'CurrencyRate': 1,
       'TaxGroupCode': shippingH.taxGroupCode,
       'totalNet': shippingH.totalNet,
       'totalQty': shippingH.totalQty,

@@ -19,8 +19,8 @@ class ReceivePermissionHApiService{
       'Search':{
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
-        'TrxCase': 2,
-        'TrxKind': 3
+        'TrxCase': 1,
+        'TrxKind': 7
       }
     };
 
@@ -78,16 +78,16 @@ class ReceivePermissionHApiService{
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'TrxCase': 2,
-      'TrxKind': 3,
+      'TrxCase': 1,
+      'TrxKind': 7,
       'TrxTypeCode': "1",
       'TrxSerial': receiveH.trxSerial,
       'TrxDate': receiveH.trxDate,
       'TargetCode': receiveH.targetCode,
       'TargetType': 'VEN',
       'SalesManCode': receiveH.salesManCode,
-      'CurrencyCode': receiveH.currencyCode,
-      //'CurrencyRate': receiveH.currencyRate,
+      'CurrencyCode': 1,
+      'CurrencyRate': 1,
       'TaxGroupCode': receiveH.taxGroupCode,
       'totalNet': receiveH.totalNet,
       'totalQty': receiveH.totalQty,
@@ -160,8 +160,8 @@ class ReceivePermissionHApiService{
       'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'TrxCase': 2,
-      'TrxKind': 3,
+      'TrxCase': 1,
+      'TrxKind': 7,
       'TrxTypeCode': "1",
       'TrxSerial': receiveH.trxSerial,
       'TrxDate': receiveH.trxDate,
@@ -169,6 +169,7 @@ class ReceivePermissionHApiService{
       'TargetType': 'VEN',
       'SalesManCode': receiveH.salesManCode,
       'CurrencyCode': receiveH.currencyCode,
+      'CurrencyRate': 1,
       'TaxGroupCode': receiveH.taxGroupCode,
       'totalNet': receiveH.totalNet,
       'totalQty': receiveH.totalQty,

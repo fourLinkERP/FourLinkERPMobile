@@ -10,7 +10,8 @@ class ReceivePermissionH{
  String? targetCode;
  String? targetName;
  String? targetType;
- String? currencyCode;  // need to be reviewed
+ int? currencyCode;
+ double? currencyRate;
  String? salesManCode;
  String? salesManName;
  String? taxGroupCode;
@@ -42,6 +43,7 @@ class ReceivePermissionH{
   this.targetType,
   this.containerNo,
   this.currencyCode,
+  this.currencyRate,
   this.rowsCount,
   this.salesManName,
   this.targetName,
@@ -67,7 +69,8 @@ class ReceivePermissionH{
    targetCode: (json['targetCode'] !=null) ? json['targetCode'] as String : "",
    targetName: (json['targetName'] !=null) ? json['targetName'] as String : "",
    targetType: (json['targetType'] !=null) ? json['targetType'] as String : "",
-   currencyCode: (json['currencyCode'] !=null) ? json['currencyCode'] as String : "1",
+   currencyCode: (json['currencyCode'] !=null) ? json['currencyCode'] as int : 1,
+   currencyRate: (json['currencyRate'] !=null) ? json['currencyRate'].toDouble() : 1,
    totalValue: (json['totalValue'] !=null) ? json['totalValue'].toDouble() : 0,
    salesManCode: (json['salesManCode'] !=null) ? json['salesManCode'] as String : "",
    salesManName: (json['salesManName'] !=null) ? json['salesManName'] as String : "",
