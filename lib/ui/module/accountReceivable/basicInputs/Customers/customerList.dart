@@ -407,7 +407,6 @@ class _CustomerListPageState extends State<CustomerListPage> {
       // Display the image using Image.memory
       return Image.memory(uint8List, height: 150, width: 57);
     } else {
-
       return Image.asset('assets/fitness_app/clients.png', height: 100, width: 57);
     }
   }

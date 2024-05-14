@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/basicInputs/Vendors/vendor.dart';
@@ -9,6 +12,8 @@ import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/V
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/SalesMen/salesManApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Stores/storesApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/ReceivePermissions/receivePermissionHApiService.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/Stock/ItemBarcode/itemBarcodeApiService.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/Stock/ItemImage/itemImageApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:supercharged/supercharged.dart';
 import '../../../../../common/globals.dart';
@@ -26,6 +31,8 @@ import '../../../../../service/module/accountReceivable/transactions/ReceivePerm
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import 'package:intl/intl.dart';
+import 'dart:io';
+import 'package:barcode_widget/barcode_widget.dart';
 
 
 //APIs
@@ -38,6 +45,8 @@ StoresApiService _storesApiService= StoresApiService();
 ClearanceContainerTypesApiService _clearanceContainerTypesApiService= ClearanceContainerTypesApiService();
 ItemApiService _itemsApiService = ItemApiService();
 UnitApiService _unitsApiService = UnitApiService();
+ItemImageApiService _itemImageApiService = ItemImageApiService();
+ItemBarcodeApiService _itemBarcodeApiService = ItemBarcodeApiService();
 
 //List Models
 List<Vendors> vendors=[];
@@ -84,6 +93,8 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
   String? price = null;
   String? qty = null;
   String? total = null;
+  String itemImage = '';
+  String itemBarcode = '';
   final _addFormKey = GlobalKey<FormState>();
 
   final ReceivePermissionHApiService api = ReceivePermissionHApiService();
@@ -133,14 +144,14 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
     fillCompos();
   }
   void fetchData() async {
-    // Simulate fetching data
     await Future.delayed(const Duration(milliseconds: 50));
 
-    // Set isLoading to false when data is retrieved
     setState(() {
       isLoading = false;
     });
   }
+
+  File? imageFile;
 
   @override
   Widget build(BuildContext context) {
@@ -541,65 +552,84 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
                         ],
                       ),
                     ),
-                    Form(
-                        key: _dropdownItemFormKey,
-                        child: Row(
-                          children: [
-                            Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('${"item".tr()} :',
-                                style: const TextStyle(fontWeight: FontWeight.bold))),
-                            const SizedBox(width: 10),
-                            SizedBox(
-                              width: 200,
-                              child: DropdownSearch<Item>(
-                                selectedItem: itemItem,
-                                popupProps: PopupProps.menu(
-                                  itemBuilder: (context, item, isSelected) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                                      decoration: !isSelected ? null :
-                                      BoxDecoration(
-                                        border: Border.all(color: Colors.black12),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.white,
+                    Row(
+                      children: [
+                        Form(
+                            key: _dropdownItemFormKey,
+                            child: Row(
+                              children: [
+                                Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('${"item".tr()} :',
+                                    style: const TextStyle(fontWeight: FontWeight.bold))),
+                                const SizedBox(width: 10),
+                                SizedBox(
+                                  width: 150,
+                                  child: DropdownSearch<Item>(
+                                    selectedItem: itemItem,
+                                    popupProps: PopupProps.menu(
+                                      itemBuilder: (context, item, isSelected) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                                          decoration: !isSelected ? null :
+                                          BoxDecoration(
+                                            border: Border.all(color: Colors.black12),
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: Colors.white,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text((langId == 1) ? item.itemNameAra.toString() : item.itemNameEng.toString()),
+                                          ),
+                                        );
+                                      },
+                                      showSearchBox: true,
+
+                                    ),
+                                    items: items,
+                                    itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
+
+                                    onChanged: (value) {
+                                      selectedItemValue = value!.itemCode.toString();
+                                      selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
+                                      changeItemUnit(selectedItemValue.toString());
+                                      selectedUnitValue = "1";
+                                      itemImageHandled(selectedItemValue.toString());
+                                      itemBarcodeHandler(selectedItemValue.toString());
+                                    },
+
+                                    filterFn: (instance, filter) {
+                                      if ((langId == 1) ? instance.itemNameAra!.contains(filter) : instance.itemNameEng!.contains(filter)) {
+                                        print(filter);
+                                        return true;
+                                      }
+                                      else {
+                                        return false;
+                                      }
+                                    },
+                                    dropdownDecoratorProps: const DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
                                       ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text((langId == 1) ? item.itemNameAra.toString() : item.itemNameEng.toString()),
-                                      ),
-                                    );
-                                  },
-                                  showSearchBox: true,
+                                    ),
 
-                                ),
-                                items: items,
-                                itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
-
-                                onChanged: (value) {
-                                  selectedItemValue = value!.itemCode.toString();
-                                  selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
-                                  changeItemUnit(selectedItemValue.toString());
-                                  selectedUnitValue = "1";
-                                },
-
-                                filterFn: (instance, filter) {
-                                  if ((langId == 1) ? instance.itemNameAra!.contains(filter) : instance.itemNameEng!.contains(filter)) {
-                                    print(filter);
-                                    return true;
-                                  }
-                                  else {
-                                    return false;
-                                  }
-                                },
-                                dropdownDecoratorProps: const DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
                                   ),
                                 ),
 
-                              ),
+                              ],
+                            )
+                        ),
+                        const SizedBox(width: 15),
+                        Column(
+                          children: [
+                            BarcodeWidget(
+                              barcode: Barcode.code128(),
+                              data: itemBarcode,
+                              width: 100,
+                              height: 50,
                             ),
-
+                            _buildImageWidget(itemImage),
                           ],
                         )
+
+                      ],
                     ),
                     const SizedBox(height: 20),
                     Row(
@@ -822,7 +852,6 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
                           width: 85,
                           child: textFormFields(
                             controller: _totalQtyController,
-                            // hintText: "totalQty".tr(),
                             enable: false,
                             onSaved: (val) {
                               total = val;
@@ -1166,4 +1195,45 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
       print(e);
     });
   }
+
+  Uint8List _base64StringToUint8List(String base64String) {
+    return Uint8List.fromList(base64Decode(base64String));
+  }
+
+  Widget _buildImageWidget(String? base64Image) {
+    if (base64Image != null && base64Image.isNotEmpty) {
+
+      Uint8List uint8List = _base64StringToUint8List(base64Image);
+
+      // Display the image using Image.memory
+      return Image.memory(uint8List, height: 120, width: 100);
+    } else {
+      return Image.asset('assets/fitness_app/galleryIcon.png', height: 120, width: 100);
+    }
+  }
+  itemImageHandled(String itemCode){
+    Future<String> futureItemImage = _itemImageApiService.getItemImage(itemCode).then((data) {
+      itemImage = data;
+
+      setState(() {
+
+      });
+      return itemImage;
+    }, onError: (e) {
+      print(e);
+    });
+  }
+  itemBarcodeHandler(String itemCode){
+    Future<String> futureItemBarcode = _itemBarcodeApiService.getItemBarcode(itemCode).then((data) {
+      itemBarcode = data;
+
+      setState(() {
+
+      });
+      return itemBarcode;
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
 }

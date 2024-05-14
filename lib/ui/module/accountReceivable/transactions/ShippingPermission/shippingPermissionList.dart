@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/receipt/stockShippingReceipt.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/shippingPermission/ShippingPermissionD.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/shippingPermission/ShippingPermissionH.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/stock/stockShipping.dart';
+import 'package:fourlinkmobileapp/service/general/receipt/pdfShippingReceipt.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/ShippingPermission/shippingPermissionDApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/ShippingPermission/shippingPermissionHApiService.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/ShippingPermission/addShippingPermissionWidget.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/ShippingPermission/editShippingPermissionWidget.dart';
+import '../../../../../data/model/modules/module/general/receipt/stockReceiptHeader.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../cubit/app_cubit.dart';
+import '../../../../../service/general/Pdf/pdf_api.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import '../../../../../utils/permissionHelper.dart';
 import 'package:intl/intl.dart';
@@ -43,10 +49,10 @@ class _ShippingPermissionHListPageState extends State<ShippingPermissionHListPag
   }
   void getData() async {
     try {
-      List<ShippingPermissionH>? futureReceiveH = await _apiService.getShippingPermissionsH();
+      List<ShippingPermissionH>? futureShippingH = await _apiService.getShippingPermissionsH();
 
-      if (futureReceiveH != null) {
-        _shippingPermissions = futureReceiveH;
+      if (futureShippingH != null) {
+        _shippingPermissions = futureShippingH;
         _shippingPermissionsSearch = List.from(_shippingPermissions);
 
         if (_shippingPermissions.isNotEmpty) {
@@ -64,8 +70,8 @@ class _ShippingPermissionHListPageState extends State<ShippingPermissionHListPag
   }
 
   void getDetailData(int? headerId) async {
-    Future<List<ShippingPermissionD>?> futureReceiveD = _apiDService.getShippingPermissionD(headerId);
-    _shippingPermissionsD = (await futureReceiveD)!;
+    Future<List<ShippingPermissionD>?> futureShippingD = _apiDService.getShippingPermissionD(headerId);
+    _shippingPermissionsD = (await futureShippingD)!;
 
   }
 
@@ -371,115 +377,85 @@ class _ShippingPermissionHListPageState extends State<ShippingPermissionHListPag
 
   }
 
-  _navigateToPrintScreen (BuildContext context, ShippingPermissionH receiveH,int index) async {
-    //   int menuId=7206;
-    //   bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
-    //   //isAllowPrint = true;
-    //   if(isAllowPrint)
-    //   {
-    //     bool IsReceipt =true;
-    //     if(IsReceipt)
-    //     {
-    //       DateTime date = DateTime.parse(_receiveH.offerDate.toString());
-    //       final dueDate = date.add(Duration(days: 7));
-    //
-    //       //Get Sales Invoice Details To Create List Of Items
-    //       //getDetailData(offerH.id);
-    //       Future<List<SalesOfferD>?> futureSalesOfferD = _apiDService.getSalesOffersD(_receiveH.offerSerial);
-    //       _salesOffersD = (await futureSalesOfferD)!;
-    //
-    //       List<InvoiceItem> invoiceItems=[];
-    //       print('Before Sales offer : ' + _receiveH.id.toString() );
-    //       if(_salesOffersD != null)
-    //       {
-    //         print('In Sales Offer' );
-    //         print('_salesOffersD >> ' + _salesOffersD.length.toString() );
-    //         for(var i = 0; i < _salesOffersD.length; i++){
-    //           double qty= (_salesOffersD[i].displayQty != null) ? double.parse(_salesOffersD[i].displayQty.toStringAsFixed(2))  : 0;
-    //           //double vat=0;
-    //           double vat=(_salesOffersD[i].displayTotalTaxValue != null) ? double.parse(_salesOffersD[i].displayTotalTaxValue.toStringAsFixed(2)) : 0 ;
-    //           //double price =_salesOffersD[i].displayPrice! as double;
-    //           double price =( _salesOffersD[i].displayPrice != null) ? double.parse(_salesOffersD[i].displayPrice.toStringAsFixed(2)) : 0;
-    //           double total =( _salesOffersD[i].displayNetValue != null) ? double.parse(_salesOffersD[i].displayNetValue.toStringAsFixed(2)) : 0;
-    //
-    //           InvoiceItem _invoiceItem= InvoiceItem(description: _salesOffersD[i].itemName.toString(),
-    //               date: date, quantity: qty  , vat: vat  , unitPrice: price , totalValue : total );
-    //
-    //           invoiceItems.add(_invoiceItem);
-    //         }
-    //       }
-    //
-    //       double totalDiscount =( _receiveH.totalDiscount != null) ? double.parse(_receiveH.totalDiscount!.toStringAsFixed(2)) : 0;
-    //       double totalBeforeVat =( _receiveH.totalValue != null) ? double.parse(_receiveH.totalValue!.toStringAsFixed(2)) : 0;
-    //       double totalVatAmount =( _receiveH.totalTax != null) ? double.parse(_receiveH.totalTax!.toStringAsFixed(2)) : 0;
-    //       double totalAfterVat =( _receiveH.totalNet != null) ? double.parse(_receiveH.totalNet!.toStringAsFixed(2)) : 0;
-    //       double totalAmount =( _receiveH.totalAfterDiscount != null) ? double.parse(_receiveH.totalAfterDiscount!.toStringAsFixed(2)) : 0;
-    //       double totalQty =( _receiveH.totalQty != null) ? double.parse(_receiveH.totalQty!.toStringAsFixed(2)) : 0;
-    //       double rowsCount =( _receiveH.rowsCount != null) ? double.parse(_receiveH.rowsCount!.toStringAsFixed(2))   : 0;
-    //       //String TafqeetName = "";
-    //       String tafqeetName =  _receiveH.tafqitNameArabic.toString();
-    //
-    //       print('taftaf');
-    //       print(tafqeetName);
-    //
-    //       final invoice = Invoice(   //ToDO
-    //           supplier: Vendor(
-    //             vendorNameAra: 'Sarah Field',
-    //             address1: 'Sarah Street 9, Beijing, China',
-    //             paymentInfo: 'https://paypal.me/sarahfieldzz',
-    //           ),
-    //           customer: Customer(
-    //             customerNameAra: _receiveH.customerName,
-    //             address: 'Apple Street, Cupertino, CA 95014', //ToDO
-    //           ),
-    //           info: InvoiceInfo(
-    //               date: date,
-    //               dueDate: dueDate,
-    //               description: 'My description...',
-    //               number: _receiveH.offerSerial.toString() ,
-    //               totalDiscount:  totalDiscount,
-    //               totalBeforeVat:  totalBeforeVat,
-    //               totalVatAmount:  totalVatAmount,
-    //               totalAfterVat:  totalAfterVat,
-    //               totalAmount:  totalAmount,
-    //               totalQty:  totalQty,
-    //               tafqeetName:  tafqeetName,
-    //               rowsCount:  rowsCount
-    //           ),
-    //           items: invoiceItems
-    //       );
-    //
-    //
-    //       String invoiceDate =DateFormat('yyyy-MM-dd hh:mm').format(DateTime.parse(_receiveH.offerDate.toString()));
-    //       final receipt = Receipt(   //ToDO
-    //           receiptHeader: ReceiptHeader(
-    //               companyName: langId==1?'مؤسسة ركن كريز للحلويات':' مؤسسة ركن كريز للحلويات',
-    //               companyInvoiceTypeName: (_receiveH.offerTypeCode == "1") ?'عرض سعر':'عرض سعر',
-    //               companyInvoiceTypeName2: langId==1?'Simplified Tax Offer':'Simplified Tax Offer',
-    //               companyVatNumber: langId==1? "الرقم الضريبي  " + '302211485800003':'VAT No  302211485800003',
-    //               companyCommercialName: langId==1? 'ترخيص رقم 450714529009':'Registeration No 450714529009',
-    //               companyInvoiceNo: langId==1?'رقم عرض السعر ' + _receiveH.offerSerial.toString() :'Offer No  ' + _receiveH.offerSerial.toString(),
-    //               companyDate: langId==1? "التاريخ  " + invoiceDate  : "Date : " + invoiceDate ,
-    //               companyAddress: langId==1?'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
-    //               companyPhone: langId==1?'Tel No :+966539679540':'Tel No :+966539679540',
-    //               customerName: langId==1? "العميل : " + _receiveH.customerName.toString() : "Customer : " + _receiveH.customerName.toString() ,
-    //               customerTaxNo:  langId==1? "الرقم الضريبي  " + _receiveH.taxIdentificationNumber.toString() :'VAT No ' + _receiveH.taxIdentificationNumber.toString(),
-    //               salesInvoicesTypeName:  (_receiveH.offerTypeCode.toString() == "1") ?(langId==1?"عرض سعر" : "Sales offer" ) : (langId==1?"عرض سعر" : "Sales offer" )  ,
-    //               tafqeetName : tafqeetName
-    //           ),
-    //           invoice: invoice
-    //       );
-    //
-    //       final pdfFile = await pdfReceipt.generateOffer(receipt);
-    //       PdfApi.openFile(pdfFile);
-    //     }
-    //     else{
-    //     }
-    //   }
-    //   else
-    //   {
-    //     FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
-    //   }
-    // }
+  _navigateToPrintScreen (BuildContext context, ShippingPermissionH shippingH,int index) async {
+    int menuId=6206;
+    bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
+    //isAllowPrint = true;
+    if(isAllowPrint)
+    {
+      bool IsReceipt =true;
+      if(IsReceipt)
+      {
+        DateTime date = DateTime.parse(shippingH.trxDate.toString());
+        final dueDate = date.add(Duration(days: 7));
+
+        //Get Details To Create List Of Items
+        Future<List<ShippingPermissionD>?> futureShippingPermissionD = _apiDService.getShippingPermissionD(shippingH.id);
+        _shippingPermissionsD = (await futureShippingPermissionD)!;
+
+        List<StockShippingItem> shippingItems=[];
+        print('Before Print Shipping : ' + shippingH.id.toString() );
+        if(_shippingPermissionsD != null)
+        {
+          print('In Print Shipping' );
+          print('_shippingPermissionsD >> ' + _shippingPermissionsD.length.toString() );
+          for(var i = 0; i < _shippingPermissionsD.length; i++){
+            double qty= (_shippingPermissionsD[i].displayQty != null) ? double.parse(_shippingPermissionsD[i].displayQty.toStringAsFixed(2))  : 0;
+
+            StockShippingItem shippingItem= StockShippingItem(description: _shippingPermissionsD[i].itemName.toString(),
+                date: date, quantity: qty  , contractNo: _shippingPermissionsD[i].contractNumber!,
+                shipmentNumber: _shippingPermissionsD[i].shippmentCount , shipmentWeightCount : _shippingPermissionsD[i].shippmentWeightCount );
+
+            shippingItems.add(shippingItem);
+          }
+        }
+
+        double totalQty =( shippingH.totalQty != null) ? double.parse(shippingH.totalQty!.toStringAsFixed(2)) : 0;
+        double rowsCount =( shippingH.rowsCount != null) ? double.parse(shippingH.rowsCount!.toStringAsFixed(2))   : 0;
+
+        final shipping = StockShipping(   //ToDO
+            supplier: Customer(
+              customerName: shippingH.targetName,
+            ),
+
+            info: StockShippingInfo(
+                date: date,
+                dueDate: dueDate,
+                description: 'My description...',
+                number: shippingH.trxSerial.toString() ,
+                totalQty:  totalQty,
+                rowsCount:  rowsCount
+            ),
+            items: shippingItems
+        );
+
+
+        String invoiceDate =DateFormat('yyyy-MM-dd hh:mm').format(DateTime.parse(shippingH.trxDate.toString()));
+        final receipt = ShippingReceipt(   //ToDO
+            receiptHeader: StockReceiptHeader(
+              companyName: langId==1?'Franches':'Franches',
+              companyStockTypeName: (shippingH.trxTypeCode == "1") ?'إذن شحن':'إذن شحن',
+              // companyInvoiceTypeName2: langId==1?'Simplified Tax Offer':'Simplified Tax Offer',
+              // companyVatNumber: langId==1? "الرقم الضريبي  " + '302211485800003':'VAT No  302211485800003',
+              // companyCommercialName: langId==1? 'ترخيص رقم 450714529009':'Registeration No 450714529009',
+              companyShippingPermissionNo: langId==1?'رقم إذن الشحن ' + shippingH.trxSerial.toString() :'Shipping No  ' + shippingH.trxSerial.toString(),
+              companyDate: langId==1? "التاريخ  " + invoiceDate  : "Date : " + invoiceDate ,
+              // companyAddress: langId==1?'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
+              // companyPhone: langId==1?'Tel No :+966539679540':'Tel No :+966539679540',
+              customerName: langId==1? "العميل : " + shippingH.targetName.toString() : "Customer : " + shippingH.targetName.toString() ,
+              //customerTaxNo:  langId==1? "الرقم الضريبي  " + shippingH.taxIdentificationNumber.toString() :'VAT No ' + shippingH.taxIdentificationNumber.toString(),
+              stockTypeName:  (shippingH.trxTypeCode.toString() == "1") ?(langId==1?"إذن شحن" : "Shipping Permission" ) : (langId==1?"إذن شحن" : "Shipping Permission" )  ,
+            ),
+            shipping: shipping
+        );
+
+        final pdfFile = await PDFShippingReceipt.generateStockShipping(receipt);
+        PdfApi.openFile(pdfFile);
+      }
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
+    }
   }
 }

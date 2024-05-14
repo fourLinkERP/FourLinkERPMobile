@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/receipt/stockReceiveReceipt.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/receivePermission/ReceivePermissionD.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/receivePermission/ReceivePermissionH.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/ReceivePermissions/receivePermissionDApiService.dart';
@@ -9,8 +10,13 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../../common/globals.dart';
 import '../../../../../cubit/app_cubit.dart';
+import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vendors/Vendor.dart';
+import '../../../../../data/model/modules/module/accountreceivable/transactions/stock/stockReceive.dart';
+import '../../../../../data/model/modules/module/general/receipt/stockReceiptHeader.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
+import '../../../../../service/general/Pdf/pdf_api.dart';
+import '../../../../../service/general/receipt/pdfStockReceipt.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import '../../../../../utils/permissionHelper.dart';
 import 'addReceivePermissionDataWidget.dart';
@@ -377,114 +383,84 @@ class _ReceivePermissionHListPageState extends State<ReceivePermissionHListPage>
   }
 
   _navigateToPrintScreen (BuildContext context, ReceivePermissionH receiveH,int index) async {
-    //   int menuId=7206;
-    //   bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
-    //   //isAllowPrint = true;
-    //   if(isAllowPrint)
-    //   {
-    //     bool IsReceipt =true;
-    //     if(IsReceipt)
-    //     {
-    //       DateTime date = DateTime.parse(_receiveH.offerDate.toString());
-    //       final dueDate = date.add(Duration(days: 7));
-    //
-    //       //Get Sales Invoice Details To Create List Of Items
-    //       //getDetailData(offerH.id);
-    //       Future<List<SalesOfferD>?> futureSalesOfferD = _apiDService.getSalesOffersD(_receiveH.offerSerial);
-    //       _salesOffersD = (await futureSalesOfferD)!;
-    //
-    //       List<InvoiceItem> invoiceItems=[];
-    //       print('Before Sales offer : ' + _receiveH.id.toString() );
-    //       if(_salesOffersD != null)
-    //       {
-    //         print('In Sales Offer' );
-    //         print('_salesOffersD >> ' + _salesOffersD.length.toString() );
-    //         for(var i = 0; i < _salesOffersD.length; i++){
-    //           double qty= (_salesOffersD[i].displayQty != null) ? double.parse(_salesOffersD[i].displayQty.toStringAsFixed(2))  : 0;
-    //           //double vat=0;
-    //           double vat=(_salesOffersD[i].displayTotalTaxValue != null) ? double.parse(_salesOffersD[i].displayTotalTaxValue.toStringAsFixed(2)) : 0 ;
-    //           //double price =_salesOffersD[i].displayPrice! as double;
-    //           double price =( _salesOffersD[i].displayPrice != null) ? double.parse(_salesOffersD[i].displayPrice.toStringAsFixed(2)) : 0;
-    //           double total =( _salesOffersD[i].displayNetValue != null) ? double.parse(_salesOffersD[i].displayNetValue.toStringAsFixed(2)) : 0;
-    //
-    //           InvoiceItem _invoiceItem= InvoiceItem(description: _salesOffersD[i].itemName.toString(),
-    //               date: date, quantity: qty  , vat: vat  , unitPrice: price , totalValue : total );
-    //
-    //           invoiceItems.add(_invoiceItem);
-    //         }
-    //       }
-    //
-    //       double totalDiscount =( _receiveH.totalDiscount != null) ? double.parse(_receiveH.totalDiscount!.toStringAsFixed(2)) : 0;
-    //       double totalBeforeVat =( _receiveH.totalValue != null) ? double.parse(_receiveH.totalValue!.toStringAsFixed(2)) : 0;
-    //       double totalVatAmount =( _receiveH.totalTax != null) ? double.parse(_receiveH.totalTax!.toStringAsFixed(2)) : 0;
-    //       double totalAfterVat =( _receiveH.totalNet != null) ? double.parse(_receiveH.totalNet!.toStringAsFixed(2)) : 0;
-    //       double totalAmount =( _receiveH.totalAfterDiscount != null) ? double.parse(_receiveH.totalAfterDiscount!.toStringAsFixed(2)) : 0;
-    //       double totalQty =( _receiveH.totalQty != null) ? double.parse(_receiveH.totalQty!.toStringAsFixed(2)) : 0;
-    //       double rowsCount =( _receiveH.rowsCount != null) ? double.parse(_receiveH.rowsCount!.toStringAsFixed(2))   : 0;
-    //       //String TafqeetName = "";
-    //       String tafqeetName =  _receiveH.tafqitNameArabic.toString();
-    //
-    //       print('taftaf');
-    //       print(tafqeetName);
-    //
-    //       final invoice = Invoice(   //ToDO
-    //           supplier: Vendor(
-    //             vendorNameAra: 'Sarah Field',
-    //             address1: 'Sarah Street 9, Beijing, China',
-    //             paymentInfo: 'https://paypal.me/sarahfieldzz',
-    //           ),
-    //           customer: Customer(
-    //             customerNameAra: _receiveH.customerName,
-    //             address: 'Apple Street, Cupertino, CA 95014', //ToDO
-    //           ),
-    //           info: InvoiceInfo(
-    //               date: date,
-    //               dueDate: dueDate,
-    //               description: 'My description...',
-    //               number: _receiveH.offerSerial.toString() ,
-    //               totalDiscount:  totalDiscount,
-    //               totalBeforeVat:  totalBeforeVat,
-    //               totalVatAmount:  totalVatAmount,
-    //               totalAfterVat:  totalAfterVat,
-    //               totalAmount:  totalAmount,
-    //               totalQty:  totalQty,
-    //               tafqeetName:  tafqeetName,
-    //               rowsCount:  rowsCount
-    //           ),
-    //           items: invoiceItems
-    //       );
-    //
-    //
-    //       String invoiceDate =DateFormat('yyyy-MM-dd hh:mm').format(DateTime.parse(_receiveH.offerDate.toString()));
-    //       final receipt = Receipt(   //ToDO
-    //           receiptHeader: ReceiptHeader(
-    //               companyName: langId==1?'مؤسسة ركن كريز للحلويات':' مؤسسة ركن كريز للحلويات',
-    //               companyInvoiceTypeName: (_receiveH.offerTypeCode == "1") ?'عرض سعر':'عرض سعر',
-    //               companyInvoiceTypeName2: langId==1?'Simplified Tax Offer':'Simplified Tax Offer',
-    //               companyVatNumber: langId==1? "الرقم الضريبي  " + '302211485800003':'VAT No  302211485800003',
-    //               companyCommercialName: langId==1? 'ترخيص رقم 450714529009':'Registeration No 450714529009',
-    //               companyInvoiceNo: langId==1?'رقم عرض السعر ' + _receiveH.offerSerial.toString() :'Offer No  ' + _receiveH.offerSerial.toString(),
-    //               companyDate: langId==1? "التاريخ  " + invoiceDate  : "Date : " + invoiceDate ,
-    //               companyAddress: langId==1?'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
-    //               companyPhone: langId==1?'Tel No :+966539679540':'Tel No :+966539679540',
-    //               customerName: langId==1? "العميل : " + _receiveH.customerName.toString() : "Customer : " + _receiveH.customerName.toString() ,
-    //               customerTaxNo:  langId==1? "الرقم الضريبي  " + _receiveH.taxIdentificationNumber.toString() :'VAT No ' + _receiveH.taxIdentificationNumber.toString(),
-    //               salesInvoicesTypeName:  (_receiveH.offerTypeCode.toString() == "1") ?(langId==1?"عرض سعر" : "Sales offer" ) : (langId==1?"عرض سعر" : "Sales offer" )  ,
-    //               tafqeetName : tafqeetName
-    //           ),
-    //           invoice: invoice
-    //       );
-    //
-    //       final pdfFile = await pdfReceipt.generateOffer(receipt);
-    //       PdfApi.openFile(pdfFile);
-    //     }
-    //     else{
-    //     }
-    //   }
-    //   else
-    //   {
-    //     FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
-    //   }
-    // }
+      int menuId=7206;
+      bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
+      //isAllowPrint = true;
+      if(isAllowPrint)
+      {
+        bool IsReceipt =true;
+        if(IsReceipt)
+        {
+          DateTime date = DateTime.parse(receiveH.trxDate.toString());
+          final dueDate = date.add(Duration(days: 7));
+
+          //Get Details To Create List Of Items
+          Future<List<ReceivePermissionD>?> futureReceivePermissionD = _apiDService.getReceivePermissionD(receiveH.id);
+          _receivePermissionsD = (await futureReceivePermissionD)!;
+
+          List<StockReceiveItem> receiveItems=[];
+          print('Before Print Receive : ' + receiveH.id.toString() );
+          if(_receivePermissionsD != null)
+          {
+            print('In Print Receive' );
+            print('_receivePermissionsD >> ' + _receivePermissionsD.length.toString() );
+            for(var i = 0; i < _receivePermissionsD.length; i++){
+              double qty= (_receivePermissionsD[i].displayQty != null) ? double.parse(_receivePermissionsD[i].displayQty.toStringAsFixed(2))  : 0;
+
+              StockReceiveItem receiveItem= StockReceiveItem(description: _receivePermissionsD[i].itemName.toString(),
+                  date: date, quantity: qty  , contractNo: _receivePermissionsD[i].contractNumber!,
+                  shipmentNumber: _receivePermissionsD[i].shippmentCount , shipmentWeightCount : _receivePermissionsD[i].shippmentWeightCount );
+
+              receiveItems.add(receiveItem);
+            }
+          }
+
+          double totalQty =( receiveH.totalQty != null) ? double.parse(receiveH.totalQty!.toStringAsFixed(2)) : 0;
+          double rowsCount =( receiveH.rowsCount != null) ? double.parse(receiveH.rowsCount!.toStringAsFixed(2))   : 0;
+
+          final receive = StockReceive(   //ToDO
+              supplier: Vendor(
+                vendorNameAra: receiveH.targetName,
+              ),
+
+              info: StockReceiveInfo(
+                  date: date,
+                  dueDate: dueDate,
+                  description: 'My description...',
+                  number: receiveH.trxSerial.toString() ,
+                  totalQty:  totalQty,
+                  rowsCount:  rowsCount
+              ),
+              items: receiveItems
+          );
+
+
+          String invoiceDate =DateFormat('yyyy-MM-dd hh:mm').format(DateTime.parse(receiveH.trxDate.toString()));
+          final receipt = ReceiveReceipt(   //ToDO
+              receiptHeader: StockReceiptHeader(
+                  companyName: langId==1?'Franches':'Franches',
+                  companyStockTypeName: (receiveH.trxTypeCode == "1") ?'إذن استلام':'إذن استلام',
+                  // companyInvoiceTypeName2: langId==1?'Simplified Tax Offer':'Simplified Tax Offer',
+                  // companyVatNumber: langId==1? "الرقم الضريبي  " + '302211485800003':'VAT No  302211485800003',
+                  // companyCommercialName: langId==1? 'ترخيص رقم 450714529009':'Registeration No 450714529009',
+                  companyReceivePermissionNo: langId==1?'رقم إذن الاستلام ' + receiveH.trxSerial.toString() :'Receive No  ' + receiveH.trxSerial.toString(),
+                  companyDate: langId==1? "التاريخ  " + invoiceDate  : "Date : " + invoiceDate ,
+                  // companyAddress: langId==1?'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
+                  // companyPhone: langId==1?'Tel No :+966539679540':'Tel No :+966539679540',
+                  customerName: langId==1? "المصنع : " + receiveH.targetName.toString() : "Vendor : " + receiveH.targetName.toString() ,
+                  //customerTaxNo:  langId==1? "الرقم الضريبي  " + receiveH.taxIdentificationNumber.toString() :'VAT No ' + receiveH.taxIdentificationNumber.toString(),
+                  stockTypeName:  (receiveH.trxTypeCode.toString() == "1") ?(langId==1?"إذن استلام" : "Receive Permission" ) : (langId==1?"إذن استلام" : "Receive Permission" )  ,
+              ),
+              receive: receive
+          );
+
+          final pdfFile = await PDFReceiveReceipt.generateStockReceive(receipt);
+          PdfApi.openFile(pdfFile);
+        }
+      }
+      else
+      {
+        FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
+      }
+    }
   }
-}
