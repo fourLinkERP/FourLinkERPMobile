@@ -525,6 +525,10 @@
     "please_enter_quantity": "please enter quantity",
     "please_Set_Serial": "please set Serial",
     "please_Set_Supplier": "please set supplier",
-    "please_set_customer": "please set customer"
+    "please_set_customer": "please set customer",
+    "egypt": "Egypt",
+    "saudi_arabia": "Saudi Arabia",
+    "riyadh": "Riyadh",
+    "cairo": "Cairo"
 
 }

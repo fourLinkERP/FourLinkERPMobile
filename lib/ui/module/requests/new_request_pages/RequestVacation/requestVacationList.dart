@@ -50,7 +50,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
   List<VacationRequests> filterListByEmployeeCode() {
     List<VacationRequests> filteredList = [];
 
-    if (empCode == "1" || empCode == "11" || empCode == "10") {
+    if (empCode == "1" || empCode == "11" || empCode == "10" || empCode == "2") {
       filteredList = vacationRequests;
     } else {
       vacationRequests.forEach((element) {
@@ -152,17 +152,22 @@ class _RequestVacationListState extends State<RequestVacationList> {
     );
   }
   _navigateToAddScreen(BuildContext context) async {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddRequestVacation(),
+    )).then((value) {
+        getData();
+    });
 
     // int menuId=45201;
     // bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     // if(isAllowAdd)
     // {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddRequestVacation(),
-      )).then((value) {
-        if (value != null && value == true) {
-          getData();
-        }
-      });
+    //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddRequestVacation(),
+    //   )).then((value) {
+    //     if (value != null && value == true) {
+    //           getData();
+    //         }
+    //   });
+    //
     // }
     // else
     // {
@@ -171,16 +176,17 @@ class _RequestVacationListState extends State<RequestVacationList> {
 
   }
   _navigateToEditScreen (BuildContext context, VacationRequests requests) async {
+    final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+        EditRequestVacationTabs(requests)),).then((value) => getData());
 
-    int menuId=45201;
-    bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
+    // int menuId=45201;
+    // bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
     // if(isAllowEdit)
     // {
-
-      final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-          //EditRequestVacation(requests)),).then((value) => getData());
-          EditRequestVacationTabs(requests)),).then((value) => getData());
-
+    //
+    //   final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+    //       EditRequestVacationTabs(requests)),).then((value) => getData());
+    //
     // }
     // else
     // {

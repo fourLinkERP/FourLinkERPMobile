@@ -503,7 +503,7 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                                       //_displayQtyController.text = "1";
                                       changeItemUnit(selectedItemValue.toString());
                                       selectedUnitValue = "1";
-                                      String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                      String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                       setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
 
 
@@ -580,7 +580,7 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                                           selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
 
                                           if (selectedUnitValue != null && selectedItemValue != null) {
-                                            String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                            String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                             //Item Price
                                             setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
                                             //Factor

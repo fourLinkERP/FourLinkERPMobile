@@ -21,8 +21,8 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
     print('Sales Man 1');
     Map data = {
       'Search': {
-        'CompanyCode': companyCode,
-        'BranchCode': branchCode
+        'CompanyCode': companyCode
+        //'BranchCode': branchCode
       }
     };
 

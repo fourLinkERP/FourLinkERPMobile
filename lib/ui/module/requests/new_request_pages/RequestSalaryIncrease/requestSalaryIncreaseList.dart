@@ -145,34 +145,39 @@ class _RequestSalaryIncreaseListState extends State<RequestSalaryIncreaseList> {
   }
 
   _navigateToAddScreen(BuildContext context) async {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => RequestSalary(),)).then((value) {
+      getData();
+    });
 
-    int menuId = 45203;
-    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
-    if(isAllowAdd) {
-      print('you_have_add_permission');
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => RequestSalary(),)).then((value) {
-        getData();
-      });
-    }
-    else {
-      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
-    }
+    // int menuId = 45203;
+    // bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    // if(isAllowAdd) {
+    //   print('you_have_add_permission');
+    //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => RequestSalary(),)).then((value) {
+    //     getData();
+    //   });
+    // }
+    // else {
+    //   FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    // }
   }
 
   _navigateToEditScreen (BuildContext context, SalaryIncRequests salaryRequests) async {
+    final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+        EditRequestSalaryIncrease(salaryRequests)),).then((value) => getData());
 
-    int menuId = 45203;
-    bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
-    if(isAllowEdit)
-    {
-
-      final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-          EditRequestSalaryIncrease(salaryRequests)),).then((value) => getData());
-    }
-    else
-    {
-      FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
-    }
+    // int menuId = 45203;
+    // bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
+    // if(isAllowEdit)
+    // {
+    //
+    //   final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+    //       EditRequestSalaryIncrease(salaryRequests)),).then((value) => getData());
+    // }
+    // else
+    // {
+    //   FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
+    // }
   }
 
   Widget buildIncreaseRequests(){

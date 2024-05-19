@@ -26,7 +26,7 @@
     "enter_valid_email": "ادخل بريد الكتروني صحيح",
     "email_verify": "سوف نرسل اليك ايميل للتحقق من صحة حسابك",
     "email_empty": "لا يمكن ترك البريد الالكتروني خالي",
-    "mobile": "رقم الجوال: ",
+    "mobile": "الهاتف",
     "enter_mobile": "ادخل رقم جوالك",
     "enter_valid_mobile": "ادخل رقم جوال صحيح",
     "password_required": "الباسورد *",
@@ -411,7 +411,7 @@
     "Request Salary Increase": "طلب زيادة مرتب",
     "Save": "حفظ",
     "Subject": "العنوان",
-    "recruitment_date": "تاريخ التوظيف",
+    "recruitment_date": "تاريخ التعيين",
     "basic_salary": "الراتب الاساسي",
     "main_salary": "الراتب الاساسي",
     "full_salary": "الراتب الكامل",
@@ -618,6 +618,10 @@
     "please_enter_shipment_number": "من فضلك ادخل عدد الكراتين",
     "please_Set_Serial": "من فضلك حدد المسلسل",
     "please_Set_Supplier": "من فضلك اختر المصنع",
-    "please_set_customer": "من فضلك اختر العميل"
+    "please_set_customer": "من فضلك اختر العميل",
+    "egypt": "جمهورية مصر العربية",
+    "saudi_arabia": "المملكة العربية السعودية",
+    "riyadh": "الرياض",
+    "cairo": "القاهرة"
 }
 

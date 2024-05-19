@@ -128,11 +128,9 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
     });
 
     id = widget.requests.id!;
-    _vacationRequestTrxDateController.text = widget.requests.trxDate!;
+    _vacationRequestTrxDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.requests.trxDate!.toString()));
     _vacationRequestSerialController.text = widget.requests.trxSerial!;
     _vacationRequestMessageController.text = widget.requests.messageTitle!;
-    _fromDateController.text = widget.requests.fromDate!;
-    _toDateController.text = widget.requests.toDate!;
     _vacationRequestRequestedDaysController.text = widget.requests.requestDays!.toString();
     _vacationRequestVacationBalanceController.text = widget.requests.vacationBalance!.toString();
     _vacationRequestAllowedBalanceController.text = widget.requests.allowBalance!.toString();
@@ -140,8 +138,10 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
     _vacationRequestAdvanceBalanceController.text = widget.requests.advanceBalance!.toString();
     _vacationRequestListBalanceController.text = widget.requests.ruleBalance!.toString();
     _vacationRequestNoteController.text = widget.requests.notes!;
-    _vacationRequestLastSalaryDateController.text = widget.requests.latestVacationDate!;
-    _vacationRequestDueDateController.text = widget.requests.vacationDueDate!;
+    _fromDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.requests.vacationStartDate!.toString()));
+    _toDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.requests.vacationEndDate!.toString()));
+    _vacationRequestLastSalaryDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.requests.latestVacationDate!.toString()));
+    _vacationRequestDueDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.requests.vacationDueDate!.toString()));
     selectedVacationTypeValue = widget.requests.vacationTypeCode!;
     selectedDepartmentValue = widget.requests.departmentCode!;
     selectedCostCenterValue = widget.requests.costCenterCode1!;
@@ -177,8 +177,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
     super.initState();
   }
 
-  DateTime get pickedDate => DateTime.now();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -191,7 +189,7 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                 child: ListView(
                     children: [
                       Container(
-                        padding: EdgeInsets.only(left: 20, right: 20),
+                        padding: const EdgeInsets.only(left: 20, right: 20),
                         height: 800,
                         child: ListView(
                           scrollDirection: Axis.horizontal,
@@ -406,9 +404,7 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                     items: costCenters,
                                     itemAsString: (CostCenter u) => u.costCenterNameAra.toString(),
                                     onChanged: (value){
-                                      //v.text = value!.cusTypesCode.toString();
-                                      //print(value!.id);
-                                      selectedCostCenterValue =  value!.costCenterCode.toString();
+                                      selectedCostCenterValue =  value!.costCenterCode.toString();  /// costCenterCode1
                                     },
                                     filterFn: (instance, filter){
                                       if(instance.costCenterNameAra!.contains(filter)){
@@ -825,12 +821,12 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
       empCode: selectedEmployeeValue,
       jobCode: selectedJobValue,
       vacationTypeCode: selectedVacationTypeValue,
-      departmentCode: selectedDepartmentValue,
+      //departmentCode: selectedDepartmentValue,
       trxDate: _vacationRequestTrxDateController.text,
       trxSerial: _vacationRequestSerialController.text,
       messageTitle: _vacationRequestMessageController.text,
-      fromDate: _fromDateController.text,
-      toDate: _toDateController.text,
+      vacationStartDate: _fromDateController.text,
+      vacationEndDate: _toDateController.text,
       requestDays: _vacationRequestRequestedDaysController.text.toInt(),
       vacationBalance: _vacationRequestVacationBalanceController.text.toInt(),
       allowBalance: _vacationRequestAllowedBalanceController.text.toInt(),

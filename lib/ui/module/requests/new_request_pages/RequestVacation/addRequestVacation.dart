@@ -63,18 +63,18 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   List<DropdownMenuItem<String>> menuJobs = [];
 
   String? selectedEmployeeValue = empCode;
+  String? selectedJobValue = jobCode;
+  String? selectedCostCenterValue = costCenterCode;
   String? selectedDepartmentValue = null;
-  String? selectedJobValue = null;
   String? selectedVacationTypeValue = null;
-  String? selectedCostCenterValue = null;
 
   final VacationRequestsApiService api = VacationRequestsApiService();
   final _addFormKey = GlobalKey<FormState>();
 
-  Employee employeeItem = Employee(empCode: empCode, empNameAra: empName,empNameEng: empName );
-  CostCenter costCenterItem = CostCenter(costCenterCode: costCenterCode, costCenterNameAra: costCenterName,
-      costCenterNameEng: costCenterName );
-  Job jobItem = Job(jobCode: jobCode, jobNameAra: jobName,jobNameEng: jobName);
+  Employee employeeItem = Employee(empCode: "", empNameAra: "",empNameEng: "", id: 0);
+  CostCenter costCenterItem = CostCenter(costCenterCode: "", costCenterNameAra: "",
+      costCenterNameEng: "", id: 0);
+  Job jobItem = Job(jobCode: "", jobNameAra: "",jobNameEng: "", id: 0);
 
   final _vacationRequestSerialController = TextEditingController(); // Serial
   final _vacationRequestTrxDateController = TextEditingController(); // Date
@@ -87,69 +87,11 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   initState() {
     super.initState();
     _vacationRequestMessageController.text = "Request vacation".tr();
-    //fetchData();
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("WFW_EmployeeVacationRequests", "TrxSerial", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
-      NextSerial nextSerial = data;
-      _vacationRequestSerialController.text = nextSerial.nextSerial.toString();
-      //Set Date
-      DateTime now = DateTime.now();
-      _vacationRequestTrxDateController.text = DateFormat('yyyy-MM-dd').format(now);
 
-      return nextSerial;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<VacationType>> futureVacationType = _vacationTypeApiService.getVacationTypes().then((data) {
-      vacationTypes = data;
-
-      getVacationTypeData();
-      return vacationTypes;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<Employee>> futureEmployees = _employeeApiService.getEmployeesFiltrated(empCode).then((data) {
-      print("empCode in addVacation: " + empCode);
-      employees = data;
-      print('employees:  ' + employees.toString());
-      //getEmployeesData();
-      return employees;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<Job>> futureJobs = _jobApiService.getJobs().then((data) {
-      jobs = data;
-
-      getJobsData();
-      return jobs;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<CostCenter>> futureCostCenter = _costCenterApiService.getCostCenters().then((data) {
-      costCenters = data;
-
-      getCostCenterData();
-      return costCenters;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<Department>> futureDepartment = _departmentApiService.getDepartments().then((data) {
-      departments = data;
-      getDepartmentData();
-      return departments;
-    }, onError: (e) {
-      print(e);
-    });
+    fillCompos();
 
   }
 
-  DateTime get pickedDate => DateTime.now();
-  DateTime get pickedDate2 => DateTime.now();
-  DateTime get pickedDate3 => DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -180,9 +122,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                           scrollDirection: Axis.horizontal,
                           children: [
                             Column(
-                              //mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                //const SizedBox(height: 10),
                                 SizedBox(
                                   height: 50,
                                   width: 100,
@@ -457,7 +397,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                 SizedBox(
                                   height: 50,
                                   width: 210,
-                                  // child: Center(),
                                   child: DropdownSearch<Employee>(
                                     enabled: false,
                                     selectedItem: employeeItem,
@@ -475,7 +414,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text((langId==1)? employeeItem.empNameAra.toString():  employeeItem.empNameEng.toString(),
-                                              //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
                                               textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
                                           ),
@@ -486,8 +424,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                     items: employees,
                                     itemAsString: (Employee u) => u.empNameAra.toString(),
                                     onChanged: (value){
-                                      //v.text = value!.cusTypesCode.toString();
-                                      //print(value!.id);
                                       selectedEmployeeValue =  empCode.toString();//value!.empCode.toString();
                                     },
                                     filterFn: (instance, filter){
@@ -523,7 +459,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text((langId==1)? item.jobNameAra.toString():  item.jobNameEng.toString(),
-                                              //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
                                               textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
                                           ),
@@ -568,7 +503,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text((langId==1)? item.vacationTypeNameAra.toString():  item.vacationTypeNameEng.toString(),
-                                              //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
                                               textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
                                           ),
@@ -579,8 +513,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                     items: vacationTypes,
                                     itemAsString: (VacationType u) => u.vacationTypeNameAra.toString(),
                                     onChanged: (value){
-                                      //v.text = value!.cusTypesCode.toString();
-                                      //print(value!.id);
                                       selectedVacationTypeValue =  value!.vacationTypeCode.toString();
                                     },
                                     filterFn: (instance, filter){
@@ -757,25 +689,25 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
 
     });
   }
-  // getEmployeesData() {
-  //   if (employees.isNotEmpty) {
-  //     for(var i = 0; i < employees.length; i++){
-  //       menuEmployees.add(DropdownMenuItem(
-  //           value: employees[i].empCode.toString(),
-  //           child: Text((langId==1)? employees[i].empNameAra.toString() : employees[i].empNameEng.toString())));
-  //     }
-  //   }
-  //   setState(() {
-  //
-  //   });
-  // }
+  getEmployeesData() {
+    if (employees.isNotEmpty) {
+      for(var i = 0; i < employees.length; i++){
+        if(employees[i].empCode == empCode){
+          employeeItem = employees[employees.indexOf(employees[i])];
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
 
   getJobsData() {
     if (jobs.isNotEmpty) {
       for(var i = 0; i < jobs.length; i++){
-        menuJobs.add(DropdownMenuItem(
-            value: jobs[i].jobCode.toString(),
-            child: Text((langId==1)? jobs[i].jobNameAra.toString() : jobs[i].jobNameEng.toString())));
+        if(jobs[i].jobCode == jobCode){
+          jobItem = jobs[jobs.indexOf(jobs[i])];
+        }
       }
     }
     setState(() {
@@ -786,17 +718,16 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   getCostCenterData() {
     if (costCenters.isNotEmpty) {
       for(var i = 0; i < costCenters.length; i++){
-        menuCostCenters.add(
-            DropdownMenuItem(
-                value: costCenters[i].costCenterCode.toString(),
-                child: Text((langId==1)?  costCenters[i].costCenterNameAra.toString() : costCenters[i].costCenterNameEng.toString())));
+        if(costCenters[i].costCenterCode == costCenterCode){
+          costCenterItem = costCenters[costCenters.indexOf(costCenters[i])];
+        }
       }
     }
     setState(() {
 
     });
   }
-  //
+
   getDepartmentData() {
     if (departments.isNotEmpty) {
       for(var i = 0; i < departments.length; i++){
@@ -829,21 +760,84 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
     }
 
     api.createVacationRequest(context, VacationRequests(
-        costCenterCode1: selectedCostCenterValue,
+        costCenterCode1: costCenterCode,
         requestTypeCode: "2",
-        empCode: selectedEmployeeValue,
-        jobCode: selectedJobValue,
+        empCode: empCode,
+        jobCode: jobCode,
         vacationTypeCode: selectedVacationTypeValue,
-        departmentCode: selectedDepartmentValue,
+        //departmentCode: selectedDepartmentValue,
         trxDate: _vacationRequestTrxDateController.text,
         trxSerial: _vacationRequestSerialController.text,
         messageTitle: _vacationRequestMessageController.text,
-        fromDate: _fromDateController.text,
-        toDate: _toDateController.text,
+        vacationStartDate: _fromDateController.text,
+        vacationEndDate: _toDateController.text,
         notes: _vacationRequestNoteController.text
 
     ));
     Navigator.pop(context,true );
   }
 
+  fillCompos(){
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("WFW_EmployeeVacationRequests", "TrxSerial", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
+      NextSerial nextSerial = data;
+      _vacationRequestSerialController.text = nextSerial.nextSerial.toString();
+      //Set Date
+      DateTime now = DateTime.now();
+      _vacationRequestTrxDateController.text = DateFormat('yyyy-MM-dd').format(now);
+
+      return nextSerial;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<VacationType>> futureVacationType = _vacationTypeApiService.getVacationTypes().then((data) {
+      vacationTypes = data;
+
+      getVacationTypeData();
+      return vacationTypes;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<Employee>> futureEmployees = _employeeApiService.getEmployeesFiltrated(empCode).then((data) {
+      print("empCode in addVacation: " + empCode);
+      employees = data;
+      print('employees:  ' + employees.toString());
+      // setState(() {
+      //
+      // });
+      getEmployeesData();
+      return employees;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<Job>> futureJobs = _jobApiService.getJobs().then((data) {
+      jobs = data;
+
+      getJobsData();
+      return jobs;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<CostCenter>> futureCostCenter = _costCenterApiService.getCostCenters().then((data) {
+      costCenters = data;
+
+      getCostCenterData();
+      return costCenters;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<Department>> futureDepartment = _departmentApiService.getDepartments().then((data) {
+      departments = data;
+      setState(() {
+
+      });
+      return departments;
+    }, onError: (e) {
+      print(e);
+    });
+  }
 }

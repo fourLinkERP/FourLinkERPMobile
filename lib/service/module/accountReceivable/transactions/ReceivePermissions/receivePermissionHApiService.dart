@@ -18,7 +18,7 @@ class ReceivePermissionHApiService{
     Map data = {
       'Search':{
         'CompanyCode': companyCode,
-        'BranchCode': branchCode,
+        //'BranchCode': branchCode,
         'TrxCase': 1,
         'TrxKind': 7
       }

@@ -82,6 +82,9 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
       NextSerial nextSerial = data;
 
       _advanceTrxSerialController.text = nextSerial.nextSerial.toString();
+      //Set Date
+      DateTime now = DateTime.now();
+      _advanceTrxDateController.text = DateFormat('yyyy-MM-dd').format(now);
       return nextSerial;
     }, onError: (e) {
       print(e);
@@ -121,7 +124,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                 children:[
                   Container(
                     margin: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-                    height: 1300,
+                    height: 1050,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
@@ -171,12 +174,12 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               child: Text("recruitment_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                             ),
                             const SizedBox(height: 20),
-                            SizedBox(
-                              height: 50,
-                              width: 100,
-                              child: Text("contract_period".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                            ),
-                            const SizedBox(height: 20),
+                            // SizedBox(
+                            //   height: 50,
+                            //   width: 100,
+                            //   child: Text("contract_period".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            // ),
+                            // const SizedBox(height: 20),
                             SizedBox(
                               height: 50,
                               width: 100,
@@ -213,18 +216,18 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               child: Text("installment_value".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                             ),
                             const SizedBox(height: 20),
-                            SizedBox(
-                              height: 50,
-                              width: 100,
-                              child: Text("advance_balance".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                            ),
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              height: 50,
-                              width: 100,
-                              child: Text("employee_balance".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                            ),
-                            const SizedBox(height: 20),
+                            // SizedBox(
+                            //   height: 50,
+                            //   width: 100,
+                            //   child: Text("advance_balance".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            // ),
+                            // const SizedBox(height: 20),
+                            // SizedBox(
+                            //   height: 50,
+                            //   width: 100,
+                            //   child: Text("employee_balance".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                            // ),
+                            // const SizedBox(height: 20),
                             SizedBox(
                               height: 50,
                               width: 100,
@@ -263,6 +266,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               height: 50,
                               width: 210,
                               child: defaultFormField(
+                                enable: false,
                                 label: 'trxdate'.tr(),
                                 controller: _advanceTrxDateController,
                                 onTab: () async {
@@ -428,28 +432,28 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               ),
                             ),
                             const SizedBox(height: 20),
-                            SizedBox(
-                              height: 50,
-                              width: 210,
-                              child: defaultFormField(
-                                //label: 'to_date'.tr(),
-                                controller: _contractPeriodController,
-                                onTab: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1950),
-                                      lastDate: DateTime(2050));
-
-                                  if (pickedDate != null) {
-                                    _contractPeriodController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                  }
-                                },
-                                type: TextInputType.datetime,
-                                colors: Colors.blueGrey,
-                              ),
-                            ),
-                            const SizedBox(height: 20),
+                            // SizedBox(
+                            //   height: 50,
+                            //   width: 210,
+                            //   child: defaultFormField(
+                            //     //label: 'to_date'.tr(),
+                            //     controller: _contractPeriodController,
+                            //     onTab: () async {
+                            //       DateTime? pickedDate = await showDatePicker(
+                            //           context: context,
+                            //           initialDate: DateTime.now(),
+                            //           firstDate: DateTime(1950),
+                            //           lastDate: DateTime(2050));
+                            //
+                            //       if (pickedDate != null) {
+                            //         _contractPeriodController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                            //       }
+                            //     },
+                            //     type: TextInputType.datetime,
+                            //     colors: Colors.blueGrey,
+                            //   ),
+                            // ),
+                            // const SizedBox(height: 20),
                             SizedBox(
                               height: 50,
                               width: 210,
@@ -559,38 +563,38 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               ),
                             ),
                             const SizedBox(height: 20),
-                            SizedBox(
-                              height: 50,
-                              width: 210,
-                              child: defaultFormField(
-                                controller: _advanceBalanceController,
-                                type: TextInputType.number,
-                                colors: Colors.blueGrey,
-                                validate: (String? value) {
-                                  if (value!.isEmpty) {
-                                    return 'installment must be non empty';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              height: 50,
-                              width: 210,
-                              child: defaultFormField(
-                                controller: _empBalanceController,
-                                type: TextInputType.number,
-                                colors: Colors.blueGrey,
-                                validate: (String? value) {
-                                  if (value!.isEmpty) {
-                                    return 'balance must be non empty';
-                                  }
-                                  return null;
-                                },
-                              ),
-                            ),
-                            const SizedBox(height: 20),
+                            // SizedBox(
+                            //   height: 50,
+                            //   width: 210,
+                            //   child: defaultFormField(
+                            //     controller: _advanceBalanceController,
+                            //     type: TextInputType.number,
+                            //     colors: Colors.blueGrey,
+                            //     validate: (String? value) {
+                            //       if (value!.isEmpty) {
+                            //         return 'installment must be non empty';
+                            //       }
+                            //       return null;
+                            //     },
+                            //   ),
+                            // ),
+                            // const SizedBox(height: 20),
+                            // SizedBox(
+                            //   height: 50,
+                            //   width: 210,
+                            //   child: defaultFormField(
+                            //     controller: _empBalanceController,
+                            //     type: TextInputType.number,
+                            //     colors: Colors.blueGrey,
+                            //     validate: (String? value) {
+                            //       if (value!.isEmpty) {
+                            //         return 'balance must be non empty';
+                            //       }
+                            //       return null;
+                            //     },
+                            //   ),
+                            // ),
+                            // const SizedBox(height: 20),
                             SizedBox(
                               height: 50,
                               width: 210,
@@ -608,7 +612,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                             ),
                             const SizedBox(height: 20),
                             SizedBox(
-                              height: 50,
+                              height: 70,
                               width: 210,
                               child: defaultFormField(
                                 controller: _noteController,
@@ -741,8 +745,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
       basicSalary: _basicSalaryController.text.toInt(),
       fullSalary: _fullSalaryController.text.toInt(),
       recruitmentDate: _recruitmentDateController.text,
-      contractPeriod: _contractPeriodController.text,
-      latestAdvanceAmount: latestAdvanceAmount,
+      latestAdvanceAmount: int.parse(_latestAdvanceAmountController.text),
       amountRequired: _amountRequiredOfAdvanceController.text.toInt(),
       approvedAmount: _approvedAmountOfAdvanceController.text.toInt(),
       empBalance: _empBalanceController.text.toInt(),
@@ -752,7 +755,6 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
       calculatedDate: _startCountingDateController.text,
       notes: _noteController.text,
       latestAdvanceDate: _latestAdvanceDateController.text,
-      latestIncreaseDate: _lastIncreaseDateController.text,
 
     ));
     Navigator.pop(context,true );

@@ -295,33 +295,39 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
   }
   _navigateToAddScreen(BuildContext context) async {
 
-    int menuId = 45202;
-    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
-    if(isAllowAdd) {
-      print('you_have_add_permission');
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => RequestAdvance(),)).then((value) {
-        getData();
-      });
-    }
-    else {
-      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
-    }
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => RequestAdvance(),)).then((value) {
+      getData();
+    });
+
+    // int menuId = 45202;
+    // bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    // if(isAllowAdd) {
+    //   print('you_have_add_permission');
+    //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => RequestAdvance(),)).then((value) {
+    //     getData();
+    //   });
+    // }
+    // else {
+    //   FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    // }
 
   }
   _navigateToEditScreen (BuildContext context, AdvanceRequests advanceRequests) async {
 
-    int menuId = 45203;
-    bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
-    if(isAllowEdit)
-    {
-
-      final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-          EditRequestAdvance(advanceRequests)),).then((value) => getData());
-    }
-    else
-    {
-      FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
-    }
+    final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+        EditRequestAdvance(advanceRequests)),).then((value) => getData());
+    // int menuId = 45203;
+    // bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
+    // if(isAllowEdit)
+    // {
+    //
+    //   final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+    //       EditRequestAdvance(advanceRequests)),).then((value) => getData());
+    // }
+    // else
+    // {
+    //   FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
+    // }
   }
 
   void getData() async {

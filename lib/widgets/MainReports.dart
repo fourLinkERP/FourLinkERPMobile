@@ -7,6 +7,8 @@ import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/sales
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesOffers/salesOfferList.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
+import '../ui/module/accountReceivable/reports/rptCustomerAccountsSummary.dart';
+import '../ui/module/accountReceivable/reports/rptDailySales.dart';
 import '../ui/module/cash/transactions/CashReceive/cashReceiveList.dart';
 
 
@@ -20,25 +22,33 @@ class MainReports extends StatelessWidget {
     List<String> areaListData = <String>[
       'assets/fitness_app/report.png',
       'assets/fitness_app/report.png',
-      'assets/fitness_app/report.png',
-      'assets/fitness_app/report.png',
+      // 'assets/fitness_app/report.png',
+      // 'assets/fitness_app/report.png',
     ];
 
     List<String> areaListDataTitle = <String>[
       'customeraccountreport'.tr(),
-      'vendoraccountreport'.tr(),
-      'itemcardreport'.tr(),
-      'accountreports'.tr(),
+      'dailySalesreport'.tr(),
+      // 'itemcardreport'.tr(),
+      // 'accountreports'.tr(),
     ];
 
 
     return  Scaffold(
       appBar: AppBar(
-        title: Text("Reportszzzz"),
-        backgroundColor: Colors.grey,
+        centerTitle: true,
+        title: ListTile(
+          leading: Image.asset('assets/images/logowhite2.png', scale: 3),
+          title: Text(
+            'reports'.tr(),
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+        ),
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
       ),
       body: Container(
-          padding: EdgeInsets.all(12.0),
+          padding: const EdgeInsets.all(12.0),
           child: GridView.builder(
             itemCount: areaListData.length,
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -71,23 +81,17 @@ class MainReports extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                     splashColor: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.2),
                     onTap: () {
-                      if(areaListData[index] == 'assets/fitness_app/sales.png') // Invoice
-                          {
-                        // print('okz1');
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) =>
-                        //             SalesInvoiceHListPage()));
-                      }
-                      else if(areaListData[index]  == 'assets/fitness_app/quotion.png') //Quotion
+                      if(areaListDataTitle[index] == 'customeraccountreport'.tr())
                       {
-                        // print('okz2');
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) =>
-                        //             SalesOfferHListPage()));
+                        print('okz1');
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => RptCustomerAccountsSummary()));
+                      }
+                      else if(areaListDataTitle[index] == 'dailySalesreport'.tr())
+                      {
+                        print('okz2');
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute( builder: (context) => RptDailySales()));
                       }
                       else  if(areaListData[index]  == 'assets/fitness_app/inventory.png')//Orders
                           {

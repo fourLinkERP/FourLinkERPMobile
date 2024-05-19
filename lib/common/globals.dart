@@ -2,8 +2,14 @@ import 'package:fourlinkmobileapp/data/model/modules/module/administration/basic
 import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/emailSettings/emailSetting.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/security/menuPermission.dart';
 
+import '../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
+import '../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
+
+EmployeeApiService _employeeApiService = EmployeeApiService();
+
 late bool isLoggedIn=false;
 bool isLive = false;
+List<Employee> employees = [];
 
 //Url - Token
 //String urlString = "http://kraezapi.4linkweb.com:8092";
@@ -37,7 +43,7 @@ int lineNumber = 1;
 //Language
 int langId = 1; //1-Arabic   2-English
 //Employee
-String empCode = "1";
+String empCode = "";
 String empUserCode = "A3ddsdwewewq";
 String empUserId = "Admin";
 String empName = "";
@@ -74,3 +80,11 @@ var reportsEnglishDesc='You can always use the different reports to explore tran
 String generalSetupSalesInvoicesTypeCode='';
 String generalSetupSalesInvoicesReturnTypeCode='';
 
+
+Future<List<Employee>> futureEmployees = _employeeApiService.getEmployeesFiltrated(empCode).then((data) {
+  employees = data;
+
+  return employees;
+}, onError: (e) {
+  print(e);
+});

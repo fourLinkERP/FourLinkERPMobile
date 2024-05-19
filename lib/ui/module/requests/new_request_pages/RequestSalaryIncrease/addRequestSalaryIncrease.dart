@@ -74,6 +74,9 @@ class _AddRequestSalaryState extends State<AddRequestSalary> {
       NextSerial nextSerial = data;
 
       _salaryIncSerialController.text = nextSerial.nextSerial.toString();
+      //Set Date
+      DateTime now = DateTime.now();
+      _salaryIncTrxDateController.text = DateFormat('yyyy-MM-dd').format(now);
       return nextSerial;
     }, onError: (e) {
       print(e);

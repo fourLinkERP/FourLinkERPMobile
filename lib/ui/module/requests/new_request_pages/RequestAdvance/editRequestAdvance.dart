@@ -61,7 +61,6 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
   final _advanceTrxSerialController = TextEditingController(); // Serial
   final _advanceTrxDateController = TextEditingController(); // Date
   final _recruitmentDateController = TextEditingController();
-  final _contractPeriodController = TextEditingController();
   final _lastIncreaseDateController = TextEditingController();
   final _basicSalaryController = TextEditingController();
   final _fullSalaryController = TextEditingController();
@@ -96,31 +95,23 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
       print(e);
     });
     id = widget.advance.id!;
-    _advanceTrxDateController.text =widget.advance.trxDate!;
+    _advanceTrxDateController.text =DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.advance.trxDate!.toString()));
     _advanceTrxSerialController.text = widget.advance.trxSerial!;
     _basicSalaryController.text = widget.advance.basicSalary.toString();
     _fullSalaryController.text = widget.advance.fullSalary.toString();
-    _recruitmentDateController.text = widget.advance.recruitmentDate!;
-    _contractPeriodController.text = widget.advance.contractPeriod!;
+    _recruitmentDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.advance.recruitmentDate!.toString()));
+    //_contractPeriodController.text = widget.advance.contractPeriod!;
     _latestAdvanceAmountController.text = widget.advance.latestAdvanceAmount.toString();
     _amountRequiredOfAdvanceController.text = widget.advance.amountRequired.toString();
     _approvedAmountOfAdvanceController.text = widget.advance.approvedAmount.toString();
-    _empBalanceController.text = widget.advance.empBalance.toString();
-    _advanceBalanceController.text = widget.advance.advanceBalance.toString();
     _advanceReasonController.text = widget.advance.advanceReason!;
     _installmentController.text = widget.advance.installmentValue.toString();
     _noteController.text = widget.advance.notes!;
-    _latestAdvanceDateController.text = widget.advance.latestAdvanceDate!;
-    _lastIncreaseDateController.text = widget.advance.latestIncreaseDate!;
+    _latestAdvanceDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.advance.latestAdvanceDate!.toString()));
+    _lastIncreaseDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.advance.latestIncreaseDate!.toString()));
+    selectedEmployeeValue = widget.advance.empCode!;
+    selectedJobValue = widget.advance.jobCode!;
 
-    if(widget.advance.empCode != null){
-      selectedEmployeeValue = widget.advance.empCode!;
-
-    }
-    if(widget.advance.jobCode != null){
-      selectedJobValue = widget.advance.jobCode!;
-
-    }
 
     super.initState();
   }
@@ -148,7 +139,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                       children:[
                         Container(
                           margin: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-                          height: 1300,
+                          height: 1150,
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: [
@@ -198,12 +189,12 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     child: Text("recruitment_date".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                   ),
                                   const SizedBox(height: 20),
-                                  SizedBox(
-                                    height: 60,
-                                    width: 100,
-                                    child: Text("contract_period".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                                  ),
-                                  const SizedBox(height: 20),
+                                  // SizedBox(
+                                  //   height: 60,
+                                  //   width: 100,
+                                  //   child: Text("contract_period".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  // ),
+                                  // const SizedBox(height: 20),
                                   SizedBox(
                                     height: 60,
                                     width: 100,
@@ -240,18 +231,18 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     child: Text("installment_value".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                   ),
                                   const SizedBox(height: 20),
-                                  SizedBox(
-                                    height: 50,
-                                    width: 100,
-                                    child: Text("advance_balance".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  SizedBox(
-                                    height: 50,
-                                    width: 100,
-                                    child: Text("employee_balance".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                                  ),
-                                  const SizedBox(height: 20),
+                                  // SizedBox(
+                                  //   height: 50,
+                                  //   width: 100,
+                                  //   child: Text("advance_balance".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  // ),
+                                  // const SizedBox(height: 20),
+                                  // SizedBox(
+                                  //   height: 50,
+                                  //   width: 100,
+                                  //   child: Text("employee_balance".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  // ),
+                                  // const SizedBox(height: 20),
                                   SizedBox(
                                     height: 50,
                                     width: 100,
@@ -312,7 +303,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     height: 50,
                                     width: 210,
                                     child: DropdownSearch<Employee>(
-                                      selectedItem: null,
+                                      selectedItem: empItem,
                                       popupProps: PopupProps.menu(
                                         itemBuilder: (context, item, isSelected) {
                                           return Container(
@@ -338,8 +329,6 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                       items: employees,
                                       itemAsString: (Employee u) => u.empNameAra.toString(),
                                       onChanged: (value){
-                                        //v.text = value!.cusTypesCode.toString();
-                                        //print(value!.id);
                                         selectedEmployeeValue =  value!.empCode.toString();
                                       },
                                       filterFn: (instance, filter){
@@ -359,6 +348,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     height: 50,
                                     width: 210,
                                     child: DropdownSearch<Job>(
+                                      selectedItem: jobItem,
                                       popupProps: PopupProps.menu(
                                         itemBuilder: (context, item, isSelected) {
                                           return Container(
@@ -457,28 +447,28 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     ),
                                   ),
                                   const SizedBox(height: 20),
-                                  SizedBox(
-                                    height: 60,
-                                    width: 210,
-                                    child: defaultFormField(
-                                      //label: 'to_date'.tr(),
-                                      controller: _contractPeriodController,
-                                      onTab: () async {
-                                        DateTime? pickedDate = await showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime(1950),
-                                            lastDate: DateTime(2050));
-
-                                        if (pickedDate != null) {
-                                          _contractPeriodController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                        }
-                                      },
-                                      type: TextInputType.datetime,
-                                      colors: Colors.blueGrey,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
+                                  // SizedBox(
+                                  //   height: 60,
+                                  //   width: 210,
+                                  //   child: defaultFormField(
+                                  //     //label: 'to_date'.tr(),
+                                  //     controller: _contractPeriodController,
+                                  //     onTab: () async {
+                                  //       DateTime? pickedDate = await showDatePicker(
+                                  //           context: context,
+                                  //           initialDate: DateTime.now(),
+                                  //           firstDate: DateTime(1950),
+                                  //           lastDate: DateTime(2050));
+                                  //
+                                  //       if (pickedDate != null) {
+                                  //         _contractPeriodController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                  //       }
+                                  //     },
+                                  //     type: TextInputType.datetime,
+                                  //     colors: Colors.blueGrey,
+                                  //   ),
+                                  // ),
+                                  // const SizedBox(height: 20),
                                   SizedBox(
                                     height: 60,
                                     width: 210,
@@ -588,38 +578,38 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     ),
                                   ),
                                   const SizedBox(height: 20),
-                                  SizedBox(
-                                    height: 50,
-                                    width: 210,
-                                    child: defaultFormField(
-                                      controller: _advanceBalanceController,
-                                      type: TextInputType.number,
-                                      colors: Colors.blueGrey,
-                                      validate: (String? value) {
-                                        if (value!.isEmpty) {
-                                          return 'installment must be non empty';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  SizedBox(
-                                    height: 50,
-                                    width: 210,
-                                    child: defaultFormField(
-                                      controller: _empBalanceController,
-                                      type: TextInputType.number,
-                                      colors: Colors.blueGrey,
-                                      validate: (String? value) {
-                                        if (value!.isEmpty) {
-                                          return 'balance must be non empty';
-                                        }
-                                        return null;
-                                      },
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
+                                  // SizedBox(
+                                  //   height: 50,
+                                  //   width: 210,
+                                  //   child: defaultFormField(
+                                  //     controller: _advanceBalanceController,
+                                  //     type: TextInputType.number,
+                                  //     colors: Colors.blueGrey,
+                                  //     validate: (String? value) {
+                                  //       if (value!.isEmpty) {
+                                  //         return 'installment must be non empty';
+                                  //       }
+                                  //       return null;
+                                  //     },
+                                  //   ),
+                                  // ),
+                                  // const SizedBox(height: 20),
+                                  // SizedBox(
+                                  //   height: 50,
+                                  //   width: 210,
+                                  //   child: defaultFormField(
+                                  //     controller: _empBalanceController,
+                                  //     type: TextInputType.number,
+                                  //     colors: Colors.blueGrey,
+                                  //     validate: (String? value) {
+                                  //       if (value!.isEmpty) {
+                                  //         return 'balance must be non empty';
+                                  //       }
+                                  //       return null;
+                                  //     },
+                                  //   ),
+                                  // ),
+                                  // const SizedBox(height: 20),
                                   SizedBox(
                                     height: 50,
                                     width: 210,
@@ -637,7 +627,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                   ),
                                   const SizedBox(height: 20),
                                   SizedBox(
-                                    height: 50,
+                                    height: 70,
                                     width: 210,
                                     child: defaultFormField(
                                       controller: _noteController,
@@ -726,9 +716,6 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
   getEmployeesData() {
     if (employees.isNotEmpty) {
       for(var i = 0; i < employees.length; i++){
-        menuEmployees.add(DropdownMenuItem(
-            value: employees[i].empCode.toString(),
-            child: Text((langId==1)? employees[i].empNameAra.toString() : employees[i].empNameEng.toString())));
         if(employees[i].empCode == selectedEmployeeValue){
           empItem = employees[employees.indexOf(employees[i])];
         }
@@ -738,13 +725,9 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
 
     });
   }
-
   getJobsData() {
     if (jobs.isNotEmpty) {
       for(var i = 0; i < jobs.length; i++){
-        menuJobs.add(DropdownMenuItem(
-            value: jobs[i].jobCode.toString(),
-            child: Text((langId==1)? jobs[i].jobNameAra.toString() : jobs[i].jobNameEng.toString())));
         if(jobs[i].jobCode == selectedJobValue){
           jobItem = jobs[jobs.indexOf(jobs[i])];
         }
@@ -758,22 +741,20 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
     api.updateAdvanceRequest(context,id, AdvanceRequests(
       empCode: selectedEmployeeValue,
       jobCode: selectedJobValue,
-      trxDate: _advanceTrxDateController.text,
+      trxDate: DateFormat('yyyy-MM-dd').format(pickedDate),
       trxSerial: _advanceTrxSerialController.text,
       basicSalary: _basicSalaryController.text.toInt(),
       fullSalary: _fullSalaryController.text.toInt(),
       recruitmentDate: _recruitmentDateController.text,
-      contractPeriod: _contractPeriodController.text,
-      latestAdvanceAmount: _latestAdvanceAmountController.text.toInt(),
+      latestAdvanceAmount: int.parse(_latestAdvanceAmountController.text),
       amountRequired: _amountRequiredOfAdvanceController.text.toInt(),
       approvedAmount: _approvedAmountOfAdvanceController.text.toInt(),
       empBalance: _empBalanceController.text.toInt(),
       advanceBalance: _advanceBalanceController.text.toInt(),
+      installmentValue: _installmentController.text.toInt(),
       advanceReason: _advanceReasonController.text,
       notes: _noteController.text,
-      installmentValue: _installmentController.text.toInt(),
       latestAdvanceDate: _latestAdvanceDateController.text,
-      latestIncreaseDate: _lastIncreaseDateController.text,
 
     ));
     Navigator.pop(context);

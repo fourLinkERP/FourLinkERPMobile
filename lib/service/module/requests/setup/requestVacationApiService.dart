@@ -82,11 +82,11 @@ class VacationRequestsApiService {
       'messageTitle': request.messageTitle,
       'requestTypeCode': request.requestTypeCode,
       'costCenterCode1': request.costCenterCode1,
-      'departmentCode': request.departmentCode,
+      //'departmentCode': request.departmentCode,
       'empCode': request.empCode,
       'jobCode': request.jobCode,
-      'fromDate': request.fromDate,
-      'toDate': request.toDate,
+      'vacationStartDate': request.vacationStartDate,
+      'vacationEndDate': request.vacationEndDate,
       'vacationTypeCode': request.vacationTypeCode,
       // 'requestDays': request.requestDays,
       // 'ruleBalance': request.ruleBalance,
@@ -116,8 +116,8 @@ class VacationRequestsApiService {
     print(data.toString());
     print('uri');
     print(createApi);
-    print('token');
-    print('Bearer $token');
+    // print('token');
+    // print('Bearer $token');
 
 
     final http.Response response = await http.post(
@@ -147,34 +147,48 @@ class VacationRequestsApiService {
     print('Start Update');
 
     Map data = {
+      'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
       'trxSerial': request.trxSerial,
       'trxDate' : request.trxDate,
       'messageTitle': request.messageTitle,
       'costCenterCode1': request.costCenterCode1,
-      'departmentCode': request.departmentCode,
+      //'departmentCode': request.departmentCode,
       'empCode': request.empCode,
       'jobCode': request.jobCode,
-      'fromDate': request.fromDate,
-      'toDate': request.toDate,
+      'vacationStartDate': request.vacationStartDate,
+      'vacationEndDate': request.vacationEndDate,
       'vacationTypeCode': request.vacationTypeCode,
-      'requestDays': request.requestDays,
-      'ruleBalance': request.ruleBalance,
-      'vacationBalance': request.vacationBalance,
-      'allowBalance': request.allowBalance,
-      'empBalance': request.empBalance ,
-      'vacationDueDate': request.vacationDueDate,
-      'advanceBalance': request.advanceBalance,
-      'latestVacationDate': request.latestVacationDate,
+      // 'requestDays': request.requestDays,
+      // 'ruleBalance': request.ruleBalance,
+      // 'vacationBalance': request.vacationBalance,
+      // 'allowBalance': request.allowBalance,
+      // 'empBalance': request.empBalance ,
+      // 'vacationDueDate': request.vacationDueDate,
+      // 'advanceBalance': request.advanceBalance,
+      // 'latestVacationDate': request.latestVacationDate,
       'notes': request.notes,
-
+      "confirmed": false,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSynchronized": false,
+      "isSystem": false,
+      "notActive": false,
+      "postedToGL": false,
+      "flgDelete": false,
+      "year":financialYearCode
 
       // 'Year': invoice.year,
     };
 
     String apiUpdate =updateApi + id.toString();
     print('Start Update apiUpdate ' + apiUpdate );
+    print("Update vacation data: " + data.toString());
+
 
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data),

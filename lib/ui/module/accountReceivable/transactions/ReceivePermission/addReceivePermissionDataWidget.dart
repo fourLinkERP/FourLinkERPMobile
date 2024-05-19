@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/basicInputs/Vendors/vendor.dart';
@@ -13,6 +14,7 @@ import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/S
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Stores/storesApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/ReceivePermissions/receivePermissionHApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/Stock/ItemBarcode/itemBarcodeApiService.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/Stock/ItemByBarcode/itemByBarcodeApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/Stock/ItemImage/itemImageApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:supercharged/supercharged.dart';
@@ -47,6 +49,7 @@ ItemApiService _itemsApiService = ItemApiService();
 UnitApiService _unitsApiService = UnitApiService();
 ItemImageApiService _itemImageApiService = ItemImageApiService();
 ItemBarcodeApiService _itemBarcodeApiService = ItemBarcodeApiService();
+ItemByBarcodeApiService _itemByBarcodeApiService = ItemByBarcodeApiService();
 
 //List Models
 List<Vendors> vendors=[];
@@ -95,6 +98,8 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
   String? total = null;
   String itemImage = '';
   String itemBarcode = '';
+  String itemCode = '';
+  String scanBarcodeResult = '';
   final _addFormKey = GlobalKey<FormState>();
 
   final ReceivePermissionHApiService api = ReceivePermissionHApiService();
@@ -554,67 +559,110 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
                     ),
                     Row(
                       children: [
-                        Form(
-                            key: _dropdownItemFormKey,
-                            child: Row(
-                              children: [
-                                Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('${"item".tr()} :',
-                                    style: const TextStyle(fontWeight: FontWeight.bold))),
-                                const SizedBox(width: 10),
-                                SizedBox(
-                                  width: 150,
-                                  child: DropdownSearch<Item>(
-                                    selectedItem: itemItem,
-                                    popupProps: PopupProps.menu(
-                                      itemBuilder: (context, item, isSelected) {
-                                        return Container(
-                                          margin: const EdgeInsets.symmetric(horizontal: 8),
-                                          decoration: !isSelected ? null :
-                                          BoxDecoration(
-                                            border: Border.all(color: Colors.black12),
-                                            borderRadius: BorderRadius.circular(5),
-                                            color: Colors.white,
+                        Column(
+                          children: [
+                            Form(
+                                key: _dropdownItemFormKey,
+                                child: Row(
+                                  children: [
+                                    Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('${"item".tr()} :',
+                                        style: const TextStyle(fontWeight: FontWeight.bold))),
+                                    const SizedBox(width: 10),
+                                    SizedBox(
+                                      width: 150,
+                                      child: DropdownSearch<Item>(
+                                        selectedItem: itemItem,
+                                        popupProps: PopupProps.menu(
+                                          itemBuilder: (context, item, isSelected) {
+                                            return Container(
+                                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                                              decoration: !isSelected ? null :
+                                              BoxDecoration(
+                                                border: Border.all(color: Colors.black12),
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: Colors.white,
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text((langId == 1) ? item.itemNameAra.toString() : item.itemNameEng.toString()),
+                                              ),
+                                            );
+                                          },
+                                          showSearchBox: true,
+
+                                        ),
+                                        items: items,
+                                        itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
+
+                                        onChanged: (value) {
+                                          selectedItemValue = value!.itemCode.toString();
+                                          selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
+                                          changeItemUnit(selectedItemValue.toString());
+                                          selectedUnitValue = "1";
+                                          itemImageHandled(selectedItemValue.toString());
+                                          itemBarcodeHandler(selectedItemValue.toString());
+                                        },
+
+                                        filterFn: (instance, filter) {
+                                          if ((langId == 1) ? instance.itemNameAra!.contains(filter) : instance.itemNameEng!.contains(filter)) {
+                                            print(filter);
+                                            return true;
+                                          }
+                                          else {
+                                            return false;
+                                          }
+                                        },
+                                        dropdownDecoratorProps: const DropDownDecoratorProps(
+                                          dropdownSearchDecoration: InputDecoration(
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text((langId == 1) ? item.itemNameAra.toString() : item.itemNameEng.toString()),
-                                          ),
-                                        );
-                                      },
-                                      showSearchBox: true,
+                                        ),
 
-                                    ),
-                                    items: items,
-                                    itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
-
-                                    onChanged: (value) {
-                                      selectedItemValue = value!.itemCode.toString();
-                                      selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
-                                      changeItemUnit(selectedItemValue.toString());
-                                      selectedUnitValue = "1";
-                                      itemImageHandled(selectedItemValue.toString());
-                                      itemBarcodeHandler(selectedItemValue.toString());
-                                    },
-
-                                    filterFn: (instance, filter) {
-                                      if ((langId == 1) ? instance.itemNameAra!.contains(filter) : instance.itemNameEng!.contains(filter)) {
-                                        print(filter);
-                                        return true;
-                                      }
-                                      else {
-                                        return false;
-                                      }
-                                    },
-                                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                                      dropdownSearchDecoration: InputDecoration(
                                       ),
                                     ),
 
+                                  ],
+                                )
+                            ),
+                            const SizedBox(height: 30),
+                            InkWell(
+                              onTap: () async {
+                                await scanCode();
+                                await itemByBarcodeHandler(scanBarcodeResult);
+                              },
+                              child: Container(
+                                height: 50,
+                                width: 150,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.shade300,
+                                    borderRadius: BorderRadius.circular(15),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color.fromRGBO(200, 16, 46, 1),
+                                        spreadRadius: 1,
+                                        blurRadius: 8,
+                                        offset: Offset(4, 4),
+                                      ),
+                                      BoxShadow(
+                                        color: Colors.white,
+                                        spreadRadius: 2,
+                                        blurRadius: 8,
+                                        offset: Offset(-4, -4),
+                                      )
+                                    ]
+                                ),
+                                child: Center(
+                                  child: Text("Scan".tr(),
+                                    style: const TextStyle(
+                                      color: Color.fromRGBO(200, 16, 46, 1),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
                                   ),
                                 ),
+                              ),
+                            ),
 
-                              ],
-                            )
+                          ],
                         ),
                         const SizedBox(width: 15),
                         Column(
@@ -627,8 +675,7 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
                             ),
                             _buildImageWidget(itemImage),
                           ],
-                        )
-
+                        ),
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -1234,6 +1281,46 @@ class _AddReceivePermissionHDataWidgetState extends State<AddReceivePermissionHD
     }, onError: (e) {
       print(e);
     });
+  }
+  Future<void> scanCode() async {
+    String barCodeScanRes;
+    try{
+      barCodeScanRes = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.BARCODE);
+    }on PlatformException{
+      barCodeScanRes = "Failed to scan";
+    }
+    setState(() {
+      scanBarcodeResult = barCodeScanRes;
+    });
+    print("scanBarcodeResult: "+ scanBarcodeResult);
+  }
+  itemByBarcodeHandler(String itemBarcode) {
+    Future<String> futureItemByBarcode = _itemByBarcodeApiService.getItemCode(itemBarcode).then((data) {
+      itemCode = data;
+
+      setState(() {
+        selectedItemValue = itemCode.toString();
+        changeItemUnit(selectedItemValue.toString());
+        selectedUnitValue = "1";
+        itemImageHandled(selectedItemValue.toString());
+        itemBarcodeHandler(selectedItemValue.toString());
+      });
+      getItemData();
+      return itemCode;
+
+    }, onError: (e) {
+      print(e);
+    });
+  }
+  getItemData() {
+    if (items != null) {
+      for(var i = 0; i < items.length; i++){
+        if(items[i].itemCode == selectedItemValue){
+          itemItem = items[items.indexOf(items[i])];
+        }
+      }
+    }
+    setState(() {});
   }
 
 }

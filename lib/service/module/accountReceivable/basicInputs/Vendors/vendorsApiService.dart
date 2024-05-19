@@ -16,8 +16,8 @@ class VendorsApiService{
 
     Map data = {
       'Search':{
-        'CompanyCode': companyCode,
-        'BranchCode': branchCode
+        'CompanyCode': companyCode
+        //'BranchCode': branchCode
       }
     };
 

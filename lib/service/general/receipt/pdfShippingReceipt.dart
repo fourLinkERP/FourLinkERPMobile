@@ -244,9 +244,7 @@ class PDFShippingReceipt {
         3: const FlexColumnWidth(1),
         4: const FlexColumnWidth(2),
       },
-
     );
-
   }
   static pw.Widget buildInvoice(StockShipping shipping) {
 

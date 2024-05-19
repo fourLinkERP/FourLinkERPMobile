@@ -19,7 +19,7 @@ class ShippingPermissionDApiService{
     print('Booter 1 ShippingPermissionD');
     Map data = {
         'CompanyCode': companyCode,
-        'BranchCode': branchCode,
+        //'BranchCode': branchCode,
         'TrxCase': 2,
         'TrxKind': 3,
         'headerId': headerId

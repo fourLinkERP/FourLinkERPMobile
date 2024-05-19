@@ -19,7 +19,7 @@ class ReceivePermissionDApiService{
     print('Booter 1 ReceivePermissionD');
     Map data = {
         'CompanyCode': companyCode,
-        'BranchCode': branchCode,
+        //'BranchCode': branchCode,
         'TrxCase': 1,
         'TrxKind': 7,
         'headerId': headerId

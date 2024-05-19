@@ -25,8 +25,8 @@ class VacationRequests{
   String? jobCode;
   String? empName;
   String? empCode;
-  String? fromDate;
-  String? toDate;
+  String? vacationStartDate;
+  String? vacationEndDate;
   String? costCenterName;
   String? vacationTypeCode;
   String? costCenterCode1;
@@ -67,8 +67,8 @@ class VacationRequests{
     this.jobCode,
     this.empName,
     this.empCode,
-    this.fromDate,
-    this.toDate,
+    this.vacationStartDate,
+    this.vacationEndDate,
     this.costCenterName,
     this.costCenterCode1,
     this.vacationTypeCode,
@@ -99,8 +99,8 @@ class VacationRequests{
       jobCode: (json['jobCode'] != null) ? json['jobCode'] as String : "",
       empName: (json['empName'] != null) ? json['empName'] as String : "",
       empCode: (json['empCode'] != null) ? json['empCode'] as String : "",
-      fromDate: (json['fromDate'] != null) ? json['fromDate'] as String : pickedDate,
-      toDate: (json['toDate'] != null) ? json['toDate'] as String : pickedDate,
+      vacationStartDate: (json['vacationStartDate'] != null) ? json['vacationStartDate'] as String : pickedDate,
+      vacationEndDate: (json['vacationEndDate'] != null) ? json['vacationEndDate'] as String : pickedDate,
       costCenterName: (json['costCenterName'] != null) ? json['costCenterName'] as String : "",
       vacationTypeCode: (json['vacationTypeCode'] != null) ? json['vacationTypeCode'] as String : "",
       costCenterCode1: (json['costCenterCode1'] != null) ? json['costCenterCode1'] as String : "",

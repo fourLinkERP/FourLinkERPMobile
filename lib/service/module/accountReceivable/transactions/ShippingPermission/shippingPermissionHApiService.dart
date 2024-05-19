@@ -18,7 +18,7 @@ class ShippingPermissionHApiService{
     Map data = {
       'Search':{
         'CompanyCode': companyCode,
-        'BranchCode': branchCode,
+        //'BranchCode': branchCode,
         'TrxCase': 2,
         'TrxKind': 3
       }

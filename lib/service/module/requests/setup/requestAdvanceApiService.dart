@@ -34,14 +34,12 @@ class AdvanceRequestApiService {
 
     if(response.statusCode == 200)
     {
-      print('AdvanceRequest success1');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<AdvanceRequests> list = [];
       if(data.isNotEmpty)
       {
         list = data.map((item) => AdvanceRequests.fromJson(item)).toList();
       }
-      print('AdvanceRequest success 2');
       return list;
     }
     else {
@@ -82,7 +80,6 @@ class AdvanceRequestApiService {
       'recruitmentDate': advanceRequest.recruitmentDate,
       'empCode': advanceRequest.empCode,
       'jobCode': advanceRequest.jobCode,
-      'contractPeriod': advanceRequest.contractPeriod,
       'latestAdvanceDate': advanceRequest.latestAdvanceDate,
       'latestAdvanceAmount': advanceRequest.latestAdvanceAmount,
       'amountRequired': advanceRequest.amountRequired,
@@ -135,6 +132,7 @@ class AdvanceRequestApiService {
     print('Start Update');
 
     Map data = {
+      'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
       'trxSerial': advanceRequest.trxSerial,
