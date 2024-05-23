@@ -740,26 +740,30 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
 
     });
   }
-  saveVacationRequest(BuildContext context)
+  saveVacationRequest(BuildContext context) async
   {
-    //Vacation Type Required Validation
-    if (selectedVacationTypeValue!.isEmpty) {
+    if (selectedVacationTypeValue == null) {
       FN_showToast(context, 'please_set_vacation_type'.tr(), Colors.black);
       return;
     }
-    //Vacation From Date Required Validation
+    if (selectedJobValue == null) {
+      FN_showToast(context, 'please_set_job'.tr(), Colors.black);
+      return;
+    }
     if (_fromDateController.text.isEmpty) {
       FN_showToast(context, 'please_set_from_date'.tr(), Colors.black);
       return;
     }
-
-    //Vacation To Date Required Validation
     if (_toDateController.text.isEmpty) {
       FN_showToast(context, 'please_set_to_date'.tr(), Colors.black);
       return;
     }
+    if(!_validateDates())
+    {
+      return;
+    }
 
-    api.createVacationRequest(context, VacationRequests(
+    await api.createVacationRequest(context, VacationRequests(
         costCenterCode1: costCenterCode,
         requestTypeCode: "2",
         empCode: empCode,
@@ -839,5 +843,71 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
     }, onError: (e) {
       print(e);
     });
+  }
+  bool _validateDates() {
+    String fromDateStr = _fromDateController.text;
+    String toDateStr = _toDateController.text;
+
+    if (_fromDateController.text.isEmpty) {
+      FN_showToast(context, 'please_set_from_date'.tr(), Colors.black);
+      return false;
+    }
+    if (_toDateController.text.isEmpty) {
+      FN_showToast(context, 'please_set_to_date'.tr(), Colors.black);
+      return false;
+    }
+    if (fromDateStr.isNotEmpty && toDateStr.isNotEmpty) {
+      DateTime fromDate = DateTime.parse(fromDateStr);
+      DateTime toDate = DateTime.parse(toDateStr);
+
+      if (toDate.isBefore(fromDate)) {
+        // Show an error message or handle the error
+        _showModernAlertDialog(context, "Invalid Dates", "To Date should be after or the same as From Date.");
+        return false;
+      } else {
+        print("Dates are valid");
+        return true;
+      }
+    }
+    return true;
+  }
+  void _showModernAlertDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: [
+              const Icon(Icons.warning, color: Colors.red),
+              const SizedBox(width: 8),
+              Text(title),
+            ],
+          ),
+          content: Text(
+            message,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black54,
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red, // background
+                onPrimary: Colors.white, // foreground
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

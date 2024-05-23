@@ -121,15 +121,15 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: ListTile(
-            leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-            title: Text('Request Advance'.tr(),
-              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-          ),
-          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-        ),
+        // appBar: AppBar(
+        //   centerTitle: true,
+        //   title: ListTile(
+        //     leading: Image.asset('assets/images/logowhite2.png', scale: 3),
+        //     title: Text('Request Advance'.tr(),
+        //       style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
+        //   ),
+        //   backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+        // ),
         body: Form(
           key: _addFormKey,
           child: Column(

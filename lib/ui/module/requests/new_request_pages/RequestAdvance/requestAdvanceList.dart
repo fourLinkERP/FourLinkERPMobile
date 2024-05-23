@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/advanceRequest.dart';
 import 'package:fourlinkmobileapp/service/module/requests/setup/requestAdvanceApiService.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestAdvance/addRequestAdvanceTabs.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestAdvance/detailRequestAdvance.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestAdvance/editRequestAdvance.dart';
 import 'dart:core';
@@ -16,6 +15,8 @@ import 'package:intl/intl.dart';
 
 import '../../../../../helpers/toast.dart';
 import '../../../../../utils/permissionHelper.dart';
+import 'addRequestAdvance.dart';
+import 'editRequestAdvanceTabs.dart';
 
 
 //APIs
@@ -207,7 +208,7 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
                                           size: 20.0,
                                           weight: 10,
                                         ),
-                                        label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
+                                        label: Text('edit'.tr(),style:const TextStyle(color: Colors.white)),
                                         onPressed: () {
                                            _navigateToEditScreen(context,advanceRequests[index]);
                                         },
@@ -295,7 +296,7 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
   }
   _navigateToAddScreen(BuildContext context) async {
 
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => RequestAdvance(),)).then((value) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddRequestAdvance(),)).then((value) {
       getData();
     });
 
@@ -315,7 +316,7 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
   _navigateToEditScreen (BuildContext context, AdvanceRequests advanceRequests) async {
 
     final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-        EditRequestAdvance(advanceRequests)),).then((value) => getData());
+        EditRequestAdvanceTabs(advanceRequests)),).then((value) => getData());
     // int menuId = 45203;
     // bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
     // if(isAllowEdit)
@@ -337,6 +338,7 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
     });
     advanceRequests = (await futureAdvanceRequests)!;
     if (advanceRequests.isNotEmpty) {
+      advanceRequests.sort((a, b) => int.parse(b.trxSerial!).compareTo(int.parse(a.trxSerial!)));
       setState(() {
         _founded = advanceRequests;
         String search = '';

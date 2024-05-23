@@ -93,7 +93,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
   String? selectedCustomerValue = null;
   String? selectedCustomerEmail = null;
-  String? selectedTypeValue = null;
+  String? selectedTypeValue = "1";
   String? selectedItemValue = null;
   String? selectedItemName = null;
   String? selectedUnitValue = null;
@@ -1795,5 +1795,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
   calcDiscountPercentFromValue() {
 
   }
+
 
 }

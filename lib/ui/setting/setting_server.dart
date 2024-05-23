@@ -219,7 +219,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                               Container(
                                 child: defaultFormField(
                                   controller: _emailController,
-                                  label: 'admin'.tr(),
+                                  label: 'User'.tr(),
                                   type: TextInputType.emailAddress,
                                   colors: Colors.blueGrey,
                                   prefix: Icons.email,
@@ -236,7 +236,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                 //decoration: ThemeHelper().inputBoxDecorationShaddow(),
                                 child: defaultFormField(
                                   controller: _passwordController,
-                                  label: '123Pa\$\$word!'.tr(),
+                                  label: 'Password'.tr(),
                                   type: TextInputType.text,
                                   colors: Colors.blueGrey,
                                   prefix: Icons.lock,

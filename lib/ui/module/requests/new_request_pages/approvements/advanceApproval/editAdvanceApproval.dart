@@ -1,24 +1,24 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import '../../../../../common/globals.dart';
-import '../../../../../common/login_components.dart';
-import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
-import '../../../../../data/model/modules/module/accounts/basicInputs/Levels/Level.dart';
-import '../../../../../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
-import '../../../../../service/module/accounts/basicInputs/Levels/levelApiService.dart';
+import '../../../../../../common/globals.dart';
+import '../../../../../../common/login_components.dart';
+import '../../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
+import '../../../../../../data/model/modules/module/accounts/basicInputs/Levels/Level.dart';
+import '../../../../../../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
+import '../../../../../../service/module/accounts/basicInputs/Levels/levelApiService.dart';
 
 EmployeeApiService _employeeApiService = EmployeeApiService();
 LevelApiService _levelApiService = LevelApiService();
 
-class EditApproval extends StatefulWidget {
-  const EditApproval({Key? key}) : super(key: key);
+class EditAdvanceApproval extends StatefulWidget {
+  const EditAdvanceApproval({Key? key}) : super(key: key);
 
   @override
-  State<EditApproval> createState() => _EditApprovalState();
+  State<EditAdvanceApproval> createState() => _EditAdvanceApprovalState();
 }
 
-class _EditApprovalState extends State<EditApproval> {
+class _EditAdvanceApprovalState extends State<EditAdvanceApproval> {
 
   List<Employee> employees = [];
   List<Level> levels = [];

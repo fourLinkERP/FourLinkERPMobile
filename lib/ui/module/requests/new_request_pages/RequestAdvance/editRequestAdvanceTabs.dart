@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/approvements/vacationApproval/vacationApprovalList.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/approvements/advanceApproval/advanceApprovalList.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVacation/editRequestVacation.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestAdvance/editRequestAdvance.dart';
 
-import '../../../../../data/model/modules/module/requests/setup/vacationRequest.dart';
+import '../../../../../data/model/modules/module/requests/setup/advanceRequest.dart';
 
-class EditRequestVacationTabs extends StatefulWidget {
-  //EditRequestVacationTabs(this.finalRequests);
-  EditRequestVacationTabs(this.requests);
-  VacationRequests requests;
+class EditRequestAdvanceTabs extends StatefulWidget {
+  EditRequestAdvanceTabs(this.requests);
+  AdvanceRequests requests;
 
   @override
-  State<EditRequestVacationTabs> createState() => EditRequestVacationTabsState(requests);
+  State<EditRequestAdvanceTabs> createState() => EditRequestAdvanceTabsState(requests);
 }
 
-class EditRequestVacationTabsState extends State<EditRequestVacationTabs> {
-   late VacationRequests _requests;
+class EditRequestAdvanceTabsState extends State<EditRequestAdvanceTabs> {
+  late AdvanceRequests _requests;
 
-   EditRequestVacationTabsState(VacationRequests requests) {
-     this._requests = requests;
-   }
+  EditRequestAdvanceTabsState(AdvanceRequests requests) {
+    this._requests = requests;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,7 @@ class EditRequestVacationTabsState extends State<EditRequestVacationTabs> {
           centerTitle: true,
           title:ListTile(
             leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-            title: Text('edit_vacation_request'.tr(),
+            title: Text('edit_advance_request'.tr(),
               style: const TextStyle(color: Colors.white),),
           ),
           bottom: TabBar(
@@ -44,8 +43,8 @@ class EditRequestVacationTabsState extends State<EditRequestVacationTabs> {
         ),
         body: TabBarView(
           children: [
-            EditRequestVacation(_requests),
-            Approvals(_requests),
+            EditRequestAdvance(_requests),
+            AdvanceApprovals(_requests),
           ],
         ),
       ),

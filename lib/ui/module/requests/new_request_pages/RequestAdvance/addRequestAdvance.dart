@@ -59,8 +59,6 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
   final _advanceTrxSerialController = TextEditingController(); // Serial
   final _advanceTrxDateController = TextEditingController(); // Date
   final _recruitmentDateController = TextEditingController();
-  final _contractPeriodController = TextEditingController();
-  final _lastIncreaseDateController = TextEditingController();
   final _basicSalaryController = TextEditingController();
   final _fullSalaryController = TextEditingController();
   final _amountRequiredOfAdvanceController = TextEditingController();
@@ -74,9 +72,22 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
   final _startCountingDateController = TextEditingController();
   final _noteController = TextEditingController();
 
+  Employee employeeItem = Employee(empCode: empCode, empNameAra: empName,empNameEng: empName, id: 0);
+  Job jobItem = Job(jobCode: jobCode, jobNameAra: jobName,jobNameEng: jobName, id: 0);
+
   @override
   initState() {
     super.initState();
+    // Template until Ahmed finishes the API
+    _recruitmentDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    _basicSalaryController.text = "0";
+    _fullSalaryController.text = "0";
+    _latestAdvanceDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    _latestAdvanceAmountController.text = "0";
+    selectedEmployeeValue = empCode;
+    jobCode = "1";
+    selectedJobValue = jobCode;
+
 
     Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("WFW_EmployeeAdvanceRequests", "TrxSerial", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
       NextSerial nextSerial = data;
@@ -114,6 +125,18 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: ListTile(
+            leading: Image.asset('assets/images/logowhite2.png', scale: 3),
+            title: Text(
+              'add_advance_request'.tr(),
+              style: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold),
+            ),
+          ),
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+        ),
 
       body: Form(
         key: _addFormKey,
@@ -129,7 +152,6 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                       scrollDirection: Axis.horizontal,
                       children: [
                         Column(
-                          //mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const SizedBox(height: 10),
                             SizedBox(
@@ -289,7 +311,8 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               height: 50,
                               width: 210,
                               child: DropdownSearch<Employee>(
-                                selectedItem: null,
+                                enabled: false,
+                                selectedItem: employeeItem,
                                 popupProps: PopupProps.menu(
                                   itemBuilder: (context, item, isSelected) {
                                     return Container(
@@ -304,7 +327,6 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Text((langId==1)? item.empNameAra.toString():  item.empNameEng.toString(),
-                                          //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
                                           textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
                                       ),
@@ -315,8 +337,6 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                                 items: employees,
                                 itemAsString: (Employee u) => u.empNameAra.toString(),
                                 onChanged: (value){
-                                  //v.text = value!.cusTypesCode.toString();
-                                  //print(value!.id);
                                   selectedEmployeeValue =  value!.empCode.toString();
                                 },
                                 filterFn: (instance, filter){
@@ -336,6 +356,8 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               height: 50,
                               width: 210,
                               child: DropdownSearch<Job>(
+                                enabled: false,
+                                selectedItem: jobItem,
                                 popupProps: PopupProps.menu(
                                   itemBuilder: (context, item, isSelected) {
                                     return Container(
@@ -360,8 +382,6 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                                 items: jobs,
                                 itemAsString: (Job u) => u.jobNameAra.toString(),
                                 onChanged: (value){
-                                  //v.text = value!.cusTypesCode.toString();
-                                  //print(value!.id);
                                   selectedJobValue =  value!.jobCode.toString();
                                 },
                                 filterFn: (instance, filter){
@@ -381,6 +401,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               height: 50,
                               width: 210,
                               child: defaultFormField(
+                                enable: false,
                                 controller: _basicSalaryController,
                                 type: TextInputType.number,
                                 colors: Colors.blueGrey,
@@ -398,6 +419,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               height: 50,
                               width: 210,
                               child: defaultFormField(
+                                enable: false,
                                 controller: _fullSalaryController,
                                 type: TextInputType.number,
                                 colors: Colors.blueGrey,
@@ -414,7 +436,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               height: 50,
                               width: 210,
                               child: defaultFormField(
-                                //label: 'from_date'.tr(),
+                                enable: false,
                                 controller: _recruitmentDateController,
                                 onTab: () async {
                                   DateTime? pickedDate = await showDatePicker(
@@ -458,6 +480,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               height: 50,
                               width: 210,
                               child: defaultFormField(
+                                enable: false,
                                 controller: _latestAdvanceDateController,
                                 onTab: () async {
                                   DateTime? pickedDate = await showDatePicker(
@@ -479,6 +502,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               height: 50,
                               width: 210,
                               child: defaultFormField(
+                                enable: false,
                                 controller: _latestAdvanceAmountController,
                                 type: TextInputType.number,
                                 colors: Colors.blueGrey,
@@ -513,6 +537,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               height: 50,
                               width: 210,
                               child: defaultFormField(
+                                enable: false,
                                 controller: _approvedAmountOfAdvanceController,
                                 type: TextInputType.number,
                                 colors: Colors.blueGrey,
@@ -563,38 +588,6 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               ),
                             ),
                             const SizedBox(height: 20),
-                            // SizedBox(
-                            //   height: 50,
-                            //   width: 210,
-                            //   child: defaultFormField(
-                            //     controller: _advanceBalanceController,
-                            //     type: TextInputType.number,
-                            //     colors: Colors.blueGrey,
-                            //     validate: (String? value) {
-                            //       if (value!.isEmpty) {
-                            //         return 'installment must be non empty';
-                            //       }
-                            //       return null;
-                            //     },
-                            //   ),
-                            // ),
-                            // const SizedBox(height: 20),
-                            // SizedBox(
-                            //   height: 50,
-                            //   width: 210,
-                            //   child: defaultFormField(
-                            //     controller: _empBalanceController,
-                            //     type: TextInputType.number,
-                            //     colors: Colors.blueGrey,
-                            //     validate: (String? value) {
-                            //       if (value!.isEmpty) {
-                            //         return 'balance must be non empty';
-                            //       }
-                            //       return null;
-                            //     },
-                            //   ),
-                            // ),
-                            // const SizedBox(height: 20),
                             SizedBox(
                               height: 50,
                               width: 210,
@@ -656,7 +649,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 15),
           ]
         ),
       )
@@ -701,43 +694,70 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
   getEmployeesData() {
     if (employees.isNotEmpty) {
       for(var i = 0; i < employees.length; i++){
-        menuEmployees.add(DropdownMenuItem(
-            value: employees[i].empCode.toString(),
-            child: Text((langId==1)? employees[i].empNameAra.toString() : employees[i].empNameEng.toString())));
+        if(employees[i].empCode == empCode){
+          employeeItem = employees[employees.indexOf(employees[i])];
+        }
       }
     }
     setState(() {
 
     });
   }
+
   getJobsData() {
     if (jobs.isNotEmpty) {
       for(var i = 0; i < jobs.length; i++){
-        menuJobs.add(DropdownMenuItem(
-            value: jobs[i].jobCode.toString(),
-            child: Text((langId==1)? jobs[i].jobNameAra.toString() : jobs[i].jobNameEng.toString())));
+        if(jobs[i].jobCode == jobCode){
+          jobItem = jobs[jobs.indexOf(jobs[i])];
+        }
       }
     }
     setState(() {
 
     });
   }
-  saveAdvanceRequest(BuildContext context)
+  saveAdvanceRequest(BuildContext context) async
   {
 
-    // if (selectedJobValue == null || selectedJobValue!.isEmpty) {
-    //   FN_showToast(context, 'please set a job'.tr(), Colors.black);
-    //   return;
-    // }
+    if (selectedJobValue == null || selectedJobValue!.isEmpty) {
+      FN_showToast(context, 'please_set_job'.tr(), Colors.black);
+      return;
+    }
     if (selectedEmployeeValue == null || selectedEmployeeValue!.isEmpty) {
       FN_showToast(context, 'please set employee value'.tr(), Colors.black);
       return;
     }
-    // if (_salaryIncTrxDateController.text.isEmpty) {
-    //   FN_showToast(context, 'please set date'.tr(), Colors.black);
-    //   return;
-    // }
-    api.createAdvanceRequest(context, AdvanceRequests(
+    if (_amountRequiredOfAdvanceController.text.isEmpty) {
+      FN_showToast(context, 'please_set_required_amount'.tr(), Colors.black);
+      return;
+    }
+    if (_installmentController.text.isEmpty) {
+      FN_showToast(context, 'please_set_installment'.tr(), Colors.black);
+      return;
+    }
+    if (_advanceReasonController.text.isEmpty) {
+      FN_showToast(context, 'please_set_reason'.tr(), Colors.black);
+      return;
+    }
+    if (_startCountingDateController.text.isEmpty) {
+      FN_showToast(context, 'please_set_start_counting'.tr(), Colors.black);
+      return;
+    }
+    if (_recruitmentDateController.text.isEmpty) {
+      FN_showToast(context, 'recruitment_date_is_required'.tr(), Colors.black);
+      return;
+    }
+    if(!_validateDates())
+    {
+      return;
+    }
+    if(!_validateAmount())
+    {
+      FN_showToast(context, 'installment_value_should_be_less_than_required_amount'.tr(), Colors.black);
+      return;
+    }
+
+    await api.createAdvanceRequest(context, AdvanceRequests(
       empCode: selectedEmployeeValue,
       jobCode: selectedJobValue,
       trxDate: DateFormat('yyyy-MM-dd').format(pickedDate),
@@ -745,7 +765,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
       basicSalary: _basicSalaryController.text.toInt(),
       fullSalary: _fullSalaryController.text.toInt(),
       recruitmentDate: _recruitmentDateController.text,
-      latestAdvanceAmount: int.parse(_latestAdvanceAmountController.text),
+      latestAdvanceAmount: _latestAdvanceAmountController.text.toInt(),
       amountRequired: _amountRequiredOfAdvanceController.text.toInt(),
       approvedAmount: _approvedAmountOfAdvanceController.text.toInt(),
       empBalance: _empBalanceController.text.toInt(),
@@ -758,5 +778,84 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
 
     ));
     Navigator.pop(context,true );
+  }
+
+  bool _validateAmount() {
+    int requiredAmount = int.parse(_amountRequiredOfAdvanceController.text);
+    int installmentValue = int.parse(_installmentController.text);
+    if(requiredAmount.toString().isNotEmpty && installmentValue.toString().isNotEmpty)
+      {
+        if (requiredAmount > installmentValue)
+          {
+            return true;
+          }
+        else{
+          return false;
+        }
+      }
+    return true;
+  }
+  bool _validateDates() {
+    String todayDate = _advanceTrxDateController.text;
+    String countingDate = _startCountingDateController.text;
+
+    if (_startCountingDateController.text.isEmpty) {
+      FN_showToast(context, 'please_set_to_date'.tr(), Colors.black);
+      return false;
+    }
+    if (todayDate.isNotEmpty && countingDate.isNotEmpty) {
+      DateTime fromDate = DateTime.parse(todayDate);
+      DateTime toDate = DateTime.parse(countingDate);
+
+      if (toDate.isBefore(fromDate)) {
+        _showModernAlertDialog(context, "Invalid Dates", "Start Counting Date should be after Today's Date.");
+        return false;
+      } else {
+        print("Dates are valid");
+        return true;
+      }
+    }
+    return true;
+  }
+
+  void _showModernAlertDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: [
+              const Icon(Icons.warning, color: Colors.red),
+              const SizedBox(width: 8),
+              Text(title),
+            ],
+          ),
+          content: Text(
+            message,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black54,
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.red, // background
+                onPrimary: Colors.white, // foreground
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+
   }
 }

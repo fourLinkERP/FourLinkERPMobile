@@ -73,7 +73,6 @@ import '../../../../../common/globals.dart';
       print('EmployeeFiltrated 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
       // print('data: '+ data.toString());
-      // print('data length: '+ data.length.toString());
       List<Employee> list = [];
       if (data.isNotEmpty) {
         final employee = Employee.fromJson(data[0]);

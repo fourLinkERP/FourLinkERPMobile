@@ -50,14 +50,15 @@ class _RequestVacationListState extends State<RequestVacationList> {
   List<VacationRequests> filterListByEmployeeCode() {
     List<VacationRequests> filteredList = [];
 
-    if (empCode == "1" || empCode == "11" || empCode == "10" || empCode == "2") {
+    if (empCode == "1" || empCode == "11" || empCode == "10" || empCode == "44") {
       filteredList = vacationRequests;
     } else {
-      vacationRequests.forEach((element) {
-        if (element.empCode == empCode) {
-          filteredList.add(element);
-        }
-      });
+      filteredList = vacationRequests;
+      // vacationRequests.forEach((element) {
+      //   if (element.empCode == empCode) {
+      //     filteredList.add(element);
+      //   }
+      // });                                    /// the right code
     }
 
     return filteredList;
@@ -163,9 +164,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
     // {
     //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddRequestVacation(),
     //   )).then((value) {
-    //     if (value != null && value == true) {
-    //           getData();
-    //         }
+    //     getData();
     //   });
     //
     // }
@@ -195,39 +194,39 @@ class _RequestVacationListState extends State<RequestVacationList> {
 
   }
   _deleteItem(BuildContext context,int? id) async {
-    FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
+    //FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
 
-    // final result = await showDialog<bool>(
-    //   context: context,
-    //   builder: (context) => AlertDialog(
-    //     title: const Text('Are you sure?'),
-    //     content: const Text('This action will permanently delete this data'),
-    //     actions: [
-    //       TextButton(
-    //         onPressed: () => Navigator.pop(context, false),
-    //         child: const Text('Cancel'),
-    //       ),
-    //       TextButton(
-    //         onPressed: () => Navigator.pop(context, true),
-    //         child: const Text('Delete'),
-    //       ),
-    //     ],
-    //   ),
-    // );
-    // if (result == null || !result) {
-    //   return;
-    // }
-    //
-    // int menuId=45201;
-    // bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
-    // if(isAllowDelete)
-    // {
-    //   var res = _apiService.deleteVacationRequest(context,id).then((value) => getData());
-    // }
-    // else
-    // {
-    //   FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
-    // }
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Are you sure?'),
+        content: const Text('This action will permanently delete this data'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+    if (result == null || !result) {
+      return;
+    }
+
+    int menuId=45201;
+    bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
+    if(isAllowDelete)
+    {
+      var res = _apiService.deleteVacationRequest(context,id).then((value) => getData());
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_delete_permission'.tr(),Colors.black);
+    }
   }
 
   Widget buildVacationRequests(){

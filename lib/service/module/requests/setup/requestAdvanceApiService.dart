@@ -75,6 +75,7 @@ class AdvanceRequestApiService {
       'BranchCode': branchCode,
       'trxSerial': advanceRequest.trxSerial,
       'trxDate' : advanceRequest.trxDate,
+      //'requestTypeCode': advanceRequest.request
       'basicSalary': advanceRequest.basicSalary,
       'fullSalary': advanceRequest.fullSalary,
       'recruitmentDate': advanceRequest.recruitmentDate,
@@ -101,7 +102,7 @@ class AdvanceRequestApiService {
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "year": 2023
+      "year": 2024
     };
 
     print('to print body');

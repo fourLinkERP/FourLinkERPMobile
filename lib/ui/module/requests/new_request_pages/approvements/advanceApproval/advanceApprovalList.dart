@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/advanceRequest.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/approvements/addApproval.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/approvements/editApproval.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/approvements/advanceApproval/addAdvanceApproval.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/approvements/advanceApproval/editAdvanceApproval.dart';
 import 'package:intl/intl.dart';
-import '../../../../../common/globals.dart';
-import '../../../../../cubit/app_cubit.dart';
-import '../../../../../cubit/app_states.dart';
-import '../../../../../data/model/modules/module/accounts/basicInputs/Approvals/workFlowProcess.dart';
-import '../../../../../data/model/modules/module/requests/setup/vacationRequest.dart';
-import '../../../../../helpers/hex_decimal.dart';
-import '../../../../../service/module/requests/setup/Approvals/workFlowProcessApiService.dart';
-import '../../../../../theme/fitness_app_theme.dart';
+import '../../../../../../common/globals.dart';
+import '../../../../../../cubit/app_cubit.dart';
+import '../../../../../../cubit/app_states.dart';
+import '../../../../../../data/model/modules/module/accounts/basicInputs/Approvals/workFlowProcess.dart';
+import '../../../../../../helpers/hex_decimal.dart';
+import '../../../../../../service/module/requests/setup/Approvals/workFlowProcessApiService.dart';
+import '../../../../../../theme/fitness_app_theme.dart';
 
 WorkFlowProcessApiService _apiService = WorkFlowProcessApiService();
 
-class Approvals extends StatefulWidget {
+class AdvanceApprovals extends StatefulWidget {
 
-  Approvals(this.vacationRequest);
-  final VacationRequests vacationRequest;
+  AdvanceApprovals(this.advanceRequest);
+  final AdvanceRequests advanceRequest;
 
   @override
-  State<Approvals> createState() => ApprovalsState(vacationRequest);
+  State<AdvanceApprovals> createState() => AdvanceApprovalsState(advanceRequest);
 }
 
-class ApprovalsState extends State<Approvals> {
-  late VacationRequests vacationRequest;
+class AdvanceApprovalsState extends State<AdvanceApprovals> {
+  late AdvanceRequests advanceRequest;
 
-  ApprovalsState(VacationRequests requests) {
-    this.vacationRequest = requests;
+  AdvanceApprovalsState(AdvanceRequests requests) {
+    this.advanceRequest = requests;
   }
 
   //WorkFlowProcess? process = WorkFlowProcess(empCode: "",levelCode: "");
@@ -51,7 +51,7 @@ class ApprovalsState extends State<Approvals> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-        body: SafeArea(child: buildApprovals()),
+        body: SafeArea(child: buildAdvanceApprovals()),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             _navigateToAddScreen(context);
@@ -100,7 +100,7 @@ class ApprovalsState extends State<Approvals> {
         )
     );
   }
-  Widget buildApprovals(){
+  Widget buildAdvanceApprovals(){
     if(State is AppErrorState){
       return const Center(child: Text('no data'));
     }
@@ -109,7 +109,7 @@ class ApprovalsState extends State<Approvals> {
 
     }
     else if(processes.isEmpty && AppCubit.get(context).Conection==true){
-      return const Center(child: CircularProgressIndicator());
+      return Center(child: Text("No Data To Show", style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     }
     else{
       print("Success to load approvals............");
@@ -259,67 +259,24 @@ class ApprovalsState extends State<Approvals> {
     // bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     // if(isAllowAdd)
     // {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddApproval(vacationRequest)),);
-          //.then((value) {
-        //getData();
-      //}
-    //);
-   // }
-   //  else
-   //  {
-   //    FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
-   //  }
-
-  }
-  _navigateToEditScreen (BuildContext context) async {
-
-    // int menuId=45201;
-    // bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
-    // if(isAllowEdit)
-    // {
-    //
-    //   final result = await
-      Navigator.push(context, MaterialPageRoute(builder: (context) => EditApproval()),);
-    //
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddAdvanceApproval(advanceRequest))).then((value) {
+      getData();
+    });
     // }
-    // else
-    // {
-    //   FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
-    // }
+    //  else
+    //  {
+    //    FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    //  }
 
   }
 
-  // void processWorkflows() {
-  //   debugger;
-  //   if (!utilityService.isEmptyValue(workflowForm.get('workFlowTransactionId').value) &&
-  //       !utilityService.isEmptyValue(workflowForm.get('requestTypeCode').value)) {
-  //     workflowParams = globalService.addSearchAnotherParams(workflowParams, null);
-  //     workflowParams.search['transactionId'] = workflowForm.get('workFlowTransactionId').value;
-  //     workflowParams.search['requestTypeCode'] = workflowForm.get('requestTypeCode').value;
-  //     workflowService.processWorkflows(workflowParams).listen((result) {
-  //       debugger;
-  //       if (!utilityService.isEmptyValue(result)) {
-  //         final EmpCode = globalService.getEmpCode();
-  //         //Set Employee Value
-  //         if (EmpCode == result['empCode']) {
-  //           workflowForm.get('actionEmpCode').setValue(result['empCode']);
-  //         }
-  //         if (EmpCode == result['alternativeEmpCode']) {
-  //           workflowForm.get('actionEmpCode').setValue(result['alternativeEmpCode']);
-  //         }
-  //         //Set Level Code
-  //         workflowForm.get('levelCode').setValue(result['levelCode']);
-  //       }
-  //     });
-  //   }
-  // }
   void getData() async {
     Future<List<WorkFlowProcess>?> futureWorkflowProcess =
-    _apiService.getWorkFlowProcesses("2", widget.vacationRequest.id!).catchError((Error){
+    _apiService.getWorkFlowProcesses("1", widget.advanceRequest.id!).catchError((Error){
       print('Error ${Error}');
       AppCubit.get(context).EmitErrorState();
     });
-    print("+++++++++----" + widget.vacationRequest.id.toString());
+    print("+++++++++----" + widget.advanceRequest.id.toString());
     processes = (await futureWorkflowProcess)!;
     if (processes.isNotEmpty) {
       setState(() {

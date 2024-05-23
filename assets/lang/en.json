@@ -529,6 +529,21 @@
     "egypt": "Egypt",
     "saudi_arabia": "Saudi Arabia",
     "riyadh": "Riyadh",
-    "cairo": "Cairo"
+    "cairo": "Cairo",
+    "add_advance_request": "Add Advance Request",
+    "edit_vacation_request": "Edit Vacation Request",
+    "edit_advance_request": "Edit Advance Request",
+    "logout": "Log out",
+    "please_set_from_date": "please set from date",
+    "please_set_to_date": "please set to date",
+    "please_set_vacation_type": "please set vacation type",
+    "please_set_job": "please set job",
+    "please_set_reason": "please set reason",
+    "please_set_required_amount": "please set the required amount",
+    "please_set_installment": "please seف installment value",
+    "the_status": "Status",
+    "please_set_start_counting": "please set start counting date",
+    "installment_value_should_be_less_than_required_amount": "installment value should be less than required amount",
+    "recruitment_date_is_required": "recruitment date is required"
 
 }

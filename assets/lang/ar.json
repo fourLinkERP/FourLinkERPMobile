@@ -622,6 +622,25 @@
     "egypt": "جمهورية مصر العربية",
     "saudi_arabia": "المملكة العربية السعودية",
     "riyadh": "الرياض",
-    "cairo": "القاهرة"
+    "cairo": "القاهرة",
+    "add_advance_request": "اضافة طلب سلفة",
+    "edit_vacation_request": "تعديل طلب اجازة",
+    "edit_advance_request": "تعديل طلب سلفة",
+    "logout": "تسجيل خروج",
+    "please_set_from_date": "من فضلك ادخل تاريخ ابتداء الاجازة",
+    "please_set_to_date": "من فضلك ادخل تاريخ انتهاء الاجازة",
+    "please_set_vacation_type": "من فضلك اختر نوع الاجازة",
+    "please_set_job": "من فضلك ادخل الوظيفة",
+    "please_set_reason": "من فضلك ادخل السبب",
+    "please_set_required_amount": "من فضلك ادخل المبلغ المطلوب",
+    "please_set_installment": "ادخل قيمة القسط",
+    "the_status": "الاجراء",
+    "please_set_start_counting": "ادخل تاريخ بداية الاحتساب",
+    "installment_value_should_be_less_than_required_amount": "قيمة القسط يجب ان تكون اقل من المبلغ المطلوب",
+    "recruitment_date_is_required": "تاريخ التعيين مطلوب",
+    "please_set_employee": "من فضلك اختر موظف",
+    "please_set_level": "من فضلك اخر المستوى",
+    "please_set_status": "من فضلك اختر الاجراء",
+    "please_set_note": "من فضلك اكتب ملاحظة"
 }
 

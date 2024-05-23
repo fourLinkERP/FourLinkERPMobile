@@ -1,19 +1,19 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Approvals/workFlowProcess.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/vacationRequest.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/advanceRequest.dart';
 import 'package:fourlinkmobileapp/service/module/requests/basicInputs/WorkflowStatuses/workflowStatusesApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import '../../../../../common/globals.dart';
-import '../../../../../common/login_components.dart';
-import '../../../../../cubit/app_cubit.dart';
-import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
+import '../../../../../../common/globals.dart';
+import '../../../../../../common/login_components.dart';
+import '../../../../../../cubit/app_cubit.dart';
+import '../../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Levels/Level.dart';
-import '../../../../../data/model/modules/module/requests/basicInputs/WorkflowStatuses/workflowStatuses.dart';
-import '../../../../../helpers/toast.dart';
-import '../../../../../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
-import '../../../../../service/module/accounts/basicInputs/Levels/levelApiService.dart';
-import '../../../../../service/module/requests/setup/Approvals/workFlowProcessApiService.dart';
+import '../../../../../../data/model/modules/module/requests/basicInputs/WorkflowStatuses/workflowStatuses.dart';
+import '../../../../../../helpers/toast.dart';
+import '../../../../../../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
+import '../../../../../../service/module/accounts/basicInputs/Levels/levelApiService.dart';
+import '../../../../../../service/module/requests/setup/Approvals/workFlowProcessApiService.dart';
 import 'package:intl/intl.dart';
 
 //APIs
@@ -22,16 +22,16 @@ LevelApiService _levelApiService = LevelApiService();
 StatusesApiService _statusesApiService = StatusesApiService();
 WorkFlowProcessApiService _apiService = WorkFlowProcessApiService();
 
-class AddApproval extends StatefulWidget {
-  AddApproval(this.vacationRequest);
+class AddAdvanceApproval extends StatefulWidget {
+  AddAdvanceApproval(this.advanceRequest);
 
-  final VacationRequests vacationRequest;
+  final AdvanceRequests advanceRequest;
 
   @override
-  State<AddApproval> createState() => _AddApprovalState();
+  State<AddAdvanceApproval> createState() => _AddAdvanceApprovalState();
 }
 
-class _AddApprovalState extends State<AddApproval> {
+class _AddAdvanceApprovalState extends State<AddAdvanceApproval> {
 
   List<Employee> employees = [];
   List<Level> levels = [];
@@ -335,10 +335,10 @@ class _AddApprovalState extends State<AddApproval> {
   }
   void getData() async {
     Future<WorkFlowProcess>? futureWorkflowProcess =
-    _apiService.get2WorkFlowProcess("2", widget.vacationRequest.id!).catchError((Error){
+    _apiService.get2WorkFlowProcess("1", widget.advanceRequest.id!).catchError((Error){
       AppCubit.get(context).EmitErrorState();
     });
-    print("+++++++++----" + widget.vacationRequest.id.toString());
+    print("+++++++++----" + widget.advanceRequest.id.toString());
     process = (await futureWorkflowProcess)!;
     print("empCode: "+ process!.empCode.toString() + "  level: "+ process!.levelCode.toString());
     if(process!.empCode == empCode || process!.alternativeEmpCode == empCode){
@@ -351,8 +351,8 @@ class _AddApprovalState extends State<AddApproval> {
       for(var i = 0; i < employees.length; i++){
         menuEmployees.add(
             DropdownMenuItem(
-            value: employees[i].empCode.toString(),
-            child: Text((langId==1)? employees[i].empNameAra.toString() : employees[i].empNameEng.toString())));
+                value: employees[i].empCode.toString(),
+                child: Text((langId==1)? employees[i].empNameAra.toString() : employees[i].empNameEng.toString())));
       }
     }
     setState(() {
@@ -364,10 +364,10 @@ class _AddApprovalState extends State<AddApproval> {
     if (levels.isNotEmpty) {
       for(var i = 0; i < levels.length; i++){
         menuLevels.add(
-            DropdownMenuItem(
-            value: levels[i].levelCode.toString(),
-            child: Text((langId==1)? levels[i].levelNameAra.toString() : levels[i].levelNameEng.toString())
-            ),
+          DropdownMenuItem(
+              value: levels[i].levelCode.toString(),
+              child: Text((langId==1)? levels[i].levelNameAra.toString() : levels[i].levelNameEng.toString())
+          ),
         );
       }
     }
@@ -390,29 +390,29 @@ class _AddApprovalState extends State<AddApproval> {
 
     });
   }
-  saveWorkflowProcess(BuildContext context)
+  saveWorkflowProcess(BuildContext context) async
   {
     if (selectedEmployeeValue == null) {
-      FN_showToast(context, 'please set employee'.tr(), Colors.red);
+      FN_showToast(context, 'please_set_employee'.tr(), Colors.black);
       return;
     }
 
     if (selectedLevelValue == null) {
-      FN_showToast(context, 'please set a level'.tr(), Colors.red);
+      FN_showToast(context, 'please_set_level'.tr(), Colors.black);
       return;
     }
     if (selectedStatusValue == null) {
-      FN_showToast(context, 'please set a status'.tr(), Colors.red);
+      FN_showToast(context, 'please_set_status'.tr(), Colors.black);
       return;
     }
     if (notesController.text.isEmpty) {
-      FN_showToast(context, 'please write a note'.tr(), Colors.red);
+      FN_showToast(context, 'please_write_note'.tr(), Colors.black);
       return;
     }
 
-    api.createWorkFlowProcess(context, WorkFlowProcess(
-      workFlowTransactionsId: widget.vacationRequest.id,
-      requestTypeCode: "2",    //widget.vacationRequest.requestTypeCode,
+    await api.createWorkFlowProcess(context, WorkFlowProcess(
+      workFlowTransactionsId: widget.advanceRequest.id,
+      requestTypeCode: "1",
       trxDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
       levelCode: selectedLevelValue,
       empCode: selectedEmployeeValue,

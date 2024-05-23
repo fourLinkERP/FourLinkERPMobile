@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestResources/addRequestResources.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/approvements/approvalList.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/approvements/vacationApproval/vacationApprovalList.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 class RequestResources extends StatefulWidget {

@@ -9,7 +9,9 @@ import 'package:fourlinkmobileapp/routes/pageRoute.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/ui/home/home_screen.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import '../../helpers/navigator.dart';
 import '../../theme/app_theme.dart';
+import '../../ui/auth/login/login_screen.dart';
 import '../../ui/module/requests/generalList/ReqistsList.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/Employees/employeeApiService.dart';
@@ -120,11 +122,18 @@ class _navigationDrawerState extends State<navigationDrawer> {
             text: 'Notifications'.tr(),
             onTap: () => Navigator.pushReplacementNamed(context, pageRoutes.notification),
           ),
+
           createDrawerBodyItem(
             icon: Icons.contact_phone,
             text: 'Contact Info'.tr(),
             onTap: () =>
                 Navigator.pushReplacementNamed(context, pageRoutes.contact),
+          ),
+          createDrawerBodyItem(
+              icon: Icons.logout,
+              text: 'logout'.tr(),
+              onTap: () => navigateAndClearStack(context, LoginScreen())
+
           ),
 /*          ListTile(
             title: Text('App version 1.0.0'),
