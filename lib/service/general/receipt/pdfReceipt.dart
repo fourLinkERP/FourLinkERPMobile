@@ -21,7 +21,7 @@ class pdfReceipt {
     pw.Font.ttf(await rootBundle.load("assets/fonts/HacenTunisia.ttf"));
     //var barcodeImage = pw.RawImage(barcodeImageArray,60,60,orientation: )
 
-    final companyImage = pw.MemoryImage((await rootBundle.load('assets/images/deliciouslogo.jpg')).buffer.asUint8List(),);
+    MemoryImage? companyImage;//pw.MemoryImage((await rootBundle.load('assets/images/deliciouslogo.jpg')).buffer.asUint8List(),);
     final barcodeImage = pw.MemoryImage(barcodeImageArray  );
     //final barCodeImage = pw.MemoryImage((await rootBundle.load('assets/images/barCodeImage.jpg')).buffer.asUint8List(),);
 
@@ -300,7 +300,7 @@ class pdfReceipt {
 
     return PdfApi.saveDocument(name: 'Receipt.pdf', pdf: pdf);
   }
-  static pw.Widget buildHeader(Receipt receipt,pw.MemoryImage companyImage ) => pw.Column(
+  static pw.Widget buildHeader(Receipt receipt,pw.MemoryImage? companyImage ) => pw.Column(
     crossAxisAlignment: pw.CrossAxisAlignment.start,
     children: [
       pw.Row(
@@ -316,7 +316,7 @@ class pdfReceipt {
     ],
   );
 
-  static pw.Widget buildHeader2(Receipt receipt,pw.MemoryImage companyImage ) => pw.Column(
+  static pw.Widget buildHeader2(Receipt receipt,pw.MemoryImage? companyImage ) => pw.Column(
     crossAxisAlignment: pw.CrossAxisAlignment.start,
     children: [
       pw.Row(
@@ -396,24 +396,24 @@ class pdfReceipt {
     ],
   );
 
-  static pw.Widget buildCompanyLogo(Receipt receipt,pw.MemoryImage companyImage) => pw.Column(
+  static pw.Widget buildCompanyLogo(Receipt receipt,pw.MemoryImage? companyImage) => pw.Column(
     crossAxisAlignment: pw.CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      pw.Container(
-        padding:  const EdgeInsets.only(top: 10,left: 50),
-        child:
-        pw.Image(companyImage
-            ,width: 160,
-            height: 130),
-      )
+      // pw.Container(
+      //   padding:  const EdgeInsets.only(top: 10,left: 50),
+      //   child:
+      //   pw.Image(companyImage
+      //       ,width: 160,
+      //       height: 130),
+      // )
 
 
       // Text(customer.address.toString()),
     ],
   );
 
-  static pw.Widget buildCompanyLogo2(Receipt receipt,pw.MemoryImage companyImage) => pw.Column(
+  static pw.Widget buildCompanyLogo2(Receipt receipt,pw.MemoryImage? companyImage) => pw.Column(
     crossAxisAlignment: pw.CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
     children: [

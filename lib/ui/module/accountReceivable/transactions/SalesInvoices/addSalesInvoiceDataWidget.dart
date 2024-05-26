@@ -441,7 +441,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                   ),
                                     ),
                                   ),
-                                  const SizedBox(width: 20),
+                                  const SizedBox(width: 15),
                                   IconButton(
                                     onPressed: () async {
                                       await Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddCustomerDataWidget(),
@@ -661,7 +661,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                             const SizedBox(width: 20),
                             SizedBox(
                               width: 60,
-                                child: Text('discount :'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
+                                child: Text('discount'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
                             const SizedBox(width: 10),
                             SizedBox(
                               width: 90,

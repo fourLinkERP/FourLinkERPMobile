@@ -23,6 +23,7 @@ class SalesInvoiceReturnH {
   double? totalQty ;
   double? totalDiscount ;
   double? totalTax ;
+  String? taxNumber;
 
   int rowsCount;
   double? invoiceDiscountPercent;
@@ -31,7 +32,9 @@ class SalesInvoiceReturnH {
   double? totalAfterDiscount;
   double? totalBeforeTax ;
   double? totalNet ;
+  String?  invoiceTypeCode ;
   String? invoiceQRCodeBase64;
+  String?  tafqeetName ;
   String?  tafqitNameArabic ;
   String?  tafqitNameEnglish ;
 
@@ -54,15 +57,18 @@ class SalesInvoiceReturnH {
     this.totalQty ,
     this.totalDiscount ,
     this.totalTax ,
+    this.taxNumber,
     this.rowsCount=0,
     this.invoiceDiscountPercent,
     this.invoiceDiscountValue,
+    this.invoiceTypeCode,
     this.totalValue,
     this.totalAfterDiscount,
     this.totalBeforeTax,
     this.totalNet,
     this.tafqitNameArabic,
     this.tafqitNameEnglish,
+    this.tafqeetName,
     this.invoiceQRCodeBase64,
     //image
   });
@@ -88,8 +94,11 @@ class SalesInvoiceReturnH {
       totalAfterDiscount: (json['totalAfterDiscount'] !=null) ? json['totalAfterDiscount'].toDouble() : 0,
       totalBeforeTax: (json['totalBeforeTax'] !=null) ? json['totalBeforeTax'].toDouble() : 0,
       totalNet: (json['totalNet'] !=null) ? json['totalNet'].toDouble() : 0,
+      tafqeetName: (json['tafqeetName'] != null) ? json['tafqeetName'] as String : "",
       currencyRate: (json['currencyRate'] !=null) ? json['currencyRate'].toDouble() : 0,
       tafqitNameArabic: (json['tafqitNameArabic'] != null) ? json['tafqitNameArabic'] as String : "",
+      taxNumber: (json['taxNumber'] != null) ? json['taxNumber'] as String : "",
+      invoiceTypeCode: (json['invoiceTypeCode'] != null) ? json['invoiceTypeCode'] as String : "",
       tafqitNameEnglish: (json['tafqitNameEnglish'] != null) ? json['tafqitNameEnglish'] as String : "",
       invoiceQRCodeBase64: (json['invoiceQRCodeBase64'] != null) ? json['invoiceQRCodeBase64'] as String : "",
       // salesManCode: json['salesManCode'] as String,

@@ -12,6 +12,7 @@ import '../../../../../common/globals.dart';
  class EmployeeApiService {
 
   String searchApi= baseUrl.toString()  + '/api/v1/employees/search';
+  String getContractApi= baseUrl.toString()  + '/api/v1/employees/getemployeecontractdata';
   String createApi= baseUrl.toString()  + '/api/v1/employees';
   String updateApi= baseUrl.toString()  + '/api/v1/employees/';  // Add ID For Edit
   String deleteApi= baseUrl.toString()  + '/api/v1/employees/';
@@ -90,6 +91,41 @@ import '../../../../../common/globals.dart';
     } else {
       print('Employee Failed');
       throw "Failed to load Employee list";
+    }
+  }
+  Future<List<Employee>>  getContractData(String employeeCode) async {
+    Map data = {
+      'Search': {
+        'EmpCode': employeeCode
+      }
+    };
+
+    print('Contract 1');
+    final http.Response response = await http.post(
+      Uri.parse(getContractApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body)['data'];
+      List<Employee> list = [];
+      if (data.isNotEmpty) {
+        final employee = Employee.fromJson(data[0]);
+        // jobCode = employee.jobCode.toString();
+        // jobName = employee.jobName!;
+
+        list = [employee];
+      }
+      print('Contract 3');
+      return  list;
+
+    } else {
+      print('Contract Failed');
+      throw "Failed to load Contract list";
     }
   }
 

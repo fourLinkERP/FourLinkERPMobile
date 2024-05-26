@@ -9,6 +9,8 @@ class Employee {
   String? costCenterName;
   int? jobCode;
   String? jobName;
+  int? basicSalary;
+  int? fullSalary;
 
 
   Employee({
@@ -20,7 +22,9 @@ class Employee {
     this.costCenterCode,
     this.costCenterName,
     this.jobCode,
-    this.jobName
+    this.jobName,
+    this.basicSalary,
+    this.fullSalary
     });
 
   factory Employee.fromJson(Map<String, dynamic> json) {
@@ -34,6 +38,8 @@ class Employee {
       costCenterName: (json['costCenterName'] != null)? json['costCenterName'] as String : " ",
       jobCode: (json['jobCode'] != null) ? json['jobCode'] as int : 0,
       jobName: (json['jobName'] != null) ? json['jobName'] as String : " ",
+      basicSalary: (json['basicSalary'] != null) ? json['basicSalary'] as int : 0,
+      fullSalary: (json['fullSalary'] != null) ? json['fullSalary'] as int : 0,
     );
   }
 

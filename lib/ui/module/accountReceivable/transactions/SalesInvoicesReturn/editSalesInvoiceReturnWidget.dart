@@ -385,87 +385,86 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
                         ),
 
                         const SizedBox(height: 20),
-                        Form(
-                            key: _dropdownCustomerFormKey,
-                            child: Row(
-                              //crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
-                              children: [
-                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Customer: '.tr())),
-                                const SizedBox(width: 10),
-                                SizedBox(
-                                  width: 220,
-                                  child: DropdownSearch<Customer>(
-                                    selectedItem: customerItem,
-                                    popupProps: PopupProps.menu(
+                        Column(
+                          children: [
+                            Form(
+                                key: _dropdownCustomerFormKey,
+                                child: Row(
+                                  //crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
+                                  children: [
+                                    Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Customer: '.tr())),
+                                    const SizedBox(width: 10),
+                                    SizedBox(
+                                      width: 220,
+                                      child: DropdownSearch<Customer>(
+                                        selectedItem: customerItem,
+                                        popupProps: PopupProps.menu(
 
-                                      itemBuilder: (context, item, isSelected) {
-                                        return Container(
-                                          margin: const EdgeInsets.symmetric(horizontal: 8),
-                                          decoration: !isSelected ? null
-                                              : BoxDecoration(
+                                          itemBuilder: (context, item, isSelected) {
+                                            return Container(
+                                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                                              decoration: !isSelected ? null
+                                                  : BoxDecoration(
 
-                                            border: Border.all(color: Colors.black12),
-                                            borderRadius: BorderRadius.circular(5),
-                                            color: Colors.white,
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text((langId==1)? item.customerNameAra.toString() : item.customerNameEng.toString()),
-                                          ),
-                                        );
-                                      },
-                                      showSearchBox: true,
+                                                border: Border.all(color: Colors.black12),
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: Colors.white,
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text((langId==1)? item.customerNameAra.toString() : item.customerNameEng.toString()),
+                                              ),
+                                            );
+                                          },
+                                          showSearchBox: true,
 
+                                        ),
+
+                                        items: customers,
+                                        itemAsString: (Customer u) => (langId==1)? u.customerNameAra.toString() : u.customerNameEng.toString(),
+
+                                        onChanged: (value){
+                                          //v.text = value!.cusTypesCode.toString();
+                                          //print(value!.id);
+                                          selectedCustomerValue = value!.customerCode.toString();
+                                          selectedCustomerEmail = value!.email.toString();
+                                        },
+
+                                        filterFn: (instance, filter){
+                                          if((langId==1)? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)){
+                                            print(filter);
+                                            return true;
+                                          }
+                                          else{
+                                            return false;
+                                          }
+                                        },
+                                        dropdownDecoratorProps: const DropDownDecoratorProps(
+                                          dropdownSearchDecoration: InputDecoration(
+                                            //labelText: 'customer'.tr(),
+                                          ),),
+
+                                      ),
                                     ),
 
-                                    items: customers,
-                                    itemAsString: (Customer u) => (langId==1)? u.customerNameAra.toString() : u.customerNameEng.toString(),
-
-                                    onChanged: (value){
-                                      //v.text = value!.cusTypesCode.toString();
-                                      //print(value!.id);
-                                      selectedCustomerValue = value!.customerCode.toString();
-                                      selectedCustomerEmail = value!.email.toString();
-                                    },
-
-                                    filterFn: (instance, filter){
-                                      if((langId==1)? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)){
-                                        print(filter);
-                                        return true;
-                                      }
-                                      else{
-                                        return false;
-                                      }
-                                    },
-                                    dropdownDecoratorProps: const DropDownDecoratorProps(
-                                      dropdownSearchDecoration: InputDecoration(
-                                        //labelText: 'customer'.tr(),
-                                      ),),
-
-                                  ),
-                                ),
-
-                                // ElevatedButton(
-                                //     onPressed: () {
-                                //       if (_dropdownFormKey.currentState!.validate()) {
-                                //         //valid flow
-                                //       }
-                                //     },
-                                //     child: Text("Submit"))
-                              ],
-                            )),
-
-                        const SizedBox(height: 15),
-                        Row(
-                          children: [
+                                    // ElevatedButton(
+                                    //     onPressed: () {
+                                    //       if (_dropdownFormKey.currentState!.validate()) {
+                                    //         //valid flow
+                                    //       }
+                                    //     },
+                                    //     child: Text("Submit"))
+                                  ],
+                                )),
+                            const SizedBox(height: 20),
                             Form(
                                 key: _dropdownItemFormKey,
                                 child: Row(
                                   children: [
                                     Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Item: '.tr()) ),
-                                    const SizedBox(width: 5),
+                                    const SizedBox(width: 10),
                                     SizedBox(
-                                      width: 90,
+                                      width: 220,
                                       child: DropdownSearch<Item>(
                                         selectedItem: itemItem,
                                         popupProps: PopupProps.menu(
@@ -494,17 +493,20 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
 
                                         onChanged: (value){
                                           selectedItemValue = value!.itemCode.toString();
-                                          selectedItemName = (langId==1) ? value!.itemNameAra.toString() : value!.itemNameEng.toString();
-                                          _displayQtyController.text="1";
+                                          selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
+                                          //_displayQtyController.text = "1";
                                           changeItemUnit(selectedItemValue.toString());
-
+                                          selectedUnitValue = "1";
+                                          String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                          setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
                                           //Factor
-                                          int qty=(_displayQtyController.text.isNotEmpty)? int.parse(_displayQtyController.text):0;
-                                          setItemQty(selectedItemValue.toString(),selectedUnitValue.toString(), qty);
-
+                                          int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+                                          setItemQty(
+                                              selectedItemValue.toString(),
+                                              selectedUnitValue.toString(), qty
+                                          );
                                           //Cost Price
-                                          setItemCostPrice(selectedItemValue.toString(),"1",0,_salesInvoicesDateController.text);
-
+                                          setItemCostPrice(selectedItemValue.toString(), "1", 0, _salesInvoicesDateController.text);
                                         },
 
                                         filterFn: (instance, filter){
@@ -527,8 +529,12 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
 
                                   ],
                                 )),
-                            const SizedBox(width: 15),
+                          ],
+                        ),
 
+                        const SizedBox(height: 15),
+                        Row(
+                          children: [
                             Form(
                                 key: _dropdownUnitFormKey,
                                 child: Row(
@@ -563,20 +569,19 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
                                         items: units,
                                         itemAsString: (Unit u) => (langId==1)? u.unitNameAra.toString() : u.unitNameEng.toString(),
 
-                                        onChanged: (value){
-                                          //v.text = value!.cusTypesCode.toString();
+                                        onChanged: (value) {
                                           selectedUnitValue = value!.unitCode.toString();
-                                          selectedUnitName = (langId==1) ? value!.unitNameAra.toString() : value!.unitNameEng.toString();
+                                          selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
 
-                                          if(selectedUnitValue != null && selectedItemValue != null){
-                                            String criteria=" And CompanyCode=" + companyCode.toString() +" And BranchCode=" + branchCode.toString()  + " And SalesInvoicesCase=2 And SalesInvoicesTypeCode=N'" + selectedTypeValue.toString() +  "'";
+                                          if (selectedUnitValue != null &&
+                                              selectedItemValue != null) {
+                                            String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                             //Item Price
-                                            setItemPrice(selectedItemValue.toString(),selectedUnitValue.toString(),criteria);
+                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
                                             //Factor
-                                            int qty=(_displayQtyController.text !=null)? int.parse(_displayQtyController.text):0;
-                                            setItemQty(selectedItemValue.toString(),selectedUnitValue.toString(), qty);
+                                            int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+                                            setItemQty(selectedItemValue.toString(), selectedUnitValue.toString(), qty);
                                           }
-
                                         },
 
                                         filterFn: (instance, filter){
@@ -594,44 +599,43 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
                                           ),),
                                       ),
                                     ),
-
-                                    // ElevatedButton(
-                                    //     onPressed: () {
-                                    //       if (_dropdownFormKey.currentState!.validate()) {
-                                    //         //valid flow
-                                    //       }
-                                    //     },
-                                    //     child: Text("Submit"))
                                   ],
                                 )),
+                            const SizedBox(width: 20),
+                            Row(
+                              children: [
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_price :'.tr()) ),
+                                const SizedBox(width: 10),
+                                SizedBox(
+                                  width: 90,
+                                  child: TextFormField(
+                                    controller: _displayPriceController,
+                                    //hintText: "price".tr(),
+                                    enabled: true,  /// open just for now
+                                    onSaved: (val) {
+                                      //price = val;
+                                    },
+                                    //textInputType: TextInputType.number,
+                                    onChanged: (value){
+                                      calcTotalPriceRow();
+                                    },
+                                  ),
+                                ),
+                              ],
+                            )
+
                           ],
                         ),
                         const SizedBox(height: 20),
 
                         Row(
                           children: [
-                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_price :'.tr()) ),
+                            SizedBox(
+                                width: 60,
+                                child: Text('display_qty'.tr(),)),
                             const SizedBox(width: 10),
                             SizedBox(
-                              width: 100,
-                              child: TextFormField(
-                                controller: _displayPriceController,
-                                //hintText: "price".tr(),
-                                enabled: false,
-                                onSaved: (val) {
-                                  //price = val;
-                                },
-                                //textInputType: TextInputType.number,
-                                onChanged: (value){
-                                  calcTotalPriceRow();
-                                },
-                              ),
-                            ),
-                            const SizedBox(width: 15),
-                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_qty :'.tr()) ),
-                            const SizedBox(width: 10),
-                            SizedBox(
-                              width: 100,
+                              width: 90,
                               child: TextFormField(
                                 controller: _displayQtyController,
                                 decoration: const InputDecoration(
@@ -640,61 +644,34 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
                                 enabled: true,
                                 keyboardType: TextInputType.number,
                                 onChanged: (value) {
-
                                   calcTotalPriceRow();
-
                                 },
                               ),
                             ),
-
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-
-                        /*Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('total'.tr()) ),
-                        TextField(
-                          enabled: false,
-                          keyboardType: TextInputType.number,
-                          controller: _displayTotalController,
-                          // enable: false,
-                          // //hintText: 'vat'.tr(),
-                          // onSaved: (val) {
-                          //   vat = val;
-                          // },
-                          // textInputType: TextInputType.number,
-                          // onChanged: (value) {},
-                        ),*/
-                        Row(
-                          children: [
-                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('discount :'.tr()) ),
+                            const SizedBox(width: 20),
+                            SizedBox(
+                                width: 60,
+                                child: Text("${'discount'.tr()} :",)),
                             const SizedBox(width: 10),
                             SizedBox(
-                              width: 100,
+                              width: 90,
                               child: TextFormField(
                                 controller: _displayDiscountController,
                                 keyboardType: TextInputType.number,
-                                //hintText: 'discount'.tr(),
                                 onSaved: (val) {
                                   discount = val;
                                 },
                                 onChanged: (value) {
-
-                                  double price=0;
-                                  if(_priceController.text.isNotEmpty)
-                                  {
-                                    price=double.parse(_priceController.text);
+                                  double price = 0;
+                                  if (_priceController.text.isNotEmpty) {
+                                    price = double.parse(_priceController.text);
                                   }
-
-                                  double qtyVal=0;
-                                  if(_displayQtyController.text.isNotEmpty)
-                                  {
-                                    qtyVal=double.parse(_displayQtyController.text);
+                                  double qtyVal = 0;
+                                  if (_displayQtyController.text.isNotEmpty) {
+                                    qtyVal = double.parse(_displayQtyController.text);
                                   }
-
-                                  print('toGetUnittotal');
                                   var total = qtyVal * price;
-                                  setMaxDiscount(double.parse(value), total , empCode );
-
+                                  setMaxDiscount(double.parse(value), total, empCode);
                                 },
                               ),
                             ),

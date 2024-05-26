@@ -623,11 +623,12 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
 
                         Row(
                           children: [
-                            Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_qty :'.tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold))),
+                            SizedBox(
+                                width: 60,
+                                child: Text('display_qty'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
                             const SizedBox(width: 10),
                             SizedBox(
-                              width: 85,
+                              width: 90,
                               child: TextFormField(
                                 controller: _displayQtyController,
                                 decoration: const InputDecoration(
@@ -641,37 +642,31 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                               ),
                             ),
                             const SizedBox(width: 20),
-                            Row(
-                              children:[
-
-                                Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('discount :'.tr(),
-                                    style: const TextStyle(fontWeight: FontWeight.bold))),
-                                const SizedBox(width: 10),
-                                SizedBox(
-                                  width: 85,
-                                  child: TextFormField(
-                                    controller: _displayDiscountController,
-                                    keyboardType: TextInputType.number,
-                                    //hintText: 'discount'.tr(),
-                                    onSaved: (val) {
-                                      discount = val;
-                                    },
-                                    onChanged: (value) {
-                                      double price = 0;
-                                      if (_priceController.text.isNotEmpty) {
-                                        price = double.parse(_priceController.text);
-                                      }
-                                      double qtyVal = 0;
-                                      if (_displayQtyController.text.isNotEmpty) {
-                                        qtyVal = double.parse(_displayQtyController.text);
-                                      }
-                                      //print('toGetUnittotal');
-                                      var total = qtyVal * price;
-                                      setMaxDiscount(double.parse(value), total, empCode);
-                                    },
-                                  ),
-                                ),
-                              ],
+                            SizedBox(
+                                width: 60,
+                                child: Text('discount'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
+                            const SizedBox(width: 10),
+                            SizedBox(
+                              width: 90,
+                              child: TextFormField(
+                                controller: _displayDiscountController,
+                                keyboardType: TextInputType.number,
+                                onSaved: (val) {
+                                  discount = val;
+                                },
+                                onChanged: (value) {
+                                  double price = 0;
+                                  if (_priceController.text.isNotEmpty) {
+                                    price = double.parse(_priceController.text);
+                                  }
+                                  double qtyVal = 0;
+                                  if (_displayQtyController.text.isNotEmpty) {
+                                    qtyVal = double.parse(_displayQtyController.text);
+                                  }
+                                  var total = qtyVal * price;
+                                  setMaxDiscount(double.parse(value), total, empCode);
+                                },
+                              ),
                             ),
                           ],
                         ),

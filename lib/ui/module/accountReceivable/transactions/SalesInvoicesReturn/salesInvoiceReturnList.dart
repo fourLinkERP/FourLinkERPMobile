@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:core';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/cubit/app_cubit.dart';
@@ -13,10 +14,11 @@ import 'package:zatca_fatoora_flutter/zatca_fatoora_flutter.dart';
 import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vendors/vendor.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
+import '../../../../../data/model/modules/module/accountReceivable/transactions/receipt/receipt.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceReturnH.dart';
 import '../../../../../data/model/modules/module/accountreceivable/transactions/salesInvoices/SalesInvoiceReturnD.dart';
+import '../../../../../data/model/modules/module/general/receipt/receiptHeader.dart';
 import '../../../../../service/general/Pdf/pdf_api.dart';
-import '../../../../../service/general/Pdf/pdf_invoice_api.dart';
 import '../../../../../service/module/accountReceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnDApiService.dart';
 import '../../../../../service/module/accountReceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnHApiService.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -25,6 +27,11 @@ import 'package:intl/intl.dart';
 import 'addSalesInvoiceReturnWidget.dart';
 import 'detailSalesInvoiceReturnWidget.dart';
 import 'editSalesInvoiceReturnWidget.dart';
+
+import 'dart:ui';
+import 'package:flutter/rendering.dart';
+import 'package:fourlinkmobileapp/service/general/receipt/pdfReceipt.dart';
+
 
 SalesInvoiceReturnHApiService _apiReturnService= SalesInvoiceReturnHApiService();
 SalesInvoiceReturnDApiService _apiReturnDService= SalesInvoiceReturnDApiService();
@@ -38,15 +45,17 @@ class SalesInvoiceReturnHListPage extends StatefulWidget {
 }
 
 class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPage> {
-  bool isLoading=true;
+  bool isLoading = true;
   List<SalesInvoiceReturnH> _salesInvoices = [];
   List<SalesInvoiceReturnH> _salesInvoicesSearch = [];
   List<SalesInvoiceReturnD> _salesInvoicesD = [];
   List<SalesInvoiceReturnH> _founded = [];
-  List<WidgetsToImageController> imageControllers  = [] ;
-  List<GlobalKey> imageGlobalKeys  = [] ;
-  String companyTitle ="مؤسسة ركن كريز للحلويات";
-  String companyVatNo ="302211485800003";
+  List<WidgetsToImageController> imageControllers = [];
+
+  List<GlobalKey> imageGlobalKeys = [];
+
+  String companyTitle = companyName;
+  String companyVatNo = "302211485800003";
 
 
   @override
@@ -60,16 +69,18 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
       _founded = _salesInvoices!;
     });
   }
+
   void getData() async {
-    try{
-      List<SalesInvoiceReturnH>? futureSalesInvoiceReturnH = await _apiReturnService.getSalesInvoiceReturnH();
-      if (futureSalesInvoiceReturnH != null){
+    try {
+      List<
+          SalesInvoiceReturnH>? futureSalesInvoiceReturnH = await _apiReturnService
+          .getSalesInvoiceReturnH();
+      if (futureSalesInvoiceReturnH != null) {
         _salesInvoices = futureSalesInvoiceReturnH;
         _salesInvoicesSearch = List.from(_salesInvoices);
 
-        if(_salesInvoices.length >0)
-        {
-          for(var i = 0; i < _salesInvoices.length; i++){
+        if (_salesInvoices.length > 0) {
+          for (var i = 0; i < _salesInvoices.length; i++) {
             {
               imageControllers.add(WidgetsToImageController());
               imageGlobalKeys.add(GlobalKey());
@@ -78,22 +89,26 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
         }
 
         if (_salesInvoices.isNotEmpty) {
-          _salesInvoices.sort((a, b) => int.parse(b.salesInvoicesSerial!).compareTo(int.parse(a.salesInvoicesSerial!)));
+          _salesInvoices.sort((a, b) =>
+              int.parse(b.salesInvoicesSerial!).compareTo(
+                  int.parse(a.salesInvoicesSerial!)));
           setState(() {
             _founded = _salesInvoices!;
           });
         }
       }
-    } catch (error){
+    } catch (error) {
       AppCubit.get(context).EmitErrorState();
     }
   }
 
   void getDetailData(int? headerId) async {
-    Future<List<SalesInvoiceReturnD>?> futureSalesInvoiceReturnD = _apiReturnDService.getSalesInvoiceReturnD(headerId);
+    Future<List<
+        SalesInvoiceReturnD>?> futureSalesInvoiceReturnD = _apiReturnDService
+        .getSalesInvoiceReturnD(headerId);
     _salesInvoicesD = (await futureSalesInvoiceReturnD)!;
-
   }
+
   void onSearch(String search) {
     if (search.isEmpty) {
       setState(() {
@@ -107,11 +122,11 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
       });
     }
   }
+
   final searchValueController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -127,7 +142,8 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                     filled: true,
                     fillColor: Colors.white,
                     contentPadding: const EdgeInsets.all(0),
-                    prefixIcon: const Icon(Icons.search, color: Colors.black26,),
+                    prefixIcon: const Icon(
+                      Icons.search, color: Colors.black26,),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(50),
                       borderSide: BorderSide.none,
@@ -161,7 +177,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
             _navigateToAddScreen(context);
           },
           tooltip: 'Increment',
-          backgroundColor:  Colors.transparent,
+          backgroundColor: Colors.transparent,
 
           child: Container(
 
@@ -191,7 +207,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                 splashColor: Colors.white.withOpacity(0.1),
                 highlightColor: Colors.transparent,
                 focusColor: Colors.transparent,
-                onTap: (){
+                onTap: () {
                   // widget.addClick;
                   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSalesInvoiceHDataWidget()));
                   _navigateToAddScreen(context);
@@ -206,126 +222,209 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
           ),
         )
     );
-
   }
 
   _navigateToAddScreen(BuildContext context) async {
     // CircularProgressIndicator();
-    int menuId=6204;
+    int menuId = 6204;
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
-    if(isAllowAdd)
-    {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSalesInvoiceReturnHWidget(),
+    if (isAllowAdd) {
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => AddSalesInvoiceReturnHWidget(),
       ))
           .then((value) {
         getData();
       });
     }
-    else
-    {
-      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    else {
+      FN_showToast(context, 'you_dont_have_add_permission'.tr(), Colors.black);
     }
   }
 
-  _navigateToEditScreen (BuildContext context, SalesInvoiceReturnH customer) async {
-
-    int menuId=6204;
+  _navigateToEditScreen(BuildContext context,
+      SalesInvoiceReturnH customer) async {
+    int menuId = 6204;
     bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
-    if(isAllowEdit)
-    {
-
+    if (isAllowEdit) {
       final result = await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => EditSalesInvoiceReturnHWidget(customer)),
+        MaterialPageRoute(
+            builder: (context) => EditSalesInvoiceReturnHWidget(customer)),
       ).then((value) => getData());
-
     }
-    else
-    {
-      FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
+    else {
+      FN_showToast(context, 'you_dont_have_edit_permission'.tr(), Colors.black);
     }
-
   }
-  _navigateToPrintScreen (BuildContext context, SalesInvoiceReturnH invoiceH) async {
 
-    int menuId=6204;
+  _navigateToPrintScreen(BuildContext context, SalesInvoiceReturnH invoiceH, int index) async {
+    int menuId = 6204;
     bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
-    if(isAllowPrint)
-    {
+    //isAllowPrint = true;
+    if (isAllowPrint) {
+      bool IsReceipt = true;
+      if (IsReceipt) {
+        DateTime date = DateTime.parse(invoiceH.salesInvoicesDate.toString());
+        final dueDate = date.add(Duration(days: 7));
 
-      DateTime date = DateTime.parse(invoiceH.salesInvoicesDate.toString());
-      final dueDate = date.add(Duration(days: 7));
+        Future<List<SalesInvoiceReturnD>?> futureSalesInvoiceReturnD = _apiReturnDService.getSalesInvoiceReturnD(invoiceH.id);
+        _salesInvoicesD = (await futureSalesInvoiceReturnD)!;
 
-      //Get Sales Invoice Details To Create List Of Items
-      //getDetailData(invoiceH.id);
-      Future<List<SalesInvoiceReturnD>?> futureSalesInvoiceD = _apiReturnDService.getSalesInvoiceReturnD(invoiceH.id);
-      _salesInvoicesD = (await futureSalesInvoiceD)!;
+        List<InvoiceItem> invoiceItems = [];
+        print('Before Sales Invoice : ' + invoiceH.id.toString());
+        if (_salesInvoicesD != null) {
+          print('In Sales Invoice');
+          print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString());
+          for (var i = 0; i < _salesInvoicesD.length; i++) {
+            double qty = (_salesInvoicesD[i].displayQty != null) ? double.parse(
+                _salesInvoicesD[i].displayQty.toStringAsFixed(2)) : 0;
+            //double vat=0;
+            double vat = (_salesInvoicesD[i].displayTotalTaxValue != null)
+                ? double.parse(
+                _salesInvoicesD[i].displayTotalTaxValue.toStringAsFixed(2))
+                : 0;
+            //double price =_salesInvoicesD[i].displayPrice! as double;
+            double price = (_salesInvoicesD[i].displayPrice != null) ? double
+                .parse(_salesInvoicesD[i].displayPrice.toStringAsFixed(2)) : 0;
+            double total = (_salesInvoicesD[i].displayNetValue != null)
+                ? double.parse(
+                _salesInvoicesD[i].displayNetValue.toStringAsFixed(2))
+                : 0;
 
-      List<InvoiceItem> invoiceItems=[];
-      print('Before Sales Invoicr : ' + invoiceH.id.toString() );
-      if(_salesInvoicesD != null)
-      {
-        print('In Sales Invoicr' );
-        print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString() );
-        for(var i = 0; i < _salesInvoicesD.length; i++){
-          double qty= (_salesInvoicesD[i].displayQty != null) ? _salesInvoicesD[i].displayQty as double : 0;
-          //double vat=0;
-          double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? _salesInvoicesD[i].displayTotalTaxValue : 0 ;
-          //double price =_salesInvoicesD[i].displayPrice! as double;
-          double price =( _salesInvoicesD[i].price != null) ? _salesInvoicesD[i].price : 0;
-          double total =( _salesInvoicesD[i].total != null) ? _salesInvoicesD[i].total : 0;
+            //InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
+            InvoiceItem _invoiceItem = InvoiceItem(
+                description: _salesInvoicesD[i].itemName.toString(),
+                date: date,
+                quantity: qty,
+                vat: vat,
+                unitPrice: price,
+                totalValue: total);
 
-          InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
-              date: date, quantity: qty  , vat: vat  , unitPrice: price,totalValue: total );
-
-          invoiceItems.add(_invoiceItem);
+            invoiceItems.add(_invoiceItem);
+          }
         }
+
+        double totalDiscount = (invoiceH.totalDiscount != null) ? double.parse(
+            invoiceH.totalDiscount!.toStringAsFixed(2)) : 0;
+        double totalBeforeVat = (invoiceH.totalValue != null) ? double.parse(
+            invoiceH.totalValue!.toStringAsFixed(2)) : 0;
+        double totalVatAmount = (invoiceH.totalTax != null) ? double.parse(
+            invoiceH.totalTax!.toStringAsFixed(2)) : 0;
+        double totalAfterVat = (invoiceH.totalNet != null) ? double.parse(
+            invoiceH.totalNet!.toStringAsFixed(2)) : 0;
+        double totalAmount = (invoiceH.totalAfterDiscount != null) ? double
+            .parse(invoiceH.totalAfterDiscount!.toStringAsFixed(2)) : 0;
+        double totalQty = (invoiceH.totalQty != null) ? double.parse(
+            invoiceH.totalQty!.toStringAsFixed(2)) : 0;
+        double rowsCount = (invoiceH.rowsCount != null) ? double.parse(
+            invoiceH.rowsCount.toStringAsFixed(2)) : 0;
+        String tafqeetName = (langId == 1) ? invoiceH.tafqitNameArabic.toString() : invoiceH.tafqitNameEnglish.toString();
+
+        print('taftaf');
+        print(tafqeetName);
+
+        final invoice = Invoice( //ToDO
+            supplier: Vendor(
+              vendorNameAra: 'Sarah Field',
+              address1: 'Sarah Street 9, Beijing, China',
+              paymentInfo: 'https://paypal.me/sarahfieldzz',
+            ),
+            customer: Customer(
+              customerNameAra: invoiceH.customerName,
+              address: 'Apple Street, Cupertino, CA 95014', //ToDO
+            ),
+            info: InvoiceInfo(
+                date: date,
+                dueDate: dueDate,
+                description: 'My description...',
+                number: invoiceH.salesInvoicesSerial.toString(),
+                totalDiscount: totalDiscount,
+                totalBeforeVat: totalBeforeVat,
+                totalVatAmount: totalVatAmount,
+                totalAfterVat: totalAfterVat,
+                totalAmount: totalAmount,
+                totalQty: totalQty,
+                tafqeetName: tafqeetName,
+                rowsCount: rowsCount
+            ),
+            items: invoiceItems
+        );
+
+
+        String invoiceDate = DateFormat('yyyy-MM-dd hh:mm').format(
+            DateTime.parse(invoiceH.salesInvoicesDate.toString()));
+        final receipt = Receipt( //ToDO
+            receiptHeader: ReceiptHeader(
+                companyName: langId == 1
+                    ? companyName
+                    : companyName,
+                companyInvoiceTypeName: (invoiceH.invoiceTypeCode == "1")
+                    ? 'فاتورة ضريبية'
+                    : 'فاتورة ضريبية مبسطة',
+                companyInvoiceTypeName2: langId == 1
+                    ? 'Simplified Tax Invoice'
+                    : 'Simplified Tax Invoice',
+                companyVatNumber: langId == 1 ? "الرقم الضريبي  " +
+                    '302211485800003' : 'VAT No  302211485800003',
+                companyCommercialName: langId == 1
+                    ? 'ترخيص رقم 450714529009'
+                    : 'Registeration No 450714529009',
+                companyInvoiceNo: langId == 1 ? 'رقم مرتجع الفاتورة ' +
+                    invoiceH.salesInvoicesSerial.toString() : 'Invoice Return No ' +
+                    invoiceH.salesInvoicesSerial.toString(),
+                companyDate: langId == 1
+                    ? "التاريخ  " + invoiceDate
+                    : "Date : " + invoiceDate,
+                companyAddress: langId == 1
+                    ? 'العنوان : الرياض - ص ب 14922'
+                    : 'العنوان  الرياض - ص ب 14922',
+                companyPhone: langId == 1
+                    ? 'Tel No :+966539679540'
+                    : 'Tel No :+966539679540',
+                customerName: langId == 1 ? "العميل : " +
+                    invoiceH.customerName.toString() : "Customer : " +
+                    invoiceH.customerName.toString(),
+                customerTaxNo: langId == 1 ? "الرقم الضريبي  " +
+                    invoiceH.taxNumber.toString() : 'VAT No ' +
+                    invoiceH.taxNumber.toString(),
+                salesInvoicesTypeName: (invoiceH.salesInvoicesTypeCode
+                    .toString() == "1") ? (langId == 1
+                    ? invoiceH.salesInvoicesTypeName
+                    : invoiceH.salesInvoicesTypeName) : (langId == 1
+                    ? invoiceH.salesInvoicesTypeName
+                    : invoiceH.salesInvoicesTypeName),
+                tafqeetName: tafqeetName
+            ),
+            invoice: invoice
+        );
+
+        print('xOXOXOXO');
+        print(invoice.info.totalQty);
+
+
+        print('indexxxxxxxxx');
+        print(index);
+        final bytesx = await imageControllers[index].capture();
+        var bytesImg = bytesx as Uint8List;
+
+        final pdfFile = await pdfReceipt.generate(receipt, bytesImg);
+        PdfApi.openFile(pdfFile);
+
+        //var boundary = globalKey.currentContext!.findRenderObject();
+        ///ui.Image image = await x.toImage(pixelRatio: 3.0);
+
+
       }
-
-      double totalDiscount =( invoiceH.totalDiscount != null) ? invoiceH.totalDiscount as double : 0;
-      double totalBeforeVat =( invoiceH.totalValue != null) ? invoiceH.totalValue as double : 0;
-      double totalVatAmount =( invoiceH.totalTax != null) ? invoiceH.totalTax as double : 0;
-      double totalAfterVat =( invoiceH.totalNet != null) ? invoiceH.totalNet as double : 0;
-      double totalAmount =( invoiceH.totalAfterDiscount != null) ? invoiceH.totalAfterDiscount as double : 0;
-
-      final invoice = Invoice(   //ToDO
-          supplier: Vendor(
-            vendorNameAra: 'Sarah Field',
-            address1: 'Sarah Street 9, Beijing, China',
-            paymentInfo: 'https://paypal.me/sarahfieldzz',
-          ),
-          customer: Customer(
-            customerNameAra: invoiceH.customerName,
-            address: 'Apple Street, Cupertino, CA 95014', //ToDO
-          ),
-          info: InvoiceInfo(
-            date: date,
-            dueDate: dueDate,
-            description: 'My description...',
-            number: invoiceH.salesInvoicesSerial.toString() ,
-            totalDiscount:  totalDiscount,
-            totalBeforeVat:  totalBeforeVat,
-            totalVatAmount:  totalVatAmount,
-            totalAfterVat:  totalAfterVat,
-            totalAmount:  totalAmount,
-          ),
-          items: invoiceItems
-      );
-
-      final pdfFile = await PdfInvoiceApi.generate(invoice);
-
-      PdfApi.openFile(pdfFile);
-
+      else {}
     }
-    else
-    {
-      FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
+    else {
+      FN_showToast(
+          context, 'you_dont_have_print_permission'.tr(), Colors.black);
     }
   }
 
-  _deleteItem(BuildContext context,int? id) async {
-
-    FN_showToast(context,'not_allowed_to_delete'.tr(),Colors.red);
+  _deleteItem(BuildContext context, int? id) async {
+    FN_showToast(context, 'not_allowed_to_delete'.tr(), Colors.red);
     // final result = await showDialog<bool>(
     //   context: context,
     //   builder: (context) => AlertDialog(
@@ -352,7 +451,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
     // bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
     // if(isAllowDelete)
     // {
-    //   var res = _apiService.deleteSalesInvoiceH(context,id).then((value) => getData());
+    //   var res = _apiService.deleteSalesInvoiceReturnH(context,id).then((value) => getData());
     // }
     // else
     // {
@@ -361,13 +460,13 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
 
   }
 
-  Widget buildSalesInvoices(){
-    if(_salesInvoices.isEmpty){
+  Widget buildSalesInvoices() {
+    if (_salesInvoices.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
-    else{
+    else {
       return Container(
-        color: const Color.fromRGBO(240, 242, 246,1),// Main Color
+        color: const Color.fromRGBO(240, 242, 246, 1), // Main Color
 
         child: ListView.builder(
             itemCount: _salesInvoices.isEmpty ? 0 : _salesInvoices.length,
@@ -376,23 +475,29 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                 Card(
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceReturnHWidget(_salesInvoices[index])),);
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) =>
+                              DetailSalesInvoiceReturnHWidget(
+                                  _salesInvoices[index])),);
                     },
                     child: ListTile(
                       leading: SizedBox(
                         width: 55,
                         height: 55,
                         child: WidgetsToImage(
-                            controller:imageControllers[index],
-                            child :Container(
+                            controller: imageControllers[index],
+                            child: Container(
                               padding: const EdgeInsets.all(1),
                               color: Colors.white,
-                              child:   ZatcaFatoora.simpleQRCode(
+                              child: ZatcaFatoora.simpleQRCode(
                                 fatooraData: ZatcaFatooraDataModel(
                                   businessName: companyTitle,
                                   vatRegistrationNumber: companyVatNo,
-                                  date:   DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString()),
-                                  totalAmountIncludingVat: _salesInvoices[index].totalNet!.toDouble(),
+                                  date: DateTime.parse(
+                                      _salesInvoices[index].salesInvoicesDate
+                                          .toString()),
+                                  totalAmountIncludingVat: _salesInvoices[index]
+                                      .totalNet!.toDouble(),
                                   vat: _salesInvoices[index].totalNet!,
                                 ),
                               ),
@@ -400,18 +505,25 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
 
                         ),
                       ),
-                      title: Text('serial'.tr() + " : " + _salesInvoices[index].salesInvoicesSerial.toString()),
+                      title: Text('serial'.tr() + " : " +
+                          _salesInvoices[index].salesInvoicesSerial.toString()),
                       subtitle: Column(
-                        crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
+                        crossAxisAlignment: langId == 1 ? CrossAxisAlignment
+                            .start : CrossAxisAlignment.end,
                         children: <Widget>[
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString())))),
+                              child: Text('date'.tr() + " : " + DateFormat(
+                                  'yyyy-MM-dd').format(DateTime.parse(
+                                  _salesInvoices[index].salesInvoicesDate
+                                      .toString())))),
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Text('customer'.tr() + " : " + _salesInvoices[index].customerName.toString())),
+                              child: Text('customer'.tr() + " : " +
+                                  _salesInvoices[index].customerName
+                                      .toString())),
                           const SizedBox(width: 5),
                           SizedBox(
                               child: Row(
@@ -424,21 +536,27 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                                           size: 20.0,
                                           weight: 10,
                                         ),
-                                        label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
+                                        label: Text('edit'.tr(),
+                                            style: const TextStyle(
+                                                color: Colors.white)),
                                         onPressed: () {
-                                          _navigateToEditScreen(context,_salesInvoices[index]);
+                                          _navigateToEditScreen(
+                                              context, _salesInvoices[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(5),
+                                              borderRadius: BorderRadius
+                                                  .circular(5),
                                             ),
                                             padding: const EdgeInsets.all(7),
-                                            backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
+                                            backgroundColor: const Color
+                                                .fromRGBO(0, 136, 134, 1),
                                             foregroundColor: Colors.black,
                                             elevation: 0,
                                             side: const BorderSide(
                                                 width: 1,
-                                                color: Color.fromRGBO(0, 136, 134, 1)
+                                                color: Color.fromRGBO(
+                                                    0, 136, 134, 1)
                                             )
                                         ),
                                       )
@@ -452,21 +570,27 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                                           size: 20.0,
                                           weight: 10,
                                         ),
-                                        label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
+                                        label: Text('delete'.tr(),
+                                            style: const TextStyle(
+                                              color: Colors.white,)),
                                         onPressed: () {
-                                          _deleteItem(context,_salesInvoices[index].id);
+                                          _deleteItem(context,
+                                              _salesInvoices[index].id);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(5),
+                                              borderRadius: BorderRadius
+                                                  .circular(5),
                                             ),
                                             padding: const EdgeInsets.all(7),
-                                            backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+                                            backgroundColor: const Color
+                                                .fromRGBO(144, 16, 46, 1),
                                             foregroundColor: Colors.black,
                                             elevation: 0,
                                             side: const BorderSide(
                                                 width: 1,
-                                                color: Color.fromRGBO(144, 16, 46, 1)
+                                                color: Color.fromRGBO(
+                                                    144, 16, 46, 1)
                                             )
                                         ),
                                       )),
@@ -479,13 +603,16 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                                           size: 20.0,
                                           weight: 10,
                                         ),
-                                        label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
+                                        label: Text('print'.tr(),
+                                            style: const TextStyle(
+                                              color: Colors.white,)),
                                         onPressed: () {
-                                          _navigateToPrintScreen(context,_salesInvoices[index]);
+                                          _navigateToPrintScreen(context,_salesInvoices[index],index);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(5),
+                                              borderRadius: BorderRadius
+                                                  .circular(5),
                                             ),
                                             padding: const EdgeInsets.all(7),
                                             backgroundColor: Colors.black87,

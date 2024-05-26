@@ -32,7 +32,7 @@ class _DetailRequestAdvanceState extends State<DetailRequestAdvance> {
               child: Container(
                   padding: const EdgeInsets.only(top: 20.0, left: 0.0, bottom: 0.0),
                   width: 400,
-                  height: 300,
+                  height: 400,
                   child: Column(
                     children: <Widget>[
                       Container(
@@ -40,92 +40,52 @@ class _DetailRequestAdvanceState extends State<DetailRequestAdvance> {
                         //EdgeInsets.fromLTRB(0, 20, 0, 20)
                         child: Column(
                           children: <Widget>[
-                            Text('Serial: '.tr() + widget.requests.trxSerial.toString(),
+                            const SizedBox(height: 15.0),
+                            Text('${'employee'.tr()} : ${widget.requests.empName}',
                                 style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                             const SizedBox(height: 15.0),
-                            Text('Employee: '.tr()  + widget.requests.empName.toString(),
+                            Text('${'job'.tr()} : ${widget.requests.jobName}',
                                 style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
                             const SizedBox(height: 15.0),
-                            Text('Job: '.tr()  + widget.requests.jobName.toString(),
+                            Text('${'required_amount'.tr()} : ${widget.requests.amountRequired}',
                                 style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 15.0),
+                            Text('${'approved_amount'.tr()} : ${widget.requests.approvedAmount}',
+                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 15.0),
+                            Text('${'reason'.tr()} : ${widget.requests.advanceReason}',
+                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 15.0),
+                            Text('${'notes'.tr()} : ${widget.requests.notes}',
+                                style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 20.0),
+                            Center(
+                              child: SizedBox(
+                                height: 55,
+                                width: 115,
+                                child: ElevatedButton.icon(
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                    size: 22.0,
 
-                          ],
-                        ),
-                      ),
-
-                      // Container(
-                      //   margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                      //   child: Column(
-                      //     children: <Widget>[
-                      //       Text('Status:', style: TextStyle(color: Colors.black.withOpacity(0.8))),
-                      //       Text(widget.customers.customerNameAra.toString(), style: Theme.of(context).textTheme.titleLarge)
-                      //     ],
-                      //   ),
-                      // ),
-                      // Container(
-                      //   margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                      //   child: Column(
-                      //     children: <Widget>[
-                      //       Text('Update Date:', style: TextStyle(color: Colors.black.withOpacity(0.8))),
-                      //       Text(widget.customers.customerNameAra.toString(), style: Theme.of(context).textTheme.titleLarge)
-                      //     ],
-                      //   ),
-                      // ),
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(30, 15, 0, 10),
-                        child: Row(
-                          children: <Widget>[
-                            SizedBox(
-                              height: 55,
-                              width: 115,
-                              child: ElevatedButton.icon(
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
-                                  size: 22.0,
-
-                                ),
-                                label: const Text('Edit', style: TextStyle(color: Colors.white, fontSize: 18.0)),
-                                onPressed: () {
-                                  _navigateToEditScreen(context, widget.requests);
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                  label: const Text('Edit', style: TextStyle(color: Colors.white, fontSize: 18.0)),
+                                  onPressed: () {
+                                    _navigateToEditScreen(context, widget.requests);
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all<Color>(Colors.green),
+                                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                      RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20.0),
+                                      ),
                                     ),
                                   ),
+
                                 ),
-                              ),
-                            ),
-                            const SizedBox(width: 40),
-                            SizedBox(
-                              height: 55,
-                              width: 115,
-                              child: ElevatedButton.icon(
-                                icon: const Icon(
-                                  Icons.delete,
-                                  color: Colors.white,
-                                  size: 22.0,
-                                ),
-                                label: Text('delete'.tr(),
-                                    style: const TextStyle(color: Colors.white, fontSize: 16.0)),
-                                onPressed: () {
-                                  _confirmDialog();
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(210, 10, 46, 1)),
-                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            //color: Colors.blue,
+
+                              ),),
                           ],
                         ),
                       ),

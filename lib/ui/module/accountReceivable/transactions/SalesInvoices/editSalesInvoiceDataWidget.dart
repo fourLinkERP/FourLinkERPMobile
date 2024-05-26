@@ -637,7 +637,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
 
                         Row(
                           children: [
-                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_qty :'.tr()) ),
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('display_qty'.tr()) ),
                             const SizedBox(width: 10),
                             SizedBox(
                               width: 85,
@@ -693,22 +693,6 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
 
                           ],
                         ),
-                        const SizedBox(height: 20),
-
-                        /*Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('total'.tr()) ),
-                        TextField(
-                          enabled: false,
-                          keyboardType: TextInputType.number,
-                          controller: _displayTotalController,
-                          // enable: false,
-                          // //hintText: 'vat'.tr(),
-                          // onSaved: (val) {
-                          //   vat = val;
-                          // },
-                          // textInputType: TextInputType.number,
-                          // onChanged: (value) {},
-                        ),*/
-
                         const SizedBox(height: 20),
                         Row(children: [
                           Center(
