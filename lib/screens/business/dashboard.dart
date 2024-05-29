@@ -5,12 +5,18 @@ import 'package:fourlinkmobileapp/widgets/dashboard_widgets/dashboard_curvy_top_
 import 'package:fourlinkmobileapp/widgets/dashboard_widgets/dashboard_slider.dart';
 import 'package:fourlinkmobileapp/widgets/ui_view/title_view.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import '../../service/module/accounts/basicInputs/Notifications/NotificationNumberApiService.dart';
 import '../../theme/fitness_app_theme.dart';
 import '../../ui/general/ChartsAndWidgetsPage.dart';
 import '../../ui/general/TodayWorkPage.dart';
+import '../../ui/module/requests/Tabs/myDuties.dart';
+import '../../ui/module/requests/generalList/ReqistsList.dart';
 import '../../widgets/navigationDrawer/navigationDrawer.dart';
 import '../../widgets/ui_view/body_measurement.dart';
 import '../../widgets/ui_view/glass_view.dart';
+import 'package:badges/badges.dart' as badges;
+
+NotificationNumberApiService _notificationNumberApiService = NotificationNumberApiService();
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({Key? key, this.animationController}) : super(key: key);
@@ -28,9 +34,11 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   final ScrollController scrollController = ScrollController();
   double topBarOpacity = 0.0;
   // DateTime date=DateTime.now();
+  int notificationCount = 0;
 
   @override
   void initState() {
+    notificationNumberHandler();
     topBarAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(
             parent: widget.animationController!,
@@ -361,6 +369,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                         color: FitnessAppTheme.darkerText,
                                       ),
                                     ),
+
                                   ],
                                 ),
                               ),
@@ -381,6 +390,32 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                 ),
                               ),
                             ),
+                            InkWell(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => Requests(initialIndex: 2),),);
+                              },
+                              child: SizedBox(
+                                width: 60,
+                                height: 50,
+                                child: Center(
+                                  child: badges.Badge(
+                                    onTap: (){
+                                      Navigator.push(context, MaterialPageRoute(builder: (context) => Requests(initialIndex: 2),),);
+                                    },
+                                    badgeContent: Text(
+                                      "$notificationCount",
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
+                                    badgeStyle: const badges.BadgeStyle(badgeColor: Color.fromRGBO(144, 16, 46, 1),),
+                                    position: badges.BadgePosition.custom(top: -20, end: -10),
+                                    child: const Icon(
+                                      Icons.notifications,
+                                      size: 35,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ],
                         ),
                       )
@@ -393,5 +428,17 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         )
       ],
     );
+  }
+  notificationNumberHandler(){
+    Future<int> futureNotificationNumber = _notificationNumberApiService.getNotificationNumber().then((data) {
+      notificationCount = data;
+
+      setState(() {
+
+      });
+      return notificationCount;
+    }, onError: (e) {
+      print(e);
+    });
   }
 }

@@ -21,7 +21,6 @@ class WorkFlowProcessApiService {
         'RequestTypeCode': requestTypeCode,
         'WorkFlowTransactionsId': transactionId
       }
-
     };
 
     final http.Response response = await http.post(
@@ -82,7 +81,9 @@ class WorkFlowProcessApiService {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
       'trxDate' : workFlowProcess.trxDate,
+      'actionEmpCode': workFlowProcess.actionEmpCode,
       'empCode': workFlowProcess.empCode,
+      'alternativeEmpCode': workFlowProcess.alternativeEmpCode,
       'WorkFlowStatusCode': workFlowProcess.workFlowStatusCode,
       'WorkFlowTransactionsId': workFlowProcess.workFlowTransactionsId,
       'requestTypeCode': workFlowProcess.requestTypeCode,

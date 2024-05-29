@@ -143,15 +143,15 @@ class AdvanceRequestApiService {
       'recruitmentDate': advanceRequest.recruitmentDate,
       'empCode': advanceRequest.empCode,
       'jobCode': advanceRequest.jobCode,
-      'contractPeriod': advanceRequest.contractPeriod,
+      //'contractPeriod': advanceRequest.contractPeriod,
       'latestAdvanceDate': advanceRequest.latestAdvanceDate,
       'latestAdvanceAmount': advanceRequest.latestAdvanceAmount,
       'amountRequired': advanceRequest.amountRequired,
       'approvedAmount': advanceRequest.approvedAmount,
       'calculatedDate': advanceRequest.calculatedDate,
       'installmentValue': advanceRequest.installmentValue,
-      'empBalance': advanceRequest.empBalance ,
-      'advanceBalance': advanceRequest.advanceBalance,
+      // 'empBalance': advanceRequest.empBalance ,
+      // 'advanceBalance': advanceRequest.advanceBalance,
       'advanceReason': advanceRequest.advanceReason,
       'notes': advanceRequest.notes,
 
@@ -160,7 +160,8 @@ class AdvanceRequestApiService {
     };
 
     String apiUpdate =updateApi + id.toString();
-    print('Start Update apiUpdate ' + apiUpdate );
+    print('Start Update apiUpdate ' + apiUpdate);
+    print('Update data: ' + data.toString());
 
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data),

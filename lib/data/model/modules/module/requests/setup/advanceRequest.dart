@@ -63,7 +63,7 @@ class AdvanceRequests {
       fullSalary: (json['fullSalary'] != null) ? json['fullSalary'] as int : 0,
       recruitmentDate: (json['recruitmentDate'] != null) ? json['recruitmentDate'] as String : pickedDate,
       contractPeriod: (json['contractPeriod'] != null) ? json['contractPeriod'] as String : "",
-      latestAdvanceDate: (json['latestAdvanceDate'] != null) ? json['latestAdvanceDate'] as String : pickedDate,
+      latestAdvanceDate: (json['latestAdvanceDate'] != null) ? json['latestAdvanceDate'] as String : "",
       latestIncreaseDate: (json['latestIncreaseDate'] != null) ? json['latestIncreaseDate'] as String : pickedDate,
       latestAdvanceAmount: (json['latestAdvanceAmount'] != null) ? json['latestAdvanceAmount'] as int : 0,
       amountRequired: (json['amountRequired'] != null) ? json['amountRequired'] as int : 0,

@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/login_components.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Employees/EmployeeAdvance.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/advanceRequest.dart';
 import 'package:fourlinkmobileapp/service/module/requests/setup/requestAdvanceApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -10,6 +11,7 @@ import 'package:supercharged/supercharged.dart';
 
 import '../../../../../common/globals.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
+import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/EmployeeContract.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Jobs/Job.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../helpers/toast.dart';
@@ -37,28 +39,16 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
   List<DropdownMenuItem<String>> menuEmployees = [];
   List<DropdownMenuItem<String>> menuJobs = [];
 
-  String? selectedEmployeeValue = null;
-  String? selectedJobValue = null;
+  String? selectedEmployeeValue = empCode;
+  String? selectedJobValue = jobCode;
 
   final AdvanceRequestApiService api = AdvanceRequestApiService();
   final _addFormKey = GlobalKey<FormState>();
 
-  String? vacationDate;
-  String? recruitmentDate;
-  String? lastAdvanceDate;
-  String? countingDate;
-  int? basicSalary;
-  int? fullSalary;
-  int? latestAdvanceAmount;
-  int? amountRequired;
-  int? approvedAmount;
-  int? empBalance;
-  int? advanceBalance;
-  int? installmentValue;
 
   final _advanceTrxSerialController = TextEditingController(); // Serial
   final _advanceTrxDateController = TextEditingController(); // Date
-  final _recruitmentDateController = TextEditingController();
+  final _hiringDateController = TextEditingController();
   final _basicSalaryController = TextEditingController();
   final _fullSalaryController = TextEditingController();
   final _amountRequiredOfAdvanceController = TextEditingController();
@@ -72,52 +62,17 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
   final _startCountingDateController = TextEditingController();
   final _noteController = TextEditingController();
 
-  Employee employeeItem = Employee(empCode: empCode, empNameAra: empName,empNameEng: empName, id: 0);
-  Job jobItem = Job(jobCode: jobCode, jobNameAra: jobName,jobNameEng: jobName, id: 0);
+  EmployeeContract? employeeContract = EmployeeContract(empCode: "",basicSalary: 0,fullSalary: 0, hiringDate: "");
+  EmployeeAdvance? employeeAdvance = EmployeeAdvance(advanceValue: 0, trxDate: "");
+  Employee employeeItem = Employee(empCode: "", empNameAra: "",empNameEng: "", id: 0);
+  Job jobItem = Job(jobCode: "", jobNameAra: "",jobNameEng: "", id: 0);
 
   @override
   initState() {
+
     super.initState();
-    // Template until Ahmed finishes the API
-    _recruitmentDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    _basicSalaryController.text = "0";
-    _fullSalaryController.text = "0";
-    _latestAdvanceDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    _latestAdvanceAmountController.text = "0";
-    selectedEmployeeValue = empCode;
-    jobCode = "1";
-    selectedJobValue = jobCode;
 
-
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("WFW_EmployeeAdvanceRequests", "TrxSerial", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
-      NextSerial nextSerial = data;
-
-      _advanceTrxSerialController.text = nextSerial.nextSerial.toString();
-      //Set Date
-      DateTime now = DateTime.now();
-      _advanceTrxDateController.text = DateFormat('yyyy-MM-dd').format(now);
-      return nextSerial;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<Employee>> futureEmployees = _employeeApiService.getEmployees().then((data) {
-      employees = data;
-
-      getEmployeesData();
-      return employees;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<Job>> futureJobs = _jobApiService.getJobs().then((data) {
-      jobs = data;
-
-      getJobsData();
-      return jobs;
-    }, onError: (e) {
-      print(e);
-    });
+    fillCompos();
   }
 
   DateTime get pickedDate => DateTime.now();
@@ -437,7 +392,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               width: 210,
                               child: defaultFormField(
                                 enable: false,
-                                controller: _recruitmentDateController,
+                                controller: _hiringDateController,
                                 onTab: () async {
                                   DateTime? pickedDate = await showDatePicker(
                                       context: context,
@@ -446,7 +401,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                                       lastDate: DateTime(2050));
 
                                   if (pickedDate != null) {
-                                    _recruitmentDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                    _hiringDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                                   }
                                 },
                                 type: TextInputType.datetime,
@@ -743,7 +698,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
       FN_showToast(context, 'please_set_start_counting'.tr(), Colors.black);
       return;
     }
-    if (_recruitmentDateController.text.isEmpty) {
+    if (_hiringDateController.text.isEmpty) {
       FN_showToast(context, 'recruitment_date_is_required'.tr(), Colors.black);
       return;
     }
@@ -764,7 +719,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
       trxSerial: _advanceTrxSerialController.text,
       basicSalary: _basicSalaryController.text.toInt(),
       fullSalary: _fullSalaryController.text.toInt(),
-      recruitmentDate: _recruitmentDateController.text,
+      recruitmentDate: _hiringDateController.text,
       latestAdvanceAmount: _latestAdvanceAmountController.text.toInt(),
       amountRequired: _amountRequiredOfAdvanceController.text.toInt(),
       approvedAmount: _approvedAmountOfAdvanceController.text.toInt(),
@@ -774,7 +729,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
       advanceReason: _advanceReasonController.text,
       calculatedDate: _startCountingDateController.text,
       notes: _noteController.text,
-      latestAdvanceDate: _latestAdvanceDateController.text,
+      latestAdvanceDate: _latestAdvanceDateController.text.isNotEmpty ? _latestAdvanceDateController.text : null,
 
     ));
     Navigator.pop(context,true );
@@ -856,6 +811,60 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
         );
       },
     );
+  }
+  fillCompos(){
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("WFW_EmployeeAdvanceRequests", "TrxSerial", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
+      NextSerial nextSerial = data;
 
+      _advanceTrxSerialController.text = nextSerial.nextSerial.toString();
+      //Set Date
+      DateTime now = DateTime.now();
+      _advanceTrxDateController.text = DateFormat('yyyy-MM-dd').format(now);
+      return nextSerial;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<Employee>> futureEmployees = _employeeApiService.getEmployeesFiltrated(empCode).then((data) {
+      employees = data;
+
+      getEmployeesData();
+      return employees;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<Job>> futureJobs = _jobApiService.getJobs().then((data) {
+      jobs = data;
+
+      getJobsData();
+      return jobs;
+    }, onError: (e) {
+      print(e);
+    });
+    Future<EmployeeContract?> futureContract = _employeeApiService.getContractData(empCode).then((data){
+      employeeContract = data;
+
+      print("+++++++++++ before contract0");
+      _basicSalaryController.text = employeeContract!.basicSalary.toString();
+      _fullSalaryController.text = employeeContract!.fullSalary.toString();
+      _hiringDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(employeeContract!.hiringDate.toString()));
+
+      return employeeContract;
+    }, onError: (e) {
+      print(e);
+    });
+    Future<EmployeeAdvance?> futureEmployeeAdvance = _employeeApiService.getEmployeeAdvanceData(empCode).then((data){
+      employeeAdvance = data;
+
+      print("+++++++++++ before advance");
+
+      _latestAdvanceAmountController.text = employeeAdvance!.advanceValue.toString();
+      _latestAdvanceDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(employeeAdvance!.trxDate.toString()));
+
+      return employeeAdvance;
+    }, onError: (e) {
+      print(e);
+    });
   }
 }

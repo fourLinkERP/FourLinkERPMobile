@@ -122,7 +122,7 @@ class ApprovalsState extends State<Approvals> {
             itemBuilder: (BuildContext context, int index) {
               return
                 Card(
-                  margin: const EdgeInsets.only(top: 10.0, left: 30.0, right: 30.0, bottom: 10.0),
+                  margin: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
                   child: InkWell(
                     onTap: (){
                       // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_salesInvoices[index])),

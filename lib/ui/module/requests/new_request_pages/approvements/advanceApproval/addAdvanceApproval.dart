@@ -50,17 +50,19 @@ class _AddAdvanceApprovalState extends State<AddAdvanceApproval> {
   final notesController =  TextEditingController();
   final _addFormKey = GlobalKey<FormState>();
   WorkFlowProcess? process = WorkFlowProcess(empCode: "",alternativeEmpCode: "",levelCode: "");
-  Employee employeeItem = Employee(empCode: empCode, empNameAra: empName,empNameEng: empName );
-  //Level levelItem = Level(levelCode: empCode, empNameAra: empName,empNameEng: empName );
+  Employee employeeItem = Employee(empCode: "", empNameAra: "",empNameEng: "", id: 0);
+  Level levelItem = Level(levelCode: "", levelNameAra: "",levelNameEng: "", id: 0);
 
 
   @override
   void initState() {
     getData();
     super.initState();
+
     Future<List<Employee>> futureEmployees = _employeeApiService.getEmployeesFiltrated(empCode).then((data) {
       employees = data;
-      //getEmployeesData();
+
+      getEmployeesData();
       return employees;
     }, onError: (e) {
       print(e);
@@ -76,6 +78,10 @@ class _AddAdvanceApprovalState extends State<AddAdvanceApproval> {
     });
 
     Future<List<Status>> futureStatuses = _statusesApiService.getStatuses().then((data) {
+      if (data.length > 2) {
+        // Remove the first two elements
+        data = data.sublist(2);
+      }
       statuses = data;
 
       getStatusesData();
@@ -142,8 +148,6 @@ class _AddAdvanceApprovalState extends State<AddAdvanceApproval> {
                             items: employees,
                             itemAsString: (Employee u) => u.empNameAra.toString(),
                             onChanged: (value){
-                              //v.text = value!.cusTypesCode.toString();
-                              //print(value!.id);
                               selectedEmployeeValue =  value!.empCode.toString();
                             },
                             filterFn: (instance, filter){
@@ -333,26 +337,27 @@ class _AddAdvanceApprovalState extends State<AddAdvanceApproval> {
       ),
     );
   }
-  void getData() async {
-    Future<WorkFlowProcess>? futureWorkflowProcess =
-    _apiService.get2WorkFlowProcess("1", widget.advanceRequest.id!).catchError((Error){
-      AppCubit.get(context).EmitErrorState();
+  getData(){
+    Future<WorkFlowProcess?> futureWorkflowProcess = _apiService.get2WorkFlowProcess("1", widget.advanceRequest.id!).then((data){
+      print("+++++++++----" + widget.advanceRequest.id.toString());
+      process = data;
+      print("empCode: "+ process!.empCode.toString() + "  level: "+ process!.levelCode.toString());
+      if(process!.empCode == empCode || process!.alternativeEmpCode == empCode){
+        selectedEmployeeValue = empCode;
+        selectedLevelValue = process!.levelCode;
+      }
+      return process;
+    }, onError: (e) {
+      print(e);
     });
-    print("+++++++++----" + widget.advanceRequest.id.toString());
-    process = (await futureWorkflowProcess)!;
-    print("empCode: "+ process!.empCode.toString() + "  level: "+ process!.levelCode.toString());
-    if(process!.empCode == empCode || process!.alternativeEmpCode == empCode){
-      selectedEmployeeValue = empCode;
-      selectedLevelValue = process!.levelCode;
-    }
   }
+
   getEmployeesData() {
     if (employees.isNotEmpty) {
       for(var i = 0; i < employees.length; i++){
-        menuEmployees.add(
-            DropdownMenuItem(
-                value: employees[i].empCode.toString(),
-                child: Text((langId==1)? employees[i].empNameAra.toString() : employees[i].empNameEng.toString())));
+        if(employees[i].empCode == empCode){
+          employeeItem = employees[employees.indexOf(employees[i])];
+        }
       }
     }
     setState(() {
@@ -363,12 +368,9 @@ class _AddAdvanceApprovalState extends State<AddAdvanceApproval> {
   getLevelsData() {
     if (levels.isNotEmpty) {
       for(var i = 0; i < levels.length; i++){
-        menuLevels.add(
-          DropdownMenuItem(
-              value: levels[i].levelCode.toString(),
-              child: Text((langId==1)? levels[i].levelNameAra.toString() : levels[i].levelNameEng.toString())
-          ),
-        );
+        if(levels[i].levelCode == process?.levelCode){
+          levelItem = levels[levels.indexOf(levels[i])];
+        }
       }
     }
     setState(() {
@@ -414,8 +416,10 @@ class _AddAdvanceApprovalState extends State<AddAdvanceApproval> {
       workFlowTransactionsId: widget.advanceRequest.id,
       requestTypeCode: "1",
       trxDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+      alternativeEmpCode: process?.alternativeEmpCode,
+      empCode: process?.empCode,
       levelCode: selectedLevelValue,
-      empCode: selectedEmployeeValue,
+      actionEmpCode: selectedEmployeeValue,
       workFlowStatusCode: selectedStatusValue,
       notes: notesController.text,
     ));

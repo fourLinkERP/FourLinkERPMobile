@@ -1,6 +1,7 @@
 import'package:flutter/material.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
+import '../../../../theme/app_theme.dart';
 import '../my_duties_screens/Inbox/InboxMailsList.dart';
 import '../my_duties_screens/Outbox/OutboxMailsList.dart';
 
@@ -11,6 +12,7 @@ class MyDuties extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      //color: AppTheme.white,
         margin: const EdgeInsets.all(20),
         child: ListView(
           children: [

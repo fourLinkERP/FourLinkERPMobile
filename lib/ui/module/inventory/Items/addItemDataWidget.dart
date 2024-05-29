@@ -80,33 +80,33 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.transparent,
-        onPressed: () {
+        onPressed: () async {
           if(_itemCodeController.text.isEmpty){
-            FN_showToast(context, "please_enter_item_code", Colors.black);
+            FN_showToast(context, "please_enter_item_code".tr(), Colors.black);
             return;
           }
-          if(_itemNameAraController.text.isEmpty){
-            FN_showToast(context, "please_enter_item_name", Colors.black);
+          if(_itemNameAraController.text.isEmpty && _itemNameEngController.text.isEmpty){
+            FN_showToast(context, "please_enter_item_name".tr(), Colors.black);
             return;
           }
-          if(_itemNameEngController.text.isEmpty){
-            FN_showToast(context, "please_enter_item_name", Colors.black);
-            return;
-          }
+          // if(_itemNameEngController.text.isEmpty){
+          //   FN_showToast(context, "please_enter_item_name".tr(), Colors.black);
+          //   return;
+          // }
           if(selectedItemTypeValue == null){
-            FN_showToast(context, "please_select_item_type", Colors.black);
+            FN_showToast(context, "please_select_item_type".tr(), Colors.black);
             return;
           }
           if(selectedUnitValue == null){
-            FN_showToast(context, "please_select_unit", Colors.black);
+            FN_showToast(context, "please_select_unit".tr(), Colors.black);
           }
 
-          api.createItem(context,Item(
+          await api.createItem(context,Item(
               itemCode: _itemCodeController.text ,
               itemNameAra: _itemNameAraController.text ,
               itemNameEng: _itemNameEngController.text,
               itemTypeCode: int.parse(selectedItemTypeValue!),
-              defaultSellPrice: double.parse(_itemSellPriceController.text),
+              defaultSellPrice: _itemSellPriceController.text.isNotEmpty ? double.parse(_itemSellPriceController.text) : 0,
               defaultUniteCode: selectedUnitValue
 
           ));

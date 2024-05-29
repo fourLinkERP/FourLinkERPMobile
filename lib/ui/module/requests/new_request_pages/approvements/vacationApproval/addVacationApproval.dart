@@ -51,7 +51,7 @@ class _AddApprovalState extends State<AddApproval> {
   final _addFormKey = GlobalKey<FormState>();
   WorkFlowProcess? process = WorkFlowProcess(empCode: "",alternativeEmpCode: "",levelCode: "");
   Employee employeeItem = Employee(empCode: empCode, empNameAra: empName,empNameEng: empName );
-  //Level levelItem = Level(levelCode: empCode, empNameAra: empName,empNameEng: empName );
+  //Level levelItem = Level(levelCode: "", levelNameAra: "",levelNameEng: "", id: 0);
 
 
   @override
@@ -76,6 +76,10 @@ class _AddApprovalState extends State<AddApproval> {
     });
 
     Future<List<Status>> futureStatuses = _statusesApiService.getStatuses().then((data) {
+      if (data.length > 2) {
+        // Remove the first two elements
+        data = data.sublist(2);
+      }
       statuses = data;
 
       getStatusesData();
@@ -333,18 +337,19 @@ class _AddApprovalState extends State<AddApproval> {
       ),
     );
   }
-  void getData() async {
-    Future<WorkFlowProcess>? futureWorkflowProcess =
-    _apiService.get2WorkFlowProcess("2", widget.vacationRequest.id!).catchError((Error){
-      AppCubit.get(context).EmitErrorState();
+  getData()  {
+    Future<WorkFlowProcess?> futureWorkflowProcess = _apiService.get2WorkFlowProcess("2", widget.vacationRequest.id!).then((data){
+      print("+++++++++----" + widget.vacationRequest.id.toString());
+      process = data;
+      print("empCode: "+ process!.empCode.toString() + "  level: "+ process!.levelCode.toString());
+      if(process!.empCode == empCode || process!.alternativeEmpCode == empCode){
+        selectedEmployeeValue = empCode;
+        selectedLevelValue = process!.levelCode;
+      }
+      return process;
+    }, onError: (e) {
+      print(e);
     });
-    print("+++++++++----" + widget.vacationRequest.id.toString());
-    process = (await futureWorkflowProcess)!;
-    print("empCode: "+ process!.empCode.toString() + "  level: "+ process!.levelCode.toString());
-    if(process!.empCode == empCode || process!.alternativeEmpCode == empCode){
-      selectedEmployeeValue = empCode;
-      selectedLevelValue = process!.levelCode;
-    }
   }
   getEmployeesData() {
     if (employees.isNotEmpty) {
@@ -413,8 +418,10 @@ class _AddApprovalState extends State<AddApproval> {
       workFlowTransactionsId: widget.vacationRequest.id,
       requestTypeCode: "2",
       trxDate: DateFormat('yyyy-MM-dd').format(DateTime.now()),
+      alternativeEmpCode: process?.alternativeEmpCode,
+      empCode: process?.empCode,
       levelCode: selectedLevelValue,
-      empCode: selectedEmployeeValue,
+      actionEmpCode: selectedEmployeeValue,
       workFlowStatusCode: selectedStatusValue,
       notes: notesController.text,
     ));

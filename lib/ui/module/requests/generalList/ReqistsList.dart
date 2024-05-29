@@ -4,7 +4,9 @@ import 'package:fourlinkmobileapp/ui/module/requests/Tabs/myRequests.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/Tabs/newRequest.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/Tabs/myDuties.dart';
 class Requests extends StatefulWidget {
-  const Requests({Key? key}) : super(key: key);
+  final int initialIndex;
+
+  const Requests({Key? key, this.initialIndex = 0}) : super(key: key);
 
   @override
   State<Requests> createState() => _RequestsState();
@@ -15,6 +17,7 @@ class _RequestsState extends State<Requests> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
+      initialIndex: widget.initialIndex,
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,

@@ -641,6 +641,8 @@
     "please_set_employee": "من فضلك اختر موظف",
     "please_set_level": "من فضلك اخر المستوى",
     "please_set_status": "من فضلك اختر الاجراء",
-    "please_set_note": "من فضلك اكتب ملاحظة"
+    "please_set_note": "من فضلك اكتب ملاحظة",
+    "unit_name": "وحدة القياس",
+    "please_select_item_type": "من فضلك ادخل نوع الصنف"
 }
 

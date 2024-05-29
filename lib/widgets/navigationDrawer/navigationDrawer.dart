@@ -55,7 +55,7 @@ class _navigationDrawerState extends State<navigationDrawer> {
 
     return Drawer(
 
-      backgroundColor: isLightMode ? AppTheme.white : AppTheme.nearlyBlack,
+      backgroundColor: AppTheme.white, //isLightMode ? AppTheme.white : AppTheme.nearlyBlack,
       child: ListView(
         scrollDirection: Axis.vertical,
         padding: EdgeInsets.zero,

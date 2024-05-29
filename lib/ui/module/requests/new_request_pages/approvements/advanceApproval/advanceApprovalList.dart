@@ -122,15 +122,14 @@ class AdvanceApprovalsState extends State<AdvanceApprovals> {
             itemBuilder: (BuildContext context, int index) {
               return
                 Card(
+                  margin: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
                   child: InkWell(
-                    onTap: () {
+                    onTap: (){
                       // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_salesInvoices[index])),
                       // );
                     },
                     child: ListTile(
-                      //leading: Image.asset('assets/fitness_app/vacation.png'),
-                      title: Text('serial'.tr() + " : " + processes[index].id.toString()),
-
+                      title: Text("${'employee'.tr()} : ${processes[index].actionEmpName}"),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
@@ -142,106 +141,23 @@ class AdvanceApprovalsState extends State<AdvanceApprovals> {
                                   Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(processes[index].trxDate.toString())))  ,
                                 ],
                               )),
-                          Container(height: 20, color: Colors.white30, child: Row(
-                            children: [
-                              Text('level'.tr() + " : " + processes[index].levelCode.toString()),
-                            ],
-
-                          )),
-                          Container(height: 20, color: Colors.white30, child: Row(
-                            children: [
-                              Text('employee'.tr() + " : " + processes[index].actionEmpName.toString()),
-                            ],
-
-                          )),
+                          Container(
+                              height: 20,
+                              color: Colors.white30,
+                              child: Row(
+                                children: [
+                                  Text("${'level'.tr()} : ${processes[index].levelCode}"),
+                                ],
+                              )),
+                          Container(
+                              height: 20,
+                              color: Colors.white30,
+                              child: Row(
+                                children: [
+                                  Text("${'the_status'.tr()} : ${processes[index].workFlowStatusName}"),
+                                ],
+                              )),
                           const SizedBox(height: 10),
-                          // SizedBox(
-                          //     child: Row(
-                          //       children: <Widget>[
-                          //         Center(
-                          //             child: ElevatedButton.icon(
-                          //               icon: const Icon(
-                          //                 Icons.edit,
-                          //                 color: Colors.white,
-                          //                 size: 20.0,
-                          //                 weight: 10,
-                          //               ),
-                          //               label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
-                          //               onPressed: () {
-                          //                  _navigateToEditScreen(context);
-                          //               },
-                          //               style: ElevatedButton.styleFrom(
-                          //                   shape: RoundedRectangleBorder(
-                          //                     borderRadius: BorderRadius.circular(5),
-                          //                   ),
-                          //                   padding: const EdgeInsets.all(7),
-                          //                   backgroundColor: const Color.fromRGBO(0, 136, 134, 1),
-                          //                   foregroundColor: Colors.black,
-                          //                   elevation: 0,
-                          //                   side: const BorderSide(
-                          //                       width: 1,
-                          //                       color: Color.fromRGBO(0, 136, 134, 1)
-                          //                   )
-                          //               ),
-                          //             )
-                          //         ),
-                          //         const SizedBox(width: 5),
-                          //         Center(
-                          //             child: ElevatedButton.icon(
-                          //               icon: const Icon(
-                          //                 Icons.delete,
-                          //                 color: Colors.white,
-                          //                 size: 20.0,
-                          //                 weight: 10,
-                          //               ),
-                          //               label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
-                          //               onPressed: () {
-                          //                // _deleteItem(context,vacationRequests[index].id);
-                          //               },
-                          //               style: ElevatedButton.styleFrom(
-                          //                   shape: RoundedRectangleBorder(
-                          //                     borderRadius: BorderRadius.circular(5),
-                          //                   ),
-                          //                   padding: const EdgeInsets.all(7),
-                          //                   backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-                          //                   foregroundColor: Colors.black,
-                          //                   elevation: 0,
-                          //                   side: const BorderSide(
-                          //                       width: 1,
-                          //                       color: Color.fromRGBO(144, 16, 46, 1)
-                          //                   )
-                          //               ),
-                          //             )),
-                          //         const SizedBox(width: 5),
-                          //         Center(
-                          //             child: ElevatedButton.icon(
-                          //               icon: const Icon(
-                          //                 Icons.print,
-                          //                 color: Colors.white,
-                          //                 size: 20.0,
-                          //                 weight: 10,
-                          //               ),
-                          //               label: Text('print'.tr(),style:const TextStyle(color: Colors.white,)),
-                          //               onPressed: () {
-                          //                 // _navigateToPrintScreen(context,_salesInvoices[index]);
-                          //               },
-                          //               style: ElevatedButton.styleFrom(
-                          //                   shape: RoundedRectangleBorder(
-                          //                     borderRadius: BorderRadius.circular(5),
-                          //                   ),
-                          //                   padding: const EdgeInsets.all(7),
-                          //                   backgroundColor: Colors.black87,
-                          //                   foregroundColor: Colors.black,
-                          //                   elevation: 0,
-                          //                   side: const BorderSide(
-                          //                       width: 1,
-                          //                       color: Colors.black87
-                          //                   )
-                          //               ),
-                          //             )),
-                          //
-                          //       ],
-                          //     ))
                         ],
                       ),
                     ),

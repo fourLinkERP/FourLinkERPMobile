@@ -295,10 +295,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                       }
                                       return null;
                                     },
-                                    // onSaved: (val) {
-                                    //   vacationRequestMessage = val;
-                                    //   return null;
-                                    // },
                                   ),
                                 ),
                                 const SizedBox(height: 20),
@@ -807,9 +803,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
       print("empCode in addVacation: " + empCode);
       employees = data;
       print('employees:  ' + employees.toString());
-      // setState(() {
-      //
-      // });
+
       getEmployeesData();
       return employees;
     }, onError: (e) {

@@ -7,12 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 import '../../../../../common/globals.dart';
+import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/EmployeeAdvance.dart';
+import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/EmployeeContract.dart';
 
 
  class EmployeeApiService {
 
   String searchApi= baseUrl.toString()  + '/api/v1/employees/search';
   String getContractApi= baseUrl.toString()  + '/api/v1/employees/getemployeecontractdata';
+  String getEmployeeAdvanceApi = baseUrl.toString()  + '/api/v1/crmemployeeadvanceheaders/searchdata';
   String createApi= baseUrl.toString()  + '/api/v1/employees';
   String updateApi= baseUrl.toString()  + '/api/v1/employees/';  // Add ID For Edit
   String deleteApi= baseUrl.toString()  + '/api/v1/employees/';
@@ -93,7 +96,7 @@ import '../../../../../common/globals.dart';
       throw "Failed to load Employee list";
     }
   }
-  Future<List<Employee>>  getContractData(String employeeCode) async {
+  Future<EmployeeContract>  getContractData(String employeeCode) async {
     Map data = {
       'Search': {
         'EmpCode': employeeCode
@@ -111,21 +114,39 @@ import '../../../../../common/globals.dart';
     );
 
     if (response.statusCode == 200) {
-      List<dynamic> data = jsonDecode(response.body)['data'];
-      List<Employee> list = [];
-      if (data.isNotEmpty) {
-        final employee = Employee.fromJson(data[0]);
-        // jobCode = employee.jobCode.toString();
-        // jobName = employee.jobName!;
-
-        list = [employee];
-      }
-      print('Contract 3');
-      return  list;
+      print('Contract 2');
+      return EmployeeContract.fromJson(json.decode(response.body));
 
     } else {
-      print('Contract Failed');
-      throw "Failed to load Contract list";
+      throw Exception('Failed to load a case in Contract');
+    }
+  }
+
+  Future<EmployeeAdvance>  getEmployeeAdvanceData(String employeeCode) async {
+    Map data = {
+      'Search': {
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode,
+        'EmpCode': employeeCode
+      }
+    };
+
+    print('advance data 1');
+    final http.Response response = await http.post(
+      Uri.parse(getEmployeeAdvanceApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      print('advance data 2');
+      return EmployeeAdvance.fromJson(json.decode(response.body));
+
+    } else {
+      throw Exception('Failed to load a case in advance data');
     }
   }
 

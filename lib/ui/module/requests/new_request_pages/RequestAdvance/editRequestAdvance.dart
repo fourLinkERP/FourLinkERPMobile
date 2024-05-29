@@ -4,6 +4,7 @@ import 'package:fourlinkmobileapp/service/module/requests/setup/requestAdvanceAp
 import 'package:supercharged/supercharged.dart';
 
 import '../../../../../common/globals.dart';
+import '../../../../../data/model/modules/module/accounts/basicInputs/Approvals/workFlowProcess.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Jobs/Job.dart';
 import '../../../../../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
@@ -14,9 +15,12 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../../service/module/requests/setup/Approvals/workFlowProcessApiService.dart';
+
 //APIs
 EmployeeApiService _employeeApiService = EmployeeApiService();
 JobApiService _jobApiService = JobApiService();
+WorkFlowProcessApiService _apiProcessService = WorkFlowProcessApiService();
 
 class EditRequestAdvance extends StatefulWidget {
   EditRequestAdvance(this.advance);
@@ -36,24 +40,14 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
   List<DropdownMenuItem<String>> menuEmployees = [];
   List<DropdownMenuItem<String>> menuJobs = [];
 
+  WorkFlowProcess? process = WorkFlowProcess(empCode: "",alternativeEmpCode: "",levelCode: "");
   Employee?  empItem= Employee(empCode: "",empNameAra: "",empNameEng: "",id: 0);
   Job?  jobItem= Job(jobCode: "",jobNameAra: "",jobNameEng: "",id: 0);
 
   String? selectedEmployeeValue = null;
   String? selectedJobValue = null;
 
-  String? vacationDate;
-  String? recruitmentDate;
-  String? lastAdvanceDate;
-  String? countingDate;
-  int? basicSalary;
-  int? fullSalary;
-  int? latestAdvanceAmount;
-  int? amountRequired;
-  int? approvedAmount;
-  int? empBalance;
-  int? advanceBalance;
-  int? installmentValue;
+  bool isApproved = false;
 
   final AdvanceRequestApiService api = AdvanceRequestApiService();
   final _addFormKey = GlobalKey<FormState>();
@@ -72,6 +66,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
   final _advanceBalanceController = TextEditingController();
   final _installmentController = TextEditingController();
   final _advanceReasonController = TextEditingController();
+  final _startCountingDateController = TextEditingController();
   final _noteController = TextEditingController();
 
   @override
@@ -99,7 +94,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
     _advanceTrxSerialController.text = widget.advance.trxSerial!;
     _basicSalaryController.text = widget.advance.basicSalary.toString();
     _fullSalaryController.text = widget.advance.fullSalary.toString();
-    _recruitmentDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.advance.recruitmentDate!.toString()));
+    _recruitmentDateController.text = widget.advance.recruitmentDate != null ? DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.advance.recruitmentDate!.toString())) : "";
     //_contractPeriodController.text = widget.advance.contractPeriod!;
     _latestAdvanceAmountController.text = widget.advance.latestAdvanceAmount.toString();
     _amountRequiredOfAdvanceController.text = widget.advance.amountRequired.toString();
@@ -107,11 +102,12 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
     _advanceReasonController.text = widget.advance.advanceReason!;
     _installmentController.text = widget.advance.installmentValue.toString();
     _noteController.text = widget.advance.notes!;
-    _latestAdvanceDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.advance.latestAdvanceDate!.toString()));
-    _lastIncreaseDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.advance.latestIncreaseDate!.toString()));
+    _latestAdvanceDateController.text = widget.advance.latestAdvanceDate.toString().isNotEmpty ? DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.advance.latestAdvanceDate!.toString())) : "";
+    _startCountingDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.advance.calculatedDate!.toString()));
     selectedEmployeeValue = widget.advance.empCode!;
     selectedJobValue = widget.advance.jobCode!;
 
+    getData();
 
     super.initState();
   }
@@ -281,6 +277,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     height: 60,
                                     width: 210,
                                     child: defaultFormField(
+                                      enable: false,
                                       label: 'trxdate'.tr(),
                                       controller: _advanceTrxDateController,
                                       onTab: () async {
@@ -303,6 +300,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     height: 50,
                                     width: 210,
                                     child: DropdownSearch<Employee>(
+                                      enabled: false,
                                       selectedItem: empItem,
                                       popupProps: PopupProps.menu(
                                         itemBuilder: (context, item, isSelected) {
@@ -348,6 +346,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     height: 50,
                                     width: 210,
                                     child: DropdownSearch<Job>(
+                                      enabled: false,
                                       selectedItem: jobItem,
                                       popupProps: PopupProps.menu(
                                         itemBuilder: (context, item, isSelected) {
@@ -394,6 +393,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     height: 50,
                                     width: 210,
                                     child: defaultFormField(
+                                      enable: false,
                                       controller: _basicSalaryController,
                                       //label: 'message_title'.tr(),
                                       type: TextInputType.number,
@@ -412,6 +412,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     height: 50,
                                     width: 210,
                                     child: defaultFormField(
+                                      enable: false,
                                       controller: _fullSalaryController,
                                      // label: 'message_title'.tr(),
                                       type: TextInputType.number,
@@ -429,7 +430,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     height: 60,
                                     width: 210,
                                     child: defaultFormField(
-                                      //label: 'from_date'.tr(),
+                                      enable: false,
                                       controller: _recruitmentDateController,
                                       onTab: () async {
                                         DateTime? pickedDate = await showDatePicker(
@@ -473,6 +474,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     height: 60,
                                     width: 210,
                                     child: defaultFormField(
+                                      enable: false,
                                       controller: _latestAdvanceDateController,
                                       onTab: () async {
                                         DateTime? pickedDate = await showDatePicker(
@@ -494,6 +496,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     height: 50,
                                     width: 210,
                                     child: defaultFormField(
+                                      enable: false,
                                       controller: _latestAdvanceAmountController,
                                       type: TextInputType.number,
                                       colors: Colors.blueGrey,
@@ -528,6 +531,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     height: 50,
                                     width: 210,
                                     child: defaultFormField(
+                                      enable: isApproved == true ? true : false,
                                       controller: _approvedAmountOfAdvanceController,
                                       type: TextInputType.number,
                                       colors: Colors.blueGrey,
@@ -544,7 +548,8 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     height: 60,
                                     width: 210,
                                     child: defaultFormField(
-                                      controller: _recruitmentDateController,
+                                      enable: false,
+                                      controller: _startCountingDateController,
                                       onTab: () async {
                                         DateTime? pickedDate = await showDatePicker(
                                             context: context,
@@ -553,7 +558,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                             lastDate: DateTime(2050));
 
                                         if (pickedDate != null) {
-                                          _recruitmentDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                          _startCountingDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                                         }
                                       },
                                       type: TextInputType.datetime,
@@ -746,17 +751,32 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
       basicSalary: _basicSalaryController.text.toInt(),
       fullSalary: _fullSalaryController.text.toInt(),
       recruitmentDate: _recruitmentDateController.text,
-      latestAdvanceAmount: int.parse(_latestAdvanceAmountController.text),
+      latestAdvanceAmount: _latestAdvanceAmountController.text.toInt(),
       amountRequired: _amountRequiredOfAdvanceController.text.toInt(),
       approvedAmount: _approvedAmountOfAdvanceController.text.toInt(),
       empBalance: _empBalanceController.text.toInt(),
       advanceBalance: _advanceBalanceController.text.toInt(),
       installmentValue: _installmentController.text.toInt(),
+      latestAdvanceDate: _latestAdvanceDateController.text.isNotEmpty ? _latestAdvanceDateController.text : null,
+      calculatedDate: _startCountingDateController.text,
       advanceReason: _advanceReasonController.text,
       notes: _noteController.text,
-      latestAdvanceDate: _latestAdvanceDateController.text,
+
 
     ));
     Navigator.pop(context);
+  }
+  getData()  {
+    Future<WorkFlowProcess?> futureWorkflowProcess = _apiProcessService.get2WorkFlowProcess("1", widget.advance.id!).then((data){
+      print("+++++++++----" + widget.advance.id.toString());
+      process = data;
+      print("empCode: "+ process!.empCode.toString() + "  level: "+ process!.levelCode.toString());
+      if((process!.empCode == empCode || process!.alternativeEmpCode == empCode) && empCode != selectedEmployeeValue ){
+        isApproved = true;
+      }
+      return process;
+    }, onError: (e) {
+      print(e);
+    });
   }
 }
