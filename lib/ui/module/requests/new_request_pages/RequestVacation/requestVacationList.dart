@@ -38,7 +38,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
 
   @override
   void initState() {
-    print('okkkkkkkkkkk');
+
     AppCubit.get(context).CheckConnection();
 
     getData();
@@ -66,9 +66,6 @@ class _RequestVacationListState extends State<RequestVacationList> {
 
   @override
   Widget build(BuildContext context) {
-    // setState(() {
-    //   filterListByEmployeeCode();
-    // });
 
     return Scaffold(
       appBar: AppBar(

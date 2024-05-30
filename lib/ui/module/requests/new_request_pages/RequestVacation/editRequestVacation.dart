@@ -45,7 +45,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
   List<Job> jobs = [];
   List<CostCenter> costCenters =[];
 
-
   VacationType?  vacationTypeItem= VacationType(vacationTypeCode: "",vacationTypeNameAra: "",vacationTypeNameEng: "",id: 0);
   Department?  departmentItem= Department(departmentCode: "",departmentNameAra: "",departmentNameEng: "",id: 0);
   CostCenter?  costCenterItem= CostCenter(costCenterCode: "",costCenterNameAra: "",costCenterNameEng: "",id: 0);
@@ -76,56 +75,9 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
   final _vacationRequestDueDateController = TextEditingController();
   final _vacationRequestLastSalaryDateController =  TextEditingController();
 
-  // String? fromDate;
-  // String? toDate;
-  // String? vacationDueDate;
-  // String? lastSalaryDate;
-
   @override
   initState() {
-
-    Future<List<VacationType>> futureVacationType = _vacationTypeApiService.getVacationTypes().then((data) {
-      vacationTypes = data;
-      //print(customers.length.toString());
-      getVacationTypeData();
-      return vacationTypes;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<Employee>> futureEmployees = _employeeApiService.getEmployees().then((data) {
-      employees = data;
-
-      getEmployeesData();
-      return employees;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<Job>> futureJobs = _jobApiService.getJobs().then((data) {
-      jobs = data;
-
-      getJobsData();
-      return jobs;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<CostCenter>> futureCostCenter = _costCenterApiService.getCostCenters().then((data) {
-      costCenters = data;
-      getCostCenterData();
-      return costCenters;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<Department>> futureDepartment = _departmentApiService.getDepartments().then((data) {
-      departments = data;
-      getDepartmentData();
-      return departments;
-    }, onError: (e) {
-      print(e);
-    });
+    fillCompos();
 
     id = widget.requests.id!;
     _vacationRequestTrxDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.requests.trxDate!.toString()));
@@ -147,33 +99,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
     selectedCostCenterValue = widget.requests.costCenterCode1!;
     selectedEmployeeValue = widget.requests.empCode!;
     selectedJobValue = widget.requests.jobCode!;
-
-    // if(widget.requests.vacationTypeCode != null){
-    //   selectedVacationTypeValue = widget.requests.vacationTypeCode!;
-    //
-    //   print('Hello VT ' + vacationTypes.length.toString());
-    // }
-    // if(widget.requests.departmentCode != null){
-    //
-    //
-    //   print('Hello DP' + departments.length.toString());
-    //   print('Hello selectedDepartmentValue' + selectedDepartmentValue.toString());
-    // }
-    // if(widget.requests.costCenterCode1 != null){
-    //
-    //
-    //   print('Hello CC' + costCenters.length.toString());
-    // }
-    // if(widget.requests.empCode != null){
-    //
-    //
-    //   print('Hello EM' + employees.length.toString());
-    // }
-    // if(widget.requests.jobCode != null){
-    //
-    //
-    //   print('Hello EM' + jobs.length.toString());
-    // }
     super.initState();
   }
 
@@ -419,67 +344,9 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
 
                                 ),
                                 const SizedBox(height: 20),
-                                // SizedBox(
-                                //   height: 50,
-                                //   width: 210,
-                                //   // child: Center(),
-                                //   child: DropdownSearch<Department>(
-                                //     selectedItem: departmentItem,
-                                //     popupProps: PopupProps.menu(
-                                //       itemBuilder: (context, item, isSelected) {
-                                //         return Container(
-                                //           margin: const EdgeInsets.symmetric(horizontal: 8),
-                                //           decoration: !isSelected ? null
-                                //               : BoxDecoration(
-                                //
-                                //             border: Border.all(color: Theme.of(context).primaryColor),
-                                //             borderRadius: BorderRadius.circular(5),
-                                //             color: Colors.white,
-                                //           ),
-                                //           child: Padding(
-                                //             padding: const EdgeInsets.all(5.0),
-                                //             child: Text((langId==1)? item.departmentNameAra.toString():  item.departmentNameEng.toString(),
-                                //               //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
-                                //               textAlign: langId==1?TextAlign.right:TextAlign.left,),
-                                //
-                                //           ),
-                                //         );
-                                //       },
-                                //       showSearchBox: true,
-                                //     ),
-                                //     items: departments,
-                                //     itemAsString: (Department u) => u.departmentNameAra.toString(),
-                                //     onChanged: (value){
-                                //       //v.text = value!.cusTypesCode.toString();
-                                //       //print(value!.id);
-                                //       selectedDepartmentValue =  value!.departmentCode.toString();
-                                //     },
-                                //     filterFn: (instance, filter){
-                                //       if(instance.departmentNameAra!.contains(filter)){
-                                //         print(filter);
-                                //         return true;
-                                //       }
-                                //       else{
-                                //         return false;
-                                //       }
-                                //     },
-                                //     // dropdownDecoratorProps: const DropDownDecoratorProps(
-                                //     //   dropdownSearchDecoration: InputDecoration(
-                                //     //     labelStyle: TextStyle(
-                                //     //       color: Colors.black,
-                                //     //     ),
-                                //     //     //icon: Icon(Icons.keyboard_arrow_down),
-                                //     //   ),
-                                //     // ),
-                                //
-                                //   ),
-                                //
-                                // ),
-                                // const SizedBox(height: 20),
                                 SizedBox(
                                   height: 50,
                                   width: 210,
-                                  // child: Center(),
                                   child: DropdownSearch<Employee>(
                                     selectedItem: empItem,
                                     popupProps: PopupProps.menu(
@@ -488,7 +355,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                           margin: const EdgeInsets.symmetric(horizontal: 8),
                                           decoration: !isSelected ? null
                                               : BoxDecoration(
-
                                             border: Border.all(color: Theme.of(context).primaryColor),
                                             borderRadius: BorderRadius.circular(5),
                                             color: Colors.white,
@@ -496,7 +362,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text((langId==1)? item.empNameAra.toString():  item.empNameEng.toString(),
-                                              //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
                                               textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
                                           ),
@@ -507,8 +372,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                     items: employees,
                                     itemAsString: (Employee u) => u.empNameAra.toString(),
                                     onChanged: (value){
-                                      //v.text = value!.cusTypesCode.toString();
-                                      //print(value!.id);
                                       selectedEmployeeValue =  value!.empCode.toString();
                                     },
                                     filterFn: (instance, filter){
@@ -520,7 +383,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                         return false;
                                       }
                                     },
-
                                   ),
                                 ),
                                 const SizedBox(height: 20),
@@ -543,7 +405,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                             padding: const EdgeInsets.all(10.0),
                                             child: Text((langId==1)? item.jobNameAra.toString():  item.jobNameEng.toString(),
                                               textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
                                           ),
                                         );
                                       },
@@ -563,7 +424,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                         return false;
                                       }
                                     },
-
                                   ),
                                 ),
                                 const SizedBox(height: 20),
@@ -578,7 +438,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                           margin: const EdgeInsets.symmetric(horizontal: 8),
                                           decoration: !isSelected ? null
                                               : BoxDecoration(
-
                                             border: Border.all(color: Theme.of(context).primaryColor),
                                             borderRadius: BorderRadius.circular(5),
                                             color: Colors.white,
@@ -609,7 +468,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                         return false;
                                       }
                                     },
-
                                   ),
                                 ),
                                 const SizedBox(height: 20),
@@ -711,8 +569,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
             ],
           ),
         )
-
-
     );
   }
 
@@ -840,5 +696,48 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
     ));
     Navigator.pop(context);
   }
+  fillCompos(){
+    Future<List<VacationType>> futureVacationType = _vacationTypeApiService.getVacationTypes().then((data) {
+      vacationTypes = data;
+      //print(customers.length.toString());
+      getVacationTypeData();
+      return vacationTypes;
+    }, onError: (e) {
+      print(e);
+    });
 
+    Future<List<Employee>> futureEmployees = _employeeApiService.getEmployees().then((data) {
+      employees = data;
+
+      getEmployeesData();
+      return employees;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<Job>> futureJobs = _jobApiService.getJobs().then((data) {
+      jobs = data;
+
+      getJobsData();
+      return jobs;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<CostCenter>> futureCostCenter = _costCenterApiService.getCostCenters().then((data) {
+      costCenters = data;
+      getCostCenterData();
+      return costCenters;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<Department>> futureDepartment = _departmentApiService.getDepartments().then((data) {
+      departments = data;
+      getDepartmentData();
+      return departments;
+    }, onError: (e) {
+      print(e);
+    });
+  }
 }

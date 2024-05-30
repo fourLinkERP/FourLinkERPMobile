@@ -6,8 +6,9 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 class NotificationNumberApiService{
-  String searchApi= baseUrl.toString()  + '/api/v1/dashboard/searchdata';
+  String notificationCountApi= baseUrl.toString()  + '/api/v1/dashboard/searchdata';
   String updateSeenApi = baseUrl.toString()  + '/api/v1/dashboard/';
+
 
   Future<int> getNotificationNumber() async {
     Map data = {
@@ -19,7 +20,7 @@ class NotificationNumberApiService{
     };
 
     final http.Response response = await http.post(
-      Uri.parse(searchApi),
+      Uri.parse(notificationCountApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'

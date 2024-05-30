@@ -5,7 +5,7 @@ import 'package:fourlinkmobileapp/widgets/dashboard_widgets/dashboard_curvy_top_
 import 'package:fourlinkmobileapp/widgets/dashboard_widgets/dashboard_slider.dart';
 import 'package:fourlinkmobileapp/widgets/ui_view/title_view.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import '../../service/module/accounts/basicInputs/Notifications/NotificationNumberApiService.dart';
+import '../../service/module/accounts/basicInputs/Notifications/NotificationsApiService.dart';
 import '../../theme/fitness_app_theme.dart';
 import '../../ui/general/ChartsAndWidgetsPage.dart';
 import '../../ui/general/TodayWorkPage.dart';

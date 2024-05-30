@@ -546,6 +546,7 @@
     "installment_value_should_be_less_than_required_amount": "installment value should be less than required amount",
     "recruitment_date_is_required": "recruitment date is required",
     "unit_name": "Unit name",
-    "please_select_item_type": "please select item type"
+    "please_select_item_type": "please select item type",
+    "searchMyDuties": "Search My Duties"
 
 }

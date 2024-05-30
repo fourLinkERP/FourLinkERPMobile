@@ -37,7 +37,6 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
 
   @override
   void initState() {
-    // TODO: implement initState
     print('okkkkkkkkkkk');
     AppCubit.get(context).CheckConnection();
     Timer(const Duration(seconds: 30), () { // <-- Delay here
@@ -60,9 +59,6 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      getData();
-    });
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -72,7 +68,6 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
             child: Column(
               crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
               children: [
-                //Align(child: Text('serial'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
                 TextField(
                   onChanged: (value) => onSearch(value),
                   decoration: InputDecoration(

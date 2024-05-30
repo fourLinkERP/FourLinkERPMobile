@@ -674,12 +674,12 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
   saveAdvanceRequest(BuildContext context) async
   {
 
-    if (selectedJobValue == null || selectedJobValue!.isEmpty) {
-      FN_showToast(context, 'please_set_job'.tr(), Colors.black);
-      return;
-    }
     if (selectedEmployeeValue == null || selectedEmployeeValue!.isEmpty) {
       FN_showToast(context, 'please set employee value'.tr(), Colors.black);
+      return;
+    }
+    if (selectedJobValue == null || selectedJobValue!.isEmpty) {
+      FN_showToast(context, 'please_set_job'.tr(), Colors.black);
       return;
     }
     if (_amountRequiredOfAdvanceController.text.isEmpty) {

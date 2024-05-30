@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/Mails/outboxMails.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/my_duties_screens/Outbox/addOutboxMail.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/myDutiesScreens/Outbox/addOutboxMail.dart';
 import '../../../../../common/globals.dart';
 import 'dart:core';
 import 'package:localize_and_translate/localize_and_translate.dart';
