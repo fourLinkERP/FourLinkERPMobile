@@ -547,6 +547,8 @@
     "recruitment_date_is_required": "recruitment date is required",
     "unit_name": "Unit name",
     "please_select_item_type": "please select item type",
-    "searchMyDuties": "Search My Duties"
+    "searchMyDuties": "Search My Duties",
+    "notes_is_required": "Notes field is required",
+    "employees": "Employees"
 
 }

@@ -3,6 +3,8 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/Tabs/myRequests.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/Tabs/newRequest.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/Tabs/myDuties.dart';
+
+import '../setting_requests/SettingRequestsList/settingRequestList.dart';
 class Requests extends StatefulWidget {
   final int initialIndex;
 
@@ -25,6 +27,13 @@ class _RequestsState extends State<Requests> {
                 leading: Image.asset('assets/images/logowhite2.png', scale: 3),
                 title: Text('Requests'.tr(),
                   style: const TextStyle(color: Colors.white),),
+            trailing: IconButton(
+              icon: Icon(Icons.settings, color: Colors.white,),
+              iconSize: 30.0,
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingRequestList(),));
+              },
+            ),
               ),
           bottom: TabBar(
             indicatorColor: Colors.white,

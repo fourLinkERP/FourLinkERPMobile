@@ -6,6 +6,7 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../ui/module/accountReceivable/basicInputs/Salesman/salesmanList.dart';
 import '../../ui/module/accountReceivable/basicInputs/customers/customerList.dart';
+import '../../ui/module/accountreceivable/basicInputs/Employees/employeeList.dart';
 import '../../ui/module/inventory/Items/itemList.dart';
 
 class BasicInputsAreaListView extends StatefulWidget {
@@ -27,6 +28,7 @@ class _BasicInputsAreaListViewState extends State<BasicInputsAreaListView>
     'assets/fitness_app/clients.png',
     'assets/fitness_app/vendors.png',
     'assets/fitness_app/salesman.png',
+    'assets/fitness_app/employee.jpeg',
   ];
 
   List<String> areaListDataTitle = <String>[
@@ -34,6 +36,7 @@ class _BasicInputsAreaListViewState extends State<BasicInputsAreaListView>
     'customers'.tr(),
     'vendors'.tr(),
     'salesman'.tr(),
+    'employees'.tr(),
   ];
 
   @override
@@ -188,6 +191,14 @@ class AreaView extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) =>
                                   SalesManListPage()));
+                    }
+                    else if(imagepath == 'assets/fitness_app/employees.jpeg')
+                    {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  EmployeesList()));
                     }
 
                   },

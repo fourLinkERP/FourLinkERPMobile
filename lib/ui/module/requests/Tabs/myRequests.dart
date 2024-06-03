@@ -89,7 +89,7 @@ class _MyRequestsState extends State<MyRequests> {
                   child: InkWell(
                     onTap: () {},
                     child: ListTile(
-                      leading: Image.asset('assets/fitness_app/requestSalary.png'),
+                      leading: Image.asset('assets/fitness_app/responsability.jpg'),
                       title: Text('request_type'.tr() + " : " + myRequests[index].requestTypeName.toString()),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
@@ -204,6 +204,7 @@ class _MyRequestsState extends State<MyRequests> {
       AppCubit.get(context).EmitErrorState();
     });
     myRequests = (await futureMyRequests)!;
+    print("My Requests list length: "+ myRequests.length.toString());
     if (myRequests.isNotEmpty) {
       setState(() {
         _founded = myRequests;

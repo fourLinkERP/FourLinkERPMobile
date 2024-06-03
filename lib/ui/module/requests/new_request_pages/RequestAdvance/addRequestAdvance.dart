@@ -702,6 +702,10 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
       FN_showToast(context, 'recruitment_date_is_required'.tr(), Colors.black);
       return;
     }
+    if (_noteController.text.isEmpty) {
+      FN_showToast(context, 'notes_is_required'.tr(), Colors.black);
+      return;
+    }
     if(!_validateDates())
     {
       return;

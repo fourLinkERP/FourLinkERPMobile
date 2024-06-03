@@ -410,7 +410,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                                     position: badges.BadgePosition.custom(top: -20, end: -10),
                                     child: const Icon(
                                       Icons.notifications,
-                                      size: 35,
+                                      size: 30,
                                     ),
                                   ),
                                 ),

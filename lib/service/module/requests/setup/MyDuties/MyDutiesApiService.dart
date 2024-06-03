@@ -15,7 +15,8 @@ class MyDutiesApiService {
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
         'EmpCode': empCode,
-        "IsResbonibility": true
+        "IsResbonibility": true,
+        "LangId": langId
       }
     };
 
@@ -50,7 +51,8 @@ class MyDutiesApiService {
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
         'EmpCode': empCode,
-        "IsResbonibility": false
+        "IsResbonibility": false,
+        "LangId": langId
       }
     };
 

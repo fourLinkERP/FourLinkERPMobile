@@ -70,12 +70,14 @@ class _MyDutiesState extends State<MyDuties> {
       return const Center(child: Text('no internet connection'));
 
     }
+    if (duties.length == 0) {
+      return Center(child: Text("No Data To Show", style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
+    }
+
     else if(AppCubit.get(context).Conection==true && duties.isEmpty){
       return const Center(child: CircularProgressIndicator());
     }
-    if (duties.isEmpty) {
-      return Center(child: Text("No Data To Show", style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
-    }
+
     else{
       return Container(
         margin: const EdgeInsets.only(top: 5,),
@@ -89,7 +91,7 @@ class _MyDutiesState extends State<MyDuties> {
                   child: InkWell(
                     onTap: () {},
                     child: ListTile(
-                      leading: Image.asset('assets/fitness_app/requestSalary.png'),
+                      leading: Image.asset('assets/fitness_app/responsability.jpg'),
                       title: Text('request_type'.tr() + " : " + duties[index].requestTypeName.toString()),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
@@ -203,8 +205,8 @@ class _MyDutiesState extends State<MyDuties> {
       AppCubit.get(context).EmitErrorState();
     });
     duties = (await futureMyDuty)!;
+    print("My Duties list length: "+ duties.length.toString());
     if (duties.isNotEmpty) {
-      //duties.sort((a, b) => int.parse(b.trxSerial!).compareTo(int.parse(a.trxSerial!)));
       setState(() {
         _founded = duties;
         String search = '';

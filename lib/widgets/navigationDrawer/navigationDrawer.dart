@@ -102,11 +102,11 @@ class _navigationDrawerState extends State<navigationDrawer> {
             text: 'Requests'.tr(),
             onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>  Requests()),)
           ),
-          createDrawerBodyItem(
-              icon: Icons.settings_applications,
-              text: 'Setting Requests'.tr(),
-              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>  SettingRequestList()),)
-          ),
+          // createDrawerBodyItem(
+          //     icon: Icons.settings_applications,
+          //     text: 'Setting Requests'.tr(),
+          //     onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>  SettingRequestList()),)
+          // ),
 
 
           createDrawerBodyItem(
