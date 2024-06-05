@@ -92,15 +92,6 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
 
   }
 
-  // String gender = 'male';
-  // Gender _gender = Gender.male;
-  // final _ageController = TextEditingController();
-
-  // final _cityController = TextEditingController();
-  // final _countryController = TextEditingController();
-  // String status = 'positive';
-  // Status _status = Status.positive;
-
   String arabicNameHint = 'arabicNameHint'.tr();
 
   @override
@@ -117,16 +108,6 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
             FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
             return;
           }
-          // if(_customerNameEngController.text.isEmpty)
-          // {
-          //   FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
-          //   return;
-          // }
-          // if(_phone1Controller.text.isEmpty)
-          //   {
-          //     FN_showToast(context,'please_enter_phone'.tr() ,Colors.black);
-          //     return;
-          //   }
           if(customerGroupSelectedValue == null)
           {
             FN_showToast(context,'please_select_group'.tr() ,Colors.black);

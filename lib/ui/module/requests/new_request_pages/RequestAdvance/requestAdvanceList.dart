@@ -37,9 +37,8 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
 
   @override
   void initState() {
-    print('okkkkkkkkkkk');
     AppCubit.get(context).CheckConnection();
-    Timer(const Duration(seconds: 30), () { // <-- Delay here
+    Timer(const Duration(seconds: 15), () {
       setState(() {
         if(advanceRequests.isEmpty){
           isLoading = false;

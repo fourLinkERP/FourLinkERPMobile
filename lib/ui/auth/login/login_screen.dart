@@ -685,12 +685,9 @@ class _LoginScreenState extends State<LoginScreen> {
           baseUrl = Uri.parse(urlString1);
         }
 
-
         //checkUserGroupData
         EmployeeGroupStatus employeeGroupStatus = await _EmployeeApiService
             .checkUserGroupData(empCode);
-
-        //print('Permission :'  + employeeGroupStatus.statusCode.toString());
 
         if (employeeGroupStatus.statusCode == 1) // Has Permission
             {

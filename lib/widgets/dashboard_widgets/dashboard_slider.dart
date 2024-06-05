@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/models/dashboard/dashboard_slider_data.dart';
 import '../../theme/fitness_app_theme.dart';
 import '../../helpers/hex_decimal.dart';
+import '../../ui/module/HR/hrMain/MainHR.dart';
 import '../../ui/module/requests/generalList/ReqistsList.dart';
 import '../../ui/module/workshop/workshop_home/workshopMainScreen.dart';
 import '../MainTransactions.dart';
@@ -241,7 +242,7 @@ class MealsView extends StatelessWidget {
                                               Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainTransactions()),);
                                               //Navigator.push(context, MaterialPageRoute(builder: (context) =>  SalesPage()),);
                                             }else if(index==2){
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainTransactions()),);
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainHR()),);
                                             }else if(index==3){
                                               Navigator.push(context, MaterialPageRoute(builder: (context) =>  Requests()),);
                                             }

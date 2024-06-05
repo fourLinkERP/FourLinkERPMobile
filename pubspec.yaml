@@ -73,6 +73,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   localize_and_translate: ^4.1.1
+  location: ^4.4.0
   http: ^0.13.3
   qr_flutter: ^4.0.0
   barcode_widget: ^2.0.4

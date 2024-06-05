@@ -17,9 +17,9 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
   String getContractApi= baseUrl.toString()  + '/api/v1/employees/getemployeecontractdata';
   String getEmployeeAdvanceApi = baseUrl.toString()  + '/api/v1/crmemployeeadvanceheaders/searchdata';
   String createApi= baseUrl.toString()  + '/api/v1/employees';
-  String updateApi= baseUrl.toString()  + '/api/v1/employees/';  // Add ID For Edit
+  String updateApi= baseUrl.toString()  + '/api/v1/employees/';
   String deleteApi= baseUrl.toString()  + '/api/v1/employees/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/employees/';  // Add ID For Get
+  String getByIdApi= baseUrl.toString()  + '/api/v1/employees/';
 
   Future<List<Employee>>  getEmployees() async {
 
@@ -38,7 +38,6 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
       body: jsonEncode(data),
     );
 
-
     if (response.statusCode == 200) {
       print('Employee 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
@@ -46,9 +45,8 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
       if (data.isNotEmpty) {
         list = data.map((item) => Employee.fromJson(item)).toList();
       }
-      print('Employee 3');
-      return  list;
 
+      return  list;
     } else {
       print('Employee Failed');
       throw "Failed to load Employee list";
@@ -176,11 +174,25 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
 
   Future<int> createEmployee(BuildContext context ,Employee employee) async {
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode,
+      'companyCode': employee.companyCode,
+      'branchCode': employee.branchCode,
       'empCode': employee.empCode,
       'empNameAra': employee.empNameAra,
       'empNameEng': employee.empNameEng,
+      'jobCode': employee.jobCode,
+      'email': employee.email,
+      'password': employee.password,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSynchronized": false,
+      "isSystem": false,
+      "notActive": false,
+      "postedToGL": false,
+      "flgDelete": false,
+      "confirmed": false
 
     };
 
@@ -192,14 +204,12 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
       },
       body: jsonEncode(data),
     );
-
+    print("Employee Body: " + data.toString());
 
     if (response.statusCode == 200) {
 
       FN_showToast(context,'save_success'.tr() ,Colors.black);
-
       return  1;
-
 
     } else {
       throw Exception('Failed to post Employee');
@@ -213,11 +223,26 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
     print('Start Update');
 
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode,
+      'id': id,
+      'companyCode': employee.companyCode,
+      'branchCode': employee.branchCode,
       'empCode': employee.empCode,
       'empNameAra': employee.empNameAra,
       'empNameEng': employee.empNameEng,
+      'jobCode': employee.jobCode,
+      'email': employee.email,
+      'password': employee.password,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSynchronized": false,
+      "isSystem": false,
+      "notActive": false,
+      "postedToGL": false,
+      "flgDelete": false,
+      "confirmed": false
 
     };
 

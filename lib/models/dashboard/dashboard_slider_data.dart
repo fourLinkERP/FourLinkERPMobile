@@ -44,7 +44,7 @@ class DashboardSliderListData {
     ),
     DashboardSliderListData(
       imagePath: 'assets/fitness_app/newbranch.png',
-      titleTxt: 'inventory'.tr(),
+      titleTxt: 'HR'.tr(),
       kacl: 0,
       meals: <String>['', ''],
       startColor: '#FE95B6',

@@ -646,6 +646,26 @@
     "please_select_item_type": "من فضلك ادخل نوع الصنف",
     "searchMyDuties": "بحث مهامي",
     "notes_is_required": "الملاحظات مطلوبة",
-    "employees": "الموظفين"
+    "employees": "الموظفين",
+    "searchEmployees": "بحث الموظفين",
+    "please_select_company": "من فضلك اختر الشركة",
+    "add_new_employee": "اضافة موظف جديد",
+    "please_select_job": "من فضلك اختر الوظيفة",
+    "please_enter_email": "ادخل الايميل",
+    "please_enter_password": "ادخل كلمة المرور",
+    "settings": "الاعدادات",
+    "attendanceAndDeparture": "الحضور و الانصراف",
+    "setting_face_print": "اعدادات بصمة الوجه",
+    "searchAttendanceAndDeparture": "بحث الحضور و الانصراف",
+    "attendance": "حضور",
+    "departure": "انصراف",
+    "facePrintLocation": "مكان التبصيم",
+    "please_set_depart": "من فضلك سجل انصراف",
+    "please_set_attend": "من فضلك سجل حضور",
+    "fromTime": "وقت الحضور",
+    "toTime": "وقت الانصراف",
+    "You_haven't_registered_to_attend.": "انت لم تسجل حضور.",
+    "You_have_already_registered_to_depart.": "لقد سجلت انصراف بالفعل.",
+    "You_had_already_registered_to_attend.": "لقد سجلت حضور بالفعل."
 }
 

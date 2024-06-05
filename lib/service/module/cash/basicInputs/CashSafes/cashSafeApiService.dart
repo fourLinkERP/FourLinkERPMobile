@@ -7,7 +7,7 @@ import '../../../../../common/globals.dart';
 
  class CashSafeApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/cashsafes/searchData';
+  String searchApi= baseUrl.toString()  + '/api/v1/cashsafes/searchdata';
   String createApi= baseUrl.toString()  + '/api/v1/cashsafes';
   String updateApi= baseUrl.toString()  + '/api/v1/cashsafes/';  // Add ID For Edit
   String deleteApi= baseUrl.toString()  + '/api/v1/cashsafes/';
@@ -17,7 +17,9 @@ import '../../../../../common/globals.dart';
 
     Map data = {
       'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      'BranchCode': branchCode,
+      'EmpCode': empCode,
+      "IsWorkWithPerm":true
     };
 
     final http.Response response = await http.post(

@@ -7,17 +7,19 @@ import '../../../../../common/globals.dart';
 
  class CashBankBranchApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/cashbankbranches/searchData';
+  String searchApi= baseUrl.toString()  + '/api/v1/cashbankbranches/searchdata';
   String createApi= baseUrl.toString()  + '/api/v1/cashbankbranches';
-  String updateApi= baseUrl.toString()  + '/api/v1/cashbankbranches/';  // Add ID For Edit
+  String updateApi= baseUrl.toString()  + '/api/v1/cashbankbranches/';
   String deleteApi= baseUrl.toString()  + '/api/v1/cashbankbranches/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/cashbankbranches/';  // Add ID For Get
+  String getByIdApi= baseUrl.toString()  + '/api/v1/cashbankbranches/';
 
   Future<List<CashBankBranch>>  getCashBankBranches() async {
 
     Map data = {
       'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      "bankbranchCode": "1",
+      'EmpCode': empCode,
+      "IsWorkWithPerm":true
     };
 
     final http.Response response = await http.post(

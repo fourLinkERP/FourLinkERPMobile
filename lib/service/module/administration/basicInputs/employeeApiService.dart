@@ -38,11 +38,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       if (data != null) {
         list = data.map((item) => Employee.fromJson(item)).toList();
       }
-      print('Employee 3');
+
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => Employee.fromJson(data))
-      //     .toList();
     } else {
       print('Employee Failed');
       throw "Failed to load employee list";

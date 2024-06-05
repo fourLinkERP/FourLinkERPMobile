@@ -113,7 +113,7 @@ class _MyRequestsState extends State<MyRequests> {
                                 children: <Widget>[
                                   Expanded(
                                     child: Center(
-                                        child: Container(
+                                        child: SizedBox(
                                           width: 120,
                                           child: ElevatedButton.icon(
                                             icon: const Icon(

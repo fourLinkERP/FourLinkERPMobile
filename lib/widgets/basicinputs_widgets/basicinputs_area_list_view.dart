@@ -192,13 +192,9 @@ class AreaView extends StatelessWidget {
                               builder: (context) =>
                                   SalesManListPage()));
                     }
-                    else if(imagepath == 'assets/fitness_app/employees.jpeg')
+                    else if(imagepath == 'assets/fitness_app/employee.jpeg')
                     {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  EmployeesList()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => EmployeesList()));
                     }
 
                   },

@@ -15,7 +15,6 @@ import 'editCustomerDataWidget.dart';
 import 'package:flutter/services.dart';
 
 CustomerApiService _apiService = CustomerApiService();
-//Get Customer List
 
 class CustomerListPage extends StatefulWidget {
   const CustomerListPage({Key? key}) : super(key: key);
@@ -29,20 +28,6 @@ class _CustomerListPageState extends State<CustomerListPage> {
   List<Customer> _customers = [];
   List<Customer> _founded = [];
 
-  // List<Customer>? ss = await res;
-
-  // List<Customer> _customers = [
-  //   Customer(id: 1,customerNameAra :'test',customerNameEng :'test' )
-  //   // User('Kayley Dwyer', '@kayley', 'https://images.unsplash.com/photo-1503467913725-8484b65b0715?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=cf7f82093012c4789841f570933f88e3', false),
-  //   // User('Kathleen Mcdonough', '@kathleen', 'https://images.unsplash.com/photo-1507081323647-4d250478b919?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b717a6d0469694bbe6400e6bfe45a1da', false),
-  //   // User('Kathleen Dyer', '@kathleen', 'https://images.unsplash.com/photo-1502980426475-b83966705988?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=ddcb7ec744fc63472f2d9e19362aa387', false),
-  //   // User('Mikayla Marquez', '@mikayla', 'https://images.unsplash.com/photo-1541710430735-5fca14c95b00?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ', false),
-  //   // User('Kiersten Lange', '@kiersten', 'https://images.unsplash.com/photo-1542534759-05f6c34a9e63?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ', false),
-  //   // User('Carys Metz', '@metz', 'https://images.unsplash.com/photo-1516239482977-b550ba7253f2?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ', false),
-  //   // User('Ignacio Schmidt', '@schmidt', 'https://images.unsplash.com/photo-1542973748-658653fb3d12?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ', false),
-  //   // User('Clyde Lucas', '@clyde', 'https://images.unsplash.com/photo-1569443693539-175ea9f007e8?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ', false),
-  //   // User('Mikayla Marquez', '@mikayla', 'https://images.unsplash.com/photo-1541710430735-5fca14c95b00?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ', false)
-  // ];
 
   @override
   void initState() {
@@ -115,7 +100,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
             ),
           ),
         ),
-        body: SafeArea(child: Build_customers()),
+        body: SafeArea(child: buildCustomer()),
         floatingActionButton: FloatingActionButton(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(90.0))),
@@ -259,7 +244,7 @@ class _CustomerListPageState extends State<CustomerListPage> {
     ).then((value) => getData());
   }
 
-  Widget Build_customers() {
+  Widget buildCustomer() {
     print('state:${State}');
     if (_customers.isEmpty) {
       return const Center(child: CircularProgressIndicator());

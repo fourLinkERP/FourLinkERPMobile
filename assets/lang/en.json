@@ -549,6 +549,26 @@
     "please_select_item_type": "please select item type",
     "searchMyDuties": "Search My Duties",
     "notes_is_required": "Notes field is required",
-    "employees": "Employees"
+    "employees": "Employees",
+    "searchEmployees": "Search Employees",
+    "please_select_company": "please select company",
+    "add_new_employee": "Add new employee",
+    "please_select_job": "please select job",
+    "please_enter_email": "please enter email",
+    "please_enter_password": "please enter password",
+    "settings": "Settings",
+    "attendanceAndDeparture": "Attendance And Departure",
+    "setting_face_print": "Setting face print",
+    "searchAttendanceAndDeparture": "search attendance and departure",
+    "attendance": "Attendance",
+    "departure": "Departure",
+    "facePrintLocation": "Face print Location",
+    "please_set_depart": "please set departure",
+    "please_set_attend": "please set attendance",
+    "fromTime": "Attendance time",
+    "toTime": "Departure time",
+    "You_haven't_registered_to_attend.": "You haven't registered to attend.",
+    "You_have_already_registered_to_depart.": "You have already registered to depart",
+    "You_had_already_registered_to_attend.": "You had already registered to attend"
 
 }

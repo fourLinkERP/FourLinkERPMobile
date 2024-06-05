@@ -1,6 +1,8 @@
 
 class Employee {
   int? id;
+  int? companyCode;
+  int? branchCode;
   String? empCode;
   String? empName;
   String? empNameAra ;
@@ -9,12 +11,16 @@ class Employee {
   String? costCenterName;
   int? jobCode;
   String? jobName;
+  String? email;
+  String? password;
   int? basicSalary;
   int? fullSalary;
 
 
   Employee({
     this.id,
+    this.companyCode,
+    this.branchCode,
     this.empCode,
     this.empName,
     this.empNameAra,
@@ -23,6 +29,8 @@ class Employee {
     this.costCenterName,
     this.jobCode,
     this.jobName,
+    this.email,
+    this.password,
     this.basicSalary,
     this.fullSalary
     });
@@ -30,6 +38,8 @@ class Employee {
   factory Employee.fromJson(Map<String, dynamic> json) {
     return Employee(
       id: (json['id'] != null) ? json['id'] as int : 0,
+      companyCode: (json['companyCode'] != null) ? json['companyCode'] as int : 0,
+      branchCode: (json['branchCode'] != null) ? json['branchCode'] as int : 0,
       empCode: (json['empCode'] != null) ? json['empCode'] as String : " ",
       empName: (json['empName'] != null) ? json['empName'] as String : " ",
       empNameAra: (json['empNameAra'] != null) ? json['empNameAra'] as String : " ",
@@ -38,6 +48,8 @@ class Employee {
       costCenterName: (json['costCenterName'] != null)? json['costCenterName'] as String : " ",
       jobCode: (json['jobCode'] != null) ? json['jobCode'] as int : 0,
       jobName: (json['jobName'] != null) ? json['jobName'] as String : " ",
+      email: (json['email'] != null) ? json['email'] as String : " ",
+      password: (json['password'] != null)? json['password'] as String : " ",
       basicSalary: (json['basicSalary'] != null) ? json['basicSalary'] as int : 0,
       fullSalary: (json['fullSalary'] != null) ? json['fullSalary'] as int : 0,
     );
