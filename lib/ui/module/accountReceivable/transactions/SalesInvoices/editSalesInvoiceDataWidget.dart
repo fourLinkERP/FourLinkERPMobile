@@ -188,17 +188,19 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     _totalAfterDiscountController.text = widget.salesInvoicesH.totalAfterDiscount.toString();
 
 
+    totalPrice = (widget.salesInvoicesH.totalValue != null)? double.parse(_totalValueController.text) : 0;
     totalQty =(widget.salesInvoicesH.totalQty != null) ? double.parse(_totalQtyController.text) : 0;
     rowsCount =(widget.salesInvoicesH.rowsCount.toString().isNotEmpty) ? int.parse(_rowsCountController.text) : 0;
     totalDiscount =(widget.salesInvoicesH.totalDiscount != null)? double.parse(_totalDiscountController.text) : 0;
     totalBeforeTax =(widget.salesInvoicesH.totalBeforeTax != null)? double.parse(_totalBeforeTaxController.text) : 0;
     totalTax =(widget.salesInvoicesH.totalTax != null)? double.parse(_totalTaxController.text) : 0;
+    totalNet = (widget.salesInvoicesH.totalNet != null)? double.parse(_totalNetController.text) : 0;
     summeryTotal =(widget.salesInvoicesH.totalNet != null)? double.parse(_totalNetController.text) : 0;
     setTafqeet("1" ,summeryTotal.toString());
 
     fillCombos();
-    
- 
+
+
     super.initState();
   }
 
@@ -283,7 +285,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
 
                                 DropdownSearch<SalesInvoiceType>(
                                   validator: (value) => value == null ? "select_a_Type".tr() : null,
-
+                                  enabled: false,
                                   selectedItem: salesInvoiceTypeItem,
                                   popupProps: PopupProps.menu(
 
@@ -304,18 +306,12 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                                       );
                                     },
                                     showSearchBox: true,
-
                                   ),
-                                  enabled: true,
-
                                   items: salesInvoiceTypes,
                                   itemAsString: (SalesInvoiceType u) =>(langId ==1 )? u.salesInvoicesTypeNameAra.toString() : u.salesInvoicesTypeNameEng.toString(),
 
                                   onChanged: (value){
-                                    //v.text = value!.cusTypesCode.toString();
-                                    //print(value!.id);
                                     selectedTypeValue = value!.salesInvoicesTypeCode.toString();
-                                    //setNextSerial();
                                   },
 
                                   filterFn: (instance, filter){
@@ -721,21 +717,6 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                                     )
                                 ),
                               )),
-                          // ElevatedButton(
-                          //   style: ButtonStyle(
-                          //       backgroundColor: MaterialStateProperty.all(Colors.blueAccent),
-                          //       padding:
-                          //       MaterialStateProperty.all(const EdgeInsets.all(20)),
-                          //       textStyle: MaterialStateProperty.all(
-                          //           const TextStyle(fontSize: 14, color: Colors.white))),
-                          //   onPressed: () {
-                          //
-                          //     saveInvoice(context);
-                          //
-                          //   },
-                          //   child: Text('save'.tr(), style: TextStyle(color: Colors.white)),
-                          //   //color: Colors.blue,
-                          // )
                         ]),
                         const SizedBox(height: 20),
                         SingleChildScrollView(
@@ -1419,8 +1400,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
 
   //#region Calc
 
-  calcTotalPriceRow()
-  {
+  calcTotalPriceRow() {
     double price=0;
     if(_priceController.text.isNotEmpty)
     {
@@ -1686,7 +1666,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     }, onError: (e) {
       print(e);
     });
-    
+
   }
 
   // setItemPrice(String itemCode , String unitCode,String criteria ){
