@@ -15,6 +15,9 @@ class Employee {
   String? password;
   int? basicSalary;
   int? fullSalary;
+  bool? isManager;
+  bool? isIt;
+
 
 
   Employee({
@@ -32,7 +35,9 @@ class Employee {
     this.email,
     this.password,
     this.basicSalary,
-    this.fullSalary
+    this.fullSalary,
+    this.isManager,
+    this.isIt
     });
 
   factory Employee.fromJson(Map<String, dynamic> json) {
@@ -52,6 +57,8 @@ class Employee {
       password: (json['password'] != null)? json['password'] as String : " ",
       basicSalary: (json['basicSalary'] != null) ? json['basicSalary'] as int : 0,
       fullSalary: (json['fullSalary'] != null) ? json['fullSalary'] as int : 0,
+      isManager: (json['isManager'] != null) ? json['isManager'] as bool : false,
+      isIt: (json['isIt'] != null) ? json['isIt'] as bool : false,
     );
   }
 

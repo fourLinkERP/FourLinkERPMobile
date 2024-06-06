@@ -20,14 +20,17 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
 
     Map data = {
       'Search':{
-        'CompanyCode': companyCode,
-        'BranchCode': branchCode,
-        //'SalesInvoicesCase': 1
-      } //Sales Invoice Case =1
-      // 'SalesInvoicesTypeCode': '1', //Sales Invoice Type
+            "CompanyCode":1,
+            "BranchCode":1,
+            "langId": langId,
+            "empCode": empCode,
+            "isShowTransactionsByUser": true,
+            "isManager": isManager,
+            "isIt": isIt
+        }
     };
 
-    //print('B 2');
+    print("search data: " + data.toString());
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{

@@ -7,7 +7,8 @@ class Employee {
   String?  empNameEng;
   String?  userCode;
   String?  userId;
-
+  bool? isManager;
+  bool? isIt;
 
 
 
@@ -17,6 +18,8 @@ class Employee {
     this.empNameEng,
     this.userCode,
     this.userId,
+    this.isManager,
+    this.isIt
 
     //image
     });
@@ -29,6 +32,8 @@ class Employee {
       empNameEng: json['empNameEng'] as String,
       userCode: json['userCode'] as String,
       userId: json['userId'] as String,
+      isManager: json['isManager'] as bool,
+      isIt: json['isIt'] as bool,
 
     );
   }

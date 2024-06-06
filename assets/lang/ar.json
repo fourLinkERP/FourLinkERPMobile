@@ -666,6 +666,7 @@
     "toTime": "وقت الانصراف",
     "You_haven't_registered_to_attend.": "انت لم تسجل حضور.",
     "You_have_already_registered_to_depart.": "لقد سجلت انصراف بالفعل.",
-    "You_had_already_registered_to_attend.": "لقد سجلت حضور بالفعل."
+    "You_had_already_registered_to_attend.": "لقد سجلت حضور بالفعل.",
+    "total_net": "الصافي"
 }
 

@@ -441,25 +441,25 @@ class _LoginScreenState extends State<LoginScreen> {
                               //     ),
                               //   ])),
                               // ),
-                              // Container(
-                              //   margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
-                              //   alignment: Alignment.center,
-                              //   child: GestureDetector(
-                              //     onTap: () async {
-                              //       //final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                              //       //sharedPreferences.setString('email', _emailController.text);
-                              //       //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-                              //       startQuickLogin();
-                              //     },
-                              //     child: Text(
-                              //       '<- الدخول السريع'.tr(),
-                              //       style: const TextStyle(
-                              //         color: Colors.red,
-                              //         fontWeight: FontWeight.bold,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
+                              Container(
+                                margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
+                                alignment: Alignment.center,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    //final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                                    //sharedPreferences.setString('email', _emailController.text);
+                                    //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                                    startQuickLogin();
+                                  },
+                                  child: Text(
+                                    '<- الدخول السريع'.tr(),
+                                    style: const TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
 
                               Align(
                                 alignment: FractionalOffset.bottomCenter,
@@ -638,17 +638,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
   setEmployeeData() {
     //Set Menu Permission
-   _EmployeeApiService
-        .getEmployeeByEmpCode(empCode).then((data) {
+   _EmployeeApiService.getEmployeeByEmpCode(empCode).then((data) {
       print('Berfore Set Empz Data');
       empUserCode = data.userCode!;
       empUserId = data.userId!;
+      isManager = data.isManager;
+      isIt = data.isIt;
       print('After Set Empz Data');
       print(empUserId);
 
     }, onError: (e) {
       print(e);
     });
+
   }
 
 

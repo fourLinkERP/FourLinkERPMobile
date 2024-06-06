@@ -74,7 +74,7 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
     if (response.statusCode == 200) {
       print('EmployeeFiltrated 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
-      // print('data: '+ data.toString());
+
       List<Employee> list = [];
       if (data.isNotEmpty) {
         final employee = Employee.fromJson(data[0]);
@@ -83,10 +83,11 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
         costCenterName = employee.costCenterName!;
         jobCode = employee.jobCode.toString();
         jobName = employee.jobName!;
-
+        isManager = employee.isManager;
+        isIt = employee.isIt;
         list = [employee];
+        print('Employee : ' + employee.toString());
       }
-      print('Employee 3');
       return  list;
 
     } else {

@@ -5,6 +5,8 @@ class Branch {
   int? branchCode ;
   String? branchNameAra ;
   String?  branchNameEng;
+  String? latitude;
+  String? longitude;
 
 
 
@@ -13,6 +15,8 @@ class Branch {
     this.branchCode ,
     this.branchNameAra,
     this.branchNameEng,
+    this.latitude,
+    this.longitude
 
     //image
     });
@@ -22,7 +26,9 @@ class Branch {
       id: (json['id'] != null) ? json['id'] as int : 0,
       branchCode: (json['branchCode'] != null) ? json['branchCode'] as int : 0,
       branchNameAra: (json['branchNameAra'] != null) ? json['branchNameAra'] as String : "",
-      branchNameEng: (json['branchNameEng'] != null) ? json['branchNameEng'] as String : ""
+      branchNameEng: (json['branchNameEng'] != null) ? json['branchNameEng'] as String : "",
+      latitude: (json['latitude'] != null) ? json['latitude'] as String : "",
+      longitude: (json['longitude'] != null) ? json['longitude'] as String : ""
 
  
     );

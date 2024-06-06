@@ -45,6 +45,8 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
   void initState() {
     super.initState();
 
+    getUserLocation();
+
     _timeStream = Stream<DateTime>.periodic(Duration(seconds: 1), (int count) {
       return DateTime.now();
     });

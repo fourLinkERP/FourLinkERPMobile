@@ -569,6 +569,7 @@
     "toTime": "Departure time",
     "You_haven't_registered_to_attend.": "You haven't registered to attend.",
     "You_have_already_registered_to_depart.": "You have already registered to depart",
-    "You_had_already_registered_to_attend.": "You had already registered to attend"
+    "You_had_already_registered_to_attend.": "You had already registered to attend",
+    "total_net": "Total net"
 
 }

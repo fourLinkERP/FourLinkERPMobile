@@ -36,6 +36,8 @@ int companyCode = 1;//Will Set On App Preference
 int branchCode = 1; //Will Set On App Preference
 String companyName= '';  //'Test Company';
 String branchName= '';  //'Test Branch';
+String latitude ='';
+String longitude = '';
 // RequestTypeCode & TransactionId
 String requestTypeCode = "";
 String transactionId = "";
@@ -44,6 +46,8 @@ int lineNumber = 1;
 int langId = 1; //1-Arabic   2-English
 //Employee
 String empCode = "";
+bool? isManager;
+bool? isIt;
 String empUserCode = "A3ddsdwewewq";
 String empUserId = "Admin";
 String empName = "";

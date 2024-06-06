@@ -20,11 +20,15 @@ class SalesInvoiceReturnHApiService {
 
     Map data = {
       'Search':{
-        'CompanyCode': companyCode,
-        'BranchCode': branchCode,
+        "CompanyCode":1,
+        "BranchCode":1,
+        "langId": langId,
+        "empCode": empCode,
+        "isShowTransactionsByUser": true,
+        "isManager": isManager,
+        "isIt": isIt,
         'SalesInvoicesCase': 2
       }
-      // 'SalesInvoicesTypeCode': '1', //Sales Invoice Type
     };
 
     //print('B 2');
