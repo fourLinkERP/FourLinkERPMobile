@@ -47,7 +47,7 @@ class MainTransactions extends StatelessWidget {
         'sales_Qution'.tr(),
         'salesOrder'.tr(),
         'cash_receipt'.tr(),
-        'purchaseinvoice'.tr(),
+        'inventory_screen'.tr(),
         'receive_permission'.tr(),
         'shipping_permission'.tr()
 

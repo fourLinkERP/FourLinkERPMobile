@@ -667,6 +667,24 @@
     "You_haven't_registered_to_attend.": "انت لم تسجل حضور.",
     "You_have_already_registered_to_depart.": "لقد سجلت انصراف بالفعل.",
     "You_had_already_registered_to_attend.": "لقد سجلت حضور بالفعل.",
-    "total_net": "الصافي"
+    "total_net": "الصافي",
+    "do_you_want_to_confirm_attendance": "هل تريد تأكيد الحضور",
+    "ok": "نعم",
+    "cancel": "الغاء",
+    "confirm": "تأكيد",
+    "do_you_want_to_confirm_departure": "هل تريد تأكيد الانصراف",
+    "inventory_screen": "شاشة الجرد",
+    "lawyer": "المحامي",
+    "lawyer_case_follow_up_report": "استعلام و متابعة القضايا",
+    "case_type": "نوع القضية",
+    "case_num": "رقم القضية",
+    "last_degree": "اخر درجة",
+    "case_open_date": "تاريخ فتح القضية",
+    "last_session_date": "تاريخ اخر جلسة",
+    "client": "الموكل",
+    "latest_procedure": "اخر موقف",
+    "litigation_level": "درجة التقاضي",
+    "not_active": "غير نشط",
+    "display_qty :": "الكمية :"
 }
 

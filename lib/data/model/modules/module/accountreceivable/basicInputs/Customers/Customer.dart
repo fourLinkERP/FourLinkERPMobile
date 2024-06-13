@@ -7,6 +7,7 @@ class Customer {
   String? customerNameAra ;
   String?  customerNameEng;
   String? taxIdentificationNumber;
+  String? taxNumber;
   String? address;
   String? phone1;
   String? customerTypeCode;
@@ -23,6 +24,7 @@ class Customer {
     this.customerNameAra,
     this.customerNameEng,
     this.taxIdentificationNumber,
+    this.taxNumber,
     this.address,
     this.phone1,
     this.customerTypeCode,
@@ -42,6 +44,7 @@ class Customer {
       customerTypeCode: (json['customerTypeCode'] != null)?  json['customerTypeCode'] as String : "",
       cusGroupsCode: (json['cusGroupsCode'] != null)?  json['cusGroupsCode'] as String : "",
       taxIdentificationNumber: (json['taxIdentificationNumber'] != null)?  json['taxIdentificationNumber'] as String : "",
+      taxNumber: (json['taxNumber'] != null)?  json['taxNumber'] as String : "",
       address: (json['address'] != null)?  json['address'] as String : "",
       phone1: (json['phone1'] != null)?  json['phone1'] as String : "",
       email: (json['email'] != null)?  json['email'] as String : "",

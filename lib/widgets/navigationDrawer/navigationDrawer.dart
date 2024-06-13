@@ -12,6 +12,7 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../helpers/navigator.dart';
 import '../../theme/app_theme.dart';
 import '../../ui/auth/login/login_screen.dart';
+import '../../ui/module/Lawyer/lawyerCaseFollowUp/lawyerCaseFollowUpReport.dart';
 import '../../ui/module/requests/generalList/ReqistsList.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/Employees/employeeApiService.dart';
@@ -121,6 +122,13 @@ class _navigationDrawerState extends State<navigationDrawer> {
             icon: Icons.notifications_active,
             text: 'Notifications'.tr(),
             onTap: () => Navigator.pushReplacementNamed(context, pageRoutes.notification),
+          ),
+          createDrawerBodyItem(
+              icon: Icons.person,
+              text: 'lawyer'.tr(),
+              onTap: () =>{
+                Navigator.push(context, MaterialPageRoute(builder: (context) =>  FollowUpReport()),)
+              }
           ),
 
           createDrawerBodyItem(

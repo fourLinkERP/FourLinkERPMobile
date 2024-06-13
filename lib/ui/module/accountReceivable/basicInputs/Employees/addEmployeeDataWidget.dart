@@ -436,7 +436,7 @@ class _AddEmployeeDataWidgetState extends State<AddEmployeeDataWidget> {
                                 items: jobs,
                                 itemAsString: (Job u) => u.jobNameAra.toString(),
                                 onChanged: (value){
-                                  selectedCompanyCode =  value!.jobCode.toString();
+                                  selectedJobCode =  value!.jobCode.toString();
                                 },
 
                                 filterFn: (instance, filter){

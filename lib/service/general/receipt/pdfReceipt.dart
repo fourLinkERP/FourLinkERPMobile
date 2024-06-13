@@ -15,13 +15,23 @@ import 'package:flutter/material.dart' as mt;
 import '../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
 import '../../../utils/utils.dart';
 class pdfReceipt {
-  static Future<File> generate(Receipt receipt , Uint8List barcodeImageArray) async {
+  static Future<File> generate(Receipt receipt , Uint8List barcodeImageArray, Uint8List logoCompany) async {
     final pdf = pw.Document();
     var arabicFont =
     pw.Font.ttf(await rootBundle.load("assets/fonts/HacenTunisia.ttf"));
     //var barcodeImage = pw.RawImage(barcodeImageArray,60,60,orientation: )
 
-    MemoryImage? companyImage = pw.MemoryImage((await rootBundle.load('assets/images/deliciouslogo.jpg')).buffer.asUint8List(),);
+    //MemoryImage? companyImage = pw.MemoryImage(logoCompany);  // (await rootBundle.load('assets/images/deliciouslogo.jpg')).buffer.asUint8List(),
+    MemoryImage? companyImage;
+    try {
+      if (logoCompany.isNotEmpty) {
+        companyImage = pw.MemoryImage(logoCompany);
+      } else {
+        print('Error: logoCompany is empty.');
+      }
+    } catch (e) {
+      print('Error loading company logo: $e');
+    }
     final barcodeImage = pw.MemoryImage(barcodeImageArray  );
     //final barCodeImage = pw.MemoryImage((await rootBundle.load('assets/images/barCodeImage.jpg')).buffer.asUint8List(),);
 
@@ -179,11 +189,21 @@ class pdfReceipt {
     return PdfApi.saveDocument(name: 'Receipt.pdf', pdf: pdf);
   }
 
-  static Future<File> generateOffer(Receipt receipt) async {
+  static Future<File> generateOffer(Receipt receipt, Uint8List logoCompany) async {
     final pdf = pw.Document();
     var arabicFont =
     pw.Font.ttf(await rootBundle.load("assets/fonts/HacenTunisia.ttf"));
-    final companyImage = pw.MemoryImage((await rootBundle.load('assets/images/deliciouslogo.jpg')).buffer.asUint8List(),);
+
+    MemoryImage? companyImage;
+    try {
+      if (logoCompany.isNotEmpty) {
+        companyImage = pw.MemoryImage(logoCompany);
+      } else {
+        print('Error: logoCompany is empty.');
+      }
+    } catch (e) {
+      print('Error loading company logo: $e');
+    }
 
     pdfx.PdfPageFormat pageFormat = pdfx.PdfPageFormat.roll80.copyWith(height: 1000.0, width: 600.0);
 

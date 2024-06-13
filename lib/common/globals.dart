@@ -35,9 +35,14 @@ String apiPassword="";//Will Set On App Preference
 int companyCode = 1;//Will Set On App Preference
 int branchCode = 1; //Will Set On App Preference
 String companyName= '';  //'Test Company';
+String companyTaxID = '';
+String companyCommercialID = '';
+String companyAddress = '';
+String companyMobile = '';
+String companyLogo = '';
 String branchName= '';  //'Test Branch';
-String latitude ='';
-String longitude = '';
+String branchLatitude ='';
+String branchLongitude = '';
 // RequestTypeCode & TransactionId
 String requestTypeCode = "";
 String transactionId = "";

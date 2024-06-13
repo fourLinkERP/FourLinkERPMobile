@@ -23,7 +23,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
             "CompanyCode":1,
             "BranchCode":1,
             "langId": langId,
-            "empCode": empCode,
+            "empCode": empUserId,
             "isShowTransactionsByUser": true,
             "isManager": isManager,
             "isIt": isIt

@@ -74,6 +74,28 @@ void emitState(){
      {
        financialYearCode = (value != null)? value.toString() : "2024"
      });
+    await CacheHelper.getString('CompanyTaxId').then((value) =>
+    {
+      companyTaxID = (value != null)? value.toString() : ""
+    });
+    await CacheHelper.getString('CompanyCommercialID').then((value) =>
+    {
+      companyCommercialID = (value != null)? value.toString() : ""
+    });
+    await CacheHelper.getString('CompanyAddress').then((value) =>
+    {
+      companyAddress = (value != null)? value.toString() : ""
+    });
+    await CacheHelper.getString('CompanyMobile').then((value) =>
+    {
+      companyMobile = (value != null)? value.toString() : ""
+    });
+    await CacheHelper.getString('CompanyLogo').then((value) =>
+    {
+      companyLogo = (value != null)? value.toString() : ""
+    });
+    print('CompanyAddress Var1');
+    print(companyAddress);
 
     print('FinancialYearCode Var1');
     print(financialYearCode);

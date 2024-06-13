@@ -520,15 +520,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                         return false;
                                       }
                                     },
-                                    // dropdownDecoratorProps: const DropDownDecoratorProps(
-                                    //   dropdownSearchDecoration: InputDecoration(
-                                    //     labelStyle: TextStyle(
-                                    //       color: Colors.black,
-                                    //     ),
-                                    //     // icon: Icon(Icons.keyboard_arrow_down),
-                                    //   ),
-                                    // ),
-
                                   ),
 
                                 ),

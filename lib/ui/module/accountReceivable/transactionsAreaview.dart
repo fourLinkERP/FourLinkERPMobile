@@ -40,7 +40,7 @@ class _TransactionsAreaListViewState extends State<TransactionsAreaListView>
     'salesOrder'.tr(),
     'cash_receipt'.tr(),
     'generaltransaction'.tr(),
-    'purchaseinvoice'.tr(),
+    'inventory_screen'.tr(),
 
   ];
 

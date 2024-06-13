@@ -16,10 +16,12 @@ import '../../../../../common/globals.dart';
   Future<List<CashBankBranch>>  getCashBankBranches() async {
 
     Map data = {
-      'CompanyCode': companyCode,
-      "bankbranchCode": "1",
-      'EmpCode': empCode,
-      "IsWorkWithPerm":true
+      'Search': {
+        'CompanyCode': companyCode,
+        "bankbranchCode": "1",
+        'EmpCode': empCode,
+        "IsWorkWithPerm": true
+      }
     };
 
     final http.Response response = await http.post(

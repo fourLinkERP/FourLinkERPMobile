@@ -82,7 +82,7 @@ class _AttendanceAndDepartureListState extends State<AttendanceAndDepartureList>
             Expanded(
               child: InkWell(
                 onTap: () {
-                  _navigateToDepartureAddScreen(context, attendances[0]);
+                  _navigateToDepartureAddScreen(context, attendances.last);
                 },
                 child: Container(
                   height: 50,
@@ -273,10 +273,9 @@ class _AttendanceAndDepartureListState extends State<AttendanceAndDepartureList>
       getData();
     });
 
-
   }
   _navigateToDepartureAddScreen(BuildContext context, AttendanceAndDeparture departure) async {
-    if(_attendanceTime == null || _attendanceTime!.isEmpty){
+    if((departure.fromTime == null || departure.fromTime!.isEmpty) && departure.trxDate != DateTime.now().toString()){
       _showModernAlertDialog(context, "Error", "You_haven't_registered_to_attend.".tr());
       return;
     }
@@ -288,8 +287,8 @@ class _AttendanceAndDepartureListState extends State<AttendanceAndDepartureList>
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddDepartureDataWidget(departure),)).then((value) {
       getData();
     });
-
   }
+
   bool _validateDates() {
     String todayDate = _todayTrxDateController.text;
     String attendanceDate = _attendanceTrxDateController.text;
@@ -333,14 +332,14 @@ class _AttendanceAndDepartureListState extends State<AttendanceAndDepartureList>
           actions: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.red, // background
-                onPrimary: Colors.white, // foreground
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red, // foreground
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
               ),
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text("OK"),
+              child: Text("ok".tr()),
             ),
           ],
         );

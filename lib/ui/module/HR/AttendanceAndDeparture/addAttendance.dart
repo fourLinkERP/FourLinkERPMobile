@@ -9,6 +9,7 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:intl/intl.dart';
 import '../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import '../../../../helpers/toast.dart';
+import 'dart:math' show cos, sqrt, asin;
 
 EmployeeApiService _employeeApiService = EmployeeApiService();
 
@@ -45,6 +46,8 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
   void initState() {
     super.initState();
 
+    print("branchLat: " + branchLatitude);
+    print("branchLong: " + branchLongitude);
     getUserLocation();
 
     _timeStream = Stream<DateTime>.periodic(Duration(seconds: 1), (int count) {
@@ -64,6 +67,14 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
   DateTime get pickedDate => DateTime.now();
   String _formatTime(DateTime time) {
     return "${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}:${time.second.toString().padLeft(2, '0')}";
+  }
+  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    var p = 0.017453292519943295; // Pi/180
+    var a = 0.5 - cos((lat2 - lat1) * p)/2 +
+        cos(lat1 * p) * cos(lat2 * p) *
+            (1 - cos((lon2 - lon1) * p))/2;
+    print("distance = " + (12742 * asin(sqrt(a)) * 1000).toString());
+    return 12742 * asin(sqrt(a)) * 1000;
   }
 
   @override
@@ -96,8 +107,14 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("${"facePrintLocation".tr()} : " + "المقر الفرعي - القاهرة - مصر" ,
+                Text("${"facePrintLocation".tr()} : ",
                   style: const TextStyle(
+                    color: Color.fromRGBO(16, 46, 144, 1),   //Color.fromRGBO(144, 16, 72, 1),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                  ), ),
+                const Text("المقر الفرعي - القاهرة - مصر",
+                  style: TextStyle(
                     color: Color.fromRGBO(16, 46, 144, 1),   //Color.fromRGBO(144, 16, 72, 1),
                     fontWeight: FontWeight.bold,
                     fontSize: 20.0,
@@ -117,81 +134,76 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
               ],
             ),
             const SizedBox(height: 30,),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      buildButtonAttendRow("حضور   ATTEND ", Colors.green, Colors.lightGreen.withOpacity(0.3) ,_getCurrentTime),
-                      buildButtonDepartureRow("إنصراف  DEPART ", Colors.red, Colors.transparent),
-                    ],
+                Container(
+                  height: 220,
+                  width: 200,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    color: Colors.black12,
                   ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Container(
-                    height: 200,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey),
-                      color: Colors.black12,
-                    ),
-                    child: Center(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Image.asset('assets/fitness_app/galleryIcon.png'),
+                  child: Center(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
                       ),
+                      child: Image.asset('assets/fitness_app/galleryIcon.png'),
                     ),
                   ),
                 ),
+                const SizedBox(height: 40),
+                SizedBox(
+                  //height: 50,
+                    width: 200,
+                    child: buildButtonAttendRow("حضور        ATTEND ", Colors.green, Colors.lightGreen.withOpacity(0.3) ,checkAttendance)),
               ],
             ),
             const SizedBox(height:100),
-            Center(
-              child: SizedBox(
-                height: 60,
-                width: 120,
-                child: InkWell(
-                  onTap: () {
-                    saveAttendance(context);
-                  },
-                  child: Container(
-                    height: 50,
-                    width: 70,
-                    decoration: BoxDecoration(
-                        color: Colors.grey.shade300,
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.green,
-                            spreadRadius: 1,
-                            blurRadius: 8,
-                            offset: Offset(4, 4),
-                          ),
-                          BoxShadow(
-                            color: Colors.white,
-                            spreadRadius: 2,
-                            blurRadius: 8,
-                            offset: Offset(-4, -4),
-                          )
-                        ]
-                    ),
-                    child: Center(
-                      child: Text( "save".tr(),
-                        style: const TextStyle(
-                          color: Colors.green,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),          ],
+            // Center(
+            //   child: SizedBox(
+            //     height: 60,
+            //     width: 120,
+            //     child: InkWell(
+            //       onTap: () {
+            //         saveAttendance(context);
+            //       },
+            //       child: Container(
+            //         height: 50,
+            //         width: 70,
+            //         decoration: BoxDecoration(
+            //             color: Colors.grey.shade300,
+            //             borderRadius: BorderRadius.circular(15),
+            //             boxShadow: const [
+            //               BoxShadow(
+            //                 color: Colors.green,
+            //                 spreadRadius: 1,
+            //                 blurRadius: 8,
+            //                 offset: Offset(4, 4),
+            //               ),
+            //               BoxShadow(
+            //                 color: Colors.white,
+            //                 spreadRadius: 2,
+            //                 blurRadius: 8,
+            //                 offset: Offset(-4, -4),
+            //               )
+            //             ]
+            //         ),
+            //         child: Center(
+            //           child: Text( "save".tr(),
+            //             style: const TextStyle(
+            //               color: Colors.green,
+            //               fontWeight: FontWeight.bold,
+            //               fontSize: 18,
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+          ],
         ),
       ),
     );
@@ -226,7 +238,7 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
       },
       child: Container(
         height: 45,
-        width: 160,
+        width: 190,
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         decoration: BoxDecoration(
           color: _backgroundColorAttend,
@@ -235,7 +247,7 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
         ),
         child: Text(
           text,
-          style: TextStyle(color: textColor, fontSize: 17.0, fontWeight: FontWeight.bold),
+          style: TextStyle(color: textColor, fontSize: 18.0, fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -251,7 +263,7 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         decoration: BoxDecoration(
           color: _backgroundColorDepart,
-          border: Border.all(color: Colors.black45),  // Colors.black45
+          border: Border.all(color: Colors.black45),
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Text(
@@ -266,26 +278,45 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
   late PermissionStatus permissionStatus;
   late LocationData locationData;
 
+  // void getUserLocation() async {
+  //   Location location = Location();
+  //   bool serviceEnabled;
+  //   PermissionStatus permissionGranted;
+  //
+  //   serviceEnabled = await location.serviceEnabled();
+  //   if (!serviceEnabled) {
+  //     serviceEnabled = await location.requestService();
+  //     if (!serviceEnabled) {
+  //       return;
+  //     }
+  //   }
+  //
+  //   permissionGranted = await location.hasPermission();
+  //   if (permissionGranted == PermissionStatus.denied) {
+  //     permissionGranted = await location.requestPermission();
+  //     if (permissionGranted != PermissionStatus.granted) {
+  //       return;
+  //     }
+  //   }
+  //
+  //   LocationData locationData = await location.getLocation();
+  //   print("latitude: ${locationData.latitude}");
+  //   print("longitude: ${locationData.longitude}");
+  //
+  // }
+
   void getUserLocation() async {
     var isPermissionGranted = await isPremissionGranted();
     var isServiceEnabled = await isServiceEnable();
 
     if (!isPermissionGranted) return;
-
     if (!isServiceEnabled) return;
-
     locationData = await location.getLocation();
 
     print(" latitude: ${locationData.latitude}");
     print("longitude: ${locationData.longitude}");
 
-    location.onLocationChanged.listen((locationdata) {
-      locationData = locationdata;
-      print(" latitude: ${locationData.latitude}");
-      print("longitude: ${locationData.longitude}");
-    });
   }
-
   Future<bool> isPremissionGranted() async {
     var permissionStatus = await location.hasPermission();
 
@@ -317,18 +348,88 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
   }
   saveAttendance(BuildContext context) async
   {
-
     if (_currentTime == null || _currentTime.isEmpty) {
       FN_showToast(context, 'please_set_attend'.tr(), Colors.black);
       return;
     }
+    LocationData locationData = await Location().getLocation();
+    double employeeLat = locationData.latitude ?? 0.0;
+    double employeeLon = locationData.longitude ?? 0.0;
 
-    await api.createAttendance(context, AttendanceAndDeparture(
+    double branchLat = double.parse(branchLatitude);
+    double branchLon = double.parse(branchLongitude);
 
-      empCode: empCode,
-      trxDate: _todayTrxDateController.text,
-      fromTime: _currentTime,
-    ));
-    Navigator.pop(context,true );
+    double distance = _calculateDistance(employeeLat, employeeLon, branchLat, branchLon);
+
+    if (distance <= 50) {
+        AttendanceAndDeparture attendance = AttendanceAndDeparture(
+        empCode: empCode,
+        trxDate: _todayTrxDateController.text,
+        fromTime: _currentTime,
+      );
+      await api.createAttendance(context, attendance);
+      Navigator.pop(context,true );
+    }
+    else{
+      FN_showToast(context, "You are not within the 50-meter radius of the branch location", Colors.red);
+      return;
+    }
+    //Navigator.pop(context,true );
+  }
+  void checkAttendance(){
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            title: Row(
+              children: [
+                const Icon(Icons.warning, color: Colors.green),
+                const SizedBox(width: 8),
+                Text("Confirm".tr()),
+              ],
+            ),
+            content: Text(
+              "do_you_want_to_confirm_attendance".tr(),
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black54,
+              ),
+            ),
+            actions: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green, // background
+                  onPrimary: Colors.white, // foreground
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () async{
+                  _getCurrentTime();
+                  await saveAttendance(context);
+                },
+                child: Text("ok".tr()),
+              ),
+              const SizedBox(width: 100,),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red, // background
+                  onPrimary: Colors.white, // foreground
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text("cancel".tr()),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

@@ -66,30 +66,5 @@ class ReceiptHeader {
 
     );
   }
-
-  //@override
-  // String toString() {
-  //   return 'Trans{id: $id, name: $trxSerialCode }';
-  // }
 }
-
-
-
-
-
-
-// Our demo Branchs
-
-// List<Customer> demoBranches = [
-//   Customer(
-//       id: 1,
-//       name: "Maadi - Branch",
-//       description: descriptionData
-//   ),
-//   Customer(
-//       id: 2,
-//       name: "Tahrir - Branch",
-//       description: descriptionData
-//   )
-// ];
 

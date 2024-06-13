@@ -33,6 +33,7 @@ class SalesOfferH {
   String?  tafqitNameEnglish ;
   String?  tafqeetName ;
   String?  taxIdentificationNumber ;
+  String?  taxNumber ;
   String? storeCode;
   // String? address;
   // String? Phone1;
@@ -61,6 +62,7 @@ class SalesOfferH {
     this.totalValue,
     this.totalAfterDiscount,
     this.totalBeforeTax,
+    this.taxNumber,
     this.totalNet,
     this.tafqitNameArabic,
     this.tafqitNameEnglish,
@@ -93,6 +95,7 @@ class SalesOfferH {
       tafqeetName: (json['tafqeetName'] != null) ? json['tafqeetName'] as String : "",
       storeCode: (json['storeCode'] != null) ? json['storeCode'] as String : "1",
       taxIdentificationNumber: (json['taxIdentificationNumber'] != null) ? json['taxIdentificationNumber'] as String : "",
+      taxNumber: (json['taxNumber'] != null) ? json['taxNumber'] as String : "",
       // offerDate: json['offerDate'] as String,
 
 

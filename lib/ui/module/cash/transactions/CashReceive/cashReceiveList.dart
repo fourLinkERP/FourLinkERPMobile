@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/cubit/app_states.dart';
@@ -7,6 +9,7 @@ import 'package:fourlinkmobileapp/data/model/modules/module/cash/transactions/ca
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/service/general/cash/cash_receive_report.dart';
+import 'package:fourlinkmobileapp/service/module/administration/basicInputs/compayApiService.dart';
 import 'package:fourlinkmobileapp/service/module/cash/transactions/CashReceives/cashReceiveApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/cash/transactions/CashReceive/editCashReceiveDataWidget.dart';
@@ -26,9 +29,7 @@ import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vend
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
 
 
-
 CashReceiveApiService _apiService=new CashReceiveApiService();
-//Get CashReceive List
 
 class CashReceiveListPage extends StatefulWidget {
   const CashReceiveListPage({ Key? key }) : super(key: key);
@@ -51,6 +52,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
     // TODO: implement initState
     print('okkkkkkkkkkk');
     getData();
+
     super.initState();
     setState(() {
       _founded = _cashReceives!;
@@ -324,13 +326,13 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
       receive.receiveTitle=langId==1?' سند قبض':' سند قبض';
       receive.receiveTitleDesc=langId==1?'Receipt Voucher':'Receipt Voucher';
 
-      receive.companyName=langId==1?' مؤسسة ركن كريز للحلويات':' مؤسسة ركن كريز للحلويات';
-      receive.companyAddress=langId==1?'الرياض - ص ب 14922 ':' الرياض - ص ب 14922';
-      receive.companyCommercial= langId==1?' 450714529009 ':' 450714529009 ';
-      receive.companyVat=langId==1?' 302211485800003 ':' 302211485800003';
+      receive.companyName= langId == 1 ? companyName : companyName;
+      receive.companyAddress= langId==1?  companyAddress : companyAddress;
+      receive.companyCommercial= langId==1?  companyCommercialID  : companyCommercialID;
+      receive.companyVat= langId==1?  companyTaxID : companyTaxID;
 
 
-      final pdfFile = await CashReceiveReport.generate(receive);
+      final pdfFile = await CashReceiveReport.generate(receive, _base64StringToUint8List(companyLogo));
       PdfApi.openFile(pdfFile);
 
       //Get Sales Invoice Details To Create List Of Items
@@ -388,7 +390,16 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
       FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
     }
   }
-
+  Uint8List _base64StringToUint8List(String base64String) {
+    try {
+      Uint8List decodedBytes = base64Decode(base64String).buffer.asUint8List();
+      print('Decoded logoCompany length: ${decodedBytes.length}');
+      return decodedBytes;
+    } catch (e) {
+      print('Error decoding base64String: $e');
+      return Uint8List(0);
+    }
+  }
 
 
    Widget BuildcashReceives(){

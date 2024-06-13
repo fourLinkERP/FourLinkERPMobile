@@ -42,14 +42,47 @@ import 'package:flutter/cupertino.dart';
       }
       print('Company 3');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => Company.fromJson(data))
-      //     .toList();
+
     } else {
       print('Company Failed');
       throw "Failed to load company list";
     }
   }
+
+  Future<Company> getCompany() async {
+
+    String searchApi= baseUrl.toString() + '/api/v1/companies/loginsearch';
+
+    Map data = {};
+
+    final http.Response response = await http.post(
+      Uri.parse(searchApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(data),
+    );
+
+
+    if (response.statusCode == 200) {
+
+      List<dynamic> data = jsonDecode(response.body)['data'];
+      List<Company> list = [];
+      Company  comp ;
+      if (data != null) {
+        list = data.map((item) => Company.fromJson(item)).toList();
+      }
+      print('Employee 3');
+      comp= list[0];
+      return  comp;
+
+    } else {
+      print('Company Failed');
+      throw "Failed to load company list";
+    }
+  }
+
   Future<bool> checkApiValidity(String apiUrl) async {
     Map data = {
     };

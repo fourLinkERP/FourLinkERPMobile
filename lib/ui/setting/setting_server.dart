@@ -120,25 +120,41 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                     width: 80,
                                     child: ElevatedButton(
                                       onPressed: () async {
-                                        searchCompanies = _APiController.text + '/api/v1/companies/loginsearch';
-                                        print("Entered API: " + searchCompanies);
-                                        Future<List<Company>> futureBranch = _companyApiService.getCompanies(searchCompanies).then((data) {
-                                          companies = data;
+                                        try {
+                                          searchCompanies = _APiController.text + '/api/v1/companies/loginsearch';
+                                          print("Entered API: $searchCompanies");
 
-                                          return companies;
-                                        }, onError: (e) {
-                                          print(e);
-                                        });
-                                        bool result = await _companyApiService.checkApiValidity(searchCompanies);
-                                        if (result == true) {
+                                          // Fetch the companies
+                                          List<Company>? futureCompany;
+                                          try {
+                                            futureCompany = await _companyApiService.getCompanies(searchCompanies);
+                                          } catch (e) {
+                                            print("Error fetching companies: $e");
+                                            futureCompany = null; // or handle the error appropriately
+                                          }
+
+                                          if (futureCompany != null) {
+                                            companies = futureCompany;
+                                          } else {
+                                            print("Company list is null");
+                                            companies = []; // Handle the scenario where fetching companies failed
+                                          }
+
+                                          // Check API validity
+                                          bool result = await _companyApiService.checkApiValidity(searchCompanies);
                                           setState(() {
-                                            isLinked = true; // Enable the dropdown
+                                            isLinked = result;
                                           });
-                                        } else {
-                                          setState(() {
-                                            isLinked = false; // Disable the dropdown
+
+                                          if (!result) {
                                             FN_showToast(context, "Server error, please check link", Colors.red);
+                                          }
+                                        } catch (e) {
+                                          print("Unhandled error: $e");
+                                          setState(() {
+                                            isLinked = false;
                                           });
+                                          FN_showToast(context, "Unexpected error occurred", Colors.red);
                                         }
                                       },
                                       style: ElevatedButton.styleFrom(
@@ -191,10 +207,15 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
 
                                   selectedCompanyCode =0;
                                   if(value !!= null && value.companyCode != null)
-                                    {
-                                      selectedCompanyCode = int.parse(value!.companyCode.toString());
-                                      selectedCompanyName = value.companyNameAra!;
-                                    }
+                                  {
+                                    selectedCompanyCode = int.parse(value.companyCode.toString());
+                                    selectedCompanyName = value.companyNameAra!;
+                                    CacheHelper.putString('CompanyTaxId', value.taxID!);
+                                    CacheHelper.putString('CompanyCommercialID', value.commercialID!);
+                                    CacheHelper.putString('CompanyAddress', value.address!);
+                                    CacheHelper.putString('CompanyMobile', value.mobile!);
+                                    CacheHelper.putString('CompanyLogo', value.logoImage!);
+                                  }
 
                                   //CacheHelper.putString('companyCode', selectedCompanyCode);
                                 },

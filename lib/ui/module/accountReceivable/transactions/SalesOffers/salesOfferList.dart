@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:core';
 import 'dart:io';
 import 'dart:typed_data';
@@ -9,6 +10,7 @@ import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/SalesOffers/salesOfferDApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/SalesOffers/salesOfferHApiService.dart';
+import 'package:fourlinkmobileapp/service/module/administration/basicInputs/compayApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -31,7 +33,7 @@ import 'package:intl/intl.dart';
 
 SalesOfferHApiService _apiService= SalesOfferHApiService();
 SalesOfferDApiService _apiDService= SalesOfferDApiService();
-//Get SalesOfferH List
+
 
 class SalesOfferHListPage extends StatefulWidget {
   const SalesOfferHListPage({ Key? key }) : super(key: key);
@@ -52,6 +54,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
   @override
   void initState() {
     getData();
+
     super.initState();
 
     setState(() {
@@ -409,24 +412,24 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
         String invoiceDate =DateFormat('yyyy-MM-dd hh:mm').format(DateTime.parse(offerH.offerDate.toString()));
         final receipt = Receipt(   //ToDO
             receiptHeader: ReceiptHeader(
-                companyName: langId==1?'مؤسسة ركن كريز للحلويات':' مؤسسة ركن كريز للحلويات',
+                companyName: langId == 1 ? companyName : companyName,
                 companyInvoiceTypeName: (offerH.offerTypeCode == "1") ?'عرض سعر':'عرض سعر',
                 companyInvoiceTypeName2: langId==1?'Simplified Tax Offer':'Simplified Tax Offer',
-                companyVatNumber: langId==1? "الرقم الضريبي  " + '302211485800003':'VAT No  302211485800003',
-                companyCommercialName: langId==1? 'ترخيص رقم 450714529009':'Registeration No 450714529009',
+                companyVatNumber: langId==1? "الرقم الضريبي  " + companyTaxID : 'Vat No' + companyTaxID,   //'302211485800003':'VAT No  302211485800003',
+                companyCommercialName: langId==1? 'ترخيص رقم ' + companyCommercialID  :'Registeration No '+ companyCommercialID,
                 companyInvoiceNo: langId==1?'رقم عرض السعر ' + offerH.offerSerial.toString() :'Offer No  ' + offerH.offerSerial.toString(),
                 companyDate: langId==1? "التاريخ  " + invoiceDate  : "Date : " + invoiceDate ,
-                companyAddress: langId==1?'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
-                companyPhone: langId==1?'Tel No :+966539679540':'Tel No :+966539679540',
+                companyAddress: langId==1? 'العنوان : ' + companyAddress :'العنوان : ' + companyAddress ,        //'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
+                companyPhone: langId==1? 'Tel No : '+ companyMobile :'Tel No :' + companyMobile,
                 customerName: langId==1? "العميل : " + offerH.customerName.toString() : "Customer : " + offerH.customerName.toString() ,
-                customerTaxNo:  langId==1? "الرقم الضريبي  " + offerH.taxIdentificationNumber.toString() :'VAT No ' + offerH.taxIdentificationNumber.toString(),
+                customerTaxNo:  langId==1? "الرقم الضريبي  " + offerH.taxNumber.toString() :'VAT No ' + offerH.taxNumber.toString(),
                 salesInvoicesTypeName:  (offerH.offerTypeCode.toString() == "1") ?(langId==1?"عرض سعر" : "Sales offer" ) : (langId==1?"عرض سعر" : "Sales offer" )  ,
                 tafqeetName : tafqeetName
             ),
             invoice: invoice
         );
 
-        final pdfFile = await pdfReceipt.generateOffer(receipt);
+        final pdfFile = await pdfReceipt.generateOffer(receipt, _base64StringToUint8List(companyLogo));
         PdfApi.openFile(pdfFile);
       }
       else{
@@ -435,6 +438,16 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
     else
     {
       FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
+    }
+  }
+  Uint8List _base64StringToUint8List(String base64String) {
+    try {
+      Uint8List decodedBytes = base64Decode(base64String).buffer.asUint8List();
+      print('Decoded logoCompany length: ${decodedBytes.length}');
+      return decodedBytes;
+    } catch (e) {
+      print('Error decoding base64String: $e');
+      return Uint8List(0);
     }
   }
 

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/painting/image_provider.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountPayable/basicInputs/Vendors/vendor.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/cash/transactions/cashReceives/cashReceive.dart';
@@ -14,12 +13,21 @@ import '../../../data/model/modules/module/accountReceivable/transactions/invoic
 import '../../../utils/utils.dart';
 
 class CashReceiveReport {
-  static Future<File> generate(CashReceive cashReceive) async {
+  static Future<File> generate(CashReceive cashReceive, Uint8List logoCompany) async {
     final pdf = Document();
     var arabicFont =
     pw.Font.ttf(await rootBundle.load("assets/fonts/HacenTunisia.ttf"));
 
-    final companyImage = pw.MemoryImage((await rootBundle.load('assets/images/deliciouslogo.jpg')).buffer.asUint8List(),);
+    MemoryImage? companyImage;
+    try {
+      if (logoCompany.isNotEmpty) {
+        companyImage = pw.MemoryImage(logoCompany);
+      } else {
+        print('Error: logoCompany is empty.');
+      }
+    } catch (e) {
+      print('Error loading company logo: $e');
+    }
 
 
     pdf.addPage(MultiPage(
@@ -28,7 +36,7 @@ class CashReceiveReport {
         base: arabicFont,
       ),
       build: (context) => [
-        buildHeader(cashReceive,companyImage),
+        buildHeader(cashReceive,companyImage!),
         SizedBox(height: 3 * PdfPageFormat.cm),
         buildTitle(cashReceive),
         Divider(),

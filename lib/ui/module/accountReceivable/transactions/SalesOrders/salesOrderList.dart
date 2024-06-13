@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/transactions/salesOrders/salesOrderD.dart';
@@ -8,6 +10,7 @@ import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/SalesOrders/salesOrderDApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/SalesOrders/salesOrderHApiService.dart';
+import 'package:fourlinkmobileapp/service/module/administration/basicInputs/compayApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/addSalesOrderDataWidget.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/detailSalesOrderWidget.dart';
@@ -29,7 +32,6 @@ import '../../../../../service/general/Pdf/pdf_api.dart';
 
 SalesOrderHApiService _apiService=new SalesOrderHApiService();
 SalesOrderDApiService _apiDService=new SalesOrderDApiService();
-//Get SalesOrderH List
 
 class SalesOrderHListPage extends StatefulWidget {
   const SalesOrderHListPage({ Key? key }) : super(key: key);
@@ -58,6 +60,20 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
       });
     });
     getData();
+    // _companyApiService.getCompany().then((data) {
+    //   companyTaxID = data.taxID!;
+    //   companyCommercialID = data.commercialID!;
+    //   companyAddress = data.address!;
+    //   companyMobile = data.mobile!;
+    //   companyLogo = data.logoImage!;
+    //   print("companyLogo : " + companyLogo);
+    //
+    //   setState(() {
+    //
+    //   });
+    // }, onError: (e) {
+    //   print(e);
+    // });
     super.initState();
 
 
@@ -396,24 +412,24 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
         String invoiceDate =DateFormat('yyyy-MM-dd hh:mm').format(DateTime.parse(orderH.sellOrdersDate.toString()));
         final receipt = Receipt(   //ToDO
             receiptHeader: ReceiptHeader(
-                companyName: langId==1?'مؤسسة ركن كريز للحلويات':' مؤسسة ركن كريز للحلويات',
+                companyName: langId == 1 ? companyName : companyName,
                 companyInvoiceTypeName: (orderH.sellOrdersTypeCode == "1") ?'أمر بيع':'أمر بيع',
                 companyInvoiceTypeName2: langId==1?'Simplified Tax Order':'Simplified Tax Order',
-                companyVatNumber: langId==1? "الرقم الضريبي  " + '302211485800003':'VAT No  302211485800003',
-                companyCommercialName: langId==1? 'ترخيص رقم 450714529009':'Registeration No 450714529009',
+                companyVatNumber: langId==1? "الرقم الضريبي  " + companyTaxID : 'Vat No' + companyTaxID,   //'302211485800003':'VAT No  302211485800003',
+                companyCommercialName: langId==1? 'ترخيص رقم ' + companyCommercialID  :'Registeration No '+ companyCommercialID,
                 companyInvoiceNo: langId==1?'رقم أمر البيع ' + orderH.sellOrdersSerial.toString() :'Order No  ' + orderH.sellOrdersSerial.toString(),
                 companyDate: langId==1? "التاريخ  " + invoiceDate  : "Date : " + invoiceDate ,
-                companyAddress: langId==1?'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
-                companyPhone: langId==1?'Tel No :+966539679540':'Tel No :+966539679540',
+                companyAddress: langId==1? 'العنوان : ' + companyAddress :'العنوان : ' + companyAddress ,        //'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
+                companyPhone: langId==1? 'Tel No : '+ companyMobile :'Tel No :' + companyMobile,
                 customerName: langId==1? "العميل : " + orderH.customerName.toString() : "Customer : " + orderH.customerName.toString() ,
-                //customerTaxNo:  langId==1? "الرقم الضريبي  " + orderH.taxIdentificationNumber.toString() :'VAT No ' + orderH.taxIdentificationNumber.toString(),
+                customerTaxNo:  langId==1? "الرقم الضريبي  " + orderH.taxNumber.toString() :'VAT No ' + orderH.taxNumber.toString(),
                 salesInvoicesTypeName:  (orderH.sellOrdersTypeCode.toString() == "1") ?(langId==1?"أمر بيع" : "Sales order" ) : (langId==1?"أمر بيع" : "Sales order" )  ,
                 tafqeetName : tafqeetName
             ),
             invoice: invoice
         );
 
-        final pdfFile = await pdfReceipt.generateOffer(receipt);
+        final pdfFile = await pdfReceipt.generateOffer(receipt, _base64StringToUint8List(companyLogo));
         PdfApi.openFile(pdfFile);
       }
       else{
@@ -425,7 +441,16 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     }
   }
 
-
+  Uint8List _base64StringToUint8List(String base64String) {
+    try {
+      Uint8List decodedBytes = base64Decode(base64String).buffer.asUint8List();
+      print('Decoded logoCompany length: ${decodedBytes.length}');
+      return decodedBytes;
+    } catch (e) {
+      print('Error decoding base64String: $e');
+      return Uint8List(0);
+    }
+  }
 
   Widget BuildsalesOrders(){
     if(AppCubit.get(context).Conection==false){

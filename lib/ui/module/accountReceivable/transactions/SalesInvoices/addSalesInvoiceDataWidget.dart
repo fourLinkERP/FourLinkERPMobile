@@ -366,7 +366,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                       lastDate: DateTime(2050));
 
                                   if (pickedDate != null) {
-                                    _salesInvoicesDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                    _salesInvoicesDateController.text = DateFormat('yyyy-MM-ddTHH:mm:ss').format(pickedDate);
                                   }
                                 },
                                 onSaved: (val) {
@@ -1033,8 +1033,8 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                               color: Colors.white,
                               child:   ZatcaFatoora.simpleQRCode(
                                 fatooraData: ZatcaFatooraDataModel(
-                                  businessName: companyTitle,
-                                  vatRegistrationNumber: companyVatNo,
+                                  businessName: companyName,
+                                  vatRegistrationNumber: companyTaxID,
                                   date:   DateTime.parse(_salesInvoicesDateController.text),
                                   totalAmountIncludingVat: totalPrice,
                                   vat: totalTax,
@@ -1400,7 +1400,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
 //Save
   saveInvoice(BuildContext context) async {
-    print('323434');
     //Items
     if (SalesInvoiceDLst.length <= 0) {
       FN_showToast(context, 'please_Insert_One_Item_At_Least'.tr(), Colors.black);
@@ -1454,7 +1453,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       salesInvoicesCase: 1,
       salesInvoicesSerial: _salesInvoicesSerialController.text,
       salesInvoicesTypeCode: selectedTypeValue.toString(),
-      salesInvoicesDate: _salesInvoicesDateController.text,
+      salesInvoicesDate: DateFormat('yyyy-MM-ddTHH:mm').format(DateTime.now()),
       customerCode: selectedCustomerValue.toString(),
       currencyRate: 1,
       totalQty: (_totalQtyController.text.isNotEmpty) ? _totalQtyController.text.toDouble() : 0,
@@ -1587,7 +1586,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     });
 
     //Items
-    Future<List<Item>> Items = _itemsApiService.getReturnItems().then((data) {
+    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
       items = data;
 
       getItemData();

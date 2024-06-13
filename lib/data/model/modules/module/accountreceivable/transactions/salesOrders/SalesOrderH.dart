@@ -14,6 +14,7 @@ class SalesOrderH {
   double? totalQty ;
   double? totalDiscount ;
   double? totalTax ;
+  String? taxNumber;
   int? rowsCount;
   double? invoiceDiscountPercent;
   double? invoiceDiscountValue;
@@ -40,6 +41,7 @@ class SalesOrderH {
     this.totalDiscount ,
     this.totalTax ,
     this.rowsCount,
+    this.taxNumber,
     this.invoiceDiscountPercent,
     this.invoiceDiscountValue,
     this.totalValue,
@@ -71,6 +73,7 @@ class SalesOrderH {
       totalNet: (json['totalNet'] !=null) ? json['totalNet'].toDouble() : 0,
       tafqitNameArabic: (json['tafqitNameArabic'] != null) ? json['tafqitNameArabic'] as String : "",
       tafqitNameEnglish: (json['tafqitNameEnglish'] != null) ? json['tafqitNameEnglish'] as String : "",
+      taxNumber: (json['taxNumber'] != null) ? json['taxNumber'] as String : "",
       // salesManCode: json['salesManCode'] as String,
       // taxGroupCode: json['taxGroupCode'] as String,
       // cusTypesCode: json['cusTypesCode'] as String,

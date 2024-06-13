@@ -52,6 +52,41 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
       throw "Failed to load Employee list";
     }
   }
+
+  Future<List<Employee>>  getLawyers() async {
+
+    Map data = {
+      'CompanyCode': companyCode,
+      'BranchCode': branchCode,
+      'IsLawyer': true
+    };
+
+    print('Lawyer 1');
+    final http.Response response = await http.post(
+      Uri.parse(searchApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(data),
+    );
+
+
+    if (response.statusCode == 200) {
+      print('Lawyer 2');
+      List<dynamic> data = jsonDecode(response.body)['data'];
+      List<Employee> list = [];
+      if (data != null) {
+        list = data.map((item) => Employee.fromJson(item)).toList();
+      }
+      print('Lawyer 3');
+      return  list;
+    } else {
+      print('Lawyer Failed');
+      throw "Failed to load lawyer list";
+    }
+  }
+
   Future<List<Employee>>  getEmployeesFiltrated(String employeeCode) async {
     Map data = {
       'Search': {

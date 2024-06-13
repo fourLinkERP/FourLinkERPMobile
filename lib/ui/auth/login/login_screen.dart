@@ -254,9 +254,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                           //print(value!.id);
                                           branchCodeSelectedValue =
                                               value!.branchCode.toString();
-                                          branchCode = int.parse(
-                                              branchCodeSelectedValue
-                                                  .toString());
+                                          branchCode = int.parse(branchCodeSelectedValue.toString());
+                                          branchLongitude = value.longitude!;
+                                          branchLatitude = value.latitude!;
                                           print('current Branch Code Is :' + branchCode.toString());
                                         },
 
@@ -441,25 +441,22 @@ class _LoginScreenState extends State<LoginScreen> {
                               //     ),
                               //   ])),
                               // ),
-                              Container(
-                                margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
-                                alignment: Alignment.center,
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    //final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                    //sharedPreferences.setString('email', _emailController.text);
-                                    //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-                                    startQuickLogin();
-                                  },
-                                  child: Text(
-                                    '<- الدخول السريع'.tr(),
-                                    style: const TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              // Container(
+                              //   margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
+                              //   alignment: Alignment.center,
+                              //   child: GestureDetector(
+                              //     onTap: () async {
+                              //       startQuickLogin();
+                              //     },
+                              //     child: Text(
+                              //       '<- الدخول السريع'.tr(),
+                              //       style: const TextStyle(
+                              //         color: Colors.red,
+                              //         fontWeight: FontWeight.bold,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
 
                               Align(
                                 alignment: FractionalOffset.bottomCenter,
@@ -657,9 +654,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //Start Login
   startLogin(bool isLive) async {
     print(branchCodeSelectedValue);
-    if (branchCodeSelectedValue
-        .toString()
-        .isEmpty || branchCodeSelectedValue == null) {
+    if (branchCodeSelectedValue.toString().isEmpty || branchCodeSelectedValue == null) {
       FN_showToast(context, 'please_select_branch'.tr(), Colors.black);
       return;
     }

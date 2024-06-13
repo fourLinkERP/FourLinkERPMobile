@@ -31,7 +31,7 @@ class _TransactionsAreaListViewState extends State<TransactionsAreaListView>
 
   List<String> areaListDataTitle = <String>[
     'salesinvoice'.tr(),
-    'purchaseinvoice'.tr(),
+    'inventory_screen'.tr(),
     'stocktransaction'.tr(),
     'generaltransaction'.tr(),
   ];

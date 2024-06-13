@@ -124,6 +124,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
               customerNameAra: _customerNameAraController.text ,
               customerNameEng: _customerNameEngController.text ,
               taxIdentificationNumber: _taxIdentificationNumberController.text ,
+              taxNumber: _taxIdentificationNumberController.text ,
               phone1: _phone1Controller.text ,
               address: _addressController.text,
               customerTypeCode: customerTypeSelectedValue,

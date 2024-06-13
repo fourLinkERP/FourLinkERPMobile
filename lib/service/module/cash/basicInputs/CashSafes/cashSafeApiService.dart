@@ -16,12 +16,15 @@ import '../../../../../common/globals.dart';
   Future<List<CashSafe>>  getCashSafes() async {
 
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode,
-      'EmpCode': empCode,
-      "IsWorkWithPerm":true
+      'Search': {
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode,
+        'EmpCode': empCode,
+        "IsWorkWithPerm": true
+      }
     };
 
+    print("safe data: " + data.toString());
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{

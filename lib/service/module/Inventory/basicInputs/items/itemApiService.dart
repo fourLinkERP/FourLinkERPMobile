@@ -21,10 +21,9 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
 
     print('Items 1');
     Map data = {
-      'Search':{
         'CompanyCode': companyCode,
-        'BranchCode': branchCode
-      }
+        'BranchCode': branchCode,
+        'EmpCode': empCode
     };
 
     print('Items 2');

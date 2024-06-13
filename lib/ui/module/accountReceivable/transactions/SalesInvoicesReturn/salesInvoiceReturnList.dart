@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:core';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
@@ -27,7 +28,6 @@ import 'package:intl/intl.dart';
 import 'addSalesInvoiceReturnWidget.dart';
 import 'detailSalesInvoiceReturnWidget.dart';
 import 'editSalesInvoiceReturnWidget.dart';
-
 import 'dart:ui';
 import 'package:flutter/rendering.dart';
 import 'package:fourlinkmobileapp/service/general/receipt/pdfReceipt.dart';
@@ -35,7 +35,7 @@ import 'package:fourlinkmobileapp/service/general/receipt/pdfReceipt.dart';
 
 SalesInvoiceReturnHApiService _apiReturnService= SalesInvoiceReturnHApiService();
 SalesInvoiceReturnDApiService _apiReturnDService= SalesInvoiceReturnDApiService();
-//Get SalesInvoiceH List
+
 
 class SalesInvoiceReturnHListPage extends StatefulWidget {
   const SalesInvoiceReturnHListPage({ Key? key }) : super(key: key);
@@ -55,14 +55,14 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
   List<GlobalKey> imageGlobalKeys = [];
 
   String companyTitle = companyName;
-  String companyVatNo = "302211485800003";
+  String companyVatNo = companyTaxID;
 
 
   @override
   void initState() {
     // TODO: implement initState
-    print('okkkkkkkkkkk');
     getData();
+
     super.initState();
 
     setState(() {
@@ -355,44 +355,18 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
             DateTime.parse(invoiceH.salesInvoicesDate.toString()));
         final receipt = Receipt( //ToDO
             receiptHeader: ReceiptHeader(
-                companyName: langId == 1
-                    ? companyName
-                    : companyName,
-                companyInvoiceTypeName: (invoiceH.invoiceTypeCode == "1")
-                    ? 'فاتورة ضريبية'
-                    : 'فاتورة ضريبية مبسطة',
-                companyInvoiceTypeName2: langId == 1
-                    ? 'Simplified Tax Invoice'
-                    : 'Simplified Tax Invoice',
-                companyVatNumber: langId == 1 ? "الرقم الضريبي  " +
-                    '302211485800003' : 'VAT No  302211485800003',
-                companyCommercialName: langId == 1
-                    ? 'ترخيص رقم 450714529009'
-                    : 'Registeration No 450714529009',
-                companyInvoiceNo: langId == 1 ? 'رقم مرتجع الفاتورة ' +
-                    invoiceH.salesInvoicesSerial.toString() : 'Invoice Return No ' +
-                    invoiceH.salesInvoicesSerial.toString(),
-                companyDate: langId == 1
-                    ? "التاريخ  " + invoiceDate
-                    : "Date : " + invoiceDate,
-                companyAddress: langId == 1
-                    ? 'العنوان : الرياض - ص ب 14922'
-                    : 'العنوان  الرياض - ص ب 14922',
-                companyPhone: langId == 1
-                    ? 'Tel No :+966539679540'
-                    : 'Tel No :+966539679540',
-                customerName: langId == 1 ? "العميل : " +
-                    invoiceH.customerName.toString() : "Customer : " +
-                    invoiceH.customerName.toString(),
-                customerTaxNo: langId == 1 ? "الرقم الضريبي  " +
-                    invoiceH.taxNumber.toString() : 'VAT No ' +
-                    invoiceH.taxNumber.toString(),
-                salesInvoicesTypeName: (invoiceH.salesInvoicesTypeCode
-                    .toString() == "1") ? (langId == 1
-                    ? invoiceH.salesInvoicesTypeName
-                    : invoiceH.salesInvoicesTypeName) : (langId == 1
-                    ? invoiceH.salesInvoicesTypeName
-                    : invoiceH.salesInvoicesTypeName),
+                companyName: langId == 1 ? companyName : companyName,
+                companyInvoiceTypeName: (invoiceH.invoiceTypeCode == "1") ? 'فاتورة ضريبية' : 'فاتورة ضريبية مبسطة',
+                companyInvoiceTypeName2: langId == 1 ? 'Simplified Tax Invoice' : 'Simplified Tax Invoice',
+                companyVatNumber: langId==1? "الرقم الضريبي  " + companyTaxID : 'Vat No' + companyTaxID,   //'302211485800003':'VAT No  302211485800003',
+                companyCommercialName: langId==1? 'ترخيص رقم ' + companyCommercialID  :'Registeration No '+ companyCommercialID,   //'ترخيص رقم 450714529009'  :'Registeration No 450714529009',
+                companyInvoiceNo: langId == 1 ? 'رقم مرتجع الفاتورة ' + invoiceH.salesInvoicesSerial.toString() : 'Invoice Return No ' + invoiceH.salesInvoicesSerial.toString(),
+                companyDate: langId == 1 ? "التاريخ  " + invoiceDate : "Date : " + invoiceDate,
+                companyAddress: langId==1? 'العنوان : ' + companyAddress :'العنوان : ' + companyAddress ,        //'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
+                companyPhone: langId==1? 'Tel No : '+ companyMobile :'Tel No :' + companyMobile,        //'Tel No :+966539679540':'Tel No :+966539679540',
+                customerName: langId == 1 ? "العميل : " + invoiceH.customerName.toString() : "Customer : " + invoiceH.customerName.toString(),
+                customerTaxNo:  langId==1?  "الرقم الضريبي  " + invoiceH.taxNumber.toString() : 'Vat No' + invoiceH.taxNumber.toString(),
+                salesInvoicesTypeName: (invoiceH.salesInvoicesTypeCode.toString() == "1") ? (langId == 1 ? invoiceH.salesInvoicesTypeName : invoiceH.salesInvoicesTypeName) : (langId == 1 ? invoiceH.salesInvoicesTypeName : invoiceH.salesInvoicesTypeName),
                 tafqeetName: tafqeetName
             ),
             invoice: invoice
@@ -407,7 +381,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
         final bytesx = await imageControllers[index].capture();
         var bytesImg = bytesx as Uint8List;
 
-        final pdfFile = await pdfReceipt.generate(receipt, bytesImg);
+        final pdfFile = await pdfReceipt.generate(receipt, bytesImg, _base64StringToUint8List(companyLogo));
         PdfApi.openFile(pdfFile);
 
         //var boundary = globalKey.currentContext!.findRenderObject();
@@ -491,8 +465,8 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                               color: Colors.white,
                               child: ZatcaFatoora.simpleQRCode(
                                 fatooraData: ZatcaFatooraDataModel(
-                                  businessName: companyTitle,
-                                  vatRegistrationNumber: companyVatNo,
+                                  businessName: companyName,
+                                  vatRegistrationNumber: companyTaxID,
                                   date: DateTime.parse(
                                       _salesInvoices[index].salesInvoicesDate
                                           .toString()),
@@ -540,8 +514,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                                             style: const TextStyle(
                                                 color: Colors.white)),
                                         onPressed: () {
-                                          _navigateToEditScreen(
-                                              context, _salesInvoices[index]);
+                                          //_navigateToEditScreen(context, _salesInvoices[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -634,6 +607,16 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                 );
             }),
       );
+    }
+  }
+  Uint8List _base64StringToUint8List(String base64String) {
+    try {
+      Uint8List decodedBytes = base64Decode(base64String).buffer.asUint8List();
+      print('Decoded logoCompany length: ${decodedBytes.length}');
+      return decodedBytes;
+    } catch (e) {
+      print('Error decoding base64String: $e');
+      return Uint8List(0);
     }
   }
 }

@@ -1060,8 +1060,8 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                               color: Colors.white,
                               child:   ZatcaFatoora.simpleQRCode(
                                 fatooraData: ZatcaFatooraDataModel(
-                                  businessName: companyTitle,
-                                  vatRegistrationNumber: companyVatNo,
+                                  businessName: companyName,
+                                  vatRegistrationNumber: companyTaxID,
                                   date:   DateTime.parse(_salesInvoicesDateController.text),
                                   totalAmountIncludingVat: totalNet,
                                   vat: totalTax,
@@ -1643,7 +1643,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     });
 
     //Items
-    Future<List<Item>> Items = _itemsApiService.getReturnItems().then((data) {
+    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
       items = data;
 
       getItemData();

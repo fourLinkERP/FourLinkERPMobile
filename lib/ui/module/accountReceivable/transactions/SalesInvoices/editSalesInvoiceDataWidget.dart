@@ -973,8 +973,8 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                               color: Colors.white,
                               child:   ZatcaFatoora.simpleQRCode(
                                 fatooraData: ZatcaFatooraDataModel(
-                                  businessName: companyTitle,
-                                  vatRegistrationNumber: companyVatNo,
+                                  businessName: companyName,
+                                  vatRegistrationNumber: companyTaxID,
                                   date:   DateTime.parse(_salesInvoicesDateController.text),
                                   totalAmountIncludingVat: totalNet,
                                   vat: totalTax,
@@ -1437,10 +1437,6 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
 
   }
 
-//#endregion
-
-  //#region Business Function
-
   // Item Units - Change Item Units
   changeItemUnit(String itemCode) {
     units = [];
@@ -1647,7 +1643,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     });
 
     //Items
-    Future<List<Item>> Items = _itemsApiService.getReturnItems().then((data) {
+    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
       items = data;
       //print(customers.length.toString());
       //getItemData();
