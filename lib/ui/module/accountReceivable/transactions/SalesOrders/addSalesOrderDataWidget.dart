@@ -184,7 +184,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     });
 
     //Items
-    Future<List<Item>> Items = _itemsApiService.getReturnItems().then((data) {
+    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
       items = data;
       getItemData();
       return items;
