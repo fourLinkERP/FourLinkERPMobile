@@ -275,7 +275,7 @@ class _AttendanceAndDepartureListState extends State<AttendanceAndDepartureList>
 
   }
   _navigateToDepartureAddScreen(BuildContext context, AttendanceAndDeparture departure) async {
-    if((departure.fromTime == null || departure.fromTime!.isEmpty) && departure.trxDate != DateTime.now().toString()){
+    if((departure.fromTime == null || departure.fromTime!.isEmpty) && departure.trxDate == DateTime.now().toString()){
       _showModernAlertDialog(context, "Error", "You_haven't_registered_to_attend.".tr());
       return;
     }

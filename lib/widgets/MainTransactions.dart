@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/salesOrderList.dart';
@@ -62,17 +63,17 @@ class MainTransactions extends StatelessWidget {
         ),
 
       ),
-      body: Container(
-      padding: const EdgeInsets.all(12.0),
-      child: GridView.builder(
-      itemCount: areaListData.length,
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2,
-      crossAxisSpacing: 5.0,
-      mainAxisSpacing: 4.0
-      ),
-      itemBuilder: (BuildContext context, int index){
-      return Container(
+      body: systemCode == 1 ? Container(
+            padding: const EdgeInsets.all(12.0),
+            child: GridView.builder(
+            itemCount: areaListData.length,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 5.0,
+              mainAxisSpacing: 4.0
+            ),
+       itemBuilder: (BuildContext context, int index){
+       return Container(
         height: 100,
         decoration: BoxDecoration(
           color: FitnessAppTheme.white,
@@ -223,7 +224,9 @@ class MainTransactions extends StatelessWidget {
         ),
       );
       },
-      )),
+      )) : Container(
+        color: Colors.transparent,
+      ),
       );
     }
   }

@@ -32,6 +32,8 @@ String token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWx
 String apiUserName="";//Will Set On App Preference
 String apiPassword="";//Will Set On App Preference
 //Company And Branch
+int systemCode = 1;
+String systemName= '';
 int companyCode = 1;//Will Set On App Preference
 int branchCode = 1; //Will Set On App Preference
 String companyName= '';  //'Test Company';

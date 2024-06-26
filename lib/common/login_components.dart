@@ -13,7 +13,7 @@ Widget defaultFormField({
   VoidCallback? onTab,
   bool enable = true,
   onSaved,
-  String? Function(String?)? onChanged,
+  void Function(String)? onChanged,
 
 }) => TextFormField(
   controller: controller,

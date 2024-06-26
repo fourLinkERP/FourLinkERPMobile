@@ -8,6 +8,8 @@ class AttendanceAndDeparture{
   String? trxDate;
   String? fromTime;
   String? toTime;
+  String? attendanceImage;
+  String? departureImage;
   int? year;
 
   AttendanceAndDeparture({
@@ -19,6 +21,8 @@ class AttendanceAndDeparture{
     this.trxDate,
     this.fromTime,
     this.toTime,
+    this.attendanceImage,
+    this.departureImage,
     this.year
 });
   factory AttendanceAndDeparture.fromJson(Map<String, dynamic> json) {
@@ -31,6 +35,8 @@ class AttendanceAndDeparture{
       trxDate: (json['trxDate'] != null) ? json['trxDate'] as String : "",
       fromTime: json['fromTime'] as String,
       toTime: (json['toTime'] != null) ? json['toTime'] as String : "",
+      attendanceImage: (json['attendanceImage'] != null) ? json['attendanceImage'] as String : "",
+      departureImage: (json['departureImage'] != null) ? json['departureImage'] as String : "",
       year:  (json['year'] != null) ? json['year'] as int : 2024,
     );
   }

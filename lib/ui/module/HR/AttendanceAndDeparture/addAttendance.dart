@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/hr/attendanceAndDeparture/AttendanceAndDeparture.dart';
@@ -10,6 +12,8 @@ import 'package:intl/intl.dart';
 import '../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import '../../../../helpers/toast.dart';
 import 'dart:math' show cos, sqrt, asin;
+import 'package:image_picker/image_picker.dart';
+import 'package:image/image.dart' as img;
 
 EmployeeApiService _employeeApiService = EmployeeApiService();
 
@@ -27,6 +31,9 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
   String _currentTime = '';
   Color _backgroundColorAttend = Colors.transparent;
   Color _backgroundColorDepart = Colors.transparent;
+
+  File? _image;
+  String? _base64Image;
 
   void _getCurrentTime() {
     final DateTime now = DateTime.now();
@@ -75,6 +82,23 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
             (1 - cos((lon2 - lon1) * p))/2;
     print("distance = " + (12742 * asin(sqrt(a)) * 1000).toString());
     return 12742 * asin(sqrt(a)) * 1000;
+  }
+  Future<void> _openCamera() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      final File imageFile = File(pickedFile.path);
+
+      List<int> imageBytes = await imageFile.readAsBytes();
+      final String base64Image = base64Encode(imageBytes);
+      print("image: $base64Image");
+      setState(() {
+        _image = imageFile;
+        _base64Image = base64Image;
+      });
+    } else {
+      print('No image selected.');
+    }
   }
 
   @override
@@ -137,19 +161,24 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  height: 220,
-                  width: 200,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    color: Colors.black12,
-                  ),
-                  child: Center(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Image.asset('assets/fitness_app/galleryIcon.png'),
+                InkWell(
+                  onTap: _openCamera,
+                  child: Container(
+                    height: 220,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      color: Colors.black12,
+                    ),
+                    child: Center(
+                      child: _image == null
+                          ? Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Image.asset('assets/fitness_app/galleryIcon.png'),
+                           )
+                            : Image.file(_image!),
                     ),
                   ),
                 ),
@@ -278,33 +307,6 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
   late PermissionStatus permissionStatus;
   late LocationData locationData;
 
-  // void getUserLocation() async {
-  //   Location location = Location();
-  //   bool serviceEnabled;
-  //   PermissionStatus permissionGranted;
-  //
-  //   serviceEnabled = await location.serviceEnabled();
-  //   if (!serviceEnabled) {
-  //     serviceEnabled = await location.requestService();
-  //     if (!serviceEnabled) {
-  //       return;
-  //     }
-  //   }
-  //
-  //   permissionGranted = await location.hasPermission();
-  //   if (permissionGranted == PermissionStatus.denied) {
-  //     permissionGranted = await location.requestPermission();
-  //     if (permissionGranted != PermissionStatus.granted) {
-  //       return;
-  //     }
-  //   }
-  //
-  //   LocationData locationData = await location.getLocation();
-  //   print("latitude: ${locationData.latitude}");
-  //   print("longitude: ${locationData.longitude}");
-  //
-  // }
-
   void getUserLocation() async {
     var isPermissionGranted = await isPremissionGranted();
     var isServiceEnabled = await isServiceEnable();
@@ -352,6 +354,10 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
       FN_showToast(context, 'please_set_attend'.tr(), Colors.black);
       return;
     }
+    if (_base64Image == null || _base64Image!.isEmpty) {
+      FN_showToast(context, 'please_take_image'.tr(), Colors.black);
+      return;
+    }
     LocationData locationData = await Location().getLocation();
     double employeeLat = locationData.latitude ?? 0.0;
     double employeeLon = locationData.longitude ?? 0.0;
@@ -366,6 +372,8 @@ class _AddAttendanceDataWidgetState extends State<AddAttendanceDataWidget> {
         empCode: empCode,
         trxDate: _todayTrxDateController.text,
         fromTime: _currentTime,
+        attendanceImage: _base64Image,
+
       );
       await api.createAttendance(context, attendance);
       Navigator.pop(context,true );

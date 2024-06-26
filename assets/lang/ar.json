@@ -255,7 +255,7 @@
     "please_Insert_One_Item_At_Least": "برجاء ادخال سطر علي الاقل",
     "please_Set_Invoice_Serial": "برجاء ادخال المسلسل",
     "please_Set_Invoice_Date": "برجاء ادخال التاريخ",
-    "please_Set_Customer": "برجاء اختيارعميل",
+    "please_Set_Customer": "برجاء اختيار عميل",
     "please_Set_TargetCode": "برجاء اختيار اسم المستفيد",
     "please_Set_BoxCode": "برجاء اختيار اسم الجهة",
     "please_Set_Value": "برجاء ادخال قيمة",
@@ -685,6 +685,15 @@
     "latest_procedure": "اخر موقف",
     "litigation_level": "درجة التقاضي",
     "not_active": "غير نشط",
-    "display_qty :": "الكمية :"
+    "display_qty :": "الكمية :",
+    "select_system": "اختر النظام",
+    "work_shop": "الورشة",
+    "user": "المستخدم",
+    "repair_agreements": "اتفاقية إصلاح",
+    "please_take_image": "من فضلك التقط صورة",
+    "counter": "العداد",
+    "cars_information_does_not_exist_do_you_want_to_add_car": "بيانات السيارة غير موجودة - هل تريد إضافة السيارة",
+    "please_enter_mobile_or_plate_number": "من فضلك ادخل رقم الهاتف او رقم الشاسيه"
+
 }
 

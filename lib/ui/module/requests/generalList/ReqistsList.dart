@@ -4,6 +4,7 @@ import 'package:fourlinkmobileapp/ui/module/requests/Tabs/myRequests.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/Tabs/newRequest.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/Tabs/myDuties.dart';
 
+import '../../../../common/globals.dart';
 import '../setting_requests/SettingRequestsList/settingRequestList.dart';
 class Requests extends StatefulWidget {
   final int initialIndex;
@@ -17,7 +18,9 @@ class Requests extends StatefulWidget {
 class _RequestsState extends State<Requests> {
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return  systemCode == 2 ? Container(
+      color: Colors.white,
+    ) : DefaultTabController(
       length: 3,
       initialIndex: widget.initialIndex,
       child: Scaffold(
@@ -28,7 +31,7 @@ class _RequestsState extends State<Requests> {
                 title: Text('Requests'.tr(),
                   style: const TextStyle(color: Colors.white),),
             trailing: IconButton(
-              icon: Icon(Icons.settings, color: Colors.white,),
+              icon: const Icon(Icons.settings, color: Colors.white,),
               iconSize: 30.0,
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingRequestList(),));

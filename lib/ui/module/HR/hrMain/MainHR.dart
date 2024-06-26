@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
+import '../../../../common/globals.dart';
 import '../AttendanceAndDeparture/attendanceAndDepartureList.dart';
 import '../Settings/settingFacePrint.dart';
 
@@ -37,7 +38,9 @@ class MainHR extends StatelessWidget {
         ),
         backgroundColor: const Color.fromRGBO(16, 46, 144, 1),
       ),
-      body: Container(
+      body: systemCode == 2 ? Container(
+        color: Colors.transparent,
+      ) : Container(
           padding: const EdgeInsets.all(12.0),
           child: GridView.builder(
             itemCount: areaListData.length,

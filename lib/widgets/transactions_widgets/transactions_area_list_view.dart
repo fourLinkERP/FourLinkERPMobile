@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/ui/module/accountpayable/vendors/vendorlist.dart';
 import 'package:fourlinkmobileapp/ui/module/inventory/product/productslist.dart';
 import 'package:fourlinkmobileapp/screens/new_invoice_screen/new_business_details/new_business_details.dart';
@@ -51,7 +52,9 @@ class _TransactionsAreaListViewState extends State<TransactionsAreaListView>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
+    return systemCode == 2 ? Container(
+      color: Colors.transparent,
+    ) : AnimatedBuilder(
       animation: widget.mainScreenAnimationController!,
       builder: (BuildContext context, Widget? child) {
         return FadeTransition(
@@ -121,7 +124,9 @@ class AreaView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
+    return systemCode == 2 ? Container(
+      color: Colors.transparent,
+    ): AnimatedBuilder(
       animation: animationController!,
       builder: (BuildContext context, Widget? child) {
         return FadeTransition(

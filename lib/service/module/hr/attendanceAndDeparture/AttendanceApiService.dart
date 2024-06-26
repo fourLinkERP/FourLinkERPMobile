@@ -56,7 +56,7 @@ class AttendanceApiService {
       'empCode': attendance.empCode,
       'trxDate': attendance.trxDate,
       'fromTime': attendance.fromTime,
-      //'toTime': attendance.toTime,
+      'attendanceImage': attendance.attendanceImage,
       'year': financialYearCode,
       "isActive": true,
       "isBlocked": false,

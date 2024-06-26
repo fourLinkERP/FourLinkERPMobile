@@ -123,6 +123,14 @@ class _LoginScreenState extends State<LoginScreen> {
                             fontWeight: FontWeight.bold,
                         ),
                       ),
+                      const SizedBox(height: 10.0),
+                      Text(
+                        systemName,
+                        style: const TextStyle(
+                          color: Color.fromRGBO(144, 16, 46, 1),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       const SizedBox(height: 30.0),
                       Form(
                           key: _formKey,
@@ -441,22 +449,22 @@ class _LoginScreenState extends State<LoginScreen> {
                               //     ),
                               //   ])),
                               // ),
-                              // Container(
-                              //   margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
-                              //   alignment: Alignment.center,
-                              //   child: GestureDetector(
-                              //     onTap: () async {
-                              //       startQuickLogin();
-                              //     },
-                              //     child: Text(
-                              //       '<- الدخول السريع'.tr(),
-                              //       style: const TextStyle(
-                              //         color: Colors.red,
-                              //         fontWeight: FontWeight.bold,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
+                              Container(
+                                margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
+                                alignment: Alignment.center,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    startQuickLogin();
+                                  },
+                                  child: Text(
+                                    '<- الدخول السريع'.tr(),
+                                    style: const TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
 
                               Align(
                                 alignment: FractionalOffset.bottomCenter,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/main_tabs/newRepairAgreementsMainTabs.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
@@ -22,7 +23,9 @@ class _WorkshopHomeState extends State<WorkshopHome> {
         ),
         backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
       ),
-      body: Container(
+      body: systemCode == 2 ? Container(
+        color: Colors.transparent,
+      ) : Container(
         color: Colors.grey.shade300,
         child: Center(
           child: ListView(

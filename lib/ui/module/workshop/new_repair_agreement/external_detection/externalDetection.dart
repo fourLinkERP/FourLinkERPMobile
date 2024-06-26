@@ -58,7 +58,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                                 Permission.storage, Permission.camera,
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
-                                showImagePicker(context, _imgFromGallery(), _imgFromCamera());
+                                showImagePicker(context, _imgFromGallery, _imgFromCamera);
                               } else {
                                 print('no permission provided');
                               }
@@ -147,7 +147,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                                 Permission.storage, Permission.camera,
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
-                                showImagePicker(context, _imgFromGallery2(), _imgFromCamera2());
+                                showImagePicker(context, _imgFromGallery2, _imgFromCamera2);
                               } else {
                                 print('no permission provided');
                               }
@@ -234,7 +234,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                                 Permission.storage, Permission.camera,
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
-                                showImagePicker(context, _imgFromGallery3(), _imgFromCamera3());
+                                showImagePicker(context, _imgFromGallery3, _imgFromCamera3);
                               } else {
                                 print('no permission provided');
                               }
@@ -321,7 +321,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                                 Permission.storage, Permission.camera,
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
-                                showImagePicker(context, _imgFromGallery4(), _imgFromCamera4());
+                                showImagePicker(context, _imgFromGallery4, _imgFromCamera4);
                               } else {
                                 print('no permission provided');
                               }
@@ -409,7 +409,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                                 Permission.storage, Permission.camera,
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
-                                showImagePicker(context, _imgFromGallery5(), _imgFromCamera5());
+                                showImagePicker(context, _imgFromGallery5, _imgFromCamera5);
                               } else {
                                 print('no permission provided');
                               }
@@ -497,7 +497,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                                 Permission.storage, Permission.camera,
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
-                                showImagePicker(context, _imgFromGallery6(), _imgFromCamera6());
+                                showImagePicker(context, _imgFromGallery6, _imgFromCamera6);
                               } else {
                                 print('no permission provided');
                               }
@@ -575,83 +575,83 @@ class _ExternalDetectionState extends State<ExternalDetection> {
   final picker5 = ImagePicker();
   final picker6 = ImagePicker();
 
-  void showImagePicker(BuildContext context, pickerGallery, pickerCamera) {
+  void showImagePicker(BuildContext context, VoidCallback pickerGallery, VoidCallback pickerCamera) {
     showModalBottomSheet(
-        context: context,
-        builder: (builder){
-          return Card(
-            child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height/5.2,
-                margin: const EdgeInsets.only(top: 8.0),
-                padding: const EdgeInsets.all(12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                        child: InkWell(
-                          child: const Column(
-                            children: [
-                              Icon(Icons.image, size: 60.0,),
-                              SizedBox(height: 12.0),
-                              Text(
-                                "Gallery",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 16, color: Colors.black),
-                              )
-                            ],
-                          ),
-                          onTap: () {
-                            pickerGallery;
-                            Navigator.pop(context);
-                          },
-                        )),
-                    Expanded(
-                        child: InkWell(
-                          child: const SizedBox(
-                            child: Column(
-                              children: [
-                                Icon(Icons.camera_alt, size: 60.0,),
-                                SizedBox(height: 12.0),
-                                Text(
-                                  "Camera",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(fontSize: 16, color: Colors.black),
-                                )
-                              ],
-                            ),
-                          ),
-                          onTap: () {
-                            pickerCamera;
-                            Navigator.pop(context);
-                          },
-                        ))
-                  ],
-                )
+      context: context,
+      builder: (builder) {
+        return Card(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height / 5.2,
+            margin: const EdgeInsets.only(top: 8.0),
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: InkWell(
+                    child: const Column(
+                      children: [
+                        Icon(Icons.image, size: 60.0,),
+                        SizedBox(height: 12.0),
+                        Text(
+                          "Gallery",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      pickerGallery();
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: InkWell(
+                    child: const Column(
+                      children: [
+                        Icon(Icons.camera_alt, size: 60.0,),
+                        SizedBox(height: 12.0),
+                        Text(
+                          "Camera",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      pickerCamera();
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ],
             ),
-          );
-        }
+          ),
+        );
+      },
     );
   }
 
-  _imgFromGallery() async {
-    await  picker1.pickImage(
+  Future<void> _imgFromGallery() async {
+    final pickedFile = await picker1.pickImage(
         source: ImageSource.gallery, imageQuality: 50
-    ).then((value){
-      if(value != null){
-        _cropImage(File(value.path));
-      }
-    });
+    );
+
+    if (pickedFile != null) {
+      _cropImage(File(pickedFile.path));
+    }
   }
 
-  _imgFromCamera() async {
-    await picker1.pickImage(
+  Future<void> _imgFromCamera() async {
+    final pickedFile = await picker1.pickImage(
         source: ImageSource.camera, imageQuality: 50
-    ).then((value){
-      if(value != null){
-        _cropImage(File(value.path));
-      }
-    });
+    );
+
+    if (pickedFile != null) {
+      _cropImage(File(pickedFile.path));
+    }
   }
 
   _cropImage(File imgFile) async {

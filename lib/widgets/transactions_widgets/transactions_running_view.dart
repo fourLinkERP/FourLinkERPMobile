@@ -16,8 +16,8 @@ class TransactionsRunningView extends StatelessWidget {
       builder: (BuildContext context, Widget? child) {
         return FadeTransition(
           opacity: animation!,
-          child: new Transform(
-            transform: new Matrix4.translationValues(
+          child: Transform(
+            transform: Matrix4.translationValues(
                 0.0, 30 * (1.0 - animation!.value), 0.0),
             child: Column(
               children: <Widget>[
@@ -32,7 +32,7 @@ class TransactionsRunningView extends StatelessWidget {
                         child: Container(
                           decoration: BoxDecoration(
                             color: FitnessAppTheme.white,
-                            borderRadius: BorderRadius.only(
+                            borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(8.0),
                                 bottomLeft: Radius.circular(8.0),
                                 bottomRight: Radius.circular(8.0),
@@ -40,7 +40,7 @@ class TransactionsRunningView extends StatelessWidget {
                             boxShadow: <BoxShadow>[
                               BoxShadow(
                                   color: FitnessAppTheme.grey.withOpacity(0.4),
-                                  offset: Offset(1.1, 1.1),
+                                  offset: const Offset(1.1, 1.1),
                                   blurRadius: 10.0),
                             ],
                           ),
@@ -49,7 +49,7 @@ class TransactionsRunningView extends StatelessWidget {
                             children: <Widget>[
                               ClipRRect(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(8.0)),
+                                    const BorderRadius.all(Radius.circular(8.0)),
                                 child: SizedBox(
                                   height: 74,
                                   child: AspectRatio(
@@ -62,10 +62,10 @@ class TransactionsRunningView extends StatelessWidget {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Row(
+                                  const Row(
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.only(
+                                        padding: EdgeInsets.only(
                                           left: 100,
                                           right: 16,
                                           top: 16,

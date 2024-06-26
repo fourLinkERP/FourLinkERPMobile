@@ -1635,7 +1635,6 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
-      //print(customers.length.toString());
       getCustomerData();
       return customers;
     }, onError: (e) {

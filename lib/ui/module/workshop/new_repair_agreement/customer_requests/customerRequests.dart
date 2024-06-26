@@ -154,306 +154,303 @@ class _CustomerRequestsState extends State<CustomerRequests> {
     setState(() {});
     return Form(
       key: _addFormKey,
-      child: Container(
-        //margin: const EdgeInsets.only(top: 10,),
-        child: ListView(
-          children: [
-            SizedBox(
-              height: 40,
-              width: 50,
-              child: Row(
+      child: ListView(
+        children: [
+          SizedBox(
+            height: 40,
+            width: 50,
+            child: Row(
+                children: [
+                  Container(
+                    //padding: const EdgeInsets.only(bottom: 2.0),
+                    decoration: const BoxDecoration(
+                        border: Border(
+                            bottom: BorderSide(
+                              color: Colors.red,
+                              width: 2.0,
+                            )
+                        )
+                    ),
+                    child: Text(
+                      "customer_requests".tr(),
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        // decoration: TextDecoration.underline,
+                        // decorationColor: Colors.red,
+                        // decorationThickness: 2.0,
+                      ),
+                    ),
+                  ),
+                ]
+            ),
+          ),
+          SizedBox(
+            height: 220,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                Column(
                   children: [
-                    Container(
-                      //padding: const EdgeInsets.only(bottom: 2.0),
-                      decoration: const BoxDecoration(
-                          border: Border(
-                              bottom: BorderSide(
-                                color: Colors.red,
-                                width: 2.0,
-                              )
-                          )
-                      ),
-                      child: Text(
-                        "customer_requests".tr(),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          // decoration: TextDecoration.underline,
-                          // decorationColor: Colors.red,
-                          // decorationThickness: 2.0,
+                    const SizedBox(height: 30),
+                    SizedBox(
+                      height: 40,
+                      width: 100,
+                      child: Text("maintenance_category".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 40,
+                      width: 100,
+                      child: Text("service_type".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
+                    ),
+
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 40,
+                      width: 100,
+                      child: Text("labor".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                    ),
+                  ],
+                ),
+                //const SizedBox(width: 10,),
+                Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 40,
+                      width: 200,
+                      child: DropdownSearch<MaintenanceClassification>(
+                        validator: (value) =>
+                        value == null ? "select_a_Type".tr() : null,
+                        selectedItem: maintenanceClassificationItem,
+                        popupProps: PopupProps.menu(
+                          itemBuilder: (context, item, isSelected) {
+                            return Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              decoration: !isSelected ? null :
+                              BoxDecoration(
+                                border: Border.all(color: Theme.of(context).primaryColor),
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.white,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text((langId == 1) ? item.maintenanceClassificationNameAra.toString() : item.maintenanceClassificationNameEng.toString()),
+                              ),
+                            );
+                          },
+                          showSearchBox: true,
                         ),
+                        enabled: true,
+                        items: maintenanceClassifications,
+                        itemAsString: (MaintenanceClassification u) =>
+                        (langId == 1) ? u.maintenanceClassificationNameAra.toString() : u.maintenanceClassificationNameEng.toString(),
+                        onChanged: (value) {
+                          selectedClassificationValue = value!.maintenanceClassificationCode.toString();
+                          //setNextSerial();
+                        },
+                        filterFn: (instance, filter) {
+                          if ((langId == 1) ? instance.maintenanceClassificationNameAra!.contains(filter) :
+                          instance.maintenanceClassificationNameEng!.contains(filter)) {
+                            print(filter);
+                            return true;
+                          }
+                          else {
+                            return false;
+                          }
+                        },
                       ),
                     ),
-                  ]
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 40,
+                      width: 200,
+                      child: DropdownSearch<MaintenanceType>(
+                        popupProps: PopupProps.menu(
+                          itemBuilder: (context, item, isSelected) {
+                            return Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              decoration: !isSelected ? null : BoxDecoration(
+                                border: Border.all(color: Theme.of(context).primaryColor),
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.white,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  (langId == 1) ? item.maintenanceTypeNameAra.toString() : item.maintenanceTypeNameEng.toString(),
+                                  //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
+                                  textAlign: langId == 1 ? TextAlign.right : TextAlign.left,),
+                              ),
+                            );
+                          },
+                          showSearchBox: true,
+                        ),
+                        items: maintenanceTypes,
+                        itemAsString: (MaintenanceType u) => u.maintenanceTypeNameAra.toString(),
+                        onChanged: (value) {
+                          selectedTypeValue = value!.maintenanceTypeCode.toString();
+                        },
+                        filterFn: (instance, filter) {
+                          if (instance.maintenanceTypeNameAra!.contains(filter)) {
+                            print(filter);
+                            return true;
+                          }
+                          else {
+                            return false;
+                          }
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      height: 40,
+                      width: 200,
+                      child: DropdownSearch<Malfunction>(
+                        validator: (value) => value == null ? "select_a_Type".tr() : null,
+                        selectedItem: malfunctionItem,
+                        popupProps: PopupProps.menu(
+                          itemBuilder: (context, item, isSelected) {
+                            return Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                              decoration: !isSelected ? null :
+                              BoxDecoration(
+                                border: Border.all(color: Theme.of(context).primaryColor),
+                                borderRadius: BorderRadius.circular(5),
+                                color: Colors.white,
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text((langId == 1) ? item.malfunctionNameAra.toString() : item.malfunctionNameEng.toString()),
+                              ),
+                            );
+                          },
+                          showSearchBox: true,
+                        ),
+                        enabled: true,
+                        items: services,
+                        itemAsString: (Malfunction u) =>
+                        (langId == 1) ? u.malfunctionNameAra.toString() : u.malfunctionNameEng.toString(),
+                        onChanged: (value) {
+                          selectedLaborValue = value!.malfunctionCode.toString();
+                          selectedLaborName = (langId == 1) ? value.malfunctionNameAra.toString() : value.malfunctionNameEng.toString();
+                          //filterListByMalfunctionCode(selectedLaborValue);
+
+                        },
+                        filterFn: (instance, filter) {
+                          if ((langId == 1) ? instance.malfunctionNameAra!.contains(filter) :
+                          instance.malfunctionNameEng!.contains(filter)) {
+                            print(filter);
+                            return true;
+                          }
+                          else {
+                            return false;
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Center(
+            child: ElevatedButton.icon(
+              icon: const Icon(
+                Icons.save_alt,
+                color: Colors.white,
+                size: 30.0,
+                weight: 15,
+              ),
+              label: Text('add'.tr(),
+                  style: const TextStyle(color: Colors.white)),
+              onPressed: () {
+                addLaborRow();
+              },
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  padding: const EdgeInsets.all(7),
+                  backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+                  foregroundColor: Colors.black,
+                  elevation: 0,
+                  side: const BorderSide(
+                      width: 1,
+                      color: Color.fromRGBO(144, 16, 46, 1)
+                  )
               ),
             ),
-            SizedBox(
-              height: 220,
-              child: ListView(
+          ),
+          const SizedBox(height: 20),
+          Builder(
+            builder: (context) {
+              return SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                children: [
-                  Column(
-                    children: [
-                      const SizedBox(height: 30),
-                      SizedBox(
-                        height: 40,
-                        width: 100,
-                        child: Text("issue_type".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                child: DataTable(
+                  border: TableBorder.all(),
+                  columnSpacing: 16,
+                  columns: [
+                    DataColumn(label: Text("labor".tr()),),
+                    DataColumn(label: Text("name".tr()),),
+                    DataColumn(label: Text("duration".tr()),),
+                    DataColumn(label: Text("price".tr()),),
+                    DataColumn(label: Text("total".tr()),),
+                  ],
+                  rows: carReceiveD2Lst.map((p) =>
+                      DataRow(
+                          cells: [
+                            DataCell(SizedBox(child: Text(p.malfunctionCode.toString()))),
+                            DataCell(SizedBox(child: Text(p.malfunctionName!))),
+                            DataCell(SizedBox(child: Text(p.hoursNumber.toString()))),
+                            DataCell(SizedBox(child: Text(p.malfunctionPrice.toString()))),
+                            DataCell(SizedBox(child: Text(p.netTotal.toString()))),
+                          ]
                       ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        height: 40,
-                        width: 100,
-                        child: Text("service_type".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
-                      ),
-
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        height: 40,
-                        width: 100,
-                        child: Text("labor".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ],
-                  ),
-                  //const SizedBox(width: 10,),
-                  Column(
-                    children: [
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        height: 40,
-                        width: 200,
-                        child: DropdownSearch<MaintenanceClassification>(
-                          validator: (value) =>
-                          value == null ? "select_a_Type".tr() : null,
-                          selectedItem: maintenanceClassificationItem,
-                          popupProps: PopupProps.menu(
-                            itemBuilder: (context, item, isSelected) {
-                              return Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 8),
-                                decoration: !isSelected ? null :
-                                BoxDecoration(
-                                  border: Border.all(color: Theme.of(context).primaryColor),
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text((langId == 1) ? item.maintenanceClassificationNameAra.toString() : item.maintenanceClassificationNameEng.toString()),
-                                ),
-                              );
-                            },
-                            showSearchBox: true,
-                          ),
-                          enabled: true,
-                          items: maintenanceClassifications,
-                          itemAsString: (MaintenanceClassification u) =>
-                          (langId == 1) ? u.maintenanceClassificationNameAra.toString() : u.maintenanceClassificationNameEng.toString(),
-                          onChanged: (value) {
-                            selectedClassificationValue = value!.maintenanceClassificationCode.toString();
-                            //setNextSerial();
-                          },
-                          filterFn: (instance, filter) {
-                            if ((langId == 1) ? instance.maintenanceClassificationNameAra!.contains(filter) :
-                            instance.maintenanceClassificationNameEng!.contains(filter)) {
-                              print(filter);
-                              return true;
-                            }
-                            else {
-                              return false;
-                            }
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        height: 40,
-                        width: 200,
-                        child: DropdownSearch<MaintenanceType>(
-                          popupProps: PopupProps.menu(
-                            itemBuilder: (context, item, isSelected) {
-                              return Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 8),
-                                decoration: !isSelected ? null : BoxDecoration(
-                                  border: Border.all(color: Theme.of(context).primaryColor),
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    (langId == 1) ? item.maintenanceTypeNameAra.toString() : item.maintenanceTypeNameEng.toString(),
-                                    //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
-                                    textAlign: langId == 1 ? TextAlign.right : TextAlign.left,),
-                                ),
-                              );
-                            },
-                            showSearchBox: true,
-                          ),
-                          items: maintenanceTypes,
-                          itemAsString: (MaintenanceType u) => u.maintenanceTypeNameAra.toString(),
-                          onChanged: (value) {
-                            selectedTypeValue = value!.maintenanceTypeCode.toString();
-                          },
-                          filterFn: (instance, filter) {
-                            if (instance.maintenanceTypeNameAra!.contains(filter)) {
-                              print(filter);
-                              return true;
-                            }
-                            else {
-                              return false;
-                            }
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        height: 40,
-                        width: 200,
-                        child: DropdownSearch<Malfunction>(
-                          validator: (value) => value == null ? "select_a_Type".tr() : null,
-                          selectedItem: malfunctionItem,
-                          popupProps: PopupProps.menu(
-                            itemBuilder: (context, item, isSelected) {
-                              return Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 8),
-                                decoration: !isSelected ? null :
-                                BoxDecoration(
-                                  border: Border.all(color: Theme.of(context).primaryColor),
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text((langId == 1) ? item.malfunctionNameAra.toString() : item.malfunctionNameEng.toString()),
-                                ),
-                              );
-                            },
-                            showSearchBox: true,
-                          ),
-                          enabled: true,
-                          items: services,
-                          itemAsString: (Malfunction u) =>
-                          (langId == 1) ? u.malfunctionNameAra.toString() : u.malfunctionNameEng.toString(),
-                          onChanged: (value) {
-                            selectedLaborValue = value!.malfunctionCode.toString();
-                            selectedLaborName = (langId == 1) ? value.malfunctionNameAra.toString() : value.malfunctionNameEng.toString();
-                            //filterListByMalfunctionCode(selectedLaborValue);
-
-                          },
-                          filterFn: (instance, filter) {
-                            if ((langId == 1) ? instance.malfunctionNameAra!.contains(filter) : 
-                            instance.malfunctionNameEng!.contains(filter)) {
-                              print(filter);
-                              return true;
-                            }
-                            else {
-                              return false;
-                            }
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Center(
-              child: ElevatedButton.icon(
-                icon: const Icon(
-                  Icons.save_alt,
-                  color: Colors.white,
-                  size: 30.0,
-                  weight: 15,
+                  ).toList(),
                 ),
-                label: Text('add'.tr(),
-                    style: const TextStyle(color: Colors.white)),
-                onPressed: () {
-                  addLaborRow();
-                },
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
+              );
+            }
+          ),
+          const SizedBox(height: 30),
+          SizedBox(
+            height: 70,
+            child: Row(
+              children: [
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 40,
+                      width: 120,
+                      child: Center(child: Text("total".tr(), style: const TextStyle(fontWeight: FontWeight.bold),)),
                     ),
-                    padding: const EdgeInsets.all(7),
-                    backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-                    foregroundColor: Colors.black,
-                    elevation: 0,
-                    side: const BorderSide(
-                        width: 1,
-                        color: Color.fromRGBO(144, 16, 46, 1)
-                    )
+                  ],
                 ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Builder(
-              builder: (context) {
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: DataTable(
-                    border: TableBorder.all(),
-                    columnSpacing: 16,
-                    columns: [
-                      DataColumn(label: Text("labor".tr()),),
-                      DataColumn(label: Text("name".tr()),),
-                      DataColumn(label: Text("duration".tr()),),
-                      DataColumn(label: Text("price".tr()),),
-                      DataColumn(label: Text("total".tr()),),
-                    ],
-                    rows: carReceiveD2Lst.map((p) =>
-                        DataRow(
-                            cells: [
-                              DataCell(SizedBox(child: Text(p.malfunctionCode.toString()))),
-                              DataCell(SizedBox(child: Text(p.malfunctionName!))),
-                              DataCell(SizedBox(child: Text(p.hoursNumber.toString()))),
-                              DataCell(SizedBox(child: Text(p.malfunctionPrice.toString()))),
-                              DataCell(SizedBox(child: Text(p.netTotal.toString()))),
-                            ]
-                        ),
-                    ).toList(),
-                  ),
-                );
-              }
-            ),
-            const SizedBox(height: 30),
-            SizedBox(
-              height: 70,
-              child: Row(
-                children: [
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 40,
-                        width: 120,
-                        child: Center(child: Text("total".tr(), style: const TextStyle(fontWeight: FontWeight.bold),)),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 40,
+                      width: 140,
+                      child: defaultFormField(
+                        enable: false,
+                        controller: totalController,
+                        type: TextInputType.number,
+                        colors: Colors.blueGrey,
+                        validate: (String? value) {
+                          if (value!.isEmpty) {
+                            return 'total must be non empty';
+                          }
+                          return null;
+                        },
                       ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 40,
-                        width: 140,
-                        child: defaultFormField(
-                          enable: false,
-                          controller: totalController,
-                          type: TextInputType.number,
-                          colors: Colors.blueGrey,
-                          validate: (String? value) {
-                            if (value!.isEmpty) {
-                              return 'total must be non empty';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

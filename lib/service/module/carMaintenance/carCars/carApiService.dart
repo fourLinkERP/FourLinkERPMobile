@@ -44,16 +44,17 @@ class CarApiService {
     }
   }
 
-  Future<List<CustomerCar>>  getCustomerCars(String? plateNumberAra, String? mobile) async {
+  Future<List<CustomerCar>>  getCustomerCars(String? chassisNumber, String? mobile) async {
 
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode,
-      'PlateNumberAra': plateNumberAra,
-      'Mobile': mobile
-
+      'Search':{
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode,
+        'ChassisNumber': chassisNumber,
+        'Mobile': mobile
+      }
     };
-    print('CustomerCar 1');
+    print('CustomerCar search data: ' + data.toString());
     final http.Response response = await http.post(
       Uri.parse(searchDataApi),
       headers: <String, String>{
@@ -62,17 +63,15 @@ class CarApiService {
       },
       body: jsonEncode(data),
     );
-
+    print('CustomerCar search Api: ' + searchDataApi.toString());
     if (response.statusCode == 200) {
-
-      print('CustomerCar 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
+      print("customer car success");
       List<CustomerCar> list = [];
       if (data.isNotEmpty) {
         list = data.map((item) => CustomerCar.fromJson(item)).toList();
       }
-
-      print('CustomerCar 3');
+      print("customer car list: " + list.toString());
       return  list;
     } else {
       throw "Failed to load CustomerCar list";
@@ -108,12 +107,13 @@ class CarApiService {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
       'carCode': car.carCode,
+      'customerCode': car.customerCode,
       'plateNumberAra': car.plateNumberAra,
       'plateNumberEng': car.plateNumberEng,
       'chassisNumber': car.chassisNumber,
       'groupCode': car.groupCode,
       'model': car.model,
-      'addTime': car.addTime,
+      //'addTime': car.addTime,
       "notActive": false,
       "flgDelete": false,
       "isDeleted": false,

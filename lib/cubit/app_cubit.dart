@@ -116,6 +116,15 @@ void emitState(){
     print('CompanyName Var1');
     print(companyName);
 
+    await CacheHelper.getInt('SystemCode').then((value) =>
+    {
+      systemCode= (value != null)? value  : 1
+    });
+
+    await CacheHelper.getString('SystemName').then((value) =>
+    {
+      systemName = (value != null)? value.toString() : ""
+    });
     // pass=(await  CacheHelper.getDate('PASS'))!;
     // Api=(await CacheHelper.getDate('API'))!;
     // Financialyear=(await CacheHelper.getDate('FY'))!;

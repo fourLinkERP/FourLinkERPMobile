@@ -21,7 +21,7 @@ class TransactionsWorkoutView extends StatelessWidget {
         return FadeTransition(
           opacity: animation!,
           child: Transform(
-            transform: new Matrix4.translationValues(
+            transform: Matrix4.translationValues(
                 0.0, 30 * (1.0 - animation!.value), 0.0),
             child: Padding(
               padding: const EdgeInsets.only(
@@ -32,7 +32,7 @@ class TransactionsWorkoutView extends StatelessWidget {
                     FitnessAppTheme.nearlyDarkBlue,
                     HexColor("#6F56E8")
                   ], begin: Alignment.topLeft, end: Alignment.bottomRight),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(8.0),
                       bottomLeft: Radius.circular(8.0),
                       bottomRight: Radius.circular(8.0),
@@ -40,7 +40,7 @@ class TransactionsWorkoutView extends StatelessWidget {
                   boxShadow: <BoxShadow>[
                     BoxShadow(
                         color: FitnessAppTheme.grey.withOpacity(0.6),
-                        offset: Offset(1.1, 1.1),
+                        offset: const Offset(1.1, 1.1),
                         blurRadius: 10.0),
                   ],
                 ),
@@ -53,7 +53,7 @@ class TransactionsWorkoutView extends StatelessWidget {
                       Text(
                         'transactions'.tr(),
                         textAlign: TextAlign.left,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontFamily: FitnessAppTheme.fontName,
                           fontWeight: FontWeight.normal,
                           fontSize: 14,
@@ -66,7 +66,7 @@ class TransactionsWorkoutView extends StatelessWidget {
                         child: Text(
                           (langId == 1) ?  transactionsArabicDesc : transactionsEnglishDesc ,
                           textAlign: TextAlign.left,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: FitnessAppTheme.fontName,
                             fontWeight: FontWeight.normal,
                             fontSize: 20,
@@ -75,7 +75,7 @@ class TransactionsWorkoutView extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 32,
                       ),
                       Padding(
@@ -84,8 +84,8 @@ class TransactionsWorkoutView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(left: 4),
+                            const Padding(
+                              padding: EdgeInsets.only(left: 4),
                               child: Icon(
                                 Icons.timer,
                                 color: FitnessAppTheme.white,
@@ -95,9 +95,9 @@ class TransactionsWorkoutView extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(left: 4.0),
                               child:  Text(
-                                '${transactionsVideoTime} min',
+                                '$transactionsVideoTime min',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontFamily: FitnessAppTheme.fontName,
                                   fontWeight: FontWeight.w500,
                                   fontSize: 14,
@@ -106,7 +106,7 @@ class TransactionsWorkoutView extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            Expanded(
+                            const Expanded(
                               child: SizedBox(),
                             ),
                             Container(

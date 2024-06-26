@@ -1,15 +1,15 @@
 
-
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
-import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/salesOrderList.dart';
-import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/salesInvoiceList.dart';
-import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesOffers/salesOfferList.dart';
+// import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/salesOrderList.dart';
+// import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/salesInvoiceList.dart';
+// import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesOffers/salesOfferList.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../ui/module/accountReceivable/reports/rptCustomerAccountsSummary.dart';
 import '../ui/module/accountReceivable/reports/rptDailySales.dart';
-import '../ui/module/cash/transactions/CashReceive/cashReceiveList.dart';
+//import '../ui/module/cash/transactions/CashReceive/cashReceiveList.dart';
 
 
 class MainReports extends StatelessWidget {
@@ -47,11 +47,11 @@ class MainReports extends StatelessWidget {
         ),
         backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
       ),
-      body: Container(
+      body: systemCode == 1 ? Container(
           padding: const EdgeInsets.all(12.0),
           child: GridView.builder(
             itemCount: areaListData.length,
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 4.0,
                 mainAxisSpacing: 4.0
@@ -138,7 +138,9 @@ class MainReports extends StatelessWidget {
                 ),
               );
             },
-          )),
+          )) :  Container(
+        color: Colors.transparent,
+      ) ,
     );
   }
 }

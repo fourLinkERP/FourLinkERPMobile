@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/hr/attendanceAndDeparture/AttendanceAndDeparture.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
@@ -10,6 +12,8 @@ import 'package:intl/intl.dart';
 import '../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import '../../../../helpers/toast.dart';
 import 'dart:math' show cos, sqrt, asin;
+import 'package:image_picker/image_picker.dart';
+import 'package:image/image.dart' as img;
 
 EmployeeApiService _employeeApiService = EmployeeApiService();
 
@@ -33,6 +37,9 @@ class _AddDepartureDataWidgetState extends State<AddDepartureDataWidget> {
   int id = 0;
   String? currentEmployee = null;
   String? _fromTime = null;
+
+  File? _image;
+  String? _base64Image;
 
   void _getCurrentTime() {
     final DateTime now = DateTime.now();
@@ -86,6 +93,23 @@ class _AddDepartureDataWidgetState extends State<AddDepartureDataWidget> {
             (1 - cos((lon2 - lon1) * p))/2;
     print("distance = " + (12742 * asin(sqrt(a)) * 1000).toString());
     return 12742 * asin(sqrt(a)) * 1000;
+  }
+  Future<void> _openCamera() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      final File imageFile = File(pickedFile.path);
+
+      List<int> imageBytes = await imageFile.readAsBytes();
+      final String base64Image = base64Encode(imageBytes);
+      print("image: $base64Image");
+      setState(() {
+        _image = imageFile;
+        _base64Image = base64Image;
+      });
+    } else {
+      print('No image selected.');
+    }
   }
 
   @override
@@ -148,19 +172,24 @@ class _AddDepartureDataWidgetState extends State<AddDepartureDataWidget> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  height: 220,
-                  width: 200,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    color: Colors.black12,
-                  ),
-                  child: Center(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Image.asset('assets/fitness_app/galleryIcon.png'),
+                InkWell(
+                  onTap: _openCamera,
+                  child: Container(
+                    height: 220,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      color: Colors.black12,
+                    ),
+                    child: Center(
+                      child: _image == null
+                          ? Container(
+                             decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8.0),
+                             ),
+                             child: Image.asset('assets/fitness_app/galleryIcon.png'),
+                          )
+                          : Image.file(_image!),
                     ),
                   ),
                 ),
@@ -354,6 +383,7 @@ class _AddDepartureDataWidgetState extends State<AddDepartureDataWidget> {
         trxDate: _todayTrxDateController.text,
         fromTime: _fromTime,
         toTime: _currentTime,
+        departureImage: _base64Image,
       );
       await api.updateAttendance(context, id,attendance);
       Navigator.pop(context,true );

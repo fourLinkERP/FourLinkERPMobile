@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/ui/module/accountPayable/vendors/vendorlist.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/basicInputs/salesman/old/salesmanlist.dart';
 import 'package:fourlinkmobileapp/ui/module/inventory/product/productslist.dart';
@@ -51,7 +52,10 @@ class _ReportsAreaListViewState extends State<ReportsAreaListView>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
+    return systemCode == 2 ? Container(
+      color: Colors.transparent,
+    ) :
+    AnimatedBuilder(
       animation: widget.mainScreenAnimationController!,
       builder: (BuildContext context, Widget? child) {
         return FadeTransition(

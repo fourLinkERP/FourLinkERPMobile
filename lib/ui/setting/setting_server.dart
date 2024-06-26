@@ -2,15 +2,18 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/companies/company.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/systems/system.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/network/cache_helper.dart';
 import 'package:fourlinkmobileapp/service/module/administration/basicInputs/compayApiService.dart';
+import 'package:fourlinkmobileapp/service/module/administration/basicInputs/systemApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../theme/theme_helper.dart';
 import 'package:fourlinkmobileapp/common/login_components.dart';
 
 //APIS
-CompanyApiService _companyApiService=new CompanyApiService();
+CompanyApiService _companyApiService= CompanyApiService();
+SystemApiService _systemApiService = SystemApiService();
 
 class LoginSettingPage extends StatefulWidget {
   const LoginSettingPage({Key? key}) : super(key: key);
@@ -30,26 +33,39 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
   bool isPassword = true;
   bool isLinked = false;
   String searchCompanies = "";
+  String searchSystems = "";
   //List Models
   List<Company> companies=[];
+  List<System> systems=[];
   //Object
   Company?  companyItem=Company(companyCode: 0 ,companyNameAra: "",companyNameEng: "",id: 0);
+  System?  systemItem=System(systemCode: 0 ,systemNameAra: "",systemNameEng: "",id: 0);
   //Variables
   int selectedCompanyCode=0;
   String selectedCompanyName = "";
+  int selectedSystemCode=0;
+  String selectedSystemName = "";
 
 
   @override
   void initState() {
-    super.initState();
 
-    //Company
+    // _systemApiService.getSystems().then((data) {
+    //   setState(() {
+    //     systems = data;
+    //   });
+    // }).catchError((error) {
+    //   print('Error fetching systems: $error');
+    // });
+
+    super.initState();
 
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
     _APiController = TextEditingController();
     _APiReportController = TextEditingController();
     _FinancialyearController = TextEditingController();
+
   }
 
   @override
@@ -62,8 +78,8 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
 
             SafeArea(
               child: Container(
-                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),  // This will be the login form
+                  padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+                  margin: const EdgeInsets.fromLTRB(5, 10, 5, 10),  // This will be the login form
                   child: Column(
                     children: [
                       //const SizedBox(height: 30.0),
@@ -75,111 +91,118 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                 child: Image.asset('assets/images/logo.png',
                                   width: 150,height: 150,),
                               ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          child: defaultFormField(
-                                            controller: _APiController,
-                                            label: 'api'.tr(),
-                                            type: TextInputType.emailAddress,
-                                            colors: Colors.blueGrey,
-                                            prefix: Icons.link,
-                                            validate: (String? value) {
-                                              if (value!.isEmpty) {
-                                                return 'API link must be non empty';
-                                              }
-                                              return null;
-                                            },
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8.0),
-                                        Container(
-                                          child: defaultFormField(
-                                            controller: _APiReportController,
-                                            label: 'report_api'.tr(),
-                                            type: TextInputType.emailAddress,
-                                            colors: Colors.blueGrey,
-                                            prefix: Icons.link,
-                                            validate: (String? value) {
-                                              if (value!.isEmpty) {
-                                                return 'API link must be non empty';
-                                              }
-                                              return null;
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10,),
-                                  SizedBox(
-                                    height: 40,
-                                    width: 80,
-                                    child: ElevatedButton(
-                                      onPressed: () async {
-                                        try {
-                                          searchCompanies = _APiController.text + '/api/v1/companies/loginsearch';
-                                          print("Entered API: $searchCompanies");
-
-                                          // Fetch the companies
-                                          List<Company>? futureCompany;
-                                          try {
-                                            futureCompany = await _companyApiService.getCompanies(searchCompanies);
-                                          } catch (e) {
-                                            print("Error fetching companies: $e");
-                                            futureCompany = null; // or handle the error appropriately
-                                          }
-
-                                          if (futureCompany != null) {
-                                            companies = futureCompany;
-                                          } else {
-                                            print("Company list is null");
-                                            companies = []; // Handle the scenario where fetching companies failed
-                                          }
-
-                                          // Check API validity
-                                          bool result = await _companyApiService.checkApiValidity(searchCompanies);
-                                          setState(() {
-                                            isLinked = result;
-                                          });
-
-                                          if (!result) {
-                                            FN_showToast(context, "Server error, please check link", Colors.red);
-                                          }
-                                        } catch (e) {
-                                          print("Unhandled error: $e");
-                                          setState(() {
-                                            isLinked = false;
-                                          });
-                                          FN_showToast(context, "Unexpected error occurred", Colors.red);
-                                        }
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(20),
-                                          ),
-                                          padding: const EdgeInsets.all(7),
-                                          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-                                          foregroundColor: Colors.black,
-                                          elevation: 0,
-                                          side: const BorderSide(
-                                              width: 1,
-                                              color: Color.fromRGBO(144, 16, 46, 1)
-                                          )
-                                      ),
-                                      child: Text('test'.tr(),
-                                          style: const TextStyle(color: Colors.white)),
-                                    ),
-                                  )
-                                ],
+                              Container(
+                                child: defaultFormField(
+                                  controller: _APiController,
+                                  label: 'api'.tr(),
+                                  type: TextInputType.emailAddress,
+                                  colors: Colors.blueGrey,
+                                  prefix: Icons.link,
+                                  validate: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return 'API link must be non empty';
+                                    }
+                                    return null;
+                                  },
+                                ),
                               ),
-                              const SizedBox(height: 8.0),
+                              const SizedBox(height: 10.0),
+                              Container(
+                                child: defaultFormField(
+                                  controller: _APiReportController,
+                                  label: 'report_api'.tr(),
+                                  type: TextInputType.emailAddress,
+                                  colors: Colors.blueGrey,
+                                  prefix: Icons.link,
+                                  validate: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return 'API link must be non empty';
+                                    }
+                                    return null;
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 10,),
+                              SizedBox(
+                                height: 50,
+                                width: 150,
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    try {
+                                      searchCompanies = _APiController.text + '/api/v1/companies/loginsearch';
+                                      searchSystems = _APiController.text + '/api/v1/systems/systemsearch';
+                                      print("Entered API: $searchCompanies");
+
+                                      // Fetch the companies
+                                      List<Company>? futureCompany;
+                                      List<System>? futureSystem;
+                                      try {
+                                        futureCompany = await _companyApiService.getCompanies(searchCompanies);
+                                        futureSystem = await _systemApiService.getSystems(searchSystems);
+                                      } catch (e) {
+                                        print("Error fetching companies: $e");
+                                        futureCompany = null;
+                                        futureSystem = null;
+                                      }
+
+                                      if (futureCompany != null && futureSystem != null) {
+                                        companies = futureCompany;
+                                        systems = futureSystem;
+                                      } else {
+                                        print("Company list is null");
+                                        companies = [];
+                                        systems = [];
+                                      }
+
+                                      // Check API validity
+                                      bool result = await _companyApiService.checkApiValidity(searchCompanies);
+                                      setState(() {
+                                        isLinked = result;
+                                      });
+
+                                      if (!result) {
+                                        FN_showToast(context, "Server error, please check link", Colors.red);
+                                      }
+                                    } catch (e) {
+                                      print("Unhandled error: $e");
+                                      setState(() {
+                                        isLinked = false;
+                                      });
+                                      FN_showToast(context, "Unexpected error occurred", Colors.red);
+                                    }
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      padding: const EdgeInsets.all(7),
+                                      backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+                                      foregroundColor: Colors.black,
+                                      elevation: 0,
+                                      side: const BorderSide(
+                                          width: 1,
+                                          color: Color.fromRGBO(144, 16, 46, 1)
+                                      )
+                                  ),
+                                  child: Text('test'.tr(),
+                                      style: const TextStyle(color: Colors.white, fontSize: 17.0)),
+                                ),
+                              ),
+                              const SizedBox(height: 10.0),
                               DropdownSearch<Company>(
                                 selectedItem: null,
                                 enabled: isLinked? true : false,
+                                dropdownBuilder: (context, selectedItem) {
+                                  return Center(
+                                    child: Text(
+                                      selectedItem?.companyNameAra ?? "company_name".tr(),
+                                      style: TextStyle(
+                                        color: selectedItem == null ? Colors.grey : Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  );
+                                },
                                 popupProps: PopupProps.menu(
                                   itemBuilder: (context, item, isSelected) {
                                     return Container(
@@ -187,10 +210,8 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                       decoration: !isSelected
                                           ? null
                                           : BoxDecoration(
-
-                                        border: Border.all(color: Colors.black12),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.white,
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(10),
                                       ),
                                       child: Padding(
                                         padding: const EdgeInsets.all(8.0),
@@ -229,18 +250,60 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                     return false;
                                   }
                                 },
-                                dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                    labelText: 'company_name'.tr(),
-                                  ),
-                                ),
 
+                              ),
+                              const SizedBox(height: 8.0),
+                              DropdownSearch<System>(
+                                enabled: isLinked ? true : false,
+                                dropdownBuilder: (context, selectedItem) {
+                                  return Center(
+                                    child: Text(
+                                      selectedItem?.systemNameAra ?? "select_system".tr(),
+                                      style: TextStyle(
+                                        color: selectedItem == null ? Colors.blueGrey : Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                popupProps: PopupProps.menu(
+                                  itemBuilder: (context, item, isSelected) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                                      decoration: !isSelected
+                                          ? null
+                                          : BoxDecoration(
+                                        color: Colors.grey,
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          langId == 1
+                                              ? item.systemNameAra.toString()
+                                              : item.systemNameEng.toString(),
+                                          textAlign: langId == 1 ? TextAlign.right : TextAlign.left,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  showSearchBox: true,
+                                ),
+                                items: systems,
+                                itemAsString: (System u) => u.systemNameAra.toString(),
+                                onChanged: (value) {
+                                  selectedSystemCode = value!.systemCode!;
+                                  selectedSystemName = value.systemNameAra!;
+                                },
+                                filterFn: (instance, filter) {
+                                  return instance.systemNameAra!.contains(filter);
+                                },
                               ),
                               const SizedBox(height: 8.0),
                               Container(
                                 child: defaultFormField(
                                   controller: _emailController,
-                                  label: 'User'.tr(),
+                                  label: 'user'.tr(),
                                   type: TextInputType.emailAddress,
                                   colors: Colors.blueGrey,
                                   prefix: Icons.email,
@@ -257,7 +320,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                 //decoration: ThemeHelper().inputBoxDecorationShaddow(),
                                 child: defaultFormField(
                                   controller: _passwordController,
-                                  label: 'Password'.tr(),
+                                  label: 'password'.tr(),
                                   type: TextInputType.text,
                                   colors: Colors.blueGrey,
                                   prefix: Icons.lock,
@@ -284,7 +347,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                               Container(
                                 child: defaultFormField(
                                   controller: _FinancialyearController,
-                                  label: '2024'.tr(),
+                                  label: 'year'.tr(),
                                   type: TextInputType.number,
                                   colors: Colors.blueGrey,
                                   prefix: Icons.numbers,
@@ -335,8 +398,12 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                       FN_showToast(context,'please check Report API link'.tr() ,Colors.black);
                                       return;
                                     }
-                                    if(selectedCompanyCode.toString().isEmpty){
+                                    if(selectedCompanyCode == 0){
                                       FN_showToast(context,'please select a company'.tr() ,Colors.black);
+                                      return;
+                                    }
+                                    if(selectedSystemCode == 0){
+                                      FN_showToast(context,'please select a system'.tr() ,Colors.black);
                                       return;
                                     }
                                     if(_emailController.text.isEmpty){
@@ -357,12 +424,14 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                     CacheHelper.putString('PASS', _passwordController.text);
                                     CacheHelper.putInt('CompanyCode', selectedCompanyCode);
                                     CacheHelper.putString('CompanyName', selectedCompanyName);
+                                    CacheHelper.putInt('SystemCode', selectedSystemCode);
+                                    CacheHelper.putString('SystemName', selectedSystemName);
                                     CacheHelper.putString('FinancialYearCode', _FinancialyearController.text);
                                     FN_showToast(context,'save_success'.tr() ,Colors.black);
+                                    print("system code setting : " + selectedSystemCode.toString());
                                     companyName = selectedCompanyName;
+                                    systemName = selectedSystemName;
 
-
-                                    //After successful login we will redirect to profile page. Let's create profile page now
                                   },
                                 ),
                               ),
@@ -371,7 +440,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                     alignment: FractionalOffset.bottomCenter,
                                     child: MaterialButton(
                                       onPressed: () => {},
-                                      child: const Text("Copyright \u00a9 Reserved Forlink 2022." ,
+                                      child: const Text("Copyright \u00a9 Reserved Fourlink 2022." ,
                                         style: TextStyle(color: Colors.blueGrey,fontSize: 10,),
                                       ),
                                     ),
@@ -388,412 +457,3 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
     );
   }
 }
-/*
-import 'package:dropdown_search/dropdown_search.dart';
-import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/common/globals.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/companies/company.dart';
-import 'package:fourlinkmobileapp/helpers/toast.dart';
-import 'package:fourlinkmobileapp/network/cache_helper.dart';
-import 'package:fourlinkmobileapp/service/module/administration/basicInputs/compayApiService.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
-import '../../theme/theme_helper.dart';
-import 'package:fourlinkmobileapp/common/login_components.dart';
-
-//APIS
-CompanyApiService _companyApiService=new CompanyApiService();
-
-class LoginSettingPage extends StatefulWidget {
-  const LoginSettingPage({Key? key}) : super(key: key);
-
-  @override
-  _LoginSettingPageState createState() => _LoginSettingPageState();
-}
-
-class _LoginSettingPageState extends State<LoginSettingPage> {
-  final double _headerHeight = 250;
-  final _formKey = GlobalKey<FormState>();
-  late TextEditingController _emailController;
-  late TextEditingController _passwordController;
-  late TextEditingController _APiController;
-  late TextEditingController _APiReportController;
-  late TextEditingController _FinancialyearController;
-  bool isPassword = true;
-  bool isLinked = false;
-  //List Models
-  List<Company> companies=[];
-  //Object
-  Company?  companyItem=Company(companyCode: 0 ,companyNameAra: "",companyNameEng: "",id: 0);
-  //Variables
-  int selectedCompanyCode=0;
-
-
-  @override
-  void initState() {
-    super.initState();
-
-    //Company
-    Future<List<Company>> futureBranch = _companyApiService.getCompanys().then((data) {
-      companies = data;
-
-      if (companies != null) {
-        for(var i = 0; i < companies.length; i++){
-
-          if(companyCode != null){
-            if(companies[i].companyCode == companyCode){
-              companyItem = companies[companies.indexOf(companies[i])];
-            }
-
-          }
-
-        }
-      }
-
-    setState(() {
-
-    });
-    return companies;
-    }, onError: (e) {
-    print(e);
-    });
-
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
-    _APiController = TextEditingController();
-    _APiReportController = TextEditingController();
-    _FinancialyearController = TextEditingController();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-
-            SafeArea(
-              child: Container(
-                  padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),  // This will be the login form
-                  child: Column(
-                    children: [
-                      //const SizedBox(height: 30.0),
-                      Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              Container(
-                                child: Image.asset('assets/images/logo.png',
-                                width: 150,height: 150,),
-                              ),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          child: defaultFormField(
-                                            controller: _APiController,
-                                            label: 'http://webapi.4linkerp.com'.tr(),
-                                            type: TextInputType.emailAddress,
-                                            colors: Colors.blueGrey,
-                                            prefix: Icons.link,
-                                            validate: (String? value) {
-                                              if (value!.isEmpty) {
-                                                return 'API link must be non empty';
-                                              }
-                                              return null;
-                                            },
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8.0),
-                                        Container(
-                                          child: defaultFormField(
-                                            controller: _APiReportController,
-                                            label: 'http://webreport.4linkerp.com'.tr(),
-                                            type: TextInputType.emailAddress,
-                                            colors: Colors.blueGrey,
-                                            prefix: Icons.link,
-                                            validate: (String? value) {
-                                              if (value!.isEmpty) {
-                                                return 'API link must be non empty';
-                                              }
-                                              return null;
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10,),
-                                  SizedBox(
-                                    height: 40,
-                                    width: 80,
-                                    child: ElevatedButton(
-                                      onPressed: () {},
-                                      style: ElevatedButton.styleFrom(
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(20),
-                                          ),
-                                          padding: const EdgeInsets.all(7),
-                                          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-                                          foregroundColor: Colors.black,
-                                          elevation: 0,
-                                          side: const BorderSide(
-                                              width: 1,
-                                              color: Color.fromRGBO(144, 16, 46, 1)
-                                          )
-                                      ),
-                                      child: Text('test'.tr(),
-                                          style: const TextStyle(color: Colors.white)),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(height: 8.0),
-                              Row(
-                                //scrollDirection: Axis.horizontal,
-                                children: [
-                                  Column(
-                                    children: [
-                                      const SizedBox(height: 20.0),
-                                      SizedBox(
-                                        height: 60,
-                                        width: 90,
-                                        child: Text("user_name".tr() + " : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                                      ),
-                                      const SizedBox(height: 8.0),
-                                      SizedBox(
-                                        height: 60,
-                                        width: 90,
-                                        child: Text("password".tr() + " : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                                      ),
-                                      const SizedBox(height: 8.0),
-                                      SizedBox(
-                                        height: 60,
-                                        width: 90,
-                                        child: Text("company".tr() + " : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                                      ),
-                                      const SizedBox(height: 8.0),
-                                      SizedBox(
-                                        height: 60,
-                                        width: 90,
-                                        child: Text("financial_year".tr() + " : ",style: TextStyle(fontWeight: FontWeight.bold),),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(width: 8.0),
-                                  Column(
-                                    children: [
-                                      Container(
-                                        width: 210,
-                                        height: 60,
-                                        child: defaultFormField(
-                                          controller: _emailController,
-                                          label: 'admin'.tr(),
-                                          type: TextInputType.emailAddress,
-                                          colors: Colors.blueGrey,
-                                          prefix: Icons.email,
-                                          validate: (String? value) {
-                                            if (value!.isEmpty) {
-                                              return 'email must be non empty';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8.0),
-                                      Container(
-                                        width: 210,
-                                        height: 60,
-                                        child: defaultFormField(
-                                          controller: _passwordController,
-                                          label: '123Pa\$\$word!'.tr(),
-                                          type: TextInputType.text,
-                                          colors: Colors.blueGrey,
-                                          prefix: Icons.lock,
-                                          suffix: isPassword ? Icons.visibility : Icons.visibility_off,
-                                          isPassword: isPassword,
-                                          suffixPressed: ()
-                                          {
-                                            setState(()
-                                            {
-                                              isPassword = !isPassword;
-                                            });
-                                          },
-                                          validate: (String? value)
-                                          {
-                                            if (value!.isEmpty || value.length < 8)
-                                            {
-                                              return'password must be non empty or less than 8 chars';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8.0),
-                                      Container(
-                                        width: 210,
-                                        height: 60,
-                                        child: DropdownSearch<Company>(
-                                          selectedItem: null,
-                                          enabled: isLinked ? true : false,
-                                          popupProps: PopupProps.menu(
-                                            itemBuilder: (context, item, isSelected) {
-                                              return Container(
-                                                margin: const EdgeInsets.symmetric(horizontal: 8),
-                                                decoration: !isSelected
-                                                    ? null
-                                                    : BoxDecoration(
-
-                                                  border: Border.all(color: Colors.black12),
-                                                  borderRadius: BorderRadius.circular(5),
-                                                  color: Colors.white,
-                                                ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
-                                                  child: Text((langId==1)? item.companyNameAra.toString() : item.companyNameEng.toString()),
-                                                ),
-                                              );
-                                            },
-                                            showSearchBox: true,
-
-                                          ),
-
-
-                                          items: companies,
-                                          itemAsString: (Company u) => (langId==1)? u.companyNameAra.toString() : u.companyNameAra.toString(),
-
-                                          onChanged: (value){
-                                            selectedCompanyCode = int.parse(value!.companyCode.toString());
-                                            //print(value!.id);
-                                            CacheHelper.putString('companyCode', value.companyCode);
-                                          },
-
-                                          filterFn: (instance, filter){
-                                            if((langId==1)? instance.companyNameAra!.contains(filter) : instance.companyNameAra!.contains(filter)){
-                                              print(filter);
-                                              return true;
-                                            }
-                                            else{
-                                              return false;
-                                            }
-                                          },
-                                          // dropdownDecoratorProps: DropDownDecoratorProps(
-                                          //   dropdownSearchDecoration: InputDecoration(
-                                          //     labelText: 'company_name'.tr(),
-                                          //
-                                          //   ),),
-
-                                        ),
-                                      ),
-                                      const SizedBox(height: 8.0),
-                                      Container(
-                                        width: 210,
-                                        height: 60,
-                                        child: defaultFormField(
-                                          controller: _FinancialyearController,
-                                          label: '2024'.tr(),
-                                          type: TextInputType.number,
-                                          colors: Colors.blueGrey,
-                                          prefix: Icons.numbers,
-                                          validate: (String? value) {
-                                            if (value!.isEmpty) {
-                                              return 'Year must be non empty';
-                                            }
-                                            return null;
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10.0),
-                              Container(
-                                decoration: ThemeHelper().buttonBoxDecoration(context),
-                                child: ElevatedButton(
-                                  style: ThemeHelper().buttonStyle(),
-
-                                    child: Padding(
-                                      padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
-                                      child: Text(
-                                        'add_database_url'.tr(),
-                                        style: const TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,),
-                                      ),
-                                    ),
-
-                                  onPressed: () async {
-
-                                    CacheHelper.putString('API', _APiController.text);
-                                    CacheHelper.putString('API', _APiReportController.text);
-                                    CacheHelper.putString('EMAIL', _emailController.text);
-                                    CacheHelper.putString('PASS', _passwordController.text);
-                                    //CacheHelper.putInt('CompanyCode', selectedCompanyCode);
-                                    CacheHelper.putString('financialYearCode', _FinancialyearController.text);
-                                     FN_showToast(context,'save_success'.tr() ,Colors.black);
-
-
-
-                                    /*       Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                homePage()));*/
-
-
-                                    /*            await ApiService()
-                                        .loginUser(User(
-                                        email: _emailController.text,
-                                        password: _passwordController.text))
-                                        .then((data) {
-                                      if (data.access_token!.isNotEmpty) {
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ProfilePage()));
-                                      } else {
-                                        showAlert(
-                                            context: context, title: data.msg);
-                                      }
-                                      ;
-                                    });*/
-
-                                    //After successful login we will redirect to profile page. Let's create profile page now
-                                  },
-                                ),
-                              ),
-                              //const SizedBox(height: 5.0),
-                              //const SizedBox(height: 15.0),
-
-
-
-                              Container(
-                                  child: Align(
-                                    alignment: FractionalOffset.bottomCenter,
-                                    child: MaterialButton(
-                                      onPressed: () => {},
-                                      child: Text("Copyright \u00a9 Reserved Forlink 2022." ,
-                                        style: TextStyle(color: Colors.blueGrey,fontSize: 10,),
-                                      ),
-                                    ),
-                                  )
-                              ),
-                            ],
-                          )),
-
-                    ],
-                  )),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-*/

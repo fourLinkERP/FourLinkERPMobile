@@ -226,13 +226,13 @@ class _FollowUpReportState extends State<FollowUpReport> {
                 child: ElevatedButton.icon(
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: Colors.blueGrey, // foreground
+                    backgroundColor: Colors.blueGrey,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
                   onPressed: () {
-
+                    filterCases();
                   },
                   icon: const Icon(Icons.search, size: 25.0,),
                   label: Text("search".tr(), style: const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),),
@@ -244,7 +244,7 @@ class _FollowUpReportState extends State<FollowUpReport> {
                   Container(
                     height: 3000,
                     child: ListView.builder(
-                      itemCount:  cases.isEmpty ? 0 : cases.length,
+                      itemCount:  _founded.isEmpty ? 0 : _founded.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Card(
                           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
@@ -276,7 +276,7 @@ class _FollowUpReportState extends State<FollowUpReport> {
                                       crossAxisAlignment: langId == 1 ? CrossAxisAlignment.start : CrossAxisAlignment.end,
                                       children: <Widget>[
                                         Text(
-                                          "${'lawyer'.tr()} : ${cases[index].empName}",
+                                          "${'lawyer'.tr()} : ${_founded[index].empName}",
                                           style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
@@ -285,14 +285,14 @@ class _FollowUpReportState extends State<FollowUpReport> {
                                         ),
                                         const SizedBox(height: 5),
                                         Text(
-                                          "${'client'.tr()} : ${cases[index].customerName}",
+                                          "${'client'.tr()} : ${_founded[index].customerName}",
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey[700],
                                           ),
                                         ),
                                         const SizedBox(height: 5),
-                                        Text("${"latest_procedure".tr()}: ${cases[index].procedureTypeName}" ,
+                                        Text("${"latest_procedure".tr()}: ${_founded[index].procedureTypeName}" ,
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey[700],
@@ -300,7 +300,7 @@ class _FollowUpReportState extends State<FollowUpReport> {
                                         ),
                                         const SizedBox(height: 5),
                                         Text(
-                                          "${'litigation_level'.tr()} : ${cases[index].litigationLevelName}",
+                                          "${'litigation_level'.tr()} : ${_founded[index].litigationLevelName}",
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey[700],
@@ -316,7 +316,7 @@ class _FollowUpReportState extends State<FollowUpReport> {
                                         ),
                                         const SizedBox(height: 5),
                                         Text(
-                                          "${'not_active'.tr()} : ${cases[index].notActive}",
+                                          "${'not_active'.tr()} : ${_founded[index].notActive}",
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey[700],
@@ -377,4 +377,40 @@ class _FollowUpReportState extends State<FollowUpReport> {
       });
     }
   }
+
+  void filterCases() {
+    DateTime? fromDate;
+    DateTime? toDate;
+
+    if (_fromDateController.text.isNotEmpty) {
+      fromDate = DateTime.parse(_fromDateController.text);
+    }
+    if (_toDateController.text.isNotEmpty) {
+      toDate = DateTime.parse(_toDateController.text);
+    }
+
+    setState(() {
+      _founded = cases.where((caseFollowUp) {
+        bool matchesDateRange = true;
+        bool matchesLawyer = true;
+        bool matchesCaseType = true;
+
+        if (fromDate != null && toDate != null) {
+          DateTime caseDate = DateTime.parse(caseFollowUp.caseDate.toString());
+          matchesDateRange = caseDate.isAfter(fromDate) && caseDate.isBefore(toDate);
+        }
+
+        if (selectedLawyer != null && selectedLawyer!.isNotEmpty) {
+          matchesLawyer = caseFollowUp.empCode == selectedLawyer;
+        }
+
+        if (selectedCaseType != null && selectedCaseType!.isNotEmpty) {
+          matchesCaseType = caseFollowUp.caseTypeCode == selectedCaseType;
+        }
+
+        return matchesDateRange && matchesLawyer && matchesCaseType;
+      }).toList();
+    });
+  }
 }
+

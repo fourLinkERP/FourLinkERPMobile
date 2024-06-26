@@ -60,13 +60,18 @@ class _NewRepairAgreeTabsState extends State<NewRepairAgreeTabs> {
                   Expanded(child: InkWell(
                     onTap: () {
                       if (currentStep == 0) {
-                        details.onStepContinue!();
+                        if (DTO.page1["customerCode"] != "" && DTO.page1["customerCode"] != null
+                            && DTO.page1["carCode"] != "" && DTO.page1["carCode"] != null) {
+                          details.onStepContinue!();
+                        } else {
+                          FN_showToast(context,'Step 1 validation failed'.tr() ,Colors.black);
+                        }
                       }
                       else if (currentStep == 1) {
                         if (DTO.netTotal != 0) {
                           details.onStepContinue!();
                         } else {
-                          FN_showToast(context,'Step 1 validation failed'.tr() ,Colors.black);
+                          FN_showToast(context,'Step 2 validation failed'.tr() ,Colors.black);
                         }
                       } else if (currentStep == 2) {
                         details.onStepContinue!();
@@ -80,7 +85,7 @@ class _NewRepairAgreeTabsState extends State<NewRepairAgreeTabs> {
                         ) {
                           details.onStepContinue!();
                         } else {
-                          FN_showToast(context,'Step 3 validation failed'.tr() ,Colors.black);
+                          FN_showToast(context,'Step 4 validation failed'.tr() ,Colors.black);
                         }
                       } else if (currentStep == 4) {
                         if (DTO.page5["paymentMethodCode"] != "" &&
@@ -92,7 +97,7 @@ class _NewRepairAgreeTabsState extends State<NewRepairAgreeTabs> {
                                 DTO.page5["repeatRepairsStatusCode"] != "")) {
                           details.onStepContinue!();
                         } else {
-                          FN_showToast(context,'Step 4 validation failed'.tr() ,Colors.black);
+                          FN_showToast(context,'Step 5 validation failed'.tr() ,Colors.black);
                         }
                       }
                     },

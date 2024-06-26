@@ -56,12 +56,14 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
   Future<List<Employee>>  getLawyers() async {
 
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode,
-      'IsLawyer': true
+      'Search': {
+        'companyCode': companyCode,
+        'branchCode': branchCode,
+        "isLawyer": true
+      }
     };
 
-    print('Lawyer 1');
+    print('Lawyer Search: '+ data.toString());
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
