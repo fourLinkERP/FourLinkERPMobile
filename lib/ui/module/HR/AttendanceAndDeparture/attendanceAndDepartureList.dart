@@ -10,7 +10,7 @@ import '../../../../cubit/app_states.dart';
 import '../../../../data/model/modules/module/hr/attendanceAndDeparture/AttendanceAndDeparture.dart';
 import '../../../../helpers/hex_decimal.dart';
 import '../../../../theme/fitness_app_theme.dart';
-import 'AddDeparture.dart';
+import 'addDeparture.dart';
 
 AttendanceApiService _apiService = AttendanceApiService();
 

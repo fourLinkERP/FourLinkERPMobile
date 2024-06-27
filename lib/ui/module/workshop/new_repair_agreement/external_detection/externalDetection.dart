@@ -1,12 +1,11 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/Reviews/reviews.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../../../common/login_components.dart';
 
 class ExternalDetection extends StatefulWidget {
   const ExternalDetection({Key? key}) : super(key: key);
@@ -23,6 +22,13 @@ class _ExternalDetectionState extends State<ExternalDetection> {
   File? imageFile4;
   File? imageFile5;
   File? imageFile6;
+
+  String? imageString1 = "";
+  String? imageString2 = "";
+  String? imageString3 = "";
+  String? imageString4 = "";
+  String? imageString5 = "";
+  String? imageString6 = "";
 
   final comment1Controller = TextEditingController();
   final comment2Controller = TextEditingController();
@@ -59,6 +65,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
                                 showImagePicker(context, _imgFromGallery, _imgFromCamera);
+                                await convertImageToBase64String(imageFile1, imageString1);
                               } else {
                                 print('no permission provided');
                               }
@@ -148,6 +155,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
                                 showImagePicker(context, _imgFromGallery2, _imgFromCamera2);
+                                await convertImageToBase64String(imageFile2, imageString2);
                               } else {
                                 print('no permission provided');
                               }
@@ -235,6 +243,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
                                 showImagePicker(context, _imgFromGallery3, _imgFromCamera3);
+                                await convertImageToBase64String(imageFile3, imageString3);
                               } else {
                                 print('no permission provided');
                               }
@@ -322,6 +331,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
                                 showImagePicker(context, _imgFromGallery4, _imgFromCamera4);
+                                await convertImageToBase64String(imageFile4, imageString4);
                               } else {
                                 print('no permission provided');
                               }
@@ -410,6 +420,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
                                 showImagePicker(context, _imgFromGallery5, _imgFromCamera5);
+                                await convertImageToBase64String(imageFile5, imageString5);
                               } else {
                                 print('no permission provided');
                               }
@@ -498,6 +509,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
                                 showImagePicker(context, _imgFromGallery6, _imgFromCamera6);
+                                await convertImageToBase64String(imageFile6, imageString6);
                               } else {
                                 print('no permission provided');
                               }
@@ -990,8 +1002,13 @@ class _ExternalDetectionState extends State<ExternalDetection> {
       setState(() {
         imageFile6 = File(croppedFile.path);
       });
-      // reload();
     }
   }
-
+  convertImageToBase64String(File? image, String? stringImage) async{
+    if (image != null) {
+      List<int> imageBytes = await image.readAsBytes();
+      stringImage = base64Encode(imageBytes);
+      print(stringImage.toString());
+    }
+  }
 }

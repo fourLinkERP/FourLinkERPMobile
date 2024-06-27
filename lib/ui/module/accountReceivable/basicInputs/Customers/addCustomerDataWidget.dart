@@ -6,9 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customerTypes/customerType.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/salesMen/salesMan.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/CustomerGroups/customerGroupApiService.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/SalesMen/salesManApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../../../common/login_components.dart';
@@ -22,7 +24,7 @@ import '../../../../../service/module/accountReceivable/basicInputs/CustomerType
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
 CustomerTypeApiService _customerTypeApiService= CustomerTypeApiService();
 CustomerGroupApiService _customerGroupApiService = CustomerGroupApiService();
-
+SalesManApiService _salesManApiService = SalesManApiService();
 
 class AddCustomerDataWidget extends StatefulWidget {
 
@@ -44,9 +46,11 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
   //List Models
   List<CustomerType> customerTypes=[];
   List<CustomerGroup> customerGroups=[];
+  List<SalesMan> salesMen = [];
   //Selected Value
   String? customerTypeSelectedValue = null;
   String? customerGroupSelectedValue = null;
+  String? selectedSalesManValue = null;
 
   final CustomerApiService api = CustomerApiService();
   final _addFormKey = GlobalKey<FormState>();
@@ -64,28 +68,38 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
     Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("AR_Customers", "CustomerCode", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
       NextSerial nextSerial = data;
 
-      //print(customers.length.toString());
       _customerCodeController.text = nextSerial.nextSerial.toString();
       return nextSerial;
     }, onError: (e) {
       print(e);
     });
 
-    //Customer Type
     Future<List<CustomerType>> futureCustomerType = _customerTypeApiService.getCustomerTypes().then((data) {
       customerTypes = data;
-      //print(customers.length.toString());
-      getCustomerTypeData();
+      setState(() {
+
+      });
       return customerTypes;
     }, onError: (e) {
       print(e);
     });
-    //Customer Type
+
     Future<List<CustomerGroup>> futureCustomerGroup = _customerGroupApiService.getCustomerGroups().then((data) {
       customerGroups = data;
-      //print(customers.length.toString());
-      getCustomerGroupData();
+      setState(() {
+
+      });
       return customerGroups;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<SalesMan>> futureSalesMan = _salesManApiService.getSalesMans().then((data) {
+      salesMen = data;
+      setState(() {
+
+      });
+      return salesMen;
     }, onError: (e) {
       print(e);
     });
@@ -113,6 +127,11 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
             FN_showToast(context,'please_select_group'.tr() ,Colors.black);
             return;
           }
+          if(selectedSalesManValue == null)
+          {
+            FN_showToast(context,'please_select_salesMan'.tr() ,Colors.black);
+            return;
+          }
           String base64Image ='';
           if (customerImage != null) {
             List<int> imageBytes = await customerImage!.readAsBytes();
@@ -123,6 +142,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
               customerCode: _customerCodeController.text ,
               customerNameAra: _customerNameAraController.text ,
               customerNameEng: _customerNameEngController.text ,
+              salesManCode: selectedSalesManValue,
               taxIdentificationNumber: _taxIdentificationNumberController.text ,
               taxNumber: _taxIdentificationNumberController.text ,
               phone1: _phone1Controller.text ,
@@ -196,14 +216,12 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                 child: Column(
                   children: [
                     Container(
-                      height: 450,
+                      height: 500,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: [
-                          //const SizedBox(height: 30),
                           Column(
                             children: [
-                              //const SizedBox(height: 10),
                               SizedBox(
                                   width: 120,
                                   height: 40,
@@ -232,6 +250,12 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                                   width: 120,
                                   height: 40,
                                   child: Center(child: Text('customerGroup'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                              ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                  width: 120,
+                                  height: 40,
+                                  child: Center(child: Text('salesMan'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
                               ),
                               const SizedBox(height: 15),
                               SizedBox(
@@ -390,6 +414,52 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
 
                                   filterFn: (instance, filter){
                                     if(instance.cusGroupsNameAra!.contains(filter)){
+                                      print(filter);
+                                      return true;
+                                    }
+                                    else{
+                                      return false;
+                                    }
+                                  },
+
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              SizedBox(
+                                height: 40,
+                                width: 195,
+                                child: DropdownSearch<SalesMan>(
+                                  popupProps: PopupProps.menu(
+                                    itemBuilder: (context, item, isSelected) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                                        decoration: !isSelected
+                                            ? null
+                                            : BoxDecoration(
+
+                                          border: Border.all(color: Colors.blueGrey),
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.white,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text((langId==1)? item.salesManNameAra.toString():  item.salesManNameEng.toString(),
+                                            textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
+                                            textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                        ),
+                                      );
+                                    },
+                                    showSearchBox: true,
+                                  ),
+                                  items: salesMen,
+                                  itemAsString: (SalesMan u) => u.salesManNameAra.toString(),
+                                  onChanged: (value){
+                                    selectedSalesManValue =  value!.salesManCode.toString();
+                                  },
+
+                                  filterFn: (instance, filter){
+                                    if(instance.salesManNameAra!.contains(filter)){
                                       print(filter);
                                       return true;
                                     }

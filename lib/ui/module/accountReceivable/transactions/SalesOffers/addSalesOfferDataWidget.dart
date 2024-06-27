@@ -187,10 +187,11 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
     });
 
     //Items
-    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
+    Future<List<Item>> Items = _itemsApiService.getOfferItems().then((data) {
       items = data;
+      setState(() {
 
-      getItemData();
+      });
       return items;
     }, onError: (e) {
       print(e);
@@ -649,9 +650,9 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                             SizedBox(
                               width: 60,
                                 child: Text('display_qty'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 10),
                             SizedBox(
-                              width: 100,
+                              width: 90,
                               child: TextFormField(
                                 controller: _displayQtyController,
                                 decoration: const InputDecoration(
@@ -664,7 +665,7 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                                 },
                               ),
                             ),
-                            const SizedBox(width: 30),
+                            const SizedBox(width: 20),
                             SizedBox(
                               width: 60,
                                 child: Text('discount :'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),

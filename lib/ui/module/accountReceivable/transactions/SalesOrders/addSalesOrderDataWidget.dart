@@ -184,9 +184,11 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     });
 
     //Items
-    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
+    Future<List<Item>> Items = _itemsApiService.getOfferItems().then((data) {
       items = data;
-      getItemData();
+      setState(() {
+
+      });
       return items;
     }, onError: (e) {
       print(e);
@@ -250,7 +252,6 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
             const SizedBox(width: 1,),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 11, 2, 0),
-              //apply padding to all four sides
               child: Text('sales_Order'.tr(),
                 style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),),
             )

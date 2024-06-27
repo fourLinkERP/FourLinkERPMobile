@@ -20,14 +20,14 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
 
     Map data = {
       'Search':{
-            "CompanyCode":1,
-            "BranchCode":1,
-            "langId": langId,
-            "empCode": empUserId,
-            "isShowTransactionsByUser": true,
-            "isManager": isManager,
-            "isIt": isIt
-        }
+        "CompanyCode": companyCode,
+        "BranchCode": branchCode,
+        "langId": langId,
+        "empCode": empUserId,
+        "isShowTransactionsByUser": true,
+        "isManager": isManager,
+        "isIt": isIt
+      }
     };
 
     print("search data: " + data.toString());

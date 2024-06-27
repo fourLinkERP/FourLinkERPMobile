@@ -39,6 +39,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
   final CustomerApiService api = CustomerApiService();
   final CarApiService apiCar = CarApiService();
   final _addFormKey = GlobalKey<FormState>();
+  final _serialController = TextEditingController();
   final mobileNumberController = TextEditingController();
   final plateNumberController = TextEditingController();
   final searchNumberController = TextEditingController();
@@ -98,10 +99,22 @@ class _CustomerInfoState extends State<CustomerInfo> {
       print(e);
     });
 
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("CMN_ReceiveCarsH", "TrxSerial", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
+      NextSerial nextSerial = data;
+
+      _serialController.text = nextSerial.nextSerial.toString();
+      DTO.page1["trxSerial"] = _serialController.text;
+      print("DTO serial: " + DTO.page1["trxSerial"]!);
+      return nextSerial;
+    }, onError: (e) {
+      print(e);
+    });
+
     Future<NextSerial>  futureSerialCar = _nextSerialApiService.getNextSerial("CMN_Cars", "CarCode", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
       NextSerial nextSerial = data;
 
       addCarCodeController.text = nextSerial.nextSerial.toString();
+
       return nextSerial;
     }, onError: (e) {
       print(e);
@@ -1294,8 +1307,8 @@ class _CustomerInfoState extends State<CustomerInfo> {
             actions: [
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.green, // background
-                  onPrimary: Colors.white, // foreground
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.green, // foreground
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
@@ -1313,8 +1326,8 @@ class _CustomerInfoState extends State<CustomerInfo> {
               const SizedBox(width: 100,),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.red, // background
-                  onPrimary: Colors.white, // foreground
+                  foregroundColor: Colors.white,
+                  backgroundColor: Colors.red,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),

@@ -30,8 +30,8 @@ import 'package:fourlinkmobileapp/service/general/receipt/pdfReceipt.dart';
 
 import '../../../../../service/general/Pdf/pdf_api.dart';
 
-SalesOrderHApiService _apiService=new SalesOrderHApiService();
-SalesOrderDApiService _apiDService=new SalesOrderDApiService();
+SalesOrderHApiService _apiService= SalesOrderHApiService();
+SalesOrderDApiService _apiDService= SalesOrderDApiService();
 
 class SalesOrderHListPage extends StatefulWidget {
   const SalesOrderHListPage({ Key? key }) : super(key: key);
@@ -88,7 +88,8 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
       AppCubit.get(context).EmitErrorState();
     });
     _salesOrders = (await futureSalesOrderH)!;
-    if (_salesOrders != null) {
+    if (_salesOrders.isNotEmpty) {
+      _salesOrders.sort((a, b) => int.parse(b.sellOrdersSerial!).compareTo(int.parse(a.sellOrdersSerial!)));
       setState(() {
         _founded = _salesOrders!;
         String search = '';
@@ -150,7 +151,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
             ),
           ),
         ),
-        body: BuildsalesOrders(),
+        body: buildSalesOrders(),
 
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -331,9 +332,8 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
 
   _navigateToPrintScreen (BuildContext context, SalesOrderH orderH,int index) async {
 
-    int menuId=6204;
+    int menuId=6203;
     bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
-    //isAllowPrint = true;
     if(isAllowPrint)
     {
       bool IsReceipt =true;
@@ -342,8 +342,6 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
         DateTime date = DateTime.parse(orderH.sellOrdersDate.toString());
         final dueDate = date.add(Duration(days: 7));
 
-        //Get Sales Invoice Details To Create List Of Items
-        //getDetailData(orderH.id);
         Future<List<SalesOrderD>?> futureSalesOrderD = _apiDService.getSalesOrdersD(orderH.id,orderH.sellOrdersSerial);
         _salesOrdersD = (await futureSalesOrderD)!;
 
@@ -452,13 +450,17 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     }
   }
 
-  Widget BuildsalesOrders(){
+  Widget buildSalesOrders(){
     if(AppCubit.get(context).Conection==false){
       return const Center(child: Text('no internet connection'));
     }
-   else if(_salesOrders.isEmpty&&AppCubit.get(context).Conection==true){
-      return Center(child: CircularProgressIndicator());
-    }else{
+   // else if( AppCubit.get(context).Conection==true && _salesOrders.isNotEmpty ){
+   //    return const Center(child: CircularProgressIndicator());
+   //  }
+    else if(_salesOrders.isEmpty){
+      return Center(child: Text("No_Data_To_Show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
+    }
+   else{
       return Container(
         color:  const Color.fromRGBO(240, 242, 246,1), // Main Color
         child: ListView.builder(
@@ -481,20 +483,8 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
-                          Container(height: 20, color: Colors.white30, child: Row(
-                            children: [
-                              Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesOrders[index].sellOrdersDate.toString())))  ,
-
-                            ],
-
-                          )),
-                          Container(height: 20, color: Colors.white30, child: Row(
-                            children: [
-                              Text('customer'.tr() + " : " + _salesOrders[index].customerName.toString()),
-
-                            ],
-
-                          )),
+                          Container(height: 20, color: Colors.white30, child: Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesOrders[index].sellOrdersDate.toString())))),
+                          Container(height: 20, color: Colors.white30, child: Text('customer'.tr() + " : " + _salesOrders[index].customerName.toString())),
                           const SizedBox(width: 5),
                           Container(
                               child: Row(

@@ -46,9 +46,7 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
       }
       print('Sales Man 4');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => SalesMan.fromJson(data))
-      //     .toList();
+
     } else {
       print('Sales Man Failed');
 

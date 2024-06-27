@@ -592,5 +592,9 @@
     "please_take_image": "please take a photo",
     "counter": "Counter",
     "cars_information_does_not_exist_do_you_want_to_add_car": "Car's information does not exist - do you want to add new car?",
-    "please_enter_mobile_or_plate_number": "please enter mobile or plate number"
+    "please_enter_mobile_or_plate_number": "please enter mobile or plate number",
+    "please_select_salesMan": "please select sales man",
+    "please_enter_name": "please enter name",
+    "please_select_group": "please select group",
+    "No_Data_To_Show": "No Data To Show"
 }

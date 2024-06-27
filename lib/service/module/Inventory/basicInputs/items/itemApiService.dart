@@ -55,6 +55,45 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
     }
   }
 
+  Future<List<Item>>  getOfferItems() async {
+
+    print('Items 1');
+    Map data = {
+     // "Search":{
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode,
+        'EmpCode': empCode,
+        "IsIgnoreBalance": true
+     // }
+    };
+
+    print('Items 2');
+    final http.Response response = await http.post(
+      Uri.parse(searchApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(data),
+    );
+    print("Items Api: " + searchApi);
+    print('Items 4');
+    if (response.statusCode == 200) {
+      print('Items 5');
+      List<dynamic> data = jsonDecode(response.body)['data'];
+      List<Item> list = [];
+      if (data != null) {
+        list = data.map((item) => Item.fromJson(item)).toList();
+      }
+      print('Items 1 Finish');
+      return  list;
+
+    } else {
+      print('Items Failure');
+      throw "Failed to load item list";
+    }
+  }
+
   Future<List<Item>>  getReturnItems() async {
 
     print('Items 1');

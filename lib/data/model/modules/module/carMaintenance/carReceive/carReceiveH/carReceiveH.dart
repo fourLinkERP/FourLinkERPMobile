@@ -109,8 +109,8 @@ class CarReceiveH {
   factory CarReceiveH.fromJson(Map<String, dynamic> json){
     return CarReceiveH(
       id: (json['id'] != null) ? json['id'] as int : 0,
-      customerCode: (json['customerCode'] !=null) ? json['customerCode'] as String : "",
       trxSerial: (json['trxSerial'] != null) ? json['trxSerial'] as String : "",
+      customerCode: (json['customerCode'] !=null) ? json['customerCode'] as String : "",
       carCode: (json['carCode'] != null) ? json['carCode'] as String : " ",
       receiveCarStatusCode: (json['receiveCarStatusCode'] != null) ? json['receiveCarStatusCode'] as String : " ",
       returnOldPartStatusCode: (json['returnOldPartStatusCode'] != null) ? json['returnOldPartStatusCode'] as int : 1,

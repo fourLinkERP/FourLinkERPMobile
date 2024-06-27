@@ -693,7 +693,11 @@
     "please_take_image": "من فضلك التقط صورة",
     "counter": "العداد",
     "cars_information_does_not_exist_do_you_want_to_add_car": "بيانات السيارة غير موجودة - هل تريد إضافة السيارة",
-    "please_enter_mobile_or_plate_number": "من فضلك ادخل رقم الهاتف او رقم الشاسيه"
+    "please_enter_mobile_or_plate_number": "من فضلك ادخل رقم الهاتف او رقم الشاسيه",
+    "please_select_salesMan": "من فضلك اختر المندوب",
+    "please_enter_name": "من فضلك ادخل الاسم",
+    "please_select_group": "من فضلك اختر المجموعة",
+    "No_Data_To_Show": "لا يوجد داتا لعرضها"
 
 }
 

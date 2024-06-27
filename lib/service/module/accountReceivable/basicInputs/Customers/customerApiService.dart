@@ -120,6 +120,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'customerName': customer.customerName,
       'customerNameAra': customer.customerNameAra,
       'customerNameEng': customer.customerNameEng,
+      'salesManCode': customer.salesManCode,
       'taxIdentificationNumber': customer.taxIdentificationNumber,
       'taxNumber': customer.taxNumber,
       'address': customer.address,

@@ -26,9 +26,16 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
   Future<List<SalesOrderH>?> getSalesOrdersH() async {
 
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode,
-       'SellOrdersTypeCode': '1', //Sales Invoice Type
+      'Search':{
+        "CompanyCode": companyCode,
+        "BranchCode": branchCode,
+        "langId": langId,
+        "empCode": empUserId,
+        "isShowTransactionsByUser": true,
+        "isManager": isManager,
+        "isIt": isIt
+      }
+      //"SellOrdersTypeCode": '1',
     };
 
     final http.Response response = await http.post(

@@ -10,7 +10,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
  class SalesOfferHApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/salesofferheaders/searchData';
+  String searchApi= baseUrl.toString()  + '/api/v1/salesofferheaders/searchdata';
   String createApi= baseUrl.toString()  + '/api/v1/salesofferheaders';
   String updateApi= baseUrl.toString()  + '/api/v1/salesofferheaders/';  // Add ID For Edit
   String deleteApi= baseUrl.toString()  + '/api/v1/salesofferheaders/';
@@ -19,12 +19,17 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
   Future<List<SalesOfferH>?> getSalesOffersH() async {
 
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode,
-      // 'OfferTypeCode': '1', //Sales Invoice Type
+      'Search':{
+        "CompanyCode": companyCode,
+        "BranchCode": branchCode,
+        "langId": langId,
+        "empCode": empUserId,
+        "isShowTransactionsByUser": true,
+        "isManager": isManager,
+        "isIt": isIt
+      }
     };
 
-    //print('B 2');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{

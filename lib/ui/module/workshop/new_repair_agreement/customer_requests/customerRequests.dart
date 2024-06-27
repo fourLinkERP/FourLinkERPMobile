@@ -14,13 +14,9 @@ import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../data/model/modules/module/carMaintenance/maintenanceTypes/maintenanceType.dart';
-import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../helpers/toast.dart';
-import '../../../../../service/module/general/NextSerial/generalApiService.dart';
-import '../../../accountReceivable/transactions/salesInvoices/editSalesInvoiceDataWidget.dart';
 
 //APIs
-NextSerialApiService _nextSerialApiService= NextSerialApiService();
 MaintenanceTypeApiService _maintenanceTypeApiService = MaintenanceTypeApiService();
 MaintenanceClassificationApiService _maintenanceClassificationApiService = MaintenanceClassificationApiService();
 MalfunctionApiService _malfunctionApiService = MalfunctionApiService();
@@ -71,9 +67,6 @@ class _CustomerRequestsState extends State<CustomerRequests> {
   List<CarReceiveD2s> carReceiveD2Lst2 = <CarReceiveD2s>[];
   List<CarReceiveD2s> selected = [];
 
-  List<DropdownMenuItem<String>> menuMaintenanceTypes = [];
-  List<DropdownMenuItem<String>> menuMaintenanceClassifications = [];
-  List<DropdownMenuItem<String>> menuServices = [];
 
   @override
   void initState() {
@@ -87,7 +80,9 @@ class _CustomerRequestsState extends State<CustomerRequests> {
 
     Future<List<MaintenanceType>> futureMaintenanceType = _maintenanceTypeApiService.getMaintenanceTypes().then((data) {
       maintenanceTypes = data;
-      getMaintenanceTypeData();
+      setState(() {
+
+      });
       return maintenanceTypes;
     }, onError: (e) {
       print(e);
@@ -96,7 +91,9 @@ class _CustomerRequestsState extends State<CustomerRequests> {
     Future<List<MaintenanceClassification>> futureMaintenanceClassification = _maintenanceClassificationApiService
         .getMaintenanceClassifications().then((data) {
       maintenanceClassifications = data;
-      getMaintenanceClassificationData();
+      setState(() {
+
+      });
       return maintenanceClassifications;
     }, onError: (e) {
       print(e);
@@ -104,7 +101,9 @@ class _CustomerRequestsState extends State<CustomerRequests> {
 
     Future<List<Malfunction>> futureMalfunction = _malfunctionApiService.getMalfunctions().then((data) {
       services = data;
-      getMalfunctionData();
+      setState(() {
+
+      });
       return services;
     }, onError: (e) {
       print(e);
@@ -147,6 +146,7 @@ class _CustomerRequestsState extends State<CustomerRequests> {
     });
     totalController.text = total.toString();
     DTO.netTotal = totalController.text.toInt()!;
+    print("DTO netTotal: ${DTO.netTotal}");
   }
 
   @override
@@ -454,48 +454,7 @@ class _CustomerRequestsState extends State<CustomerRequests> {
       ),
     );
   }
-  getMaintenanceTypeData() {
-    if (maintenanceTypes.isNotEmpty) {
-      for (var i = 0; i < maintenanceTypes.length; i++) {
-        menuMaintenanceTypes.add(
-            DropdownMenuItem(
-                value: maintenanceTypes[i].maintenanceTypeCode.toString(),
-                child: Text((langId == 1) ? maintenanceTypes[i].maintenanceTypeNameAra.toString() :
-                maintenanceTypes[i].maintenanceTypeNameEng.toString())));
-      }
-    }
-    setState(() {
 
-    });
-  }
-
-  getMaintenanceClassificationData() {
-    if (maintenanceClassifications.isNotEmpty) {
-      for (var i = 0; i < maintenanceClassifications.length; i++) {
-        menuMaintenanceClassifications.add(
-            DropdownMenuItem(
-                value: maintenanceClassifications[i].maintenanceClassificationCode.toString(),
-                child: Text((langId == 1) ? maintenanceClassifications[i].maintenanceClassificationNameAra.toString()
-                    : maintenanceClassifications[i].maintenanceClassificationNameEng.toString())));
-      }
-    }
-    setState(() {
-    });
-  }
-
-  getMalfunctionData() {
-    if (services.isNotEmpty) {
-      for (var i = 0; i < services.length; i++) {
-        menuServices.add(
-            DropdownMenuItem(
-                value: services[i].malfunctionCode.toString(),
-                child: Text((langId == 1) ? services[i].malfunctionNameAra.toString() :
-                services[i].malfunctionNameEng.toString())));
-      }
-    }
-    setState(() {
-    });
-  }
   void addLaborRow() {
     if (selectedLaborValue != null) {
       print(selectedLaborValue);

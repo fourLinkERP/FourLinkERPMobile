@@ -1,11 +1,18 @@
 class DTO {
   static Map<String, String> page1 = {
+    "trxSerial": "",
     "customerCode": "",
     "carCode": ""
   };
 
   static int netTotal = 0; //page2
   static Map<String, bool> page3 = {
+    "checkMemory": false,
+    "checkUsb": false,
+    "checkAlloyWheelLock": false,
+    "checkMemoryDelivery": false,
+    "checkUsbDelivery": false,
+    "checkAlloyWheelLockDelivery": false,
     "checkPic1": false,
     "checkPic2": false,
     "checkPic3": false,

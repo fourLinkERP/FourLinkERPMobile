@@ -53,8 +53,8 @@ int lineNumber = 1;
 int langId = 1; //1-Arabic   2-English
 //Employee
 String empCode = "";
-bool? isManager;
-bool? isIt;
+bool? isManager = false;
+bool? isIt = false;
 String empUserCode = "A3ddsdwewewq";
 String empUserId = "Admin";
 String empName = "";
