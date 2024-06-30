@@ -143,7 +143,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
             ),
           ),
         ),
-        body: BuildsalesOffers(),
+        body: buildSalesOffers(),
 
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -331,7 +331,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
 
   _navigateToPrintScreen (BuildContext context, SalesOfferH offerH,int index) async {
 
-    int menuId=6204;
+    int menuId=6202;
     bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
     //isAllowPrint = true;
     if(isAllowPrint)
@@ -451,9 +451,12 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
     }
   }
 
-   Widget BuildsalesOffers(){
-    if(_salesOffers.isEmpty){
-      return const Center(child: CircularProgressIndicator());
+   Widget buildSalesOffers(){
+     // if(AppCubit.get(context).Conection==true && _salesOffers.isNotEmpty){
+     //   return const Center(child: CircularProgressIndicator());
+     // }
+     if(_salesOffers.isEmpty){
+      return Center(child: Text("No_Data_To_Show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     }else{
       return Container(
         color: const Color.fromRGBO(240, 242, 246,1), // Main Color
