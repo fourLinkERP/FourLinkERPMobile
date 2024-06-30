@@ -168,6 +168,7 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
     //Sales Invoice Type
     Future<List<SalesOfferType>> futureSalesOfferType = _salesOfferTypeApiService.getSalesOffersTypes().then((data) {
       salesOfferTypes = data;
+      print('inSalesOffer1');
       //print(customers.length.toString());
       getSalesOfferTypeData();
       return salesOfferTypes;
@@ -438,6 +439,7 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                                     onChanged: (value) {
                                       //v.text = value!.cusTypesCode.toString();
                                       //print(value!.id);
+                                      print('cuschange1');
                                       selectedCustomerValue =
                                           value!.customerCode.toString();
                                     },
@@ -504,7 +506,9 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                                       //_displayQtyController.text = "1";
                                       changeItemUnit(selectedItemValue.toString());
                                       selectedUnitValue = "1";
-                                      String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                      print('oksssssa');
+                                      //String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode   And OfferTypeCode=N'$selectedTypeValue'";
+                                      String criteria = " And CompanyCode=$companyCode ";
                                       setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
 
 
@@ -581,7 +585,8 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                                           selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
 
                                           if (selectedUnitValue != null && selectedItemValue != null) {
-                                            String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                            //String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And OfferTypeCode=N'$selectedTypeValue'";
+                                            String criteria = " And CompanyCode=$companyCode ";
                                             //Item Price
                                             setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
                                             //Factor
@@ -1072,7 +1077,8 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
         totalBeforeTax:(_totalBeforeTaxController.text.isNotEmpty)?  _totalBeforeTaxController.text.toDouble():0 ,
         tafqitNameArabic: _tafqitNameArabicController.text,
         tafqitNameEnglish: _tafqitNameEnglishController.text,
-          storeCode: "1"
+        storeCode: "1",
+        currencyRate: 1
         //salesManCode: salesOffersSerial,
         // currencyCode: "1",
         // taxGroupCode: "1",
@@ -1343,7 +1349,7 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
   //Item Price
   setItemPrice(String itemCode , String unitCode,String criteria ){
     //Serial
-    Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SalesInvoicesType",criteria ).then((data) {
+    Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_OffersType",criteria ).then((data) {
 
       double sellPrice = data;
 

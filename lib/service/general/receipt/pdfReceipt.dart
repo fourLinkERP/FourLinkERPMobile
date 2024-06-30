@@ -228,17 +228,17 @@ class pdfReceipt {
                   //
                 ]
             ),
-            pw.Row(
-                mainAxisAlignment: MainAxisAlignment.center ,//Center Row contents horizontally,
-                crossAxisAlignment: CrossAxisAlignment.center, //Center Row contents vertically,
-                children: [
-                  Center(
-                    child:   Text(receipt.receiptHeader.salesOffersTypeName.toString(),style: const TextStyle(fontSize: 16),textAlign: TextAlign.center),
-                  )
-
-                  //
-                ]
-            ),
+            // pw.Row(
+            //     mainAxisAlignment: MainAxisAlignment.center ,//Center Row contents horizontally,
+            //     crossAxisAlignment: CrossAxisAlignment.center, //Center Row contents vertically,
+            //     children: [
+            //       Center(
+            //         child:   Text(receipt.receiptHeader.salesOffersTypeName.toString(),style: const TextStyle(fontSize: 16),textAlign: TextAlign.center),
+            //       )
+            //
+            //       //
+            //     ]
+            // ),
             buildHeader2(receipt, companyImage),
 
             buildInvoiceHeaderCells(receipt.invoice),
@@ -385,7 +385,7 @@ class pdfReceipt {
   static pw.Widget buildReceiptHeader2(ReceiptHeader recpt) => pw.Column(
     crossAxisAlignment: pw.CrossAxisAlignment.end,
     children: [
-      pw.Padding(padding:  const EdgeInsets.only(top: 1, left: 10.0, right: 10.0)),
+      pw.Padding(padding:  const EdgeInsets.only(top: 1, left: 5.0, right: 14.0)),
       //Text(recpt.companyName.toString(),   style: TextStyle(fontFamily: 'RobotoMono')),
       Row(
           children:[
@@ -402,7 +402,7 @@ class pdfReceipt {
             Container(
             //flex: 2,
             child: Container(
-            child: Text(' ${recpt.customerName}',style: const TextStyle(fontSize: 20)))),
+            child: Text(' ${recpt.customerName}',style: const TextStyle(fontSize: 18)))),
            ] ),
       Row(
 
@@ -410,7 +410,7 @@ class pdfReceipt {
             Container(
               //flex: 2,
                 child: Container(
-                    child: Text(' ${recpt.customerTaxNo}',style: const TextStyle(fontSize: 20)))),
+                    child: Text(' ${recpt.customerTaxNo}',style: const TextStyle(fontSize: 18)))),
           ] )
 
     ],

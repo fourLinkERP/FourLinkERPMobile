@@ -117,6 +117,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       "isSystem": false,
       "notActive": false,
       "flgDelete": false,
+      "currencyRate": invoice.currencyRate,
       'addBy': empUserId
 
 

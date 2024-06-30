@@ -595,7 +595,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                           selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
 
                                           if (selectedUnitValue != null && selectedItemValue != null) {
-                                            String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                            String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And OfferTypeCode=N'$selectedTypeValue'";
                                             //Item Price
                                             setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
                                             //Factor
@@ -1661,7 +1661,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
   //Item Price
   setItemPrice(String itemCode , String unitCode,String criteria ){
     //Serial
-    Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SalesInvoicesType",criteria ).then((data) {
+    Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_OffersType",criteria ).then((data) {
 
       double sellPrice = data;
 

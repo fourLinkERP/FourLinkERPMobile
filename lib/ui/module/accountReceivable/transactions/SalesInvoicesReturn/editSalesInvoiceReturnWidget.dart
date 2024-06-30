@@ -486,7 +486,8 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
                                           selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
                                           changeItemUnit(selectedItemValue.toString());
                                           selectedUnitValue = "1";
-                                          String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                          //String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                          String criteria = " And CompanyCode=$companyCode ";
                                           setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
                                           int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                           setItemQty(
@@ -562,7 +563,8 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
 
                                           if (selectedUnitValue != null &&
                                               selectedItemValue != null) {
-                                            String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                            //String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                            String criteria = " And CompanyCode=$companyCode ";
                                             //Item Price
                                             setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
                                             //Factor

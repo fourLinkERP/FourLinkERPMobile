@@ -35,6 +35,7 @@ class SalesOfferH {
   String?  taxIdentificationNumber ;
   String?  taxNumber ;
   String? storeCode;
+  double? currencyRate;
   // String? address;
   // String? Phone1;
   //String image;
@@ -68,7 +69,8 @@ class SalesOfferH {
     this.tafqitNameEnglish,
     this.storeCode,
     this.tafqeetName,
-    this.taxIdentificationNumber
+    this.taxIdentificationNumber,
+    this.currencyRate
     //image
     });
 
@@ -96,6 +98,8 @@ class SalesOfferH {
       storeCode: (json['storeCode'] != null) ? json['storeCode'] as String : "1",
       taxIdentificationNumber: (json['taxIdentificationNumber'] != null) ? json['taxIdentificationNumber'] as String : "",
       taxNumber: (json['taxNumber'] != null) ? json['taxNumber'] as String : "",
+      currencyCode: (json['currencyCode'] != null) ? json['currencyCode'] as String : "",
+      currencyRate: (json['currencyRate'] !=null) ? json['currencyRate'].toDouble() : 0
       // offerDate: json['offerDate'] as String,
 
 
