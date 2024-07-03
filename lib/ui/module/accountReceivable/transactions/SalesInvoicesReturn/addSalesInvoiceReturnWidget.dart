@@ -18,11 +18,9 @@ import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/C
 import 'package:fourlinkmobileapp/service/module/accountReceivable/setup/SalesInvoiceTypes/salesInvoiceType.dart'; // *
 import 'package:fourlinkmobileapp/service/module/general/inventoryOperation/inventoryOperationApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
-import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnList.dart';
 
 import 'package:fourlinkmobileapp/utils/email.dart';
 import 'package:supercharged/supercharged.dart';
-import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/salesInvoiceList.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
 import 'package:zatca_fatoora_flutter/zatca_fatoora_flutter.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
@@ -50,7 +48,7 @@ TafqeetApiService _tafqeetApiService = TafqeetApiService();
 //List Models
 List<Customer> customers = [];
 List<SalesInvoiceType> salesInvoiceTypes = [];  //*
-List<Item> items = [];
+//List<Item> items = [];
 List<Unit> units = [];
 
 int lineNum = 1;
@@ -471,7 +469,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
 
                                         ),
 
-                                        items: items,
+                                        items: itemsWithOutBalance,
                                         itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
                                         onChanged: (value) {
                                           selectedItemValue = value!.itemCode.toString();
@@ -480,7 +478,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                           changeItemUnit(selectedItemValue.toString());
                                           selectedUnitValue = "1";
                                           String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
-                                          setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
+                                          setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
 
 
                                           //Factor
@@ -559,10 +557,10 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                           selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
 
                                           if (selectedUnitValue != null &&
-                                              selectedItemValue != null) {
+                                              selectedItemValue != null && selectedCustomerValue != null) {
                                             String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=2 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                             //Item Price
-                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
+                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
                                             //Factor
                                             int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                             setItemQty(selectedItemValue.toString(), selectedUnitValue.toString(), qty);
@@ -1168,10 +1166,10 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
   }
 
 //Item Price
-  setItemPrice(String itemCode, String unitCode, String criteria) {
+  setItemPrice(String itemCode, String unitCode, String criteria, String customerCode) {
     //Serial
     Future<double> futureSellPrice = _salesInvoiceReturnDApiService
-        .getItemSellPriceData(itemCode, unitCode, "View_AR_SalesInvoicesType", criteria).then((data) {
+        .getItemSellPriceData(itemCode, unitCode, "View_AR_SalesInvoicesType", criteria, customerCode).then((data) {
       double sellPrice = data;
 
       setState(() {
@@ -1598,17 +1596,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     setState(() {});
   }
 
-  getItemData() {
-
-      for(var i = 0; i < items.length; i++){
-        menuItems.add(DropdownMenuItem(value: items[i].itemCode.toString(),
-            child: Text((langId==1)?items[i].itemNameAra.toString() : items[i].itemNameEng.toString()   )));
-      }
-    setState(() {
-
-    });
-  }
-
   getUnitData() {
     for (var i = 0; i < units.length; i++) {
       menuUnits.add(DropdownMenuItem(value: units[i].unitCode.toString(),
@@ -1642,15 +1629,15 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
       print(e);
     });
 
-    //Items
-    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
-      items = data;
-
-      getItemData();
-      return items;
-    }, onError: (e) {
-      print(e);
-    });
+    // //Items
+    // Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
+    //   items = data;
+    //
+    //   getItemData();
+    //   return items;
+    // }, onError: (e) {
+    //   print(e);
+    // });
 
     //Units
     Future<List<Unit>> Units = _unitsApiService.getUnits().then((data) {

@@ -270,9 +270,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
               print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString() );
               for(var i = 0; i < _salesInvoicesD.length; i++){
                 double qty= (_salesInvoicesD[i].displayQty != null) ? double.parse(_salesInvoicesD[i].displayQty.toStringAsFixed(2))  : 0;
-                //double vat=0;
                 double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? double.parse(_salesInvoicesD[i].displayTotalTaxValue.toStringAsFixed(2)) : 0 ;
-                //double price =_salesInvoicesD[i].displayPrice! as double;
                 double price =( _salesInvoicesD[i].displayPrice != null) ? double.parse(_salesInvoicesD[i].displayPrice.toStringAsFixed(2)) : 0;
                 double total =( _salesInvoicesD[i].displayNetValue != null) ? double.parse(_salesInvoicesD[i].displayNetValue.toStringAsFixed(2)) : 0;
 
@@ -352,7 +350,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             final bytesx = await imageControllers[index].capture();
             var bytesImg = bytesx as Uint8List;
 
-            final pdfFile = await pdfReceipt.generate(receipt,bytesImg, _base64StringToUint8List(companyLogo));
+            final pdfFile = await pdfReceipt.generate(receipt,bytesImg);  // , _base64StringToUint8List(companyLogo)
             PdfApi.openFile(pdfFile);
 
             //var boundary = globalKey.currentContext!.findRenderObject();
@@ -461,7 +459,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                       },
                       child: ListTile(
                         //leading: Image.asset('assets/fitness_app/salesCart.png'),
-                        leading:  Container(
+                        leading:  SizedBox(
                           width: 55,
                           height: 55,
                           child:
@@ -494,7 +492,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                         //       )
                         //   ),
                         ),
-                        title: Text('serial'.tr() + " : " + _salesInvoices[index].salesInvoicesSerial.toString()),
+                        title: Text("${'serial'.tr()} : ${_salesInvoices[index].salesInvoicesSerial}"),
                         subtitle: Column(
                           crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                           children: <Widget>[

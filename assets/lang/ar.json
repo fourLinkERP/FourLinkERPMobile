@@ -565,7 +565,7 @@
     "department": "القسم",
     "employee": "الموظف",
     "from_date": "من تاريخ",
-    "to_date": "الى تاريخ",
+    "to_date": "إلى تاريخ",
     "vacation_type": "نوع الاجازة",
     "notes": "ملاحظات",
     "setting_requests": "اعدادات الطلبات",
@@ -697,7 +697,14 @@
     "please_select_salesMan": "من فضلك اختر المندوب",
     "please_enter_name": "من فضلك ادخل الاسم",
     "please_select_group": "من فضلك اختر المجموعة",
-    "No_Data_To_Show": "لا يوجد داتا لعرضها"
+    "No_Data_To_Show": "لا يوجد داتا لعرضها",
+    "car_delivery": "تسليم سيارة",
+    "dailyPurchaseReport": "تقرير يومية المشتريات",
+    "detailedDailyPurchaseReport": "تقرير يومية المشتريات تفصيلي",
+    "detailedDailySalesReport": "تقرير يومية المبيعات تفصيلي",
+    "customerBalancesReport": "تقرير أرصدة العملاء",
+    "invoice_discount": "خصم الفاتورة",
+    "percent": "النسبة"
 
 }
 

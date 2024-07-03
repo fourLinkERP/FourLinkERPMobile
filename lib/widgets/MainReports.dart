@@ -2,6 +2,10 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/reports/rptCustomerBalances.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/reports/rptDailyPurchases.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/reports/rptDetailedDailyPurchases.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/reports/rptDetailedDailySales.dart';
 // import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/salesOrderList.dart';
 // import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/salesInvoiceList.dart';
 // import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesOffers/salesOfferList.dart';
@@ -22,15 +26,20 @@ class MainReports extends StatelessWidget {
     List<String> areaListData = <String>[
       'assets/fitness_app/report.png',
       'assets/fitness_app/report.png',
-      // 'assets/fitness_app/report.png',
-      // 'assets/fitness_app/report.png',
+      'assets/fitness_app/report.png',
+      'assets/fitness_app/report.png',
+      'assets/fitness_app/report.png',
+      'assets/fitness_app/report.png',
+
     ];
 
     List<String> areaListDataTitle = <String>[
       'customeraccountreport'.tr(),
       'dailySalesreport'.tr(),
-      // 'itemcardreport'.tr(),
-      // 'accountreports'.tr(),
+      'dailyPurchaseReport'.tr(),
+      'detailedDailyPurchaseReport'.tr(),
+      'detailedDailySalesReport'.tr(),
+      'customerBalancesReport'.tr(),
     ];
 
 
@@ -89,37 +98,27 @@ class MainReports extends StatelessWidget {
                       else if(areaListDataTitle[index] == 'dailySalesreport'.tr())
                       {
                         print('okz2');
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute( builder: (context) => RptDailySales()));
+                        Navigator.push(context, MaterialPageRoute( builder: (context) => RptDailySales()));
                       }
-                      else  if(areaListData[index]  == 'assets/fitness_app/inventory.png')//Orders
-                          {
-                        // print('okz3');
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) =>
-                        //             SalesOrderHListPage()));
-                      }
-                      else if(areaListData[index] == 'assets/fitness_app/accounting.png')//Cash
-                        {
-                        // print('okz4');
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) =>
-                        //             CashReceiveListPage()));
-
-                      }
-                      else if(areaListData[index]  == 'assets/fitness_app/sales_portion.png')
+                      else  if(areaListDataTitle[index] == 'dailyPurchaseReport'.tr())
                       {
-                        // print('okz5');
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) =>
-                        //             SalesOrderHListPage()));
+                        print('okz3');
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => RptDailyPurchases()));
+                      }
+                      else  if(areaListDataTitle[index] == 'detailedDailyPurchaseReport'.tr())
+                          {
+                        print('okz4');
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => RptDetailedDailyPurchases()));
+                      }
+                      else  if(areaListDataTitle[index] == 'detailedDailySalesReport'.tr())
+                      {
+                        print('okz5');
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => RptDetailedDailySales()));
+                      }
+                      else  if(areaListDataTitle[index] == 'customerBalancesReport'.tr())
+                      {
+                        print('okz6');
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => RptCustomerBalances()));
                       }
 
                     },

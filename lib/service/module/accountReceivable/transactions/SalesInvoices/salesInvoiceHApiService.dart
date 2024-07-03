@@ -103,6 +103,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       'rowsCount': invoice.rowsCount,
       'TafqitNameArabic': invoice.tafqitNameArabic,
       'TafqitNameEnglish': invoice.tafqitNameEnglish,
+      //'invoiceDiscountTypeCode': invoice.invoiceDiscountTypeCode,
       'invoiceDiscountPercent': invoice.invoiceDiscountPercent,
       'invoiceDiscountValue': invoice.invoiceDiscountValue,
       'totalAfterDiscount': invoice.totalAfterDiscount,
@@ -204,7 +205,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "isSystem": false,
       "notActive": false,
       "flgDelete": false,
-      'editBy': empCode,
+      'editBy': empUserId,
       //,
       'InvoiceQRCodeBase64': invoice.invoiceQRCodeBase64,
     };

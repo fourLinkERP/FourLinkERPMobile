@@ -1,7 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/companyGeneralSetups/companyGeneralSetup.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/emailSettings/emailSetting.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/security/menuPermission.dart';
-
+import 'package:fourlinkmobileapp/data/model/modules/module/inventory/basicInputs/items/items.dart';
 import '../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import '../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
 
@@ -42,10 +44,14 @@ String companyCommercialID = '';
 String companyAddress = '';
 String companyMobile = '';
 String companyLogo = '';
+Uint8List companyLogoDecoded = Uint8List(0);
 String branchName= '';  //'Test Branch';
 String branchLatitude ='';
 String branchLongitude = '';
 // RequestTypeCode & TransactionId
+
+List<Item> itemsWithBalance = [];
+List<Item> itemsWithOutBalance = [];
 String requestTypeCode = "";
 String transactionId = "";
 int lineNumber = 1;
@@ -56,7 +62,7 @@ String empCode = "";
 bool? isManager = false;
 bool? isIt = false;
 String empUserCode = "A3ddsdwewewq";
-String empUserId = "Admin";
+String empUserId = "";
 String empName = "";
 String jobCode = "";
 String jobName = "";

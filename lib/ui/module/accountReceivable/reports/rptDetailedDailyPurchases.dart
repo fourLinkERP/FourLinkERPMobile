@@ -1,32 +1,31 @@
-
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:fourlinkmobileapp/common/globals.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customerTypes/customerType.dart';
+import 'package:intl/intl.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
+import '../../../../common/globals.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/salesMen/salesMan.dart';
+import '../../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
+import '../../../../common/login_components.dart';
+import '../../../../data/model/modules/module/accountReceivable/basicInputs/customerTypes/customerType.dart';
+import '../../../../data/model/modules/module/general/report/formulas.dart';
+import '../../../../service/module/accountReceivable/basicInputs/CustomerTypes/customerTypeApiService.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/branches/branch.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/general/report/formulas.dart';
+import 'package:fourlinkmobileapp/service/module/administration/basicInputs/branchApiService.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/SalesMen/salesManApiService.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/salesMen/salesMan.dart';
+import '../../../../service/module/general/reportUtility/reportUtilityApiService.dart';
+import 'package:flutter/services.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/service/general/Pdf/pdf_api.dart';
-import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/SalesMen/salesManApiService.dart';
-import 'package:fourlinkmobileapp/service/module/administration/basicInputs/branchApiService.dart';
-import 'package:fourlinkmobileapp/service/module/general/reportUtility/reportUtilityApiService.dart';
-import '../../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
-import '../../../../../../service/module/accountReceivable/basicInputs/CustomerTypes/customerTypeApiService.dart';
-import '../../../../common/login_components.dart';
-import '../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceH.dart';
-
-import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+
 
 CustomerApiService _customerApiService= CustomerApiService();
 CustomerTypeApiService _customerTypeApiService= CustomerTypeApiService();
 BranchApiService _branchApiService = BranchApiService();
 SalesManApiService _salesManApiService = SalesManApiService();
+
 
 final startDateController = TextEditingController();
 final endDateController = TextEditingController();
@@ -42,14 +41,15 @@ String? customerTypeSelectedValue = null;
 String? branchSelectedValue = null;
 String? salesManSelectedValue = null;
 
-class RptDailySales extends StatefulWidget {
-  const RptDailySales({Key? key}) : super(key: key);
+
+class RptDetailedDailyPurchases extends StatefulWidget {
+  const RptDetailedDailyPurchases({Key? key}) : super(key: key);
 
   @override
-  State<RptDailySales> createState() => RptDailySalesState();
+  State<RptDetailedDailyPurchases> createState() => _RptDetailedDailyPurchasesState();
 }
 
-class RptDailySalesState extends State<RptDailySales> {
+class _RptDetailedDailyPurchasesState extends State<RptDetailedDailyPurchases> {
 
   List<DropdownMenuItem<String>> menuCustomers = [ ];
   List<Customer> customers =[];
@@ -91,20 +91,13 @@ class RptDailySalesState extends State<RptDailySales> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Row(crossAxisAlignment: langId == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-          children: [
-            Image.asset('assets/images/logowhite2.png', scale: 3,),
-            const SizedBox(width: 1,),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 11, 2, 2),
-              child: Text('dailySalesreport'.tr(),
-                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),),
-            )
-          ],
+        title: ListTile(
+          leading: Image.asset('assets/images/logowhite2.png', scale: 3),
+          title: Text('detailedDailyPurchaseReport'.tr(),
+            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17),),
         ),
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
       ),
-
       body: Form(
         key: _addFormKey,
         child: SingleChildScrollView(
@@ -433,7 +426,6 @@ class RptDailySalesState extends State<RptDailySales> {
       ),
     );
   }
-
   fillCombos(){
 
     //Customers
@@ -480,81 +472,10 @@ class RptDailySalesState extends State<RptDailySales> {
       print(e);
     });
   }
-
-
-
-
-}
-
-
-
-  Widget headLines({required String title}) {
-    return Column(
-      crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
-      children: [
-
-            Text(
-              title,
-              style: const TextStyle(
-                color: Colors.black87,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-        const SizedBox(
-          height: 10,
-        ),
-        const Divider(
-          thickness: 3,
-          color: Color.fromRGBO(144, 16, 46, 1),
-        )
-      ],
-    );
-  }
-  Widget textFormFields({controller, hintText,onTap, onSaved, textInputType,enable=true})  {
-    return TextFormField(
-      controller: controller,
-      validator: (val) {
-        if (val!.isEmpty) {
-          return "Enter your $hintText first";
-        }
-        return null;
-      },
-      onSaved: onSaved,
-      enabled:enable ,
-      onTap: onTap,
-      keyboardType: textInputType,
-      maxLines: null,
-      decoration: InputDecoration(
-        hintText: hintText,
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: dColor,
-            width: 2,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: const BorderSide(
-            color: Colors.red,
-            width: 2,
-          ),
-        ),
-      ),
-    );
-  }
-
-
-
-
-
-
-  /////////////////////////////////////////////// Print Report ///////////////////////////////////////////////////////////////////////
   printReport(BuildContext context ,String criteria){
     print('Start Report');
     print(criteria);
-    String menuId="6302"; //Customer Account Report Menu Id
+    String menuId="7305";
     //API Reference
     ReportUtilityApiService reportUtilityApiService = ReportUtilityApiService();
 
@@ -565,12 +486,10 @@ class RptDailySalesState extends State<RptDailySales> {
       new Formulas(columnName: 'branchName',columnValue: branchName)
     ];
 
-    //criteria="";
-    //report Api
     final report = reportUtilityApiService.getReportData(menuId,criteria , formulasList).then((data) async {
       print('Data Fetched');
 
-      final outputFilePath = 'DailySalesReport.pdf';
+      final outputFilePath = 'DetailedDailyPurchasesReport.pdf';
       final dir = await getApplicationDocumentsDirectory();
       final file = File('${dir.path}/$outputFilePath');
       await file.writeAsBytes(data);
@@ -594,43 +513,41 @@ class RptDailySalesState extends State<RptDailySales> {
 
   }
 
-String getCriteria()
-{
-  String criteria="";
-
-
-  if(startDateController.text.isNotEmpty && startDateController != null)
+  String getCriteria()
   {
-    criteria += " And TrxDate >='" + startDateController.text + "' ";
-  }
+    String criteria="";
 
-  if(endDateController.text.isNotEmpty && endDateController != null)
-  {
-    criteria += " And TrxDate <='" + endDateController.text + "' ";
-  }
+    if(startDateController.text.isNotEmpty && startDateController != null)
+    {
+      criteria += " And TrxDate >='" + startDateController.text + "' ";
+    }
 
-  if(selectedCustomerValue.toString().isNotEmpty && selectedCustomerValue != null)
-  {
-    criteria += " And CustomerCode =N'" + selectedCustomerValue.toString() + "' ";
-  }
+    if(endDateController.text.isNotEmpty && endDateController != null)
+    {
+      criteria += " And TrxDate <='" + endDateController.text + "' ";
+    }
 
-  if(selectedTypeValue.toString().isNotEmpty && selectedTypeValue != null)
-  {
-    criteria += " And CustomerTypeCode =N'" + selectedTypeValue.toString() + "' ";
-  }
+    if(selectedCustomerValue.toString().isNotEmpty && selectedCustomerValue != null)
+    {
+      criteria += " And CustomerCode =N'" + selectedCustomerValue.toString() + "' ";
+    }
 
-  if(branchSelectedValue.toString().isNotEmpty && branchSelectedValue != null)
-  {
+    if(selectedTypeValue.toString().isNotEmpty && selectedTypeValue != null)
+    {
+      criteria += " And CustomerTypeCode =N'" + selectedTypeValue.toString() + "' ";
+    }
+
+    if(branchSelectedValue.toString().isNotEmpty && branchSelectedValue != null)
+    {
       criteria += " And BranchCode =N'" + branchSelectedValue.toString() + "' ";
+    }
+
+    if(salesManSelectedValue.toString().isNotEmpty && salesManSelectedValue != null)
+    {
+      criteria += " And SalesManCode =N'" + salesManSelectedValue.toString() + "' ";
+    }
+
+    return criteria;
+
   }
-
-  if(salesManSelectedValue.toString().isNotEmpty && salesManSelectedValue != null)
-  {
-    criteria += " And SalesManCode =N'" + salesManSelectedValue.toString() + "' ";
-  }
-
-  return criteria;
-
 }
-
-

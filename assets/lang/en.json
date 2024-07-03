@@ -350,7 +350,7 @@
     "please_enter_ref_no": "Please Enter Ref No",
     "value": "Value",
     "please_enter_value": "Please Enter Value",
-    "tafqitNameArabic": "ِArabic Tafqit",
+    "tafqitNameArabic": "Arabic Tafqit",
     "tafqitNameEnglish": "English Tafqit",
     "statement": "Statement",
     "please_enter_statement": "Please Enter Statement",
@@ -596,5 +596,13 @@
     "please_select_salesMan": "please select sales man",
     "please_enter_name": "please enter name",
     "please_select_group": "please select group",
-    "No_Data_To_Show": "No Data To Show"
+    "No_Data_To_Show": "No Data To Show",
+    "car_delivery": "Car Delivery",
+    "dailyPurchaseReport": "Daily purchases report",
+    "dailySalesReport": "Daily sales report",
+    "detailedDailyPurchaseReport": "Detailed daily purchases report",
+    "detailedDailySalesReport": "Detailed daily sales report",
+    "customerBalancesReport": "Customer balances report",
+    "invoice_discount": "invoice discount",
+    "percent": "percent"
 }

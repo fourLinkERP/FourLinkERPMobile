@@ -39,7 +39,7 @@ SalesInvoicesTypeApiService _salesInvoiceTypeApiService= SalesInvoicesTypeApiSer
 SalesInvoiceReturnHApiService _salesInvoiceReturnHApiService= SalesInvoiceReturnHApiService();
 SalesInvoiceReturnDApiService _salesInvoiceReturnDApiService= SalesInvoiceReturnDApiService();
 CustomerApiService _customerApiService= CustomerApiService();
-ItemApiService _itemsApiService = ItemApiService();
+//ItemApiService _itemsApiService = ItemApiService();
 UnitApiService _unitsApiService = UnitApiService();
 TafqeetApiService _tafqeetApiService= TafqeetApiService();
 InventoryOperationApiService _inventoryOperationApiService = InventoryOperationApiService();
@@ -48,7 +48,7 @@ InventoryOperationApiService _inventoryOperationApiService = InventoryOperationA
 List<Customer> customers=[];
 List<SalesInvoiceType> salesInvoiceTypes=[];
 List<SalesInvoiceReturnD> SalesInvoiceReturnDLst = <SalesInvoiceReturnD>[];
-List<Item> items=[];
+//List<Item> items=[];
 List<Unit> units=[];
 
 
@@ -478,7 +478,7 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
 
                                         ),
 
-                                        items: items,
+                                        items: itemsWithOutBalance,
                                         itemAsString: (Item u) => (langId==1)? u.itemNameAra.toString() : u.itemNameEng.toString(),
 
                                         onChanged: (value){
@@ -488,7 +488,7 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
                                           selectedUnitValue = "1";
                                           //String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                           String criteria = " And CompanyCode=$companyCode ";
-                                          setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
+                                          setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
                                           int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                           setItemQty(
                                               selectedItemValue.toString(),
@@ -562,11 +562,11 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
                                           selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
 
                                           if (selectedUnitValue != null &&
-                                              selectedItemValue != null) {
+                                              selectedItemValue != null && selectedCustomerValue != null) {
                                             //String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                             String criteria = " And CompanyCode=$companyCode ";
                                             //Item Price
-                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
+                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
                                             //Factor
                                             int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                             setItemQty(selectedItemValue.toString(), selectedUnitValue.toString(), qty);
@@ -1311,18 +1311,6 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
     });
   }
 
-  getItemData() {
-    if (items.isNotEmpty) {
-      for(var i = 0; i < items.length; i++){
-        menuItems.add(DropdownMenuItem(value: items[i].itemCode.toString(), child: Text(items[i].itemNameAra.
-        toString())));
-      }
-    }
-    setState(() {
-
-    });
-  }
-
 //#endregion
 
   //#region Calc
@@ -1453,9 +1441,10 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
   }
 
   //Item Price
-  setItemPrice(String itemCode , String unitCode,String criteria ){
+  setItemPrice(String itemCode , String unitCode,String criteria, String customerCode){
     //Serial
-    Future<double>  futureSellPrice = _salesInvoiceReturnDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SalesInvoicesType",criteria ).then((data) {
+    Future<double>  futureSellPrice =
+    _salesInvoiceReturnDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SalesInvoicesType",criteria, customerCode).then((data) {
 
       double sellPrice = data;
 
@@ -1566,19 +1555,9 @@ class _EditSalesInvoiceReturnHWidgetState extends State<EditSalesInvoiceReturnHW
     //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
-      //print(customers.length.toString());
+
       getCustomerData();
       return customers;
-    }, onError: (e) {
-      print(e);
-    });
-
-    //Items
-    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
-      items = data;
-
-      getItemData();
-      return items;
     }, onError: (e) {
       print(e);
     });

@@ -19,14 +19,14 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
 
   Future<List<Item>>  getItems() async {
 
-    print('Items 1');
+    print('Items invoice 1');
     Map data = {
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
         'EmpCode': empCode
     };
 
-    print('Items 2');
+    print('Items invoice 2');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -36,7 +36,7 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
       body: jsonEncode(data),
     );
     print("Items Api: " + searchApi);
-    print('Items 4');
+    print('Items invoice 4');
     if (response.statusCode == 200) {
       print('Items 5');
       List<dynamic> data = jsonDecode(response.body)['data'];
@@ -44,11 +44,8 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
       if (data != null) {
         list = data.map((item) => Item.fromJson(item)).toList();
       }
-      print('Items 1 Finish');
+      print('Items invoice 1 Finish');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => Item.fromJson(data))
-      //     .toList();
     } else {
       print('Items Failure');
       throw "Failed to load item list";
@@ -57,17 +54,15 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
 
   Future<List<Item>>  getOfferItems() async {
 
-    print('Items 1');
+    print('Items offer 1');
     Map data = {
-     // "Search":{
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
         'EmpCode': empCode,
         "IsIgnoreBalance": true
-     // }
     };
 
-    print('Items 2');
+    print('Items offer 2');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -77,19 +72,19 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
       body: jsonEncode(data),
     );
     print("Items Api: " + searchApi);
-    print('Items 4');
+    print('Items offer 4');
     if (response.statusCode == 200) {
-      print('Items 5');
+      print('Items offer 5');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<Item> list = [];
       if (data != null) {
         list = data.map((item) => Item.fromJson(item)).toList();
       }
-      print('Items 1 Finish');
+      print('Items offer 1 Finish');
       return  list;
 
     } else {
-      print('Items Failure');
+      print('Items offer Failure');
       throw "Failed to load item list";
     }
   }

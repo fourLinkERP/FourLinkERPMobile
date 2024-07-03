@@ -8,6 +8,10 @@ import '../../theme/fitness_app_theme.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../ui/module/accountReceivable/reports/rptDailySales.dart';
+import '../../ui/module/accountreceivable/reports/rptCustomerBalances.dart';
+import '../../ui/module/accountreceivable/reports/rptDailyPurchases.dart';
+import '../../ui/module/accountreceivable/reports/rptDetailedDailyPurchases.dart';
+import '../../ui/module/accountreceivable/reports/rptDetailedDailySales.dart';
 
 class ReportsAreaListView extends StatefulWidget {
   const ReportsAreaListView(
@@ -26,15 +30,19 @@ class _ReportsAreaListViewState extends State<ReportsAreaListView>
   List<String> areaListData = <String>[
     'assets/fitness_app/report.png',
     'assets/fitness_app/report.png',
-    // 'assets/fitness_app/report.png',
-    // 'assets/fitness_app/report.png',
+    'assets/fitness_app/report.png',
+    'assets/fitness_app/report.png',
+    'assets/fitness_app/report.png',
+    'assets/fitness_app/report.png',
   ];
 
   List<String> areaListDataTitle = <String>[
     'customeraccountreport'.tr(),
     'dailySalesreport'.tr(),
-    // 'itemcardreport'.tr(),
-    // 'accountreports'.tr(),
+    'dailyPurchaseReport'.tr(),
+    'detailedDailyPurchaseReport'.tr(),
+    'detailedDailySalesReport'.tr(),
+    'customerBalancesReport'.tr(),
   ];
 
   @override
@@ -66,12 +74,18 @@ class _ReportsAreaListViewState extends State<ReportsAreaListView>
             child: AspectRatio(
               aspectRatio: 1.0,
               child: Padding(
-                padding: const EdgeInsets.only(left: 8.0, right: 8),
+                padding: const EdgeInsets.only(left: 4.0, right: 4.0),
                 child: GridView(
                   padding: const EdgeInsets.only(
                       left: 16, right: 16, top: 16, bottom: 16),
                   physics: const BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 24.0,
+                    crossAxisSpacing: 24.0,
+                    childAspectRatio: 1.0,
+                  ),
                   children: List<Widget>.generate(
                     areaListData.length,
                     (int index) {
@@ -93,12 +107,6 @@ class _ReportsAreaListViewState extends State<ReportsAreaListView>
                         index:index
                       );
                     },
-                  ),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 24.0,
-                    crossAxisSpacing: 24.0,
-                    childAspectRatio: 1.0,
                   ),
                 ),
               ),
@@ -159,36 +167,35 @@ class AreaView extends StatelessWidget {
                   borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                   splashColor: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.2),
                   onTap: () {
-                    //if(imagepath == 'assets/fitness_app/report.png')
                     if(text == 'customeraccountreport'.tr())
                     {
                       print('okz1');
                       Navigator.push(context, MaterialPageRoute(builder: (context) => RptCustomerAccountsSummary()));
                     }
                     else if(text == 'dailySalesreport'.tr())
-                    //else if(imagepath == 'assets/fitness_app/report.png')
                     {
                       print('okz2');
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute( builder: (context) => RptDailySales()));
+                      Navigator.push(context, MaterialPageRoute( builder: (context) => RptDailySales()));
                     }
-                    else if(text == 'dailySalesreport'.tr())
-                    //else  if(imagepath == 'assets/fitness_app/report.png')
+                    else  if(text == 'dailyPurchaseReport'.tr())
                     {
                       print('okz3');
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute( builder: (context) => RptDailySales()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RptDailyPurchases()));
                     }
-                    else if(imagepath == 'assets/fitness_app/report.png')
+                    else  if(text == 'detailedDailyPurchaseReport'.tr())
                     {
                       print('okz4');
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  SalesManListPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RptDetailedDailyPurchases()));
+                    }
+                    else  if(text == 'detailedDailySalesReport'.tr())
+                    {
+                      print('okz5');
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RptDetailedDailySales()));
+                    }
+                    else  if(text == 'customerBalancesReport'.tr())
+                    {
+                      print('okz6');
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => RptCustomerBalances()));
                     }
 
                   },

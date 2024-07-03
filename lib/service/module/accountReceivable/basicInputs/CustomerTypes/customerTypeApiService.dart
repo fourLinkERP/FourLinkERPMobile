@@ -1,20 +1,16 @@
 import 'dart:convert';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customerTypes/customerType.dart';
-import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
  class CustomerTypeApiService {
 
   String searchApi= baseUrl.toString()  + '/api/v1/customertypes/search';
   String createApi= baseUrl.toString()  + '/api/v1/customertypes';
-  String updateApi= baseUrl.toString()  + '/api/v1/customertypes/';  // Add ID For Edit
+  String updateApi= baseUrl.toString()  + '/api/v1/customertypes/';
   String deleteApi= baseUrl.toString()  + '/api/v1/customertypes/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/customertypes/';  // Add ID For Get
+  String getByIdApi= baseUrl.toString()  + '/api/v1/customertypes/';
 
   Future<List<CustomerType>>  getCustomerTypes() async {
 
@@ -43,9 +39,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       }
       print('CustomerTypes 3');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => CustomerTypes.fromJson(data))
-      //     .toList();
+
     } else {
       print('CustomerTypes Failed');
       throw "Failed to load customer list";
@@ -75,6 +69,5 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       throw Exception('Failed to load a case');
     }
   }
-
 
 }

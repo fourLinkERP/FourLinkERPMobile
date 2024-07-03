@@ -102,6 +102,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
   final _dropdownTypeFormKey = GlobalKey<FormState>(); //Type
   final _offerSerialController = TextEditingController(); //Serial
   final _offerDateController = TextEditingController(); //Date
+  final _toDateController = TextEditingController();
   final _dropdownCustomerFormKey = GlobalKey<FormState>(); //Customer
   //Totals
   final _totalQtyController = TextEditingController(); //Total Qty
@@ -164,8 +165,10 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     id = widget.salesOffersH.id!;
     serial = widget.salesOffersH.offerSerial!;
     _offerSerialController.text = widget.salesOffersH.offerSerial!;
-    _offerDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.salesOffersH.offerDate!.toString()));
-    selectedCustomerValue = widget.salesOffersH.customerCode!;
+    _offerDateController.text = (widget.salesOffersH.offerDate) != null ? DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.salesOffersH.offerDate!.toString())) : "";
+    _toDateController.text = (widget.salesOffersH.toDate) != null ? DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.salesOffersH.toDate!.toString())) : "";
+    selectedCustomerValue = widget.salesOffersH.customerCode.toString();
+    print("selectedCustomerValue : $selectedCustomerValue");
     selectedTypeValue = widget.salesOffersH.offerTypeCode!;
     _totalController.text = widget.salesOffersH.totalNet.toString();
 
@@ -203,6 +206,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
+      getCustomerData();
       setState(() {
 
       });
@@ -397,7 +401,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                               width: 100,
                               child: textFormFields(
                                 controller: _offerDateController,
-                                hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
+                                //hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                                 onTap: () async {
                                   DateTime? pickedDate = await showDatePicker(
                                       context: context,
@@ -418,7 +422,34 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                           ],
                         ),
 
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 15),
+                        Row(
+                          children: [
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('to_date'.tr(),
+                                style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                            const SizedBox(width: 20),
+                            SizedBox(
+                              width: 200,
+                              child: textFormFields(
+                                enable: true,
+                                controller: _toDateController,
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1950),
+                                      lastDate: DateTime(2050));
+
+                                  if (pickedDate != null) {
+                                    _toDateController.text =DateFormat('yyyy-MM-dd').format(pickedDate);
+                                  }
+                                },
+                                textInputType: TextInputType.datetime,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
 
                         Form(
                             key: _dropdownCustomerFormKey,
@@ -520,7 +551,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                       changeItemUnit(selectedItemValue.toString());
                                       selectedUnitValue = "1";
                                       String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
-                                      setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
+                                      setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
 
                                       //Factor
                                       int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
@@ -594,10 +625,10 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                           selectedUnitValue = value!.unitCode.toString();
                                           selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
 
-                                          if (selectedUnitValue != null && selectedItemValue != null) {
+                                          if (selectedUnitValue != null && selectedItemValue != null && selectedCustomerValue != null) {
                                             String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And OfferTypeCode=N'$selectedTypeValue'";
                                             //Item Price
-                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
+                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
                                             //Factor
                                             int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                             setItemQty(selectedItemValue.toString(), selectedUnitValue.toString(), qty);
@@ -1040,62 +1071,6 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                           ],
                         ),
                         const SizedBox(height: 20),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                          child: Row(
-                            children: <Widget>[
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameArabic'.tr(),
-                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                              const SizedBox(width: 10),
-
-                              SizedBox(
-                                width: 206,
-                                child: TextFormField(
-                                  controller: _descriptionNameArabicController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'please_enter_value'.tr();
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  //enabled: false,
-                                  onChanged: (value) {},
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                          child: Row(
-                            children: <Widget>[
-                              Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameEnglish'.tr(),
-                                  style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                              const SizedBox(width: 10),
-
-                              SizedBox(
-                                width: 200,
-                                child: TextFormField(
-                                  controller: _descriptionNameEnglishController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'please_enter_value'.tr();
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  //enabled: false,
-                                  onChanged: (value) {},
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
 
                         Container(
                           margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
@@ -1110,12 +1085,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                   decoration: const InputDecoration(
                                     // hintText: '',
                                   ),
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'please_enter_value'.tr();
-                                  //   }
-                                  //   return null;
-                                  // },
+
                                   enabled: false,
                                   onChanged: (value) {},
                                 ),
@@ -1406,6 +1376,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
       offerSerial: _offerSerialController.text,
       offerTypeCode: selectedTypeValue,
       offerDate: _offerDateController.text,
+      toDate: _toDateController.text,
       customerCode: selectedCustomerValue ,
       totalQty:(_totalQtyController.text.isNotEmpty)?  _totalQtyController.text.toDouble():0 ,
       totalTax:(_totalTaxController.text.isNotEmpty)?  _totalTaxController.text.toDouble():0 ,
@@ -1484,13 +1455,9 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
   getCustomerData() {
     if (customers != null) {
       for(var i = 0; i < customers.length; i++){
-        menuCustomers.add(DropdownMenuItem(child: Text(customers[i].customerNameAra.toString()),
-            value: customers[i].customerCode.toString()));
 
         if(customers[i].customerCode == selectedCustomerValue){
-          // print('in amr3');
           customerItem = customers[customers.indexOf(customers[i])];
-          //selectedCustomerValue = salesOfferTypeItem!.offerTypeCode.toString();
         }
 
       }
@@ -1576,14 +1543,15 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
 //#region Business Function
 
   // Item Units - Change Item Units
-  changeItemUnit(String itemCode){
-    //Units
-    units=[];
+  changeItemUnit(String itemCode) {
+    units = [];
     Future<List<Unit>> Units = _unitsApiService.getItemUnit(itemCode).then((data) {
       units = data;
-      setState(() {
-
-      });
+      if(data.isNotEmpty){
+        unitItem = data[0];
+        setItemPrice;
+      }
+      setState(() {});
       return units;
     }, onError: (e) {
       print(e);
@@ -1659,9 +1627,9 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
   }
 
   //Item Price
-  setItemPrice(String itemCode , String unitCode,String criteria ){
+  setItemPrice(String itemCode , String unitCode,String criteria, String? customerCode){
     //Serial
-    Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_OffersType",criteria ).then((data) {
+    Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_OffersType",criteria, customerCode).then((data) {
 
       double sellPrice = data;
 

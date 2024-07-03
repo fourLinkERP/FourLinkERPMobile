@@ -427,7 +427,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
             invoice: invoice
         );
 
-        final pdfFile = await pdfReceipt.generateOffer(receipt, _base64StringToUint8List(companyLogo));
+        final pdfFile = await pdfReceipt.generateOffer(receipt);
         PdfApi.openFile(pdfFile);
       }
       else{
@@ -454,9 +454,9 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     if(AppCubit.get(context).Conection==false){
       return const Center(child: Text('no internet connection'));
     }
-   // else if( AppCubit.get(context).Conection==true && _salesOrders.isNotEmpty ){
-   //    return const Center(child: CircularProgressIndicator());
-   //  }
+   else if( AppCubit.get(context).Conection==true && _salesOrders.isEmpty ){
+      return const Center(child: CircularProgressIndicator());
+    }
     else if(_salesOrders.isEmpty){
       return Center(child: Text("No_Data_To_Show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     }

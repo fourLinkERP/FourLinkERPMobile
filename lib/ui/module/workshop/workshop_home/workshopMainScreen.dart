@@ -136,7 +136,7 @@ class _WorkshopHomeState extends State<WorkshopHome> {
                     ),
                     child: Center(
                       child: Text(
-                        "dashboard".tr(),
+                        "car_delivery".tr(),
                         style: const TextStyle(
                           color: Color.fromRGBO(200, 16, 46, 1),
                           fontWeight: FontWeight.bold,

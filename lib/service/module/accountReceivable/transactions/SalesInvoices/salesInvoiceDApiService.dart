@@ -50,7 +50,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     }
   }
 
-  Future<double>  getItemSellPriceData(String? ItemCode,String? UnitCode,String? tableName,String? criteria) async {
+  Future<double>  getItemSellPriceData(String? ItemCode,String? UnitCode,String? tableName,String? criteria, String? customerCode) async {
 
     String sellItemApi = updateApi + "searchItemSellPriceData";
     print('ItemSellPriceData 1');
@@ -58,7 +58,9 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'ItemCode': ItemCode,
       'UnitCode': UnitCode,
       'TableName': tableName,
-      'Criteria': criteria
+      'Criteria': criteria,
+      'ModuleId': 2,
+      'CustomerCode': customerCode
     };
 
 

@@ -11,6 +11,7 @@ class ReceiptHeader {
   String?  companyCommercialName;
   String?  companyInvoiceNo;
   String?  companyDate;
+  String?  toDate;
   String?  customerName;
   String?  customerMobile;
   String?  customerTaxNo;
@@ -30,6 +31,7 @@ class ReceiptHeader {
     this.companyCommercialName,
     this.companyInvoiceNo,
     this.companyDate,
+    this.toDate,
     this.customerName,
     this.customerMobile,
     this.customerTaxNo,

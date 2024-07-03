@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
@@ -12,6 +15,8 @@ import 'package:fourlinkmobileapp/data/model/modules/module/security/menuPermiss
 import 'package:fourlinkmobileapp/service/module/administration/basicInputs/branchApiService.dart';
 import 'package:fourlinkmobileapp/service/module/administration/basicInputs/compayGeneralSetupApiService.dart';
 import 'package:fourlinkmobileapp/service/module/administration/basicInputs/employeeApiService.dart';
+import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/items/itemApiService.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/inventory/basicInputs/items/items.dart';
 import 'package:fourlinkmobileapp/ui/home/home_screen.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,6 +32,7 @@ import 'package:fourlinkmobileapp/common/login_components.dart';
 Login? logenUserData;
 //APIS
 BranchApiService _branchApiService= BranchApiService();
+ItemApiService _itemsApiService = ItemApiService();
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -50,9 +56,9 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isPassword = true;
 
   //Services
-  LoginService _LoginService = new LoginService();
-  EmployeeApiService _EmployeeApiService = new EmployeeApiService();
-  CompanyGeneralSetupGeneralSetupApiService _CompanyGeneralSetupGeneralSetupApiService = new CompanyGeneralSetupGeneralSetupApiService();
+  LoginService _LoginService =  LoginService();
+  EmployeeApiService _EmployeeApiService =  EmployeeApiService();
+  CompanyGeneralSetupGeneralSetupApiService _CompanyGeneralSetupGeneralSetupApiService =  CompanyGeneralSetupGeneralSetupApiService();
 
   //Controls
   late TextEditingController _emailController;
@@ -79,8 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
     //Branch
-    Future<List<Branch>> futureBranch = _branchApiService.getBranches().then((
-        data) {
+    Future<List<Branch>> futureBranch = _branchApiService.getBranches().then((data) {
       branches = data;
       setState(() {
 
@@ -89,6 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }, onError: (e) {
       print(e);
     });
+
   }
 
   @override
@@ -657,6 +663,35 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
   }
+  setItemsOfferData(){
+    Future<List<Item>> futureBalancedItems = _itemsApiService.getOfferItems().then((data) {
+      itemsWithBalance = data;
+
+      print("Items offer: " + itemsWithBalance.toString());
+      return itemsWithBalance;
+    }, onError: (e) {
+      print(e);
+    });
+  }
+  setItemInvoiceData() async {
+    Future<List<Item>> futureNonBalancedItems = _itemsApiService.getItems().then((data) {
+      itemsWithOutBalance = data;
+
+      print("Items invoice: " + itemsWithOutBalance.toString());
+      return itemsWithOutBalance;
+    }, onError: (e) {
+      print(e);
+    });
+  }
+  setCompanyLogo(){
+      try {
+        Uint8List decodedBytes = base64Decode(companyLogo).buffer.asUint8List();
+        print('Decoded logoCompany length: ${decodedBytes.length}');
+        companyLogoDecoded = decodedBytes;
+      } catch (e) {
+        print('Error decoding base64String: $e');
+      }
+  }
 
 
   //Start Login
@@ -700,6 +735,9 @@ class _LoginScreenState extends State<LoginScreen> {
           setCompanyGeneralSetup();
           setCompanyGeneralEmailSetup();
           setEmployeeData();
+          setItemsOfferData();
+          await setItemInvoiceData();
+          setCompanyLogo();
           print('Yes :');
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
         }
@@ -747,6 +785,9 @@ class _LoginScreenState extends State<LoginScreen> {
         setCompanyGeneralSetup();
         setCompanyGeneralEmailSetup();
         setEmployeeData();
+        setItemsOfferData();
+        setItemInvoiceData();
+        setCompanyLogo();
         print('Yes :');
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
       }

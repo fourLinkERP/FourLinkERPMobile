@@ -333,17 +333,14 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
 
     int menuId=6202;
     bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
-    //isAllowPrint = true;
     if(isAllowPrint)
     {
       bool IsReceipt =true;
       if(IsReceipt)
       {
         DateTime date = DateTime.parse(offerH.offerDate.toString());
-        final dueDate = date.add(Duration(days: 7));
+        final dueDate = date.add(const Duration(days: 7));
 
-        //Get Sales Invoice Details To Create List Of Items
-        //getDetailData(offerH.id);
         Future<List<SalesOfferD>?> futureSalesOfferD = _apiDService.getSalesOffersD(offerH.offerSerial);
         _salesOffersD = (await futureSalesOfferD)!;
 
@@ -355,9 +352,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
           print('_salesOffersD >> ' + _salesOffersD.length.toString() );
           for(var i = 0; i < _salesOffersD.length; i++){
             double qty= (_salesOffersD[i].displayQty != null) ? double.parse(_salesOffersD[i].displayQty.toStringAsFixed(2))  : 0;
-            //double vat=0;
             double vat=(_salesOffersD[i].displayTotalTaxValue != null) ? double.parse(_salesOffersD[i].displayTotalTaxValue.toStringAsFixed(2)) : 0 ;
-            //double price =_salesOffersD[i].displayPrice! as double;
             double price =( _salesOffersD[i].displayPrice != null) ? double.parse(_salesOffersD[i].displayPrice.toStringAsFixed(2)) : 0;
             double total =( _salesOffersD[i].displayNetValue != null) ? double.parse(_salesOffersD[i].displayNetValue.toStringAsFixed(2)) : 0;
 
@@ -410,6 +405,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
 
 
         String invoiceDate =DateFormat('yyyy-MM-dd hh:mm').format(DateTime.parse(offerH.offerDate.toString()));
+        String toDate =DateFormat('yyyy-MM-dd').format(DateTime.parse(offerH.toDate.toString()));
         final receipt = Receipt(   //ToDO
             receiptHeader: ReceiptHeader(
                 companyName: langId == 1 ? companyName : companyName,
@@ -419,6 +415,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                 companyCommercialName: langId==1? 'ترخيص رقم ' + companyCommercialID  :'Registeration No '+ companyCommercialID,
                 companyInvoiceNo: langId==1?'رقم عرض السعر ' + offerH.offerSerial.toString() :'Offer No  ' + offerH.offerSerial.toString(),
                 companyDate: langId==1? "التاريخ  " + invoiceDate  : "Date : " + invoiceDate ,
+                toDate: langId==1? "إلى التاريخ  " + toDate  : "To Date : " + toDate ,
                 companyAddress: langId==1? 'العنوان : ' + companyAddress :'العنوان : ' + companyAddress ,        //'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
                 companyPhone: langId==1? 'Tel No : '+ companyMobile :'Tel No :' + companyMobile,
                 customerName: langId==1? "العميل : " + offerH.customerName.toString() : "Customer : " + offerH.customerName.toString() ,
@@ -429,7 +426,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
             invoice: invoice
         );
 
-        final pdfFile = await pdfReceipt.generateOffer(receipt, _base64StringToUint8List(companyLogo));
+        final pdfFile = await pdfReceipt.generateOffer(receipt);
         PdfApi.openFile(pdfFile);
       }
       else{
@@ -452,10 +449,10 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
   }
 
    Widget buildSalesOffers(){
-     // if(AppCubit.get(context).Conection==true && _salesOffers.isNotEmpty){
-     //   return const Center(child: CircularProgressIndicator());
-     // }
-     if(_salesOffers.isEmpty){
+     if(AppCubit.get(context).Conection==true && _salesOffers.isEmpty){
+       return const Center(child: CircularProgressIndicator());
+     }
+     else if(_salesOffers.isEmpty){
       return Center(child: Text("No_Data_To_Show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     }else{
       return Container(

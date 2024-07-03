@@ -247,7 +247,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                     controller: _vacationRequestSerialController,
                                     type: TextInputType.text,
                                     colors: Colors.blueGrey,
-                                    //prefix: null,
                                     validate: (String? value) {
                                       if (value!.isEmpty) {
                                         return 'required_field'.tr();

@@ -15,7 +15,7 @@ import 'package:flutter/material.dart' as mt;
 import '../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
 import '../../../utils/utils.dart';
 class pdfReceipt {
-  static Future<File> generate(Receipt receipt , Uint8List barcodeImageArray, Uint8List logoCompany) async {
+  static Future<File> generate(Receipt receipt , Uint8List barcodeImageArray) async {
     final pdf = pw.Document();
     var arabicFont =
     pw.Font.ttf(await rootBundle.load("assets/fonts/HacenTunisia.ttf"));
@@ -24,8 +24,8 @@ class pdfReceipt {
     //MemoryImage? companyImage = pw.MemoryImage(logoCompany);  // (await rootBundle.load('assets/images/deliciouslogo.jpg')).buffer.asUint8List(),
     MemoryImage? companyImage;
     try {
-      if (logoCompany.isNotEmpty) {
-        companyImage = pw.MemoryImage(logoCompany);
+      if (companyLogoDecoded.isNotEmpty) {
+        companyImage = pw.MemoryImage(companyLogoDecoded);
       } else {
         print('Error: logoCompany is empty.');
       }
@@ -189,15 +189,15 @@ class pdfReceipt {
     return PdfApi.saveDocument(name: 'Receipt.pdf', pdf: pdf);
   }
 
-  static Future<File> generateOffer(Receipt receipt, Uint8List logoCompany) async {
+  static Future<File> generateOffer(Receipt receipt) async {
     final pdf = pw.Document();
     var arabicFont =
     pw.Font.ttf(await rootBundle.load("assets/fonts/HacenTunisia.ttf"));
 
     MemoryImage? companyImage;
     try {
-      if (logoCompany.isNotEmpty) {
-        companyImage = pw.MemoryImage(logoCompany);
+      if (companyLogoDecoded.isNotEmpty) {
+        companyImage = pw.MemoryImage(companyLogoDecoded);
       } else {
         print('Error: logoCompany is empty.');
       }
@@ -433,7 +433,7 @@ class pdfReceipt {
     ],
   );
 
-  static pw.Widget buildCompanyLogo2(Receipt receipt,pw.MemoryImage? companyImage) => pw.Column(
+  static pw.Widget buildCompanyLogo2(Receipt receipt,pw.MemoryImage? companyImage) => pw.Column( // ,pw.MemoryImage? companyImage
     crossAxisAlignment: pw.CrossAxisAlignment.center,
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
@@ -445,6 +445,12 @@ class pdfReceipt {
                       child: Text(' ${receipt.receiptHeader.companyDate}',style: const TextStyle(fontSize: 15),textAlign: TextAlign.right)),
                 ]
             ),
+      Row(
+          children:[
+            Container(
+                child: Text(' ${receipt.receiptHeader.toDate}',style: const TextStyle(fontSize: 15),textAlign: TextAlign.right)),
+          ]
+      ),
 
       // Text(customer.address.toString()),
     ],

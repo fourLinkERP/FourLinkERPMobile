@@ -215,7 +215,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                 width: 440,
                 child: Column(
                   children: [
-                    Container(
+                    SizedBox(
                       height: 500,
                       child: ListView(
                         scrollDirection: Axis.horizontal,
@@ -360,8 +360,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                                   items: customerTypes,
                                   itemAsString: (CustomerType u) => u.cusTypesNameAra.toString(),
                                   onChanged: (value){
-                                    //v.text = value!.cusTypesCode.toString();
-                                    //print(value!.id);
+
                                     customerTypeSelectedValue =  value!.cusTypesCode.toString();
                                   },
 
@@ -407,8 +406,6 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                                   items: customerGroups,
                                   itemAsString: (CustomerGroup u) => u.cusGroupsNameAra.toString(),
                                   onChanged: (value){
-                                    //v.text = value!.cusTypesCode.toString();
-                                    //print(value!.id);
                                     customerGroupSelectedValue =  value!.cusGroupsCode.toString();
                                   },
 

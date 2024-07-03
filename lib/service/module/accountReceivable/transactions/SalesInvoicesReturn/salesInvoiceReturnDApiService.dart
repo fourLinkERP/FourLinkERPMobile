@@ -54,7 +54,7 @@ class SalesInvoiceReturnDApiService {
     }
   }
 
-  Future<double>  getItemSellPriceData(String? ItemCode,String? UnitCode,String? tableName,String? criteria) async {
+  Future<double>  getItemSellPriceData(String? ItemCode,String? UnitCode,String? tableName,String? criteria, String? customerCode) async {
 
     String sellItemApi = baseUrl.toString()  + '/api/v1/salesinvoicedetails/' + "searchItemSellPriceData";
     print('ItemSellPriceData 1');
@@ -62,7 +62,9 @@ class SalesInvoiceReturnDApiService {
       'ItemCode': ItemCode,
       'UnitCode': UnitCode,
       'TableName': tableName,
-      'Criteria': criteria
+      'Criteria': criteria,
+      'ModuleId': 2,
+      'CustomerCode': customerCode
     };
 
 

@@ -184,7 +184,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     });
 
     //Items
-    Future<List<Item>> Items = _itemsApiService.getOfferItems().then((data) {
+    Future<List<Item>> futureItems = _itemsApiService.getOfferItems().then((data) {
       items = data;
       setState(() {
 
@@ -487,20 +487,18 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                                             );
                                           },
                                           showSearchBox: true,
-
                                         ),
-                                        items: items,
+                                        items: itemsWithBalance,
                                         itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
 
                                         onChanged: (value) {
                                           selectedItemValue = value!.itemCode.toString();
                                           selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
-                                          //_displayQtyController.text = "1";
                                           changeItemUnit(selectedItemValue.toString());
                                           selectedUnitValue = "1";
                                           //String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                           String criteria = " And CompanyCode=$companyCode ";
-                                          setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
+                                          setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
                                           //Factor
                                           int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                           setItemQty(
@@ -575,11 +573,11 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                                           selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
 
                                           if (selectedUnitValue != null &&
-                                              selectedItemValue != null) {
+                                              selectedItemValue != null && selectedCustomerValue != null) {
                                             //String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SellOrdersTypeCode=N'$selectedTypeValue'";
                                             String criteria = " And CompanyCode=$companyCode ";
                                             //Item Price
-                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
+                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
                                             //Factor
                                             int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                             setItemQty(selectedItemValue.toString(), selectedUnitValue.toString(), qty);
@@ -1450,9 +1448,9 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   }
 
   //Item Price
-  setItemPrice(String itemCode , String unitCode,String criteria ){
+  setItemPrice(String itemCode , String unitCode,String criteria, String customerCode){
     //Serial
-    Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SellOrdersType",criteria ).then((data) {
+    Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SellOrdersType",criteria, customerCode).then((data) {
 
       double sellPrice = data;
 

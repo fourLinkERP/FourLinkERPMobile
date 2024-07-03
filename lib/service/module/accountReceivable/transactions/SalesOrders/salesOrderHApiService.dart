@@ -178,7 +178,6 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
       'invoiceDiscountPercent': order.invoiceDiscountPercent,
       'invoiceDiscountValue': order.invoiceDiscountValue,
       'totalAfterDiscount': order.totalAfterDiscount,
-      'totalBeforeTax': order.totalBeforeTax,
       'totalValue': order.totalValue,
       'addBy': empUserId
     };

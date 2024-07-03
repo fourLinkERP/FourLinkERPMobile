@@ -381,7 +381,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
         final bytesx = await imageControllers[index].capture();
         var bytesImg = bytesx as Uint8List;
 
-        final pdfFile = await pdfReceipt.generate(receipt, bytesImg, _base64StringToUint8List(companyLogo));
+        final pdfFile = await pdfReceipt.generate(receipt, bytesImg);  // , _base64StringToUint8List(companyLogo)
         PdfApi.openFile(pdfFile);
 
         //var boundary = globalKey.currentContext!.findRenderObject();

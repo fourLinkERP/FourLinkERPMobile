@@ -115,6 +115,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
   //Totals
   final _totalQtyController = TextEditingController(); //Total Qty
   final _rowsCountController = TextEditingController(); //Total Rows Count
+  final _invoiceDiscountController = TextEditingController();
   final _invoiceDiscountPercentController = TextEditingController(); //Invoice Discount Percent
   final _invoiceDiscountValueController = TextEditingController(); //InvoiceDiscountValue
   final _totalValueController = TextEditingController(); //Total Value
@@ -213,7 +214,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
           saveInvoice(context);
         },
         child: Container(
-          // alignment: Alignment.center
           decoration: BoxDecoration(
             color: FitnessAppTheme.nearlyDarkBlue,
             gradient: LinearGradient(
@@ -305,8 +305,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                   (langId == 1) ? u.salesInvoicesTypeNameAra.toString() : u.salesInvoicesTypeNameEng.toString(),
 
                                   onChanged: (value) {
-                                    //v.text = value!.cusTypesCode.toString();
-                                    //print(value!.id);
                                     selectedTypeValue = value!.salesInvoicesTypeCode.toString();
                                     setNextSerial();
                                   },
@@ -418,8 +416,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                       itemAsString: (Customer u) =>
                                       (langId == 1) ? u.customerNameAra.toString() : u.customerNameEng.toString(),
                                       onChanged: (value) {
-                                        //v.text = value!.cusTypesCode.toString();
-                                        //print(value!.id);
                                         selectedCustomerValue = value!.customerCode.toString();
                                         selectedCustomerEmail = value.email.toString();// i've changed value!
                                       },
@@ -489,7 +485,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                           showSearchBox: true,
 
                                         ),
-                                        items: items,
+                                        items: itemsWithOutBalance,
                                         itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
 
                                         onChanged: (value) {
@@ -499,7 +495,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                           changeItemUnit(selectedItemValue.toString());
                                           selectedUnitValue = "1";
                                           String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
-                                          setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
+                                          setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
                                           //Factor
                                           int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                           setItemQty(
@@ -574,10 +570,10 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                           selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
 
                                           if (selectedUnitValue != null &&
-                                              selectedItemValue != null) {
+                                              selectedItemValue != null && selectedCustomerValue != null) {
                                             String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                             //Item Price
-                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
+                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
                                             //Factor
                                             int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                             setItemQty(selectedItemValue.toString(), selectedUnitValue.toString(), qty);
@@ -599,7 +595,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                         },
                                         dropdownDecoratorProps: const DropDownDecoratorProps(
                                       dropdownSearchDecoration: InputDecoration(
-                                        //labelText: 'unit_name'.tr(),
 
                                       ),
                                         ),
@@ -624,9 +619,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                       //hintText: "price".tr(),
                                       enabled: true,  /// open just for now
                                       onSaved: (val) {
-                                        //price = val;
                                       },
-                                      //textInputType: TextInputType.number,
                                       onChanged: (value) {
                                         calcTotalPriceRow();
                                       }
@@ -807,44 +800,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                         ),
 
                         const SizedBox(height: 20),
-                        // Row(
-                        //   children: [
-                        //     Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountPercent'.tr(),
-                        //         style: const TextStyle(fontWeight: FontWeight.bold))),
-                        //     const SizedBox(width: 10),
-                        //     SizedBox(
-                        //       width: 150,
-                        //       child: TextFormField(
-                        //         controller: _invoiceDiscountPercentController,
-                        //         enabled: true,
-                        //         onChanged: (value) {
-                        //
-                        //         },
-                        //         keyboardType: TextInputType.number,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // const SizedBox(height: 15),
-                        // Row(
-                        //   children: [
-                        //     Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
-                        //         child: Text('invoiceDiscountValue'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
-                        //     const SizedBox(width: 10),
-                        //     SizedBox(
-                        //       width: 150,
-                        //       child: TextFormField(
-                        //         enabled: true,
-                        //         controller: _invoiceDiscountValueController,
-                        //         onChanged: (value) {
-                        //
-                        //         },
-                        //         keyboardType: TextInputType.number,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // const SizedBox(height: 20),
                         Row(
                           children: [
                             Row(
@@ -917,7 +872,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                               width: 160,
                               child: textFormFields(
                                 controller: _totalBeforeTaxController,
-                                //hintText: "totalBeforeTax".tr(),
                                 enable: false,
                                 onSaved: (val) {
                                   total = val;
@@ -1135,10 +1089,10 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
   }
 
 //Item Price
-  setItemPrice(String itemCode, String unitCode, String criteria) {
+  setItemPrice(String itemCode, String unitCode, String criteria,String customerCode) {
     //Serial
     Future<double> futureSellPrice = _salesInvoiceDApiService
-        .getItemSellPriceData(itemCode, unitCode, "View_AR_SalesInvoicesType", criteria).then((data) {
+        .getItemSellPriceData(itemCode, unitCode, "View_AR_SalesInvoicesType", criteria, customerCode).then((data) {
       double sellPrice = data;
 
       setState(() {
@@ -1585,15 +1539,15 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       print(e);
     });
 
-    //Items
-    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
-      items = data;
-
-      getItemData();
-      return items;
-    }, onError: (e) {
-      print(e);
-    });
+    // //Items
+    // Future<List<Item>> futureItems = _itemsApiService.getItems().then((data) {
+    //   items = data;
+    //
+    //   getItemData();
+    //   return items;
+    // }, onError: (e) {
+    //   print(e);
+    // });
 
     //Units
     Future<List<Unit>> Units = _unitsApiService.getUnits().then((data) {

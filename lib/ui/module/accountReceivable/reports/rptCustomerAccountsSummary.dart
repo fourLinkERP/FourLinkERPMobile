@@ -20,6 +20,7 @@ import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import '../../../../../../service/module/accountReceivable/basicInputs/CustomerTypes/customerTypeApiService.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/inventory/basicInputs/units/units.dart';
 import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/units/unitApiService.dart';
+import '../../../../common/login_components.dart';
 import '../../../../data/model/modules/module/accountReceivable/setup/salesInvoiceTypes/salesInvoiceType.dart';
 import '../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceH.dart';
 import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
@@ -52,6 +53,7 @@ List<DropdownMenuItem<String>> menuCustomerType = [ ];
 String? customerTypeSelectedValue = null;
 String? branchSelectedValue = null;
 String? salesManSelectedValue = null;
+String? salesManSelectedName;
 
 
 class RptCustomerAccountsSummary extends StatefulWidget {
@@ -83,7 +85,7 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
 
   Customer?  customerItem=Customer(customerCode: "",customerNameAra: "",customerNameEng: "",id: 0);
   Branch?  branchItem=Branch(branchCode: 0,branchNameAra: "",branchNameEng: "",id: 0);
-  SalesMan ?  salesManItem=SalesMan(salesManCode: "",salesManNameAra: "",salesManNameEng: "",id: 0);
+  SalesMan ?  salesManItem=SalesMan(salesManCode: salesManSelectedValue,salesManNameAra: "",salesManNameEng: "",id: 0);
 
   String? _dropdownValue ;
   String arabicNameHint = 'arabicNameHint';
@@ -162,441 +164,329 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
       body: Form(
         key: _addFormKey,
         child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(0.0),
-            child: Card(
-              elevation: 0.0,
-              child: Container(
-                color: Colors.transparent,
-                padding: const EdgeInsets.only(left: 6.0, right: 6.0, top:10.0, bottom: 6.0),
-                child: Column(
-                  crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
-                  children: [
-                    // Center(
-                    //   child: Row(
-                    //     children: [
-                    //       const SizedBox(height: 20.0),
-                    //       // Form(
-                    //       //     key: _dropdownTypeFormKey,
-                    //       //     child: Row(
-                    //       //       children: [
-                    //       //         Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('report_name :'.tr(),
-                    //       //             style: const TextStyle(fontWeight: FontWeight.bold))),
-                    //       //         const SizedBox(width: 10),
-                    //       //         SizedBox(
-                    //       //           width: 140,
-                    //       //           child: DropdownSearch<SalesInvoiceType>(
-                    //       //             validator: (value) => value == null ? "select_a_Type".tr() : null,
-                    //       //             selectedItem: salesInvoiceTypeItem,
-                    //       //             popupProps: PopupProps.menu(
-                    //       //               itemBuilder: (context, item, isSelected) {
-                    //       //                 return Container(
-                    //       //                   margin: const EdgeInsets.symmetric(horizontal: 8),
-                    //       //                   decoration: !isSelected ? null :
-                    //       //                   BoxDecoration(
-                    //       //                     border: Border.all(color: Theme.of(context).primaryColor),
-                    //       //                     borderRadius: BorderRadius.circular(5),
-                    //       //                     color: Colors.white,
-                    //       //                   ),
-                    //       //                   child: Padding(
-                    //       //                     padding: const EdgeInsets.all(8.0),
-                    //       //                     child: Text((langId == 1) ? item.salesInvoicesTypeNameAra.toString() : item.salesInvoicesTypeNameEng.toString()),
-                    //       //                   ),
-                    //       //                 );
-                    //       //               },
-                    //       //               showSearchBox: true,
-                    //       //             ),
-                    //       //             enabled: true,
-                    //       //             items: salesInvoiceTypes,
-                    //       //             itemAsString: (SalesInvoiceType u) =>
-                    //       //             (langId == 1) ? u.salesInvoicesTypeNameAra.toString() : u.salesInvoicesTypeNameEng.toString(),
-                    //       //
-                    //       //             onChanged: (value) {
-                    //       //
-                    //       //             },
-                    //       //
-                    //       //             filterFn: (instance, filter) {
-                    //       //               if ((langId == 1) ? instance.salesInvoicesTypeNameAra!.contains(filter) : instance.salesInvoicesTypeNameEng!.contains(filter)) {
-                    //       //                 print(filter);
-                    //       //                 return true;
-                    //       //               }
-                    //       //               else {
-                    //       //                 return false;
-                    //       //               }
-                    //       //             },
-                    //       //             dropdownDecoratorProps: const DropDownDecoratorProps(
-                    //       //               dropdownSearchDecoration: InputDecoration(
-                    //       //                 //labelText: "type".tr(),
-                    //       //
-                    //       //               ),
-                    //       //             ),
-                    //       //           ),
-                    //       //         ),
-                    //       //       ],
-                    //       //     )
-                    //       // ),
-                    //
-                    //     ],
-                    //   ),
-                    // ),
-                    const SizedBox(height: 10.0,),
-                    Row(
+          child: Center(
+            child: Container(
+              margin: const EdgeInsets.only(top: 20, left: 10, right: 10),
+              padding: const EdgeInsets.all(10.0),
+              //height: 1000,
+              width: 440,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 500,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
                       children: [
-                        Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("startDate".tr(),
-                            style: const TextStyle(fontWeight: FontWeight.bold))),
-                        const SizedBox(width: 15),
-                        SizedBox(
-                          width: 200,
-                          child: textFormFields(
-                            controller: startDateController,
-                            hintText: 'date'.tr(),
-                            onTap: () async {
-                              DateTime? pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1950),
-                                  lastDate: DateTime(2050));
-
-                              if (pickedDate != null) {
-                                startDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                              }
-                            },
-                            onSaved: (val) {
-                              startDate = val;
-                            },
-                            textInputType: TextInputType.datetime,
-                          ),
+                        Column(
+                          children: [
+                            SizedBox(
+                                width: 110,
+                                height: 50,
+                                child: Center(child: Text('startDate'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                                width: 110,
+                                height: 50,
+                                child: Center(child: Text('endDate'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                                width: 110,
+                                height: 50,
+                                child: Center(child: Text('customer'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                                width: 110,
+                                height: 50,
+                                child: Center(child: Text('customerType'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                                width: 110,
+                                height: 50,
+                                child: Center(child: Text('branch'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                                width: 110,
+                                height: 50,
+                                child: Center(child: Text('salesMan'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                            ),
+                            const SizedBox(height: 20),
+                          ],
                         ),
-                      ],
-                    ),
+                        const SizedBox(width: 5),
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: 50,
+                              width: 200,
+                              child: defaultFormField(
+                                controller: startDateController,
+                                type: TextInputType.datetime,
+                                enable: true,
+                                colors: Colors.blueGrey,
+                                onTab: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1950),
+                                      lastDate: DateTime(2050));
 
-                    const SizedBox(height: 20.0,),
-                    Row(
-                      children: [
-                        Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("endDate".tr(),
-                            style: const TextStyle(fontWeight: FontWeight.bold))),
-                        const SizedBox(width: 15),
-                        SizedBox(
-                          width: 200,
-                          child: textFormFields(
-                            controller: endDateController,
-                            hintText: 'date'.tr(),
-                            onTap: () async {
-                              DateTime? pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1950),
-                                  lastDate: DateTime(2050));
-
-                              if (pickedDate != null) {
-                                endDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                              }
-                            },
-                            onSaved: (val) {
-                              endDate = val;
-                            },
-                            textInputType: TextInputType.datetime,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 30.0,),
-
-                    Form(
-                      key: _dropdownCustomerFormKey,
-                      child: Row(
-                        children: [
-                          Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Customer: ".tr(),
-                              style: const TextStyle(fontWeight: FontWeight.bold))),
-                          const SizedBox(width: 10),
-                          SizedBox(
-                            width: 200,
-                            child: DropdownSearch<Customer>(
-                              selectedItem: null,
-                              popupProps: PopupProps.menu(
-
-                                itemBuilder: (context, item, isSelected) {
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                                    decoration: !isSelected
-                                        ? null
-                                        : BoxDecoration(
-
-                                      border: Border.all(color: Colors.black12),
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.white,
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text((langId==1)? item.customerNameAra.toString() : item.customerNameEng.toString()),
-                                    ),
-                                  );
+                                  if (pickedDate != null) {
+                                    startDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                  }
                                 },
-                                showSearchBox: true,
+                                onSaved: (val) {
+                                  startDate = val;
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 200,
+                              child: defaultFormField(
+                                controller: endDateController,
+                                type: TextInputType.datetime,
+                                enable: true,
+                                colors: Colors.blueGrey,
+                                onTab: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1950),
+                                      lastDate: DateTime(2050));
+
+                                  if (pickedDate != null) {
+                                    endDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                  }
+                                },
+                                onSaved: (val) {
+                                  endDate = val;
+                                },
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                              height: 50,
+                              width: 200,
+                              child: DropdownSearch<Customer>(
+                                selectedItem: null,
+                                popupProps: PopupProps.menu(
+                                  itemBuilder: (context, item, isSelected) {
+                                    return Container(
+                                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                                      decoration: !isSelected
+                                          ? null
+                                          : BoxDecoration(
+
+                                        border: Border.all(color: Colors.black12),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text((langId==1)? item.customerNameAra.toString() : item.customerNameEng.toString()),
+                                      ),
+                                    );
+                                  },
+                                  showSearchBox: true,
+
+                                ),
+
+                                items: customers,
+                                itemAsString: (Customer u) => (langId==1)? u.customerNameAra.toString() : u.customerNameEng.toString(),
+                                onChanged: (value){
+                                  selectedCustomerValue = value!.customerCode.toString();
+                                  selectedCustomerEmail = value!.email.toString();
+                                  salesManSelectedValue = value.salesManCode.toString();
+                                },
+
+                                filterFn: (instance, filter){
+                                  if((langId==1)? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)){
+                                    print(filter);
+                                    return true;
+                                  }
+                                  else{
+                                    return false;
+                                  }
+                                },
 
                               ),
+                            ),
+                            const SizedBox(height: 20),
+                            Form(
+                              key: _dropdownCustomerTypeFormKey,
+                              child: SizedBox(
+                                height: 50,
+                                width: 200,
+                                child: DropdownSearch<CustomerType>(
+                                  popupProps: PopupProps.menu(
+                                    itemBuilder: (context, item, isSelected) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                                        decoration: !isSelected
+                                            ? null
+                                            : BoxDecoration(
 
-                              items: customers,
-                              itemAsString: (Customer u) => (langId==1)? u.customerNameAra.toString() : u.customerNameEng.toString(),
-                              onChanged: (value){
-                                //v.text = value!.cusTypesCode.toString();
-                                //print(value!.id);
-                                selectedCustomerValue = value!.customerCode.toString();
-                                selectedCustomerEmail = value!.email.toString();
-                              },
+                                          border: Border.all(color: Theme.of(context).primaryColor),
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.white,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text((langId==1)? item.cusTypesNameAra.toString():  item.cusTypesNameEng.toString(),
+                                            //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
+                                            textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
-                              filterFn: (instance, filter){
-                                if((langId==1)? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)){
-                                  print(filter);
-                                  return true;
-                                }
-                                else{
-                                  return false;
-                                }
-                              },
-                              dropdownDecoratorProps: DropDownDecoratorProps(
-                                dropdownSearchDecoration: InputDecoration(
-                                  labelText: 'customer'.tr(),
+                                        ),
+                                      );
+                                    },
+                                    showSearchBox: true,
+                                  ),
+                                  items: customerTypes,
+                                  itemAsString: (CustomerType u) => u.cusTypesNameAra.toString(),
+                                  onChanged: (value){
+
+                                  },
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Form(
+                              key: _dropdownBranchFormKey,
+                              child: SizedBox(
+                                height: 50,
+                                width: 200,
+                                child: DropdownSearch<Branch>(
+                                  popupProps: PopupProps.menu(
+                                    itemBuilder: (context, item, isSelected) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                                        decoration: !isSelected
+                                            ? null
+                                            : BoxDecoration(
+
+                                          border: Border.all(color: Theme.of(context).primaryColor),
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.white,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text((langId==1)? item.branchNameAra.toString():  item.branchNameEng.toString(),
+                                            textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                        ),
+                                      );
+                                    },
+                                    showSearchBox: true,
+                                  ),
+                                  items: branches,
+                                  itemAsString: (Branch u) => u.branchNameAra.toString(),
+                                  onChanged: (value){
+
+                                  },
+
+                                  filterFn: (instance, filter){
+                                    if(instance.branchNameAra!.contains(filter)){
+                                      print(filter);
+                                      return true;
+                                    }
+                                    else{
+                                      return false;
+                                    }
+                                  },
 
                                 ),
                               ),
-
                             ),
-                          ),
+                            const SizedBox(height: 20),
+                            Form(
+                              key: _dropdownSalesManFormKey,
+                              child: SizedBox(
+                                height: 50,
+                                width: 200,
+                                child: DropdownSearch<SalesMan>(
+                                  selectedItem: null,
+                                  enabled: (isManager == true || isIt == true) ? true : false,
+                                  popupProps: PopupProps.menu(
+                                    itemBuilder: (context, item, isSelected) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                                        decoration: !isSelected
+                                            ? null
+                                            : BoxDecoration(
 
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 30.0),
+                                          border: Border.all(color: Theme.of(context).primaryColor),
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.white,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text((langId==1)? item.salesManNameAra.toString():  item.salesManNameEng.toString(),
+                                            //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
+                                            textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
-                    Form(
-                      key: _dropdownCustomerTypeFormKey,
-                      child: Row(
-                        children: [
-                          Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("customerType".tr(),
-                              style: const TextStyle(fontWeight: FontWeight.bold))),
-                          const SizedBox(width: 15),
-                          SizedBox(
-                            width: 180,
-                            child: DropdownSearch<CustomerType>(
-                              popupProps: PopupProps.menu(
-                                itemBuilder: (context, item, isSelected) {
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                                    decoration: !isSelected
-                                        ? null
-                                        : BoxDecoration(
+                                        ),
+                                      );
+                                    },
+                                    showSearchBox: true,
+                                  ),
+                                  items: salesMen,
+                                  itemAsString: (SalesMan u) => u.salesManNameAra.toString(),
+                                  onChanged: (value){
+                                    salesManSelectedValue = value?.salesManCode.toString();
+                                  },
 
-                                      border: Border.all(color: Theme.of(context).primaryColor),
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.white,
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text((langId==1)? item.cusTypesNameAra.toString():  item.cusTypesNameEng.toString(),
-                                        //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
-                                        textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                    ),
-                                  );
-                                },
-                                showSearchBox: true,
+                                ),
                               ),
-                              items: customerTypes,
-                              itemAsString: (CustomerType u) => u.cusTypesNameAra.toString(),
-                              onChanged: (value){
-
-                              },
-
-                              // filterFn: (instance, filter){
-                              //   if(instance.cusTypesNameAra!.contains(filter)){
-                              //     print(filter);
-                              //     return true;
-                              //   }
-                              //   else{
-                              //     return false;
-                              //   }
-                              // },
-                              dropdownDecoratorProps: DropDownDecoratorProps(
-                                dropdownSearchDecoration: InputDecoration(
-                                  labelText: "customerType".tr(),
-
-                                ),),
-
-
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
+                            const SizedBox(height: 20),
 
-                    //////////////////////
-                    const SizedBox(height: 30.0),
-                    Form(
-                      key: _dropdownBranchFormKey,
-                      child: Row(
-                        children: [
-                          Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("branch".tr(),
-                              style: const TextStyle(fontWeight: FontWeight.bold))),
-                          const SizedBox(width: 15),
-                          SizedBox(
-                            width: 200,
-                            child: DropdownSearch<Branch>(
-                              popupProps: PopupProps.menu(
-                                itemBuilder: (context, item, isSelected) {
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                                    decoration: !isSelected
-                                        ? null
-                                        : BoxDecoration(
-
-                                      border: Border.all(color: Theme.of(context).primaryColor),
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.white,
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text((langId==1)? item.branchNameAra.toString():  item.branchNameEng.toString(),
-                                        //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
-                                        textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                    ),
-                                  );
-                                },
-                                showSearchBox: true,
-                              ),
-                              items: branches,
-                              itemAsString: (Branch u) => u.branchNameAra.toString(),
-                              onChanged: (value){
-
-                              },
-
-                              // filterFn: (instance, filter){
-                              //   if(instance.cusTypesNameAra!.contains(filter)){
-                              //     print(filter);
-                              //     return true;
-                              //   }
-                              //   else{
-                              //     return false;
-                              //   }
-                              // },
-                              dropdownDecoratorProps: DropDownDecoratorProps(
-                                dropdownSearchDecoration: InputDecoration(
-                                  labelText: "branch".tr(),
-
-                                ),),
-
-
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    /////////////////////////////
-                    const SizedBox(height: 30.0),
-                    Form(
-                      key: _dropdownSalesManFormKey,
-                      child: Row(
-                        children: [
-                          Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("salesMan".tr(),
-                              style: const TextStyle(fontWeight: FontWeight.bold))),
-                          const SizedBox(width: 15),
-                          SizedBox(
-                            width: 200,
-                            child: DropdownSearch<SalesMan>(
-                              popupProps: PopupProps.menu(
-                                itemBuilder: (context, item, isSelected) {
-                                  return Container(
-                                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                                    decoration: !isSelected
-                                        ? null
-                                        : BoxDecoration(
-
-                                      border: Border.all(color: Theme.of(context).primaryColor),
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.white,
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text((langId==1)? item.salesManNameAra.toString():  item.salesManNameEng.toString(),
-                                        //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
-                                        textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                    ),
-                                  );
-                                },
-                                showSearchBox: true,
-                              ),
-                              items: salesMen,
-                              itemAsString: (SalesMan u) => u.salesManNameAra.toString(),
-                              onChanged: (value){
-
-                              },
-
-                              // filterFn: (instance, filter){
-                              //   if(instance.cusTypesNameAra!.contains(filter)){
-                              //     print(filter);
-                              //     return true;
-                              //   }
-                              //   else{
-                              //     return false;
-                              //   }
-                              // },
-                              dropdownDecoratorProps: DropDownDecoratorProps(
-                                dropdownSearchDecoration: InputDecoration(
-                                  labelText: "salesMan".tr(),
-
-                                ),),
-
-
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 30.0),
-                    Center(
-                      child: SizedBox(
-                        //margin: const EdgeInsets.only(left: 50.0,),
-                        width: 150,
-                        height: 50,
-                        child: ElevatedButton.icon(
-                          icon: const Icon(
-                            Icons.print,
-                            color: Colors.white,
-                            size: 15.0,
-                            weight: 5,
-                          ),
-                          label: Text('print'.tr(),
-                              style: const TextStyle(color: Colors.white)),
-                          onPressed: () {
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => Print()));
-                            //_navigateToPrintScreen(context,_customers[index]);
-                            printReport(context , getCriteria());
-                          },
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              padding: const EdgeInsets.only(left: 5, right: 5,),
-                              backgroundColor: Colors.blueGrey,
-                              foregroundColor: Colors.blueGrey,
-                              elevation: 0,
-                              side: const BorderSide(width: 1, color: Colors.blueGrey)),
+                          ],
                         ),
+                      ],
+                    ),
+                  ),
+                  Center(
+                    child: SizedBox(
+                      //margin: const EdgeInsets.only(left: 50.0,),
+                      width: 150,
+                      height: 50,
+                      child: ElevatedButton.icon(
+                        icon: const Icon(
+                          Icons.print,
+                          color: Colors.white,
+                          size: 15.0,
+                          weight: 5,
+                        ),
+                        label: Text('print'.tr(),
+                            style: const TextStyle(color: Colors.white)),
+                        onPressed: () {
+                          printReport(context , getCriteria());
+                        },
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            padding: const EdgeInsets.only(left: 5, right: 5,),
+                            backgroundColor: Colors.blueGrey,
+                            foregroundColor: Colors.blueGrey,
+                            elevation: 0,
+                            side: const BorderSide(width: 1, color: Colors.blueGrey)),
                       ),
                     ),
+                  ),
 
-                  ],
-                ),
-
+                ],
               ),
             ),
           ),
         ),
-
-    ),
+      ),
     );
   }
   getCustomerData() {
@@ -608,26 +498,13 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
     setState(() {
     });
   }
-  getCustomerTypeData() {
-    // if (customerTypes != null) {
-    //   // for(var i = 0; i < customerTypes.length; i++){
-    //   //   menuCustomerType.add(
-    //   //       DropdownMenuItem(
-    //   //           value: customerTypes[i].cusTypesCode.toString(),
-    //   //           child: Text((langId==1)?  customerTypes[i].cusTypesNameAra.toString() : customerTypes[i].cusTypesNameEng.toString())));
-    //   // }
-    // }
-    setState(() {
-    });
-  }
 
   fillCombos(){
 
     //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
-      //print(customers.length.toString());
-      //getCustomerData();
+
       setState(() {
       });
       return customers;
@@ -638,8 +515,7 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
     //Branches
     Future<List<Branch>> Branches = _branchApiService.getBranches().then((data) {
       branches = data;
-      //print(customers.length.toString());
-      //getItemData();
+
       setState(() {
       });
       return branches;
@@ -648,10 +524,9 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
     });
 
     //Sales Man
-    Future<List<SalesMan>> SalesMen = _salesManApiService.getSalesMans().then((data) {
+    Future<List<SalesMan>> futureSalesMen = _salesManApiService.getReportSalesMen().then((data) {
       salesMen = data;
-      //print(customers.length.toString());
-      //getItemData();
+
       setState(() {
       });
       return salesMen;
@@ -660,10 +535,11 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
     });
 
     //Units
-    Future<List<CustomerType>> futureSalesMan = _customerTypeApiService.getCustomerTypes().then((data) {
+    Future<List<CustomerType>> futureCustomerType = _customerTypeApiService.getCustomerTypes().then((data) {
       customerTypes = data;
-      //print(customers.length.toString());
-      getCustomerTypeData();
+      setState(() {
+
+      });
       return customerTypes;
     }, onError: (e) {
       print(e);

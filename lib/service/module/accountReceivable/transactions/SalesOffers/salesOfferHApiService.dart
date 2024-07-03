@@ -89,12 +89,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'OfferTypeCode': invoice.offerTypeCode, //Sales Invoice Type
       'OfferSerial': invoice.offerSerial,
       'OfferDate': invoice.offerDate,
+      'toDate': invoice.toDate,
       'CustomerCode': invoice.customerCode,
       'SalesManCode': invoice.salesManCode,
       'CurrencyCode': invoice.currencyCode,
       'TaxGroupCode': invoice.taxGroupCode,
-      'isSynchronized': false ,
-      'PostedToGL': false,
       'totalNet': invoice.totalNet,
       'totalQty': invoice.totalQty,
       'totalTax': invoice.totalTax,
@@ -102,6 +101,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'rowsCount': invoice.rowsCount,
       'TafqitNameArabic': invoice.tafqitNameArabic,
       'TafqitNameEnglish': invoice.tafqitNameEnglish,
+      //'invoiceDiscountTypeCode': invoice.invoiceDiscountTypeCode,
       'invoiceDiscountPercent': invoice.invoiceDiscountPercent,
       'invoiceDiscountValue': invoice.invoiceDiscountValue,
       'totalAfterDiscount': invoice.totalAfterDiscount,
@@ -117,6 +117,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       "isSystem": false,
       "notActive": false,
       "flgDelete": false,
+      'isSynchronized': false ,
+      'PostedToGL': false,
       "currencyRate": invoice.currencyRate,
       'addBy': empUserId
 
@@ -172,6 +174,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'OfferTypeCode': invoice.offerTypeCode, //Sales Invoice Type
       'OfferSerial': invoice.offerSerial,
       'OfferDate': invoice.offerDate,
+      'toDate': invoice.toDate,
       'CustomerCode': invoice.customerCode,
       'SalesManCode': invoice.salesManCode,
       'CurrencyCode': invoice.currencyCode,

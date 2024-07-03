@@ -385,7 +385,6 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                             Form(
                                 key: _dropdownCustomerFormKey,
                                 child: Row(
-                                  //crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
                                   children: [
                                     Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Customer: '.tr())),
                                     const SizedBox(width: 10),
@@ -442,13 +441,6 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                                       ),
                                     ),
 
-                                    // ElevatedButton(
-                                    //     onPressed: () {
-                                    //       if (_dropdownFormKey.currentState!.validate()) {
-                                    //         //valid flow
-                                    //       }
-                                    //     },
-                                    //     child: Text("Submit"))
                                   ],
                                 )),
                             const SizedBox(height: 20),
@@ -483,7 +475,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
 
                                         ),
 
-                                        items: items,
+                                        items: itemsWithOutBalance,
                                         itemAsString: (Item u) => (langId==1)? u.itemNameAra.toString() : u.itemNameEng.toString(),
 
                                         onChanged: (value){
@@ -493,7 +485,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                                           changeItemUnit(selectedItemValue.toString());
                                           selectedUnitValue = "1";
                                           String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
-                                          setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
+                                          setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
                                           //Factor
                                           int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                           setItemQty(
@@ -569,10 +561,10 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                                           selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
 
                                           if (selectedUnitValue != null &&
-                                              selectedItemValue != null) {
+                                              selectedItemValue != null && selectedCustomerValue != null) {
                                             String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                             //Item Price
-                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
+                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
                                             //Factor
                                             int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                             setItemQty(selectedItemValue.toString(), selectedUnitValue.toString(), qty);
@@ -1522,9 +1514,9 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     }
 
   //Item Price
-    setItemPrice(String itemCode , String unitCode,String criteria ){
+    setItemPrice(String itemCode , String unitCode,String criteria, String customerCode ){
       //Serial
-      Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SalesInvoicesType",criteria ).then((data) {
+      Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SalesInvoicesType",criteria, customerCode).then((data) {
 
         double sellPrice = data;
 

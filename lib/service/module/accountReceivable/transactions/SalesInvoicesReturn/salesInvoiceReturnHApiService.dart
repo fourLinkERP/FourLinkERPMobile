@@ -201,7 +201,7 @@ class SalesInvoiceReturnHApiService {
       "isSystem": false,
       "notActive": false,
       "flgDelete": false,
-      'editBy': empCode,
+      'editBy': empUserId,
       'InvoiceQRCodeBase64' : invoice.invoiceQRCodeBase64
     };
 

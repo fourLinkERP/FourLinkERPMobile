@@ -21,12 +21,11 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
     print('Sales Man 1');
     Map data = {
       'Search': {
-        'CompanyCode': companyCode
-        //'BranchCode': branchCode
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode
       }
     };
 
-    //print('B 2');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -54,10 +53,44 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
     }
   }
 
+  Future<List<SalesMan>>  getReportSalesMen() async {
+    Map data = {
+      'Search': {
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode,
+        'EmpCode': empCode
+      }
+    };
+
+    final http.Response response = await http.post(
+      Uri.parse(searchApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      print('report sales Man 3');
+      List<dynamic> data = jsonDecode(response.body)['data'];
+      List<SalesMan> list = [];
+      if (data != null) {
+        list = data.map((item) => SalesMan.fromJson(item)).toList();
+      }
+      return  list;
+
+    } else {
+      print('Sales Man Failed');
+
+      throw "Failed to load salesMan list";
+    }
+  }
+
   Future<SalesMan> getSalesManById(int id) async {
 
     var data = {
-      // "id": id
+
     };
 
     String apiGet=getByIdApi + id.toString();

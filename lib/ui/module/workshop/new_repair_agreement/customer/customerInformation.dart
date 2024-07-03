@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/dto.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carCars/customerCar.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carGroups/carGroup.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/CustomerGroups/customerGroupApiService.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/CustomerTypes/customerTypeApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:fourlinkmobileapp/service/module/carMaintenance/carGroups/carGroupApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -12,6 +14,8 @@ import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import '../../../../../cubit/app_cubit.dart';
+import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customerTypes/customerType.dart';
+import '../../../../../data/model/modules/module/accountreceivable/basicInputs/CustomerGroups/CustomerGroup.dart';
 import '../../../../../data/model/modules/module/carMaintenance/carCars/carCar.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../helpers/toast.dart';
@@ -25,6 +29,8 @@ import 'package:intl/intl.dart';
 
 // APIs
 CarGroupApiService _carGroupApiService = CarGroupApiService();
+CustomerGroupApiService _customerGroupApiService = CustomerGroupApiService();
+CustomerTypeApiService _customerTypeApiService = CustomerTypeApiService();
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
 
 class CustomerInfo extends StatefulWidget {
@@ -66,14 +72,15 @@ class _CustomerInfoState extends State<CustomerInfo> {
   List<CarGroup> carGroups = [];
   List<Customer> customers = [];
   List<CustomerCar> _customerCar =[] ;
+  List<CustomerGroup> customerGroups = [];
+  List<CustomerType> customerTypes = [];
   List<CustomerCar> _founded = [];
-
-  List<DropdownMenuItem<String>> menuCarGroups = [];
-  List<DropdownMenuItem<String>> menuCustomers = [];
 
   String? selectedCarGroupValue = null;
   String? selectedCustomerValue = null;
+  String? selectedCustomerGroupValue = null;
   String? selectedAddCarGroupValue = null;
+  String? selectedCustomerTypeValue = null;
   int _value = 1;
   bool isSelected = true;
 
@@ -95,6 +102,24 @@ class _CustomerInfoState extends State<CustomerInfo> {
 
       });
       return customers;
+    }, onError: (e) {
+      print(e);
+    });
+    Future<List<CustomerGroup>> futureCustomerGroup = _customerGroupApiService.getCustomerGroups().then((data) {
+      customerGroups = data;
+      setState(() {
+
+      });
+      return customerGroups;
+    }, onError: (e) {
+      print(e);
+    });
+    Future<List<CustomerType>> futureCustomerType = _customerTypeApiService.getCustomerTypes().then((data) {
+      customerTypes = data;
+      setState(() {
+
+      });
+      return customerTypes;
     }, onError: (e) {
       print(e);
     });
@@ -122,7 +147,9 @@ class _CustomerInfoState extends State<CustomerInfo> {
 
     Future<List<CarGroup>> futureCarGroup = _carGroupApiService.getCarGroups().then((data) {
       carGroups = data;
-      getCarGroupsData();
+      setState(() {
+
+      });
       return carGroups;
     }, onError: (e) {
       print(e);
@@ -576,6 +603,8 @@ class _CustomerInfoState extends State<CustomerInfo> {
                       dialogPopUp("add_customer".tr(),
                         addCustomerNameEngController,
                         addCustomerNameAraController,
+                        selectedCustomerTypeValue,
+                        selectedCustomerGroupValue,
                         addCustomerEmailController,
                         addCustomerIDController,
                         addCustomerPhoneController
@@ -739,21 +768,8 @@ class _CustomerInfoState extends State<CustomerInfo> {
         ),
     );
   }
-  getCarGroupsData() {
-    if (carGroups.isNotEmpty) {
-      for(var i = 0; i < carGroups.length; i++){
-        menuCarGroups.add(
-            DropdownMenuItem(
-                value: carGroups[i].groupCode.toString(),
-                child: Text((langId==1)?  carGroups[i].groupNameAra.toString() : carGroups[i].groupNameEng.toString())));
-      }
-    }
-    setState(() {
 
-    });
-  }
-
-  dialogPopUp(String textMsg, TextEditingController controllerNameEng, TextEditingController controllerNameAra,TextEditingController controllerEmail,TextEditingController controllerID,TextEditingController controllerPhone,){
+  dialogPopUp(String textMsg, TextEditingController controllerNameEng, TextEditingController controllerNameAra, String? customerType, String? customerGroup,TextEditingController controllerEmail,TextEditingController controllerID,TextEditingController controllerPhone,){
     showDialog(
         context: context,
         builder: (context){
@@ -767,8 +783,8 @@ class _CustomerInfoState extends State<CustomerInfo> {
                   ),
                   contentPadding: const EdgeInsets.only(top: 15.0, bottom: 15.0, left: 10.0, right: 10.0),
                   content: SizedBox(
-                    height: 370,
-                    width: 300,
+                    height: 500,
+                    width: 350,
                     child: ListView(
                       children: [
                         SizedBox(
@@ -804,6 +820,118 @@ class _CustomerInfoState extends State<CustomerInfo> {
                               }
                               return null;
                             },
+                          ),
+                        ),
+                        const SizedBox(height: 15.0,),
+                        SizedBox(
+                          height: 40,
+                          width: 195,
+                          child: DropdownSearch<CustomerType>(
+                            dropdownBuilder: (context, selectedItem) {
+                              return Center(
+                                child: Text(
+                                  selectedItem?.cusTypesNameAra ?? "customerType".tr(),
+                                  style: TextStyle(
+                                    color: selectedItem == null ? Colors.grey : Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              );
+                            },
+                            popupProps: PopupProps.menu(
+                              itemBuilder: (context, item, isSelected) {
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: !isSelected
+                                      ? null
+                                      : BoxDecoration(
+
+                                    border: Border.all(color: Colors.blueGrey),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text((langId==1)? item.cusTypesNameAra.toString():  item.cusTypesNameEng.toString(),
+                                      textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                  ),
+                                );
+                              },
+                              showSearchBox: true,
+                            ),
+                            items: customerTypes,
+                            itemAsString: (CustomerType u) => u.cusTypesNameAra.toString(),
+                            onChanged: (value){
+
+                              customerType =  value!.cusTypesCode.toString();
+                            },
+
+                            filterFn: (instance, filter){
+                              if(instance.cusTypesNameAra!.contains(filter)){
+                                print(filter);
+                                return true;
+                              }
+                              else{
+                                return false;
+                              }
+                            },
+
+                          ),
+                        ),
+                        const SizedBox(height: 15.0,),
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: DropdownSearch<CustomerGroup>(
+                            dropdownBuilder: (context, selectedItem) {
+                              return Center(
+                                child: Text(
+                                  selectedItem?.cusGroupsNameAra ?? "customerGroup".tr(),
+                                  style: TextStyle(
+                                    color: selectedItem == null ? Colors.grey : Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              );
+                            },
+                            popupProps: PopupProps.menu(
+                              itemBuilder: (context, item, isSelected) {
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: !isSelected ? null
+                                      : BoxDecoration(
+
+                                    border: Border.all(color: Colors.blueGrey),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text((langId==1)? item.cusGroupsNameAra.toString():  item.cusGroupsNameEng.toString(),
+                                      textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                  ),
+                                );
+                              },
+                              showSearchBox: true,
+                            ),
+                            items: customerGroups,
+                            itemAsString: (CustomerGroup u) => u.cusGroupsNameAra.toString(),
+                            onChanged: (value){
+                              customerGroup =  value!.cusGroupsCode.toString();
+                            },
+
+                            filterFn: (instance, filter){
+                              if(instance.cusGroupsNameAra!.contains(filter)){
+                                print(filter);
+                                return true;
+                              }
+                              else{
+                                return false;
+                              }
+                            },
+
                           ),
                         ),
                         const SizedBox(height: 15.0,),

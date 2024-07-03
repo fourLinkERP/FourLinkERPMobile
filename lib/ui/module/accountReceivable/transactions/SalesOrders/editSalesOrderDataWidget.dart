@@ -544,7 +544,7 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
                                           selectedUnitValue = "1";
                                           //String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                           String criteria = " And CompanyCode=$companyCode  ";
-                                          setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
+                                          setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
                                           //Factor
                                           int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                           setItemQty(
@@ -619,11 +619,11 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
                                           selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
 
                                           if (selectedUnitValue != null &&
-                                              selectedItemValue != null) {
+                                              selectedItemValue != null && selectedCustomerValue != null) {
                                             //String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode  And SellOrdersTypeCode=N'$selectedTypeValue'";
                                             String criteria = " And CompanyCode=$companyCode ";
                                             //Item Price
-                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria);
+                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
                                             //Factor
                                             int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                             setItemQty(selectedItemValue.toString(), selectedUnitValue.toString(), qty);
@@ -1601,14 +1601,15 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
   //#region Business Function
 
   // Item Units - Change Item Units
-  changeItemUnit(String itemCode){
-    //Units
-    units=[];
+  changeItemUnit(String itemCode) {
+    units = [];
     Future<List<Unit>> Units = _unitsApiService.getItemUnit(itemCode).then((data) {
       units = data;
-      setState(() {
-
-      });
+      if(data.isNotEmpty){
+        unitItem = data[0];
+        setItemPrice;
+      }
+      setState(() {});
       return units;
     }, onError: (e) {
       print(e);
@@ -1684,9 +1685,9 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
   }
 
   //Item Price
-  setItemPrice(String itemCode , String unitCode,String criteria ){
+  setItemPrice(String itemCode , String unitCode,String criteria, String customerCode){
     //Serial
-    Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SellOrdersType",criteria ).then((data) {
+    Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SellOrdersType",criteria, customerCode).then((data) {
 
       double sellPrice = data;
 

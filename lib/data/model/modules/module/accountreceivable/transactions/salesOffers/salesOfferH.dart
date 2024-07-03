@@ -17,12 +17,14 @@ class SalesOfferH {
   String? customerName ;
   String? currencyCode ;
   String? offerDate ;
+  String? toDate ;
   String? salesManCode ;
   String? taxGroupCode ;
   double? totalQty ;
   double? totalDiscount ;
   double? totalTax ;
   int? rowsCount;
+  String? invoiceDiscountTypeCode;
   double? invoiceDiscountPercent;
   double? invoiceDiscountValue;
   double? totalValue;
@@ -52,12 +54,14 @@ class SalesOfferH {
     this.customerName,
     this.currencyCode,
     this.offerDate,
+    this.toDate,
     this.salesManCode,
     this.taxGroupCode,
     this.totalQty ,
     this.totalDiscount ,
     this.totalTax ,
     this.rowsCount,
+    this.invoiceDiscountTypeCode,
     this.invoiceDiscountPercent,
     this.invoiceDiscountValue,
     this.totalValue,
@@ -80,12 +84,14 @@ class SalesOfferH {
       offerTypeCode: (json['offerTypeCode'] != null) ? json['offerTypeCode'] as String : "",
       offerSerial: (json['offerSerial'] != null) ? json['offerSerial'] as String : "",
       offerDate: (json['offerDate'] != null) ? json['offerDate'] as String : "",
+      toDate: (json['toDate'] != null) ? json['toDate'] as String : "",
       customerCode: (json['customerCode'] != null) ? json['customerCode'] as String : "",
       customerName: (json['customerName'] != null) ? json['customerName'] as String : "",
       totalQty: (json['totalQty'] !=null) ? json['totalQty'].toDouble() : 0,
       totalDiscount: (json['totalDiscount'] !=null) ? json['totalDiscount'].toDouble() : 0,
       rowsCount: (json['rowsCount']  != null) ? json['rowsCount'] as int:0,
       totalTax: (json['totalTax'] !=null) ? json['totalTax'].toDouble() : 0,
+      invoiceDiscountTypeCode:  (json['invoiceDiscountTypeCode'] != null) ? json['invoiceDiscountTypeCode'] as String : "",
       invoiceDiscountPercent: (json['invoiceDiscountPercent'] !=null) ? json['invoiceDiscountPercent'].toDouble() : 0,
       invoiceDiscountValue: (json['invoiceDiscountValue'] !=null) ? json['invoiceDiscountValue'].toDouble() : 0,
       totalValue: (json['totalValue'] !=null) ? json['totalValue'].toDouble() : 0,
