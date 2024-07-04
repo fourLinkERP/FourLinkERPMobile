@@ -604,5 +604,12 @@
     "detailedDailySalesReport": "Detailed daily sales report",
     "customerBalancesReport": "Customer balances report",
     "invoice_discount": "invoice discount",
-    "percent": "percent"
+    "percent": "percent",
+    "please_set_customer_image": "please set customer image",
+    "please_set_commercial_Tax_image": "please set commercial tax image",
+    "please_set_governmentId_image": "please set government id image",
+    "please_set_shopId_image": "please set shop id image",
+    "please_set_shopPlate_image": "please set shop plate image",
+    "please_set_taxId_image": "please set tax id image",
+    "please_enter_taxId": "please enter tax id"
 }

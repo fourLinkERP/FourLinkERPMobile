@@ -628,7 +628,7 @@
     "edit_advance_request": "تعديل طلب سلفة",
     "logout": "تسجيل خروج",
     "please_set_from_date": "من فضلك ادخل تاريخ ابتداء الاجازة",
-    "please_set_to_date": "من فضلك ادخل تاريخ انتهاء الاجازة",
+    "please_set_to_date": "من فضلك ادخل الى تاريخ",
     "please_set_vacation_type": "من فضلك اختر نوع الاجازة",
     "please_set_job": "من فضلك ادخل الوظيفة",
     "please_set_reason": "من فضلك ادخل السبب",
@@ -704,7 +704,14 @@
     "detailedDailySalesReport": "تقرير يومية المبيعات تفصيلي",
     "customerBalancesReport": "تقرير أرصدة العملاء",
     "invoice_discount": "خصم الفاتورة",
-    "percent": "النسبة"
+    "percent": "النسبة",
+    "please_set_customer_image": "من فضلك ادخل صورة العميل",
+    "please_set_commercial_Tax_image": "من فضلك ادخل صورة السجل التجاري",
+    "please_set_governmentId_image": "من فضلك ادخل صورة رخصة البلدية",
+    "please_set_shopId_image": "من فضلك ادخل صورة رخصة المحل",
+    "please_set_shopPlate_image": "من فضلك ادخل صورة لوحة المحل",
+    "please_set_taxId_image": "من فضلك ادخل صورة الرقم الضريبي",
+    "please_enter_taxId": "من فضلك ادخل الرقم الضريبي"
 
 }
 

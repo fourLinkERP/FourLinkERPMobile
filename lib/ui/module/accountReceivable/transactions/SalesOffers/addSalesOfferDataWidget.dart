@@ -738,6 +738,7 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                                 label: Text('add_product'.tr(),style:const TextStyle(color: Color.fromRGBO(144, 16, 46, 1)) ),
                                 onPressed: () {
                                   addInvoiceRow() ;
+                                  storeInitialValues();
                                 },
                                 style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
@@ -833,112 +834,115 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                     ),
 
                     const SizedBox(height: 15),
-                    // Form(
-                    //       key: _dropdownDiscountFormKey,
-                    //       child: Row(
-                    //         children: [
-                    //           Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("invoice_discount".tr(),
-                    //               style: const TextStyle(fontWeight: FontWeight.bold))),
-                    //           const SizedBox(width: 10),
-                    //           SizedBox(
-                    //             height: 40,
-                    //             width: 100,
-                    //             child: DropdownSearch<InvoiceDiscountType>(
-                    //               selectedItem: null,
-                    //               popupProps: PopupProps.menu(
-                    //                 itemBuilder: (context, item, isSelected) {
-                    //                   return Container(
-                    //                     margin: const EdgeInsets.symmetric(
-                    //                         horizontal: 8),
-                    //                     decoration: !isSelected ? null : BoxDecoration(
-                    //                       border: Border.all(color: Colors.black12),
-                    //                       borderRadius: BorderRadius.circular(5),
-                    //                       color: Colors.white,
-                    //                     ),
-                    //                     child: Padding(
-                    //                       padding: const EdgeInsets.all(8.0),
-                    //                       child: Text((langId == 1) ? item.invoiceDiscountTypeNameAra.toString() : item.invoiceDiscountTypeNameEng.toString()),
-                    //                     ),
-                    //                   );
-                    //                 },
-                    //                 showSearchBox: true,
-                    //
-                    //               ),
-                    //
-                    //               items: discountTypes,
-                    //               itemAsString: (InvoiceDiscountType u) =>
-                    //               (langId == 1) ? u.invoiceDiscountTypeNameAra.toString() : u.invoiceDiscountTypeNameEng.toString(),
-                    //               onChanged: (value) {
-                    //                 selectedDiscountTypeValue = value!.invoiceDiscountTypeCode.toString();
-                    //                 // selectedDiscountTypeValue == "1" ? isUnlocked == true : false;
-                    //                 print("selectedDiscountTypeValue = " + selectedDiscountTypeValue!);
-                    //               },
-                    //
-                    //               filterFn: (instance, filter) {
-                    //                 if ((langId == 1) ? instance.invoiceDiscountTypeNameAra!.contains(filter) : instance.invoiceDiscountTypeNameEng!.contains(filter)) {
-                    //                   print(filter);
-                    //                   return true;
-                    //                 }
-                    //                 else {
-                    //                   return false;
-                    //                 }
-                    //               },
-                    //             ),
-                    //           ),
-                    //           const SizedBox(width: 5),
-                    //           SizedBox(
-                    //             height: 40,
-                    //             width: 70,
-                    //             child: TextFormField(
-                    //               enabled: selectedDiscountTypeValue == "1" ? true : false,
-                    //               controller: _invoiceDiscountValueController,
-                    //               keyboardType: TextInputType.number,
-                    //               onChanged: (val){
-                    //                 calcDiscountValue(double.parse(val));
-                    //                // recalculateParameters();
-                    //               },
-                    //               validator: (String? value) {
-                    //                 if (value!.isEmpty) {
-                    //                   return 'required_field'.tr();
-                    //                 }
-                    //                 return null;
-                    //               },
-                    //               decoration: InputDecoration(
-                    //                 labelText: "value".tr(),
-                    //                 labelStyle: TextStyle(color: Colors.blueGrey),
-                    //                 border: OutlineInputBorder(
-                    //                     borderRadius: BorderRadius.circular(10.0),
-                    //                     borderSide:  const BorderSide(color: Colors.blueGrey, width: 1.0) ),
-                    //               ),
-                    //             ),
-                    //           ),
-                    //           const SizedBox(width: 5),
-                    //           SizedBox(
-                    //             height: 40,
-                    //             width: 70,
-                    //             child: TextFormField(
-                    //               enabled: selectedDiscountTypeValue == "2" ? true : false,
-                    //               controller: _invoiceDiscountPercentController,
-                    //               keyboardType: TextInputType.number,
-                    //               validator: (String? value) {
-                    //                 if (value!.isEmpty) {
-                    //                   return 'required_field'.tr();
-                    //                 }
-                    //                 return null;
-                    //               },
-                    //               decoration: InputDecoration(
-                    //                 labelText: "percent".tr(),
-                    //                 labelStyle: TextStyle(color: Colors.blueGrey),
-                    //                 border: OutlineInputBorder(
-                    //                     borderRadius: BorderRadius.circular(10.0),
-                    //                     borderSide:  const BorderSide(color: Colors.blueGrey, width: 1.0) ),
-                    //               ),
-                    //             ),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ),
-                    // const SizedBox(height: 15),
+                    Form(
+                          key: _dropdownDiscountFormKey,
+                          child: Row(
+                            children: [
+                              Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("invoice_discount".tr(),
+                                  style: const TextStyle(fontWeight: FontWeight.bold))),
+                              const SizedBox(width: 10),
+                              SizedBox(
+                                height: 40,
+                                width: 100,
+                                child: DropdownSearch<InvoiceDiscountType>(
+                                  selectedItem: null,
+                                  popupProps: PopupProps.menu(
+                                    itemBuilder: (context, item, isSelected) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            horizontal: 8),
+                                        decoration: !isSelected ? null : BoxDecoration(
+                                          border: Border.all(color: Colors.black12),
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.white,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text((langId == 1) ? item.invoiceDiscountTypeNameAra.toString() : item.invoiceDiscountTypeNameEng.toString()),
+                                        ),
+                                      );
+                                    },
+                                    showSearchBox: true,
+
+                                  ),
+
+                                  items: discountTypes,
+                                  itemAsString: (InvoiceDiscountType u) =>
+                                  (langId == 1) ? u.invoiceDiscountTypeNameAra.toString() : u.invoiceDiscountTypeNameEng.toString(),
+                                  onChanged: (value) {
+                                    selectedDiscountTypeValue = value!.invoiceDiscountTypeCode.toString();
+                                    setState(() {
+
+                                    });
+                                  },
+
+                                  filterFn: (instance, filter) {
+                                    if ((langId == 1) ? instance.invoiceDiscountTypeNameAra!.contains(filter) : instance.invoiceDiscountTypeNameEng!.contains(filter)) {
+                                      print(filter);
+                                      return true;
+                                    }
+                                    else {
+                                      return false;
+                                    }
+                                  },
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              SizedBox(
+                                height: 40,
+                                width: 70,
+                                child: TextFormField(
+                                  enabled: selectedDiscountTypeValue == "1" ? true : false,
+                                  controller: _invoiceDiscountValueController,
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (value) {
+                                    updateValuesAfterDiscountValue(value);
+                                  },
+                                  validator: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return 'required_field'.tr();
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                    labelText: "value".tr(),
+                                    labelStyle: const TextStyle(color: Colors.blueGrey),
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        borderSide:  const BorderSide(color: Colors.blueGrey, width: 1.0) ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              SizedBox(
+                                height: 40,
+                                width: 70,
+                                child: TextFormField(
+                                  enabled: selectedDiscountTypeValue == "2" ? true : false,
+                                  controller: _invoiceDiscountPercentController,
+                                  keyboardType: TextInputType.number,
+                                  onChanged: (value) {
+                                    updateValuesAfterDiscountPercent(value);
+                                  },
+                                  validator: (String? value) {
+                                    if (value!.isEmpty) {
+                                      return 'required_field'.tr();
+                                    }
+                                    return null;
+                                  },
+                                  decoration: InputDecoration(
+                                    labelText: "percent".tr(),
+                                    labelStyle: const TextStyle(color: Colors.blueGrey),
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        borderSide:  const BorderSide(color: Colors.blueGrey, width: 1.0) ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                    const SizedBox(height: 15),
                     Row(
                       children: [
                         Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('totalValue'.tr(),
@@ -1155,11 +1159,10 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
         return;
       }
 
-      // //Currency
-      // if(currencyCodeSelectedValue == null || currencyCodeSelectedValue!.isEmpty){
-      //   FN_showToast(context,'Please Set Currency',Colors.black);
-      //   return;
-      // }
+      if(_toDateController.text.isEmpty){
+        FN_showToast(context,'please_set_to_date'.tr(),Colors.black);
+        return;
+      }
 
       await _salesOfferHApiService.createSalesOfferH(context,SalesOfferH(
 
@@ -1173,19 +1176,17 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
         totalTax:(_totalTaxController.text.isNotEmpty)?  _totalTaxController.text.toDouble():0 ,
         totalDiscount:(_totalDiscountController.text.isNotEmpty)?  _totalDiscountController.text.toDouble():0 ,
         rowsCount:(rowsCount >0 )? rowsCount :0 ,
+        totalValue: (_totalValueController.text.isNotEmpty)?  _totalValueController.text.toDouble():0 ,
         totalNet:(_totalNetController.text.isNotEmpty)?  _totalNetController.text.toDouble():0 ,
         invoiceDiscountPercent:(_invoiceDiscountPercentController.text.isNotEmpty)?  _invoiceDiscountPercentController.text.toDouble():0 ,
         invoiceDiscountValue:(_invoiceDiscountValueController.text.isNotEmpty)?  _invoiceDiscountValueController.text.toDouble():0 ,
-        totalValue:(_totalValueController.text.isNotEmpty)?  _totalValueController.text.toDouble():0 ,
         totalAfterDiscount:(_totalAfterDiscountController.text.isNotEmpty)?  _totalAfterDiscountController.text.toDouble():0 ,
         totalBeforeTax:(_totalBeforeTaxController.text.isNotEmpty)?  _totalBeforeTaxController.text.toDouble():0 ,
         tafqitNameArabic: _tafqitNameArabicController.text,
         tafqitNameEnglish: _tafqitNameEnglishController.text,
         storeCode: "1",
         currencyRate: 1
-        //salesManCode: salesOffersSerial,
-        // currencyCode: "1",
-        // taxGroupCode: "1",
+
       ));
 
       //Save Footer For Now
@@ -1699,31 +1700,98 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
     _totalValueController.text = totalPrice.toString();
     setTafqeet("2", _totalNetController.text);
   }
-  // calcDiscountValue(double? discountValue){
-  //   double discountPercent = 0;
-  //   discountValue = 0;
-  //   discountValue = double.parse(_invoiceDiscountValueController.text);
-  //   totalDiscount = discountValue;
-  //   discountPercent = (discountValue / totalBeforeTax)*100;
-  //   totalAfterDiscount = totalAfterDiscount - discountValue;
-  //   totalNet = totalAfterDiscount;
-  //   totalBeforeTax = totalAfterDiscount;
-  //   totalPrice  = totalAfterDiscount;
-  //   _invoiceDiscountPercentController.text = discountPercent.toString();
-  //   _totalDiscountController.text = totalDiscount.toString();
-  //   _totalAfterDiscountController.text = totalAfterDiscount.toString();
-  //   _totalBeforeTaxController.text = totalBeforeTax.toString();
-  //   _totalValueController.text = totalPrice.toString();
-  //   setTafqeet("2", _totalNetController.text);
-  //
-  //   setState(() {
-  //     // _totalDiscountController.text = "";
-  //     // _totalAfterDiscountController.text = "";
-  //     // _totalBeforeTaxController.text = "";
-  //     // _totalValueController.text = "";
-  //     // setTafqeet("2", _totalNetController.text);
-  //   });
-  //
-  // }
+  Map<String, double> initialValues = {};
 
+  void storeInitialValues() {
+    initialValues = {
+      'totalQty': double.tryParse(_totalQtyController.text) ?? 0,
+      'totalTax': double.tryParse(_totalTaxController.text) ?? 0,
+      'totalDiscount': double.tryParse(_totalDiscountController.text) ?? 0,
+      'totalNet': double.tryParse(_totalNetController.text) ?? 0,
+      'totalAfterDiscount': double.tryParse(_totalAfterDiscountController.text) ?? 0,
+      'totalBeforeTax': double.tryParse(_totalBeforeTaxController.text) ?? 0,
+      'totalValue': double.tryParse(_totalValueController.text) ?? 0,
+      'discountPercent': double.tryParse(_invoiceDiscountPercentController.text) ?? 0,
+      'discountValue': double.tryParse(_invoiceDiscountValueController.text) ?? 0,
+    };
+  }
+  void updateValuesAfterDiscountValue(String discountValue) {
+    if (initialValues.isEmpty) {
+      storeInitialValues();
+    }
+
+    double discount = double.tryParse(discountValue) ?? 0;
+
+    if (discount == 0) {
+      // Restore original values
+      _totalQtyController.text = initialValues['totalQty'].toString();
+      _totalTaxController.text = initialValues['totalTax'].toString();
+      _totalDiscountController.text = initialValues['totalDiscount'].toString();
+      _totalNetController.text = initialValues['totalNet'].toString();
+      _totalAfterDiscountController.text = initialValues['totalAfterDiscount'].toString();
+      _totalBeforeTaxController.text = initialValues['totalBeforeTax'].toString();
+      //_totalValueController.text = initialValues['totalValue'].toString();
+      _invoiceDiscountPercentController.text = initialValues['discountPercent'].toString();
+    } else {
+      // Calculate new values
+      double totalAfterDiscount = initialValues['totalValue']! - discount;
+      double totalBeforeTax = totalAfterDiscount;
+      double totalTax = (0.15 * totalAfterDiscount);
+      double totalNet = totalAfterDiscount + totalTax;
+      double discountPercentage = (discount / initialValues['totalValue']!) * 100;
+
+      String discountPercentageFormatted = discountPercentage.toStringAsFixed(2);
+
+      _totalTaxController.text = totalTax.toString();
+      _invoiceDiscountPercentController.text = discountPercentageFormatted;
+      _totalDiscountController.text = discount.toString();
+      _totalAfterDiscountController.text = totalAfterDiscount.toString();
+      _totalBeforeTaxController.text = totalBeforeTax.toString();
+      //_totalValueController.text = totalAfterDiscount.toString();
+      _totalNetController.text = totalNet.toString();
+      setTafqeet("2", _totalNetController.text);
+    }
+
+    setState(() {});
+  }
+  void updateValuesAfterDiscountPercent(String discountPercent) {
+    if (initialValues.isEmpty) {
+      storeInitialValues();
+    }
+
+    double discountValue = (double.tryParse(discountPercent)! / 100) * (initialValues['totalValue']!);
+    double discount = discountValue ?? 0;
+
+    if (discount == 0) {
+      // Restore original values
+      _totalQtyController.text = initialValues['totalQty'].toString();
+      _totalTaxController.text = initialValues['totalTax'].toString();
+      _totalDiscountController.text = initialValues['totalDiscount'].toString();
+      _totalNetController.text = initialValues['totalNet'].toString();
+      _totalAfterDiscountController.text = initialValues['totalAfterDiscount'].toString();
+      _totalBeforeTaxController.text = initialValues['totalBeforeTax'].toString();
+      //_totalValueController.text = initialValues['totalValue'].toString();
+      _invoiceDiscountValueController.text = initialValues['discountValue'].toString();
+    } else {
+      // Calculate new values
+      double totalAfterDiscount = initialValues['totalValue']! - discount;
+      double totalBeforeTax = totalAfterDiscount;
+      double totalTax = (0.15 * totalAfterDiscount);
+      double totalNet = totalAfterDiscount + totalTax;
+      double discountValue = discount;
+
+      String discountValueFormatted = discountValue.toStringAsFixed(2);
+
+      _totalTaxController.text = totalTax.toString();
+      _invoiceDiscountValueController.text = discountValueFormatted;
+      _totalDiscountController.text = discount.toString();
+      _totalAfterDiscountController.text = totalAfterDiscount.toString();
+      _totalBeforeTaxController.text = totalBeforeTax.toString();
+      //_totalValueController.text = totalAfterDiscount.toString();
+      _totalNetController.text = totalNet.toString();
+      setTafqeet("2", _totalNetController.text);
+    }
+
+    setState(() {});
+  }
 }

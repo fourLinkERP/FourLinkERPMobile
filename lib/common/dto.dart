@@ -2,7 +2,10 @@ class DTO {
   static Map<String, String> page1 = {
     "trxSerial": "",
     "customerCode": "",
-    "carCode": ""
+    "carCode": "",
+    "checkedInPerson": "",
+    "customerMobile": "",
+    "counter": ""
   };
 
   static int netTotal = 0; //page2

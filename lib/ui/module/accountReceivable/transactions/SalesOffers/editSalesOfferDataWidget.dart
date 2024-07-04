@@ -180,11 +180,12 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     _totalNetController.text = widget.salesOffersH.totalNet.toString();
 
     _totalValueController.text = widget.salesOffersH.totalValue.toString();
+    print("salesOffersH.totalValue = " + widget.salesOffersH.totalValue.toString());
     _invoiceDiscountPercentController.text = widget.salesOffersH.invoiceDiscountPercent.toString();
     _invoiceDiscountValueController.text = widget.salesOffersH.invoiceDiscountValue.toString();
     _totalAfterDiscountController.text = widget.salesOffersH.totalAfterDiscount.toString();
 
-
+    totalPrice = (widget.salesOffersH.totalValue != null)? double.parse(_totalValueController.text) : 0;
     totalQty =(widget.salesOffersH.totalQty != null) ? double.parse(_totalQtyController.text) : 0;
     rowsCount =(widget.salesOffersH.rowsCount != null) ? int.parse(_rowsCountController.text) : 0;
     totalDiscount =(widget.salesOffersH.totalDiscount != null)? double.parse(_totalDiscountController.text) : 0;
@@ -788,90 +789,41 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                         const SizedBox(height: 20),
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
-
                           child: DataTable(
                             border: TableBorder.all(),
+
+                            headingRowColor: MaterialStateProperty.all(const Color.fromRGBO(144, 16, 46, 1)),
                             columnSpacing: 20,
                             columns: [
-                              DataColumn(label: Text("id".tr()),),
-                              // DataColumn(
-                              //   label: Text("Code"),
-                              // ),
-                              DataColumn(label: Text("name".tr()),),
-
-                              DataColumn(label: Text("qty".tr()), numeric: true,),
-
-                              DataColumn(label: Text("price".tr()), numeric: true,),
-
-                              DataColumn(label: Text("total".tr()), numeric: true,),
-
-                              DataColumn(label: Text("discount".tr()), numeric: true,),
-
-                              DataColumn(label: Text("netAfterDiscount".tr()), numeric: true,),
-
-                              DataColumn(label: Text("vat".tr()), numeric: true,),
-
-                              DataColumn(label: Text("net".tr()), numeric: true,),
-
-                              DataColumn(label: Text("action".tr()),),
+                              DataColumn(label: Text("id".tr(),style: const TextStyle(color: Colors.white),),),
+                              DataColumn(label: Text("name".tr(),style: const TextStyle(color: Colors.white),),),
+                              DataColumn(label: Text("qty".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("price".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("total".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("discount".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("netAfterDiscount".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("vat".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("net".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
+                              DataColumn(label: Text("action".tr(), style: const TextStyle(color: Colors.white),),),
                             ],
                             rows: salesOfferDLst.map((p) =>
-                                DataRow(
-                                    cells: [
-                                      DataCell(
-                                          SizedBox(width: 5, child: Text(p.lineNum.toString()))),
-                                // DataCell(
-                                //   Text(p.itemCode.toString()),
-                                // ),
-                                DataCell(
-                                    SizedBox(
-                                        width: 50, //SET width
-                                        child: Text(p.itemName.toString()))
-                                ),
-                                DataCell(
-                                    SizedBox(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayQty.toString()))
-                                ),
-                                DataCell(
-                                    SizedBox(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayPrice.toString()))
-
-                                ),
-                                DataCell(
-                                    SizedBox(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayTotal.toString()))
-
-                                ),
-                                DataCell(
-                                    SizedBox(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayDiscountValue.toString()))
-                                ),
-                                DataCell(
-                                    SizedBox(
-                                      //width: 15, //SET width
-                                        child: Text(p.netAfterDiscount.toString()))
-                                ),
-                                DataCell(
-                                    SizedBox(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayTotalTaxValue.toString()))
-                                ),
-                                DataCell(
-                                    SizedBox(
-                                      //width: 15, //SET width
-                                        child: Text(p.displayNetValue.toString()))
-                                ),
-
-                                      DataCell(IconButton(icon: Icon(Icons.delete_forever, size: 30.0, color: Colors.red.shade600,),
-                                        onPressed: () {
-                                          deleteOfferRow(context,p.id);
-                                        },
-                                      )),
-                              ]),
+                                DataRow(cells: [
+                                  DataCell(SizedBox(width: 5, child: Text(p.lineNum.toString()))),
+                                  DataCell(SizedBox(width: 50, child: Text(p.itemName.toString()))),
+                                  DataCell(SizedBox(child: Text(p.displayQty.toString()))),
+                                  DataCell(SizedBox(child: Text(p.displayPrice.toString()))),
+                                  DataCell(SizedBox(child: Text(p.displayTotal.toString()))),
+                                  DataCell(SizedBox(child: Text(p.displayDiscountValue.toString()))),
+                                  DataCell(SizedBox(child: Text(p.netAfterDiscount.toString()))),
+                                  DataCell(SizedBox(child: Text(p.displayTotalTaxValue.toString()))),
+                                  DataCell(SizedBox(child: Text(p.displayNetValue.toString()))),
+                                  DataCell(IconButton(icon: Icon(Icons.delete_forever, size: 30.0, color: Colors.red.shade600,),
+                                    onPressed: () {
+                                      deleteInvoiceRow(context,p.lineNum);
+                                      calcTotalPriceRow();
+                                    },
+                                  )),
+                                ]),
                             ).toList(),
                           ),
                         ),
@@ -904,7 +856,6 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                               width: 80,
                               child: textFormFields(
                                 controller: _rowsCountController,
-                                //hintText: "rowsCount".tr(),
                                 enable: false,
                                 onSaved: (val) {
                                   total = val;
@@ -916,45 +867,44 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                         ),
                         const SizedBox(height: 20),
 
-                        Row(
-                          children: [
-                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountPercent'.tr()) ),
-                            const SizedBox(width: 10),
-                            SizedBox(
-                              width: 150,
-                              child: TextFormField(
-                                controller: _invoiceDiscountPercentController,
-                                // hintText: "invoiceDiscountPercent".tr(),
-                                enabled: true,
-                                onChanged: (value){
-
-                                },
-                                keyboardType: TextInputType.number,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-
-                        Row(
-                          children: [
-                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountValue'.tr()) ),
-                            const SizedBox(width: 10),
-                            SizedBox(
-                              width: 150,
-                              child: TextFormField(
-                                enabled: true,
-                                controller: _invoiceDiscountValueController,
-                                // hintText: "invoiceDiscountValue".tr(),
-                                onChanged: (value){
-
-                                },
-                                keyboardType: TextInputType.number,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 20),
+                        // Row(
+                        //   children: [
+                        //     Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountPercent'.tr()) ),
+                        //     const SizedBox(width: 10),
+                        //     SizedBox(
+                        //       width: 150,
+                        //       child: TextFormField(
+                        //         controller: _invoiceDiscountPercentController,
+                        //         enabled: true,
+                        //         onChanged: (value){
+                        //
+                        //         },
+                        //         keyboardType: TextInputType.number,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // const SizedBox(height: 20),
+                        //
+                        // Row(
+                        //   children: [
+                        //     Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountValue'.tr()) ),
+                        //     const SizedBox(width: 10),
+                        //     SizedBox(
+                        //       width: 150,
+                        //       child: TextFormField(
+                        //         enabled: true,
+                        //         controller: _invoiceDiscountValueController,
+                        //         // hintText: "invoiceDiscountValue".tr(),
+                        //         onChanged: (value){
+                        //
+                        //         },
+                        //         keyboardType: TextInputType.number,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        // const SizedBox(height: 20),
 
                         Row(
                           children: [
@@ -1429,8 +1379,75 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
 
     Navigator.pop(context) ;
   }
+  void deleteInvoiceRow(BuildContext context, int? lineNum) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Are you sure?'),
+        content: const Text('This action will permanently delete this data'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
 
+    if (confirmed!) {
+      int indexToRemove = salesOfferDLst.indexWhere((p) => p.lineNum == lineNum);
 
+      if (indexToRemove != -1) {
+        // Remove the row
+        salesOfferDLst.removeAt(indexToRemove);
+
+        // Recalculate the parameters based on the remaining rows
+        recalculateParameters();
+
+        // Trigger a rebuild
+        setState(() {});
+      }
+    }
+  }
+  void recalculateParameters() {
+    //SalesInvoiceH _salesInvoiceH = SalesInvoiceH();
+    totalQty = 0;
+    totalTax = 0;
+    totalDiscount = 0;
+    rowsCount = salesOfferDLst.length;
+    totalNet = 0;
+    totalPrice = 0;
+    totalBeforeTax = 0;
+    totalAfterDiscount = 0;
+    totalBeforeTax = 0;
+    //_salesInvoiceH.tafqitNameArabic = _tafqitNameArabicController.text;
+    //_salesInvoiceH.tafqitNameEnglish = _tafqitNameEnglishController.text;
+
+    for (var row in salesOfferDLst) {
+      totalQty += row.displayQty;
+      totalTax += row.displayTotalTaxValue;
+      totalDiscount += row.displayDiscountValue;
+      totalNet += row.displayNetValue;
+      totalAfterDiscount += row.netAfterDiscount;
+      totalBeforeTax += row.netAfterDiscount;
+      totalPrice  += row.netAfterDiscount;
+    }
+
+    // Update controllers
+    _totalQtyController.text = totalQty.toString();
+    _totalTaxController.text = totalTax.toString();
+    _totalDiscountController.text = totalDiscount.toString();
+    _rowsCountController.text = rowsCount.toString();
+    _totalNetController.text = totalNet.toString();
+    _totalAfterDiscountController.text = totalAfterDiscount.toString();
+    _totalBeforeTaxController.text = totalBeforeTax.toString();
+    _totalValueController.text = totalPrice.toString();
+    setTafqeet("2", _totalNetController.text);
+  }
 
   getSalesOfferTypeData() {
     if (salesOfferTypes != null) {

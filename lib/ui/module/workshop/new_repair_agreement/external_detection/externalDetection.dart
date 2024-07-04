@@ -1004,6 +1004,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
       });
     }
   }
+
   convertImageToBase64String(File? image, String? stringImage) async{
     if (image != null) {
       List<int> imageBytes = await image.readAsBytes();

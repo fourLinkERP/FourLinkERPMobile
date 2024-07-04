@@ -8,6 +8,8 @@ class CarReceiveH {
   String? receiveCarStatusCode;
   int? returnOldPartStatusCode;
   int? repeatRepairStatusCode;
+  String? counter;
+  String? customerMobile;
   int? netTotal;
   String? deliveryDate;
   String? deliveryTime;
@@ -61,6 +63,8 @@ class CarReceiveH {
         this.receiveCarStatusCode,
         this.returnOldPartStatusCode,
         this.repeatRepairStatusCode,
+        this.counter,
+        this.customerMobile,
         this.netTotal,
         this.deliveryDate,
         this.deliveryTime,
@@ -104,7 +108,6 @@ class CarReceiveH {
         this.comment5,
         this.comment6,
 
-
       });
   factory CarReceiveH.fromJson(Map<String, dynamic> json){
     return CarReceiveH(
@@ -115,6 +118,8 @@ class CarReceiveH {
       receiveCarStatusCode: (json['receiveCarStatusCode'] != null) ? json['receiveCarStatusCode'] as String : " ",
       returnOldPartStatusCode: (json['returnOldPartStatusCode'] != null) ? json['returnOldPartStatusCode'] as int : 1,
       repeatRepairStatusCode: (json['repeatRepairStatusCode'] != null) ? json['repeatRepairStatusCode'] as int : 1,
+      counter: (json['counter'] !=null) ? json['counter'] as String : "",
+      customerMobile: (json['customerMobile'] != null) ? json['customerMobile'] as String : " ",
       netTotal: (json['netTotal'] != null) ? json['netTotal'] as int : 0,
       deliveryDate: (json['deliveryDate'] != null) ? json['deliveryDate'] as String : pickedDate,
       deliveryTime: (json['deliveryTime'] != null) ? json['deliveryTime'] as String : " ",
@@ -157,7 +162,6 @@ class CarReceiveH {
       comment4: (json['comment4'] != null) ? json['comment4'] as String : " ",
       comment5: (json['comment5'] != null) ? json['comment5'] as String : " ",
       comment6: (json['comment6'] != null) ? json['comment6'] as String : " ",
-
 
     );
   }

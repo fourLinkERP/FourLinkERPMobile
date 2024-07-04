@@ -734,6 +734,10 @@ class _CustomerInfoState extends State<CustomerInfo> {
                           controller: bringerNameController,
                           type: TextInputType.text,
                           colors: Colors.blueGrey,
+                          onChanged: (value)
+                          {
+                            DTO.page1["checkedInPerson"] = bringerNameController.text;
+                          },
                           validate: (String? value) {
                             if (value!.isEmpty) {
                               return 'name must be non empty';
@@ -751,6 +755,10 @@ class _CustomerInfoState extends State<CustomerInfo> {
                           controller: bringerNumberController,
                           type: TextInputType.text,
                           colors: Colors.blueGrey,
+                          onChanged: (value)
+                          {
+                            DTO.page1["customerMobile"] = bringerNumberController.text;
+                          },
                           validate: (String? value) {
                             if (value!.isEmpty) {
                               return 'name must be non empty';

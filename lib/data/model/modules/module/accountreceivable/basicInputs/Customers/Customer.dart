@@ -16,6 +16,11 @@ class Customer {
   String? email;
   String? idNo;
   String? customerImage;
+  String? commercialTaxNoImage;
+  String? governmentIdImage;
+  String? shopIdImage;
+  String? shopPlateImage;
+  String? taxIdImage;
 
 
   Customer({
@@ -33,7 +38,12 @@ class Customer {
     this.cusGroupsCode,
     this.email,
     this.idNo,
-    this.customerImage
+    this.customerImage,
+    this.commercialTaxNoImage,
+    this.governmentIdImage,
+    this.shopIdImage,
+    this.shopPlateImage,
+    this.taxIdImage
     });
 
   factory Customer.fromJson(Map<String, dynamic> json) {
@@ -53,6 +63,11 @@ class Customer {
       email: (json['email'] != null)?  json['email'] as String : "",
       idNo: (json['idNo'] != null)?  json['idNo'] as String : "",
       customerImage: (json['customerImage'] != null)?  json['customerImage'] as String : "",
+      commercialTaxNoImage: (json['commercialTaxNoImage'] != null)?  json['commercialTaxNoImage'] as String : "",
+      shopIdImage: (json['shopIdImage'] != null)?  json['shopIdImage'] as String : "",
+      shopPlateImage: (json['shopPlateImage'] != null)?  json['shopPlateImage'] as String : "",
+      governmentIdImage: (json['governmentIdImage'] != null)?  json['governmentIdImage'] as String : "",
+      taxIdImage: (json['taxIdImage'] != null)?  json['taxIdImage'] as String : "",
     );
   }
 
@@ -61,24 +76,3 @@ class Customer {
     return 'Trans{id: $id, name: $customerNameAra }';
   }
 }
-
-
-
-
-
-
-// Our demo Branchs
-
-// List<Customer> demoBranches = [
-//   Customer(
-//       id: 1,
-//       name: "Maadi - Branch",
-//       description: descriptionData
-//   ),
-//   Customer(
-//       id: 2,
-//       name: "Tahrir - Branch",
-//       description: descriptionData
-//   )
-// ];
-

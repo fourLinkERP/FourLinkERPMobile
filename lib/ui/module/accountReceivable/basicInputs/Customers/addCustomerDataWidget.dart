@@ -12,7 +12,9 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/CustomerGroups/customerGroupApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/SalesMen/salesManApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../../../../common/login_components.dart';
 import '../../../../../data/model/modules/module/accountreceivable/basicInputs/CustomerGroups/CustomerGroup.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
@@ -39,10 +41,19 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
   _AddCustomerDataWidgetState();
 
   File? customerImage;
+  File? commercialTaxNoImage;
+  File? governmentIdImage;
+  File? shopIdImage;
+  File? shopPlateImage;
+  File? taxIdImage;
 
-  //Menus Data
-  List<DropdownMenuItem<String>> menuCustomerType = [ ];
-  List<DropdownMenuItem<String>> menuCustomerGroup = [ ];
+  String? customerImageString = "";
+  String? commercialTaxNoImageString = "";
+  String? governmentIdImageString = "";
+  String? shopIdImageString = "";
+  String? shopPlateImageString = "";
+  String? taxIdImageString = "";
+
   //List Models
   List<CustomerType> customerTypes=[];
   List<CustomerGroup> customerGroups=[];
@@ -60,7 +71,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
   final _taxIdentificationNumberController = TextEditingController();
   final _addressController = TextEditingController();
   final _phone1Controller = TextEditingController();
-  TextEditingController v = TextEditingController();
+  //TextEditingController v = TextEditingController();
 
   @override void initState() {
 
@@ -132,11 +143,34 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
             FN_showToast(context,'please_select_salesMan'.tr() ,Colors.black);
             return;
           }
-          String base64Image ='';
-          if (customerImage != null) {
-            List<int> imageBytes = await customerImage!.readAsBytes();
-            base64Image = base64Encode(imageBytes);
-            print(base64Image.toString());
+          if(_taxIdentificationNumberController.text.isEmpty)
+          {
+            FN_showToast(context,'please_enter_taxId'.tr() ,Colors.black);
+            return;
+          }
+          if (customerImageString == null || customerImageString!.isEmpty) {
+            FN_showToast(context,'please_set_customer_image'.tr() ,Colors.black);
+            return;
+          }
+          if (commercialTaxNoImageString == null || commercialTaxNoImageString!.isEmpty) {
+            FN_showToast(context,'please_set_commercial_Tax_image'.tr() ,Colors.black);
+            return;
+          }
+          if (governmentIdImageString == null || governmentIdImageString!.isEmpty) {
+            FN_showToast(context,'please_set_governmentId_image'.tr() ,Colors.black);
+            return;
+          }
+          if (shopIdImageString == null || shopIdImageString!.isEmpty) {
+            FN_showToast(context,'please_set_shopId_image'.tr() ,Colors.black);
+            return;
+          }
+          if (shopPlateImageString == null || shopPlateImageString!.isEmpty) {
+            FN_showToast(context,'please_set_shopPlate_image'.tr() ,Colors.black);
+            return;
+          }
+          if (taxIdImageString == null || taxIdImageString!.isEmpty) {
+            FN_showToast(context,'please_set_taxId_image'.tr() ,Colors.black);
+            return;
           }
           await api.createCustomer(context,Customer(
               customerCode: _customerCodeController.text ,
@@ -149,7 +183,12 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
               address: _addressController.text,
               customerTypeCode: customerTypeSelectedValue,
               cusGroupsCode: customerGroupSelectedValue,
-              customerImage: base64Image,
+              customerImage: customerImageString,
+              commercialTaxNoImage: commercialTaxNoImageString,
+              governmentIdImage: governmentIdImageString,
+              shopIdImage: shopIdImageString,
+              shopPlateImage: shopPlateImageString,
+              taxIdImage: taxIdImageString
 
           ));
 
@@ -523,228 +562,372 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                       ),
                     ),
 
-                        // Align(child: Text('Customer Type'),alignment: Alignment.topLeft),
-                        // Form(
-                        //     key: _dropdownCustomerTypeFormKey,
-                        //     child: Column(
-                        //       mainAxisAlignment: MainAxisAlignment.center,
-                        //       children: [
-                        //         DropdownButtonFormField(
-                        //
-                        //             decoration: InputDecoration(
-                        //               enabledBorder: OutlineInputBorder(
-                        //                 borderSide: BorderSide(color: Colors.white60, width: 2),
-                        //                 borderRadius: BorderRadius.circular(20),
-                        //               ),
-                        //               border: OutlineInputBorder(
-                        //                 borderSide: BorderSide(color: Colors.white60, width: 2),
-                        //                 borderRadius: BorderRadius.circular(20),
-                        //               ),
-                        //               filled: true,
-                        //               fillColor: Colors.white,
-                        //             ),
-                        //             validator: (value) => value == null ? "Select Sales Man" : null,
-                        //             dropdownColor: Colors.greenAccent,
-                        //             value: customerTypeSelectedValue,
-                        //             onChanged: (String? newValue) {
-                        //               print(customerTypes);
-                        //               setState(() {
-                        //                 customerTypeSelectedValue = newValue!;
-                        //               });
-                        //             },
-                        //             items: menuCustomerType),
-                        //
-                        //
-                        //         // ElevatedButton(
-                        //         //     onPressed: () {
-                        //         //       if (_dropdownFormKey.currentState!.validate()) {
-                        //         //         //valid flow
-                        //         //       }
-                        //         //     },
-                        //         //     child: Text("Submit"))
-                        //       ],
-                        //     )),
-
-                        const SizedBox(height: 20),
-                        // Container(
-                        //   width: double.infinity,
-                        //   // child: ElevatedButton(
-                        //   //   style: ButtonStyle(
-                        //   //       backgroundColor: MaterialStateProperty.all(Colors.blue),
-                        //   //       padding:
-                        //   //       MaterialStateProperty.all(const EdgeInsets.all(20)),
-                        //   //       textStyle: MaterialStateProperty.all(
-                        //   //           const TextStyle(fontSize: 14, color: Colors.white))),
-                        //   //   onPressed: () {
-                        //   //
-                        //   //     // if (_addFormKey.currentState.validate()) {
-                        //   //     //   _addFormKey.currentState.save();
-                        //   //     api.createCustomer(context,Customer(customerCode: _customerCodeController.text ,
-                        //   //         customerNameAra: _customerNameAraController.text ,
-                        //   //         customerNameEng: _customerNameEngController.text ,
-                        //   //         taxIdentificationNumber: _taxIdentificationNumberController.text ,
-                        //   //         Phone1: _phone1Controller.text ,
-                        //   //         address: _addressController.text,customerTypeCode: customerTypeSelectedValue ));
-                        //   //     //
-                        //   //     Navigator.pop(context,true );
-                        //   //
-                        //   //
-                        //   //     // }
-                        //   //   },
-                        //   //   child: Text('save'.tr(), style: TextStyle(color: Colors.white)),
-                        //   //   //color: Colors.blue,
-                        //   // ),
-                        // ),
-                        // const SizedBox(height: 20),
-                    SizedBox(
-                      width:  300,//double.infinity,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
-                            padding:
-                            MaterialStateProperty.all(const EdgeInsets.all(20)),
-                            textStyle: MaterialStateProperty.all(
-                                const TextStyle(fontSize: 14, color: Colors.white))),
-                        onPressed: () {
-                          _showPicker(context: context);
-
-                        },
-                        child: Text('customer_image'.tr(), style: const TextStyle(color: Colors.white)),
-                        //color: Colors.blue,
-                      ),
-                    ),
                     const SizedBox(height: 20),
-                        SizedBox(
-                          width:  300,//double.infinity,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
-                                padding:
-                                MaterialStateProperty.all(const EdgeInsets.all(20)),
-                                textStyle: MaterialStateProperty.all(
-                                    const TextStyle(fontSize: 14, color: Colors.white))),
-                            onPressed: () {
-                              _showPicker(context: context);
-                              //saveInvoice(context);
-
-                            },
-                            child: Text('commercialTaxNo'.tr(), style: const TextStyle(color: Colors.white)),
-                            //color: Colors.blue,
-                          ),
+                    Column(
+                      children: [
+                        customerImage == null
+                            ? Image.asset('assets/fitness_app/imageIcon.png', height: 250.0, width: 250.0,)
+                            : ClipRRect(
+                            borderRadius: BorderRadius.zero,
+                            child: Image.file(customerImage!, height: 150.0, width: 150.0,)//fit: BoxFit.fill,)
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(width: 10.0),
                         SizedBox(
-                          width: 300, //double.infinity,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
-                                padding:
-                                MaterialStateProperty.all(const EdgeInsets.all(20)),
-                                textStyle: MaterialStateProperty.all(
-                                    const TextStyle(fontSize: 14, color: Colors.white))),
-                            onPressed: () {
-                              _showPicker(context: context);
-                              //saveInvoice(context);
-
+                          height: 50,
+                          width: 250,
+                          //margin: const EdgeInsets.only(top: 20, left: 70, right: 70),
+                          child: InkWell(
+                            onTap: () async {
+                              Map<Permission, PermissionStatus> statuses = await [
+                                Permission.storage, Permission.camera,
+                              ].request();
+                              if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
+                                showImagePicker(context, _imgFromGallery, _imgFromCamera);
+                              } else {
+                                print('no permission provided');
+                              }
                             },
-                            child: Text('governmentId'.tr(), style: const TextStyle(color: Colors.white)),
-                            //color: Colors.blue,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-
-                        SizedBox(
-                          width: 300,  // double.infinity,
-                          child: ElevatedButton(
-
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
-                                padding:
-                                MaterialStateProperty.all(const EdgeInsets.all(20)),
-                                textStyle: MaterialStateProperty.all(
-                                    const TextStyle(fontSize: 14, color: Colors.white))),
-                            onPressed: () {
-                              _showPicker(context: context);
-                              //saveInvoice(context);
-
-                            },
-                            child: Text('shopId'.tr(), style: const TextStyle(color: Colors.white)),
-                            //color: Colors.blue,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          width: 300,  //double.infinity,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
-                                padding:
-                                MaterialStateProperty.all(const EdgeInsets.all(20)),
-                                textStyle: MaterialStateProperty.all(
-                                    const TextStyle(fontSize: 14, color: Colors.white))),
-                            onPressed: () {
-                              _showPicker(context: context);
-                              //saveInvoice(context);
-
-                            },
-                            child: Text('shopPlate'.tr(), style: const TextStyle(color: Colors.white)),
-                            //color: Colors.blue,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          width: 300, //double.infinity,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
-                                padding:
-                                MaterialStateProperty.all(const EdgeInsets.all(20)),
-                                textStyle: MaterialStateProperty.all(
-                                    const TextStyle(fontSize: 14, color: Colors.white))),
-                            onPressed: () {
-                              _showPicker(context: context);
-                              //saveInvoice(context);
-
-                            },
-                            child: Text('taxId'.tr(), style: const TextStyle(color: Colors.white)),
-                            //color: Colors.blue,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          width: 300,   //double.infinity,
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all( const Color.fromRGBO(144, 16, 46, 1),),
-                                padding:
-                                MaterialStateProperty.all(const EdgeInsets.all(20)),
-                                textStyle: MaterialStateProperty.all(
-                                    const TextStyle(fontSize: 14, color: Colors.white))),
-                            onPressed: () {
-                              setState(() {
-                                _showPicker(context: context);
-                              });
-
-                            },
-
-
-                            child: Text('customerLocation'.tr(), style: const TextStyle(color: Colors.white)),
-                            //color: Colors.blue,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-
-
-                        Container(
-                          margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                          child: const Column(
-                            children: <Widget>[
-
-                            ],
+                            child: Container(
+                              height: 55,
+                              width: 300,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade300,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color.fromRGBO(200, 16, 46, 1),
+                                      spreadRadius: 1,
+                                      blurRadius: 8,
+                                      offset: Offset(4, 4),
+                                    ),
+                                    BoxShadow(
+                                      color: Colors.white,
+                                      spreadRadius: 2,
+                                      blurRadius: 8,
+                                      offset: Offset(-4, -4),
+                                    )
+                                  ]
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "customer_image".tr(),
+                                  style: const TextStyle(
+                                    color: Color.fromRGBO(200, 16, 46, 1),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 19,
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
+                    const SizedBox(height: 20),
+                    Column(
+                      children: [
+                        commercialTaxNoImage == null
+                            ? Image.asset('assets/fitness_app/imageIcon.png', height: 250.0, width: 250.0,)
+                            : ClipRRect(
+                            borderRadius: BorderRadius.zero,
+                            child: Image.file(commercialTaxNoImage!, height: 250.0, width: 250.0, )//fit: BoxFit.fill,)
+                        ),
+                        const SizedBox(width: 10.0,),
+                        SizedBox(
+                          height: 50,
+                          width: 250,
+                          child: InkWell(
+                            onTap: () async {
+                              Map<Permission, PermissionStatus> statuses = await [
+                                Permission.storage, Permission.camera,
+                              ].request();
+                              if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
+                                showImagePicker(context, _imgFromGallery2, _imgFromCamera2);
+                              } else {
+                                print('no permission provided');
+                              }
+                            },
+                            child: Container(
+                              height: 55,
+                              width: 250,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade300,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color.fromRGBO(200, 16, 46, 1),
+                                      spreadRadius: 1,
+                                      blurRadius: 8,
+                                      offset: Offset(4, 4),
+                                    ),
+                                    BoxShadow(
+                                      color: Colors.white,
+                                      spreadRadius: 2,
+                                      blurRadius: 8,
+                                      offset: Offset(-4, -4),
+                                    )
+                                  ]
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "commercialTaxNo".tr(),
+                                  style: const TextStyle(
+                                    color: Color.fromRGBO(200, 16, 46, 1),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 19,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Column(
+                      children: [
+                        governmentIdImage == null
+                            ? Image.asset('assets/fitness_app/imageIcon.png', height: 250.0, width: 250.0,)
+                            : ClipRRect(
+                            borderRadius: BorderRadius.zero,
+                            child: Image.file(governmentIdImage!, height: 250.0, width: 250.0, )//fit: BoxFit.fill,)
+                        ),
+                        const SizedBox(width: 10.0,),
+                        SizedBox(
+                          height: 50,
+                          width: 250,
+                          child: InkWell(
+                            onTap: () async {
+                              Map<Permission, PermissionStatus> statuses = await [
+                                Permission.storage, Permission.camera,
+                              ].request();
+                              if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
+                                showImagePicker(context, _imgFromGallery3, _imgFromCamera3);
+                              } else {
+                                print('no permission provided');
+                              }
+                            },
+                            child: Container(
+                              height: 50,
+                              width: 250,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade300,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color.fromRGBO(200, 16, 46, 1),
+                                      spreadRadius: 1,
+                                      blurRadius: 8,
+                                      offset: Offset(4, 4),
+                                    ),
+                                    BoxShadow(
+                                      color: Colors.white,
+                                      spreadRadius: 2,
+                                      blurRadius: 8,
+                                      offset: Offset(-4, -4),
+                                    )
+                                  ]
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "governmentId".tr(),
+                                  style: const TextStyle(
+                                    color: Color.fromRGBO(200, 16, 46, 1),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 19,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Column(
+                      children: [
+                        shopIdImage == null
+                            ? Image.asset('assets/fitness_app/imageIcon.png', height: 250.0, width: 250.0,)
+                            : ClipRRect(
+                                borderRadius: BorderRadius.zero,
+                                child: Image.file(shopIdImage!, height: 250.0, width: 250.0, ),//fit: BoxFit.fill,)
+                        ),
+                        const SizedBox(width: 10.0,),
+                        SizedBox(
+                          height: 50,
+                          width: 250,
+                          child: InkWell(
+                            onTap: () async {
+                              Map<Permission, PermissionStatus> statuses = await [
+                                Permission.storage, Permission.camera,
+                              ].request();
+                              if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
+                                showImagePicker(context, _imgFromGallery4, _imgFromCamera4);
+                              } else {
+                                print('no permission provided');
+                              }
+                            },
+                            child: Container(
+                              height: 50,
+                              width: 250,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade300,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color.fromRGBO(200, 16, 46, 1),
+                                      spreadRadius: 1,
+                                      blurRadius: 8,
+                                      offset: Offset(4, 4),
+                                    ),
+                                    BoxShadow(
+                                      color: Colors.white,
+                                      spreadRadius: 2,
+                                      blurRadius: 8,
+                                      offset: Offset(-4, -4),
+                                    )
+                                  ]
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "shopId".tr(),
+                                  style: const TextStyle(
+                                    color: Color.fromRGBO(200, 16, 46, 1),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 19,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Column(
+                      children: [
+                        shopPlateImage == null
+                            ? Image.asset('assets/fitness_app/imageIcon.png', height: 250.0, width: 250.0,)
+                            : ClipRRect(
+                            borderRadius: BorderRadius.zero,
+                            child: Image.file(shopPlateImage!, height: 250.0, width: 250.0, )//fit: BoxFit.fill,)
+                        ),
+                        const SizedBox(width: 10.0,),
+                        SizedBox(
+                          height: 50,
+                          width: 250,
+                          child: InkWell(
+                            onTap: () async {
+                              Map<Permission, PermissionStatus> statuses = await [
+                                Permission.storage, Permission.camera,
+                              ].request();
+                              if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
+                                showImagePicker(context, _imgFromGallery5, _imgFromCamera5);
+                              } else {
+                                print('no permission provided');
+                              }
+                            },
+                            child: Container(
+                              height: 50,
+                              width: 250,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade300,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color.fromRGBO(200, 16, 46, 1),
+                                      spreadRadius: 1,
+                                      blurRadius: 8,
+                                      offset: Offset(4, 4),
+                                    ),
+                                    BoxShadow(
+                                      color: Colors.white,
+                                      spreadRadius: 2,
+                                      blurRadius: 8,
+                                      offset: Offset(-4, -4),
+                                    )
+                                  ]
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "shopPlate".tr(),
+                                  style: const TextStyle(
+                                    color: Color.fromRGBO(200, 16, 46, 1),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 19,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Column(
+                      children: [
+                        taxIdImage == null
+                            ? Image.asset('assets/fitness_app/imageIcon.png', height: 250.0, width: 250.0,)
+                            : ClipRRect(
+                            borderRadius: BorderRadius.zero,
+                            child: Image.file(taxIdImage!, height: 250.0, width: 250.0, )//fit: BoxFit.fill,)
+                        ),
+                        const SizedBox(width: 10.0,),
+                        SizedBox(
+                          height: 50,
+                          width: 250,
+                          child: InkWell(
+                            onTap: () async {
+                              Map<Permission, PermissionStatus> statuses = await [
+                                Permission.storage, Permission.camera,
+                              ].request();
+                              if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
+                                showImagePicker(context, _imgFromGallery6, _imgFromCamera6);
+                              } else {
+                                print('no permission provided');
+                              }
+                            },
+                            child: Container(
+                              height: 50,
+                              width: 250,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.shade300,
+                                  borderRadius: BorderRadius.circular(15),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Color.fromRGBO(200, 16, 46, 1),
+                                      spreadRadius: 1,
+                                      blurRadius: 8,
+                                      offset: Offset(4, 4),
+                                    ),
+                                    BoxShadow(
+                                      color: Colors.white,
+                                      spreadRadius: 2,
+                                      blurRadius: 8,
+                                      offset: Offset(-4, -4),
+                                    )
+                                  ]
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "taxId".tr(),
+                                  style: const TextStyle(
+                                    color: Color.fromRGBO(200, 16, 46, 1),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 19,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+               ),
             ),
           ),
         ),
@@ -752,95 +935,477 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
     );
   }
 
+  final picker1 = ImagePicker();
+  final picker2 = ImagePicker();
+  final picker3 = ImagePicker();
+  final picker4 = ImagePicker();
+  final picker5 = ImagePicker();
+  final picker6 = ImagePicker();
 
-
-  getCustomerTypeData() {
-    if (customerTypes.isNotEmpty) {
-      for(var i = 0; i < customerTypes.length; i++){
-        menuCustomerType.add(
-            DropdownMenuItem(
-                value: customerTypes[i].cusTypesCode.toString(),
-                child: Text((langId==1)?  customerTypes[i].cusTypesNameAra.toString() : customerTypes[i].cusTypesNameEng.toString())));
-      }
-    }
-    setState(() {
-
-      });
-    }
-  getCustomerGroupData() {
-    if (customerGroups.isNotEmpty) {
-      for(var i = 0; i < customerGroups.length; i++){
-        menuCustomerGroup.add(
-            DropdownMenuItem(
-                value: customerGroups[i].cusGroupsCode.toString(),
-                child: Text((langId==1)?  customerGroups[i].cusGroupsNameAra.toString() : customerGroups[i].cusGroupsNameEng.toString())));
-      }
-    }
-    setState(() {
-
-    });
-  }
-
-  void _showPicker({
-    required BuildContext context,
-  }) {
+  void showImagePicker(BuildContext context, VoidCallback pickerGallery, VoidCallback pickerCamera) {
     showModalBottomSheet(
       context: context,
-      builder: (BuildContext context) {
-        return SafeArea(
-          child: Wrap(
-            children: <Widget>[
-              ListTile(
-                leading: const Icon(Icons.photo_library),
-                title: const Text('Photo Library'),
-                onTap: () {
-                  captureImageWithPhoneFromGallery();
-                   Navigator.of(context).pop();
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.photo_camera),
-                title: const Text('Camera'),
-                onTap: () {
-                  captureImageWithPhoneCamera();
-                   Navigator.of(context).pop();
-                },
-              ),
-            ],
+      builder: (builder) {
+        return Card(
+          child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height / 5.2,
+            margin: const EdgeInsets.only(top: 8.0),
+            padding: const EdgeInsets.all(12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: InkWell(
+                    child: const Column(
+                      children: [
+                        Icon(Icons.image, size: 60.0,),
+                        SizedBox(height: 12.0),
+                        Text(
+                          "Gallery",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      pickerGallery();
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                Expanded(
+                  child: InkWell(
+                    child: const Column(
+                      children: [
+                        Icon(Icons.camera_alt, size: 60.0,),
+                        SizedBox(height: 12.0),
+                        Text(
+                          "Camera",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 16, color: Colors.black),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      pickerCamera();
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       },
     );
   }
 
+  Future<void> _imgFromGallery() async {
+    final pickedFile = await picker1.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    );
 
-  captureImageWithPhoneCamera() async
-  {
-    final image=  await ImagePicker().pickImage(source: ImageSource.camera);
-    print('image${image}');
-    if (image == null) return;
-    final imageTemporary = File(image.path);
-    print('imageTemporary${imageTemporary}');
-    setState (() => this.customerImage = imageTemporary);
-    print(' File? image;${this.customerImage}');
-
-
+    if (pickedFile != null) {
+      _cropImage(File(pickedFile.path));
+    }
   }
-  captureImageWithPhoneFromGallery() async
-  {
-    final image=  await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image == null) return;
-    final imageTemporary = File(image.path);
-    setState (() => this.customerImage = imageTemporary);
 
-   }
-   // convertImageIntoBase64String() async {
-   //   final customerImage = this.customerImage;
-   //   if (customerImage != null) {
-   //     List<int> imageBytes = await customerImage.readAsBytes();
-   //     base64Image = base64Encode(imageBytes);
-   //     print(base64Image.toString());
-   //   }
-   // }
+  Future<void> _imgFromCamera() async {
+    final pickedFile = await picker1.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    );
+
+    if (pickedFile != null) {
+      _cropImage(File(pickedFile.path));
+    }
+  }
+
+  _cropImage(File imgFile) async {
+    final croppedFile = await ImageCropper().cropImage(
+        sourcePath: imgFile.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ] : [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [AndroidUiSettings(
+            toolbarTitle: "Image Cropper",
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+          IOSUiSettings(
+            title: "Image Cropper",
+          )
+        ]);
+    if (croppedFile != null) {
+
+      imageCache.clear();
+      setState(() {
+        customerImage = File(croppedFile.path);
+        convertImage1ToBase64String(customerImage);
+      });
+      // reload();
+    }
+  }
+
+  _imgFromGallery2() async {
+    await  picker2.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage2(File(value.path));
+      }
+    });
+  }
+
+  _imgFromCamera2() async {
+    await picker2.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage2(File(value.path));
+      }
+    });
+  }
+
+  _cropImage2(File imgFile) async {
+    final croppedFile = await ImageCropper().cropImage(
+        sourcePath: imgFile.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ] : [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [AndroidUiSettings(
+            toolbarTitle: "Image Cropper",
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+          IOSUiSettings(
+            title: "Image Cropper",
+          )
+        ]);
+    if (croppedFile != null) {
+
+      imageCache.clear();
+      setState(() {
+        commercialTaxNoImage = File(croppedFile.path);
+        convertImage2ToBase64String(commercialTaxNoImage);
+      });
+      // reload();
+    }
+  }
+
+  _imgFromGallery3() async {
+    await  picker3.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage3(File(value.path));
+      }
+    });
+  }
+
+  _imgFromCamera3() async {
+    await picker3.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage3(File(value.path));
+      }
+    });
+  }
+
+  _cropImage3(File imgFile) async {
+    final croppedFile = await ImageCropper().cropImage(
+        sourcePath: imgFile.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ] : [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [AndroidUiSettings(
+            toolbarTitle: "Image Cropper",
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+          IOSUiSettings(
+            title: "Image Cropper",
+          )
+        ]);
+    if (croppedFile != null) {
+
+      imageCache.clear();
+      setState(() {
+        governmentIdImage = File(croppedFile.path);
+        convertImage3ToBase64String(governmentIdImage);
+      });
+      // reload();
+    }
+  }
+
+  _imgFromGallery4() async {
+    await  picker4.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage4(File(value.path));
+      }
+    });
+  }
+
+  _imgFromCamera4() async {
+    await picker4.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage4(File(value.path));
+      }
+    });
+  }
+
+  _cropImage4(File imgFile) async {
+    final croppedFile = await ImageCropper().cropImage(
+        sourcePath: imgFile.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ] : [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [AndroidUiSettings(
+            toolbarTitle: "Image Cropper",
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+          IOSUiSettings(
+            title: "Image Cropper",
+          )
+        ]);
+    if (croppedFile != null) {
+
+      imageCache.clear();
+      setState(() {
+        shopIdImage = File(croppedFile.path);
+        convertImage4ToBase64String(shopIdImage);
+      });
+      // reload();
+    }
+  }
+
+  _imgFromGallery5() async {
+    await  picker5.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage5(File(value.path));
+      }
+    });
+  }
+
+  _imgFromCamera5() async {
+    await picker5.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage5(File(value.path));
+      }
+    });
+  }
+
+  _cropImage5(File imgFile) async {
+    final croppedFile = await ImageCropper().cropImage(
+        sourcePath: imgFile.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ] : [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [AndroidUiSettings(
+            toolbarTitle: "Image Cropper",
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+          IOSUiSettings(
+            title: "Image Cropper",
+          )
+        ]);
+    if (croppedFile != null) {
+
+      imageCache.clear();
+      setState(() {
+        shopPlateImage = File(croppedFile.path);
+        convertImage5ToBase64String(shopPlateImage);
+      });
+    }
+  }
+
+  _imgFromGallery6() async {
+    await  picker6.pickImage(
+        source: ImageSource.gallery, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage6(File(value.path));
+      }
+    });
+  }
+
+  _imgFromCamera6() async {
+    await picker6.pickImage(
+        source: ImageSource.camera, imageQuality: 50
+    ).then((value){
+      if(value != null){
+        _cropImage6(File(value.path));
+      }
+    });
+  }
+
+  _cropImage6(File imgFile) async {
+    final croppedFile = await ImageCropper().cropImage(
+        sourcePath: imgFile.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ] : [
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio5x3,
+          CropAspectRatioPreset.ratio5x4,
+          CropAspectRatioPreset.ratio7x5,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [AndroidUiSettings(
+            toolbarTitle: "Image Cropper",
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+          IOSUiSettings(
+            title: "Image Cropper",
+          )
+        ]);
+    if (croppedFile != null) {
+
+      imageCache.clear();
+      setState(() {
+        taxIdImage = File(croppedFile.path);
+        convertImage6ToBase64String(taxIdImage);
+      });
+    }
+  }
+
+  convertImage1ToBase64String(File? image) async{
+    if (image != null) {
+      List<int> imageBytes = await image.readAsBytes();
+      customerImageString = base64Encode(imageBytes);
+      print(customerImageString.toString());
+    }
+  }
+  convertImage2ToBase64String(File? image) async{
+    if (image != null) {
+      List<int> imageBytes = await image.readAsBytes();
+      commercialTaxNoImageString = base64Encode(imageBytes);
+      print(commercialTaxNoImageString.toString());
+    }
+  }
+  convertImage3ToBase64String(File? image) async{
+    if (image != null) {
+      List<int> imageBytes = await image.readAsBytes();
+      governmentIdImageString = base64Encode(imageBytes);
+      print(governmentIdImageString.toString());
+    }
+  }
+  convertImage4ToBase64String(File? image) async{
+    if (image != null) {
+      List<int> imageBytes = await image.readAsBytes();
+      shopIdImageString = base64Encode(imageBytes);
+      print(shopIdImageString.toString());
+    }
+  }
+  convertImage5ToBase64String(File? image) async{
+    if (image != null) {
+      List<int> imageBytes = await image.readAsBytes();
+      shopPlateImageString = base64Encode(imageBytes);
+      print(shopPlateImageString.toString());
+    }
+  }
+  convertImage6ToBase64String(File? image) async{
+    if (image != null) {
+      List<int> imageBytes = await image.readAsBytes();
+      taxIdImageString = base64Encode(imageBytes);
+      print(taxIdImageString.toString());
+    }
+  }
 
 }
