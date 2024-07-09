@@ -21,6 +21,7 @@ class DTO {
     "checkPic3": false,
     "checkPic4": false,
     "checkPic5": false,
+    "checkPic6": false,
     "checkPic7": false,
     "checkPic8": false,
     "checkPic9": false,
@@ -31,7 +32,7 @@ class DTO {
     "checkPic14": false,
     "checkPic15": false,
     "checkPic16": false,
-
+    "waitingCustomer":false
   };
 
   static Map<String, String> page4Images = {

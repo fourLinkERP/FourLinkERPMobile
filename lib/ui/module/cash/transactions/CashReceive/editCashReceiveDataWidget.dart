@@ -27,15 +27,15 @@ import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 //APIS
-NextSerialApiService _nextSerialApiService=new NextSerialApiService();
-TafqeetApiService _tafqeetApiService=new TafqeetApiService();
-CashTypeTypeApiService _cashTypeTypeApiService=new CashTypeTypeApiService();
-CashTargetTypeApiService _cashTargetTypeApiService=new CashTargetTypeApiService();
-BoxTypeApiService _boxTypeApiService=new BoxTypeApiService();
-CashReceiveApiService _cashReceiveApiService=new CashReceiveApiService();
-CustomerApiService _customerApiService=new CustomerApiService(); //Customer
-CashSafeApiService _cashSafeApiService=new CashSafeApiService(); //Cash
-CashBankBranchApiService _cashBankBranchApiService=new CashBankBranchApiService(); //Bank
+NextSerialApiService _nextSerialApiService= NextSerialApiService();
+TafqeetApiService _tafqeetApiService= TafqeetApiService();
+CashTypeTypeApiService _cashTypeTypeApiService= CashTypeTypeApiService();
+CashTargetTypeApiService _cashTargetTypeApiService= CashTargetTypeApiService();
+BoxTypeApiService _boxTypeApiService= BoxTypeApiService();
+CashReceiveApiService _cashReceiveApiService= CashReceiveApiService();
+CustomerApiService _customerApiService= CustomerApiService(); //Customer
+CashSafeApiService _cashSafeApiService= CashSafeApiService(); //Cash
+CashBankBranchApiService _cashBankBranchApiService= CashBankBranchApiService(); //Bank
 
 //List Models
 // List<Customer> customers=[];
@@ -119,7 +119,6 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
     _valueController.text =(widget.cashReceive.value != null)?  widget.cashReceive.value!.toString() : "";
     _tafqitNameArabicController.text =(widget.cashReceive.tafqitNameArabic != null)?  widget.cashReceive.tafqitNameArabic! : "";
     _tafqitNameEnglishController.text =(widget.cashReceive.tafqitNameEnglish != null)?  widget.cashReceive.tafqitNameEnglish! : "";
-
 
     typeCodeSelectedValue =(widget.cashReceive.cashTypeCode != null)?  widget.cashReceive.cashTypeCode! : "";
 
@@ -269,7 +268,6 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                     child: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
                         children: <Widget>[
-                          const SizedBox(height: 20),
 
                   Form(
                       key: _dropdownTypeFormKey,
@@ -309,8 +307,6 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                             itemAsString: (CashType u) =>(langId ==1 )? u.descAra.toString() : u.descEng.toString(),
 
                             onChanged: (value){
-                              //v.text = value!.cusTypesCode.toString();
-                              //print(value!.id);
                               typeCodeSelectedValue = value!.code.toString();
 
                             },
@@ -432,8 +428,6 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                                           itemAsString: (CashTargetType u) =>(langId ==1 )? u.typeNameAra.toString() : u.typeNameEng.toString(),
 
                                           onChanged: (value){
-                                            //v.text = value!.cusTypesCode.toString();
-                                            //print(value!.id);
                                             cashTargetTypeIdSelectedValue = value!.code ;
                                             boxTypeSelectedValue = 2;
                                             setTargetCode(cashTargetTypeIdSelectedValue.toString());
@@ -450,7 +444,6 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                                           },
                                           dropdownDecoratorProps: const DropDownDecoratorProps(
                                             dropdownSearchDecoration: InputDecoration(
-                                              //labelText: "cash_target_type".tr(),
 
                                             ),),
 
@@ -474,7 +467,7 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                                           style: const TextStyle(fontWeight: FontWeight.bold))),
                                       const SizedBox(width: 10),
                                       SizedBox(
-                                        width: 230,
+                                        width: 200,
                                         child: DropdownSearch<TargetCode>(
                                           validator: (value) => value == null ? "select_a_cash_target_Code".tr() : null,
 
@@ -507,8 +500,6 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                                           itemAsString: (TargetCode u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
 
                                           onChanged: (value){
-                                            //v.text = value!.cusTypesCode.toString();
-                                            //print(value!.id);
                                             cashTargetCodeSelectedValue = value!.code.toString();
                                             print('cashTargetCodeSelectedValue Is >> ' + cashTargetCodeSelectedValue.toString());
                                           },
@@ -839,48 +830,15 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
 
 
 
-
-
-  // DataTable _createDataTable() {
-  //   return DataTable(columns: _createColumns(), rows: _createRows());
-  // }
-  // List<DataColumn> _createColumns() {
-  //   return [
-  //     DataColumn(label: Text('ID')),
-  //     DataColumn(label: Text('Book')),
-  //     DataColumn(label: Text('Author')),
-  //     DataColumn(label: Text('Category'))
-  //   ];
-  // }
-  // List<DataRow> _createRows() {
-  //   return _books
-  //       .map((book) => DataRow(cells: [
-  //     DataCell(Text('#' + book['id'].toString())),
-  //     DataCell(Text(book['title'])),
-  //     DataCell(Text(book['author'])),
-  //     DataCell(FlutterLogo())
-  //   ]))
-  //       .toList();
-  // }
-
-
-
   getCashTypeData() {
     if (cashTypes != null) {
       for(var i = 0; i < cashTypes.length; i++){
-        menuCashReceiveTypes.add(DropdownMenuItem(child: Text(cashTypes[i].
-        descAra.toString()),value: cashTypes[i].code.toString()));
         if(cashTypes[i].code == typeCodeSelectedValue){
-          // print('in amr3');
           cashTypeItem = cashTypes[cashTypes.indexOf(cashTypes[i])];
-          // print('in amr4');
-          // print(customerTypeItem );
         }
 
       }
-
       typeCodeSelectedValue = "1";
-
     }
     setState(() {
 
@@ -891,14 +849,10 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
   getCashTargetTypeData() {
     if (cashTargetTypes != null) {
       for(var i = 0; i < cashTargetTypes.length; i++){
-        menuCashReceiveTypes.add(DropdownMenuItem(child: Text(cashTargetTypes[i].
-        typeNameAra.toString()),value: cashTypes[i].code.toString()));
+
         if(cashTargetTypes[i].code == cashTargetTypeIdSelectedValue){
-          // print('in amr3');
           cashTargetTypeItem = cashTargetTypes[cashTargetTypes.indexOf(cashTargetTypes[i])];
           setTargetCode(cashTargetTypeIdSelectedValue.toString());
-          // print('in amr4');
-          // print(customerTypeItem );
         }
 
       }
@@ -1037,10 +991,10 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
 
           print('ToTarget0');
           if(boxTypes[i].code.toString() == cashTargetCodeSelectedValue.toString()){
-            print('ToTarget');
             cashTargetCodeItem = targetCodes[targetCodes.indexOf(targetCodes[i])];
-            // print('in amr4');
-            // print(customerTypeItem );
+            setState(() {
+
+            });
           }
         }
 

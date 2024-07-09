@@ -8,6 +8,7 @@ class CarReceiveH {
   String? receiveCarStatusCode;
   int? returnOldPartStatusCode;
   int? repeatRepairStatusCode;
+  bool? waitingCustomer;
   String? counter;
   String? customerMobile;
   int? netTotal;
@@ -60,9 +61,10 @@ class CarReceiveH {
         this.trxSerial,
         this.customerCode,
         this.carCode,
-        this.receiveCarStatusCode,
+        //this.receiveCarStatusCode,
         this.returnOldPartStatusCode,
         this.repeatRepairStatusCode,
+        this.waitingCustomer,
         this.counter,
         this.customerMobile,
         this.netTotal,
@@ -115,8 +117,9 @@ class CarReceiveH {
       trxSerial: (json['trxSerial'] != null) ? json['trxSerial'] as String : "",
       customerCode: (json['customerCode'] !=null) ? json['customerCode'] as String : "",
       carCode: (json['carCode'] != null) ? json['carCode'] as String : " ",
-      receiveCarStatusCode: (json['receiveCarStatusCode'] != null) ? json['receiveCarStatusCode'] as String : " ",
+      //receiveCarStatusCode: (json['receiveCarStatusCode'] != null) ? json['receiveCarStatusCode'] as String : " ",
       returnOldPartStatusCode: (json['returnOldPartStatusCode'] != null) ? json['returnOldPartStatusCode'] as int : 1,
+      waitingCustomer: (json['waitingCustomer'] != null) ? json['waitingCustomer'] as bool : false,
       repeatRepairStatusCode: (json['repeatRepairStatusCode'] != null) ? json['repeatRepairStatusCode'] as int : 1,
       counter: (json['counter'] !=null) ? json['counter'] as String : "",
       customerMobile: (json['customerMobile'] != null) ? json['customerMobile'] as String : " ",

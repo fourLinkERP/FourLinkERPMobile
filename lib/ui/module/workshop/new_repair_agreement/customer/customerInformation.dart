@@ -27,6 +27,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
+
 // APIs
 CarGroupApiService _carGroupApiService = CarGroupApiService();
 CustomerGroupApiService _customerGroupApiService = CustomerGroupApiService();
@@ -76,6 +77,8 @@ class _CustomerInfoState extends State<CustomerInfo> {
   List<CustomerType> customerTypes = [];
   List<CustomerCar> _founded = [];
 
+  CarGroup carGroupItem = CarGroup(groupCode: "", groupNameAra: "", groupNameEng: "", id: 0);
+
   String? selectedCarGroupValue = null;
   String? selectedCustomerValue = null;
   String? selectedCustomerGroupValue = null;
@@ -107,6 +110,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
     });
     Future<List<CustomerGroup>> futureCustomerGroup = _customerGroupApiService.getCustomerGroups().then((data) {
       customerGroups = data;
+      getCarGroupData();
       setState(() {
 
       });
@@ -155,32 +159,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
       print(e);
     });
   }
-  // void getData() async {
-  //   Future<List<CustomerCar>?> futureCustomerCar = apiCar.getCustomerCars(_value == 1 ? searchNumberController.text : null, _value == 2 ? searchNumberController.text : null).catchError((Error) {
-  //     print('Error${Error}');
-  //     AppCubit.get(context).EmitErrorState();
-  //   });
-  //
-  //   _customerCar = (await futureCustomerCar)!;
-  //   print(_customerCar);
-  //   if (_customerCar.isNotEmpty) {
-  //     setState(() {
-  //       _founded = _customerCar;
-  //       String search = '';
-  //     });
-  //   }
-  // }
-  // Future<void> getData() async{
-  //   Future<List<CustomerCar>> futureCustomerCar = apiCar.getCustomerCars(_value == 1 ? searchNumberController.text : null, _value == 2 ? searchNumberController.text : null).then((data) {
-  //     _customerCar = data;
-  //     print('naaaaaaaaaa');
-  //     print(_customerCar.length.toString());
-  //
-  //     return _customerCar;
-  //   }, onError: (e) {
-  //     print(e);
-  //   });
-  // }
+
   Future<void> getData() async {
     try {
       List<CustomerCar> data = await apiCar.getCustomerCars(
@@ -330,7 +309,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                   onPressed: () async {
                     await getData();
                     if (searchNumberController.text.isEmpty) {
-                      FN_showToast(context, "please_enter_mobile_or_plate_number", Colors.red);
+                      FN_showToast(context, "please_enter_mobile_or_plate_number".tr(), Colors.red);
                     }
                     else if(_customerCar == null || _customerCar.isEmpty)
                     {
@@ -343,6 +322,8 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         setState(() {
                           DTO.page1["customerCode"] = _customerCar[0].customerCode!;
                           DTO.page1["carCode"] = _customerCar[0].carCode!;
+                          print("DTO.customerCode =" + DTO.page1["customerCode"]!);
+                          print("DTO.carCode =" + DTO.page1["carCode"]!);
                           customerNameController.text = _customerCar[0].customerName!;
                           customerIdentityController.text = _customerCar[0].idNo!;
                           emailController.text = _customerCar[0].email!;
@@ -352,6 +333,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                           modelController.text = _customerCar[0].model!;
                           selectedCarGroupValue = _customerCar[0].groupCode;
                         });
+                        getCarGroupData();
                       }
                     }
                   },
@@ -386,11 +368,13 @@ class _CustomerInfoState extends State<CustomerInfo> {
                   child: ElevatedButton(
 
                     onPressed: () {
-                      dialogPopUp2("add_car".tr(),
+                      dialogPopUp2(
+                          "add_car".tr(),
                           addCarChassisController,
                           addCarPlateController,
                           addCarModelController,
-                          selectedAddCarGroupValue
+                          selectedAddCarGroupValue,
+                          selectedCustomerValue
                       );
                       Navigator.pop(context,true);
                     },
@@ -415,7 +399,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
               ],
             ),
             SizedBox(
-              height: 360,
+              height: 400,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
@@ -430,7 +414,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                       ),
                       const SizedBox(height: 20),
                       SizedBox(
-                        height: 50,
+                        height: 60,
                         width: 110,
                         child: Text("chassis_number".tr(), style: const TextStyle(fontWeight: FontWeight.bold),),
                       ),
@@ -465,7 +449,8 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         height: 50,
                         width: 195,
                         child: DropdownSearch<CarGroup>(
-                          enabled: true,
+                          selectedItem: carGroupItem,
+                          enabled: false,
                           popupProps: PopupProps.menu(
                             itemBuilder: (context, item, isSelected) {
                               return Container(
@@ -506,7 +491,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                       ),
                       const SizedBox(height: 20),
                       SizedBox(
-                        height: 50,
+                        height: 60,
                         width: 195,
                         child: defaultFormField(
                           enable: false,
@@ -564,6 +549,10 @@ class _CustomerInfoState extends State<CustomerInfo> {
                           controller: counterController,
                           type: TextInputType.emailAddress,
                           colors: Colors.blueGrey,
+                          onChanged: (value)
+                          {
+                            DTO.page1["counter"] = counterController.text;
+                          },
                           validate: (String? value) {
                             if (value!.isEmpty) {
                               return 'counter must be non empty';
@@ -1057,7 +1046,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
         }
     );
   }
-  dialogPopUp2(String textMsg, TextEditingController controllerChassis, TextEditingController controllerPlate,TextEditingController controllerModel, String? carGroup,){
+  dialogPopUp2(String textMsg, TextEditingController controllerChassis, TextEditingController controllerPlate,TextEditingController controllerModel, String? carGroup, String? customerCode){
     showDialog(
         context: context,
         builder: (context){
@@ -1078,13 +1067,23 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         SizedBox(
                           height: 40,
                           width: 200,
-                          child: defaultFormField(
-                            enable: true,
-                            label: '${'chassis_number'.tr()} *',
+                          child: TextFormField(
+                            keyboardType: TextInputType.text,
+                            inputFormatters: [UpperCaseTextInputFormatter()],
+                            textCapitalization: TextCapitalization.characters,
+                            enabled: true,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide:  const BorderSide(color: Colors.blueGrey, width: 1.0) ),
+                              labelText: '${'chassis_number'.tr()} *',
+                              labelStyle: const TextStyle(
+                                  color: Colors.blueGrey,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold),
+                            ),
                             controller: controllerChassis,
-                            type: TextInputType.text,
-                            colors: Colors.blueGrey,
-                            validate: (String? value) {
+                            validator: (String? value) {
                               if (value!.isEmpty) {
                                 return 'chassis must be non empty';
                               }
@@ -1129,112 +1128,114 @@ class _CustomerInfoState extends State<CustomerInfo> {
                           ),
                         ),
                         const SizedBox(height: 15.0,),
-                        Row(
-                          children: [
-                            SizedBox(
-                              height: 30,
-                              width: 80,
-                              child: Text('car_group'.tr()+' : ', style: TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold),),
-                            ),
-                            const SizedBox(width: 10,),
-                            SizedBox(
-                              height: 40,
-                              width: 170,
-                              child: DropdownSearch<CarGroup>(
-                                enabled: true,
-                                popupProps: PopupProps.menu(
-                                  itemBuilder: (context, item, isSelected) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                                      decoration: !isSelected ? null
-                                          : BoxDecoration(
-
-                                        border: Border.all(color: Theme.of(context).primaryColor),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.white,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text((langId==1)? item.groupNameAra.toString():  item.groupNameEng.toString(),
-                                          textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                      ),
-                                    );
-                                  },
-                                  showSearchBox: true,
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: DropdownSearch<CarGroup>(
+                            dropdownBuilder: (context, selectedItem) {
+                              return Center(
+                                child: Text(
+                                  selectedItem?.groupNameAra ?? "car_group".tr(),
+                                  style: TextStyle(
+                                    color: selectedItem == null ? Colors.grey : Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                                items: carGroups,
-                                itemAsString: (CarGroup u) => u.groupNameAra.toString(),
-                                onChanged: (value){
-                                  selectedAddCarGroupValue =  value!.groupCode.toString();
-                                },
-                                filterFn: (instance, filter){
-                                  if(instance.groupNameAra!.contains(filter)){
-                                    print(filter);
-                                    return true;
-                                  }
-                                  else{
-                                    return false;
-                                  }
-                                },
+                              );
+                            },
+                            enabled: true,
+                            popupProps: PopupProps.menu(
+                              itemBuilder: (context, item, isSelected) {
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: !isSelected ? null
+                                      : BoxDecoration(
 
-                              ),
+                                    border: Border.all(color: Theme.of(context).primaryColor),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text((langId==1)? item.groupNameAra.toString():  item.groupNameEng.toString(),
+                                      textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                  ),
+                                );
+                              },
+                              showSearchBox: true,
                             ),
-                          ],
+                            items: carGroups,
+                            itemAsString: (CarGroup u) => u.groupNameAra.toString(),
+                            onChanged: (value){
+                              selectedAddCarGroupValue =  value!.groupCode.toString();
+                            },
+                            filterFn: (instance, filter){
+                              if(instance.groupNameAra!.contains(filter)){
+                                print(filter);
+                                return true;
+                              }
+                              else{
+                                return false;
+                              }
+                            },
+
+                          ),
                         ),
                         const SizedBox(height: 15.0,),
-                        Row(
-                          children: [
-                            SizedBox(
-                              height: 30,
-                              width: 80,
-                              child: Text('${'customer'.tr()} : ', style: const TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.bold),),
-                            ),
-                            const SizedBox(width: 10,),
-                            SizedBox(
-                              height: 40,
-                              width: 170,
-                              child: DropdownSearch<Customer>(
-                                enabled: true,
-                                popupProps: PopupProps.menu(
-                                  itemBuilder: (context, item, isSelected) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                                      decoration: !isSelected ? null
-                                          : BoxDecoration(
-
-                                        border: Border.all(color: Theme.of(context).primaryColor),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.white,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text((langId==1)? item.customerNameAra.toString():  item.customerNameEng.toString(),
-                                          textAlign: langId==1?TextAlign.right:TextAlign.left,),
-
-                                      ),
-                                    );
-                                  },
-                                  showSearchBox: true,
+                        SizedBox(
+                          height: 40,
+                          width: 200,
+                          child: DropdownSearch<Customer>(
+                            dropdownBuilder: (context, selectedItem) {
+                              return Center(
+                                child: Text(
+                                  selectedItem?.customerNameAra ?? "customer".tr(),
+                                  style: TextStyle(
+                                    color: selectedItem == null ? Colors.grey : Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                                items: customers,
-                                itemAsString: (Customer u) => u.customerNameAra.toString(),
-                                onChanged: (value){
-                                  selectedCustomerValue =  value!.customerCode.toString();
-                                },
-                                filterFn: (instance, filter){
-                                  if(instance.customerNameAra!.contains(filter)){
-                                    print(filter);
-                                    return true;
-                                  }
-                                  else{
-                                    return false;
-                                  }
-                                },
+                              );
+                            },
+                            enabled: true,
+                            popupProps: PopupProps.menu(
+                              itemBuilder: (context, item, isSelected) {
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: !isSelected ? null
+                                      : BoxDecoration(
 
-                              ),
+                                    border: Border.all(color: Theme.of(context).primaryColor),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text((langId==1)? item.customerNameAra.toString():  item.customerNameEng.toString(),
+                                      textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                  ),
+                                );
+                              },
+                              showSearchBox: true,
                             ),
-                          ],
+                            items: customers,
+                            itemAsString: (Customer u) => u.customerNameAra.toString(),
+                            onChanged: (value){
+                              selectedCustomerValue =  value!.customerCode.toString();
+                            },
+                            filterFn: (instance, filter){
+                              if(instance.customerNameAra!.contains(filter)){
+                                print(filter);
+                                return true;
+                              }
+                              else{
+                                return false;
+                              }
+                            },
+
+                          ),
                         ),
                         const SizedBox(height: 40.0,),
                         SizedBox(
@@ -1255,6 +1256,11 @@ class _CustomerInfoState extends State<CustomerInfo> {
                                 if(addCarChassisController.text.isEmpty)
                                 {
                                   FN_showToast(context,'please_chassis_number'.tr() ,Colors.black);
+                                  return;
+                                }
+                                if(addCarChassisController.text.length != 17)
+                                {
+                                  FN_showToast(context,'chassis_number_cannot_be_less_or_bigger_than_17'.tr() ,Colors.red);
                                   return;
                                 }
                                 if(addCarPlateController.text.isEmpty)
@@ -1454,7 +1460,8 @@ class _CustomerInfoState extends State<CustomerInfo> {
                       addCarChassisController,
                       addCarPlateController,
                       addCarModelController,
-                      selectedAddCarGroupValue
+                      selectedAddCarGroupValue,
+                      selectedCustomerValue
                   );
                 },
                 child: Text("yes".tr()),
@@ -1477,29 +1484,27 @@ class _CustomerInfoState extends State<CustomerInfo> {
       },
     );
   }
+  getCarGroupData() {
+    if (carGroups.isNotEmpty) {
+      for(var i = 0; i < carGroups.length; i++){
+        if(carGroups[i].groupCode == selectedCarGroupValue){
+          carGroupItem = carGroups[carGroups.indexOf(carGroups[i])];
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
 
 }
-//   addLaborRow() {
-//     if (selectedLaborValue == null) {
-//       FN_showToast(context, 'please choose labor'.tr(), Colors.black);
-//       return;
-//     }
-//
-//     CarReceiveD2s _carReceiveD2s = CarReceiveD2s();
-//     _carReceiveD2s.malfunctionCode = selectedLaborValue;
-//     _carReceiveD2s.malfunctionName = selectedLaborName;
-//     // _carReceiveD2s.hoursNumber;
-//     // _additionalRequestD.costCenterName1 = selectedCostCenter1Name;
-//     // _additionalRequestD.costCenterCode2 = selectedCostCenter2Value;
-//     // _additionalRequestD.costCenterName2 = selectedCostCenter2Name;
-//     _carReceiveD2s.lineNum = lineNum;
-//
-//      carReceiveD2Lst.add(_carReceiveD2s);
-//     lineNum++;
-//     setState(() {
-//       // selectedEmployeeValue = " ";
-//       // selectedCostCenter1Value = " ";
-//       // selectedCostCenter2Value = " ";
-//     });
-//   }
-// }
+
+class UpperCaseTextInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase().replaceAll(RegExp('[^A-Z]'), ''),
+      selection: newValue.selection,
+    );
+  }
+}

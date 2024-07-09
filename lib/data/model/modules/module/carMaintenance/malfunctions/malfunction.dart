@@ -5,7 +5,7 @@ class Malfunction{
   String? malfunctionName;
   String? malfunctionNameAra;
   String? malfunctionNameEng;
-  int? expectedTimeByHour;
+  //int? expectedTimeByHour;
   
 
   Malfunction({
@@ -14,7 +14,7 @@ class Malfunction{
     this.malfunctionName,
     this.malfunctionNameAra,
     this.malfunctionNameEng,
-    this.expectedTimeByHour,
+   // this.expectedTimeByHour,
   });
 
   factory Malfunction.fromJson(Map<String, dynamic> json) {
@@ -24,7 +24,7 @@ class Malfunction{
       malfunctionCode: (json['malfunctionCode'] != null) ? json['malfunctionCode'] as String : " ",
       malfunctionNameAra: (json['malfunctionNameAra'] != null) ? json['malfunctionNameAra'] as String : " ",
       malfunctionNameEng: (json['malfunctionNameEng'] != null) ? json['malfunctionNameEng'] as String : " ",
-      expectedTimeByHour: (json['expectedTimeByHour'] != null) ? json['expectedTimeByHour'] as int : 0,
+     // expectedTimeByHour: (json['expectedTimeByHour'] != null) ? json['expectedTimeByHour'] as int : 0,
     );
   }
 

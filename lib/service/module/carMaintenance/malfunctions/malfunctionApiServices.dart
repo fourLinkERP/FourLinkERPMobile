@@ -81,7 +81,7 @@ class MalfunctionApiService {
       'malfunctionName': malfunction.malfunctionName,
       'malfunctionNameAra': malfunction.malfunctionNameAra,
       'malfunctionNameEng': malfunction.malfunctionNameEng,
-      'expectedTimeByHour': malfunction.expectedTimeByHour,
+      //'expectedTimeByHour': malfunction.expectedTimeByHour,
 
     };
 
@@ -119,7 +119,7 @@ class MalfunctionApiService {
       'malfunctionName': malfunction.malfunctionName,
       'malfunctionNameAra': malfunction.malfunctionNameAra,
       'malfunctionNameEng': malfunction.malfunctionNameEng,
-      'expectedTimeByHour': malfunction.expectedTimeByHour,
+      //'expectedTimeByHour': malfunction.expectedTimeByHour,
     };
 
     String apiUpdate =updateApi + id.toString();

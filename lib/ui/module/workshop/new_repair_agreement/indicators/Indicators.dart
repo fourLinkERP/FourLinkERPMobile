@@ -169,7 +169,7 @@ class _IndicatorsState extends State<Indicators> {
                                   onChanged: (bool? newValue){
                                     setState(() {
                                       _isCheckedDelivered3 = newValue;
-                                      DTO.page3["_isCheckedDelivered3"] = _isCheckedDelivered3!;
+                                      DTO.page3["checkAlloyWheelLockDelivery"] = _isCheckedDelivered3!;
                                     });
                                   },
                                   activeColor: const Color.fromRGBO(144, 16, 46, 1),

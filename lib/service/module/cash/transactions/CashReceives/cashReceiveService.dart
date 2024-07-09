@@ -12,9 +12,9 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   String searchApi= baseUrl.toString()  + '/api/v1/cashtransactionheaders/searchData';
   String createApi= baseUrl.toString()  + '/api/v1/cashtransactionheaders';
-  String updateApi= baseUrl.toString()  + '/api/v1/cashtransactionheaders/';  // Add ID For Edit
+  String updateApi= baseUrl.toString()  + '/api/v1/cashtransactionheaders/';
   String deleteApi= baseUrl.toString()  + '/api/v1/cashtransactionheaders/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/cashtransactionheaders/';  // Add ID For Get
+  String getByIdApi= baseUrl.toString()  + '/api/v1/cashtransactionheaders/';
 
   Future<List<CashReceive>?> getCashReceivesH() async {
 

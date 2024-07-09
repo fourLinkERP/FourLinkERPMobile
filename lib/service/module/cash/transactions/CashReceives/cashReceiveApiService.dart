@@ -18,13 +18,17 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
   Future<List<CashReceive>?> getCashReceivesH() async {
 
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode,
-       'TrxKind': '1', //Sales Invoice Type
-      'Search':{
-        'CompanyCode': companyCode,
-        'BranchCode': branchCode,
-        'TrxKind': '1', //Sales Invoice Type
+      "CompanyCode": companyCode,
+      "BranchCode": branchCode,
+      "TrxKind": "1",
+      "Search":{
+        "CompanyCode": companyCode,
+        "BranchCode": branchCode,
+        "TrxKind": "1",
+        "EmpCode":"adam",
+        "isShowTransactionsByUser": true,
+        "isManager": isManager,
+        "isIt": isIt
       }
     };
 

@@ -711,7 +711,12 @@
     "please_set_shopId_image": "من فضلك ادخل صورة رخصة المحل",
     "please_set_shopPlate_image": "من فضلك ادخل صورة لوحة المحل",
     "please_set_taxId_image": "من فضلك ادخل صورة الرقم الضريبي",
-    "please_enter_taxId": "من فضلك ادخل الرقم الضريبي"
+    "please_enter_taxId": "من فضلك ادخل الرقم الضريبي",
+    "chassis_number_cannot_be_less_or_bigger_than_17": "طول رقم الشاسيه يجب ان يكون 17 ",
+    "searchInventory": "بحث الجرد",
+    "check_stores": "الجرد",
+    "unit": "الوحدة",
+    "please_select_store": "من فضلك اختر المخزن"
 
 }
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/dto.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carReceive/carReceiveH/carReceiveH.dart';
+import 'package:fourlinkmobileapp/service/module/carMaintenance/carReceive/carReceiveH/carReceiveHApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/Reviews/reviews.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/customer/customerInformation.dart';
@@ -7,8 +9,10 @@ import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/custom
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/external_detection/externalDetection.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/indicators/Indicators.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/workshop_home/workshopMainScreen.dart';
+import 'package:supercharged/supercharged.dart';
 
 import '../../../../../helpers/toast.dart';
+
 
 class NewRepairAgreeTabs extends StatefulWidget {
   const NewRepairAgreeTabs({Key? key}) : super(key: key);
@@ -19,6 +23,7 @@ class NewRepairAgreeTabs extends StatefulWidget {
 
 class _NewRepairAgreeTabsState extends State<NewRepairAgreeTabs> {
 
+  final CarReceiveHApiService api = CarReceiveHApiService();
   int currentStep = 0;
 
   @override
@@ -92,14 +97,16 @@ class _NewRepairAgreeTabsState extends State<NewRepairAgreeTabs> {
                             DTO.page5["maintenanceClassificationCode"] != "" &&
                             DTO.page5["maintenanceTypeCode"] != "" &&
                             DTO.page5["deliveryDate"] != "" &&
-                            DTO.page5["deliveryTime"] != "" &&
-                            (DTO.page5["returnOldPartStatusCode"] != "" ||
-                                DTO.page5["repeatRepairsStatusCode"] != "")) {
+                            DTO.page5["deliveryTime"] != "" )
+                            //(DTO.page5["returnOldPartStatusCode"] != "" || DTO.page5["repeatRepairsStatusCode"] != ""))
+                        {
+                          saveCarReceiveH(context);
                           details.onStepContinue!();
                         } else {
                           FN_showToast(context,'Step 5 validation failed'.tr() ,Colors.black);
                         }
                       }
+
                     },
                       child: Container(
                       height: 50,
@@ -192,248 +199,67 @@ class _NewRepairAgreeTabsState extends State<NewRepairAgreeTabs> {
         content: const SizedBox( height: 540,child: Reviews()),
         isActive: currentStep >= 4),
   ];
-}
-/*
-import 'package:flutter/material.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
-//import 'package:fourlinkmobileapp/common/my_timeline_tiles.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/Reviews/reviews.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/customer/customerInformation.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/customer_requests/customerRequests.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/external_detection/externalDetection.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/indicators/Indicators.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/workshop_home/workshopMainScreen.dart';
-
-class NewRepairAgreeTabs extends StatefulWidget {
-  const NewRepairAgreeTabs({Key? key}) : super(key: key);
-
-  @override
-  State<NewRepairAgreeTabs> createState() => _NewRepairAgreeTabsState();
-}
-
-class _NewRepairAgreeTabsState extends State<NewRepairAgreeTabs> {
-
-  int currentStep = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: ListTile(
-          leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-          title: Text('Repair Agreements'.tr(),
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-        ),
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-      ),
-      body: Theme(
-        data: Theme.of(context).copyWith(
-          colorScheme: const ColorScheme.light(primary: Color.fromRGBO(144, 16, 46, 1)),
-        ),
-        child: Stepper(
-          type: StepperType.horizontal,
-          steps: getSteps(),
-          currentStep: currentStep,
-          onStepContinue: (){
-            final isLastStep = currentStep == getSteps().length - 1;
-
-            if(isLastStep){
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>  WorkshopHome()),);
-            }
-            else{
-              setState(() => currentStep += 1 );
-            }
-
-          },
-          onStepCancel: currentStep == 0 ? null :  () => setState(() => currentStep -= 1 ),
-          onStepTapped: (step) => setState(() => currentStep = step),
-          controlsBuilder: (BuildContext context, ControlsDetails details) {
-            return Row(
-              children: <Widget> [
-                Expanded(child: ElevatedButton(
-                  onPressed: details.onStepContinue,
-                  child: Text("next".tr()),
-                )),
-                const SizedBox( width: 15),
-                Expanded(child: ElevatedButton(
-                  onPressed: details.onStepCancel,
-                  child: Text("back".tr()),
-                )),
-              ],
-            );
-          },
-        ),
-      )
-    );
-
+  saveCarReceiveH(BuildContext context) async
+  {
+    // if (selectedVacationTypeValue == null) {
+    //   FN_showToast(context, 'please_set_vacation_type'.tr(), Colors.black);
+    //   return;
+    // }
+    // if (_fromDateController.text.isEmpty) {
+    //   FN_showToast(context, 'please_set_from_date'.tr(), Colors.black);
+    //   return;
+    // }
+    await api.createCarReceiveH(context, CarReceiveH(
+        trxSerial: DTO.page1["trxSerial"],
+        customerCode: DTO.page1["customerCode"],
+        carCode: DTO.page1["carCode"],
+        checkedInPerson: DTO.page1["checkedInPerson"],
+        customerMobile: DTO.page1["customerMobile"],
+        counter: DTO.page1["counter"],
+        netTotal: DTO.netTotal,
+        navMemoryCard: DTO.page3["checkMemory"],
+        usbDevice: DTO.page3["checkUsb"],
+        alloyWheelLock: DTO.page3["checkAlloyWheelLock"],
+        navDeliverd: DTO.page3["checkMemoryDelivery"],
+        usbDeliverd: DTO.page3["checkUsbDelivery"],
+        alloyWheelDeliverd: DTO.page3["checkAlloyWheelLockDelivery"],
+       checkPic1: DTO.page3["checkPic1"],
+      checkPic2: DTO.page3["checkPic2"],
+      checkPic3: DTO.page3["checkPic3"],
+      checkPic4: DTO.page3["checkPic4"],
+      checkPic5: DTO.page3["checkPic5"],
+      checkPic6: DTO.page3["checkPic6"],
+      checkPic7: DTO.page3["checkPic7"],
+      checkPic8: DTO.page3["checkPic8"],
+      checkPic9: DTO.page3["checkPic9"],
+      checkPic10: DTO.page3["checkPic10"],
+      checkPic11: DTO.page3["checkPic11"],
+      checkPic12: DTO.page3["checkPic12"],
+      checkPic13: DTO.page3["checkPic13"],
+      checkPic14: DTO.page3["checkPic14"],
+      checkPic15: DTO.page3["checkPic15"],
+      checkPic16: DTO.page3["checkPic16"],
+      image1: DTO.page4Images["image1"],
+      image2: DTO.page4Images["image2"],
+      image3: DTO.page4Images["image3"],
+      image4: DTO.page4Images["image4"],
+      image5: DTO.page4Images["image5"],
+      image6: DTO.page4Images["image6"],
+      comment1: DTO.page4Comments["comment1"],
+      comment2: DTO.page4Comments["comment2"],
+      comment3: DTO.page4Comments["comment3"],
+      comment4: DTO.page4Comments["comment4"],
+      comment5: DTO.page4Comments["comment5"],
+      comment6: DTO.page4Comments["comment6"],
+      paymentMethodCode: DTO.page5["paymentMethodCode"],
+      maintenanceClassificationCode: DTO.page5["maintenanceClassificationCode"],
+      maintenanceTypeCode: DTO.page5["maintenanceTypeCode"],
+      deliveryDate:  DTO.page5["deliveryDate"],
+      deliveryTime: DTO.page5["deliveryTime"],
+      returnOldPartStatusCode: DTO.page5["returnOldPartStatusCode"]!.toInt(),
+      repeatRepairStatusCode: DTO.page5["repeatRepairsStatusCode"]!.toInt(),
+      waitingCustomer: DTO.page3["waitingCustomer"],
+    ));
+    Navigator.pop(context,true );
   }
-
-  List<Step> getSteps() => [
-        Step(
-            state: currentStep > 0 ? StepState.complete : StepState.indexed,
-            title: Text("Customer"),
-            content: CustomerInfo(),
-            isActive: currentStep >= 0),
-        Step(
-            state: currentStep > 1 ? StepState.complete : StepState.indexed,
-            title: Text("Customer requests"),
-            content: CustomerRequests(),
-            isActive: currentStep >= 1),
-        Step(
-            state: currentStep > 2 ? StepState.complete : StepState.indexed,
-            title: Text("Indicators"),
-            content: Indicators(),
-            isActive: currentStep >= 2),
-        Step(
-            state: currentStep > 3 ? StepState.complete : StepState.indexed,
-            title: Text("External detection"),
-            content: ExternalDetection(),
-            isActive: currentStep >= 3),
-        Step(
-            state: currentStep > 4 ? StepState.complete : StepState.indexed,
-            title: Text("Reviews"),
-            content: Reviews(),
-            isActive: currentStep >= 4),
-      ];
 }
-*/
-/*
-   import 'package:flutter/material.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:fourlinkmobileapp/common/my_timeline_tiles.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/Reviews/reviews.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/customer/customerInformation.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/customer_requests/customerRequests.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/external_detection/externalDetection.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/indicators/Indicators.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/workshop_home/workshopMainScreen.dart';
-
-class NewRepairAgreeTabs extends StatefulWidget {
-  const NewRepairAgreeTabs({Key? key}) : super(key: key);
-
-  @override
-  State<NewRepairAgreeTabs> createState() => _NewRepairAgreeTabsState();
-}
-
-class _NewRepairAgreeTabsState extends State<NewRepairAgreeTabs> {
-
-  int currentStep = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: ListTile(
-          leading: Image.asset('assets/images/logowhite2.png', scale: 3),
-          title: Text('Repair Agreements'.tr(),
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-        ),
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-      ),
-        body: Padding(
-          padding: const EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
-          child: ListView(
-            children: [
-              MyTimeLineTile(
-                isFirst: true,
-                isLast: false,
-                isPast: true,
-                icon: Icons.person,
-                text: "Customer",
-                onTab: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CustomerInfo()),
-                  );
-                },
-              ),
-              MyTimeLineTile(
-                isFirst: false,
-                isLast: false,
-                isPast: true,
-                icon: Icons.request_page,
-                text: "Customer requests",
-                onTab: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => CustomerRequests()),
-                  );
-                },
-              ),
-              MyTimeLineTile(
-                isFirst: false,
-                isLast: false,
-                isPast: true,
-                icon: Icons.drag_indicator,
-                text: "Indicators",
-                onTab: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Indicators()),
-                  );
-                },
-              ),
-              MyTimeLineTile(
-                isFirst: false,
-                isLast: false,
-                isPast: false,
-                icon: Icons.document_scanner_rounded,
-                text: "External detection",
-                onTab: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ExternalDetection()),
-                  );
-                },
-              ),
-              MyTimeLineTile(
-                isFirst: false,
-                isLast: true,
-                isPast: false,
-                icon: Icons.reviews,
-                text: "Reviews",
-                onTab: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Reviews()),
-                  );
-                },
-              ),
-            ],
-          ),
-        ));
-
-  }
-
-  List<Step> getSteps() => [
-        Step(
-            state: currentStep > 0 ? StepState.complete : StepState.indexed,
-            title: Text("Customer"),
-            content: CustomerInfo(),
-            isActive: currentStep >= 0),
-        Step(
-            state: currentStep > 1 ? StepState.complete : StepState.indexed,
-            title: Text("Customer requests"),
-            content: CustomerRequests(),
-            isActive: currentStep >= 1),
-        // Step(
-        //     state: currentStep > 2 ? StepState.complete : StepState.indexed,
-        //     title: Text("Indicators"),
-        //     content: Indicators(),
-        //     isActive: currentStep >= 2),
-        // Step(
-        //     state: currentStep > 3 ? StepState.complete : StepState.indexed,
-        //     title: Text("External detection"),
-        //     content: ExternalDetection(),
-        //     isActive: currentStep >= 3),
-        // Step(
-        //     state: currentStep > 4 ? StepState.complete : StepState.indexed,
-        //     title: Text("Reviews"),
-        //     content: Reviews(),
-        //     isActive: currentStep >= 4),
-      ];
-}*/
-

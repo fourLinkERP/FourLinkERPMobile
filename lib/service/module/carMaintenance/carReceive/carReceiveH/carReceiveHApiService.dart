@@ -41,9 +41,6 @@ class CarReceiveHApiService {
       }
       print('CarReceiveH 3');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => CarReceiveH.fromJson(data))
-      //     .toList();
     } else {
       print('CarReceiveH Failed');
       throw "Failed to load CarReceiveH list";
@@ -81,7 +78,10 @@ class CarReceiveHApiService {
       'trxSerial': carReceiveH.trxSerial,
       'customerCode': carReceiveH.customerCode,
       'carCode': carReceiveH.carCode,
-      'receiveCarStatusCode': carReceiveH.receiveCarStatusCode,
+      'checkedInPerson': carReceiveH.checkedInPerson,
+      'customerMobile': carReceiveH.customerMobile,
+      'counter': carReceiveH.counter,
+      'waitingCustomer': carReceiveH.waitingCustomer,
       'returnOldPartStatusCode': carReceiveH.returnOldPartStatusCode,
       'repeatRepairStatusCode': carReceiveH.repeatRepairStatusCode,
       'netTotal': carReceiveH.netTotal,
@@ -90,7 +90,7 @@ class CarReceiveHApiService {
       'maintenanceClassificationCode': carReceiveH.maintenanceClassificationCode,
       'maintenanceTypeCode': carReceiveH.maintenanceTypeCode,
       'paymentMethodCode': carReceiveH.paymentMethodCode,
-      'customerSignature': carReceiveH.customerSignature,
+      //'customerSignature': carReceiveH.customerSignature,
       'navMemoryCard': carReceiveH.navMemoryCard,
       'alloyWheelLock': carReceiveH.alloyWheelLock,
       'usbDevice': carReceiveH.usbDevice,
@@ -113,20 +113,18 @@ class CarReceiveHApiService {
       'checkPic14': carReceiveH.checkPic14,
       'checkPic15': carReceiveH.checkPic15,
       'checkPic16': carReceiveH.checkPic16,
-      'checkedInPerson': carReceiveH.checkedInPerson,
-      'image1': carReceiveH.image1,
-      'image2': carReceiveH.image2,
-      'image3': carReceiveH.image3,
-      'image4': carReceiveH.image4,
-      'image5': carReceiveH.image5,
-      'image6': carReceiveH.image6,
       'comment1': carReceiveH.comment1,
       'comment2': carReceiveH.comment2,
       'comment3': carReceiveH.comment3,
       'comment4': carReceiveH.comment4,
       'comment5': carReceiveH.comment5,
       'comment6': carReceiveH.comment6,
-      'addTime': carReceiveH.addTime,
+      'image1': carReceiveH.image1,
+      'image2': carReceiveH.image2,
+      'image3': carReceiveH.image3,
+      'image4': carReceiveH.image4,
+      'image5': carReceiveH.image5,
+      'image6': carReceiveH.image6,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,
@@ -142,7 +140,7 @@ class CarReceiveHApiService {
 
     };
 
-    print('to print body');
+    print('Car Receive: ');
     print(data.toString());
 
     final http.Response response = await http.post(

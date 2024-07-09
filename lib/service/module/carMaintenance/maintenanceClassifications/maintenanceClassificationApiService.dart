@@ -13,15 +13,15 @@ class MaintenanceClassificationApiService {
 
   String searchApi= baseUrl.toString()  + '/api/v1/maintenanceclassifications/search';
   String createApi= baseUrl.toString()  + '/api/v1/maintenanceclassifications';
-  String updateApi= baseUrl.toString()  + '/api/v1/maintenanceclassifications/';  // Add ID For Edit
+  String updateApi= baseUrl.toString()  + '/api/v1/maintenanceclassifications/';
   String deleteApi= baseUrl.toString()  + '/api/v1/maintenanceclassifications/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/maintenanceclassifications/';  // Add ID For Get
+  String getByIdApi= baseUrl.toString()  + '/api/v1/maintenanceclassifications/';
 
   Future<List<MaintenanceClassification>>  getMaintenanceClassifications() async {
 
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      'CompanyCode': 1,
+      'BranchCode': 8 //branchCode
     };
 
     print('MaintenanceClassification 1');

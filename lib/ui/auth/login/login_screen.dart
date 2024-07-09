@@ -417,8 +417,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: ElevatedButton(
                                   style: ThemeHelper().buttonStyle(),
                                   child: Padding(
-                                    padding:
-                                    const EdgeInsets.fromLTRB(40, 10, 40, 10),
+                                    padding: const EdgeInsets.fromLTRB(40, 10, 40, 10),
                                     child: Text(
                                       'log_in'.tr(),
                                       style: const TextStyle(
@@ -429,8 +428,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                   onPressed: () async {
 
-                                    //final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                    //sharedPreferences.setString('email', _emailController.text);
                                     if (_formKey.currentState!.validate()) {
                                       startLogin(true);
                                     }
@@ -455,22 +452,22 @@ class _LoginScreenState extends State<LoginScreen> {
                               //     ),
                               //   ])),
                               // ),
-                              // Container(
-                              //   margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
-                              //   alignment: Alignment.center,
-                              //   child: GestureDetector(
-                              //     onTap: () async {
-                              //       startQuickLogin();
-                              //     },
-                              //     child: Text(
-                              //       '<- الدخول السريع'.tr(),
-                              //       style: const TextStyle(
-                              //         color: Colors.red,
-                              //         fontWeight: FontWeight.bold,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
+                              Container(
+                                margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
+                                alignment: Alignment.center,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    startQuickLogin();
+                                  },
+                                  child: Text(
+                                    '<- الدخول السريع'.tr(),
+                                    style: const TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
 
                               Align(
                                 alignment: FractionalOffset.bottomCenter,

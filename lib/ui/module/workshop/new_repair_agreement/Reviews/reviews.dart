@@ -1,5 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/common/dto.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/paymentMethods/paymentMethod.dart';
 import 'package:fourlinkmobileapp/service/module/carMaintenance/paymentMethods/paymentMethodApiServices.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -201,10 +202,9 @@ class _ReviewsState extends State<Reviews> {
                             (langId == 1) ? u.paymentMethodNameAra.toString() : u.paymentMethodNameEng.toString(),
 
                             onChanged: (value) {
-                              //v.text = value!.cusTypesCode.toString();
-                              //print(value!.id);
-                              selectedClassificationValue = value!.paymentMethodCode.toString();
-                              //setNextSerial();
+                              selectePaymentValue = value!.paymentMethodCode.toString();
+                              DTO.page5["paymentMethodCode"] = selectePaymentValue!;
+                              print("DTO page5 paymentMethodCode " + selectePaymentValue!);
                             },
 
                             filterFn: (instance, filter) {
@@ -255,10 +255,10 @@ class _ReviewsState extends State<Reviews> {
                             (langId == 1) ? u.maintenanceClassificationNameAra.toString() : u.maintenanceClassificationNameEng.toString(),
 
                             onChanged: (value) {
-                              //v.text = value!.cusTypesCode.toString();
-                              //print(value!.id);
+
                               selectedClassificationValue = value!.maintenanceClassificationCode.toString();
-                              //setNextSerial();
+                              DTO.page5["maintenanceClassificationCode"] = selectedClassificationValue!;
+                              print("DTO page5 maintenanceClassificationCode " + selectedClassificationValue!);
                             },
 
                             filterFn: (instance, filter) {
@@ -270,12 +270,6 @@ class _ReviewsState extends State<Reviews> {
                                 return false;
                               }
                             },
-                            // dropdownDecoratorProps: DropDownDecoratorProps(
-                            //   dropdownSearchDecoration: InputDecoration(
-                            //     labelText: "type".tr(),
-                            //
-                            //   ),
-                            // ),
                           ),
                         ),
                         const SizedBox(height: 10),
@@ -297,7 +291,6 @@ class _ReviewsState extends State<Reviews> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text((langId==1)? item.maintenanceTypeNameAra.toString():  item.maintenanceTypeNameEng.toString(),
-                                      //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
                                       textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
                                   ),
@@ -308,9 +301,9 @@ class _ReviewsState extends State<Reviews> {
                             items: maintenanceTypes,
                             itemAsString: (MaintenanceType u) => u.maintenanceTypeNameAra.toString(),
                             onChanged: (value){
-                              //v.text = value!.cusTypesCode.toString();
-                              //print(value!.id);
                               selectedTypeValue =  value!.maintenanceTypeCode.toString();
+                              DTO.page5["maintenanceTypeCode"] = selectedTypeValue!;
+                              print("DTO page5 selectedTypeValue " + selectedTypeValue!);
                             },
                             filterFn: (instance, filter){
                               if(instance.maintenanceTypeNameAra!.contains(filter)){
@@ -321,14 +314,6 @@ class _ReviewsState extends State<Reviews> {
                                 return false;
                               }
                             },
-                            // dropdownDecoratorProps: const DropDownDecoratorProps(
-                            // dropdownSearchDecoration: InputDecoration(
-                            //   labelStyle: TextStyle(
-                            //     color: Colors.black,
-                            //   ),
-                            //   //icon: Icon(Icons.keyboard_arrow_down),
-                            // ),
-                            // ),
 
                           ),
                         ),
@@ -348,6 +333,8 @@ class _ReviewsState extends State<Reviews> {
 
                               if (pickedDate != null) {
                                 deliveryDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                DTO.page5["deliveryDate"] = deliveryDateController.text;
+                                print("DTO page5 deliveryDate : " + deliveryDateController.text);
                               }
                             },
                             type: TextInputType.datetime,
@@ -359,19 +346,27 @@ class _ReviewsState extends State<Reviews> {
                           height: 40,
                           width: 175,
                           child: defaultFormField(
-                            label: 'time'.tr(),
                             controller: deliveryTimeController,
                             onTab: () async {
-                              DateTime? pickedDate = await showDatePicker(
+                              TimeOfDay? pickedTime = await showTimePicker(
                                   context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1950),
-                                  lastDate: DateTime(2050));
-
-                              if (pickedDate != null) {
-                                deliveryTimeController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                              }
-                            },
+                                  initialTime: TimeOfDay.now(),
+                              );
+                              if(pickedTime != null)
+                                {
+                                  DateTime now = DateTime.now();
+                                  DateTime pickedDateTime = DateTime(
+                                    now.year,
+                                    now.month,
+                                    now.day,
+                                    pickedTime.hour,
+                                    pickedTime.minute,
+                                  );
+                                  deliveryTimeController.text = DateFormat('HH:mm:ss').format(pickedDateTime);
+                                  DTO.page5["deliveryTime"] = deliveryTimeController.text;
+                                  print("DTO page5 deliveryTime : " + deliveryTimeController.text);
+                                }
+                              },
                             type: TextInputType.datetime,
                             colors: Colors.blueGrey,
                           ),
@@ -390,6 +385,12 @@ class _ReviewsState extends State<Reviews> {
                   onChanged: (bool? newValue){
                     setState(() {
                       _isCheckedOldParts = newValue;
+                      if(_isCheckedOldParts == true){
+                        DTO.page5["returnOldPartStatusCode"] = "1";
+                      }
+                      else{
+                        DTO.page5["returnOldPartStatusCode"] = "2";
+                      }
                     });
                   },
                   activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -405,6 +406,12 @@ class _ReviewsState extends State<Reviews> {
                   onChanged: (bool? newValue){
                     setState(() {
                       _isCheckedTransService = newValue;
+                      if(_isCheckedTransService == true){
+                        DTO.page5["repeatRepairsStatusCode"] = "1";
+                      }
+                      else{
+                        DTO.page5["repeatRepairsStatusCode"] = "2";
+                      }
                     });
                   },
                   activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -420,6 +427,12 @@ class _ReviewsState extends State<Reviews> {
                   onChanged: (bool? newValue){
                     setState(() {
                       _isCheckedWaitingCustomer = newValue;
+                      if(_isCheckedWaitingCustomer == true){
+                        DTO.page3["waitingCustomer"] = true;
+                      }
+                      else{
+                        DTO.page3["waitingCustomer"] = false;
+                      }
                     });
                   },
                   activeColor: const Color.fromRGBO(144, 16, 46, 1),

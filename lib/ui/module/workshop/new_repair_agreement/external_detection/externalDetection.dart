@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/common/dto.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -65,7 +66,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
                                 showImagePicker(context, _imgFromGallery, _imgFromCamera);
-                                await convertImageToBase64String(imageFile1, imageString1);
+
                               } else {
                                 print('no permission provided');
                               }
@@ -128,6 +129,11 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                           borderRadius: BorderRadius.circular(10.0),
                           borderSide: const BorderSide(color: Colors.blue, width: 1.0)),
                     ),
+                    onChanged: (value){
+                      DTO.page4Comments["comment1"] = value;
+                      print("DTO page4 comment1 " + DTO.page4Comments["comment1"]!);
+
+                    },
                   ),
                 ),
               ],
@@ -155,7 +161,6 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
                                 showImagePicker(context, _imgFromGallery2, _imgFromCamera2);
-                                await convertImageToBase64String(imageFile2, imageString2);
                               } else {
                                 print('no permission provided');
                               }
@@ -217,6 +222,11 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                           borderRadius: BorderRadius.circular(10.0),
                           borderSide: const BorderSide(color: Colors.blue, width: 1.0)),
                     ),
+                    onChanged: (value){
+                      DTO.page4Comments["comment2"] = value;
+                      print("DTO page4 comment2 " + DTO.page4Comments["comment2"]!);
+
+                    },
                   ),
                 ),
               ],
@@ -243,7 +253,6 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
                                 showImagePicker(context, _imgFromGallery3, _imgFromCamera3);
-                                await convertImageToBase64String(imageFile3, imageString3);
                               } else {
                                 print('no permission provided');
                               }
@@ -305,6 +314,11 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                           borderRadius: BorderRadius.circular(10.0),
                           borderSide: const BorderSide(color: Colors.blue, width: 1.0)),
                     ),
+                    onChanged: (value){
+                      DTO.page4Comments["comment3"] = value;
+                      print("DTO page4 comment3 " + DTO.page4Comments["comment3"]!);
+
+                    },
                   ),
                 ),
               ],
@@ -331,7 +345,6 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
                                 showImagePicker(context, _imgFromGallery4, _imgFromCamera4);
-                                await convertImageToBase64String(imageFile4, imageString4);
                               } else {
                                 print('no permission provided');
                               }
@@ -394,6 +407,11 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                           borderRadius: BorderRadius.circular(10.0),
                           borderSide: const BorderSide(color: Colors.blue, width: 1.0)),
                     ),
+                    onChanged: (value){
+                      DTO.page4Comments["comment4"] = value;
+                      print("DTO page4 comment4 " + DTO.page4Comments["comment4"]!);
+
+                    },
                   ),
                 )
               ],
@@ -420,7 +438,6 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
                                 showImagePicker(context, _imgFromGallery5, _imgFromCamera5);
-                                await convertImageToBase64String(imageFile5, imageString5);
                               } else {
                                 print('no permission provided');
                               }
@@ -483,6 +500,11 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                           borderRadius: BorderRadius.circular(10.0),
                           borderSide: const BorderSide(color: Colors.blue, width: 1.0)),
                     ),
+                    onChanged: (value){
+                      DTO.page4Comments["comment5"] = value;
+                      print("DTO page4 comment5 " + DTO.page4Comments["comment5"]!);
+
+                    },
                   ),
                 )
               ],
@@ -509,7 +531,6 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                               ].request();
                               if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
                                 showImagePicker(context, _imgFromGallery6, _imgFromCamera6);
-                                await convertImageToBase64String(imageFile6, imageString6);
                               } else {
                                 print('no permission provided');
                               }
@@ -571,6 +592,11 @@ class _ExternalDetectionState extends State<ExternalDetection> {
                           borderRadius: BorderRadius.circular(10.0),
                           borderSide: const BorderSide(color: Colors.blue, width: 1.0)),
                     ),
+                    onChanged: (value){
+                      DTO.page4Comments["comment6"] = value;
+                      print("DTO page4 comment6 " + DTO.page4Comments["comment6"]!);
+
+                    },
                   ),
                 )
               ],
@@ -701,8 +727,8 @@ class _ExternalDetectionState extends State<ExternalDetection> {
       imageCache.clear();
       setState(() {
         imageFile1 = File(croppedFile.path);
+        convertImageToBase64String1(imageFile1);
       });
-      // reload();
     }
   }
 
@@ -761,6 +787,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
       imageCache.clear();
       setState(() {
         imageFile2 = File(croppedFile.path);
+        convertImageToBase64String2(imageFile2);
       });
       // reload();
     }
@@ -821,6 +848,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
       imageCache.clear();
       setState(() {
         imageFile3 = File(croppedFile.path);
+        convertImageToBase64String3(imageFile3);
       });
       // reload();
     }
@@ -881,8 +909,8 @@ class _ExternalDetectionState extends State<ExternalDetection> {
       imageCache.clear();
       setState(() {
         imageFile4 = File(croppedFile.path);
+        convertImageToBase64String4(imageFile4);
       });
-      // reload();
     }
   }
 
@@ -941,6 +969,7 @@ class _ExternalDetectionState extends State<ExternalDetection> {
       imageCache.clear();
       setState(() {
         imageFile5 = File(croppedFile.path);
+        convertImageToBase64String5(imageFile5);
       });
       // reload();
     }
@@ -1001,15 +1030,57 @@ class _ExternalDetectionState extends State<ExternalDetection> {
       imageCache.clear();
       setState(() {
         imageFile6 = File(croppedFile.path);
+        convertImageToBase64String6(imageFile6);
       });
     }
   }
 
-  convertImageToBase64String(File? image, String? stringImage) async{
+  convertImageToBase64String1(File? image) async{
     if (image != null) {
       List<int> imageBytes = await image.readAsBytes();
-      stringImage = base64Encode(imageBytes);
-      print(stringImage.toString());
+      imageString1 = base64Encode(imageBytes);
+      DTO.page4Images["image1"] = imageString1!;
+      print("DTO page4 image1 " + DTO.page4Images["image1"]!);
+    }
+  }
+  convertImageToBase64String2(File? image) async{
+    if (image != null) {
+      List<int> imageBytes = await image.readAsBytes();
+      imageString2 = base64Encode(imageBytes);
+      DTO.page4Images["image2"] = imageString2!;
+      print("DTO page4 image2 " + DTO.page4Images["image2"]!);
+    }
+  }
+  convertImageToBase64String3(File? image) async{
+    if (image != null) {
+      List<int> imageBytes = await image.readAsBytes();
+      imageString3 = base64Encode(imageBytes);
+      DTO.page4Images["image3"] = imageString3!;
+      print("DTO page4 image3 " + DTO.page4Images["image3"]!);
+    }
+  }
+  convertImageToBase64String4(File? image) async{
+    if (image != null) {
+      List<int> imageBytes = await image.readAsBytes();
+      imageString4 = base64Encode(imageBytes);
+      DTO.page4Images["image4"] = imageString4!;
+      print("DTO page4 image4 " + DTO.page4Images["image4"]!);
+    }
+  }
+  convertImageToBase64String5(File? image) async{
+    if (image != null) {
+      List<int> imageBytes = await image.readAsBytes();
+      imageString5 = base64Encode(imageBytes);
+      DTO.page4Images["image5"] = imageString5!;
+      print("DTO page4 image5 " + DTO.page4Images["image5"]!);
+    }
+  }
+  convertImageToBase64String6(File? image) async{
+    if (image != null) {
+      List<int> imageBytes = await image.readAsBytes();
+      imageString6 = base64Encode(imageBytes);
+      DTO.page4Images["image6"] = imageString6!;
+      print("DTO page4 image6 " + DTO.page4Images["image6"]!);
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/salesOrderList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/salesInvoiceList.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/CheckStores/checkStoreList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesOffers/salesOfferList.dart';
 import 'package:fourlinkmobileapp/ui/module/cash/transactions/CashReceive/cashReceiveList.dart';
@@ -38,7 +39,7 @@ class MainTransactions extends StatelessWidget {
         'assets/fitness_app/quotion.png',
         'assets/fitness_app/inventory.png',
         'assets/fitness_app/accounting.png',
-        'assets/fitness_app/accounting.png',
+        'assets/fitness_app/check_store.jpeg',
         'assets/fitness_app/receive_goods.png',
         'assets/fitness_app/shipping.png'
       ];
@@ -182,6 +183,20 @@ class MainTransactions extends StatelessWidget {
                   FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                 }
               }
+              else if(areaListData[index] == 'assets/fitness_app/check_store.jpeg')
+              {
+                int menuId=5207;
+                bool isAllowView = PermissionHelper.checkViewPermission(menuId);
+                if(isAllowView)
+                {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => CheckStoreList()));
+                }
+                else
+                {
+                  FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                }
+
+              }
               else if(areaListData[index] == 'assets/fitness_app/receive_goods.png')
                   {
                 int menuId=7206;
@@ -195,6 +210,7 @@ class MainTransactions extends StatelessWidget {
                   FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                 }
               }
+
               else if(areaListData[index] == 'assets/fitness_app/shipping.png')
               {
                 int menuId=6206;

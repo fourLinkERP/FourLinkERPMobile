@@ -611,5 +611,11 @@
     "please_set_shopId_image": "please set shop id image",
     "please_set_shopPlate_image": "please set shop plate image",
     "please_set_taxId_image": "please set tax id image",
-    "please_enter_taxId": "please enter tax id"
+    "please_enter_taxId": "please enter tax id",
+    "chassis_number_cannot_be_less_or_bigger_than_17": "length of chassis number should be 17",
+    "searchInventory": "Search Inventory",
+    "check_stores": "Check stores",
+    "unit": "Unit",
+    "please_select_store": "please select store"
+
 }

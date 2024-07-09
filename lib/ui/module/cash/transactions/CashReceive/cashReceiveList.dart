@@ -29,7 +29,7 @@ import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vend
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
 
 
-CashReceiveApiService _apiService=new CashReceiveApiService();
+CashReceiveApiService _apiService= CashReceiveApiService();
 
 class CashReceiveListPage extends StatefulWidget {
   const CashReceiveListPage({ Key? key }) : super(key: key);
