@@ -1,8 +1,7 @@
 
 import 'dart:async';
 import 'dart:core';
-
-import 'package:connectivity_plus/connectivity_plus.dart';
+//import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:fourlinkmobileapp/cubit/app_cubit.dart';

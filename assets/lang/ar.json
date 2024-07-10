@@ -54,7 +54,7 @@
     "inventory": "مخازن",
     "accounting": "حسابات",
     "item": "الصنف",
-    "car": "سيارات",
+    "cars": "سيارات",
     "items": "الاصناف",
     "Items :": "الاصناف :",
     "vendors": "موردين",
@@ -716,7 +716,13 @@
     "searchInventory": "بحث الجرد",
     "check_stores": "الجرد",
     "unit": "الوحدة",
-    "please_select_store": "من فضلك اختر المخزن"
+    "please_select_store": "من فضلك اختر المخزن",
+    "searchMaintenanceOrder": "بحث أمر إصلاح",
+    "maintenance_order": "أمر إصلاح",
+    "car": "السيارة",
+    "driver": "السائق",
+    "meter_reading": "قراءة العداد",
+    "complaint": "الشكوى"
 
 }
 

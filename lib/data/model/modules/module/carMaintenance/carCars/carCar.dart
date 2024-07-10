@@ -4,6 +4,9 @@ String get pickedDate => (DateTime.now()).toString();
 class Car{
   int? id;
   String? carCode;
+  String? carName;
+  String? carNameAra;
+  String? carNameEng;
   String? customerCode;
   String? plateNumberAra;
   String? plateNumberEng;
@@ -15,6 +18,9 @@ class Car{
   Car({
     this.id,
     this.carCode,
+    this.carName,
+    this.carNameAra,
+    this.carNameEng,
     this.customerCode,
     this.plateNumberAra,
     this.plateNumberEng,
@@ -29,6 +35,9 @@ class Car{
     return Car(
       id: (json['id'] != null) ? json['id'] as int : 0,
       carCode: (json['carCode'] != null) ? json['carCode'] as String : " ",
+      carName: (json['carName'] != null) ? json['carName'] as String : " ",
+      carNameAra: (json['carNameAra'] != null) ? json['carNameAra'] as String : " ",
+      carNameEng: (json['carNameEng'] != null) ? json['carNameEng'] as String : " ",
       customerCode: (json['customerCode'] != null) ? json['customerCode'] as String : " ",
       chassisNumber: (json['chassisNumber'] != null) ? json['chassisNumber'] as String : " ",
       plateNumberAra: (json['plateNumberAra'] != null) ? json['plateNumberAra'] as String : " ",

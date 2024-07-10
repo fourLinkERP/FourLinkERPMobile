@@ -616,6 +616,11 @@
     "searchInventory": "Search Inventory",
     "check_stores": "Check stores",
     "unit": "Unit",
-    "please_select_store": "please select store"
+    "please_select_store": "please select store",
+    "searchMaintenanceOrder": "search maintenance order",
+    "maintenance_order": "Maintenance order",
+    "driver": "Driver",
+    "meter_reading": "Counter reading",
+    "complaint": "Complaint"
 
 }

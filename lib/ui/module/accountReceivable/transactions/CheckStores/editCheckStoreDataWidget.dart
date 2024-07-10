@@ -1,5 +1,6 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/checkStores/checkStoreH.dart';
 import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -17,7 +18,9 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
 import '../../../../../data/model/modules/module/inventory/basicInputs/units/units.dart';
 import '../../../../../service/module/Inventory/basicInputs/items/itemApiService.dart';
 import '../../../../../service/module/Inventory/basicInputs/units/unitApiService.dart';
+import '../../../../../service/module/accountReceivable/transactions/Stock/ItemByBarcode/itemByBarcodeApiService.dart';
 import '../../../../../theme/fitness_app_theme.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 CheckStoreHApiService _checkStoreHApiService = CheckStoreHApiService();
 CheckStoreDApiService _checkStoreDApiService = CheckStoreDApiService();
@@ -25,6 +28,7 @@ StoresApiService _storesApiService = StoresApiService();
 ItemApiService _itemsApiService = ItemApiService();
 UnitApiService _unitsApiService = UnitApiService();
 ItemBarcodeApiService _itemBarcodeApiService = ItemBarcodeApiService();
+ItemByBarcodeApiService _itemByBarcodeApiService = ItemByBarcodeApiService();
 
 class EditCheckStoreDataWidget extends StatefulWidget {
   EditCheckStoreDataWidget(this.checkStoreH);
@@ -65,6 +69,8 @@ class _EditCheckStoreDataWidgetState extends State<EditCheckStoreDataWidget> {
   String? selectedUnitValue = null;
   String? selectedUnitName = null;
   String itemBarcode = '';
+  String itemCode = '';
+  String scanBarcodeResult = '';
 
   Item?  itemItem=Item(itemCode: "",itemNameAra: "",itemNameEng: "",id: 0);
   Unit?  unitItem=Unit(unitCode: "",unitNameAra: "",unitNameEng: "",id: 0);
@@ -258,7 +264,7 @@ class _EditCheckStoreDataWidgetState extends State<EditCheckStoreDataWidget> {
                                   child: Text('${"item".tr()} :', style: const TextStyle(fontWeight: FontWeight.bold))),
                               const SizedBox(width: 10),
                               SizedBox(
-                                width: 200,
+                                width: 180,
                                 child: DropdownSearch<Item>(
                                   selectedItem: itemItem,
                                   popupProps: PopupProps.menu(
@@ -288,7 +294,7 @@ class _EditCheckStoreDataWidgetState extends State<EditCheckStoreDataWidget> {
                                     selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
                                     changeItemUnit(selectedItemValue.toString());
                                     selectedUnitValue = "1";
-                                    //itemBarcodeHandler(selectedItemValue.toString());
+                                    itemBarcodeHandler(selectedItemValue.toString());
                                   },
 
                                   filterFn: (instance, filter) {
@@ -305,6 +311,45 @@ class _EditCheckStoreDataWidgetState extends State<EditCheckStoreDataWidget> {
                                     ),
                                   ),
 
+                                ),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: InkWell(
+                                  onTap: () async {
+                                    await scanCode();
+                                    await itemByBarcodeHandler(scanBarcodeResult);
+                                  },
+                                  child: Container(
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                        color: Colors.grey.shade300,
+                                        borderRadius: BorderRadius.circular(15),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Color.fromRGBO(200, 16, 46, 1),
+                                            spreadRadius: 1,
+                                            blurRadius: 8,
+                                            offset: Offset(4, 4),
+                                          ),
+                                          BoxShadow(
+                                            color: Colors.white,
+                                            spreadRadius: 2,
+                                            blurRadius: 8,
+                                            offset: Offset(-4, -4),
+                                          )
+                                        ]
+                                    ),
+                                    child: Center(
+                                      child: Text("Scan".tr(),
+                                        style: const TextStyle(
+                                          color: Color.fromRGBO(200, 16, 46, 1),
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 17,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
@@ -754,4 +799,56 @@ class _EditCheckStoreDataWidgetState extends State<EditCheckStoreDataWidget> {
     Navigator.pop(context) ;
   }
 
+  itemBarcodeHandler(String itemCode){
+    Future<String> futureItemBarcode = _itemBarcodeApiService.getItemBarcode(itemCode).then((data) {
+      itemBarcode = data;
+
+      setState(() {
+
+      });
+      return itemBarcode;
+    }, onError: (e) {
+      print(e);
+    });
+  }
+
+  Future<void> scanCode() async {
+    String barCodeScanRes;
+    try{
+      barCodeScanRes = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.BARCODE);
+    }on PlatformException{
+      barCodeScanRes = "Failed to scan";
+    }
+    setState(() {
+      scanBarcodeResult = barCodeScanRes;
+    });
+    print("scanBarcodeResult: "+ scanBarcodeResult);
+  }
+  itemByBarcodeHandler(String itemBarcode) {
+    Future<String> futureItemByBarcode = _itemByBarcodeApiService.getItemCode(itemBarcode).then((data) {
+      itemCode = data;
+
+      setState(() {
+        selectedItemValue = itemCode.toString();
+        changeItemUnit(selectedItemValue.toString());
+        selectedUnitValue = "1";
+        itemBarcodeHandler(selectedItemValue.toString());
+      });
+      getItemData();
+      return itemCode;
+
+    }, onError: (e) {
+      print(e);
+    });
+  }
+  getItemData() {
+    if (items != null) {
+      for(var i = 0; i < items.length; i++){
+        if(items[i].itemCode == selectedItemValue){
+          itemItem = items[items.indexOf(items[i])];
+        }
+      }
+    }
+    setState(() {});
+  }
 }
