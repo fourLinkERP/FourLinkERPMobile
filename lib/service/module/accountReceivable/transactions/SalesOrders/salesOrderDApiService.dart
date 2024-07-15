@@ -115,6 +115,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "flgDelete": false,
       "confirmed": true,
       "Year" : financialYearCode,
+      'addBy': empUserId
 
     };
 

@@ -113,6 +113,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       "isSystem": false,
       "notActive": false,
       "flgDelete": false,
+      'addBy': empUserId
 
       // 'age': customer.age,
       // 'address': customer.address,

@@ -111,8 +111,7 @@ class ReceivePermissionHApiService{
       "flgDelete": false,
       "confirmed": true,
       "year" : financialYearCode,
-      //"InvoiceQRCodeBase64": invoice.invoiceQRCodeBase64,
-      "addBy": "1",
+      'addBy': empUserId
       // "allowInstallment": true,
       // "posted": true,
       // "showBomOnly": true,

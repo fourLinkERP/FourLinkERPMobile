@@ -112,7 +112,7 @@ class ReceivePermissionDApiService{
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": true,
-      "addBy": "1",
+      'addBy': empUserId,
       "year" : financialYearCode,
       "bonus": 0,
       "displayBonus": 0,
