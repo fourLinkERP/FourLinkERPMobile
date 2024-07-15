@@ -722,7 +722,11 @@
     "car": "السيارة",
     "driver": "السائق",
     "meter_reading": "قراءة العداد",
-    "complaint": "الشكوى"
+    "complaint": "الشكوى",
+    "maintenance_status": "حالة الصيانة",
+    "searchCarDelivery": "بحث تسليم السيارة",
+    "total_order": "اجمالي الأمر",
+    "total_paid": "اجمالي المسدد"
 
 }
 

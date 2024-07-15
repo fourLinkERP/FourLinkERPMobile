@@ -621,6 +621,10 @@
     "maintenance_order": "Maintenance order",
     "driver": "Driver",
     "meter_reading": "Counter reading",
-    "complaint": "Complaint"
+    "complaint": "Complaint",
+    "maintenance_status": "maintenance status",
+    "searchCarDelivery": "search car delivery",
+    "total_order": "total order",
+    "total_paid": "total paid"
 
 }

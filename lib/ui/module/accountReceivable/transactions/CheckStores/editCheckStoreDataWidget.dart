@@ -767,6 +767,7 @@ class _EditCheckStoreDataWidgetState extends State<EditCheckStoreDataWidget> {
 
     await _checkStoreHApiService.updateCheckStoreH(context,id,CheckStoreH(
 
+      id: id,
       serial: int.parse(_checkStoreSerialController.text),
       toDate: _checkStoreToDateController.text,
       storeCode: selectedStoreValue.toString(),

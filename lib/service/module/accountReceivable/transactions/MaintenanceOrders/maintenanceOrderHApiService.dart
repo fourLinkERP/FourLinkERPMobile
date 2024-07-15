@@ -1,31 +1,28 @@
 import 'dart:convert';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/checkStores/checkStoreD.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:http/http.dart' as http;
-import '../../../../../common/globals.dart';
-import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/maintenanceOrders/maintenanceOrderH.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import '../../../../../common/globals.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 
+class MaintenanceOrderHApiService{
 
-class CheckStoreDApiService {
+  String searchApi= baseUrl.toString()  + '/api/v1/maintenanceorderheaders/search';
+  String createApi= baseUrl.toString()  + '/api/v1/maintenanceorderheaders';
+  String updateApi= baseUrl.toString()  + '/api/v1/maintenanceorderheaders/';
+  String deleteApi= baseUrl.toString()  + '/api/v1/maintenanceorderheaders/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/maintenanceorderheaders/';
 
-  String searchApi= baseUrl.toString()  + '/api/v1/checkstorestempddetails/search';
-  String createApi= baseUrl.toString()  + '/api/v1/checkstorestempddetails';
-  String updateApi= baseUrl.toString()  + '/api/v1/checkstorestempddetails/';
-  String deleteApi= baseUrl.toString()  + '/api/v1/checkstorestempddetails/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/checkstorestempddetails/';
+  Future<List<MaintenanceOrderH>?> getMaintenanceOrderH() async {
 
-  Future<List<CheckStoreD>> getCheckStoreD(int? headerId) async {
-    print('Booter 1 CheckStoreD');
     Map data = {
       'Search':{
         'CompanyCode': companyCode,
-        'BranchCode': branchCode,
-        'HeaderId': headerId
+        'BranchCode': branchCode
       }
     };
 
-    print('Booter 2  CheckStoreD' + data.toString());
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -34,32 +31,37 @@ class CheckStoreDApiService {
       },
       body: jsonEncode(data),
     );
-
+    print('MaintenanceOrderH ' + searchApi.toString());
+    print('maintenanceOrderH ' + data.toString());
+    print('maintenanceOrderH Before ');
     if (response.statusCode == 200) {
-      print('Booter 3 CheckStoreD');
+      print('maintenanceOrderH After ');
       List<dynamic> data = jsonDecode(response.body)['data'];
-      List<CheckStoreD> list = [];
+      print(data);
+      List<MaintenanceOrderH> list = [];
       if (data.isNotEmpty) {
-        list = data.map((item) => CheckStoreD.fromJson(item)).toList();
+        list = data.map((item) => MaintenanceOrderH.fromJson(item)).toList();
       }
-      print('B 1 Finish CheckStoreD');
+      print('maintenanceOrderH Finish');
       return  list;
     } else {
-      print('Booter Error');
-      throw "Failed to load check store list";
+      print('maintenanceOrderH Failure');
+      throw "Failed to load maintenanceOrderH list";
     }
   }
 
-  Future<int> createCheckStoreD(BuildContext context ,CheckStoreD checkStoreD) async {
+  Future<int> createMaintenanceOrderH(BuildContext context ,MaintenanceOrderH maintenanceOrderH) async {
+    print('save maintenanceOrderH 0');
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'Serial': checkStoreD.serial,
-      'lineNum': checkStoreD.lineNum,
-      'itemCode': checkStoreD.itemCode,
-      'unitCode': checkStoreD.unitCode,
-      'registeredBalance': checkStoreD.registeredBalance,
-      'storeCode': checkStoreD.storeCode,
+      'TrxSerial': maintenanceOrderH.trxSerial,
+      'TrxDate': maintenanceOrderH.trxDate,
+      'complaint': maintenanceOrderH.complaint,
+      'notes': maintenanceOrderH.notes,
+      "isRun": true,
+      "isStop": true,
+      "isCheckFinished": true,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,
@@ -71,12 +73,14 @@ class CheckStoreDApiService {
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": true,
-      'addBy': empUserId,
-      "year" : financialYearCode
+      "year" : financialYearCode,
+      "addBy": empUserId,
 
     };
 
-    print('Start Create D' + data.toString());
+    print('save maintenanceOrderH 1>>');
+    print('save maintenanceOrderH: ' + data.toString());
+
     final http.Response response = await http.post(
       Uri.parse(createApi),
       headers: <String, String>{
@@ -86,38 +90,36 @@ class CheckStoreDApiService {
       body: jsonEncode(data),
     );
 
-    print('Start Create D2' );
-    print('save details: ' + data.toString());
+    print('save maintenanceOrderH 2');
+    print('createApi');
+    print(createApi);
 
     if (response.statusCode == 200) {
 
-      print('Start Create D3' );
+      print('save maintenanceOrderH 3');
+      FN_showToast(context,'save_success'.tr() ,Colors.black);
+
       return  1;
 
-
     } else {
-      print('Error Create D' );
-      //return  1;
-      throw Exception('Failed to post checkStoreD');
+      print('save maintenanceOrderH Error');
+      throw Exception('Failed to post StockH');
     }
 
-    return  0;
   }
 
-  Future<int> updateCheckStoreD(BuildContext context ,int id, CheckStoreD checkStoreD) async {
+  Future<int> updateMaintenanceOrderH(BuildContext context ,int id, MaintenanceOrderH maintenanceOrderH) async {
 
     print('Start Update');
 
     Map data = {
+      'id': maintenanceOrderH.id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'Serial': checkStoreD.serial,
-      'year': financialYearCode,
-      'lineNum': checkStoreD.lineNum,
-      'itemCode': checkStoreD.itemCode,
-      'unitCode': checkStoreD.unitCode,
-      'storeCode': checkStoreD.storeCode,
-      'registeredBalance': checkStoreD.registeredBalance,
+      'TrxSerial': maintenanceOrderH.trxSerial,
+      'TrxDate': maintenanceOrderH.trxDate,
+      'complaint': maintenanceOrderH.complaint,
+      'notes': maintenanceOrderH.notes,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,
@@ -128,7 +130,10 @@ class CheckStoreDApiService {
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "confirmed": false
+      "confirmed": true,
+      "year" : financialYearCode,
+      "editBy": empUserId,
+
     };
 
     String apiUpdate =updateApi + id.toString();
@@ -141,10 +146,9 @@ class CheckStoreDApiService {
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after ' );
+    print('Start Update after');
     if (response.statusCode == 200) {
       print('Start Update done ' );
-      //var data = jsonDecode(response.body)['data'];
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
@@ -153,15 +157,14 @@ class CheckStoreDApiService {
       throw Exception('Failed to update a case');
     }
 
-    return 0;
   }
 
-  Future<void> deleteCheckStoreD(BuildContext context ,int? id) async {  //Future<void> deleteCheckStoreD(BuildContext context ,int? id) async {
+  Future<void> deleteMaintenanceOrderH(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
     print('url' + apiDel);
     var data = {
-      //"id": id
+
     };
 
     print('before response');
@@ -177,7 +180,7 @@ class CheckStoreDApiService {
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);
     } else {
-      throw "Failed to delete a checkStoreD.";
+      throw "Failed to delete a maintenanceOrderH.";
     }
   }
 

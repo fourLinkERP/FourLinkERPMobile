@@ -1,41 +1,40 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/maintenanceCars/maintenanceCar.dart';
-import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Driver/driverApiService.dart';
-import 'package:fourlinkmobileapp/service/module/carMaintenance/maintenanceCars/maintenanceCarApiService.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/maintenanceOrders/maintenanceOrderD.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/maintenanceOrders/maintenanceOrderH.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/MaintenanceOrders/maintenanceOrderDApiService.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/MaintenanceOrders/maintenanceOrderHApiService.dart';
 import 'package:intl/intl.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
-import '../../../../../data/model/modules/module/accountreceivable/transactions/maintenanceOrders/maintenanceOrderD.dart';
-import '../../../../../data/model/modules/module/accountreceivable/transactions/maintenanceOrders/maintenanceOrderH.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Drivers/driver.dart';
-import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
+import '../../../../../data/model/modules/module/carMaintenance/maintenanceCars/maintenanceCar.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
-import '../../../../../service/module/accountReceivable/transactions/MaintenanceOrders/maintenanceOrderDApiService.dart';
-import '../../../../../service/module/accountReceivable/transactions/MaintenanceOrders/maintenanceOrderHApiService.dart';
-import '../../../../../service/module/general/NextSerial/generalApiService.dart';
+import '../../../../../service/module/accountReceivable/basicInputs/Driver/driverApiService.dart';
+import '../../../../../service/module/carMaintenance/maintenanceCars/maintenanceCarApiService.dart';
 import '../../../../../theme/fitness_app_theme.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 
-NextSerialApiService _nextSerialApiService = NextSerialApiService();
 MaintenanceOrderHApiService _maintenanceOrderHApiService = MaintenanceOrderHApiService();
 MaintenanceOrderDApiService _maintenanceOrderDApiService = MaintenanceOrderDApiService();
 MaintenanceCarApiService _carApiService = MaintenanceCarApiService();
 DriverApiService _driverApiService = DriverApiService();
 
-class AddMaintenanceOrderDataWidget extends StatefulWidget {
-  const AddMaintenanceOrderDataWidget({Key? key}) : super(key: key);
+class EditMaintenanceOrder extends StatefulWidget {
+  EditMaintenanceOrder(this.maintenanceOrderH);
+
+  final MaintenanceOrderH maintenanceOrderH;
 
   @override
-  State<AddMaintenanceOrderDataWidget> createState() => _AddMaintenanceOrderDataWidgetState();
+  State<EditMaintenanceOrder> createState() => _EditMaintenanceOrderState();
 }
 
-class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataWidget> {
+class _EditMaintenanceOrderState extends State<EditMaintenanceOrder> {
 
-  List<MaintenanceCar> cars = [];
-  List<Driver> drivers = [];
-
+  final MaintenanceOrderHApiService api = MaintenanceOrderHApiService();
+  int id = 0;
+  int detailsId = 0;
   final _addFormKey = GlobalKey<FormState>();
   final _dropdownCarFormKey = GlobalKey<FormState>();
   final _dropdownDriverFormKey = GlobalKey<FormState>();
@@ -45,19 +44,32 @@ class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataW
   final _complaintController = TextEditingController();
   final _notesController = TextEditingController();
 
+  List<MaintenanceOrderD> maintenanceOrderDLst = <MaintenanceOrderD>[];
+  List<MaintenanceOrderD> selected = [];
+  List<MaintenanceCar> cars = [];
+  List<Driver> drivers = [];
+
   String? selectedCarValue;
   String? selectedDriverValue;
+  int lineNum = 1;
 
-  Driver? driverItem = Driver(driverCode: "", driverNameAra: "", driverNameEng: "", id: 0);
+  MaintenanceCar?  carItem = MaintenanceCar(carCode: "",carNameAra: "",carNameEng: "",id: 0);
+  Driver?  driverItem = Driver(driverCode: "",driverNameAra: "",driverNameEng: "",id: 0);
 
   @override
-  initState() {
-    super.initState();
+  void initState() {
+
+    id = widget.maintenanceOrderH.id!;
+    _trxSerialController.text = widget.maintenanceOrderH.trxSerial.toString();
+    _trxDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.maintenanceOrderH.trxDate!.toString()));
+    _complaintController.text = widget.maintenanceOrderH.complaint!;
+    _notesController.text = widget.maintenanceOrderH.notes!;
+   // selectedCarValue =
 
     fillCompos();
-  }
 
-  DateTime get pickedDate => DateTime.now();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +152,6 @@ class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataW
                       child: textFormFields(
                         enable: false,
                         controller: _trxDateController,
-                        hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                         onTap: () async {
                           DateTime? pickedDate = await showDatePicker(
                               context: context,
@@ -172,7 +183,7 @@ class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataW
                             SizedBox(
                               width: 220,
                               child: DropdownSearch<MaintenanceCar>(
-                                selectedItem: null,
+                                selectedItem: carItem,
                                 popupProps: PopupProps.menu(
                                   itemBuilder: (context, item, isSelected) {
                                     return Container(
@@ -199,8 +210,6 @@ class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataW
 
                                 onChanged: (value){
                                   selectedCarValue = value!.carCode.toString();
-                                  selectedDriverValue = value.driverCode.toString();
-                                  getDriverData();
                                 },
 
                                 filterFn: (instance, filter){
@@ -251,7 +260,6 @@ class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataW
                               width: 200,
                               child: DropdownSearch<Driver>(
                                 selectedItem: driverItem,
-                                enabled: false,
                                 popupProps: PopupProps.menu(
                                   itemBuilder: (context, item, isSelected) {
                                     return Container(
@@ -386,22 +394,24 @@ class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataW
 
   fillCompos(){
 
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("MNT_MaintenanceOrdersH", "TrxSerial", " And CompanyCode=$companyCode And BranchCode=$branchCode").then((data) {
-      NextSerial nextSerial = data;
-
-      _trxSerialController.text = nextSerial.nextSerial.toString();
-      _trxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-
-      return nextSerial;
+    Future<List<MaintenanceOrderD>> futureMaintenanceOrderD = _maintenanceOrderDApiService.getMaintenanceOrderD(id).then((data) {
+      maintenanceOrderDLst = data;
+      print(maintenanceOrderDLst.length.toString());
+      getMaintenanceOrderData();
+      detailsId = maintenanceOrderDLst[0].id!;
+      selectedCarValue = maintenanceOrderDLst[0].carCode.toString();
+      getCarData();
+      selectedDriverValue = maintenanceOrderDLst[0].driverCode.toString();
+      getDriverData();
+      _counterReadingController.text = maintenanceOrderDLst[0].meterReading.toString();
+      return maintenanceOrderDLst;
     }, onError: (e) {
       print(e);
     });
 
     Future<List<MaintenanceCar>> futureCar = _carApiService.getMaintenanceCars().then((data) {
       cars = data;
-      setState(() {
-
-      });
+      getCarData();
       return cars;
     }, onError: (e) {
       print(e);
@@ -409,15 +419,49 @@ class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataW
 
     Future<List<Driver>> futureDriver = _driverApiService.getDrivers().then((data) {
       drivers = data;
-      setState(() {
-
-      });
+      getDriverData();
       return drivers;
     }, onError: (e) {
       print(e);
     });
   }
+  getMaintenanceOrderData() {
+    if (maintenanceOrderDLst.isNotEmpty) {
+      for(var i = 0; i < maintenanceOrderDLst.length; i++){
 
+        MaintenanceOrderD _maintenanceOrderD= maintenanceOrderDLst[i];
+        _maintenanceOrderD.isUpdate=true;
+      }
+    }
+    setState(() {
+    });
+  }
+  getCarData() {
+    if (cars != null) {
+      for(var i = 0; i < cars.length; i++){
+        if(cars[i].carCode == maintenanceOrderDLst[0].carCode){
+          carItem = cars[cars.indexOf(cars[i])];
+
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
+  getDriverData() {
+    if (drivers != null) {
+      for(var i = 0; i < cars.length; i++){
+        if(drivers[i].driverCode == maintenanceOrderDLst[0].driverCode){
+          driverItem = drivers[drivers.indexOf(drivers[i])];
+
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
   saveMaintenanceOrder(BuildContext context) async {
 
     if (_trxSerialController.text.isEmpty) {
@@ -438,7 +482,10 @@ class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataW
       FN_showToast(context, 'please_select_driver'.tr(), Colors.black);
       return;
     }
-    await _maintenanceOrderHApiService.createMaintenanceOrderH(context, MaintenanceOrderH(
+
+    await _maintenanceOrderHApiService.updateMaintenanceOrderH(context,id,MaintenanceOrderH(
+
+      id: id,
       trxSerial: _trxSerialController.text,
       trxDate: _trxDateController.text,
       complaint: _complaintController.text,
@@ -446,25 +493,18 @@ class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataW
       year: 2024,
 
     ));
-    _maintenanceOrderDApiService.createMaintenanceOrderD(context, MaintenanceOrderD(
-
-      trxSerial: _trxSerialController.text,
-      carCode: selectedCarValue,
-      lineNum: lineNumber,
-      driverCode: selectedDriverValue,
-      meterReading: _counterReadingController.text,
-      year: 2024,
-    ));
-    Navigator.pop(context);
-  }
-  getDriverData() {
-    if (drivers != null) {
-      for(var i = 0; i < drivers.length; i++){
-        if(drivers[i].driverCode == selectedDriverValue){
-          driverItem = drivers[drivers.indexOf(drivers[i])];
-        }
+      MaintenanceOrderD _maintenanceOrderD = maintenanceOrderDLst[0];
+      if(_maintenanceOrderD.isUpdate == false){
+        _maintenanceOrderDApiService.updateMaintenanceOrderD(context, detailsId,MaintenanceOrderD(
+          id: detailsId,
+          trxSerial: _trxSerialController.text,
+          carCode: selectedCarValue,
+          lineNum: lineNumber,
+          driverCode: selectedDriverValue,
+          meterReading: _counterReadingController.text,
+          year: 2024,
+        ));
       }
-    }
-    setState(() {});
+    Navigator.pop(context) ;
   }
 }

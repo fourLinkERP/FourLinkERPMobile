@@ -36,8 +36,8 @@ String apiPassword="";//Will Set On App Preference
 //Company And Branch
 int systemCode = 1;
 String systemName= '';
-int companyCode = 1;//Will Set On App Preference
-int branchCode = 1; //Will Set On App Preference
+int companyCode = 0;//Will Set On App Preference
+int branchCode = 0; //Will Set On App Preference
 String companyName= '';  //'Test Company';
 String companyTaxID = '';
 String companyCommercialID = '';

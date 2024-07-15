@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/checkStores/checkStoreD.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/maintenanceOrders/maintenanceOrderD.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
@@ -7,16 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
-class CheckStoreDApiService {
+class MaintenanceOrderDApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/checkstorestempddetails/search';
-  String createApi= baseUrl.toString()  + '/api/v1/checkstorestempddetails';
-  String updateApi= baseUrl.toString()  + '/api/v1/checkstorestempddetails/';
-  String deleteApi= baseUrl.toString()  + '/api/v1/checkstorestempddetails/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/checkstorestempddetails/';
+  String searchApi= baseUrl.toString()  + '/api/v1/maintenanceorderdetails/search';
+  String createApi= baseUrl.toString()  + '/api/v1/maintenanceorderdetails';
+  String updateApi= baseUrl.toString()  + '/api/v1/maintenanceorderdetails/';
+  String deleteApi= baseUrl.toString()  + '/api/v1/maintenanceorderdetails/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/maintenanceorderdetails/';
 
-  Future<List<CheckStoreD>> getCheckStoreD(int? headerId) async {
-    print('Booter 1 CheckStoreD');
+  Future<List<MaintenanceOrderD>> getMaintenanceOrderD(int? headerId) async {
+    print('Booter 1 MaintenanceOrderD');
     Map data = {
       'Search':{
         'CompanyCode': companyCode,
@@ -25,7 +25,7 @@ class CheckStoreDApiService {
       }
     };
 
-    print('Booter 2  CheckStoreD' + data.toString());
+    print('Booter 2  MaintenanceOrderD' + data.toString());
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -36,13 +36,13 @@ class CheckStoreDApiService {
     );
 
     if (response.statusCode == 200) {
-      print('Booter 3 CheckStoreD');
+      print('Booter 3 MaintenanceOrderD');
       List<dynamic> data = jsonDecode(response.body)['data'];
-      List<CheckStoreD> list = [];
+      List<MaintenanceOrderD> list = [];
       if (data.isNotEmpty) {
-        list = data.map((item) => CheckStoreD.fromJson(item)).toList();
+        list = data.map((item) => MaintenanceOrderD.fromJson(item)).toList();
       }
-      print('B 1 Finish CheckStoreD');
+      print('B 1 Finish MaintenanceOrderD');
       return  list;
     } else {
       print('Booter Error');
@@ -50,16 +50,15 @@ class CheckStoreDApiService {
     }
   }
 
-  Future<int> createCheckStoreD(BuildContext context ,CheckStoreD checkStoreD) async {
+  Future<int> createMaintenanceOrderD(BuildContext context ,MaintenanceOrderD maintenanceOrderD) async {
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'Serial': checkStoreD.serial,
-      'lineNum': checkStoreD.lineNum,
-      'itemCode': checkStoreD.itemCode,
-      'unitCode': checkStoreD.unitCode,
-      'registeredBalance': checkStoreD.registeredBalance,
-      'storeCode': checkStoreD.storeCode,
+      'TrxSerial': maintenanceOrderD.trxSerial,
+      'lineNum': maintenanceOrderD.lineNum,
+      'carCode': maintenanceOrderD.carCode,
+      'driverCode': maintenanceOrderD.driverCode,
+      'meterReading': maintenanceOrderD.meterReading,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,
@@ -97,27 +96,25 @@ class CheckStoreDApiService {
 
     } else {
       print('Error Create D' );
-      //return  1;
-      throw Exception('Failed to post checkStoreD');
+      throw Exception('Failed to post maintenanceOrderD');
     }
 
     return  0;
   }
 
-  Future<int> updateCheckStoreD(BuildContext context ,int id, CheckStoreD checkStoreD) async {
+  Future<int> updateMaintenanceOrderD(BuildContext context ,int id, MaintenanceOrderD maintenanceOrderD) async {
 
     print('Start Update');
 
     Map data = {
+      'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'Serial': checkStoreD.serial,
-      'year': financialYearCode,
-      'lineNum': checkStoreD.lineNum,
-      'itemCode': checkStoreD.itemCode,
-      'unitCode': checkStoreD.unitCode,
-      'storeCode': checkStoreD.storeCode,
-      'registeredBalance': checkStoreD.registeredBalance,
+      'TrxSerial': maintenanceOrderD.trxSerial,
+      'lineNum': maintenanceOrderD.lineNum,
+      'carCode': maintenanceOrderD.carCode,
+      'driverCode': maintenanceOrderD.driverCode,
+      'meterReading': maintenanceOrderD.meterReading,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,
@@ -156,7 +153,7 @@ class CheckStoreDApiService {
     return 0;
   }
 
-  Future<void> deleteCheckStoreD(BuildContext context ,int? id) async {  //Future<void> deleteCheckStoreD(BuildContext context ,int? id) async {
+  Future<void> deleteMaintenanceOrderD(BuildContext context ,int? id) async {  //Future<void> deleteMaintenanceOrderD(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
     print('url' + apiDel);
@@ -177,7 +174,7 @@ class CheckStoreDApiService {
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);
     } else {
-      throw "Failed to delete a checkStoreD.";
+      throw "Failed to delete a maintenanceOrderD.";
     }
   }
 
