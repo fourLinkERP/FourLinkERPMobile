@@ -73,11 +73,11 @@ class _AttendanceAndDepartureListState extends State<AttendanceAndDepartureList>
         ),
       ),
         body: SafeArea(child: buildAttendance()),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked, // Optional: Adjust location if needed
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: Padding(
-        padding: const EdgeInsets.only(left: 20.0, bottom: 20.0,right: 20.0), // Adjust padding as desired
+        padding: const EdgeInsets.only(left: 20.0, bottom: 20.0,right: 20.0),
         child: Row(
-          mainAxisSize: MainAxisSize.min, // Keeps buttons compact
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Expanded(
               child: InkWell(

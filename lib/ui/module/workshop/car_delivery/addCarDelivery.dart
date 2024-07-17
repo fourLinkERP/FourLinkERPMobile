@@ -1,7 +1,11 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carDelivery/deliveryCar.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carEntryRegistrationH/carEntryRegistrationH.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/maintenanceStatuses/maintenanceStatus.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
+import 'package:fourlinkmobileapp/service/module/carMaintenance/carEntryRegistration/carEntryRegistrationApiService.dart';
+import 'package:fourlinkmobileapp/service/module/carMaintenance/deliveryCar/deliveryCarApiService.dart';
 import 'package:fourlinkmobileapp/service/module/carMaintenance/maintenanceClassifications/maintenanceClassificationApiService.dart';
 import 'package:fourlinkmobileapp/service/module/carMaintenance/maintenanceStatuses/maintenanceStatusApiService.dart';
 import 'package:fourlinkmobileapp/service/module/general/NextSerial/generalApiService.dart';
@@ -10,11 +14,15 @@ import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/ba
 import '../../../../common/globals.dart';
 import '../../../../common/login_components.dart';
 import '../../../../data/model/modules/module/carMaintenance/maintenanceClassification/maintenanceClassification.dart';
+import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../helpers/hex_decimal.dart';
+import '../../../../helpers/toast.dart';
 import '../../../../theme/fitness_app_theme.dart';
 import 'package:intl/intl.dart';
 
 NextSerialApiService _nextSerialApiService = NextSerialApiService();
+DeliveryCarApiService _deliveryCarApiService = DeliveryCarApiService();
+CarEntryRegistrationHApiService _carEntryRegistrationHApiService = CarEntryRegistrationHApiService();
 MaintenanceClassificationApiService _maintenanceClassificationApiService = MaintenanceClassificationApiService();
 MaintenanceStatusApiService _maintenanceStatusApiService = MaintenanceStatusApiService();
 CustomerApiService _customerApiService = CustomerApiService();
@@ -29,6 +37,7 @@ class AddCarDeliveryDataWidget extends StatefulWidget {
 class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
 
   final _addFormKey = GlobalKey<FormState>();
+  final _dropdownOrderFormKey = GlobalKey<FormState>();
   final _dropdownCustomerFormKey = GlobalKey<FormState>();
   final _dropdownClassificationFormKey = GlobalKey<FormState>();
   final _dropdownStatusFormKey = GlobalKey<FormState>();
@@ -40,6 +49,7 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
   final _totalOrderController = TextEditingController();
   final _totalPaidController = TextEditingController();
 
+  List<CarEntryRegistrationH> orders = [];
   List<MaintenanceClassification> maintenanceClassifications = [];
   List<Customer> customers = [];
   List<MaintenanceStatus> maintenanceStatuses = [];
@@ -47,6 +57,11 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
   String? selectedCustomerValue;
   String? selectedMaintenanceStatusValue;
   String? selectedMaintenanceClassificationValue;
+
+  Customer? customerItem = Customer(customerCode: "", customerNameAra: "", customerNameEng: "", id: 0);
+  MaintenanceStatus? maintenanceStatusItem = MaintenanceStatus(maintenanceStatusCode: "", maintenanceStatusNameAra: "", maintenanceStatusNameEng: "", id: 0);
+  MaintenanceClassification? classificationItem = MaintenanceClassification(maintenanceClassificationCode: "", maintenanceClassificationNameAra: "", maintenanceClassificationNameEng: "", id: 0);
+
 
   @override
   initState() {
@@ -61,7 +76,7 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          //saveCarDelivery(context);
+          saveDeliveryCar(context);
         },
         child: Container(
           decoration: BoxDecoration(
@@ -135,7 +150,7 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
                     SizedBox(
                       width: 100,
                       child: textFormFields(
-                        enable: true,
+                        enable: false,
                         controller: _trxDateController,
                         hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                         onTap: () async {
@@ -159,6 +174,74 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Form(
+                      key: _dropdownOrderFormKey,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                              width: 70,
+                              child: Text('${"order_number".tr()} :', style: const TextStyle(fontWeight: FontWeight.bold))),
+                          const SizedBox(width: 10),
+                          SizedBox(
+                            width: 200,
+                            child: DropdownSearch<CarEntryRegistrationH>(
+                              selectedItem: null,
+                              popupProps: PopupProps.menu(
+                                itemBuilder: (context, item, isSelected) {
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                                    decoration: !isSelected ? null
+                                        : BoxDecoration(
+
+                                      border: Border.all(color: Colors.black12),
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.white,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text((langId==1)? item.trxSerial.toString() : item.trxSerial.toString()),
+                                    ),
+                                  );
+                                },
+                                showSearchBox: true,
+
+                              ),
+
+                              items: orders,
+                              itemAsString: (CarEntryRegistrationH u) => (langId==1)? u.trxSerial.toString() : u.trxSerial.toString(),
+
+                              onChanged: (value){
+                                selectedOrderValue = value!.trxSerial.toString();
+                                selectedCustomerValue = value.customerCode.toString();
+                                getCustomerData();
+                                selectedMaintenanceStatusValue = value.maintenanceStatusCode.toString();
+                                getStatusData();
+                                selectedMaintenanceClassificationValue = value.maintenanceClassificationCode.toString();
+                                getClassificationData();
+                                _totalPaidController.text = "0.0";
+                                _totalOrderController.text = value.totalValue.toString();
+                              },
+
+                              filterFn: (instance, filter){
+                                if((langId==1)? instance.trxSerial!.contains(filter) : instance.trxSerial!.contains(filter)){
+                                  print(filter);
+                                  return true;
+                                }
+                                else{
+                                  return false;
+                                }
+                              },
+                              dropdownDecoratorProps: const DropDownDecoratorProps(
+                                dropdownSearchDecoration: InputDecoration(
+
+                                ),),
+
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Form(
                       key: _dropdownCustomerFormKey,
                         child: Row(
                           children: [
@@ -169,7 +252,7 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
                             SizedBox(
                               width: 200,
                               child: DropdownSearch<Customer>(
-                                selectedItem: null,
+                                selectedItem: customerItem,
                                 popupProps: PopupProps.menu(
                                   itemBuilder: (context, item, isSelected) {
                                     return Container(
@@ -263,7 +346,7 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
                           SizedBox(
                             width: 200,
                             child: DropdownSearch<MaintenanceStatus>(
-                              selectedItem: null,
+                              selectedItem: maintenanceStatusItem,
                               popupProps: PopupProps.menu(
                                 itemBuilder: (context, item, isSelected) {
                                   return Container(
@@ -323,7 +406,7 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
                           SizedBox(
                             width: 200,
                               child: DropdownSearch<MaintenanceClassification>(
-                                selectedItem: null,
+                                selectedItem: classificationItem,
                                 popupProps: PopupProps.menu(
                                   itemBuilder: (context, item, isSelected) {
                                     return Container(
@@ -467,12 +550,32 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
 
   fillCompos(){
 
-    Future<List<MaintenanceClassification>> futureMaintenanceClassification = _maintenanceClassificationApiService
-        .getMaintenanceClassifications().then((data) {
-      maintenanceClassifications = data;
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("CMN_DeliveryCars", "TrxSerial", " And CompanyCode=$companyCode And BranchCode=$branchCode").then((data) {
+      NextSerial nextSerial = data;
+
+      DateTime now = DateTime.now();
+      _trxDateController.text =DateFormat('yyyy-MM-dd').format(now);
+      _trxSerialController.text = nextSerial.nextSerial.toString();
+      return nextSerial;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<CarEntryRegistrationH>> futureCarEntryRegistrationH = _carEntryRegistrationHApiService.getCarEntryRegistrationH().then((data) {
+      orders = data;
       setState(() {
 
       });
+      return orders;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<MaintenanceClassification>> futureMaintenanceClassification = _maintenanceClassificationApiService
+        .getMaintenanceClassifications().then((data) {
+      maintenanceClassifications = data;
+      getClassificationData();
+
       return maintenanceClassifications;
     }, onError: (e) {
       print(e);
@@ -480,9 +583,8 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
 
     Future<List<MaintenanceStatus>> futureMaintenanceStatus = _maintenanceStatusApiService.getMaintenanceStatuses().then((data) {
       maintenanceStatuses = data;
-      setState(() {
+      getStatusData();
 
-      });
       return maintenanceStatuses;
     }, onError: (e) {
       print(e);
@@ -490,14 +592,64 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
 
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
-      setState(() {
+      getCustomerData();
 
-      });
       return customers;
     }, onError: (e) {
       print(e);
     });
+  }
 
+  getCustomerData() {
+    if (customers.isNotEmpty) {
+      for(var i = 0; i < customers.length; i++){
+        if(customers[i].customerCode == selectedCustomerValue){
+          customerItem = customers[customers.indexOf(customers[i])];
+        }
+      }
+    }
+    setState(() {});
+  }
+  getStatusData() {
+    if (maintenanceStatuses.isNotEmpty) {
+      for(var i = 0; i < maintenanceStatuses.length; i++){
+        if(maintenanceStatuses[i].maintenanceStatusCode == selectedMaintenanceStatusValue){
+          maintenanceStatusItem = maintenanceStatuses[maintenanceStatuses.indexOf(maintenanceStatuses[i])];
+        }
+      }
+    }
+    setState(() {});
+  }
+  getClassificationData() {
+    if (maintenanceClassifications.isNotEmpty) {
+      for(var i = 0; i < maintenanceClassifications.length; i++){
+        if(maintenanceClassifications[i].maintenanceClassificationCode == selectedMaintenanceClassificationValue){
+          classificationItem = maintenanceClassifications[maintenanceClassifications.indexOf(maintenanceClassifications[i])];
+        }
+      }
+    }
+    setState(() {});
+  }
+  saveDeliveryCar(BuildContext context) async {
 
+    if (selectedOrderValue == null || selectedOrderValue!.isEmpty) {
+      FN_showToast(context, 'please_select_order'.tr(), Colors.black);
+      return;
+    }
+
+    if (selectedCustomerValue == null || selectedCustomerValue!.isEmpty) {
+      FN_showToast(context, 'please_Set_Customer'.tr(), Colors.black);
+      return;
+    }
+    await _deliveryCarApiService.createDeliveryCar(context, DeliveryCar(
+      trxSerial: _trxSerialController.text,
+      trxDate: _trxDateController.text,
+      repairOrderCode: selectedOrderValue,
+      totalValue: double.parse(_totalOrderController.text),
+      totalPaid: double.parse(_totalPaidController.text),
+      notes: _notesController.text,
+
+    ));
+    Navigator.pop(context);
   }
 }
