@@ -627,6 +627,7 @@
     "total_order": "total order",
     "total_paid": "total paid",
     "order_number": "Order number",
-    "please_select_order": "please select order number"
+    "please_select_order": "please select order number",
+    "the_search": "The search"
 
 }

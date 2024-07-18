@@ -30,7 +30,7 @@ class Employee {
       empCode: json['empCode'] as String,
       empNameAra: json['empNameAra'] as String,
       empNameEng: json['empNameEng'] as String,
-      userCode: json['userCode'] as String,
+      userCode: (json['userCode'] != null) ? json['userCode'] as String : "",
       userId: json['userId'] as String,
       isManager: json['isManager'] as bool,
       isIt: json['isIt'] as bool,

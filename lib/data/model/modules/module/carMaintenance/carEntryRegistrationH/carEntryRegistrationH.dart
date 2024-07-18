@@ -12,7 +12,7 @@ class CarEntryRegistrationH{
   String? maintenanceClassificationName;
   String? chassisNumber;
   String? chassisName;
-  String? plateNumber;
+  String? plateNumberAra;
   String? plateName;
   double? totalValue;
   //double? totalPaid;
@@ -25,7 +25,7 @@ class CarEntryRegistrationH{
     this.maintenanceStatusCode,
     this.maintenanceClassificationCode,
     this.chassisNumber,
-    this.plateNumber,
+    this.plateNumberAra,
     this.totalValue,
     //this.totalPaid,
     this.carName,
@@ -49,7 +49,7 @@ class CarEntryRegistrationH{
       maintenanceClassificationName: (json["maintenanceClassificationName"] != null) ? json["maintenanceClassificationName"] as String : "",
       chassisNumber: (json["chassisNumber"] != null) ? json["chassisNumber"] as String : "",
       chassisName: (json["chassisName"] != null) ? json["chassisName"] as String : "",
-      plateNumber: (json["plateNumber"] != null) ? json["plateNumber"] as String : "",
+      plateNumberAra: (json["plateNumberAra"] != null) ? json["plateNumberAra"] as String : "",
       plateName: (json["plateName"] != null) ? json["plateName"] as String : "",
       totalValue: (json["totalValue"] != null) ? json["totalValue"].toDouble() : 0.0,
       //totalPaid: (json["totalPaid"] != null) ? json["totalPaid"].toDouble() : 0.0,

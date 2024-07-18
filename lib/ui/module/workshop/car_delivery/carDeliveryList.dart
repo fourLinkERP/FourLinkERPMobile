@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/service/module/carMaintenance/deliveryCar/deliveryCarApiService.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/car_delivery/addCarDelivery.dart';
+import 'package:fourlinkmobileapp/ui/module/workshop/car_delivery/detailsCarDelivery.dart';
 import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
@@ -151,6 +152,23 @@ class _CarDeliveryListState extends State<CarDeliveryList> {
       FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
     }
   }
+
+  _navigateToDetailsScreen(BuildContext context, DeliveryCar deliveryCar) async {
+    int menuId=14222;
+    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    if(isAllowAdd)
+    {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => DetailsCarDelivery(deliveryCar),
+      )).then((value) {
+        getData();
+      });
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    }
+  }
+
   Widget buildDeliveryCars(){
     //return Center(child: Text("No Data To Show", style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     if(State is AppErrorState){
@@ -175,6 +193,7 @@ class _CarDeliveryListState extends State<CarDeliveryList> {
               elevation: 4,
               child: InkWell(
                 onTap: () {
+                  _navigateToDetailsScreen(context, deliveryCars[index]);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(10),
@@ -184,7 +203,7 @@ class _CarDeliveryListState extends State<CarDeliveryList> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.asset(
-                          'assets/fitness_app/attendance.jpg',
+                          'assets/fitness_app/carDelivery.png',
                           width: 60,
                           height: 60,
                           fit: BoxFit.cover,

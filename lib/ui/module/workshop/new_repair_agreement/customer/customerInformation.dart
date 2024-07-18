@@ -47,12 +47,12 @@ class _CustomerInfoState extends State<CustomerInfo> {
   final CarApiService apiCar = CarApiService();
   final _addFormKey = GlobalKey<FormState>();
   final _serialController = TextEditingController();
-  final mobileNumberController = TextEditingController();
-  final plateNumberController = TextEditingController();
-  final searchNumberController = TextEditingController();
-  final customerNameController = TextEditingController();
-  final customerIdentityController = TextEditingController();
-  final emailController = TextEditingController();
+  final _mobileNumberController = TextEditingController();
+  final _plateNumberController = TextEditingController();
+  final _searchNumberController = TextEditingController();
+  final _customerNameController = TextEditingController();
+  final _customerIdentityController = TextEditingController();
+  final _emailController = TextEditingController();
   final bringerNameController = TextEditingController();
   final bringerNumberController = TextEditingController();
   final chassis1NumberController = TextEditingController();
@@ -62,7 +62,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
   final addCustomerNameEngController = TextEditingController();
   final addCustomerNameAraController = TextEditingController();
   final addCustomerIDController = TextEditingController();
-  final addCustomerEmailController = TextEditingController();
+  final _addCustomerEmailController = TextEditingController();
   final addCustomerPhoneController = TextEditingController();
   final addCarChassisController = TextEditingController();
   final addCarPlateController = TextEditingController();
@@ -163,8 +163,8 @@ class _CustomerInfoState extends State<CustomerInfo> {
   Future<void> getData() async {
     try {
       List<CustomerCar> data = await apiCar.getCustomerCars(
-        _value == 1 ? searchNumberController.text.toString() :'',
-        _value == 2 ? searchNumberController.text.toString() :'',
+        _value == 1 ? _searchNumberController.text.toString() :'',
+        _value == 2 ? _searchNumberController.text.toString() :'',
       );
 
       if (data != null) {
@@ -278,10 +278,10 @@ class _CustomerInfoState extends State<CustomerInfo> {
                     //       setState(() {
                     //         DTO.page1["customerCode"] = _customerCar[0].customerCode!;
                     //         DTO.page1["carCode"] = _customerCar[0].carCode!;
-                    //         customerNameController.text = _customerCar[0].customerName!;
-                    //         customerIdentityController.text = _customerCar[0].idNo!;
-                    //         emailController.text = _customerCar[0].email!;
-                    //         mobileNumberController.text = _customerCar[0].mobile!;
+                    //         _customerNameController.text = _customerCar[0].customerName!;
+                    //         _customerIdentityController.text = _customerCar[0].idNo!;
+                    //         _emailController.text = _customerCar[0].email!;
+                    //         _mobileNumberController.text = _customerCar[0].mobile!;
                     //         chassis1NumberController.text = _customerCar[0].chassisNumber!;
                     //         plate1NameController.text = _customerCar[0].plateNumberAra!;
                     //         modelController.text = _customerCar[0].model!;
@@ -293,7 +293,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                     enable: true,
                     label: _value == 1 ?'chassis_num'.tr() : 'mobile'.tr(),
                     prefix: Icons.search,
-                    controller: searchNumberController,
+                    controller: _searchNumberController,
                     type: TextInputType.text,
                     colors: Colors.blueGrey,
                     validate: (String? value) {
@@ -308,7 +308,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                 IconButton(
                   onPressed: () async {
                     await getData();
-                    if (searchNumberController.text.isEmpty) {
+                    if (_searchNumberController.text.isEmpty) {
                       FN_showToast(context, "please_enter_mobile_or_plate_number".tr(), Colors.red);
                     }
                     else if(_customerCar == null || _customerCar.isEmpty)
@@ -324,10 +324,10 @@ class _CustomerInfoState extends State<CustomerInfo> {
                           DTO.page1["carCode"] = _customerCar[0].carCode!;
                           print("DTO.customerCode =" + DTO.page1["customerCode"]!);
                           print("DTO.carCode =" + DTO.page1["carCode"]!);
-                          customerNameController.text = _customerCar[0].customerName!;
-                          customerIdentityController.text = _customerCar[0].idNo!;
-                          emailController.text = _customerCar[0].email!;
-                          mobileNumberController.text = _customerCar[0].mobile!;
+                          _customerNameController.text = _customerCar[0].customerName!;
+                          _customerIdentityController.text = _customerCar[0].idNo!;
+                          _emailController.text = _customerCar[0].email!;
+                          _mobileNumberController.text = _customerCar[0].mobile!;
                           chassis1NumberController.text = _customerCar[0].chassisNumber!;
                           plate1NameController.text = _customerCar[0].plateNumberAra!;
                           modelController.text = _customerCar[0].model!;
@@ -594,7 +594,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         addCustomerNameAraController,
                         selectedCustomerTypeValue,
                         selectedCustomerGroupValue,
-                        addCustomerEmailController,
+                        _addCustomerEmailController,
                         addCustomerIDController,
                         addCustomerPhoneController
                       );
@@ -669,7 +669,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         width: 220,
                         child: defaultFormField(
                           enable: false,
-                          controller: customerNameController,
+                          controller: _customerNameController,
                           type: TextInputType.text,
                           colors: Colors.blueGrey,
                           validate: (String? value) {
@@ -686,7 +686,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         width: 225,
                         child: defaultFormField(
                           enable: false,
-                          controller: customerIdentityController,
+                          controller: _customerIdentityController,
                           type: TextInputType.text,
                           colors: Colors.blueGrey,
                           validate: (String? value) {
@@ -703,7 +703,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                         width: 225,
                         child: defaultFormField(
                           enable: false,
-                          controller: emailController,
+                          controller: _emailController,
                           type: TextInputType.emailAddress,
                           colors: Colors.blueGrey,
                           validate: (String? value) {
@@ -1026,7 +1026,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                                     customerCode: addCustomerCodeController.text ,
                                     customerNameAra: addCustomerNameAraController.text ,
                                     customerNameEng: addCustomerNameEngController.text ,
-                                    email: addCustomerEmailController.text ,
+                                    email: _addCustomerEmailController.text ,
                                     phone1: addCustomerPhoneController.text ,
                                     idNo: addCustomerIDController.text,
                                   )
