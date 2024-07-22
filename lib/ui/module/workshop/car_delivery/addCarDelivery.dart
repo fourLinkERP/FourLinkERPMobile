@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carDelivery/deliveryCar.dart';
@@ -19,6 +22,9 @@ import '../../../../helpers/hex_decimal.dart';
 import '../../../../helpers/toast.dart';
 import '../../../../theme/fitness_app_theme.dart';
 import 'package:intl/intl.dart';
+
+import '../../../../theme/theme_helper.dart';
+import '../customerSignatureComponent/customerSignature.dart';
 
 NextSerialApiService _nextSerialApiService = NextSerialApiService();
 DeliveryCarApiService _deliveryCarApiService = DeliveryCarApiService();
@@ -57,17 +63,37 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
   String? selectedCustomerValue;
   String? selectedMaintenanceStatusValue;
   String? selectedMaintenanceClassificationValue;
+  String? customerSignature;
 
   Customer? customerItem = Customer(customerCode: "", customerNameAra: "", customerNameEng: "", id: 0);
   MaintenanceStatus? maintenanceStatusItem = MaintenanceStatus(maintenanceStatusCode: "", maintenanceStatusNameAra: "", maintenanceStatusNameEng: "", id: 0);
   MaintenanceClassification? classificationItem = MaintenanceClassification(maintenanceClassificationCode: "", maintenanceClassificationNameAra: "", maintenanceClassificationNameEng: "", id: 0);
 
+  Uint8List? _signature;
+
+  void _showSignaturePopup() async {
+    final signature = await showDialog<Uint8List>(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomerSignatureComponent();
+      },
+    );
+
+    if (signature != null) {
+      setState(() {
+        _signature = signature;
+        convertUint8ListToBase64(_signature!);
+        customerSignature = convertUint8ListToBase64(_signature!);
+        print("customerSignature String: ${convertUint8ListToBase64(_signature!)}");
+      });
+    }
+  }
 
   @override
   initState() {
     super.initState();
 
-    fillCompos();
+    _fillCompos();
   }
 
   DateTime get pickedDate => DateTime.now();
@@ -507,6 +533,36 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
                       ],
                     ),
                     const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 100,
+                          child: Center(child: Text("signature".tr(), style: const TextStyle(fontWeight: FontWeight.bold),)),
+                        ),
+                        SizedBox(
+                          width: 170,
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                height: 40,
+                                child: ElevatedButton(
+                                  style: ThemeHelper().buttonStyle(),
+                                  onPressed: _showSignaturePopup,
+                                  child: const Text('Sign'),
+                                ),
+                              ),
+                              const SizedBox(height: 20),
+                              _signature != null
+                                  ? Image.memory(_signature!)
+                                  : const Text('No signature captured'),
+                            ],
+                          ),
+
+                        ),
+                      ],
+                    )
+
                   ],
                 )
               ],
@@ -551,7 +607,7 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
     );
   }
 
-  fillCompos(){
+  _fillCompos(){
 
     Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("CMN_DeliveryCars", "TrxSerial", " And CompanyCode=$companyCode And BranchCode=$branchCode").then((data) {
       NextSerial nextSerial = data;
@@ -651,8 +707,12 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
       totalValue: double.parse(_totalOrderController.text),
       totalPaid: double.parse(_totalPaidController.text),
       notes: _notesController.text,
+      customerSignature: customerSignature
 
     ));
     Navigator.pop(context);
+  }
+  String convertUint8ListToBase64(Uint8List data) {
+    return base64Encode(data);
   }
 }

@@ -1,13 +1,19 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carCars/carCar.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carDelivery/deliveryCar.dart';
+import 'package:fourlinkmobileapp/service/general/car/car_delivery_report.dart';
 import '../../../../common/globals.dart';
 import '../../../../common/login_components.dart';
+import '../../../../data/model/modules/module/carMaintenance/carDeliveyPrint/printCarDelivery.dart';
 import '../../../../data/model/modules/module/carMaintenance/carEntryRegistrationH/carEntryRegistrationH.dart';
 import '../../../../data/model/modules/module/carMaintenance/maintenanceClassification/maintenanceClassification.dart';
 import '../../../../data/model/modules/module/carMaintenance/maintenanceStatuses/maintenanceStatus.dart';
+import '../../../../helpers/toast.dart';
+import '../../../../service/general/Pdf/pdf_api.dart';
 import '../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
+import '../../../../service/module/carMaintenance/carCars/carApiService.dart';
 import '../../../../service/module/carMaintenance/carEntryRegistration/carEntryRegistrationApiService.dart';
 import '../../../../service/module/carMaintenance/deliveryCar/deliveryCarApiService.dart';
 import '../../../../service/module/carMaintenance/maintenanceClassifications/maintenanceClassificationApiService.dart';
@@ -15,11 +21,14 @@ import '../../../../service/module/carMaintenance/maintenanceStatuses/maintenanc
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:intl/intl.dart';
 
+import '../../../../utils/permissionHelper.dart';
+
 DeliveryCarApiService _deliveryCarApiService = DeliveryCarApiService();
 CarEntryRegistrationHApiService _carEntryRegistrationHApiService = CarEntryRegistrationHApiService();
 MaintenanceClassificationApiService _maintenanceClassificationApiService = MaintenanceClassificationApiService();
 MaintenanceStatusApiService _maintenanceStatusApiService = MaintenanceStatusApiService();
 CustomerApiService _customerApiService = CustomerApiService();
+CarApiService _carApiService = CarApiService();
 
 class DetailsCarDelivery extends StatefulWidget {
    DetailsCarDelivery(this.carDelivery);
@@ -48,16 +57,22 @@ class _DetailsCarDeliveryState extends State<DetailsCarDelivery> {
   List<CarEntryRegistrationH> orders = [];
   List<MaintenanceClassification> maintenanceClassifications = [];
   List<Customer> customers = [];
+  List<Car> cars = [];
   List<MaintenanceStatus> maintenanceStatuses = [];
 
   int id = 0;
   String? selectedOrderValue;
   String? selectedCustomerValue;
+  String? selectedCustomerName;
+  String? selectedCarValue;
+  String? selectedCarName;
   String? selectedMaintenanceStatusValue;
   String? selectedMaintenanceClassificationValue;
 
+  CarDeliveryPrint? carDeliveryPrint = CarDeliveryPrint(trxSerial: "", trxDate: "", classificationName: "", statusName: "", customerName: "", carName: "", totalPaid: 0.0, totalValue: 0.0, notes: "");
   CarEntryRegistrationH? carEntryItem = CarEntryRegistrationH(trxSerial: "", maintenanceClassificationCode: "", maintenanceStatusCode: "", customerCode: "", chassisNumber: "",carCode: "", plateNumberAra: "", id: 0);
   Customer? customerItem = Customer(customerCode: "", customerNameAra: "", customerNameEng: "", id: 0);
+  Car? carItem = Car(carCode: "", carNameAra: "", carNameEng: "", id: 0);
   MaintenanceStatus? maintenanceStatusItem = MaintenanceStatus(maintenanceStatusCode: "", maintenanceStatusNameAra: "", maintenanceStatusNameEng: "", id: 0);
   MaintenanceClassification? classificationItem = MaintenanceClassification(maintenanceClassificationCode: "", maintenanceClassificationNameAra: "", maintenanceClassificationNameEng: "", id: 0);
 
@@ -73,7 +88,7 @@ class _DetailsCarDeliveryState extends State<DetailsCarDelivery> {
     _totalOrderController.text = widget.carDelivery.totalValue.toString();
 
 
-    fillCompos();
+    _fillCompos();
 
     super.initState();
   }
@@ -481,6 +496,35 @@ class _DetailsCarDeliveryState extends State<DetailsCarDelivery> {
                       ],
                     ),
                     const SizedBox(height: 20),
+                    Center(
+                      child: SizedBox(
+                        //margin: const EdgeInsets.only(left: 50.0,),
+                        width: 150,
+                        height: 50,
+                        child: ElevatedButton.icon(
+                          icon: const Icon(
+                            Icons.print,
+                            color: Colors.white,
+                            size: 15.0,
+                            weight: 5,
+                          ),
+                          label: Text('print'.tr(),
+                              style: const TextStyle(color: Colors.white)),
+                          onPressed: () {
+                            _navigateToPrintScreen(context , carDeliveryPrint!);
+                          },
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              padding: const EdgeInsets.only(left: 5, right: 5,),
+                              backgroundColor: Colors.blueGrey,
+                              foregroundColor: Colors.blueGrey,
+                              elevation: 0,
+                              side: const BorderSide(width: 1, color: Colors.blueGrey)),
+                        ),
+                      ),
+                    ),
                   ],
                 )
               ],
@@ -524,19 +568,24 @@ class _DetailsCarDeliveryState extends State<DetailsCarDelivery> {
     );
   }
 
-  fillCompos(){
-
+  _fillCompos(){
     Future<List<CarEntryRegistrationH>> futureCarEntryRegistrationH = _carEntryRegistrationHApiService.getCarEntryRegistrationH().then((data) {
       orders = data;
       getOrderData();
       selectedCustomerValue = carEntryItem?.customerCode;
+      selectedCustomerName = carEntryItem?.customerName;
       getCustomerData();
       selectedMaintenanceClassificationValue = carEntryItem?.maintenanceClassificationCode;
       getClassificationData();
       selectedMaintenanceStatusValue = carEntryItem?.maintenanceStatusCode;
       getStatusData();
+      selectedCarValue = carEntryItem?.carCode;
+      selectedCarName = carEntryItem?.carName;
+      getCarData();
       _chassisNumberController.text = carEntryItem!.chassisNumber.toString();
       _plateNumberController.text = carEntryItem!.plateNumberAra.toString();
+      carDeliveryPrint?.chassisNumber = carEntryItem!.chassisNumber.toString();
+      carDeliveryPrint?.plateNumber = carEntryItem!.plateNumberAra.toString();
       return orders;
     }, onError: (e) {
       print(e);
@@ -569,6 +618,15 @@ class _DetailsCarDeliveryState extends State<DetailsCarDelivery> {
     }, onError: (e) {
       print(e);
     });
+
+    Future<List<Car>> futureCar = _carApiService.getCars().then((data) {
+      cars = data;
+      getCarData();
+
+      return cars;
+    }, onError: (e) {
+      print(e);
+    });
   }
 
   getOrderData() {
@@ -592,11 +650,22 @@ class _DetailsCarDeliveryState extends State<DetailsCarDelivery> {
     }
     setState(() {});
   }
+  getCarData() {
+    if (cars.isNotEmpty) {
+      for(var i = 0; i < cars.length; i++){
+        if(cars[i].carCode == selectedCarValue){
+          carItem = cars[cars.indexOf(cars[i])];
+        }
+      }
+    }
+    setState(() {});
+  }
   getStatusData() {
     if (maintenanceStatuses.isNotEmpty) {
       for(var i = 0; i < maintenanceStatuses.length; i++){
         if(maintenanceStatuses[i].maintenanceStatusCode == selectedMaintenanceStatusValue){
           maintenanceStatusItem = maintenanceStatuses[maintenanceStatuses.indexOf(maintenanceStatuses[i])];
+          carDeliveryPrint?.statusName = maintenanceStatusItem?.maintenanceStatusName;
         }
       }
     }
@@ -607,9 +676,41 @@ class _DetailsCarDeliveryState extends State<DetailsCarDelivery> {
       for(var i = 0; i < maintenanceClassifications.length; i++){
         if(maintenanceClassifications[i].maintenanceClassificationCode == selectedMaintenanceClassificationValue){
           classificationItem = maintenanceClassifications[maintenanceClassifications.indexOf(maintenanceClassifications[i])];
+          carDeliveryPrint?.classificationName = classificationItem?.maintenanceClassificationNameAra;
         }
       }
     }
     setState(() {});
+  }
+  _navigateToPrintScreen (BuildContext context, CarDeliveryPrint carDeliveryPrint) async {
+
+    int menuId=14222;
+    bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
+    if(isAllowPrint)
+    {
+      print('hohoooooooooooz2');
+      DateTime date = DateTime.parse(widget.carDelivery.trxDate!);
+      final dueDate = date.add(Duration(days: 7));
+
+      carDeliveryPrint.trxSerial = widget.carDelivery.trxSerial.toString();
+      carDeliveryPrint.trxDate = widget.carDelivery.trxDate.toString();
+      carDeliveryPrint.carDeliveryTitle=langId==1?'إذن تسليم السيارة':' إذن تسليم السيارة';
+
+      carDeliveryPrint.companyName= langId == 1 ? companyName : companyName;
+      carDeliveryPrint.companyAddress= langId==1?  companyAddress : companyAddress;
+      carDeliveryPrint.companyCommercial= langId==1?  companyCommercialID  : companyCommercialID;
+      carDeliveryPrint.carName = selectedCarName;
+      carDeliveryPrint.customerName = selectedCustomerName;
+      carDeliveryPrint.repairOrderCode = carEntryItem?.trxSerial;
+
+
+      final pdfFile = await CarDeliveryReport.generate(carDeliveryPrint);
+      PdfApi.openFile(pdfFile);
+
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
+    }
   }
 }

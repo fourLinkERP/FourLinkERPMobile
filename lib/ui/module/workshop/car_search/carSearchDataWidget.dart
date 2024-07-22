@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carDelivery/deliveryCar.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../../../common/globals.dart';
+import '../../../../common/login_components.dart';
+import '../../../../helpers/toast.dart';
+import '../../../../service/module/carMaintenance/deliveryCar/deliveryCarApiService.dart';
+
+DeliveryCarApiService _deliveryCarApiService = DeliveryCarApiService();
 
 class CarSearchDataWidget extends StatefulWidget {
   const CarSearchDataWidget({Key? key}) : super(key: key);
@@ -12,6 +19,11 @@ class CarSearchDataWidget extends StatefulWidget {
 class _CarSearchDataWidgetState extends State<CarSearchDataWidget> {
 
   final _addFormKey = GlobalKey<FormState>();
+  final _searchNumberController = TextEditingController();
+  int _value = 1;
+  bool isSelected = true;
+
+  List<DeliveryCar> _orderLst = <DeliveryCar>[];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,8 +44,134 @@ class _CarSearchDataWidgetState extends State<CarSearchDataWidget> {
       ),
       body: Form(
         key: _addFormKey,
-        child: ListView(
+        child: Container(
+          margin: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+          child: ListView(
+            children: [
+              Container(
+               // margin: const EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Row(
+                        children:[
+                          Radio(
+                              value: 1,
+                              groupValue: _value,
+                              onChanged: (int? value) {
+                                setState(() {
+                                  _value = value!;
+                                });
+                              }),
 
+                          Text("chassis_num".tr() ,style: const TextStyle(fontWeight: FontWeight.bold),),
+
+                          const SizedBox(width: 50,),
+                          Radio(
+                              value: 2,
+                              groupValue: _value,
+                              onChanged: (int? value) {
+                                setState(() {
+                                  _value = value!;
+                                });
+                              }),
+                          Text("plate_number".tr(),style: const TextStyle(fontWeight: FontWeight.bold)),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          height: 40,
+                          width: 250,
+                          child: defaultFormField(
+                            enable: true,
+                            label: _value == 1 ?'chassis_num'.tr() : 'plate_number'.tr(),
+                            prefix: Icons.search,
+                            controller: _searchNumberController,
+                            type: TextInputType.text,
+                            colors: Colors.blueGrey,
+                            validate: (String? value) {
+                              if (value!.isEmpty) {
+                                return 'plate number must be non empty';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        const SizedBox(width: 10,),
+                        IconButton(
+                          onPressed: () async {
+                            // await getData();
+                            // if (_searchNumberController.text.isEmpty) {
+                            //   FN_showToast(context, "please_enter_mobile_or_plate_number".tr(), Colors.red);
+                            // }
+                            // else if(_customerCar == null || _customerCar.isEmpty)
+                            // {
+                            //   checkExistence();
+                            // }
+                            // else {
+                            //   await getData();
+                            //   if (_customerCar != null && _customerCar.isNotEmpty) {
+                            //     print("_customer car: " + _customerCar.toString());
+                            //     setState(() {
+                            //       DTO.page1["customerCode"] = _customerCar[0].customerCode!;
+                            //       DTO.page1["carCode"] = _customerCar[0].carCode!;
+                            //       print("DTO.customerCode =" + DTO.page1["customerCode"]!);
+                            //       print("DTO.carCode =" + DTO.page1["carCode"]!);
+                            //       _customerNameController.text = _customerCar[0].customerName!;
+                            //       _customerIdentityController.text = _customerCar[0].idNo!;
+                            //       _emailController.text = _customerCar[0].email!;
+                            //       _mobileNumberController.text = _customerCar[0].mobile!;
+                            //       chassis1NumberController.text = _customerCar[0].chassisNumber!;
+                            //       plate1NameController.text = _customerCar[0].plateNumberAra!;
+                            //       modelController.text = _customerCar[0].model!;
+                            //       selectedCarGroupValue = _customerCar[0].groupCode;
+                            //     });
+                            //     getCarGroupData();
+                            //   }
+                            // }
+                          },
+                          icon: const Icon(Icons.search),
+                          iconSize: 30,
+                          color: Colors.blueGrey,
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 20),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: DataTable(
+                  border: TableBorder.all(),
+
+                  headingRowColor: MaterialStateProperty.all(const Color.fromRGBO(144, 16, 46, 1)),
+                  columnSpacing: 20,
+                  columns: [
+                    DataColumn(label: Text("order_number".tr(),style: const TextStyle(color: Colors.white),),),
+                    DataColumn(label: Text("date".tr(),style: const TextStyle(color: Colors.white),),),
+                    DataColumn(label: Text("customer".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                    DataColumn(label: Text("chassis_num".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                    DataColumn(label: Text("status".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                  ],
+                  rows: _orderLst.map((p) =>
+                      DataRow(cells: [
+                        DataCell(SizedBox(width: 5, child: Text(p.repairOrderCode.toString()))),
+                        DataCell(SizedBox(width: 50, child: Text(p.trxDate.toString()))),
+                        DataCell(SizedBox(child: Text(p.totalValue.toString()))),
+                        DataCell(SizedBox(child: Text(p.totalPaid.toString()))),
+                        DataCell(SizedBox(child: Text(p.trxSerial.toString()))),
+
+                      ]),
+                  ).toList(),
+                ),
+              ),
+
+            ],
+          ),
         ),
       ),
     );

@@ -17,7 +17,6 @@ class CarReceiveH {
   String? maintenanceClassificationCode;
   String? maintenanceTypeCode;
   String? paymentMethodCode;
-  String? customerSignature;
   bool? navMemoryCard;
   bool? alloyWheelLock;
   bool? usbDevice;
@@ -54,6 +53,8 @@ class CarReceiveH {
   String? comment5;
   String? comment6;
   String? addTime;
+  String? customerSignature;
+  String? customerSignatureImage;
 
   CarReceiveH(
       {
@@ -73,7 +74,6 @@ class CarReceiveH {
         this.maintenanceClassificationCode,
         this.maintenanceTypeCode,
         this.paymentMethodCode,
-        this.customerSignature,
         this.navMemoryCard,
         this.alloyWheelLock,
         this.usbDevice,
@@ -109,6 +109,8 @@ class CarReceiveH {
         this.comment4,
         this.comment5,
         this.comment6,
+        this.customerSignature,
+        this.customerSignatureImage,
 
       });
   factory CarReceiveH.fromJson(Map<String, dynamic> json){
@@ -129,7 +131,6 @@ class CarReceiveH {
       maintenanceClassificationCode: (json['maintenanceClassificationCode'] != null) ? json['maintenanceClassificationCode'] as String : " ",
       maintenanceTypeCode: (json['maintenanceTypeCode'] != null) ? json['maintenanceTypeCode'] as String : " ",
       paymentMethodCode: (json['paymentMethodCode'] != null) ? json['paymentMethodCode'] as String : " ",
-      customerSignature: (json['customerSignature'] != null) ? json['customerSignature'] as String : " ",
       navMemoryCard: (json['navMemoryCard'] != null) ? json['navMemoryCard'] as bool : true,
       alloyWheelLock: (json['alloyWheelLock'] != null) ? json['alloyWheelLock'] as bool : true,
       usbDevice: (json['usbDevice'] != null) ? json['usbDevice'] as bool : true,
@@ -165,6 +166,8 @@ class CarReceiveH {
       comment4: (json['comment4'] != null) ? json['comment4'] as String : " ",
       comment5: (json['comment5'] != null) ? json['comment5'] as String : " ",
       comment6: (json['comment6'] != null) ? json['comment6'] as String : " ",
+      customerSignature: (json['customerSignature'] != null) ? json['customerSignature'] as String : " ",
+      //customerSignatureImage: (json['customerSignatureImage'] != null) ? json['customerSignatureImage'] as String : " ",
 
     );
   }

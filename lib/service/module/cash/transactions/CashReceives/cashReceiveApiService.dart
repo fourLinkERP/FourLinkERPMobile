@@ -25,7 +25,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
         "CompanyCode": companyCode,
         "BranchCode": branchCode,
         "TrxKind": "1",
-        "EmpCode":"adam",
+        "EmpCode": empUserId,
         "isShowTransactionsByUser": true,
         "isManager": isManager,
         "isIt": isIt
@@ -86,8 +86,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'TrxKind': 1, //Sales Invoice Type
-      'CashTypeCode': cash.cashTypeCode, //Sales Invoice Type
+      'TrxKind': 1,
+      'CashTypeCode': cash.cashTypeCode,
       'trxSerial': cash.trxSerial,
       'trxDate': cash.trxDate,
       'Year': financialYearCode,
@@ -106,7 +106,18 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'DescriptionEng': cash.descriptionNameEnglish,
       'TafqitNameArabic': cash.tafqitNameArabic,
       'TafqitNameEnglish': cash.tafqitNameEnglish,
-      'addBy': empUserId
+      'addBy': empUserId,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSynchronized": false,
+      "isSystem": false,
+      "notActive": false,
+      "postedToGL": false,
+      "flgDelete": false,
+      "confirmed": true
 
     };
     print('Cash Receive Save 1');
@@ -149,8 +160,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'Id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'TrxKind': 1, //Sales Invoice Type
-      'CashTypeCode': cash.cashTypeCode, //Sales Invoice Type
+      'TrxKind': 1,
+      'CashTypeCode': cash.cashTypeCode,
       'trxSerial': cash.trxSerial,
       'trxDate': cash.trxDate,
       'Year': financialYearCode,
@@ -168,7 +179,19 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'DescriptionAra': cash.descriptionNameArabic,
       'DescriptionEng': cash.descriptionNameEnglish,
       'TafqitNameArabic': cash.tafqitNameArabic,
-      'TafqitNameEnglish': cash.tafqitNameEnglish
+      'TafqitNameEnglish': cash.tafqitNameEnglish,
+      'addBy': empUserId,
+      "isActive": true,
+      "isBlocked": false,
+      "isDeleted": false,
+      "isImported": false,
+      "isLinkWithTaxAuthority": false,
+      "isSynchronized": false,
+      "isSystem": false,
+      "notActive": false,
+      "postedToGL": false,
+      "flgDelete": false,
+      "confirmed": true
     };
 
     String apiUpdate =updateApi + id.toString();

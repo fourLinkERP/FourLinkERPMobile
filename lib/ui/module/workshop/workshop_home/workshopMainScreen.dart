@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/car_delivery/carDeliveryList.dart';
+import 'package:fourlinkmobileapp/ui/module/workshop/car_search/carSearchDataWidget.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/main_tabs/newRepairAgreementsMainTabs.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
@@ -75,7 +76,9 @@ class _WorkshopHomeState extends State<WorkshopHome> {
               Container(
                 margin: const EdgeInsets.only(top: 20, left: 30, right: 30),
                 child: InkWell(
-                  onTap: (){},
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CarSearchDataWidget()));
+                  },
                   child: Container(
                     height: 50,
                     width: 200,

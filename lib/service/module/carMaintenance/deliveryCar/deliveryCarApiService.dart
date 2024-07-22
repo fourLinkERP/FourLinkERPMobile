@@ -57,6 +57,7 @@ class DeliveryCarApiService{
       'totalPaid': deliveryCar.totalPaid,
       'notes': deliveryCar.notes,
       'year': financialYearCode,
+      'customerSignature': deliveryCar.customerSignature,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,

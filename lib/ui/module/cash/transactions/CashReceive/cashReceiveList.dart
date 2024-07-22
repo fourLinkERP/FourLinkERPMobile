@@ -314,12 +314,12 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
 
   _navigateToPrintScreen (BuildContext context, CashReceive receive) async {
     
-    print('tohoooooooooooz');
+    print('hohoooooooooooz');
     int menuId=3203;
     bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
     if(isAllowPrint)
     {
-      print('tohoooooooooooz2');
+      print('hohoooooooooooz2');
       DateTime date = DateTime.parse(receive.trxDate.toString());
       final dueDate = date.add(Duration(days: 7));
 

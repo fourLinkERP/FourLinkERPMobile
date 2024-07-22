@@ -32,7 +32,7 @@ class DTO {
     "checkPic14": false,
     "checkPic15": false,
     "checkPic16": false,
-    "waitingCustomer":false
+    "waitingCustomer":false  // page 5
   };
 
   static Map<String, String> page4Images = {
@@ -59,5 +59,6 @@ class DTO {
     "deliveryTime": "",
     "returnOldPartStatusCode": "", // parse to int
     "repeatRepairsStatusCode": "", //parse to int
+    "customerSignature":""
   };
 }

@@ -189,75 +189,62 @@ class _CustomerInfoState extends State<CustomerInfo> {
           children: [
             SizedBox(
               height: 50,
-              child: ListView(
-                scrollDirection: Axis.horizontal,
+              child: Column(
                 children: [
-                  Column(
-                    children: [
-                      Row(
-                        children:[
-                      Row(
-                        children: [
-                          Radio(
-                                value: 1,
-                                groupValue: _value,
-                                onChanged: (int? value) {
-                                  setState(() {
-                                    _value = value!;
-                                  });
-                                }),
-                          //const SizedBox(width: 5,),
-                          Text("chassis_num".tr() ,style: const TextStyle(fontWeight: FontWeight.bold),),
-                        ],
-                      ),
-                      const SizedBox(width: 30,),
-                      Row(
-                        children: [
-                          Radio(
-                              value: 2,
-                              groupValue: _value,
-                              onChanged: (int? value) {
-                                setState(() {
-                                  _value = value!;
-                                });
-                              }),
-                          //const SizedBox(width: 5,),
-                          Text("mobile".tr(),style: const TextStyle(fontWeight: FontWeight.bold)),
-                        ],
-                      ),
-                          const SizedBox(width: 25,),
-                          SizedBox(
-                            height: 30,
-                            width: 60,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                Map<Permission, PermissionStatus> statuses = await [
-                                  Permission.storage, Permission.camera,
-                                ].request();
-                                if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
-                                  showImagePicker(context);
-                                } else {
-                                  print('no permission provided');
-                                }
-                              },
-                              style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  padding: const EdgeInsets.all(7),
-                                  backgroundColor: Colors.cyan,
-                                  foregroundColor: Colors.black,
-                                  elevation: 0,
-                                  side: const BorderSide(
-                                      width: 1,
-                                      color: Colors.cyan, //ColorScheme.secondary,
-                                  )
+                  Row(
+                    children:[
+                      Radio(
+                            value: 1,
+                            groupValue: _value,
+                            onChanged: (int? value) {
+                              setState(() {
+                                _value = value!;
+                              });
+                            }),
+
+                      Text("chassis_num".tr() ,style: const TextStyle(fontWeight: FontWeight.bold),),
+
+                  const SizedBox(width: 20,),
+                      Radio(
+                          value: 2,
+                          groupValue: _value,
+                          onChanged: (int? value) {
+                            setState(() {
+                              _value = value!;
+                            });
+                          }),
+                      Text("mobile".tr(),style: const TextStyle(fontWeight: FontWeight.bold)),
+                      const SizedBox(width: 25,),
+                      SizedBox(
+                        height: 30,
+                        width: 60,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            Map<Permission, PermissionStatus> statuses = await [
+                              Permission.storage, Permission.camera,
+                            ].request();
+                            if(statuses[Permission.storage]!.isGranted && statuses[Permission.camera]!.isGranted){
+                              showImagePicker(context);
+                            } else {
+                              print('no permission provided');
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
                               ),
-                              child: const Text('scan', style: TextStyle(color: Colors.white),), //Color.fromRGBO(144, 16, 46, 1)
-                            ),
-                          )
-                    ],
-                  ),
+                              padding: const EdgeInsets.all(7),
+                              backgroundColor: Colors.cyan,
+                              foregroundColor: Colors.black,
+                              elevation: 0,
+                              side: const BorderSide(
+                                  width: 1,
+                                  color: Colors.cyan, //ColorScheme.secondary,
+                              )
+                          ),
+                          child: const Text('scan', style: TextStyle(color: Colors.white),), //Color.fromRGBO(144, 16, 46, 1)
+                        ),
+                      )
                     ],
                   ),
                 ],
@@ -270,26 +257,6 @@ class _CustomerInfoState extends State<CustomerInfo> {
                   height: 40,
                   width: 250,
                   child: defaultFormField(
-                    // onChanged: (String? value){
-                    //   if (value!.isNotEmpty) {
-                    //     getData();
-                    //     if (_customerCar != null && _customerCar.isNotEmpty) {
-                    //       print("_customer car: " + _customerCar.toString());
-                    //       setState(() {
-                    //         DTO.page1["customerCode"] = _customerCar[0].customerCode!;
-                    //         DTO.page1["carCode"] = _customerCar[0].carCode!;
-                    //         _customerNameController.text = _customerCar[0].customerName!;
-                    //         _customerIdentityController.text = _customerCar[0].idNo!;
-                    //         _emailController.text = _customerCar[0].email!;
-                    //         _mobileNumberController.text = _customerCar[0].mobile!;
-                    //         chassis1NumberController.text = _customerCar[0].chassisNumber!;
-                    //         plate1NameController.text = _customerCar[0].plateNumberAra!;
-                    //         modelController.text = _customerCar[0].model!;
-                    //         selectedCarGroupValue = _customerCar[0].groupCode;
-                    //       });
-                    //     }
-                    //   }
-                    // },
                     enable: true,
                     label: _value == 1 ?'chassis_num'.tr() : 'mobile'.tr(),
                     prefix: Icons.search,

@@ -7,6 +7,7 @@ class DeliveryCar{
   double? totalValue;
   double? totalPaid;
   String? notes;
+  String? customerSignature;
 
   DeliveryCar({
     this.id,
@@ -15,7 +16,8 @@ class DeliveryCar{
     this.repairOrderCode,
     this.totalValue,
     this.totalPaid,
-    this.notes
+    this.notes,
+    this.customerSignature
 });
 
   factory DeliveryCar.fromJson(Map<String, dynamic> json) {
@@ -27,6 +29,7 @@ class DeliveryCar{
       totalValue: (json["totalValue"] != null) ? json["totalValue"].toDouble() : 0.0,
       totalPaid: (json["totalPaid"] != null) ? json["totalPaid"].toDouble() : 0.0,
       notes: (json["notes"] != null) ? json["notes"] : "",
+      customerSignature: (json["customerSignature"] != null) ? json["customerSignature"] : "",
 
     );
   }

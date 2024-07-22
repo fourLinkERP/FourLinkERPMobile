@@ -36,10 +36,6 @@ class CashReceive {
   String?  companyCommercial ;
   String?  companyVat ;
   String?  boxName ;
-  // String? address;
-  // String? Phone1;
-  //String image;
-
 
 
 
@@ -111,20 +107,3 @@ class CashReceive {
     return 'Trans{id: $id, name: $trxSerial }';
   }
 }
-
-
-// Our demo Branchs
-
-// List<Customer> demoBranches = [
-//   Customer(
-//       id: 1,
-//       name: "Maadi - Branch",
-//       description: descriptionData
-//   ),
-//   Customer(
-//       id: 2,
-//       name: "Tahrir - Branch",
-//       description: descriptionData
-//   )
-// ];
-

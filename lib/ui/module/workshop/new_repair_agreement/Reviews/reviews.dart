@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/dto.dart';
@@ -11,6 +14,7 @@ import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/maint
 import 'package:fourlinkmobileapp/service/module/carMaintenance/maintenanceClassifications/maintenanceClassificationApiService.dart';
 import 'package:fourlinkmobileapp/service/module/carMaintenance/maintenanceTypes/maintenanceTypeApiService.dart';
 import '../../../../../data/model/modules/module/carMaintenance/maintenanceTypes/maintenanceType.dart';
+import '../../customerSignatureComponent/customerSignature.dart';
 
 //APIs
 MaintenanceTypeApiService _maintenanceTypeApiService = MaintenanceTypeApiService();
@@ -42,9 +46,10 @@ class _ReviewsState extends State<Reviews> {
       paymentMethodNameEng: "",
       id: 0);
 
-  String? selectedTypeValue = null;
-  String? selectedClassificationValue = null;
-  String? selectePaymentValue = null;
+  String? selectedTypeValue;
+  String? selectedClassificationValue;
+  String? selectedPaymentValue;
+  String? customerSignature;
 
   List<MaintenanceType> maintenanceTypes = [];
   List<MaintenanceClassification> maintenanceClassifications = [];
@@ -54,6 +59,25 @@ class _ReviewsState extends State<Reviews> {
   List<DropdownMenuItem<String>> menuMaintenanceClassifications = [];
   List<DropdownMenuItem<String>> menuPaymentMethods = [];
 
+  Uint8List? _signature;
+
+  void _showSignaturePopup() async {
+    final signature = await showDialog<Uint8List>(
+      context: context,
+      builder: (BuildContext context) {
+        return CustomerSignatureComponent();
+      },
+    );
+
+    if (signature != null) {
+      setState(() {
+        _signature = signature;
+        convertUint8ListToBase64(_signature!);
+        customerSignature = convertUint8ListToBase64(_signature!);
+        print("customerSignature String: ${convertUint8ListToBase64(_signature!)}");
+      });
+    }
+  }
   @override
   initState() {
     super.initState();
@@ -202,9 +226,9 @@ class _ReviewsState extends State<Reviews> {
                             (langId == 1) ? u.paymentMethodNameAra.toString() : u.paymentMethodNameEng.toString(),
 
                             onChanged: (value) {
-                              selectePaymentValue = value!.paymentMethodCode.toString();
-                              DTO.page5["paymentMethodCode"] = selectePaymentValue!;
-                              print("DTO page5 paymentMethodCode " + selectePaymentValue!);
+                              selectedPaymentValue = value!.paymentMethodCode.toString();
+                              DTO.page5["paymentMethodCode"] = selectedPaymentValue!;
+                              print("DTO page5 paymentMethodCode " + selectedPaymentValue!);
                             },
 
                             filterFn: (instance, filter) {
@@ -441,7 +465,7 @@ class _ReviewsState extends State<Reviews> {
               ),
               const SizedBox(height: 20),
               SizedBox(
-                height: 120,
+                height: 260,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
@@ -480,19 +504,21 @@ class _ReviewsState extends State<Reviews> {
                         ),
                         const SizedBox(height: 20),
                         SizedBox(
-                          height: 50,
+                         // height: 50,
                           width: 170,
-                          child: defaultFormField(
-                            controller: signatureController,
-                            type: TextInputType.text,
-                            colors: Colors.blueGrey,
-                            validate: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'signature must be non empty';
-                              }
-                              return null;
-                            },
+                          child: Column(
+                            children: [
+                              ElevatedButton(
+                                onPressed: _showSignaturePopup,
+                                child: const Text('Sign'),
+                              ),
+                              const SizedBox(height: 20),
+                              _signature != null
+                                  ? Image.memory(_signature!)
+                                  : const Text('No signature captured'),
+                            ],
                           ),
+
                         ),
                       ],
                     ),
@@ -543,5 +569,8 @@ class _ReviewsState extends State<Reviews> {
     setState(() {
 
     });
+  }
+  String convertUint8ListToBase64(Uint8List data) {
+    return base64Encode(data);
   }
 }
