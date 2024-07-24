@@ -561,8 +561,13 @@ class RptDailySalesState extends State<RptDailySales> {
     List<Formulas>  formulasList ;
     //Formula
     formulasList = [
-      new Formulas(columnName: 'companyName',columnValue: companyName) ,
-      new Formulas(columnName: 'branchName',columnValue: branchName)
+      Formulas(columnName: 'companyName',columnValue: companyName),
+      Formulas(columnName: 'branchName',columnValue: branchName),
+      Formulas(columnName: 'year',columnValue: financialYearCode),
+      Formulas(columnName: 'userName',columnValue: empName),
+      Formulas(columnName: 'printTime',columnValue: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())),
+      Formulas(columnName: 'fromDate',columnValue: startDateController.text),
+      Formulas(columnName: 'toDate',columnValue: endDateController.text)
     ];
 
     //criteria="";

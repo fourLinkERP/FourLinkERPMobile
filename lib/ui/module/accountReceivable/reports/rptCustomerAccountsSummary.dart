@@ -489,15 +489,6 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
       ),
     );
   }
-  getCustomerData() {
-    // if (customers != null) {
-    //   for(var i = 0; i < customers.length; i++){
-    //     menuCustomers.add(DropdownMenuItem(value: customers[i].customerCode.toString(), child: Text(customers[i].customerNameAra.toString())));
-    //   }
-    // }
-    setState(() {
-    });
-  }
 
   fillCombos(){
 
@@ -626,21 +617,22 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
   printReport(BuildContext context ,String criteria){
     print('Start Report');
     print(criteria);
-    String menuId="6301"; //Customer Account Report Menu Id
+    String menuId="6301";
     //API Reference
     ReportUtilityApiService reportUtilityApiService = ReportUtilityApiService();
 
     List<Formulas>  formulasList ;
     //Formula
     formulasList = [
-      new Formulas(columnName: 'companyName',columnValue: companyName) ,
-      new Formulas(columnName: 'branchName',columnValue: branchName)
+      Formulas(columnName: 'companyName',columnValue: companyName),
+      Formulas(columnName: 'branchName',columnValue: branchName),
+      Formulas(columnName: 'year',columnValue: financialYearCode),
+      Formulas(columnName: 'userName',columnValue: empName),
+      Formulas(columnName: 'printTime',columnValue: DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now())),
+      Formulas(columnName: 'fromDate',columnValue: startDateController.text),
+      Formulas(columnName: 'toDate',columnValue: endDateController.text)
     ];
-    //;
-    //;
 
-
-    //criteria="";
     //report Api
     final report = reportUtilityApiService.getReportData(
       menuId, criteria, formulasList).then((data) async {

@@ -53,7 +53,7 @@ class _CheckStoreListState extends State<CheckStoreList> {
         _checkStoresSearch = List.from(_checkStores);
 
         if (_checkStores.isNotEmpty) {
-          _checkStores.sort((a, b) => int.parse(b.storeName!).compareTo(int.parse(a.storeName!)));
+          _checkStores.sort((a, b) => b.serial!.compareTo(a.serial!));
 
           setState(() {
             _founded = _checkStores!;

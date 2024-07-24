@@ -55,7 +55,7 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
   List<CheckStoreD> checkStoreDLst = <CheckStoreD>[];
   List<CheckStoreD> selected = [];
   List<Stores> stores =[];
-  List<Item> items=[];
+  //List<Item> items=[];
   List<Unit> units=[];
 
   int lineNum = 1;
@@ -276,7 +276,7 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
                                     showSearchBox: true,
 
                                   ),
-                                  items: items,
+                                  items: itemsWithBalance,
                                   itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
 
                                   onChanged: (value) {
@@ -608,16 +608,16 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
       print(e);
     });
 
-    Future<List<Item>> futureItems = _itemsApiService.getItems().then((data) {
-      items = data;
-
-      setState(() {
-
-      });
-      return items;
-    }, onError: (e) {
-      print(e);
-    });
+    // Future<List<Item>> futureItems = _itemsApiService.getItems().then((data) {
+    //   items = data;
+    //
+    //   setState(() {
+    //
+    //   });
+    //   return items;
+    // }, onError: (e) {
+    //   print(e);
+    // });
   }
 
   addInventoryRow() {
@@ -775,7 +775,7 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
     setState(() {
       scanBarcodeResult = barCodeScanRes;
     });
-    print("scanBarcodeResult: "+ scanBarcodeResult);
+    print("scanBarcodeResult: $scanBarcodeResult");
   }
   itemByBarcodeHandler(String itemBarcode) {
     Future<String> futureItemByBarcode = _itemByBarcodeApiService.getItemCode(itemBarcode).then((data) {
@@ -787,21 +787,21 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
         selectedUnitValue = "1";
         itemBarcodeHandler(selectedItemValue.toString());
       });
-      getItemData();
+      //getItemData();
       return itemCode;
 
     }, onError: (e) {
       print(e);
     });
   }
-  getItemData() {
-    if (items != null) {
-      for(var i = 0; i < items.length; i++){
-        if(items[i].itemCode == selectedItemValue){
-          itemItem = items[items.indexOf(items[i])];
-        }
-      }
-    }
-    setState(() {});
-  }
+  // getItemData() {
+  //   if (items != null) {
+  //     for(var i = 0; i < items.length; i++){
+  //       if(items[i].itemCode == selectedItemValue){
+  //         itemItem = items[items.indexOf(items[i])];
+  //       }
+  //     }
+  //   }
+  //   setState(() {});
+  // }
 }
