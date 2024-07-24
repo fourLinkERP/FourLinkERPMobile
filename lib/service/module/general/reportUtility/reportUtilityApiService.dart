@@ -18,10 +18,13 @@ import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart
     Map data = {
       'MenuId': menuId,
       'Criteria': criteria,
-      'Formulas' : {
+      'Formulas' : [
         for(int i=0;i<formulas.length;i++)
-             'columnName':formulas[i].columnName! + ',' + 'columnValue' +':' + formulas[i].columnValue!
-      },
+          {
+            'columnName': formulas[i].columnName! + ',' + 'columnValue' + ':' +
+                formulas[i].columnValue!
+          }
+      ]
     };
     //data.addAll({"Formulas" :formulas[0]});
     // for(int i=0;i<formulas.length;i++){

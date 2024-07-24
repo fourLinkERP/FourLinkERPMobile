@@ -25,7 +25,7 @@ class CarDeliveryList extends StatefulWidget {
 
 class _CarDeliveryListState extends State<CarDeliveryList> {
 
-  List<DeliveryCar> deliveryCars = [];
+  List<DeliveryCar> _deliveryCars = [];
   List<DeliveryCar> _founded = [];
 
   @override
@@ -34,7 +34,7 @@ class _CarDeliveryListState extends State<CarDeliveryList> {
     getData();
     super.initState();
     setState(() {
-      _founded = deliveryCars;
+      _founded = _deliveryCars;
     });
   }
   DateTime get pickedDate => DateTime.now();
@@ -130,10 +130,11 @@ class _CarDeliveryListState extends State<CarDeliveryList> {
       print('Error : $Error');
       AppCubit.get(context).EmitErrorState();
     });
-    deliveryCars = (await futureDeliveryCars)!;
-    if (deliveryCars.isNotEmpty) {
+    _deliveryCars = (await futureDeliveryCars)!;
+    if (_deliveryCars.isNotEmpty) {
+      _deliveryCars.sort((a, b) => int.parse(b.trxSerial!).compareTo(int.parse(a.trxSerial!)));
       setState(() {
-        _founded = deliveryCars;
+        _founded = _deliveryCars;
       });
     }
   }
@@ -174,7 +175,7 @@ class _CarDeliveryListState extends State<CarDeliveryList> {
     if(State is AppErrorState){
       return const Center(child: Text('no data'));
     }
-    else if(deliveryCars.isEmpty&&AppCubit.get(context).Conection==true){
+    else if(_deliveryCars.isEmpty&&AppCubit.get(context).Conection==true){
       return const Center(child: CircularProgressIndicator());
     }
     else{
@@ -183,7 +184,7 @@ class _CarDeliveryListState extends State<CarDeliveryList> {
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         color: const Color.fromRGBO(240, 242, 246, 1), // Main Color
         child: ListView.builder(
-          itemCount: deliveryCars.isEmpty ? 0 : deliveryCars.length,
+          itemCount: _deliveryCars.isEmpty ? 0 : _deliveryCars.length,
           itemBuilder: (BuildContext context, int index) {
             return Card(
               margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 5),
@@ -193,7 +194,7 @@ class _CarDeliveryListState extends State<CarDeliveryList> {
               elevation: 4,
               child: InkWell(
                 onTap: () {
-                  _navigateToDetailsScreen(context, deliveryCars[index]);
+                  _navigateToDetailsScreen(context, _deliveryCars[index]);
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(10),
@@ -215,7 +216,7 @@ class _CarDeliveryListState extends State<CarDeliveryList> {
                           crossAxisAlignment: langId == 1 ? CrossAxisAlignment.start : CrossAxisAlignment.end,
                           children: <Widget>[
                             Text(
-                              "${'serial'.tr()} : ${deliveryCars[index].trxSerial}",
+                              "${'serial'.tr()} : ${_deliveryCars[index].trxSerial}",
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -224,14 +225,14 @@ class _CarDeliveryListState extends State<CarDeliveryList> {
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              "${'date'.tr()} : ${DateFormat('yyyy-MM-dd').format(DateTime.parse(deliveryCars[index].trxDate.toString()))}",
+                              "${'date'.tr()} : ${DateFormat('yyyy-MM-dd').format(DateTime.parse(_deliveryCars[index].trxDate.toString()))}",
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey[700],
                               ),
                             ),
                             const SizedBox(height: 5),
-                            Text("${"totalPaid".tr()}: ${deliveryCars[index].totalPaid.toString()}",
+                            Text("${"totalPaid".tr()}: ${_deliveryCars[index].totalPaid.toString()}",
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.grey[700],

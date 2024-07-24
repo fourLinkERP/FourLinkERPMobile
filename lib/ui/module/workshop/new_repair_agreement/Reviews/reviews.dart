@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/dto.dart';
@@ -55,10 +54,6 @@ class _ReviewsState extends State<Reviews> {
   List<MaintenanceClassification> maintenanceClassifications = [];
   List<PaymentMethod> paymentMethods = [];
 
-  List<DropdownMenuItem<String>> menuMaintenanceTypes = [];
-  List<DropdownMenuItem<String>> menuMaintenanceClassifications = [];
-  List<DropdownMenuItem<String>> menuPaymentMethods = [];
-
   Uint8List? _signature;
 
   void _showSignaturePopup() async {
@@ -84,7 +79,9 @@ class _ReviewsState extends State<Reviews> {
 
     Future<List<MaintenanceType>> futureMaintenanceType = _maintenanceTypeApiService.getMaintenanceTypes().then((data) {
       maintenanceTypes = data;
-      getMaintenanceTypeData();
+      setState(() {
+
+      });
       return maintenanceTypes;
     }, onError: (e) {
       print(e);
@@ -92,7 +89,9 @@ class _ReviewsState extends State<Reviews> {
 
     Future<List<MaintenanceClassification>> futureMaintenanceClassification = _maintenanceClassificationApiService.getMaintenanceClassifications().then((data) {
       maintenanceClassifications = data;
-      getMaintenanceClassificationData();
+      setState(() {
+
+      });
       return maintenanceClassifications;
     }, onError: (e) {
       print(e);
@@ -100,7 +99,9 @@ class _ReviewsState extends State<Reviews> {
 
     Future<List<PaymentMethod>> futurePaymentMethod = _paymentMethodApiService.getPaymentMethods().then((data) {
       paymentMethods = data;
-      getPaymentMethodData();
+      setState(() {
+
+      });
       return paymentMethods;
     }, onError: (e) {
       print(e);
@@ -531,45 +532,7 @@ class _ReviewsState extends State<Reviews> {
         ),
     );
   }
-  getMaintenanceTypeData() {
-    if (maintenanceTypes.isNotEmpty) {
-      for(var i = 0; i < maintenanceTypes.length; i++){
-        menuMaintenanceTypes.add(
-            DropdownMenuItem(
-                value: maintenanceTypes[i].maintenanceTypeCode.toString(),
-                child: Text((langId==1)?  maintenanceTypes[i].maintenanceTypeNameAra.toString() : maintenanceTypes[i].maintenanceTypeNameEng.toString())));
-      }
-    }
-    setState(() {
 
-    });
-  }
-  getMaintenanceClassificationData() {
-    if (maintenanceClassifications.isNotEmpty) {
-      for(var i = 0; i < maintenanceClassifications.length; i++){
-        menuMaintenanceClassifications.add(
-            DropdownMenuItem(
-                value: maintenanceClassifications[i].maintenanceClassificationCode.toString(),
-                child: Text((langId==1)?  maintenanceClassifications[i].maintenanceClassificationNameAra.toString() : maintenanceClassifications[i].maintenanceClassificationNameEng.toString())));
-      }
-    }
-    setState(() {
-
-    });
-  }
-  getPaymentMethodData() {
-    if (paymentMethods.isNotEmpty) {
-      for(var i = 0; i < paymentMethods.length; i++){
-        menuMaintenanceTypes.add(
-            DropdownMenuItem(
-                value: paymentMethods[i].paymentMethodCode.toString(),
-                child: Text((langId==1)?  paymentMethods[i].paymentMethodNameAra.toString() : paymentMethods[i].paymentMethodNameEng.toString())));
-      }
-    }
-    setState(() {
-
-    });
-  }
   String convertUint8ListToBase64(Uint8List data) {
     return base64Encode(data);
   }

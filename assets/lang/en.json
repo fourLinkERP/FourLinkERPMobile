@@ -629,6 +629,7 @@
     "order_number": "Order number",
     "please_select_order": "please select order number",
     "the_search": "The search",
-    "sign": "Sign"
+    "sign": "Sign",
+    "list_is_empty": "There is no data"
 
 }

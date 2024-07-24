@@ -730,7 +730,8 @@
     "order_number": "رقم الأمر",
     "please_select_order": "من فضلك اختر رقم الأمر",
     "the_search": "البحث",
-    "sign": "وقَع"
+    "sign": "وقَع",
+    "list_is_empty": "لا يوجد بيانات"
 
 }
 

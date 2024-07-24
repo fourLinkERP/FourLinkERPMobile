@@ -164,7 +164,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
     try {
       List<CustomerCar> data = await apiCar.getCustomerCars(
         _value == 1 ? _searchNumberController.text.toString() :'',
-        _value == 2 ? _searchNumberController.text.toString() :'',
+        _value == 2 ? _searchNumberController.text.toString() :''
       );
 
       if (data != null) {

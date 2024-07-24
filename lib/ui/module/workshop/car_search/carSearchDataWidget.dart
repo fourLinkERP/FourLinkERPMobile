@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carDelivery/deliveryCar.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carsGeneralSearchs/carsGeneralSearch.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../../common/globals.dart';
 import '../../../../common/login_components.dart';
+import '../../../../cubit/app_cubit.dart';
 import '../../../../helpers/toast.dart';
-import '../../../../service/module/carMaintenance/deliveryCar/deliveryCarApiService.dart';
+import '../../../../service/module/carMaintenance/carsGeneralSearch/carsGeneralSearchApiService.dart';
 
-DeliveryCarApiService _deliveryCarApiService = DeliveryCarApiService();
+CarsGeneralSearchApiService _carsGeneralSearchApiService = CarsGeneralSearchApiService();
 
 class CarSearchDataWidget extends StatefulWidget {
   const CarSearchDataWidget({Key? key}) : super(key: key);
@@ -23,7 +24,9 @@ class _CarSearchDataWidgetState extends State<CarSearchDataWidget> {
   int _value = 1;
   bool isSelected = true;
 
-  List<DeliveryCar> _orderLst = <DeliveryCar>[];
+  List<CarGeneralSearch> _searchLst = <CarGeneralSearch>[];
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +106,7 @@ class _CarSearchDataWidgetState extends State<CarSearchDataWidget> {
                         const SizedBox(width: 10,),
                         IconButton(
                           onPressed: () async {
-                            // await getData();
+                            await _getData();
                             // if (_searchNumberController.text.isEmpty) {
                             //   FN_showToast(context, "please_enter_mobile_or_plate_number".tr(), Colors.red);
                             // }
@@ -157,14 +160,13 @@ class _CarSearchDataWidgetState extends State<CarSearchDataWidget> {
                     DataColumn(label: Text("chassis_num".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
                     DataColumn(label: Text("status".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
                   ],
-                  rows: _orderLst.map((p) =>
+                  rows: _searchLst.map((p) =>
                       DataRow(cells: [
-                        DataCell(SizedBox(width: 5, child: Text(p.repairOrderCode.toString()))),
-                        DataCell(SizedBox(width: 50, child: Text(p.trxDate.toString()))),
-                        DataCell(SizedBox(child: Text(p.totalValue.toString()))),
-                        DataCell(SizedBox(child: Text(p.totalPaid.toString()))),
                         DataCell(SizedBox(child: Text(p.trxSerial.toString()))),
-
+                        DataCell(SizedBox(child: Text(p.trxDate.toString()))),
+                        DataCell(SizedBox(child: Text(p.customerName.toString()))),
+                        DataCell(SizedBox(child: Text(p.chassisNumber.toString()))),
+                        DataCell(SizedBox(child: Text(p.maintenanceStatusName.toString()))),
                       ]),
                   ).toList(),
                 ),
@@ -176,4 +178,23 @@ class _CarSearchDataWidgetState extends State<CarSearchDataWidget> {
       ),
     );
   }
+  Future<void> _getData() async {
+      Future<List<CarGeneralSearch>?> futureCarGeneralSearch =
+      _carsGeneralSearchApiService.getCarGeneralSearch(
+        _value == 1 ? _searchNumberController.text.toString() :'',
+        _value == 2 ? _searchNumberController.text.toString() :''
+      ).catchError((Error){
+        print('Error : $Error');
+        AppCubit.get(context).EmitErrorState();
+      });
+      _searchLst = (await futureCarGeneralSearch)!;
+      if(_searchLst.isEmpty)
+        {
+          FN_showToast(context, "list_is_empty".tr(), Colors.black);
+        }
+      if (_searchLst.isNotEmpty) {
+        setState(() {
+        });
+      }
+    }
 }
