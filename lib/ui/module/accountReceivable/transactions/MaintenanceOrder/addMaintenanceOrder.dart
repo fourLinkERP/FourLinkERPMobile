@@ -438,6 +438,10 @@ class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataW
       FN_showToast(context, 'please_select_driver'.tr(), Colors.black);
       return;
     }
+    if (_complaintController.text.isEmpty) {
+      FN_showToast(context, 'please_enter_complaint'.tr(), Colors.black);
+      return;
+    }
     await _maintenanceOrderHApiService.createMaintenanceOrderH(context, MaintenanceOrderH(
       trxSerial: _trxSerialController.text,
       trxDate: _trxDateController.text,

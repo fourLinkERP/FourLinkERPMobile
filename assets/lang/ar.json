@@ -731,7 +731,14 @@
     "please_select_order": "من فضلك اختر رقم الأمر",
     "the_search": "البحث",
     "sign": "وقَع",
-    "list_is_empty": "لا يوجد بيانات"
+    "list_is_empty": "لا يوجد بيانات",
+    "please_enter_complaint": "من فضلك ادخل الشكوى",
+    "please_select_car": "من فضلك اختر السيارة",
+    "please_select_driver": "من فضلك اختر السائق",
+    "searchBranchRequest": "بحث طلب تحويل",
+    "branchRequest": "طلب تحويل",
+    "fromStore": "من مخزن",
+    "toStore": "إلى مخزن"
 
 }
 

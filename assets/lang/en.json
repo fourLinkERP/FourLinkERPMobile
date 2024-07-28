@@ -630,6 +630,11 @@
     "please_select_order": "please select order number",
     "the_search": "The search",
     "sign": "Sign",
-    "list_is_empty": "There is no data"
+    "list_is_empty": "There is no data",
+    "please_enter_complaint": "please enter your complaint",
+    "please_select_car": "please select the car",
+    "please_select_driver": "please select the driver",
+    "searchBranchRequest": "search branch request",
+    "branchRequest": "Transfer Request"
 
 }

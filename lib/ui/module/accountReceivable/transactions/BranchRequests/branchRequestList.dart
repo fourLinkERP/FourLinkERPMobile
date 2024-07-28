@@ -1,62 +1,61 @@
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/checkStores/checkStoreD.dart';
-import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/CheckStores/checkStoreHApiService.dart';
-import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/CheckStores/addCheckStoreDataWidget.dart';
-import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/CheckStores/editCheckStoreDataWidget.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/branchRequests/branchRequestH.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/BranchRequests/branchRequestDApiService.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/BranchRequests/branchRequestHApiService.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/BranchRequests/addBranchRequestDataWidget.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/BranchRequests/editBranchRequestDataWidget.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:intl/intl.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../cubit/app_cubit.dart';
-import '../../../../../data/model/modules/module/accountreceivable/transactions/checkStores/checkStoreH.dart';
+import '../../../../../data/model/modules/module/accountreceivable/transactions/branchRequests/branchRequestD.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
-import '../../../../../service/module/accountReceivable/transactions/CheckStores/checkStoreDApiService.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import '../../../../../utils/permissionHelper.dart';
 
 //APIs
-CheckStoreHApiService _apiService = CheckStoreHApiService();
-CheckStoreDApiService _apiDService = CheckStoreDApiService();
+BranchRequestHApiService _apiService = BranchRequestHApiService();
+BranchRequestDApiService _apiDService = BranchRequestDApiService();
 
-class CheckStoreList extends StatefulWidget {
-  const CheckStoreList({Key? key}) : super(key: key);
+class BranchRequestList extends StatefulWidget {
+  const BranchRequestList({Key? key}) : super(key: key);
 
   @override
-  State<CheckStoreList> createState() => _CheckStoreListState();
+  State<BranchRequestList> createState() => _BranchRequestListState();
 }
 
-class _CheckStoreListState extends State<CheckStoreList> {
+class _BranchRequestListState extends State<BranchRequestList> {
 
   final searchValueController = TextEditingController();
 
-  List<CheckStoreH> _checkStores = [];
-  List<CheckStoreH> _checkStoresSearch = [];
-  List<CheckStoreD> _checkStoresD = [];
-  List<CheckStoreH> _founded = [];
+  List<BranchRequestH> _branchRequests = [];
+  List<BranchRequestH> _branchRequestsSearch = [];
+  List<BranchRequestD> _branchRequestsD = [];
+  List<BranchRequestH> _founded = [];
 
   @override
   void initState() {
     getData();
-
     super.initState();
 
     setState(() {
-      _founded = _checkStores;
+      _founded = _branchRequests;
     });
   }
   void getData() async {
     try {
-      List<CheckStoreH>? futureCheckStoreH = await _apiService.getCheckStoreH();
+      List<BranchRequestH>? futureBranchRequestH = await _apiService.getBranchRequestH();
 
-      if (futureCheckStoreH != null) {
-        _checkStores = futureCheckStoreH;
-        _checkStoresSearch = List.from(_checkStores);
+      if (futureBranchRequestH != null) {
+        _branchRequests = futureBranchRequestH;
+        _branchRequestsSearch = List.from(_branchRequests);
 
-        if (_checkStores.isNotEmpty) {
-          _checkStores.sort((a, b) => b.serial!.compareTo(a.serial!));
+        if (_branchRequests.isNotEmpty) {
+          _branchRequests.sort((a, b) => b.trxSerial!.compareTo(a.trxSerial!));
 
           setState(() {
-            _founded = _checkStores!;
+            _founded = _branchRequests;
           });
         }
       }
@@ -66,20 +65,20 @@ class _CheckStoreListState extends State<CheckStoreList> {
   }
 
   void getDetailData(int? headerId) async {
-    Future<List<CheckStoreD>?> futureCheckStoreD = _apiDService.getCheckStoreD(headerId);
-    _checkStoresD = (await futureCheckStoreD)!;
+    Future<List<BranchRequestD>?> futureCheckStoreD = _apiDService.getBranchRequestD(headerId);
+    _branchRequestsD = (await futureCheckStoreD)!;
 
   }
   void onSearch(String search) {
     if (search.isEmpty) {
       setState(() {
-        _checkStores = List.from(_checkStoresSearch!);
+        _branchRequests = List.from(_branchRequestsSearch);
       });
     } else {
       setState(() {
-        _checkStores = List.from(_checkStoresSearch!);
-        _checkStores = _checkStores.where((checkStoreH) =>
-            checkStoreH.storeName!.toLowerCase().contains(search)).toList();
+        _branchRequests = List.from(_branchRequestsSearch);
+        _branchRequests = _branchRequests.where((checkStoreH) =>
+            checkStoreH.trxSerial!.toLowerCase().contains(search)).toList();
       });
     }
   }
@@ -109,7 +108,7 @@ class _CheckStoreListState extends State<CheckStoreList> {
                       fontSize: 16,
                       color: Color.fromRGBO(144, 16, 46, 1) //Main Font Color
                   ),
-                  hintText: "searchInventory".tr(),
+                  hintText: "searchBranchRequest".tr(),
 
                 ),
               ),
@@ -117,13 +116,13 @@ class _CheckStoreListState extends State<CheckStoreList> {
           ),
         ),
       ),
-        body: buildInventory(),
+        body: buildBranchRequest(),
         floatingActionButton: FloatingActionButton(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(90.0))
           ),
           onPressed: () {
-            _navigateToAddScreen(context);
+           _navigateToAddScreen(context);
           },
           tooltip: 'Increment',
           backgroundColor:  Colors.transparent,
@@ -168,40 +167,40 @@ class _CheckStoreListState extends State<CheckStoreList> {
         )
     );
   }
-  Widget buildInventory(){
-    if(_checkStores.isEmpty){
+  Widget buildBranchRequest(){
+    if(_branchRequests.isEmpty){
       return const Center(child: CircularProgressIndicator());
     }
     else{
-      print("_checkStores length: " + _checkStores.length.toString());
+      print("_branchRequests length: " + _branchRequests.length.toString());
       return Container(
         color: const Color.fromRGBO(240, 242, 246,1),// Main Color
 
         child: ListView.builder(
-            itemCount: _checkStores.isEmpty ? 0 : _checkStores.length,
+            itemCount: _branchRequests.isEmpty ? 0 : _branchRequests.length,
             itemBuilder: (BuildContext context, int index) {
               return
                 Card(
                   child: InkWell(
                     onTap: () {
                       // Navigator.push(
-                      //   context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_checkStores[index])),
+                      //   context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_branchRequests[index])),
                       // );
                     },
                     child: ListTile(
-                      leading: Image.asset('assets/fitness_app/check_store.jpeg'),
-                      title: Text('serial'.tr() + " : " + _checkStores[index].serial.toString()),
+                      leading: Image.asset('assets/fitness_app/branchRequest.png'),
+                      title: Text('serial'.tr() + " : " + _branchRequests[index].trxSerial.toString()),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_checkStores[index].toDate.toString())))),
+                              child: Text("${'date'.tr()} : ${DateFormat('yyyy-MM-dd').format(DateTime.parse(_branchRequests[index].trxDate.toString()))}")),
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Text('store'.tr() + " : " + _checkStores[index].storeName.toString())),
+                              child: Text("${'store'.tr()} : ${_branchRequests[index].storeName}")),
                           const SizedBox(width: 5),
                           SizedBox(
                               child: Row(
@@ -216,7 +215,7 @@ class _CheckStoreListState extends State<CheckStoreList> {
                                         ),
                                         label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
                                         onPressed: () {
-                                          _navigateToEditScreen(context,_checkStores[index]);
+                                          _navigateToEditScreen(context,_branchRequests[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -244,7 +243,7 @@ class _CheckStoreListState extends State<CheckStoreList> {
                                         ),
                                         label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                         // _deleteItem(context,_checkStores[index].id);
+                                          // _deleteItem(context,_branchRequests[index].id);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -271,7 +270,7 @@ class _CheckStoreListState extends State<CheckStoreList> {
                                         ),
                                         label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                          //_navigateToPrintScreen(context,_checkStores[index],index);
+                                          //_navigateToPrintScreen(context,_branchRequests[index],index);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -301,11 +300,11 @@ class _CheckStoreListState extends State<CheckStoreList> {
   }
 
   _navigateToAddScreen(BuildContext context) async {
-   int menuId=5207;
-   bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    int menuId=5215;
+    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if(isAllowAdd)
     {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddCheckStoreDataWidget(),
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddBranchRequestDataWidget(),
       )).then((value) {
         getData();
       });
@@ -315,16 +314,16 @@ class _CheckStoreListState extends State<CheckStoreList> {
       FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
     }
   }
-  _navigateToEditScreen (BuildContext context, CheckStoreH checkStoreH) async {
+  _navigateToEditScreen (BuildContext context, BranchRequestH branchRequestH) async {
 
-    int menuId=5207;
+    int menuId=5215;
     bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
     if(isAllowEdit)
     {
 
       final result = await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => EditCheckStoreDataWidget(checkStoreH)),
+        MaterialPageRoute(builder: (context) => EditBranchRequestDataWidget(branchRequestH)),
       ).then((value) => getData());
 
     }

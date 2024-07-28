@@ -4,6 +4,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/salesOrderList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/salesInvoiceList.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/BranchRequests/branchRequestList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/CheckStores/checkStoreList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/MaintenanceOrder/maintenanceOrderList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnList.dart';
@@ -43,7 +44,8 @@ class MainTransactions extends StatelessWidget {
         'assets/fitness_app/check_store.jpeg',
         'assets/fitness_app/receive_goods.png',
         'assets/fitness_app/shipping.png',
-        'assets/fitness_app/maintenance.jpeg'
+        'assets/fitness_app/maintenance.jpeg',
+        'assets/fitness_app/branchRequest.png'
       ];
       List<String> areaListDataTitle = <String>[
         'salesinvoice'.tr(),
@@ -54,7 +56,8 @@ class MainTransactions extends StatelessWidget {
         'inventory_screen'.tr(),
         'receive_permission'.tr(),
         'shipping_permission'.tr(),
-        'maintenance_order'.tr()
+        'maintenance_order'.tr(),
+        'branchRequest'.tr()
 
       ];
 
@@ -130,7 +133,6 @@ class MainTransactions extends StatelessWidget {
                         }
                       } else if(areaListData[index]  == 'assets/fitness_app/quotion.png') //Quotion
               {
-                //print('okz2');
 
                 int menuId=6202;
                 bool isAllowView = PermissionHelper.checkViewPermission(menuId);
@@ -234,6 +236,19 @@ class MainTransactions extends StatelessWidget {
                 if(isAllowView)
                 {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => MaintenanceOrderList()));
+                }
+                else
+                {
+                  FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                }
+              }
+              else if(areaListData[index]  == 'assets/fitness_app/branchRequest.png')
+              {
+                int menuId=5215;
+                bool isAllowView = PermissionHelper.checkViewPermission(menuId);
+                if(isAllowView)
+                {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => BranchRequestList()));
                 }
                 else
                 {
