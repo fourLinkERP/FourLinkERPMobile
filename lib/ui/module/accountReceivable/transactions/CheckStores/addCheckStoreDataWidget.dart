@@ -28,7 +28,6 @@ NextSerialApiService _nextSerialApiService = NextSerialApiService();
 CheckStoreHApiService _checkStoreHApiService = CheckStoreHApiService();
 CheckStoreDApiService _checkStoreDApiService = CheckStoreDApiService();
 StoresApiService _storesApiService = StoresApiService();
-ItemApiService _itemsApiService = ItemApiService();
 UnitApiService _unitsApiService = UnitApiService();
 ItemBarcodeApiService _itemBarcodeApiService = ItemBarcodeApiService();
 ItemByBarcodeApiService _itemByBarcodeApiService = ItemByBarcodeApiService();

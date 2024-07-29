@@ -72,6 +72,7 @@ class BranchRequestDApiService {
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": true,
+      "typeCode": "1",
       'addBy': empUserId,
       "year" : financialYearCode
 

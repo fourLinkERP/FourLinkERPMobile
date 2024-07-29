@@ -39,7 +39,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       body: jsonEncode(data),
     );
 
-    print('Offer Before ');
+    print('Offer searchData: $data');
     if (response.statusCode == 200) {
       print('Offer Ok ');
       List<dynamic> data = jsonDecode(response.body)['data'];

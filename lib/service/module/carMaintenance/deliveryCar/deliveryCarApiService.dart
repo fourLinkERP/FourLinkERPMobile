@@ -10,6 +10,7 @@ class DeliveryCarApiService{
   String searchApi= baseUrl.toString()  + '/api/v1/deliverycars/search';
   String createApi= baseUrl.toString()  + '/api/v1/deliverycars';
   String updateApi= baseUrl.toString()  + '/api/v1/deliverycars/';
+  String getTotalsApi= baseUrl.toString()  + '/api/v1/deliverycars/getdeliverycartotal';
 
   Future<List<DeliveryCar>>  getDeliveryCar() async {
 
@@ -31,7 +32,6 @@ class DeliveryCarApiService{
     );
 
     if (response.statusCode == 200) {
-      print('DeliveryCar 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<DeliveryCar> list = [];
       if (data.isNotEmpty) {
@@ -45,6 +45,31 @@ class DeliveryCarApiService{
     }
   }
 
+  Future<DeliveryCar>  getDeliveryCarTotals(String? orderCode) async {
+
+    Map data = {
+      'Search': {
+        'repairOrderCode': orderCode
+      }
+    };
+
+    print('DeliveryCar search data: $data');
+    final http.Response response = await http.post(
+      Uri.parse(getTotalsApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      return DeliveryCar.fromJson(json.decode(response.body));
+    } else {
+      print('DeliveryCar totals Failed');
+      throw "Failed to load DeliveryCar totals";
+    }
+  }
 
   Future<int> createDeliveryCar(BuildContext context ,DeliveryCar deliveryCar) async {
     Map data = {

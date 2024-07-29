@@ -64,6 +64,7 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
   String? selectedMaintenanceStatusValue;
   String? selectedMaintenanceClassificationValue;
   String? customerSignature;
+  DeliveryCar? deliveryCar;
 
   Customer? customerItem = Customer(customerCode: "", customerNameAra: "", customerNameEng: "", id: 0);
   MaintenanceStatus? maintenanceStatusItem = MaintenanceStatus(maintenanceStatusCode: "", maintenanceStatusNameAra: "", maintenanceStatusNameEng: "", id: 0);
@@ -245,8 +246,7 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
                                 getClassificationData();
                                 _chassisNumberController.text = value.chassisNumber.toString();
                                 _plateNumberController.text = value.plateNumberAra.toString();
-                                _totalPaidController.text = "0.0";
-                                _totalOrderController.text = value.totalValue.toString();
+                                getCarDeliveryTotals(selectedOrderValue);
                               },
 
                               filterFn: (instance, filter){
@@ -714,5 +714,19 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
   }
   String convertUint8ListToBase64(Uint8List data) {
     return base64Encode(data);
+  }
+  getCarDeliveryTotals(String? orderCode){
+    _deliveryCarApiService.getDeliveryCarTotals(orderCode).then((data){
+      deliveryCar = data;
+      _totalOrderController.text = data.totalValue.toString();
+      _totalPaidController.text = data.totalPaid.toString();
+      print("totalValue: " + data.totalValue.toString() + " , totalPaid " + data.totalPaid.toString());
+
+    }, onError: (e) {
+      print(e);
+    });
+    setState(() {
+
+    });
   }
 }

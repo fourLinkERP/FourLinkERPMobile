@@ -92,6 +92,8 @@ class BranchRequestHApiService{
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": true,
+      "isConfirmed":true,
+      "typeCode": "1",
       "year" : financialYearCode,
       "addBy": empUserId,
 
@@ -149,6 +151,8 @@ class BranchRequestHApiService{
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": true,
+      "isConfirmed":true,
+      "typeCode": "1",
       "year" : financialYearCode,
       "editBy": empUserId,
 
