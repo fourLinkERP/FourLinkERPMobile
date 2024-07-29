@@ -55,12 +55,12 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
   double totalQty = 0;
   int rowsCount = 0;
 
-  String? selectedItemValue = null;
-  String? selectedItemName = null;
-  String? selectedStoreValue = null;
-  String? selectedToStoreValue = null;
-  String? selectedUnitValue = null;
-  String? selectedUnitName = null;
+  String? selectedItemValue;
+  String? selectedItemName;
+  String? selectedStoreValue;
+  String? selectedToStoreValue;
+  String? selectedUnitValue;
+  String? selectedUnitName;
 
   Item?  itemItem=Item(itemCode: "",itemNameAra: "",itemNameEng: "",id: 0);
   Unit?  unitItem=Unit(unitCode: "",unitNameAra: "",unitNameEng: "",id: 0);
@@ -463,67 +463,65 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
                     ],
                   ),
                 ),
-                Row(
-                    children: [
-                      Center(
-                        child: ElevatedButton.icon(
-                          icon: const Icon(
-                            Icons.edit,
-                            color: Color.fromRGBO(144, 16, 46, 1),
-                            size: 20.0,
-                            weight: 10,
-                          ),
-                          label: Text('add_product'.tr(),
-                              style: const TextStyle(color: Color.fromRGBO(144, 16, 46, 1))),
-                          onPressed: () {
-                            addBranchRequestRow();
-                          },
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              padding: const EdgeInsets.all(7),
-                              backgroundColor: Colors.white,
-                              foregroundColor: Colors.black,
-                              elevation: 0,
-                              side: const BorderSide(
-                                  width: 1,
-                                  color: Color.fromRGBO(144, 16, 46, 1)
-                              )
-                          ),
+                Center(
+                  child: ElevatedButton.icon(
+                    icon: const Icon(
+                      Icons.edit,
+                      color: Color.fromRGBO(144, 16, 46, 1),
+                      size: 20.0,
+                      weight: 10,
+                    ),
+                    label: Text('add_product'.tr(),
+                        style: const TextStyle(color: Color.fromRGBO(144, 16, 46, 1))),
+                    onPressed: () {
+                      addBranchRequestRow();
+                    },
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5),
                         ),
-                      ),
-
-                    ]),
+                        padding: const EdgeInsets.all(7),
+                        backgroundColor: Colors.white,
+                        foregroundColor: Colors.black,
+                        elevation: 0,
+                        side: const BorderSide(
+                            width: 1,
+                            color: Color.fromRGBO(144, 16, 46, 1)
+                        )
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 20),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: DataTable(
-                    border: TableBorder.all(),
+                Center(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      border: TableBorder.all(),
 
-                    headingRowColor: MaterialStateProperty.all(const Color.fromRGBO(144, 16, 46, 1)),
-                    columnSpacing: 20,
-                    columns: [
-                      DataColumn(label: Text("id".tr(),style: const TextStyle(color: Colors.white),),),
-                      DataColumn(label: Text("item".tr(),style: const TextStyle(color: Colors.white),),),
-                      DataColumn(label: Text("unit".tr(),style: const TextStyle(color: Colors.white),),),
-                      DataColumn(label: Text("qty".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
-                      DataColumn(label: Text("action".tr(), style: const TextStyle(color: Colors.white),),),
-                    ],
-                    rows: _branchRequestDLst.map((p) =>
-                        DataRow(cells: [
-                          DataCell(SizedBox(width: 5, child: Text(p.lineNum.toString()))),
-                          DataCell(SizedBox(width: 50, child: Text(p.itemName.toString()))),
-                          DataCell(SizedBox(child: Text(p.unitName.toString()))),
-                          DataCell(SizedBox(child: Text(p.displayQty.toString()))),
-                          DataCell(IconButton(icon: Icon(Icons.delete_forever, size: 30.0, color: Colors.red.shade600,),
-                            onPressed: () {
-                              deleteBranchRequestRow(context,p.lineNum);
-                              // calcTotalPriceRow();
-                            },
-                          )),
-                        ]),
-                    ).toList(),
+                      headingRowColor: MaterialStateProperty.all(const Color.fromRGBO(144, 16, 46, 1)),
+                      columnSpacing: 20,
+                      columns: [
+                        DataColumn(label: Text("id".tr(),style: const TextStyle(color: Colors.white),),),
+                        DataColumn(label: Text("item".tr(),style: const TextStyle(color: Colors.white),),),
+                        DataColumn(label: Text("unit".tr(),style: const TextStyle(color: Colors.white),),),
+                        DataColumn(label: Text("qty".tr(),style: const TextStyle(color: Colors.white),), numeric: true,),
+                        DataColumn(label: Text("action".tr(), style: const TextStyle(color: Colors.white),),),
+                      ],
+                      rows: _branchRequestDLst.map((p) =>
+                          DataRow(cells: [
+                            DataCell(SizedBox(width: 5, child: Text(p.lineNum.toString()))),
+                            DataCell(SizedBox(width: 50, child: Text(p.itemName.toString()))),
+                            DataCell(SizedBox(child: Text(p.unitName.toString()))),
+                            DataCell(SizedBox(child: Text(p.displayQty.toString()))),
+                            DataCell(IconButton(icon: Icon(Icons.delete_forever, size: 30.0, color: Colors.red.shade600,),
+                              onPressed: () {
+                                deleteBranchRequestRow(context,p.lineNum);
+                                // calcTotalPriceRow();
+                              },
+                            )),
+                          ]),
+                      ).toList(),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 40),
