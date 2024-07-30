@@ -85,7 +85,7 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
 
   Customer?  customerItem=Customer(customerCode: "",customerNameAra: "",customerNameEng: "",id: 0);
   Branch?  branchItem=Branch(branchCode: 0,branchNameAra: "",branchNameEng: "",id: 0);
-  SalesMan ?  salesManItem=SalesMan(salesManCode: salesManSelectedValue,salesManNameAra: "",salesManNameEng: "",id: 0);
+  SalesMan?  salesManItem=SalesMan(salesManCode: "",salesManNameAra: "",salesManNameEng: "",id: 0);
 
   String? _dropdownValue ;
   String arabicNameHint = 'arabicNameHint';
@@ -96,7 +96,12 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
 
     super.initState();
 
-   fillCombos();
+   _fillCombos();
+    if(salesMen.isNotEmpty)
+    {
+        salesManSelectedValue = salesMen[0].salesManCode.toString();
+        print("salesMan: ${salesMen[0].salesManCode}");
+    }
 
   }
 
@@ -301,8 +306,7 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
                                 itemAsString: (Customer u) => (langId==1)? u.customerNameAra.toString() : u.customerNameEng.toString(),
                                 onChanged: (value){
                                   selectedCustomerValue = value!.customerCode.toString();
-                                  selectedCustomerEmail = value!.email.toString();
-                                  salesManSelectedValue = value.salesManCode.toString();
+                                  selectedCustomerEmail = value.email.toString();
                                 },
 
                                 filterFn: (instance, filter){
@@ -410,7 +414,7 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
                                 height: 50,
                                 width: 200,
                                 child: DropdownSearch<SalesMan>(
-                                  selectedItem: null,
+                                  selectedItem: salesManItem,
                                   enabled: (isManager == true || isIt == true) ? true : false,
                                   popupProps: PopupProps.menu(
                                     itemBuilder: (context, item, isSelected) {
@@ -490,7 +494,7 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
     );
   }
 
-  fillCombos(){
+  _fillCombos(){
 
     //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
@@ -517,9 +521,8 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
     //Sales Man
     Future<List<SalesMan>> futureSalesMen = _salesManApiService.getReportSalesMen().then((data) {
       salesMen = data;
-
-      setState(() {
-      });
+      salesManSelectedValue = salesMen[0].salesManCode.toString();
+      getSalesManData();
       return salesMen;
     }, onError: (e) {
       print(e);
@@ -536,9 +539,19 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
       print(e);
     });
   }
+  getSalesManData() {
+    if (salesMen.isNotEmpty) {
+      for(var i = 0; i < salesMen.length; i++){
+        if(salesMen[i].salesManCode == salesManSelectedValue){
+          salesManItem = salesMen[salesMen.indexOf(salesMen[0])];
 
+        }
+      }
+    }
+    setState(() {
 
-
+    });
+  }
 
 }
 
