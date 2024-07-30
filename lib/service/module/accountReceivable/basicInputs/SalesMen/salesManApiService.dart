@@ -11,7 +11,7 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
 
  class SalesManApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/salesMans/searchData';
+  String searchApi= baseUrl.toString()  + '/api/v1/salesMans/searchdata';
   String createApi= baseUrl.toString()  + '/api/v1/salesMans';
   String updateApi= baseUrl.toString()  + '/api/v1/salesMans/';  // Add ID For Edit
   String deleteApi= baseUrl.toString()  + '/api/v1/salesMans/';
@@ -71,6 +71,7 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
       body: jsonEncode(data),
     );
 
+    print('data sales Man: ' + data.toString());
     if (response.statusCode == 200) {
       print('report sales Man 3');
       List<dynamic> data = jsonDecode(response.body)['data'];

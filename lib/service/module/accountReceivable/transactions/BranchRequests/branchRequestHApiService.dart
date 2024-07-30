@@ -160,7 +160,7 @@ class BranchRequestHApiService{
 
     String apiUpdate =updateApi + id.toString();
     print('Start Update apiUpdate ' + apiUpdate );
-
+    print('Update date: ' + data.toString());
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data)
         ,headers: {

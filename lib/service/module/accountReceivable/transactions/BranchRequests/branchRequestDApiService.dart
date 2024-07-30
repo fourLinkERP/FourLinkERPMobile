@@ -17,7 +17,6 @@ class BranchRequestDApiService {
   String getByIdApi= baseUrl.toString()  + '/api/v1/branchrequestdetails/';
 
   Future<List<BranchRequestD>> getBranchRequestD(int? headerId) async {
-    print('Booter 1 BranchRequestD');
     Map data = {
       'Search':{
         'CompanyCode': companyCode,
@@ -26,7 +25,7 @@ class BranchRequestDApiService {
       }
     };
 
-    print('Booter 2  BranchRequestD' + data.toString());
+    print('BranchRequestD: $data');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
