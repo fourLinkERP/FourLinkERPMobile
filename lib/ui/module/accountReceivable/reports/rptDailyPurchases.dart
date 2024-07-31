@@ -73,7 +73,7 @@ class _RptDailyPurchasesState extends State<RptDailyPurchases> {
   @override void initState() {
 
     super.initState();
-    fillCombos();
+    _fillCombos();
   }
 
   void dropDownCallBack(String? selectedValue){
@@ -242,8 +242,7 @@ class _RptDailyPurchasesState extends State<RptDailyPurchases> {
                                 itemAsString: (Customer u) => (langId==1)? u.customerNameAra.toString() : u.customerNameEng.toString(),
                                 onChanged: (value){
                                   selectedCustomerValue = value!.customerCode.toString();
-                                  selectedCustomerEmail = value!.email.toString();
-                                  salesManSelectedValue = value.salesManCode.toString();
+                                  selectedCustomerEmail = value.email.toString();
                                 },
 
                                 filterFn: (instance, filter){
@@ -351,7 +350,7 @@ class _RptDailyPurchasesState extends State<RptDailyPurchases> {
                                 height: 50,
                                 width: 200,
                                 child: DropdownSearch<SalesMan>(
-                                  selectedItem: null,
+                                  selectedItem: salesManItem,
                                   enabled: (isManager == true || isIt == true) ? true : false,
                                   popupProps: PopupProps.menu(
                                     itemBuilder: (context, item, isSelected) {
@@ -430,7 +429,7 @@ class _RptDailyPurchasesState extends State<RptDailyPurchases> {
       ),
     );
   }
-  fillCombos(){
+  _fillCombos(){
 
     //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
@@ -457,9 +456,8 @@ class _RptDailyPurchasesState extends State<RptDailyPurchases> {
     //Sales Man
     Future<List<SalesMan>> futureSalesMen = _salesManApiService.getReportSalesMen().then((data) {
       salesMen = data;
-
-      setState(() {
-      });
+      salesManSelectedValue = salesMen[0].salesManCode.toString();
+      getSalesManData();
       return salesMen;
     }, onError: (e) {
       print(e);
@@ -476,10 +474,25 @@ class _RptDailyPurchasesState extends State<RptDailyPurchases> {
       print(e);
     });
   }
+
+  getSalesManData() {
+    if (salesMen.isNotEmpty) {
+      for(var i = 0; i < salesMen.length; i++){
+        if(salesMen[i].salesManCode == salesManSelectedValue){
+          salesManItem = salesMen[salesMen.indexOf(salesMen[0])];
+
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
+
   printReport(BuildContext context ,String criteria){
     print('Start Report');
     print(criteria);
-    String menuId="7302"; //Customer Account Report Menu Id
+    String menuId="7302";
     //API Reference
     ReportUtilityApiService reportUtilityApiService = ReportUtilityApiService();
 

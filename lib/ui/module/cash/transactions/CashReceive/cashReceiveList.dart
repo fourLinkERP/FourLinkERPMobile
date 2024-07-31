@@ -1,4 +1,4 @@
-import 'dart:async';
+
 import 'dart:convert';
 import 'dart:core';
 import 'dart:typed_data';
@@ -9,25 +9,20 @@ import 'package:fourlinkmobileapp/data/model/modules/module/cash/transactions/ca
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/service/general/cash/cash_receive_report.dart';
-import 'package:fourlinkmobileapp/service/module/administration/basicInputs/compayApiService.dart';
 import 'package:fourlinkmobileapp/service/module/cash/transactions/CashReceives/cashReceiveApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/cash/transactions/CashReceive/editCashReceiveDataWidget.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../cubit/app_cubit.dart';
-import '../../../../../data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
+import '../../../../../data/model/modules/module/general/report/formulas.dart';
 import '../../../../../service/general/Pdf/pdf_api.dart';
-import '../../../../../service/general/Pdf/pdf_invoice_api.dart';
+import '../../../../../service/module/general/reportUtility/reportUtilityApiService.dart';
 import 'addCashReceiveDataWidget.dart';
 import 'detailCashReceiveWidget.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
-
-import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vendors/vendor.dart';
-import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
-
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 CashReceiveApiService _apiService= CashReceiveApiService();
 
@@ -51,7 +46,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
   void initState() {
     // TODO: implement initState
     print('okkkkkkkkkkk');
-    getData();
+    _getData();
 
     super.initState();
     setState(() {
@@ -59,7 +54,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
     });
   }
 
-  void getData() async {
+  void _getData() async {
     try{
       List<CashReceive>? futureCashReceiveH = await _apiService.getCashReceivesH();
       if (futureCashReceiveH != null){
@@ -260,7 +255,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
     // if(isAllowDelete)
     // {
     //   print('lahoiiiiiiiiiiiiii');
-    //   var res = _apiService.deleteCashReceive(context,id).then((value) => getData());
+    //   var res = _apiService.deleteCashReceive(context,id).then((value) => _getData());
     // }
     // else
     // {
@@ -280,9 +275,8 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
       Navigator.of(context)
           .push(MaterialPageRoute(
         builder: (context) => AddCashReceiveDataWidget(),
-      ))
-          .then((value) {
-        getData();
+      )).then((value) {
+        _getData();
       });
     }
     else
@@ -301,13 +295,54 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
       final result = await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => EditCashReceiveDataWidget(cashReceive)),
-      ).then((value) => getData());
+      ).then((value) => _getData());
     }
     else
     {
       FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
     }
 
+  }
+
+  _toPrintScreen(BuildContext context ,String criteria){
+    print("criteria: " + criteria);
+    String menuId="3203";
+    //API Reference
+    ReportUtilityApiService reportUtilityApiService = ReportUtilityApiService();
+
+    List<Formulas>  formulasList;
+    //Formula
+    formulasList = [
+      Formulas(columnName: 'companyName',columnValue:companyName),
+      Formulas(columnName: 'branchName',columnValue:branchName),
+      Formulas(columnName: 'year',columnValue:financialYearCode),
+      Formulas(columnName: 'userName',columnValue:empName),
+      Formulas(columnName: 'printTime',columnValue:DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()))
+    ];
+
+    //report Api
+    final report = reportUtilityApiService.getReportData(menuId, criteria, formulasList).then((data) async{
+      print('Data Fetched');
+
+      final outputFilePath = 'Receipt_Voucher.pdf';
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File('${dir.path}/$outputFilePath');
+      await file.writeAsBytes(data);
+
+      if(file.lengthSync() > 0)
+      {
+        print('to Print Report');
+        PdfApi.openFile(file);
+      }
+      else
+      {
+        print('No Data To Print');
+        FN_showToast(context,'noDataToPrint'.tr() ,Colors.black);
+      }
+
+    }, onError: (e) {
+      print(e);
+    });
 
 
   }
@@ -330,60 +365,9 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
       receive.companyAddress= langId==1?  companyAddress : companyAddress;
       receive.companyCommercial= langId==1?  companyCommercialID  : companyCommercialID;
       receive.companyVat= langId==1?  companyTaxID : companyTaxID;
-
-
+      
       final pdfFile = await CashReceiveReport.generate(receive, _base64StringToUint8List(companyLogo));
       PdfApi.openFile(pdfFile);
-
-      //Get Sales Invoice Details To Create List Of Items
-      //getDetailData(receive.id);
-      // Future<List<CashReceive>?> futureCashReceive = _apiDService.getSalesInvoicesD(receive.id);
-      // _salesInvoicesD = (await futureSalesInvoiceD)!;
-      //
-      // List<InvoiceItem> invoiceItems=[];
-      // if(_salesInvoicesD != null)
-      // {
-      //   print('In Sales Invoicr' );
-      //   print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString() );
-      //   for(var i = 0; i < _salesInvoicesD.length; i++){
-      //     int qty= (_salesInvoicesD[i].displayQty != null) ? _salesInvoicesD[i].displayQty as int : 0;
-      //     //double vat=0;
-      //     double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? _salesInvoicesD[i].displayTotalTaxValue : 0 ;
-      //     //double price =_salesInvoicesD[i].displayPrice! as double;
-      //     double price =( _salesInvoicesD[i].price != null) ? _salesInvoicesD[i].price : 0;
-      //
-      //
-      //     InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
-      //         date: date, quantity: qty  , vat: vat  , unitPrice: price );
-      //
-      //     invoiceItems.add(_invoiceItem);
-      //   }
-      // }
-      //
-      // final invoice = Invoice(   //ToDO
-      //     supplier: Vendor(
-      //       vendorNameAra: 'Sarah Field',
-      //       address1: 'Sarah Street 9, Beijing, China',
-      //       paymentInfo: 'https://paypal.me/sarahfieldzz',
-      //     ),
-      //     customer: Customer(
-      //       customerNameAra: receive.customerName,
-      //       address: 'Apple Street, Cupertino, CA 95014', //ToDO
-      //     ),
-      //     info: InvoiceInfo(
-      //       date: date,
-      //       dueDate: dueDate,
-      //       description: 'My description...',
-      //       number: receive.trxSerial.toString() ,
-      //     ),
-      //     items: invoiceItems
-      //
-      // );
-      //
-      // final pdfFile = await PdfInvoiceApi.generate(invoice);
-      //
-      // PdfApi.openFile(pdfFile);
-
     }
     else
     {
@@ -508,7 +492,8 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
                                         ),
                                         label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                           _navigateToPrintScreen(context,_cashReceives[index]);
+                                          _toPrintScreen(context, " And Id = ${_cashReceives[index].id}");
+                                          // _navigateToPrintScreen(context,_cashReceives[index]);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(

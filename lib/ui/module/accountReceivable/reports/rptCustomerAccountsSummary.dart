@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
@@ -16,21 +15,14 @@ import 'package:fourlinkmobileapp/service/module/administration/basicInputs/bran
 import 'package:fourlinkmobileapp/service/module/general/reportUtility/reportUtilityApiService.dart';
 import '../../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import '../../../../../../service/module/accountReceivable/basicInputs/CustomerTypes/customerTypeApiService.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/inventory/basicInputs/units/units.dart';
 import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/units/unitApiService.dart';
 import '../../../../common/login_components.dart';
-import '../../../../data/model/modules/module/accountReceivable/setup/salesInvoiceTypes/salesInvoiceType.dart';
 import '../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceH.dart';
-import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
-import '../../../../helpers/hex_decimal.dart';
 import '../../../../service/module/general/NextSerial/generalApiService.dart';
-import '../../../general/printPage.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
-import '../transactions/salesInvoices/addSalesInvoiceDataWidget.dart';
-import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 
 NextSerialApiService _nextSerialApiService = NextSerialApiService();
@@ -393,7 +385,6 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
                                   onChanged: (value){
 
                                   },
-
                                   filterFn: (instance, filter){
                                     if(instance.branchNameAra!.contains(filter)){
                                       print(filter);
@@ -420,10 +411,7 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
                                     itemBuilder: (context, item, isSelected) {
                                       return Container(
                                         margin: const EdgeInsets.symmetric(horizontal: 8),
-                                        decoration: !isSelected
-                                            ? null
-                                            : BoxDecoration(
-
+                                        decoration: !isSelected ? null : BoxDecoration(
                                           border: Border.all(color: Theme.of(context).primaryColor),
                                           borderRadius: BorderRadius.circular(5),
                                           color: Colors.white,
@@ -431,7 +419,6 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text((langId==1)? item.salesManNameAra.toString():  item.salesManNameEng.toString(),
-                                            //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
                                             textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
                                         ),
@@ -457,7 +444,6 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
                   ),
                   Center(
                     child: SizedBox(
-                      //margin: const EdgeInsets.only(left: 50.0,),
                       width: 150,
                       height: 50,
                       child: ElevatedButton.icon(

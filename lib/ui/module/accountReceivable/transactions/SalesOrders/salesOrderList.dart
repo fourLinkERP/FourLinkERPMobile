@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
@@ -10,7 +11,6 @@ import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/SalesOrders/salesOrderDApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/SalesOrders/salesOrderHApiService.dart';
-import 'package:fourlinkmobileapp/service/module/administration/basicInputs/compayApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/addSalesOrderDataWidget.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesOrders/detailSalesOrderWidget.dart';
@@ -20,15 +20,16 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../cubit/app_cubit.dart';
-import '../../../../../cubit/app_states.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/receipt/receipt.dart';
 import '../../../../../data/model/modules/module/general/receipt/receiptHeader.dart';
 import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vendors/vendor.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
 import 'package:fourlinkmobileapp/service/general/receipt/pdfReceipt.dart';
-
+import 'package:path_provider/path_provider.dart';
+import '../../../../../data/model/modules/module/general/report/formulas.dart';
 import '../../../../../service/general/Pdf/pdf_api.dart';
+import '../../../../../service/module/general/reportUtility/reportUtilityApiService.dart';
 
 SalesOrderHApiService _apiService= SalesOrderHApiService();
 SalesOrderDApiService _apiDService= SalesOrderDApiService();
@@ -59,7 +60,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
         // <-- Code run after delay
       });
     });
-    getData();
+    _getData();
     // _companyApiService.getCompany().then((data) {
     //   companyTaxID = data.taxID!;
     //   companyCommercialID = data.commercialID!;
@@ -82,7 +83,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     });
   }
 
-  void getData() async {
+  void _getData() async {
     Future<List<SalesOrderH>?> futureSalesOrderH = _apiService.getSalesOrdersH()
         .catchError((Error){
       AppCubit.get(context).EmitErrorState();
@@ -109,7 +110,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
 
     if(search.isEmpty)
     {
-      getData();
+      _getData();
     }
 
     setState(() {
@@ -120,11 +121,6 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      getData();
-    });
-
-
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -236,19 +232,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
                 // user.isFollowedByMe = !user.isFollowedByMe;
               });
             },
-            // child: AnimatedContainer(
-            //     height: 35,
-            //     width: 110,
-            //     duration: Duration(milliseconds: 300),
-            //     decoration: BoxDecoration(
-            //         color: user.isFollowedByMe ? Colors.blue[700] : Color(0xffffff),
-            //         borderRadius: BorderRadius.circular(5),
-            //         border: Border.all(color: user.isFollowedByMe ? Colors.transparent : Colors.grey.shade700,)
-            //     ),
-            //     child: Center(
-            //         child: Text(user.isFollowedByMe ? 'Unfollow' : 'Follow', style: TextStyle(color: user.isFollowedByMe ? Colors.white : Colors.white))
-            //     )
-            // ),
+
           )
 
         ],
@@ -284,7 +268,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     if(isAllowDelete)
     {
       print('lahoiiiiiiiiiiiiii');
-      var res = _apiService.deleteSalesOrderH(context,id).then((value) => getData());
+      var res = _apiService.deleteSalesOrderH(context,id).then((value) => _getData());
     }
     else
     {
@@ -300,9 +284,8 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
       Navigator.of(context)
           .push(MaterialPageRoute(
         builder: (context) => AddSalesOrderHDataWidget(),
-      ))
-          .then((value) {
-        getData();
+      )).then((value) {
+        _getData();
       });
     }
     else
@@ -321,13 +304,56 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
       final result = await Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => EditSalesOrderHDataWidget(customer)),
-      ).then((value) => getData());
+      ).then((value) => _getData());
 
     }
     else
     {
       FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
     }
+  }
+
+  _toPrintScreen(BuildContext context ,String criteria){
+    print("criteria: " + criteria);
+    String menuId="6203";
+    //API Reference
+    ReportUtilityApiService reportUtilityApiService = ReportUtilityApiService();
+
+    List<Formulas>  formulasList;
+    //Formula
+    formulasList = [
+      Formulas(columnName: 'companyName',columnValue:companyName),
+      Formulas(columnName: 'branchName',columnValue:branchName),
+      Formulas(columnName: 'year',columnValue:financialYearCode),
+      Formulas(columnName: 'userName',columnValue:empName),
+      Formulas(columnName: 'printTime',columnValue:DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()))
+    ];
+
+    //report Api
+    final report = reportUtilityApiService.getReportData(menuId, criteria, formulasList).then((data) async{
+      print('Data Fetched');
+
+      final outputFilePath = 'SalesOrders.pdf';
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File('${dir.path}/$outputFilePath');
+      await file.writeAsBytes(data);
+
+      if(file.lengthSync() > 0)
+      {
+        print('to Print Report');
+        PdfApi.openFile(file);
+      }
+      else
+      {
+        print('No Data To Print');
+        FN_showToast(context,'noDataToPrint'.tr() ,Colors.black);
+      }
+
+    }, onError: (e) {
+      print(e);
+    });
+
+
   }
 
   _navigateToPrintScreen (BuildContext context, SalesOrderH orderH,int index) async {
@@ -553,7 +579,8 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
                                         ),
                                         label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                          _navigateToPrintScreen(context,_salesOrders[index],index);
+                                          _toPrintScreen(context, " And Id = ${_salesOrders[index].id}");
+                                         // _navigateToPrintScreen(context,_salesOrders[index],index);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(

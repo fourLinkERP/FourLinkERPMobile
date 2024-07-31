@@ -19,16 +19,17 @@ import '../../../../../cubit/app_cubit.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/invoice/invoice.dart';
 import '../../../../../data/model/modules/module/accountReceivable/transactions/receipt/receipt.dart';
 import '../../../../../data/model/modules/module/general/receipt/receiptHeader.dart';
+import '../../../../../data/model/modules/module/general/report/formulas.dart';
 import '../../../../../service/general/Pdf/pdf_api.dart';
 import '../../../../../service/general/Pdf/pdf_invoice_api.dart';
 import '../../../../../data/model/modules/module/accountPayable/basicInputs/Vendors/vendor.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/Customers/customer.dart';
+import '../../../../../service/module/general/reportUtility/reportUtilityApiService.dart';
 import 'addSalesOfferDataWidget.dart';
 import 'detailSalesOfferWidget.dart';
 import 'editSalesOfferDataWidget.dart';
 import 'package:fourlinkmobileapp/service/general/receipt/pdfReceipt.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
+import 'package:path_provider/path_provider.dart';
 import 'package:intl/intl.dart';
 
 SalesOfferHApiService _apiService= SalesOfferHApiService();
@@ -309,7 +310,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
 
   }
 
-  _navigateToEditScreen (BuildContext context, SalesOfferH customer) async {
+  _navigateToEditScreen (BuildContext context, SalesOfferH offerH) async {
 
     int menuId=6202;
     bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
@@ -318,7 +319,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
 
       final result = await Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => EditSalesOfferHDataWidget(customer)),
+        MaterialPageRoute(builder: (context) => EditSalesOfferHDataWidget(offerH)),
       ).then((value) => getData());
 
     }
@@ -329,6 +330,48 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
 
   }
 
+  _toPrintScreen(BuildContext context ,String criteria){
+    print("criteria: " + criteria);
+    String menuId="6202";
+    //API Reference
+    ReportUtilityApiService reportUtilityApiService = ReportUtilityApiService();
+
+    List<Formulas>  formulasList;
+    //Formula
+    formulasList = [
+      Formulas(columnName: 'companyName',columnValue:companyName),
+      Formulas(columnName: 'branchName',columnValue:branchName),
+      Formulas(columnName: 'year',columnValue:financialYearCode),
+      Formulas(columnName: 'userName',columnValue:empName),
+      Formulas(columnName: 'printTime',columnValue:DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()))
+    ];
+
+    //report Api
+    final report = reportUtilityApiService.getReportData(menuId, criteria, formulasList).then((data) async{
+      print('Data Fetched');
+
+      final outputFilePath = 'SalesQuotions.pdf';
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File('${dir.path}/$outputFilePath');
+      await file.writeAsBytes(data);
+
+      if(file.lengthSync() > 0)
+      {
+        print('to Print Report');
+        PdfApi.openFile(file);
+      }
+      else
+      {
+        print('No Data To Print');
+        FN_showToast(context,'noDataToPrint'.tr() ,Colors.black);
+      }
+
+    }, onError: (e) {
+      print(e);
+    });
+
+
+  }
   _navigateToPrintScreen (BuildContext context, SalesOfferH offerH,int index) async {
 
     int menuId=6202;
@@ -345,11 +388,10 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
         _salesOffersD = (await futureSalesOfferD)!;
 
         List<InvoiceItem> invoiceItems=[];
-        print('Before Sales offer : ' + offerH.id.toString() );
+        print('Before Sales offer : ${offerH.id}' );
         if(_salesOffersD != null)
         {
-          print('In Sales Offer' );
-          print('_salesOffersD >> ' + _salesOffersD.length.toString() );
+          print('_salesOffersD >> ${_salesOffersD.length}' );
           for(var i = 0; i < _salesOffersD.length; i++){
             double qty= (_salesOffersD[i].displayQty != null) ? double.parse(_salesOffersD[i].displayQty.toStringAsFixed(2))  : 0;
             double vat=(_salesOffersD[i].displayTotalTaxValue != null) ? double.parse(_salesOffersD[i].displayTotalTaxValue.toStringAsFixed(2)) : 0 ;
@@ -370,10 +412,8 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
         double totalAmount =( offerH.totalAfterDiscount != null) ? double.parse(offerH.totalAfterDiscount!.toStringAsFixed(2)) : 0;
         double totalQty =( offerH.totalQty != null) ? double.parse(offerH.totalQty!.toStringAsFixed(2)) : 0;
         double rowsCount =( offerH.rowsCount != null) ? double.parse(offerH.rowsCount!.toStringAsFixed(2))   : 0;
-        //String TafqeetName = "";
         String tafqeetName =  offerH.tafqitNameArabic.toString();
 
-        print('taftaf');
         print(tafqeetName);
 
         final invoice = Invoice(   //ToDO
@@ -437,6 +477,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
       FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
     }
   }
+
   Uint8List _base64StringToUint8List(String base64String) {
     try {
       Uint8List decodedBytes = base64Decode(base64String).buffer.asUint8List();
@@ -547,7 +588,8 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                                         ),
                                         label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                          _navigateToPrintScreen(context,_salesOffers[index],index);
+                                          _toPrintScreen(context, " And Id = ${_salesOffers[index].id}");
+                                          //_navigateToPrintScreen(context,_salesOffers[index],index);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -566,55 +608,6 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                                   ),
                                 ],
                               ))
-                          // Container(
-                          //     child: Row(
-                          //       children: <Widget>[
-                          //         ElevatedButton(
-                          //           style: ButtonStyle(
-                          //               backgroundColor: MaterialStateProperty.all(Colors.green),
-                          //               padding:
-                          //               MaterialStateProperty.all(const EdgeInsets.all(2)),
-                          //               textStyle: MaterialStateProperty.all(
-                          //                   const TextStyle(fontSize: 14, color: Colors.white))),
-                          //           child: Text('edit'.tr()),
-                          //           onPressed: () {
-                          //             _navigateToEditScreen(context,_salesOffers[index]);
-                          //
-                          //           },
-                          //         ),
-                          //         SizedBox(width: 10),
-                          //         ElevatedButton(
-                          //           style: ButtonStyle(
-                          //               backgroundColor: MaterialStateProperty.all(Colors.redAccent),
-                          //               padding:
-                          //               MaterialStateProperty.all(const EdgeInsets.all(2)),
-                          //               textStyle: MaterialStateProperty.all(
-                          //                   const TextStyle(fontSize: 14, color: Colors.white))),
-                          //           child: Text('delete'.tr()),
-                          //           onPressed: () {
-                          //             _deleteItem(context,_salesOffers[index].id);
-                          //
-                          //
-                          //           },
-                          //         ),
-                          //         SizedBox(width: 10),
-                          //         ElevatedButton(
-                          //           style: ButtonStyle(
-                          //               backgroundColor: MaterialStateProperty.all(Colors.amberAccent),
-                          //               padding:
-                          //               MaterialStateProperty.all(const EdgeInsets.all(2)),
-                          //               textStyle: MaterialStateProperty.all(
-                          //                   const TextStyle(fontSize: 14, color: Colors.white))),
-                          //           child: Text('Print'.tr()),
-                          //           onPressed: () {
-                          //             //_deleteItem(context,_salesOffers[index].id);
-                          //
-                          //             _navigateToPrintScreen(context,_salesOffers[index]);
-                          //           },
-                          //         ),
-                          //
-                          //       ],
-                          //     ))
                         ],
                       ),
                     ),
