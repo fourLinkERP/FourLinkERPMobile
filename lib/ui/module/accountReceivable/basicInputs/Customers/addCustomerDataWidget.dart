@@ -7,6 +7,7 @@ import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customerTypes/customerType.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/salesMen/salesMan.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/basicInputs/Customers/PreventCustomerWithoutAttachments.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/CustomerGroups/customerGroupApiService.dart';
@@ -20,6 +21,7 @@ import '../../../../../data/model/modules/module/accountreceivable/basicInputs/C
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import '../../../../../service/module/accountReceivable/basicInputs/Customers/preventWithoutAttachmentsApiService.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/CustomerTypes/customerTypeApiService.dart';
 
@@ -27,6 +29,7 @@ NextSerialApiService _nextSerialApiService= NextSerialApiService();
 CustomerTypeApiService _customerTypeApiService= CustomerTypeApiService();
 CustomerGroupApiService _customerGroupApiService = CustomerGroupApiService();
 SalesManApiService _salesManApiService = SalesManApiService();
+PreventWithoutAttachApiService _preventWithoutAttachApiService = PreventWithoutAttachApiService();
 
 class AddCustomerDataWidget extends StatefulWidget {
 
@@ -54,11 +57,11 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
   String? shopPlateImageString = "";
   String? taxIdImageString = "";
 
-  //List Models
   List<CustomerType> customerTypes=[];
   List<CustomerGroup> customerGroups=[];
   List<SalesMan> salesMen = [];
-  //Selected Value
+  PreventCustomerWithoutAttachments? preventCustomer;
+
   String? customerTypeSelectedValue = null;
   String? customerGroupSelectedValue = null;
   String? selectedSalesManValue = null;
@@ -71,12 +74,11 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
   final _taxIdentificationNumberController = TextEditingController();
   final _addressController = TextEditingController();
   final _phone1Controller = TextEditingController();
-  //TextEditingController v = TextEditingController();
 
   @override void initState() {
 
     super.initState();
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("AR_Customers", "CustomerCode", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("AR_Customers", "CustomerCode", " And CompanyCode="+ companyCode.toString()).then((data) {
       NextSerial nextSerial = data;
 
       _customerCodeController.text = nextSerial.nextSerial.toString();
@@ -95,7 +97,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
       print(e);
     });
 
-    Future<List<CustomerGroup>> futureCustomerGroup = _customerGroupApiService.getCustomerGroups().then((data) {
+    Future<List<CustomerGroup>> futureCustomerGroup = _customerGroupApiService.getCustomerGroups().then((data){
       customerGroups = data;
       setState(() {
 
@@ -114,6 +116,16 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
     }, onError: (e) {
       print(e);
     });
+    Future<PreventCustomerWithoutAttachments?> futurePrevent = _preventWithoutAttachApiService.getPreventCustomer().then((data) {
+      preventCustomer = data;
+      setState(() {
+
+      });
+      print("preventCustomerStatus: ${preventCustomer!.isPreventAddNewCustomerWithoutAttachments}");
+      return preventCustomer;
+    }, onError: (e) {
+      print(e);
+    });
 
   }
 
@@ -128,6 +140,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
          highlightElevation: 5,
         backgroundColor:  Colors.transparent,
         onPressed: () async {
+
           if(_customerNameAraController.text.isEmpty)
           {
             FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
@@ -148,29 +161,32 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
             FN_showToast(context,'please_enter_taxId'.tr() ,Colors.black);
             return;
           }
-          if (customerImageString == null || customerImageString!.isEmpty) {
-            FN_showToast(context,'please_set_customer_image'.tr() ,Colors.black);
-            return;
-          }
-          if (commercialTaxNoImageString == null || commercialTaxNoImageString!.isEmpty) {
-            FN_showToast(context,'please_set_commercial_Tax_image'.tr() ,Colors.black);
-            return;
-          }
-          if (governmentIdImageString == null || governmentIdImageString!.isEmpty) {
-            FN_showToast(context,'please_set_governmentId_image'.tr() ,Colors.black);
-            return;
-          }
-          if (shopIdImageString == null || shopIdImageString!.isEmpty) {
-            FN_showToast(context,'please_set_shopId_image'.tr() ,Colors.black);
-            return;
-          }
-          if (shopPlateImageString == null || shopPlateImageString!.isEmpty) {
-            FN_showToast(context,'please_set_shopPlate_image'.tr() ,Colors.black);
-            return;
-          }
-          if (taxIdImageString == null || taxIdImageString!.isEmpty) {
-            FN_showToast(context,'please_set_taxId_image'.tr() ,Colors.black);
-            return;
+          if(preventCustomer?.isPreventAddNewCustomerWithoutAttachments == true)
+          {
+            if (customerImageString == null || customerImageString!.isEmpty) {
+              FN_showToast(context,'please_set_customer_image'.tr() ,Colors.black);
+              return;
+            }
+            if (commercialTaxNoImageString == null || commercialTaxNoImageString!.isEmpty) {
+              FN_showToast(context,'please_set_commercial_Tax_image'.tr() ,Colors.black);
+              return;
+            }
+            if (governmentIdImageString == null || governmentIdImageString!.isEmpty) {
+              FN_showToast(context,'please_set_governmentId_image'.tr() ,Colors.black);
+              return;
+            }
+            if (shopIdImageString == null || shopIdImageString!.isEmpty) {
+              FN_showToast(context,'please_set_shopId_image'.tr() ,Colors.black);
+              return;
+            }
+            if (shopPlateImageString == null || shopPlateImageString!.isEmpty) {
+              FN_showToast(context,'please_set_shopPlate_image'.tr() ,Colors.black);
+              return;
+            }
+            if (taxIdImageString == null || taxIdImageString!.isEmpty) {
+              FN_showToast(context,'please_set_taxId_image'.tr() ,Colors.black);
+              return;
+            }
           }
           await api.createCustomer(context,Customer(
               customerCode: _customerCodeController.text ,

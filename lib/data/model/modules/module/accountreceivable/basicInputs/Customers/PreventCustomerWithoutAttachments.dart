@@ -1,14 +1,14 @@
 
 class PreventCustomerWithoutAttachments{
-  bool? isPreventCustomerWithoutAttachments;
+  bool? isPreventAddNewCustomerWithoutAttachments;
 
   PreventCustomerWithoutAttachments({
-    this.isPreventCustomerWithoutAttachments
+    this.isPreventAddNewCustomerWithoutAttachments
 });
 
   factory PreventCustomerWithoutAttachments.fromJson(Map<String, dynamic> json) {
     return PreventCustomerWithoutAttachments(
-      isPreventCustomerWithoutAttachments: (json['isPreventCustomerWithoutAttachments'] != null)?  json['isPreventCustomerWithoutAttachments'] as bool : true,
+      isPreventAddNewCustomerWithoutAttachments: (json['isPreventAddNewCustomerWithoutAttachments'] != null)?  json['isPreventAddNewCustomerWithoutAttachments'] as bool : true,
     );
   }
 }

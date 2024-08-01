@@ -117,7 +117,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
       'customerCode': customer.customerCode,
-      'customerName': customer.customerName,
       'customerNameAra': customer.customerNameAra,
       'customerNameEng': customer.customerNameEng,
       'salesManCode': customer.salesManCode,
