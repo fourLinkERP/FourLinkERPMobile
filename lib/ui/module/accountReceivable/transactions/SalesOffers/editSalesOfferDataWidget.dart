@@ -1846,7 +1846,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     if (result == null || !result) {
       return;
     }
-    int menuId = 6204;
+    int menuId = 6202;
     bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
 
     if (isAllowDelete) {

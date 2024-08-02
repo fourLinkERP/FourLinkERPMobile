@@ -124,7 +124,7 @@ class MainTransactions extends StatelessWidget {
               }
               else if(areaListData[index] == 'assets/fitness_app/salesReturnCart.png') // Invoice
                   {
-                        int menuId = 6204;
+                        int menuId = 6207;
                         bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                         if (isAllowView) {
                           Navigator.push(context, MaterialPageRoute(builder: (context) => SalesInvoiceReturnHListPage()));

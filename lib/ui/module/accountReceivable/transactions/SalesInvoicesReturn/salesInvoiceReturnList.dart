@@ -226,7 +226,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
 
   _navigateToAddScreen(BuildContext context) async {
     // CircularProgressIndicator();
-    int menuId = 6204;
+    int menuId = 6207;
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if (isAllowAdd) {
       Navigator.of(context).push(MaterialPageRoute(
@@ -243,7 +243,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
 
   _navigateToEditScreen(BuildContext context,
       SalesInvoiceReturnH customer) async {
-    int menuId = 6204;
+    int menuId = 6207;
     bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
     if (isAllowEdit) {
       final result = await Navigator.push(
@@ -258,7 +258,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
   }
 
   _navigateToPrintScreen(BuildContext context, SalesInvoiceReturnH invoiceH, int index) async {
-    int menuId = 6204;
+    int menuId = 6207;
     bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
     //isAllowPrint = true;
     if (isAllowPrint) {
@@ -421,7 +421,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
     //   return;
     // }
     //
-    // int menuId=6204;
+    // int menuId=6207;
     // bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
     // if(isAllowDelete)
     // {
