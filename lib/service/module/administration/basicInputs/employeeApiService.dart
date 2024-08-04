@@ -57,8 +57,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       }
     };
 
-    String apiGet= searchApi;
-
     print('Employee 1');
     final http.Response response = await http.post(
       Uri.parse(searchApi),

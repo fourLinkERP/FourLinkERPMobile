@@ -21,7 +21,9 @@ import 'package:fourlinkmobileapp/ui/home/home_screen.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../common/globals.dart';
+import '../../../data/model/modules/module/dashboard/dashboardItems.dart';
 import '../../../helpers/toast.dart';
+import '../../../service/module/dashboard/dashboardItemsApiService.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/header_widget.dart';
 import '../forget_password/forgot_password_screen.dart';
@@ -33,6 +35,7 @@ Login? logenUserData;
 //APIS
 BranchApiService _branchApiService= BranchApiService();
 ItemApiService _itemsApiService = ItemApiService();
+DashboardItemsApiService _dashboardItemsApiService = DashboardItemsApiService();
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -652,6 +655,7 @@ class _LoginScreenState extends State<LoginScreen> {
       empUserId = data.userId!;
       isManager = data.isManager;
       isIt = data.isIt;
+      isEditPrice = data.isEditPrice;
       print('After Set Empz Data');
       print(empUserId);
 
@@ -688,6 +692,15 @@ class _LoginScreenState extends State<LoginScreen> {
       } catch (e) {
         print('Error decoding base64String: $e');
       }
+  }
+  setDashboardItems() async {
+    Future<List<DashboardItems>> futureDashboard = _dashboardItemsApiService.getDashboardItems().then((data) async {
+      dashboardItems = data;
+
+      return dashboardItems;
+    }, onError: (e) {
+      print(e);
+    });
   }
 
 
@@ -727,7 +740,8 @@ class _LoginScreenState extends State<LoginScreen> {
             .checkUserGroupData(empCode);
 
         if (employeeGroupStatus.statusCode == 1) // Has Permission
-            {
+        {
+          await setDashboardItems();
           setMenuPermissions();
           setCompanyGeneralSetup();
           setCompanyGeneralEmailSetup();
@@ -751,13 +765,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
     _emailController.text = 'admin';
     _passwordController.text = '123Pa\$\$word!';
-    print('TTT To GO');
+
     Login log = await _LoginService.logApi2(
         context, _emailController.text,
         _passwordController.text,branchCode);
-    print('TTT To GO 1');
+
     if (log.token!.isNotEmpty) {
-      print('TTT To GO 2');
+
       token = log.token!;
       branchCode = 1; // Default Branch Add By Nasr
       print('tokenz :' + token);
@@ -771,13 +785,13 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       //checkUserGroupData
-      EmployeeGroupStatus employeeGroupStatus = await _EmployeeApiService
-          .checkUserGroupData(empCode);
+      EmployeeGroupStatus employeeGroupStatus = await _EmployeeApiService.checkUserGroupData(empCode);
 
 
       //print('Permission :'  + employeeGroupStatus.statusCode.toString());
       if (employeeGroupStatus.statusCode == 1) // Has Permission
-          {
+        {
+        await setDashboardItems();
         setMenuPermissions();
         setCompanyGeneralSetup();
         setCompanyGeneralEmailSetup();

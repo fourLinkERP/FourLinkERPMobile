@@ -9,6 +9,7 @@ class Employee {
   String?  userId;
   bool? isManager;
   bool? isIt;
+  bool? isEditPrice;
 
 
 
@@ -19,7 +20,8 @@ class Employee {
     this.userCode,
     this.userId,
     this.isManager,
-    this.isIt
+    this.isIt,
+    this.isEditPrice
 
     //image
     });
@@ -34,6 +36,7 @@ class Employee {
       userId: json['userId'] as String,
       isManager: json['isManager'] as bool,
       isIt: json['isIt'] as bool,
+      isEditPrice: json['isEditPrice'] as bool,
 
     );
   }

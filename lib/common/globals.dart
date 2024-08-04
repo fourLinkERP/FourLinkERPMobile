@@ -5,6 +5,7 @@ import 'package:fourlinkmobileapp/data/model/modules/module/administration/basic
 import 'package:fourlinkmobileapp/data/model/modules/module/security/menuPermission.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/inventory/basicInputs/items/items.dart';
 import '../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
+import '../data/model/modules/module/dashboard/dashboardItems.dart';
 import '../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
 
 EmployeeApiService _employeeApiService = EmployeeApiService();
@@ -52,6 +53,7 @@ String branchLongitude = '';
 
 List<Item> itemsWithBalance = [];
 List<Item> itemsWithOutBalance = [];
+List<DashboardItems> dashboardItems = [];
 String requestTypeCode = "";
 String transactionId = "";
 int lineNumber = 1;
@@ -61,6 +63,7 @@ int langId = 1; //1-Arabic   2-English
 String empCode = "";
 bool? isManager = false;
 bool? isIt = false;
+bool? isEditPrice = false;
 String empUserCode = "A3ddsdwewewq";
 String empUserId = "";
 String empName = "";

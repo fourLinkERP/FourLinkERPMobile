@@ -10,8 +10,10 @@ class DashboardItemsApiService{
   Future<List<DashboardItems>>  getDashboardItems() async {
 
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      "Search":{
+        'SystemId': systemCode,
+        "langId": langId
+      }
     };
 
     final http.Response response = await http.post(
@@ -23,13 +25,16 @@ class DashboardItemsApiService{
       body: jsonEncode(data),
     );
 
+    print("DashboardItems search: $data");
     if (response.statusCode == 200) {
       print("DashboardItems success");
+
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<DashboardItems> list = [];
       if (data.isNotEmpty) {
         list = data.map((item) => DashboardItems.fromJson(item)).toList();
       }
+      print("Dash list: $list");
       return  list;
     } else {
       throw "Failed to load DashboardItems list";

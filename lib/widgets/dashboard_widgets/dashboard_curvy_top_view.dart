@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:supercharged/supercharged.dart';
 
+import '../../common/globals.dart';
+import '../../data/model/modules/module/dashboard/dashboardItems.dart';
 import '../../helpers/hex_decimal.dart';
+import '../../service/module/dashboard/dashboardItemsApiService.dart';
 import '../../theme/fitness_app_theme.dart';
 
 
-class DashboardCurvyTopView extends StatelessWidget {
+class DashboardCurvyTopView extends StatefulWidget {
   final AnimationController? animationController;
   final Animation<double>? animation;
 
@@ -15,18 +19,23 @@ class DashboardCurvyTopView extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<DashboardCurvyTopView> createState() => _DashboardCurvyTopViewState();
+}
+
+class _DashboardCurvyTopViewState extends State<DashboardCurvyTopView> {
+
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: animationController!,
+      animation: widget.animationController!,
       builder: (BuildContext context, Widget? child) {
         return FadeTransition(
-          opacity: animation!,
+          opacity: widget.animation!,
           child: Transform(
-            transform: Matrix4.translationValues(
-                0.0, 30 * (1.0 - animation!.value), 0.0),
+            transform: Matrix4.translationValues(0.0, 30 * (1.0 - widget.animation!.value), 0.0),
             child: Padding(
-              padding: const EdgeInsets.only(
-                  left: 24, right: 24, top: 16, bottom: 18),
+              padding: const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 18),
               child: Container(
                 decoration: BoxDecoration(
                   color: FitnessAppTheme.white,
@@ -45,14 +54,12 @@ class DashboardCurvyTopView extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     Padding(
-                      padding:
-                          const EdgeInsets.only(top: 16, left: 16, right: 16),
+                      padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
                       child: Row(
                         children: <Widget>[
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 8, right: 8, top: 4),
+                              padding: const EdgeInsets.only(left: 8, right: 8, top: 4),
                               child: Column(
                                 children: <Widget>[
                                   Row(
@@ -62,180 +69,134 @@ class DashboardCurvyTopView extends StatelessWidget {
                                         width: 2,
                                         decoration: const BoxDecoration(
                                           color: Color.fromRGBO(144, 16, 46, 1),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(4.0)),
+                                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
+                                          children:[
                                             Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 4, bottom: 2),
+                                              padding: const EdgeInsets.only(left: 4, bottom: 2),
                                               child: Text(
-                                                'Sales'.tr(),
+                                                dashboardItems[2].widgetName != null? dashboardItems[2].widgetName! : 'Sales'.tr(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                  fontFamily:
-                                                      FitnessAppTheme.fontName,
+                                                  fontFamily: FitnessAppTheme.fontName,
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 16,
                                                   letterSpacing: -0.1,
-                                                  color: FitnessAppTheme.grey
-                                                      .withOpacity(0.5),
+                                                  color: FitnessAppTheme.grey.withOpacity(0.5),
                                                 ),
                                               ),
                                             ),
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.end,
                                               children: <Widget>[
                                                 SizedBox(
                                                   width: 28,
                                                   height: 28,
-                                                  child: Image.asset(
-                                                      "assets/fitness_app/eaten.png"),
+                                                  child: Image.asset("assets/fitness_app/eaten.png"),
                                                 ),
                                                 Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 4, bottom: 3),
+                                                  padding: const EdgeInsets.only(left: 4, bottom: 3),
                                                   child: Text(
-                                                    '${(1127 * animation!.value).toInt()}',
+                                                      dashboardItems[2].widgetValue != null ? '${(dashboardItems[2].widgetValue)?.toInt()}' : '1127',
                                                     textAlign: TextAlign.center,
                                                     style: const TextStyle(
-                                                      fontFamily:
-                                                          FitnessAppTheme.fontName,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 16,
-                                                      color: FitnessAppTheme
-                                                          .darkerText,
+                                                      fontFamily: FitnessAppTheme.fontName,
+                                                      fontWeight: FontWeight.w600, fontSize: 16,
+                                                      color: FitnessAppTheme.darkerText,
                                                     ),
                                                   ),
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 4, bottom: 3),
                                                   child: Text(
-                                                    'item'.tr(),
+                                                    dashboardItems[2].widgetDesc != null? dashboardItems[2].widgetDesc!: 'item'.tr(),
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                      fontFamily:
-                                                          FitnessAppTheme
-                                                              .fontName,
-                                                      fontWeight:
-                                                          FontWeight.w600,
+                                                      fontFamily: FitnessAppTheme.fontName,
+                                                      fontWeight: FontWeight.w600,
                                                       fontSize: 12,
                                                       letterSpacing: -0.2,
-                                                      color: FitnessAppTheme
-                                                          .grey
-                                                          .withOpacity(0.5),
+                                                      color: FitnessAppTheme.grey.withOpacity(0.5),
                                                     ),
                                                   ),
                                                 ),
                                               ],
-                                            )
+                                            ),
                                           ],
                                         ),
                                       )
                                     ],
                                   ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
+                                  const SizedBox(height: 8,),
                                   Row(
                                     children: <Widget>[
                                       Container(
                                         height: 48,
                                         width: 2,
                                         decoration: BoxDecoration(
-                                          color: HexColor('#F56E98')
-                                              .withOpacity(0.5),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(4.0)),
+                                          color: HexColor('#F56E98').withOpacity(0.5),
+                                          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                                         ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 4, bottom: 2),
                                               child: Text(
-                                                'purchase'.tr(),
+                                                dashboardItems[3].widgetName != null ? dashboardItems[3].widgetName! : 'purchase'.tr(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                  fontFamily:
-                                                      FitnessAppTheme.fontName,
+                                                  fontFamily: FitnessAppTheme.fontName,
                                                   fontWeight: FontWeight.w500,
                                                   fontSize: 16,
                                                   letterSpacing: -0.1,
-                                                  color: FitnessAppTheme.grey
-                                                      .withOpacity(0.5),
+                                                  color: FitnessAppTheme.grey.withOpacity(0.5),
                                                 ),
                                               ),
                                             ),
                                             Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              crossAxisAlignment: CrossAxisAlignment.end,
                                               children: <Widget>[
                                                 SizedBox(
                                                   width: 28,
                                                   height: 28,
-                                                  child: Image.asset(
-                                                      "assets/fitness_app/burned.png"),
+                                                  child: Image.asset("assets/fitness_app/burned.png"),
                                                 ),
                                                 Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 4, bottom: 3),
+                                                  padding: const EdgeInsets.only(left: 4, bottom: 3),
                                                   child: Text(
-                                                    '${(102 * animation!.value).toInt()}',
+                                                    dashboardItems[3].widgetValue != null ? '${(dashboardItems[3].widgetValue)?.toInt()}' : '2145',
                                                     textAlign: TextAlign.center,
                                                     style: const TextStyle(
-                                                      fontFamily:
-                                                          FitnessAppTheme
-                                                              .fontName,
-                                                      fontWeight:
-                                                          FontWeight.w600,
+                                                      fontFamily: FitnessAppTheme.fontName,
+                                                      fontWeight: FontWeight.w600,
                                                       fontSize: 16,
-                                                      color: FitnessAppTheme
-                                                          .darkerText,
+                                                      color: FitnessAppTheme.darkerText,
                                                     ),
                                                   ),
                                                 ),
                                                 Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8, bottom: 3),
+                                                  padding: const EdgeInsets.only(left: 8, bottom: 3),
                                                   child: Text(
-                                                    'item'.tr(),
+                                                    dashboardItems[3].widgetDesc != null ? dashboardItems[3].widgetDesc! : 'item'.tr(),
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                      fontFamily:
-                                                          FitnessAppTheme
-                                                              .fontName,
-                                                      fontWeight:
-                                                          FontWeight.w600,
+                                                      fontFamily: FitnessAppTheme.fontName,
+                                                      fontWeight: FontWeight.w600,
                                                       fontSize: 12,
                                                       letterSpacing: -0.2,
-                                                      color: FitnessAppTheme
-                                                          .grey
-                                                          .withOpacity(0.5),
+                                                      color: FitnessAppTheme.grey.withOpacity(0.5),
                                                     ),
                                                   ),
                                                 ),
@@ -268,40 +229,32 @@ class DashboardCurvyTopView extends StatelessWidget {
                                         ),
                                         border: Border.all(
                                             width: 4,
-                                            color: FitnessAppTheme
-                                                .nearlyDarkBlue
-                                                .withOpacity(0.2)),
+                                            color: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.2)),
                                       ),
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            '${(1503 * animation!.value).toInt()}',
+                                            dashboardItems[5].widgetValue != null ? dashboardItems[5].widgetValue! :'${(1503 * widget.animation!.value).toInt()}',
                                             textAlign: TextAlign.center,
                                             style: const TextStyle(
-                                              fontFamily:
-                                                  FitnessAppTheme.fontName,
+                                              fontFamily: FitnessAppTheme.fontName,
                                               fontWeight: FontWeight.normal,
                                               fontSize: 24,
                                               letterSpacing: 0.0,
-                                              color: FitnessAppTheme
-                                                  .nearlyDarkBlue,
+                                              color: FitnessAppTheme.nearlyDarkBlue,
                                             ),
                                           ),
                                           Text(
-                                            'dayrevenu'.tr(),
+                                            dashboardItems[5].widgetName != null ? dashboardItems[5].widgetName! : 'dayrevenu'.tr(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                              fontFamily:
-                                                  FitnessAppTheme.fontName,
+                                              fontFamily: FitnessAppTheme.fontName,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 12,
                                               letterSpacing: 0.0,
-                                              color: FitnessAppTheme.grey
-                                                  .withOpacity(0.5),
+                                              color: FitnessAppTheme.grey.withOpacity(0.5),
                                             ),
                                           ),
                                         ],
@@ -317,9 +270,7 @@ class DashboardCurvyTopView extends StatelessWidget {
                                             HexColor("#8A98E8"),
                                             HexColor("#8A98E8")
                                           ],
-                                          angle: 140 +
-                                              (360 - 140) *
-                                                  (1.0 - animation!.value)),
+                                          angle: 140 + (360 - 140) * (1.0 - widget.animation!.value)),
                                       child: const SizedBox(
                                         width: 108,
                                         height: 108,
@@ -334,8 +285,7 @@ class DashboardCurvyTopView extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 24, right: 24, top: 8, bottom: 8),
+                      padding: const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 8),
                       child: Container(
                         height: 2,
                         decoration: const BoxDecoration(
@@ -345,8 +295,7 @@ class DashboardCurvyTopView extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(
-                          left: 24, right: 24, top: 8, bottom: 16),
+                      padding: const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 16),
                       child: Row(
                         children: <Widget>[
                           Expanded(
@@ -355,7 +304,7 @@ class DashboardCurvyTopView extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  'customers'.tr(),
+                                  dashboardItems[0].widgetName != null ? dashboardItems[0].widgetName! : 'customers'.tr(),
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     fontFamily: FitnessAppTheme.fontName,
@@ -371,24 +320,20 @@ class DashboardCurvyTopView extends StatelessWidget {
                                     height: 4,
                                     width: 70,
                                     decoration: BoxDecoration(
-                                      color:
-                                          HexColor('#87A0E5').withOpacity(0.2),
-                                      borderRadius: const BorderRadius.all(
-                                          Radius.circular(4.0)),
+                                      color: HexColor('#87A0E5').withOpacity(0.2),
+                                      borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                                     ),
                                     child: Row(
                                       children: <Widget>[
                                         Container(
-                                          width: ((70 / 1.2) * animation!.value),
+                                          width: ((70 / 1.2) * widget.animation!.value),
                                           height: 4,
                                           decoration: BoxDecoration(
                                             gradient: LinearGradient(colors: [
                                               HexColor('#87A0E5'),
-                                              HexColor('#87A0E5')
-                                                  .withOpacity(0.5),
+                                              HexColor('#87A0E5').withOpacity(0.5),
                                             ]),
-                                            borderRadius: const BorderRadius.all(
-                                                Radius.circular(4.0)),
+                                            borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                                           ),
                                         )
                                       ],
@@ -398,7 +343,7 @@ class DashboardCurvyTopView extends StatelessWidget {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 6),
                                   child: Text(
-                                    '1500',
+                                    dashboardItems[0].widgetValue != null ? dashboardItems[0].widgetValue! : '',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontFamily: FitnessAppTheme.fontName,
@@ -422,7 +367,7 @@ class DashboardCurvyTopView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      'vendors'.tr(),
+                                      dashboardItems[1].widgetName != null ? dashboardItems[1].widgetName! : 'vendors'.tr(),
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                         fontFamily: FitnessAppTheme.fontName,
@@ -438,26 +383,20 @@ class DashboardCurvyTopView extends StatelessWidget {
                                         height: 4,
                                         width: 70,
                                         decoration: BoxDecoration(
-                                          color: HexColor('#F56E98')
-                                              .withOpacity(0.2),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(4.0)),
+                                          color: HexColor('#F56E98').withOpacity(0.2),
+                                          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                                         ),
                                         child: Row(
                                           children: <Widget>[
                                             Container(
-                                              width: ((70 / 2) *
-                                                  animationController!.value),
+                                              width: ((70 / 2) * widget.animationController!.value),
                                               height: 4,
                                               decoration: BoxDecoration(
-                                                gradient:
-                                                    LinearGradient(colors: [
-                                                  HexColor('#F56E98')
-                                                      .withOpacity(0.1),
+                                                gradient: LinearGradient(colors: [
+                                                  HexColor('#F56E98').withOpacity(0.1),
                                                   HexColor('#F56E98'),
                                                 ]),
-                                                borderRadius: const BorderRadius.all(
-                                                    Radius.circular(4.0)),
+                                                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                                               ),
                                             ),
                                           ],
@@ -467,14 +406,13 @@ class DashboardCurvyTopView extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 6),
                                       child: Text(
-                                        '100',
+                                        dashboardItems[1].widgetValue != null ? dashboardItems[1].widgetValue! : '',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: FitnessAppTheme.fontName,
                                           fontWeight: FontWeight.w600,
                                           fontSize: 12,
-                                          color: FitnessAppTheme.grey
-                                              .withOpacity(0.5),
+                                          color: FitnessAppTheme.grey.withOpacity(0.5),
                                         ),
                                       ),
                                     ),
@@ -493,7 +431,7 @@ class DashboardCurvyTopView extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      'salesman'.tr(),
+                                      dashboardItems[4].widgetName != null ? dashboardItems[4].widgetName! :'salesman'.tr(),
                                       style: const TextStyle(
                                         fontFamily: FitnessAppTheme.fontName,
                                         fontWeight: FontWeight.w500,
@@ -503,32 +441,25 @@ class DashboardCurvyTopView extends StatelessWidget {
                                       ),
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 0, top: 4),
+                                      padding: const EdgeInsets.only(right: 0, top: 4),
                                       child: Container(
                                         height: 4,
                                         width: 70,
                                         decoration: BoxDecoration(
-                                          color: HexColor('#F1B440')
-                                              .withOpacity(0.2),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(4.0)),
+                                          color: HexColor('#F1B440').withOpacity(0.2),
+                                          borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                                         ),
                                         child: Row(
                                           children: <Widget>[
                                             Container(
-                                              width: ((70 / 2.5) *
-                                                  animationController!.value),
+                                              width: ((70 / 2.5) * widget.animationController!.value),
                                               height: 4,
                                               decoration: BoxDecoration(
-                                                gradient:
-                                                    LinearGradient(colors: [
-                                                  HexColor('#F1B440')
-                                                      .withOpacity(0.1),
+                                                gradient: LinearGradient(colors: [
+                                                  HexColor('#F1B440').withOpacity(0.1),
                                                   HexColor('#F1B440'),
                                                 ]),
-                                                borderRadius: const BorderRadius.all(
-                                                    Radius.circular(4.0)),
+                                                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                                               ),
                                             ),
                                           ],
@@ -538,14 +469,13 @@ class DashboardCurvyTopView extends StatelessWidget {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 6),
                                       child: Text(
-                                        '103',
+                                        dashboardItems[4].widgetValue != null ? dashboardItems[4].widgetValue! : '103',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: FitnessAppTheme.fontName,
                                           fontWeight: FontWeight.w600,
                                           fontSize: 12,
-                                          color: FitnessAppTheme.grey
-                                              .withOpacity(0.5),
+                                          color: FitnessAppTheme.grey.withOpacity(0.5),
                                         ),
                                       ),
                                     ),
@@ -647,15 +577,15 @@ class CurvePainter extends CustomPainter {
         false,
         paint);
 
-    final gradient1 = new SweepGradient(
+    final gradient1 = SweepGradient(
       tileMode: TileMode.repeated,
       colors: [Colors.white, Colors.white],
     );
 
-    var cPaint = new Paint();
-    cPaint..shader = gradient1.createShader(rect);
-    cPaint..color = Colors.white;
-    cPaint..strokeWidth = 14 / 2;
+    var cPaint =  Paint();
+    cPaint.shader = gradient1.createShader(rect);
+    cPaint.color = Colors.white;
+    cPaint.strokeWidth = 14 / 2;
     canvas.save();
 
     final centerToCircle = size.width / 2;
@@ -666,7 +596,7 @@ class CurvePainter extends CustomPainter {
 
     canvas.save();
     canvas.translate(0.0, -centerToCircle + 14 / 2);
-    canvas.drawCircle(new Offset(0, 0), 14 / 5, cPaint);
+    canvas.drawCircle( const Offset(0, 0), 14 / 5, cPaint);
 
     canvas.restore();
     canvas.restore();
