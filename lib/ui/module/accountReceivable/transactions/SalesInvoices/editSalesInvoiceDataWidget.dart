@@ -275,14 +275,12 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                     child: Column(
                       crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
                       children: <Widget>[
-
                         Form(
                             key: _dropdownTypeFormKey,
                             child: Column(
                               crossAxisAlignment: langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-
                                 DropdownSearch<SalesInvoiceType>(
                                   validator: (value) => value == null ? "select_a_Type".tr() : null,
                                   enabled: false,
@@ -605,12 +603,8 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                                   width: 90,
                                   child: TextFormField(
                                     controller: _displayPriceController,
-                                    //hintText: "price".tr(),
-                                    enabled: true,  /// open just for now
-                                    onSaved: (val) {
-                                      //price = val;
-                                    },
-                                    //textInputType: TextInputType.number,
+                                    enabled: (isEditPrice == true) ? true : false,
+
                                     onChanged: (value){
                                       calcTotalPriceRow();
                                     },

@@ -563,7 +563,7 @@ class RptDailySalesState extends State<RptDailySales> {
   printReport(BuildContext context ,String criteria){
     print('Start Report');
     print(criteria);
-    String menuId="6302"; //Customer Account Report Menu Id
+    String menuId="6302";
     //API Reference
     ReportUtilityApiService reportUtilityApiService = ReportUtilityApiService();
 

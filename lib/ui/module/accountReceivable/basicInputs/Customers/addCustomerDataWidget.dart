@@ -75,7 +75,10 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
   final _addressController = TextEditingController();
   final _phone1Controller = TextEditingController();
 
-  @override void initState() {
+  SalesMan?  salesManItem=SalesMan(salesManCode: "",salesManNameAra: "",salesManNameEng: "",id: 0);
+
+  @override
+  void initState() {
 
     super.initState();
     Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("AR_Customers", "CustomerCode", " And CompanyCode="+ companyCode.toString()).then((data) {
@@ -107,15 +110,15 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
       print(e);
     });
 
-    Future<List<SalesMan>> futureSalesMan = _salesManApiService.getSalesMans().then((data) {
+    Future<List<SalesMan>> futureSalesMen = _salesManApiService.getReportSalesMen().then((data) {
       salesMen = data;
-      setState(() {
-
-      });
+      selectedSalesManValue = salesMen[0].salesManCode.toString();
+      getSalesManData();
       return salesMen;
     }, onError: (e) {
       print(e);
     });
+
     Future<PreventCustomerWithoutAttachments?> futurePrevent = _preventWithoutAttachApiService.getPreventCustomer().then((data) {
       preventCustomer = data;
       setState(() {
@@ -250,7 +253,6 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
             const SizedBox(width: 1,),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 11, 2, 0),
-              //apply padding to all four sides
               child: Text('add_new_Customers'.tr(),
                 style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20.0),),
             )
@@ -481,22 +483,20 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                                 height: 40,
                                 width: 195,
                                 child: DropdownSearch<SalesMan>(
+                                  selectedItem: salesManItem,
+                                  enabled: (isManager == true || isIt == true) ? true : false,
                                   popupProps: PopupProps.menu(
                                     itemBuilder: (context, item, isSelected) {
                                       return Container(
                                         margin: const EdgeInsets.symmetric(horizontal: 8),
-                                        decoration: !isSelected
-                                            ? null
-                                            : BoxDecoration(
-
-                                          border: Border.all(color: Colors.blueGrey),
+                                        decoration: !isSelected ? null : BoxDecoration(
+                                          border: Border.all(color: Theme.of(context).primaryColor),
                                           borderRadius: BorderRadius.circular(5),
                                           color: Colors.white,
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text((langId==1)? item.salesManNameAra.toString():  item.salesManNameEng.toString(),
-                                            textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
                                             textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
                                         ),
@@ -507,17 +507,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                                   items: salesMen,
                                   itemAsString: (SalesMan u) => u.salesManNameAra.toString(),
                                   onChanged: (value){
-                                    selectedSalesManValue =  value!.salesManCode.toString();
-                                  },
-
-                                  filterFn: (instance, filter){
-                                    if(instance.salesManNameAra!.contains(filter)){
-                                      print(filter);
-                                      return true;
-                                    }
-                                    else{
-                                      return false;
-                                    }
+                                    selectedSalesManValue = value?.salesManCode.toString();
                                   },
 
                                 ),
@@ -1423,5 +1413,17 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
       print(taxIdImageString.toString());
     }
   }
+  getSalesManData() {
+    if (salesMen.isNotEmpty) {
+      for(var i = 0; i < salesMen.length; i++){
+        if(salesMen[i].salesManCode == selectedSalesManValue){
+          salesManItem = salesMen[salesMen.indexOf(salesMen[0])];
 
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
 }

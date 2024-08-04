@@ -606,17 +606,6 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
     }, onError: (e) {
       print(e);
     });
-
-    // Future<List<Item>> futureItems = _itemsApiService.getItems().then((data) {
-    //   items = data;
-    //
-    //   setState(() {
-    //
-    //   });
-    //   return items;
-    // }, onError: (e) {
-    //   print(e);
-    // });
   }
 
   addInventoryRow() {
@@ -793,14 +782,5 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
       print(e);
     });
   }
-  // getItemData() {
-  //   if (items != null) {
-  //     for(var i = 0; i < items.length; i++){
-  //       if(items[i].itemCode == selectedItemValue){
-  //         itemItem = items[items.indexOf(items[i])];
-  //       }
-  //     }
-  //   }
-  //   setState(() {});
-  // }
+
 }

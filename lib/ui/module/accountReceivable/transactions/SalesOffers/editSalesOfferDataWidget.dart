@@ -229,8 +229,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     //Sales Invoice Details
     Future<List<SalesOfferD>> futureSalesOffer = _salesOfferDApiService.getSalesOffersD(serial).then((data) {
       salesOfferDLst = data;
-      print('hobaaaaaaaaaaaz');
-      //print(customers.length.toString());
+
       getSalesOfferData();
       return salesOfferDLst;
     }, onError: (e) {
@@ -673,12 +672,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                   child: TextFormField(
                                       keyboardType: TextInputType.number,
                                       controller: _displayPriceController,
-                                      //hintText: "price".tr(),
-                                      enabled: true,  /// open just for now
-                                      onSaved: (val) {
-                                        //price = val;
-                                      },
-                                      //textInputType: TextInputType.number,
+                                      enabled: (isEditPrice == true) ? true : false,
                                       onChanged: (value) {
                                         calcTotalPriceRow();
                                       }
@@ -701,9 +695,6 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                               width: 90,
                               child: TextFormField(
                                 controller: _displayQtyController,
-                                decoration: const InputDecoration(
-                                  //hintText:  'display_qty'.tr(),
-                                ),
                                 enabled: true,
                                 keyboardType: TextInputType.number,
                                 onChanged: (value) {

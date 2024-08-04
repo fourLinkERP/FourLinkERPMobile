@@ -49,7 +49,7 @@ TafqeetApiService _tafqeetApiService = TafqeetApiService();
 
 //List Models
 List<Customer> customers = [];
-List<SalesInvoiceType> salesInvoiceTypes = [];  //*
+List<SalesInvoiceType> salesInvoiceTypes = [];
 List<Item> items = [];
 List<Unit> units = [];
 
@@ -598,10 +598,8 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
                                       ),
                                         ),
-
                                       ),
                                     ),
-
                                   ],
                                 )
                             ),
@@ -616,10 +614,8 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                   child: TextFormField(
                                     keyboardType: TextInputType.number,
                                       controller: _displayPriceController,
-                                      //hintText: "price".tr(),
-                                      enabled: true,  /// open just for now
-                                      onSaved: (val) {
-                                      },
+                                      enabled: (isEditPrice == true) ? true : false,
+
                                       onChanged: (value) {
                                         calcTotalPriceRow();
                                       }
@@ -641,9 +637,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                           width: 90,
                           child: TextFormField(
                             controller: _displayQtyController,
-                            decoration: const InputDecoration(
-                              //hintText:  'display_qty'.tr(),
-                            ),
                             enabled: true,
                             keyboardType: TextInputType.number,
                             onChanged: (value) {

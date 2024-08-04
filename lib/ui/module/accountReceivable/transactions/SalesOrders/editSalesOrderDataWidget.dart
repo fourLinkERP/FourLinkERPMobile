@@ -539,10 +539,9 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
                                         onChanged: (value) {
                                           selectedItemValue = value!.itemCode.toString();
                                           selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
-                                          //_displayQtyController.text = "1";
                                           changeItemUnit(selectedItemValue.toString());
                                           selectedUnitValue = "1";
-                                          //String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+
                                           String criteria = " And CompanyCode=$companyCode  ";
                                           setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
                                           //Factor
@@ -667,12 +666,8 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
                                   child: TextFormField(
                                       keyboardType: TextInputType.number,
                                       controller: _displayPriceController,
-                                      //hintText: "price".tr(),
-                                      enabled: true,  /// open just for now
-                                      onSaved: (val) {
-                                        //price = val;
-                                      },
-                                      //textInputType: TextInputType.number,
+                                      enabled: (isEditPrice == true) ? true : false,
+
                                       onChanged: (value) {
                                         calcTotalPriceRow();
                                       }
@@ -694,9 +689,6 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
                               width: 100,
                               child: TextFormField(
                                 controller: _displayQtyController,
-                                decoration: const InputDecoration(
-                                  //hintText:  'display_qty'.tr(),
-                                ),
                                 enabled: true,
                                 keyboardType: TextInputType.number,
                                 onChanged: (value) {

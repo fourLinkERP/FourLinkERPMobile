@@ -621,12 +621,8 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
                                   child: TextFormField(
                                       keyboardType: TextInputType.number,
                                       controller: _displayPriceController,
-                                      //hintText: "price".tr(),
-                                      enabled: true,  /// open just for now
-                                      onSaved: (val) {
-                                        //price = val;
-                                      },
-                                      //textInputType: TextInputType.number,
+                                      enabled: (isEditPrice == true) ? true : false,
+
                                       onChanged: (value) {
                                         calcTotalPriceRow();
                                       }

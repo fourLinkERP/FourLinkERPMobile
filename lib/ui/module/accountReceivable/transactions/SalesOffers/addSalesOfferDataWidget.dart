@@ -527,10 +527,8 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                                     onChanged: (value) {
                                       selectedItemValue = value!.itemCode.toString();
                                       selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
-                                      //_displayQtyController.text = "1";
                                       changeItemUnit(selectedItemValue.toString());
                                       selectedUnitValue = "1";
-                                      print('oksssssa');
                                       //String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode   And OfferTypeCode=N'$selectedTypeValue'";
                                       String criteria = " And CompanyCode=$companyCode ";
                                       setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
@@ -608,7 +606,7 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                                           selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
 
                                           if (selectedUnitValue != null && selectedItemValue != null && selectedCustomerValue != null) {
-                                            //String criteria = " And CompanyCode=$companyCode And BranchCode=$branchCode And OfferTypeCode=N'$selectedTypeValue'";
+
                                             String criteria = " And CompanyCode=$companyCode ";
                                             //Item Price
                                             setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
@@ -633,7 +631,6 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                                         },
                                         dropdownDecoratorProps: const DropDownDecoratorProps(
                                           dropdownSearchDecoration: InputDecoration(
-                                            //labelText: 'unit_name'.tr(),
 
                                           ),
                                         ),
@@ -655,12 +652,7 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
                                   child: TextFormField(
                                       keyboardType: TextInputType.number,
                                       controller: _displayPriceController,
-                                      //hintText: "price".tr(),
-                                      enabled: true,  /// open just for now
-                                      onSaved: (val) {
-                                        //price = val;
-                                      },
-                                      //textInputType: TextInputType.number,
+                                      enabled: (isEditPrice == true) ? true : false,
                                       onChanged: (value) {
                                         calcTotalPriceRow();
                                       }
