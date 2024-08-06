@@ -62,11 +62,11 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
   double totalQty = 0;
   int rowsCount = 0;
 
-  String? selectedItemValue = null;
-  String? selectedItemName = null;
-  String? selectedStoreValue = null;
-  String? selectedUnitValue = null;
-  String? selectedUnitName = null;
+  String? selectedItemValue;
+  String? selectedItemName;
+  String? selectedStoreValue;
+  String? selectedUnitValue;
+  String? selectedUnitName;
   String itemBarcode = '';
   String itemCode = '';
   String scanBarcodeResult = '';
@@ -483,7 +483,6 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
                             ),
                           ),
                         ),
-
                       ]),
                   const SizedBox(height: 20),
                   SingleChildScrollView(

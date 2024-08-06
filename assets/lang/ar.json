@@ -738,7 +738,9 @@
     "searchBranchRequest": "بحث طلب تحويل",
     "branchRequest": "طلب تحويل",
     "fromStore": "من مخزن",
-    "toStore": "إلى مخزن"
+    "toStore": "إلى مخزن",
+    "please_select_customer_type": "من فضلك ادخل نوع العميل",
+    "taxId_must_be_15_char": "الرقم الضريبي يجب ان يكون 15 رقم"
 
 }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/ui/module/accountPayable/vendors/vendorlist.dart';
 import 'package:fourlinkmobileapp/ui/module/inventory/product/productslist.dart';
+import '../../helpers/toast.dart';
 import '../../theme/fitness_app_theme.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
@@ -9,6 +10,7 @@ import '../../ui/module/accountReceivable/basicInputs/Salesman/salesmanList.dart
 import '../../ui/module/accountReceivable/basicInputs/customers/customerList.dart';
 import '../../ui/module/accountreceivable/basicInputs/Employees/employeeList.dart';
 import '../../ui/module/inventory/Items/itemList.dart';
+import '../../utils/permissionHelper.dart';
 
 class BasicInputsAreaListView extends StatefulWidget {
   const BasicInputsAreaListView(
@@ -161,21 +163,27 @@ class AreaView extends StatelessWidget {
                   onTap: () {
                     if(imagepath == 'assets/fitness_app/products.png')
                     {
-                      print('okz1');
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  ItemListPage()));
+                      int menuId=5105;
+                      bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+                      if(isAllowAdd){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ItemListPage()));
+                      }
+                      else
+                      {
+                        FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+                      }
                     }
                     else if(imagepath == 'assets/fitness_app/clients.png')
                     {
-                      print('okz2');
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CustomerListPage()));
+                      int menuId=6103;
+                      bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+                      if(isAllowAdd){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerListPage()));
+                      }
+                      else
+                      {
+                        FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+                      }
                     }
                     else  if(imagepath == 'assets/fitness_app/vendors.png')
                     {
@@ -188,24 +196,25 @@ class AreaView extends StatelessWidget {
                     }
                     else if(imagepath == 'assets/fitness_app/salesman.png')
                     {
-                      print('okz4');
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  SalesManListPage()));
+                      int menuId=6122;
+                      bool isAllowed = PermissionHelper.checkAddPermission(menuId);
+                      if(isAllowed){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SalesManListPage()));
+                      }
+                      else
+                      {
+                        FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+                      }
                     }
                     else if(imagepath == 'assets/fitness_app/employee.jpeg')
                     {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => EmployeesList()));
                     }
-
                   },
                   child: Column(
                     children: <Widget>[
                       Padding(
-                        padding:
-                            const EdgeInsets.only(top: 16, left: 16, right: 16),
+                        padding: const EdgeInsets.only(top: 16, left: 16, right: 16),
                         child: Image.asset(imagepath!),
                       ),
                       const SizedBox(height: 20.0),

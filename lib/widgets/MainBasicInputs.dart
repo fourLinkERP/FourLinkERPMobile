@@ -5,9 +5,11 @@ import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/inventory/Items/itemList.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
+import '../helpers/toast.dart';
 import '../ui/module/accountReceivable/basicInputs/Salesman/salesmanList.dart';
 import '../ui/module/accountReceivable/basicInputs/customers/customerList.dart';
 import '../ui/module/cash/transactions/CashReceive/cashReceiveList.dart';
+import '../utils/permissionHelper.dart';
 
 
 class MainBasicInputs extends StatelessWidget {
@@ -70,32 +72,41 @@ class MainBasicInputs extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                     splashColor: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.2),
                     onTap: () {
-                      if(index == 0) // Items
-                       {
-
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    ItemListPage()));
+                      if(index == 0)
+                      {
+                        int menuId=5105;
+                        bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+                        if(isAllowAdd){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ItemListPage()));
+                        }
+                        else
+                        {
+                          FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+                        }
                       }
-                      else if(index == 1) //Customers
-                          {
-
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    CustomerListPage()));
+                      else if(index == 1)
+                      {
+                        int menuId=6103;
+                        bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+                        if(isAllowAdd){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerListPage()));
+                        }
+                        else
+                        {
+                          FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+                        }
                       }
-                      else  if(index == 2)//salesman
-                          {
-
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    SalesManListPage()));
+                      else  if(index == 2)
+                      {
+                        int menuId=6122;
+                        bool isAllowed = PermissionHelper.checkAddPermission(menuId);
+                        if(isAllowed){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => SalesManListPage()));
+                        }
+                        else
+                        {
+                          FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+                        }
                       }
 
                     },

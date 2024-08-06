@@ -52,11 +52,13 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<double>  getItemSellPriceData(String? ItemCode,String? UnitCode,String? tableName,String? criteria, String? customerCode) async {
 
-    String sellItemApi = updateApi + "searchItemSellPriceData";
+    String sellItemApi = "${updateApi}searchItemSellPriceData";
     print('ItemSellPriceData 1');
     Map data = {
       'ItemCode': ItemCode,
       'UnitCode': UnitCode,
+      'CompanyCode' : companyCode,
+      'BranchCode' : branchCode,
       'TableName': tableName,
       'Criteria': criteria,
       'ModuleId': 2,

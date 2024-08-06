@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
+import 'package:flutter/services.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carDelivery/deliveryCar.dart';
@@ -16,10 +17,12 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import '../../../../common/globals.dart';
 import '../../../../common/login_components.dart';
+import '../../../../data/model/modules/module/carMaintenance/carCars/carCar.dart';
 import '../../../../data/model/modules/module/carMaintenance/maintenanceClassification/maintenanceClassification.dart';
 import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../helpers/hex_decimal.dart';
 import '../../../../helpers/toast.dart';
+import '../../../../service/module/carMaintenance/carCars/carApiService.dart';
 import '../../../../theme/fitness_app_theme.dart';
 import 'package:intl/intl.dart';
 
@@ -32,6 +35,7 @@ CarEntryRegistrationHApiService _carEntryRegistrationHApiService = CarEntryRegis
 MaintenanceClassificationApiService _maintenanceClassificationApiService = MaintenanceClassificationApiService();
 MaintenanceStatusApiService _maintenanceStatusApiService = MaintenanceStatusApiService();
 CustomerApiService _customerApiService = CustomerApiService();
+CarApiService _carApiService = CarApiService();
 
 class AddCarDeliveryDataWidget extends StatefulWidget {
   const AddCarDeliveryDataWidget({Key? key}) : super(key: key);
@@ -58,15 +62,20 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
   List<CarEntryRegistrationH> orders = [];
   List<MaintenanceClassification> maintenanceClassifications = [];
   List<Customer> customers = [];
+  List<Car> cars = [];
   List<MaintenanceStatus> maintenanceStatuses = [];
   String? selectedOrderValue;
   String? selectedCustomerValue;
+  String? selectedCarValue;
   String? selectedMaintenanceStatusValue;
   String? selectedMaintenanceClassificationValue;
   String? customerSignature;
+  String scanBarcodeResult = '';
   DeliveryCar? deliveryCar;
 
+  CarEntryRegistrationH? carEntryItem = CarEntryRegistrationH(trxSerial: "", maintenanceClassificationCode: "", maintenanceStatusCode: "", customerCode: "", chassisNumber: "",carCode: "", plateNumberAra: "", id: 0);
   Customer? customerItem = Customer(customerCode: "", customerNameAra: "", customerNameEng: "", id: 0);
+  Car? carItem = Car(carCode: "", carNameAra: "", carNameEng: "", id: 0);
   MaintenanceStatus? maintenanceStatusItem = MaintenanceStatus(maintenanceStatusCode: "", maintenanceStatusNameAra: "", maintenanceStatusNameEng: "", id: 0);
   MaintenanceClassification? classificationItem = MaintenanceClassification(maintenanceClassificationCode: "", maintenanceClassificationNameAra: "", maintenanceClassificationNameEng: "", id: 0);
 
@@ -209,7 +218,7 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
                               child: Text('${"order_number".tr()} :', style: const TextStyle(fontWeight: FontWeight.bold))),
                           const SizedBox(width: 10),
                           SizedBox(
-                            width: 200,
+                            width: 180,
                             child: DropdownSearch<CarEntryRegistrationH>(
                               selectedItem: null,
                               popupProps: PopupProps.menu(
@@ -263,6 +272,44 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
 
                                 ),),
 
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () async {
+                                await scanCode();
+                              },
+                              child: Container(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    color: Colors.grey.shade300,
+                                    borderRadius: BorderRadius.circular(15),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Color.fromRGBO(200, 16, 46, 1),
+                                        spreadRadius: 1,
+                                        blurRadius: 8,
+                                        offset: Offset(4, 4),
+                                      ),
+                                      BoxShadow(
+                                        color: Colors.white,
+                                        spreadRadius: 2,
+                                        blurRadius: 8,
+                                        offset: Offset(-4, -4),
+                                      )
+                                    ]
+                                ),
+                                child: Center(
+                                  child: Text("Scan".tr(),
+                                    style: const TextStyle(
+                                      color: Color.fromRGBO(200, 16, 46, 1),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 17,
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -659,6 +706,27 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
     });
   }
 
+  getOrderData() {
+    if (orders.isNotEmpty) {
+      for(var i = 0; i < orders.length; i++){
+        if(orders[i].trxSerial == selectedOrderValue){
+          carEntryItem = orders[orders.indexOf(orders[i])];
+        }
+      }
+    }
+    setState(() {});
+  }
+
+  getCarData() {
+    if (cars.isNotEmpty) {
+      for(var i = 0; i < cars.length; i++){
+        if(cars[i].carCode == selectedCarValue){
+          carItem = cars[cars.indexOf(cars[i])];
+        }
+      }
+    }
+    setState(() {});
+  }
   getCustomerData() {
     if (customers.isNotEmpty) {
       for(var i = 0; i < customers.length; i++){
@@ -728,5 +796,28 @@ class _AddCarDeliveryDataWidgetState extends State<AddCarDeliveryDataWidget> {
     setState(() {
 
     });
+  }
+  Future<void> scanCode() async {
+    String barCodeScanRes;
+    try{
+      barCodeScanRes = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.BARCODE);
+    }on PlatformException{
+      barCodeScanRes = "Failed to scan";
+    }
+    setState(() {
+      scanBarcodeResult = barCodeScanRes;
+      selectedOrderValue = scanBarcodeResult.toString();
+      getOrderData();
+      selectedCustomerValue = carEntryItem?.customerCode;
+      getCustomerData();
+      selectedMaintenanceStatusValue = carEntryItem?.maintenanceStatusCode.toString();
+      getStatusData();
+      selectedMaintenanceClassificationValue = carEntryItem?.maintenanceClassificationCode.toString();
+      getClassificationData();
+      _chassisNumberController.text = carEntryItem!.chassisNumber.toString();
+      _plateNumberController.text = carEntryItem!.plateNumberAra.toString();
+      getCarDeliveryTotals(selectedOrderValue);
+    });
+    print("scanBarcodeResult: $scanBarcodeResult");
   }
 }

@@ -635,6 +635,8 @@
     "please_select_car": "please select the car",
     "please_select_driver": "please select the driver",
     "searchBranchRequest": "search branch request",
-    "branchRequest": "Transfer Request"
+    "branchRequest": "Transfer Request",
+    "please_select_customer_type": "please select customer type",
+    "taxId_must_be_15_char": "Tax id must be of 15 char"
 
 }

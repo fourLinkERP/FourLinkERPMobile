@@ -41,14 +41,12 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
 
   String arabicNameHint = 'arabicNameHint'.tr();
 
-  String? selectedUnitValue = null;
-  String? selectedUnitName = null;
-  String? selectedItemTypeValue = null;
-  String? selectedItemTypeName = null;
+  String? selectedUnitValue;
+  String? selectedUnitName;
+  String? selectedItemTypeValue;
+  String? selectedItemTypeName;
   List<Unit> units = [];
-  List<DropdownMenuItem<String>> menuUnits = [];
   List<ItemType> itemTypes = [];
-  List<DropdownMenuItem<String>> menuItemTypes = [];
 
   Unit? unitItem = Unit(unitCode: "", unitNameAra: "", unitNameEng: "", id: 0);
   ItemType? itemTypeItem = ItemType(itemTypeCode: 0, itemTypeName: "", id: 0);
@@ -57,17 +55,21 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
   initState() {
     super.initState();
 
-    Future<List<Unit>> Units = _unitsApiService.getUnits().then((data) {
+    Future<List<Unit>> futureUnits = _unitsApiService.getUnits().then((data) {
       units = data;
-      getUnitData();
+      setState(() {
+
+      });
       return units;
     }, onError: (e) {
       print(e);
     });
 
-    Future<List<ItemType>> ItemTypes = _itemTypeApiService.getItemTypes(langId).then((data) {
+    Future<List<ItemType>> futureItemTypes = _itemTypeApiService.getItemTypes(langId).then((data) {
       itemTypes = data;
-      getItemTypeData();
+      setState(() {
+
+      });
       return itemTypes;
     }, onError: (e) {
       print(e);
@@ -89,16 +91,14 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
             FN_showToast(context, "please_enter_item_name".tr(), Colors.black);
             return;
           }
-          // if(_itemNameEngController.text.isEmpty){
-          //   FN_showToast(context, "please_enter_item_name".tr(), Colors.black);
-          //   return;
-          // }
+
           if(selectedItemTypeValue == null){
             FN_showToast(context, "please_select_item_type".tr(), Colors.black);
             return;
           }
           if(selectedUnitValue == null){
             FN_showToast(context, "please_select_unit".tr(), Colors.black);
+            return;
           }
 
           await api.createItem(context,Item(
@@ -494,23 +494,5 @@ class _AddItemDataWidgetState extends State<AddItemDataWidget> {
         ),
       ),
     );
-  }
-  getUnitData() {
-    for (var i = 0; i < units.length; i++) {
-      menuUnits.add(DropdownMenuItem(value: units[i].unitCode.toString(), child: Text(
-          (langId == 1) ? units[i].unitNameAra.toString() : units[i].unitNameEng.toString())));
-    }
-    setState(() {
-
-    });
-  }
-  getItemTypeData() {
-    for (var i = 0; i < itemTypes.length; i++) {
-      menuItemTypes.add(DropdownMenuItem(value: itemTypes[i].itemTypeCode.toString(), child: Text(
-         itemTypes[i].itemTypeName.toString())));
-    }
-    setState(() {
-
-    });
   }
 }

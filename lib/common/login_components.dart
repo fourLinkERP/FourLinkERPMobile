@@ -31,7 +31,7 @@ Widget defaultFormField({
         color: colors,
         fontSize: 15.0,
         fontWeight: FontWeight.bold),
-    prefixIcon: Icon (prefix, color: colors, size: 20.0),
+    prefixIcon: prefix != null ? Icon (prefix, color: colors, size: 20.0) : null,
     suffixIcon:  suffix != null ? IconButton(
         onPressed: suffixPressed,
         icon : Icon(suffix), color: colors, iconSize: 20.0) : null ,
