@@ -125,8 +125,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'address': customer.address,
       'Phone1': customer.phone1,
       'email': customer.email,
-      'customerTypeCode': customer.customerTypeCode,
       'cusGroupsCode': customer.cusGroupsCode,
+      'cusTypesCode': customer.cusTypesCode,
       'idNo': customer.idNo,
       'customerImage': customer.customerImage,
       'commercialTaxNoImage': customer.commercialTaxNoImage,
@@ -163,22 +163,13 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     );
 
     if (response.statusCode == 200) {
-
-      // print('B 1');
-      // var data = jsonDecode(response.body)['data'];
-      // print('B 1 Finish');
-      // print(data);
       FN_showToast(context,'save_success'.tr() ,Colors.black);
 
       return  1;
 
-
     } else {
-      print('B 1 Error');
       throw Exception('Failed to post customer');
     }
-
-    return  0;
   }
 
   Future<int> updateCustomer(BuildContext context ,int id, Customer customer) async {
@@ -193,8 +184,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'customerName': customer.customerName,
       'customerNameAra': customer.customerNameAra,
       'customerNameEng': customer.customerNameEng,
-      'customerTypeCode': customer.customerTypeCode,
       'cusGroupsCode': customer.cusGroupsCode,
+      'cusTypesCode': customer.cusTypesCode,
       'taxIdentificationNumber': customer.taxIdentificationNumber,
       'address': customer.address,
       'idNo': customer.idNo,

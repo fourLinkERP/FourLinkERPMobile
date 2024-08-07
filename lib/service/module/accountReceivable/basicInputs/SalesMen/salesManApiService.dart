@@ -58,7 +58,10 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
       'Search': {
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
-        'EmpCode': empCode
+        'EmpCode': empCode,
+        "isShowTransactionsByUser": true,
+        "isManager": isManager,
+        "isIt": isIt
       }
     };
 

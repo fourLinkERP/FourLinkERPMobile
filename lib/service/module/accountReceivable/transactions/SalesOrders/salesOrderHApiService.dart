@@ -48,6 +48,7 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
     );
 
     if (response.statusCode == 200) {
+      print("Sales order success");
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesOrderH> list = [];
       if (data != null) {
@@ -56,6 +57,7 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
       return  list;
 
     } else {
+      print("Sales order Error");
       throw "Failed to load order list";
     }
   }

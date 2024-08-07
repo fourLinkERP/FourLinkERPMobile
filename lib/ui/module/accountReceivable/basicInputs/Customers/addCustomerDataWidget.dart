@@ -62,9 +62,9 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
   List<SalesMan> salesMen = [];
   PreventCustomerWithoutAttachments? preventCustomer;
 
-  String? customerTypeSelectedValue = null;
-  String? customerGroupSelectedValue = null;
-  String? selectedSalesManValue = null;
+  String? customerTypeSelectedValue;
+  String? customerGroupSelectedValue;
+  String? selectedSalesManValue;
 
   final CustomerApiService api = CustomerApiService();
   final _addFormKey = GlobalKey<FormState>();
@@ -149,19 +149,29 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
             FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
             return;
           }
+          if(customerTypeSelectedValue == null)
+          {
+            FN_showToast(context,'please_select_customer_type'.tr() ,Colors.black);
+            return;
+          }
           if(customerGroupSelectedValue == null)
           {
             FN_showToast(context,'please_select_group'.tr() ,Colors.black);
             return;
           }
-          if(selectedSalesManValue == null)
-          {
-            FN_showToast(context,'please_select_salesMan'.tr() ,Colors.black);
-            return;
-          }
           if(_taxIdentificationNumberController.text.isEmpty)
           {
             FN_showToast(context,'please_enter_taxId'.tr() ,Colors.black);
+            return;
+          }
+          if(_taxIdentificationNumberController.text.length != 15)
+          {
+            FN_showToast(context,'taxId_must_be_15_char'.tr() ,Colors.black);
+            return;
+          }
+          if(selectedSalesManValue == null)
+          {
+            FN_showToast(context,'please_select_salesMan'.tr() ,Colors.black);
             return;
           }
           if(preventCustomer?.isPreventAddNewCustomerWithoutAttachments == true)
@@ -200,7 +210,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
               taxNumber: _taxIdentificationNumberController.text ,
               phone1: _phone1Controller.text ,
               address: _addressController.text,
-              customerTypeCode: customerTypeSelectedValue,
+              cusTypesCode: customerTypeSelectedValue,
               cusGroupsCode: customerGroupSelectedValue,
               customerImage: customerImageString,
               commercialTaxNoImage: commercialTaxNoImageString,
@@ -758,7 +768,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                                 borderRadius: BorderRadius.zero,
                                 child: Image.file(shopIdImage!, height: 250.0, width: 250.0, ),//fit: BoxFit.fill,)
                         ),
-                        const SizedBox(width: 10.0,),
+                        const SizedBox(width: 10.0),
                         SizedBox(
                           height: 50,
                           width: 250,
@@ -807,7 +817,6 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
                             ),
                           ),
                         ),
-
                       ],
                     ),
                     const SizedBox(height: 20),

@@ -170,7 +170,7 @@ class AreaView extends StatelessWidget {
                       }
                       else
                       {
-                        FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+                        FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                       }
                     }
                     else if(imagepath == 'assets/fitness_app/clients.png')
@@ -182,17 +182,21 @@ class AreaView extends StatelessWidget {
                       }
                       else
                       {
-                        FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+                        FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                       }
                     }
                     else  if(imagepath == 'assets/fitness_app/vendors.png')
                     {
-                      print('okz3');
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  VendorListPage()));
+                      int menuId = 7103;
+                      bool isAllowed = PermissionHelper.checkAddPermission(menuId);
+                      if(isAllowed)
+                        {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => VendorListPage()));
+                        }
+                      else
+                      {
+                        FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                      }
                     }
                     else if(imagepath == 'assets/fitness_app/salesman.png')
                     {
@@ -203,7 +207,7 @@ class AreaView extends StatelessWidget {
                       }
                       else
                       {
-                        FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+                        FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                       }
                     }
                     else if(imagepath == 'assets/fitness_app/employee.jpeg')

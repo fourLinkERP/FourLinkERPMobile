@@ -4,8 +4,8 @@ class Customer {
   int? id;
   String? customerCode ;
   String? customerName;
-  String? customerNameAra ;
-  String?  customerNameEng;
+  String? customerNameAra;
+  String? customerNameEng;
   String? salesManCode ;
   String? taxIdentificationNumber;
   String? taxNumber;
@@ -13,6 +13,7 @@ class Customer {
   String? phone1;
   String? customerTypeCode;
   String? cusGroupsCode;
+  String? cusTypesCode;
   String? email;
   String? idNo;
   String? customerImage;
@@ -36,6 +37,7 @@ class Customer {
     this.phone1,
     this.customerTypeCode,
     this.cusGroupsCode,
+    this.cusTypesCode,
     this.email,
     this.idNo,
     this.customerImage,
@@ -56,6 +58,7 @@ class Customer {
       customerTypeCode: (json['customerTypeCode'] != null)?  json['customerTypeCode'] as String : "",
       salesManCode: (json['salesManCode'] != null)?  json['salesManCode'] as String : "",
       cusGroupsCode: (json['cusGroupsCode'] != null)?  json['cusGroupsCode'] as String : "",
+      cusTypesCode: (json['cusTypesCode'] != null)?  json['cusTypesCode'] as String : "",
       taxIdentificationNumber: (json['taxIdentificationNumber'] != null)?  json['taxIdentificationNumber'] as String : "",
       taxNumber: (json['taxNumber'] != null)?  json['taxNumber'] as String : "",
       address: (json['address'] != null)?  json['address'] as String : "",

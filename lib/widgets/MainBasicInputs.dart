@@ -81,7 +81,7 @@ class MainBasicInputs extends StatelessWidget {
                         }
                         else
                         {
-                          FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+                          FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                         }
                       }
                       else if(index == 1)
@@ -93,7 +93,7 @@ class MainBasicInputs extends StatelessWidget {
                         }
                         else
                         {
-                          FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+                          FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                         }
                       }
                       else  if(index == 2)
@@ -105,7 +105,7 @@ class MainBasicInputs extends StatelessWidget {
                         }
                         else
                         {
-                          FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+                          FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                         }
                       }
 

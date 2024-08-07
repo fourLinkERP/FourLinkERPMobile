@@ -9,6 +9,7 @@ import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
+import '../../../../../utils/permissionHelper.dart';
 import 'addCustomerDataWidget.dart';
 import 'detailCustomerWidget.dart';
 import 'editCustomerDataWidget.dart';
@@ -226,26 +227,39 @@ class _CustomerListPageState extends State<CustomerListPage> {
   }
 
   _navigateToAddScreen(BuildContext context) async {
-    // final result = await Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => AddCustomerDataWidget()),
-    // ).then((value) =>  );
-
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddCustomerDataWidget(),
-    )).then((value) {
-      getData();
-    });
+    int menuId=6103;
+    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    if(isAllowAdd)
+    {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddCustomerDataWidget(),
+      )).then((value) {
+        getData();
+      });
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    }
   }
-
   _navigateToEditScreen(BuildContext context, Customer customer) async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => EditCustomerDataWidget(customer)),
-    ).then((value) => getData());
+    int menuId=6103;
+    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    if(isAllowAdd){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => EditCustomerDataWidget(customer)),
+      ).then((value) {
+        getData();
+      });
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    }
   }
 
   Widget buildCustomer() {
-    print('state:${State}');
+
     if (_customers.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -389,7 +403,6 @@ class _CustomerListPageState extends State<CustomerListPage> {
 
       Uint8List uint8List = _base64StringToUint8List(base64Image);
 
-      // Display the image using Image.memory
       return Image.memory(uint8List, height: 150, width: 57);
     } else {
       return Image.asset('assets/fitness_app/clients.png', height: 100, width: 57);
