@@ -47,13 +47,9 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       if (data != null) {
         list = data.map((item) => SalesOfferH.fromJson(item)).toList();
       }
-     //print('Invoice Finish');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => SalesInvoice.fromJson(data))
-      //     .toList();
     } else {
-      //print('Invoice Failure');
+      print('Invoice Failure');
       throw "Failed to load Offer list";
     }
   }
@@ -107,7 +103,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       //'invoiceDiscountTypeCode': invoice.invoiceDiscountTypeCode,
       'totalAfterDiscount': invoice.totalAfterDiscount,
       'totalBeforeTax': invoice.totalBeforeTax,
-      'storeCode': invoice.storeCode,
+      // 'storeCode': invoice.storeCode,
       "confirmed": true,
       "isActive": true,
       "isBlocked": false,

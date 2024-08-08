@@ -76,6 +76,7 @@ class BranchRequestHApiService{
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
+      'fromBranch': branchCode,
       'TrxSerial': branchRequestH.trxSerial,
       'TrxDate': branchRequestH.trxDate,
       'StoreCode': branchRequestH.storeCode,
