@@ -161,10 +161,9 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
                       const SizedBox(width: 10),
                       SizedBox(
                         width: 100,
-                        child: textFormFields(
-                          enable: true,
+                        child: TextFormField(
+                          enabled: true,
                           controller: _checkStoreToDateController,
-                          hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                           onTap: () async {
                             DateTime? pickedDate = await showDatePicker(
                                 context: context,
@@ -176,7 +175,11 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
                               _checkStoreToDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                             }
                           },
-                          textInputType: TextInputType.datetime,
+                          keyboardType: TextInputType.datetime,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.red[50],
+                          ),
                         ),
                       ),
                     ],
@@ -193,52 +196,55 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
                                   width: 70,
                                   child: Text('${"store".tr()} :', style: const TextStyle(fontWeight: FontWeight.bold))),
                               const SizedBox(width: 10),
-                              SizedBox(
-                                width: 200,
-                                child: DropdownSearch<Stores>(
-                                  selectedItem: null,
-                                  popupProps: PopupProps.menu(
-                                    itemBuilder: (context, item, isSelected) {
-                                      return Container(
-                                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                                        decoration: !isSelected ? null
-                                            : BoxDecoration(
+                              Expanded(
+                                child: SizedBox(
+                                  width: 200,
+                                  child: DropdownSearch<Stores>(
+                                    selectedItem: null,
+                                    popupProps: PopupProps.menu(
+                                      itemBuilder: (context, item, isSelected) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                                          decoration: !isSelected ? null
+                                              : BoxDecoration(
 
-                                          border: Border.all(color: Colors.black12),
-                                          borderRadius: BorderRadius.circular(5),
-                                          color: Colors.white,
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text((langId==1)? item.storeNameAra.toString() : item.storeNameEng.toString()),
-                                        ),
-                                      );
+                                            border: Border.all(color: Colors.black12),
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: Colors.white,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text((langId==1)? item.storeNameAra.toString() : item.storeNameEng.toString()),
+                                          ),
+                                        );
+                                      },
+                                      showSearchBox: true,
+
+                                    ),
+
+                                    items: stores,
+                                    itemAsString: (Stores u) => (langId==1)? u.storeNameAra.toString() : u.storeNameEng.toString(),
+
+                                    onChanged: (value){
+                                      selectedStoreValue = value!.storeCode.toString();
                                     },
-                                    showSearchBox: true,
+
+                                    filterFn: (instance, filter){
+                                      if((langId==1)? instance.storeNameAra!.contains(filter) : instance.storeNameEng!.contains(filter)){
+                                        print(filter);
+                                        return true;
+                                      }
+                                      else{
+                                        return false;
+                                      }
+                                    },
+                                    dropdownDecoratorProps: DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.red[50],
+                                      ),),
 
                                   ),
-
-                                  items: stores,
-                                  itemAsString: (Stores u) => (langId==1)? u.storeNameAra.toString() : u.storeNameEng.toString(),
-
-                                  onChanged: (value){
-                                    selectedStoreValue = value!.storeCode.toString();
-                                  },
-
-                                  filterFn: (instance, filter){
-                                    if((langId==1)? instance.storeNameAra!.contains(filter) : instance.storeNameEng!.contains(filter)){
-                                      print(filter);
-                                      return true;
-                                    }
-                                    else{
-                                      return false;
-                                    }
-                                  },
-                                  dropdownDecoratorProps: const DropDownDecoratorProps(
-                                    dropdownSearchDecoration: InputDecoration(
-
-                                    ),),
-
                                 ),
                               ),
                             ],
@@ -252,54 +258,58 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
                                   width: 70,
                                   child: Text('${"item".tr()} :', style: const TextStyle(fontWeight: FontWeight.bold))),
                               const SizedBox(width: 10),
-                              SizedBox(
-                                width: 180,
-                                child: DropdownSearch<Item>(
-                                  selectedItem: itemItem,
-                                  popupProps: PopupProps.menu(
-                                    itemBuilder: (context, item, isSelected) {
-                                      return Container(
-                                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                                        decoration: !isSelected ? null :
-                                        BoxDecoration(
-                                          border: Border.all(color: Colors.black12),
-                                          borderRadius: BorderRadius.circular(5),
-                                          color: Colors.white,
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text((langId == 1) ? item.itemNameAra.toString() : item.itemNameEng.toString()),
-                                        ),
-                                      );
-                                    },
-                                    showSearchBox: true,
+                              Expanded(
+                                child: SizedBox(
+                                  width: 180,
+                                  child: DropdownSearch<Item>(
+                                    selectedItem: itemItem,
+                                    popupProps: PopupProps.menu(
+                                      itemBuilder: (context, item, isSelected) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                                          decoration: !isSelected ? null :
+                                          BoxDecoration(
+                                            border: Border.all(color: Colors.black12),
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: Colors.white,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text((langId == 1) ? item.itemNameAra.toString() : item.itemNameEng.toString()),
+                                          ),
+                                        );
+                                      },
+                                      showSearchBox: true,
 
-                                  ),
-                                  items: itemsWithBalance,
-                                  itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
-
-                                  onChanged: (value) {
-                                    selectedItemValue = value!.itemCode.toString();
-                                    selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
-                                    changeItemUnit(selectedItemValue.toString());
-                                    selectedUnitValue = "1";
-                                    itemBarcodeHandler(selectedItemValue.toString());
-                                  },
-
-                                  filterFn: (instance, filter) {
-                                    if ((langId == 1) ? instance.itemNameAra!.contains(filter) : instance.itemNameEng!.contains(filter)) {
-                                      print(filter);
-                                      return true;
-                                    }
-                                    else {
-                                      return false;
-                                    }
-                                  },
-                                  dropdownDecoratorProps: const DropDownDecoratorProps(
-                                    dropdownSearchDecoration: InputDecoration(
                                     ),
-                                  ),
+                                    items: itemsWithBalance,
+                                    itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
 
+                                    onChanged: (value) {
+                                      selectedItemValue = value!.itemCode.toString();
+                                      selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
+                                      changeItemUnit(selectedItemValue.toString());
+                                      selectedUnitValue = "1";
+                                      itemBarcodeHandler(selectedItemValue.toString());
+                                    },
+
+                                    filterFn: (instance, filter) {
+                                      if ((langId == 1) ? instance.itemNameAra!.contains(filter) : instance.itemNameEng!.contains(filter)) {
+                                        print(filter);
+                                        return true;
+                                      }
+                                      else {
+                                        return false;
+                                      }
+                                    },
+                                    dropdownDecoratorProps: DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.red[50],
+                                      ),
+                                    ),
+
+                                  ),
                                 ),
                               ),
                               const SizedBox(width: 10),
@@ -395,9 +405,10 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
                                       return false;
                                     }
                                   },
-                                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                                  dropdownDecoratorProps: DropDownDecoratorProps(
                                     dropdownSearchDecoration: InputDecoration(
-
+                                      filled: true,
+                                      fillColor: Colors.red[50],
                                     ),
                                   ),
 
@@ -414,10 +425,14 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
                           const SizedBox(width: 10),
                           SizedBox(
                             width: 200,
-                            child: textFormFields(
+                            child: TextFormField(
                               controller: _qtyController,
-                              enable: true,
-                              textInputType: TextInputType.name,
+                              enabled: true,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.red[50],
+                              ),
                             ),
                           ),
                         ],
@@ -668,7 +683,6 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
     );
 
     if (confirmed!) {
-      // Find the index of the row with the given lineNum
       int indexToRemove = checkStoreDLst.indexWhere((p) => p.lineNum == lineNum);
 
       if (indexToRemove != -1) {

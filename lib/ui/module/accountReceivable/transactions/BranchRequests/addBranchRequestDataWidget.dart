@@ -57,7 +57,7 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
 
   String? selectedItemValue;
   String? selectedItemName;
-  String? selectedStoreValue;
+  String? selectedFromStoreValue;
   String? selectedToStoreValue;
   String? selectedUnitValue;
   String? selectedUnitName;
@@ -206,14 +206,13 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
                                     );
                                   },
                                   showSearchBox: true,
-
                                 ),
 
                                 items: stores,
                                 itemAsString: (Stores u) => (langId==1)? u.storeNameAra.toString() : u.storeNameEng.toString(),
 
                                 onChanged: (value){
-                                  selectedStoreValue = value!.storeCode.toString();
+                                  selectedFromStoreValue = value!.storeCode.toString();
                                 },
 
                                 filterFn: (instance, filter){
@@ -706,7 +705,7 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
       return;
     }
 
-    if (selectedStoreValue == null || selectedStoreValue!.isEmpty) {
+    if (selectedFromStoreValue == null || selectedFromStoreValue!.isEmpty) {
       FN_showToast(context, 'please_select_store'.tr(), Colors.black);
       return;
     }
@@ -717,8 +716,8 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
     await _branchRequestHApiService.createBranchRequestH(context, BranchRequestH(
       trxSerial: _trxSerialController.text,
       trxDate: _trxDateController.text,
-      storeCode: selectedStoreValue.toString(),
-      toStoreCode: selectedToStoreValue.toString(),
+      storeCode: selectedToStoreValue.toString(),
+      toStoreCode: selectedFromStoreValue.toString(),
       notes: _notesController.text,
       year: 2024,
 
@@ -726,18 +725,18 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
 
     //Save Footer For Now
     for (var i = 0; i < _branchRequestDLst.length; i++) {
-      BranchRequestD _branchRequestD = _branchRequestDLst[i];
-      if (_branchRequestD.isUpdate == false) {
+      BranchRequestD branchRequestD = _branchRequestDLst[i];
+      if (branchRequestD.isUpdate == false) {
         //Add
         _branchRequestDApiService.createBranchRequestD(context, BranchRequestD(
 
             trxSerial: _trxSerialController.text,
-            itemCode: _branchRequestD.itemCode,
-            lineNum: _branchRequestD.lineNum,
-            displayQty: _branchRequestD.displayQty,
-            unitCode: _branchRequestD.unitCode,
+            itemCode: branchRequestD.itemCode,
+            lineNum: branchRequestD.lineNum,
+            displayQty: branchRequestD.displayQty,
+            unitCode: branchRequestD.unitCode,
             year: 2024,
-            storeCode: selectedStoreValue.toString()
+            storeCode: selectedFromStoreValue.toString()
         ));
       }
     }

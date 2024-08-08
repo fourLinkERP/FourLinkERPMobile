@@ -61,22 +61,8 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
       });
     });
     _getData();
-    // _companyApiService.getCompany().then((data) {
-    //   companyTaxID = data.taxID!;
-    //   companyCommercialID = data.commercialID!;
-    //   companyAddress = data.address!;
-    //   companyMobile = data.mobile!;
-    //   companyLogo = data.logoImage!;
-    //   print("companyLogo : " + companyLogo);
-    //
-    //   setState(() {
-    //
-    //   });
-    // }, onError: (e) {
-    //   print(e);
-    // });
-    super.initState();
 
+    super.initState();
 
     setState(() {
       _founded = _salesOrders!;
@@ -105,9 +91,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
 
   }
 
-
   onSearch(String search) {
-
     if(search.isEmpty)
     {
       _getData();

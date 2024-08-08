@@ -245,11 +245,11 @@ class _EditCheckStoreDataWidgetState extends State<EditCheckStoreDataWidget> {
                                       return false;
                                     }
                                   },
-                                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                                  dropdownDecoratorProps:  DropDownDecoratorProps(
                                     dropdownSearchDecoration: InputDecoration(
-
+                                      filled: true,
+                                      fillColor: Colors.red[50],
                                     ),),
-
                                 ),
                               ),
                             ],

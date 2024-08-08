@@ -299,8 +299,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                   (langId == 1) ? u.salesInvoicesTypeNameAra.toString() : u.salesInvoicesTypeNameEng.toString(),
 
                                   onChanged: (value) {
-                                    //v.text = value!.cusTypesCode.toString();
-                                    //print(value!.id);
                                     selectedTypeValue = value!.salesInvoicesTypeCode.toString();
                                     setNextSerial();
                                   },
@@ -317,7 +315,8 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                   dropdownDecoratorProps: DropDownDecoratorProps(
                                     dropdownSearchDecoration: InputDecoration(
                                       labelText: "type".tr(),
-
+                                      filled: true,
+                                      fillColor: Colors.red[50],
                                     ),
                                   ),
                                 ),
@@ -335,7 +334,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                               child: textFormFields(
                                 controller: _salesInvoicesSerialController,
                                 enable: false,
-                                //hintText: "serial".tr(),
                                 onSaved: (val) {
                                   salesInvoicesSerial = val;
                                 },
@@ -382,54 +380,54 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                   Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Customer: ".tr(),
                                       style: const TextStyle(fontWeight: FontWeight.bold))),
                                   const SizedBox(width: 10),
-                                  SizedBox(
-                                    width: 200,
-                                    child: DropdownSearch<Customer>(
-                                      selectedItem: null,
-                                      popupProps: PopupProps.menu(
+                                  Expanded(
+                                    child: SizedBox(
+                                      width: 200,
+                                      child: DropdownSearch<Customer>(
+                                        selectedItem: null,
+                                        popupProps: PopupProps.menu(
 
-                                        itemBuilder: (context, item, isSelected) {
-                                          return Container(
-                                            margin: const EdgeInsets.symmetric(
-                                                horizontal: 8),
-                                            decoration: !isSelected ? null : BoxDecoration(
-                                              border: Border.all(color: Colors.black12),
-                                              borderRadius: BorderRadius.circular(5),
-                                              color: Colors.white,
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text((langId == 1) ? item.customerNameAra.toString() : item.customerNameEng.toString()),
-                                            ),
-                                          );
+                                          itemBuilder: (context, item, isSelected) {
+                                            return Container(
+                                              margin: const EdgeInsets.symmetric(
+                                                  horizontal: 8),
+                                              decoration: !isSelected ? null : BoxDecoration(
+                                                border: Border.all(color: Colors.black12),
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: Colors.white,
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text((langId == 1) ? item.customerNameAra.toString() : item.customerNameEng.toString()),
+                                              ),
+                                            );
+                                          },
+                                          showSearchBox: true,
+
+                                        ),
+
+                                        items: customers,
+                                        itemAsString: (Customer u) =>
+                                        (langId == 1) ? u.customerNameAra.toString() : u.customerNameEng.toString(),
+                                        onChanged: (value) {
+                                          selectedCustomerValue = value!.customerCode.toString();
+                                          selectedCustomerEmail = value.email.toString();// i've changed value!
                                         },
-                                        showSearchBox: true,
 
-                                      ),
-
-                                      items: customers,
-                                      itemAsString: (Customer u) =>
-                                      (langId == 1) ? u.customerNameAra.toString() : u.customerNameEng.toString(),
-                                      onChanged: (value) {
-                                        //v.text = value!.cusTypesCode.toString();
-                                        //print(value!.id);
-                                        selectedCustomerValue = value!.customerCode.toString();
-                                        selectedCustomerEmail = value.email.toString();// i've changed value!
-                                      },
-
-                                      filterFn: (instance, filter) {
-                                        if ((langId == 1) ? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)) {
-                                          print(filter);
-                                          return true;
-                                        }
-                                        else {
-                                          return false;
-                                        }
-                                      },
-                                      dropdownDecoratorProps: const DropDownDecoratorProps(
-                                        dropdownSearchDecoration: InputDecoration(
-                                          //labelText: 'Select'.tr(),
-
+                                        filterFn: (instance, filter) {
+                                          if ((langId == 1) ? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)) {
+                                            print(filter);
+                                            return true;
+                                          }
+                                          else {
+                                            return false;
+                                          }
+                                        },
+                                        dropdownDecoratorProps: DropDownDecoratorProps(
+                                          dropdownSearchDecoration: InputDecoration(
+                                            filled: true,
+                                            fillColor: Colors.red[50],
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -445,68 +443,64 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                     Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Item: ".tr(),
                                         style: const TextStyle(fontWeight: FontWeight.bold))),
                                     const SizedBox(width: 10),
-                                    SizedBox(
-                                      width: 200,
-                                      child: DropdownSearch<Item>(
-                                        selectedItem: itemItem,
-                                        popupProps: PopupProps.menu(
-                                          itemBuilder: (context, item, isSelected) {
-                                            return Container(
-                                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                                              decoration: !isSelected ? null :
-                                              BoxDecoration(
-                                                border: Border.all(color: Colors.black12),
-                                                borderRadius: BorderRadius.circular(5),
-                                                color: Colors.white,
-                                              ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Text((langId == 1) ? item.itemNameAra.toString() : item.itemNameEng.toString()),
-                                              ),
-                                            );
-                                          },
-                                          showSearchBox: true,
+                                    Expanded(
+                                      child: SizedBox(
+                                        width: 200,
+                                        child: DropdownSearch<Item>(
+                                          selectedItem: itemItem,
+                                          popupProps: PopupProps.menu(
+                                            itemBuilder: (context, item, isSelected) {
+                                              return Container(
+                                                margin: const EdgeInsets.symmetric(horizontal: 8),
+                                                decoration: !isSelected ? null :
+                                                BoxDecoration(
+                                                  border: Border.all(color: Colors.black12),
+                                                  borderRadius: BorderRadius.circular(5),
+                                                  color: Colors.white,
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Text((langId == 1) ? item.itemNameAra.toString() : item.itemNameEng.toString()),
+                                                ),
+                                              );
+                                            },
+                                            showSearchBox: true,
 
-                                        ),
-
-                                        items: itemsWithOutBalance,
-                                        itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
-                                        onChanged: (value) {
-                                          selectedItemValue = value!.itemCode.toString();
-                                          selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
-                                          _displayQtyController.text = "1";
-                                          changeItemUnit(selectedItemValue.toString());
-                                          selectedUnitValue = "1";
-                                          String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
-                                          setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
-
-
-                                          //Factor
-                                          int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
-                                          setItemQty(
-                                              selectedItemValue.toString(),
-                                              selectedUnitValue.toString(), qty
-                                          );
-
-                                          //Cost Price
-                                          setItemCostPrice(selectedItemValue.toString(), "1", 0, _salesInvoicesDateController.text);
-                                        },
-
-                                        filterFn: (instance, filter) {
-                                          if ((langId == 1) ? instance.itemNameAra!.contains(filter) : instance.itemNameEng!.contains(filter)) {
-                                            print(filter);
-                                            return true;
-                                          }
-                                          else {
-                                            return false;
-                                          }
-                                        },
-                                        dropdownDecoratorProps: const DropDownDecoratorProps(
-                                          dropdownSearchDecoration: InputDecoration(
-                                            //labelText: 'item_name'.tr(),
                                           ),
-                                        ),
 
+                                          items: itemsWithOutBalance,
+                                          itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
+                                          onChanged: (value) {
+                                            selectedItemValue = value!.itemCode.toString();
+                                            selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
+                                            _displayQtyController.text = "1";
+                                            changeItemUnit(selectedItemValue.toString());
+                                            selectedUnitValue = "1";
+                                            String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
+                                            setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
+
+                                            int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+                                            setItemQty(selectedItemValue.toString(), selectedUnitValue.toString(), qty);
+                                            setItemCostPrice(selectedItemValue.toString(), "1", 0, _salesInvoicesDateController.text);
+                                          },
+
+                                          filterFn: (instance, filter) {
+                                            if ((langId == 1) ? instance.itemNameAra!.contains(filter) : instance.itemNameEng!.contains(filter)) {
+                                              print(filter);
+                                              return true;
+                                            }
+                                            else {
+                                              return false;
+                                            }
+                                          },
+                                          dropdownDecoratorProps: DropDownDecoratorProps(
+                                            dropdownSearchDecoration: InputDecoration(
+                                              filled: true,
+                                              fillColor: Colors.red[50],
+                                            ),
+                                          ),
+
+                                        ),
                                       ),
                                     ),
 
@@ -528,6 +522,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                         style: const TextStyle(fontWeight: FontWeight.bold))),
                                     const SizedBox(width: 5),
                                     SizedBox(
+                                      height: 45,
                                       width: 90,
                                       child: DropdownSearch<Unit>(
                                         selectedItem: unitItem,
@@ -580,9 +575,10 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                             return false;
                                           }
                                         },
-                                        dropdownDecoratorProps: const DropDownDecoratorProps(
+                                        dropdownDecoratorProps: DropDownDecoratorProps(
                                           dropdownSearchDecoration: InputDecoration(
-                                            //labelText: 'unit_name'.tr(),
+                                            filled: true,
+                                            fillColor: Colors.red[50],
                                           ),
                                         ),
                                       ),
@@ -601,12 +597,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                   child: TextFormField(
                                       keyboardType: TextInputType.number,
                                       controller: _displayPriceController,
-                                      //hintText: "price".tr(),
                                       enabled: true,
-                                      onSaved: (val) {
-                                        //price = val;
-                                      },
-                                      //textInputType: TextInputType.number,
                                       onChanged: (value) {
                                         calcTotalPriceRow();
                                       }
@@ -626,11 +617,13 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                 child: Text('display_qty'.tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
                             const SizedBox(width: 10),
                             SizedBox(
+                              height: 40,
                               width: 90,
                               child: TextFormField(
                                 controller: _displayQtyController,
-                                decoration: const InputDecoration(
-                                  //hintText:  'display_qty'.tr(),
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.red[50],
                                 ),
                                 enabled: true,
                                 keyboardType: TextInputType.number,
