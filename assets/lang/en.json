@@ -637,6 +637,9 @@
     "searchBranchRequest": "search branch request",
     "branchRequest": "Transfer Request",
     "please_select_customer_type": "please select customer type",
-    "taxId_must_be_15_char": "Tax id must be of 15 char"
+    "taxId_must_be_15_char": "Tax id must be of 15 char",
+    "searchTransfersRequests": "Search Transfers Requests",
+    "ReceiveTransfers": "Receive Transfers",
+    "receiveTransfers": "Receive Transfers"
 
 }

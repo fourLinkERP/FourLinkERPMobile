@@ -32,16 +32,13 @@ class _BranchRequestListState extends State<BranchRequestList> {
   List<BranchRequestH> _branchRequests = [];
   List<BranchRequestH> _branchRequestsSearch = [];
   List<BranchRequestD> _branchRequestsD = [];
-  List<BranchRequestH> _founded = [];
 
   @override
   void initState() {
     getData();
     super.initState();
 
-    setState(() {
-      _founded = _branchRequests;
-    });
+    setState(() {});
   }
   void getData() async {
     try {
@@ -54,9 +51,7 @@ class _BranchRequestListState extends State<BranchRequestList> {
         if (_branchRequests.isNotEmpty) {
           _branchRequests.sort((a, b) => b.trxSerial!.compareTo(a.trxSerial!));
 
-          setState(() {
-            _founded = _branchRequests;
-          });
+          setState(() {});
         }
       }
     } catch (error) {

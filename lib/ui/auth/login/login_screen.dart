@@ -3,7 +3,6 @@ import 'dart:typed_data';
 
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/cubit/app_cubit.dart';
 import 'package:fourlinkmobileapp/data/model/auth/Login.dart';
@@ -19,7 +18,6 @@ import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/items/ite
 import 'package:fourlinkmobileapp/data/model/modules/module/inventory/basicInputs/items/items.dart';
 import 'package:fourlinkmobileapp/ui/home/home_screen.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../common/globals.dart';
 import '../../../data/model/modules/module/dashboard/dashboardItems.dart';
 import '../../../helpers/toast.dart';
@@ -27,7 +25,6 @@ import '../../../service/module/dashboard/dashboardItemsApiService.dart';
 import '../../../theme/theme_helper.dart';
 import '../../../widgets/header_widget.dart';
 import '../forget_password/forgot_password_screen.dart';
-import '../signup/registration_screen.dart';
 import '../../../service/auth/login_api_service.dart';
 import 'package:fourlinkmobileapp/common/login_components.dart';
 
@@ -59,20 +56,17 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isPassword = true;
 
   //Services
-  LoginService _LoginService =  LoginService();
-  EmployeeApiService _EmployeeApiService =  EmployeeApiService();
-  CompanyGeneralSetupGeneralSetupApiService _CompanyGeneralSetupGeneralSetupApiService =  CompanyGeneralSetupGeneralSetupApiService();
+  final LoginService _loginService =  LoginService();
+  final EmployeeApiService _employeeApiService =  EmployeeApiService();
+  final CompanyGeneralSetupGeneralSetupApiService _companyGeneralSetupGeneralSetupApiService =  CompanyGeneralSetupGeneralSetupApiService();
 
   //Controls
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
 
-  //List Models
   List<Branch> branches = [];
-  List<DropdownMenuItem<String>> menuBranches = [];
 
-  //Selected Values
-  String? branchCodeSelectedValue = null;
+  String? branchCodeSelectedValue;
 
   setSelectedVal(val) {
     setState(() {
@@ -86,8 +80,6 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
 
-
-    //Branch
     Future<List<Branch>> futureBranch = _branchApiService.getBranches().then((data) {
       branches = data;
       setState(() {
@@ -107,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: _headerHeight,
               child: HeaderWidget(_headerHeight, true, Icons.person),
             ),
@@ -115,10 +107,9 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Container(
                   padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                   margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-                  // This will be the login form
                   child: Column(
                     children: [
-                      Text('login_welcome'.tr() + '' + 'app_name'.tr(),
+                      Text('${'login_welcome'.tr()}${'app_name'.tr()}',
                         style: const TextStyle(
                             fontSize: 20,
                             color: Color.fromRGBO(144, 16, 46, 1),
@@ -146,7 +137,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           child: Column(
                             children: [
                               Container(
-                                // decoration: ThemeHelper().inputBoxDecorationShaddow(),
                                 child: defaultFormField(
                                   controller: _emailController,
                                   label: 'user_name'.tr(),
@@ -160,21 +150,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     return null;
                                   },
                                 ),
-                                /*
-                                  TextField(
-                                    controller: _emailController,
-                                    decoration: InputDecoration(
-                                      filled: true, //<-- SEE HERE
-                                      fillColor: Colors.white, //<-- SEE HERE
-                                      hintText: 'user_name'.tr(),
-                                      hintStyle: TextStyle(
-                                        color: Colors.blueGrey,
-                                      ),
-                                      suffixIcon: Icon(Icons.email),
-                                    ),
-                                  ),
-                                  */
-
                               ),
                               const SizedBox(height: 30.0),
                               Container(
@@ -199,90 +174,45 @@ class _LoginScreenState extends State<LoginScreen> {
                                     return null;
                                   },
                                 ),
-                                /*TextField(
-                                    controller: _passwordController,
-                                    obscureText: !isShow,
-                                    decoration: InputDecoration(
-                                        filled: true, //<-- SEE HERE
-                                        fillColor: Colors.white, //<-- SEE HERE
-                                        hintText: 'password'.tr(),
-                                        hintStyle: TextStyle(
-                                          color: Colors.blueGrey,
-                                        ),
-                                        suffixIcon: IconButton(
-                                          icon: (isShow) ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
-                                          onPressed: (){
-                                            setState(() {
-                                              isShow = !isShow;
-                                            });
-                                          },
-                                        )),
-                                  ),*/
-
                               ),
                               Form(
                                   key: _dropdownBranchFormKey,
                                   child: Column(
-                                    crossAxisAlignment: langId == 1
-                                        ? CrossAxisAlignment.end
-                                        : CrossAxisAlignment.start,
+                                    crossAxisAlignment: langId == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                                     children: [
                                       DropdownSearch<Branch>(
                                         selectedItem: null,
                                         popupProps: PopupProps.menu(
-
                                           itemBuilder: (context, item,
                                               isSelected) {
                                             return Container(
-                                              margin: const EdgeInsets
-                                                  .symmetric(horizontal: 8),
-                                              decoration: !isSelected
-                                                  ? null
-                                                  : BoxDecoration(
-
-                                                border: Border.all(
-                                                    color: Colors.black12),
-                                                borderRadius: BorderRadius
-                                                    .circular(5),
+                                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                                              decoration: !isSelected ? null : BoxDecoration(
+                                                border: Border.all(color: Colors.black12),
+                                                borderRadius: BorderRadius.circular(5),
                                                 color: Colors.white,
                                               ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(
-                                                    8.0),
-                                                child: Text((langId == 1)
-                                                    ? item.branchNameAra
-                                                    .toString()
-                                                    : item.branchNameEng
-                                                    .toString()),
+                                              child: Padding(padding: const EdgeInsets.all(8.0),
+                                                child: Text((langId == 1) ? item.branchNameAra.toString() : item.branchNameEng.toString()),
                                               ),
                                             );
                                           },
                                           showSearchBox: true,
-
                                         ),
                                         items: branches,
                                         itemAsString: (Branch u) =>
-                                        (langId == 1) ? u.branchNameAra
-                                            .toString() : u
-                                            .branchNameEng.toString(),
-
+                                        (langId == 1) ? u.branchNameAra.toString() : u.branchNameEng.toString(),
                                         onChanged: (value) {
-                                          //v.text = value!.cusTypesCode.toString();
-                                          //print(value!.id);
-                                          branchCodeSelectedValue =
-                                              value!.branchCode.toString();
+                                          branchCodeSelectedValue = value!.branchCode.toString();
                                           branchCode = int.parse(branchCodeSelectedValue.toString());
                                           branchLongitude = value.longitude!;
                                           branchLatitude = value.latitude!;
-                                          print('current Branch Code Is :' + branchCode.toString());
+                                          print('current Branch Code Is :$branchCode');
                                         },
 
                                         filterFn: (instance, filter) {
-                                          if ((langId == 1)
-                                              ? instance.branchNameAra!
-                                              .contains(filter)
-                                              : instance.branchNameEng!
-                                              .contains(filter)) {
+                                          if ((langId == 1) ? instance.branchNameAra!.contains(filter)
+                                              : instance.branchNameEng!.contains(filter)) {
                                             print(filter);
                                             return true;
                                           }
@@ -295,33 +225,18 @@ class _LoginScreenState extends State<LoginScreen> {
                                             labelText: 'branch'.tr(),
 
                                           ),),
-
                                       ),
-
-                                      // ElevatedButton(
-                                      //     onPressed: () {
-                                      //       if (_dropdownFormKey.currentState!.validate()) {
-                                      //         //valid flow
-                                      //       }
-                                      //     },
-                                      //     child: Text("Submit"))
                                     ],
                                   )),
                               const SizedBox(height: 15.0),
                               Row(
                                 children: [
                                   Container(
-                                    margin: const EdgeInsets.fromLTRB(
-                                        10, 0, 10, 20),
+                                    margin: const EdgeInsets.fromLTRB(10, 0, 10, 20),
                                     alignment: Alignment.topRight,
                                     child: GestureDetector(
                                       onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                              const ForgotPasswordScreen()),
-                                        );
+                                        Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPasswordScreen()),);
                                       },
                                       child: Text(
                                         'forget_password'.tr(),
@@ -332,7 +247,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   const SizedBox(height: 15.0),
-
                                 ],
                               ),
                               Column(
@@ -360,20 +274,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                                     ) {
                                                       AppCubit.get(context).ChangeAppLang();
                                                     }
-                                                    /* Navigator.pushReplacement(
-                                                          context,
-                                                         MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                   HomeScreen())),*/
                                                     setSelectedVal(val);
                                                   }
-
                                                   );
 
                                                   langId = 1;
                                                 }),
-                                            Expanded(child: Text(
-                                                'ara_language'.tr()))
+                                            Expanded(child: Text('ara_language'.tr()))
                                           ],
                                         ),
 
@@ -388,9 +295,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   translator.setNewLanguage(
                                                       context,
                                                       newLanguage: "en",
-                                                      restart:
-
-                                                      false,
+                                                      restart: false,
                                                       remember: false).then((
                                                       value) {
                                                     if (
@@ -401,13 +306,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                     setSelectedVal(val);
                                                   }
                                                   );
-
-                                                  //Set LangId
-
                                                   langId = 2;
                                                 }),
-                                            Expanded(
-                                                child: Text('en_Language'.tr()))
+                                            Expanded(child: Text('en_Language'.tr()))
                                           ],
                                         ),
                                       ),
@@ -430,47 +331,28 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   ),
                                   onPressed: () async {
-
                                     if (_formKey.currentState!.validate()) {
                                       startLogin(true);
                                     }
-                                    //After successful login we will redirect to profile page. Let's create profile page now
                                   },
                                 ),
                               ),
-                              // Container(
-                              //   margin: const EdgeInsets.fromLTRB(10, 20, 10, 20),
-                              //   //child: Text('Don\'t have an account? Create'),
-                              //   child: Text.rich(TextSpan(children: [
-                              //     TextSpan(text: 'dont_have_account'.tr()),
-                              //     TextSpan(
-                              //       text: 'sign_up'.tr(),
-                              //       recognizer: TapGestureRecognizer()
-                              //         ..onTap = () {
-                              //         //Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrationScreen()));
-                              //         },
-                              //       style: TextStyle(
-                              //           fontWeight: FontWeight.bold,
-                              //           color: Theme.of(context).primaryColorLight),
-                              //     ),
-                              //   ])),
-                              // ),
-                              // Container(
-                              //   margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
-                              //   alignment: Alignment.center,
-                              //   child: GestureDetector(
-                              //     onTap: () async {
-                              //       startQuickLogin();
-                              //     },
-                              //     child: Text(
-                              //       '<- الدخول السريع'.tr(),
-                              //       style: const TextStyle(
-                              //         color: Colors.red,
-                              //         fontWeight: FontWeight.bold,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
+                              Container(
+                                margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
+                                alignment: Alignment.center,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    startQuickLogin();
+                                  },
+                                  child: Text(
+                                    '<- الدخول السريع'.tr(),
+                                    style: const TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
 
                               Align(
                                 alignment: FractionalOffset.bottomCenter,
@@ -485,7 +367,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ],
                           )),
-
                     ],
                   )),
             ),
@@ -495,15 +376,11 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-
-//#region Login Methods
-
   //Set Company Email Settings Setup
   setCompanyGeneralEmailSetup() {
     Future<
-        EmailSetting> futureCompanyGeneralSetupEmailSetting = _CompanyGeneralSetupGeneralSetupApiService
+        EmailSetting> futureCompanyGeneralSetupEmailSetting = _companyGeneralSetupGeneralSetupApiService
         .getCompanyGeneralSetupEmailSettings().then((data) {
-      //print('Berfore Set List');
       EmailSettingData = data;
       return EmailSettingData;
     }, onError: (e) {
@@ -514,7 +391,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //Set Company General Setup
   setCompanyGeneralSetup() {
     //Company Setup
-    Future<CompanyGeneralSetup> futureCompanyGeneralSetup = _CompanyGeneralSetupGeneralSetupApiService
+    Future<CompanyGeneralSetup> futureCompanyGeneralSetup = _companyGeneralSetupGeneralSetupApiService
         .getCompanyGeneralSetupGeneralSetups().then((data) {
       print('Before Set CompanyGeneralSetupData');
       CompanyGeneralSetupData = data;
@@ -528,11 +405,8 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         if (CompanyGeneralSetupData.salesInvoicesReturnTypeCode != null &&
-            CompanyGeneralSetupData.salesInvoicesReturnTypeCode
-                .toString()
-                .isNotEmpty) {
-          generalSetupSalesInvoicesReturnTypeCode =
-              CompanyGeneralSetupData.salesInvoicesReturnTypeCode.toString();
+            CompanyGeneralSetupData.salesInvoicesReturnTypeCode.toString().isNotEmpty) {
+          generalSetupSalesInvoicesReturnTypeCode = CompanyGeneralSetupData.salesInvoicesReturnTypeCode.toString();
         }
 
 
@@ -632,7 +506,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //Set Menu Permissions
   setMenuPermissions() {
     //Set Menu Permission
-    Future<List<MenuPermission>> futureMenuPermission = _EmployeeApiService
+    Future<List<MenuPermission>> futureMenuPermission = _employeeApiService
         .getEmployeePermission(empCode).then((data) {
       print('Berfore Set List');
       MenuPermissionList = data;
@@ -649,7 +523,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   setEmployeeData() {
     //Set Menu Permission
-   _EmployeeApiService.getEmployeeByEmpCode(empCode).then((data) {
+   _employeeApiService.getEmployeeByEmpCode(empCode).then((data) {
       print('Berfore Set Empz Data');
       empUserCode = data.userCode!;
       empUserId = data.userId!;
@@ -715,7 +589,7 @@ class _LoginScreenState extends State<LoginScreen> {
     int branchLoginCode = int.parse(branchCodeSelectedValue!);
     if (isLive) {
       // Live
-      Login log = await _LoginService.logApi2(context, _emailController.text,
+      Login log = await _loginService.logApi2(context, _emailController.text,
           _passwordController.text, branchLoginCode);
 
       //Token
@@ -736,7 +610,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         //checkUserGroupData
-        EmployeeGroupStatus employeeGroupStatus = await _EmployeeApiService
+        EmployeeGroupStatus employeeGroupStatus = await _employeeApiService
             .checkUserGroupData(empCode);
 
         if (employeeGroupStatus.statusCode == 1) // Has Permission
@@ -766,7 +640,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _emailController.text = 'admin';
     _passwordController.text = '123Pa\$\$word!';
 
-    Login log = await _LoginService.logApi2(
+    Login log = await _loginService.logApi2(
         context, _emailController.text,
         _passwordController.text,branchCode);
 
@@ -785,7 +659,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       //checkUserGroupData
-      EmployeeGroupStatus employeeGroupStatus = await _EmployeeApiService.checkUserGroupData(empCode);
+      EmployeeGroupStatus employeeGroupStatus = await _employeeApiService.checkUserGroupData(empCode);
 
 
       //print('Permission :'  + employeeGroupStatus.statusCode.toString());

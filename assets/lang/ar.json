@@ -740,7 +740,10 @@
     "fromStore": "من مخزن",
     "toStore": "إلى مخزن",
     "please_select_customer_type": "من فضلك ادخل نوع العميل",
-    "taxId_must_be_15_char": "الرقم الضريبي يجب ان يكون 15 رقم"
+    "taxId_must_be_15_char": "الرقم الضريبي يجب ان يكون 15 رقم",
+    "searchTransfersRequests": "بحث طلبات التحويلات",
+    "ReceiveTransfers": "استلام التحويلات",
+    "receiveTransfers": "استلام التحويلات"
 
 }
 

@@ -7,6 +7,7 @@ import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/sales
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/BranchRequests/branchRequestList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/CheckStores/checkStoreList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/MaintenanceOrder/maintenanceOrderList.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/ReceivingTransfers/receivingTransfersList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesOffers/salesOfferList.dart';
 import 'package:fourlinkmobileapp/ui/module/cash/transactions/CashReceive/cashReceiveList.dart';
@@ -45,7 +46,8 @@ class MainTransactions extends StatelessWidget {
         'assets/fitness_app/receive_goods.png',
         'assets/fitness_app/shipping.png',
         'assets/fitness_app/maintenance.jpeg',
-        'assets/fitness_app/branchRequest.png'
+        'assets/fitness_app/branchRequest.png',
+        'assets/fitness_app/transfer.jpeg'
       ];
       List<String> areaListDataTitle = <String>[
         'salesinvoice'.tr(),
@@ -57,7 +59,8 @@ class MainTransactions extends StatelessWidget {
         'receive_permission'.tr(),
         'shipping_permission'.tr(),
         'maintenance_order'.tr(),
-        'branchRequest'.tr()
+        'branchRequest'.tr(),
+        'ReceiveTransfers'.tr()
 
       ];
 
@@ -255,6 +258,19 @@ class MainTransactions extends StatelessWidget {
                   FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                 }
               }
+              else if(areaListData[index]  == 'assets/fitness_app/transfer.jpeg')
+              {
+                int menuId=5208;
+                bool isAllowView = PermissionHelper.checkViewPermission(menuId);
+                if(isAllowView)
+                {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => ReceivingTransfersList()));
+                }
+                else
+                {
+                  FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                }
+              }
             },
             child: Column(
               children: <Widget>[
@@ -264,7 +280,7 @@ class MainTransactions extends StatelessWidget {
                   child: Image.asset(areaListData[index]),
                 ),
                 const SizedBox(height: 20.0),
-                Text(areaListDataTitle[index]!)
+                Text(areaListDataTitle[index])
               ],
             ),
           ),
