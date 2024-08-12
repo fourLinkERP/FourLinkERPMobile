@@ -19,8 +19,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
   Future<List<Customer>>  getCustomers() async {
 
     Map data = {
-      'CompanyCode': companyCode
-      //'BranchCode': branchCode
+      'CompanyCode': companyCode,
+      'BranchCode': branchCode
     };
 
     print('Customer 1');

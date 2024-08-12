@@ -640,6 +640,14 @@
     "taxId_must_be_15_char": "Tax id must be of 15 char",
     "searchTransfersRequests": "Search Transfers Requests",
     "ReceiveTransfers": "Receive Transfers",
-    "receiveTransfers": "Receive Transfers"
+    "receiveTransfers": "Receive Transfers",
+    "searchTransferOrders": "Search Transfer Orders",
+    "transfer_order": "Transfer Order",
+    "TransferOrder": "Transfer Order",
+    "driverReply": "Driver Reply",
+    "transportationFare": "Transportation Fare",
+    "fuelAllowance": "Fuel Allowance",
+    "fromLocation": "From location",
+    "toLocation": "To location"
 
 }
