@@ -601,6 +601,7 @@ class _EditBranchRequestDataWidgetState extends State<EditBranchRequestDataWidge
 
     });
   }
+
   Widget textFormFields({controller, hintText, onTap, onSaved, textInputType, enable = true}) {
     return TextFormField(
       controller: controller,
@@ -634,6 +635,7 @@ class _EditBranchRequestDataWidgetState extends State<EditBranchRequestDataWidge
       ),
     );
   }
+
   changeItemUnit(String itemCode) {
     units = [];
     Future<List<Unit>> unit = _unitsApiService.getItemUnit(itemCode).then((data) {
