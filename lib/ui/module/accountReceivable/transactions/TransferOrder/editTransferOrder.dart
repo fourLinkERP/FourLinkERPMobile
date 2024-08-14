@@ -1,41 +1,39 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carCars/carCar.dart';
-import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/CityHeaders/cityHeadersApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
-import 'package:fourlinkmobileapp/service/module/carMaintenance/carCars/carApiService.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:intl/intl.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../data/model/modules/module/accountreceivable/basicInputs/CityHeaders/cityHeaders.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Drivers/driver.dart';
-import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
+import '../../../../../data/model/modules/module/carMaintenance/carCars/carCar.dart';
 import '../../../../../helpers/hex_decimal.dart';
+import '../../../../../service/module/accountReceivable/basicInputs/CityHeaders/cityHeadersApiService.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Driver/driverApiService.dart';
-import '../../../../../service/module/general/NextSerial/generalApiService.dart';
+import '../../../../../service/module/carMaintenance/carCars/carApiService.dart';
 import '../../../../../theme/fitness_app_theme.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:intl/intl.dart';
 
-NextSerialApiService _nextSerialApiService = NextSerialApiService();
 CustomerApiService _customerApiService = CustomerApiService();
 CityApiService _cityApiService = CityApiService();
 CarApiService _carApiService = CarApiService();
 DriverApiService _driverApiService = DriverApiService();
 
-class AddTransferOrderDataWidget extends StatefulWidget {
-  const AddTransferOrderDataWidget({Key? key}) : super(key: key);
+class EditTransferOrderDataWidget extends StatefulWidget {
+  const EditTransferOrderDataWidget({Key? key}) : super(key: key);
 
   @override
-  State<AddTransferOrderDataWidget> createState() => _AddTransferOrderDataWidgetState();
+  State<EditTransferOrderDataWidget> createState() => _EditTransferOrderDataWidgetState();
 }
 
-class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget> {
+class _EditTransferOrderDataWidgetState extends State<EditTransferOrderDataWidget> {
 
   List<Customer> customers = [];
   List<City> cities = [];
   List<Car> cars = [];
   List<Driver> drivers = [];
 
+  int? id = 0;
   final _addFormKey = GlobalKey<FormState>();
   final _dropdownCustomerFormKey = GlobalKey<FormState>();
   final _dropdownFromLocationFormKey = GlobalKey<FormState>();
@@ -55,6 +53,10 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
   String? selectedDriverValue;
 
   Driver? driverItem = Driver(driverCode: "", driverNameAra: "", driverNameEng: "", id: 0);
+  Customer? customerItem = Customer(customerCode: "", customerNameAra: "", customerNameEng: "", id: 0);
+  City? fromLocationItem = City(cityCode: 0, cityName: "", id: 0);
+  City? toLocationItem = City(cityCode: 0, cityName: "", id: 0);
+  Car? carItem = Car(carCode: "", carNameAra: "", carNameEng: "", id: 0);
 
   @override
   initState() {
@@ -62,14 +64,13 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
 
     fillCompos();
   }
-  DateTime get pickedDate => DateTime.now();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-
+          // saveMaintenanceOrder(context);
         },
         child: Container(
           decoration: BoxDecoration(
@@ -145,7 +146,6 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
                         child: textFormFields(
                           enable: false,
                           controller: _trxDateController,
-                          hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                           onTap: () async {
                             DateTime? pickedDate = await showDatePicker(
                                 context: context,
@@ -204,7 +204,6 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
 
                                     onChanged: (value){
                                       selectedCustomerValue = value!.customerCode.toString();
-
                                     },
 
                                     filterFn: (instance, filter){
@@ -594,22 +593,9 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
 
   fillCompos(){
 
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("TRS_TransportOrders", "TrxSerial", " And CompanyCode=$companyCode And BranchCode=$branchCode").then((data) {
-      NextSerial nextSerial = data;
-
-      _trxSerialController.text = nextSerial.nextSerial.toString();
-      _trxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-
-      return nextSerial;
-    }, onError: (e) {
-      print(e);
-    });
-
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
-      setState(() {
-
-      });
+      getCustomerData();
       return customers;
     }, onError: (e) {
       print(e);
@@ -617,9 +603,8 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
 
     Future<List<City>> futureCity = _cityApiService.getCities().then((data) {
       cities = data;
-      setState(() {
-
-      });
+      getFromLocationData();
+      getToLocationData();
       return cities;
     }, onError: (e) {
       print(e);
@@ -627,9 +612,7 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
 
     Future<List<Car>> futureCar = _carApiService.getCars().then((data) {
       cars = data;
-      setState(() {
-
-      });
+      getCarData();
       return cars;
     }, onError: (e) {
       print(e);
@@ -637,13 +620,70 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
 
     Future<List<Driver>> futureDriver = _driverApiService.getDrivers().then((data) {
       drivers = data;
-      setState(() {
-
-      });
+      getDriverData();
       return drivers;
     }, onError: (e) {
       print(e);
     });
   }
+  getCustomerData() {
+    if (customers.isNotEmpty) {
+      for(var i = 0; i < customers.length; i++){
+        if(customers[i].customerCode == selectedCustomerValue){
+          customerItem = customers[customers.indexOf(customers[i])];
+        }
+      }
+    }
+    setState(() {
 
+    });
+  }
+  getFromLocationData() {
+    if (cities.isNotEmpty) {
+      for(var i = 0; i < cities.length; i++){
+        if(cities[i].cityCode.toString() == selectedFromLocationValue){
+          fromLocationItem = cities[cities.indexOf(cities[i])];
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
+  getToLocationData() {
+    if (cities.isNotEmpty) {
+      for(var i = 0; i < cities.length; i++){
+        if(cities[i].cityCode.toString() == selectedToLocationValue){
+          toLocationItem = cities[cities.indexOf(cities[i])];
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
+  getCarData() {
+    if (cars.isNotEmpty) {
+      for(var i = 0; i < cars.length; i++){
+        if(cars[i].carCode == selectedCarValue){
+          carItem = cars[cars.indexOf(cars[i])];
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
+  getDriverData() {
+    if (drivers.isNotEmpty) {
+      for(var i = 0; i < drivers.length; i++){
+        if(drivers[i].driverCode == selectedDriverValue){
+          driverItem = drivers[drivers.indexOf(drivers[i])];
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
 }

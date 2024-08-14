@@ -7,16 +7,16 @@ import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/sales
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/BranchRequests/branchRequestList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/CheckStores/checkStoreList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/MaintenanceOrder/maintenanceOrderList.dart';
-import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/ReceivingTransfers/receivingTransfersList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnList.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/SalesOffers/salesOfferList.dart';
-import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/TransferOrder/tranferOrderList.dart';
+import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/TransferOrder/transferOrderList.dart';
 import 'package:fourlinkmobileapp/ui/module/cash/transactions/CashReceive/cashReceiveList.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
   import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../ui/module/accountreceivable/transactions/ReceivePermission/receivePermissionList.dart';
 import '../ui/module/accountreceivable/transactions/ShippingPermission/shippingPermissionList.dart';
+import '../ui/module/accountreceivable/transactions/TransferStock/transferStockList.dart';
 
 class MainTransactions extends StatelessWidget {
 
@@ -267,7 +267,7 @@ class MainTransactions extends StatelessWidget {
                 bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                 if(isAllowView)
                 {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => ReceivingTransfersList()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => TransferStockList()));
                 }
                 else
                 {

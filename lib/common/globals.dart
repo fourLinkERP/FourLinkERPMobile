@@ -61,6 +61,7 @@ int lineNumber = 1;
 int langId = 1; //1-Arabic   2-English
 //Employee
 String empCode = "";
+String storeCode = "";
 bool? isManager = false;
 bool? isIt = false;
 bool? isEditPrice = false;

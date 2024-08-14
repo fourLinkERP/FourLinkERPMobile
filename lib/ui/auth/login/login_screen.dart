@@ -337,22 +337,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                 ),
                               ),
-                              Container(
-                                margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
-                                alignment: Alignment.center,
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    startQuickLogin();
-                                  },
-                                  child: Text(
-                                    '<- الدخول السريع'.tr(),
-                                    style: const TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              // Container(
+                              //   margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
+                              //   alignment: Alignment.center,
+                              //   child: GestureDetector(
+                              //     onTap: () async {
+                              //       startQuickLogin();
+                              //     },
+                              //     child: Text(
+                              //       '<- الدخول السريع'.tr(),
+                              //       style: const TextStyle(
+                              //         color: Colors.red,
+                              //         fontWeight: FontWeight.bold,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
 
                               Align(
                                 alignment: FractionalOffset.bottomCenter,
@@ -529,8 +529,9 @@ class _LoginScreenState extends State<LoginScreen> {
       empUserId = data.userId!;
       isManager = data.isManager;
       isIt = data.isIt;
+      storeCode = data.storeCode!;
       isEditPrice = data.isEditPrice;
-      print('After Set Empz Data');
+      print('After Set Emp Data');
       print(empUserId);
 
     }, onError: (e) {

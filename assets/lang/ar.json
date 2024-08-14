@@ -752,7 +752,8 @@
     "transportationFare": "أجرة النقل",
     "fuelAllowance": "بدل محروقات",
     "fromLocation": "من موقع",
-    "toLocation": "الى موقع"
+    "toLocation": "الى موقع",
+    "receive": "استلام"
 
 }
 

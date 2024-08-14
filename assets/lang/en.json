@@ -648,6 +648,7 @@
     "transportationFare": "Transportation Fare",
     "fuelAllowance": "Fuel Allowance",
     "fromLocation": "From location",
-    "toLocation": "To location"
+    "toLocation": "To location",
+    "receive": "Receive"
 
 }
