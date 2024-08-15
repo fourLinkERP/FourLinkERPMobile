@@ -1,21 +1,26 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/transportOrders/transportOrder.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carCars/carCar.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/CityHeaders/cityHeadersApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/TransportOrders/transportOrdersApiService.dart';
 import 'package:fourlinkmobileapp/service/module/carMaintenance/carCars/carApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:intl/intl.dart';
+import 'package:supercharged/supercharged.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../data/model/modules/module/accountreceivable/basicInputs/CityHeaders/cityHeaders.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Drivers/driver.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../helpers/hex_decimal.dart';
+import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Driver/driverApiService.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 
+TransportOrderApiService _transportOrderApiService = TransportOrderApiService();
 NextSerialApiService _nextSerialApiService = NextSerialApiService();
 CustomerApiService _customerApiService = CustomerApiService();
 CityApiService _cityApiService = CityApiService();
@@ -44,8 +49,8 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
   final _dropdownDriverFormKey = GlobalKey<FormState>();
   final _trxSerialController = TextEditingController();
   final _trxDateController = TextEditingController();
-  final _driverReply = TextEditingController();
-  final _transportationFare = TextEditingController();
+  final _driverBonus = TextEditingController();
+  final _transportationFee = TextEditingController();
   final _fuelAllowance = TextEditingController();
 
   String? selectedCustomerValue;
@@ -60,7 +65,7 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
   initState() {
     super.initState();
 
-    fillCompos();
+    _fillCompos();
   }
   DateTime get pickedDate => DateTime.now();
 
@@ -69,7 +74,7 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-
+          saveTransportOrder(context);
         },
         child: Container(
           decoration: BoxDecoration(
@@ -489,9 +494,9 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
                             child: SizedBox(
                               width: 200,
                               child: TextFormField(
-                                controller: _driverReply,
+                                controller: _driverBonus,
                                 enabled: true,
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.red[50]
@@ -512,9 +517,9 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
                             child: SizedBox(
                               width: 200,
                               child: TextFormField(
-                                controller: _transportationFare,
+                                controller: _transportationFee,
                                 enabled: true,
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.red[50]
@@ -537,7 +542,7 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
                               child: TextFormField(
                                 controller: _fuelAllowance,
                                 enabled: true,
-                                keyboardType: TextInputType.text,
+                                keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
                                     filled: true,
                                     fillColor: Colors.red[50]
@@ -592,7 +597,7 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
     );
   }
 
-  fillCompos(){
+  _fillCompos(){
 
     Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("TRS_TransportOrders", "TrxSerial", " And CompanyCode=$companyCode And BranchCode=$branchCode").then((data) {
       NextSerial nextSerial = data;
@@ -646,4 +651,50 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
     });
   }
 
+  saveTransportOrder(BuildContext context) async {
+
+    if (_trxSerialController.text.isEmpty) {
+      FN_showToast(context, 'please_Set_Invoice_Serial'.tr(), Colors.black);
+      return;
+    }
+
+    if (_trxDateController.text.isEmpty) {
+      FN_showToast(context, 'please_Set_Invoice_Date'.tr(), Colors.black);
+      return;
+    }
+    if (selectedCustomerValue == null || selectedCustomerValue!.isEmpty) {
+      FN_showToast(context, 'please_Set_Customer'.tr(), Colors.black);
+      return;
+    }
+    if (selectedCarValue == null || selectedCarValue!.isEmpty) {
+      FN_showToast(context, 'please_select_car'.tr(), Colors.black);
+      return;
+    }
+    if (selectedDriverValue == null || selectedDriverValue!.isEmpty) {
+      FN_showToast(context, 'please_select_driver'.tr(), Colors.black);
+      return;
+    }
+    if (selectedFromLocationValue == null || selectedFromLocationValue!.isEmpty) {
+      FN_showToast(context, 'please_select_from_city'.tr(), Colors.black);
+      return;
+    }
+    if (selectedToLocationValue == null || selectedToLocationValue!.isEmpty) {
+      FN_showToast(context, 'please_select_to_city'.tr(), Colors.black);
+      return;
+    }
+    await _transportOrderApiService.createTransportOrder(context, TransportOrder(
+      trxSerial: _trxSerialController.text,
+      trxDate: _trxDateController.text,
+      customerCode: selectedCustomerValue,
+      carCode: selectedCarValue,
+      driverCode: selectedDriverValue,
+      fromCityCode: selectedFromLocationValue,
+      toCityCode: selectedToLocationValue,
+      driverBonus: _driverBonus.text.toInt(),
+      dizelAllowance: _fuelAllowance.text.toInt(),
+      transportationFees: _transportationFee.text.toInt(),
+
+    ));
+    Navigator.pop(context);
+  }
 }

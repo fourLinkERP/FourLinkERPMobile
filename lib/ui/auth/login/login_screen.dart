@@ -337,22 +337,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                 ),
                               ),
-                              // Container(
-                              //   margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
-                              //   alignment: Alignment.center,
-                              //   child: GestureDetector(
-                              //     onTap: () async {
-                              //       startQuickLogin();
-                              //     },
-                              //     child: Text(
-                              //       '<- الدخول السريع'.tr(),
-                              //       style: const TextStyle(
-                              //         color: Colors.red,
-                              //         fontWeight: FontWeight.bold,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
+                              Container(
+                                margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
+                                alignment: Alignment.center,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    startQuickLogin();
+                                  },
+                                  child: Text(
+                                    '<- الدخول السريع'.tr(),
+                                    style: const TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
 
                               Align(
                                 alignment: FractionalOffset.bottomCenter,
@@ -393,9 +393,8 @@ class _LoginScreenState extends State<LoginScreen> {
     //Company Setup
     Future<CompanyGeneralSetup> futureCompanyGeneralSetup = _companyGeneralSetupGeneralSetupApiService
         .getCompanyGeneralSetupGeneralSetups().then((data) {
-      print('Before Set CompanyGeneralSetupData');
       CompanyGeneralSetupData = data;
-      print(CompanyGeneralSetupData);
+
       if (CompanyGeneralSetupData != null) {
         //////////////////////////
         if (CompanyGeneralSetupData.salesInvoicesTypeCode != null &&
@@ -409,12 +408,8 @@ class _LoginScreenState extends State<LoginScreen> {
           generalSetupSalesInvoicesReturnTypeCode = CompanyGeneralSetupData.salesInvoicesReturnTypeCode.toString();
         }
 
-
-        /////////////////////////
         if (CompanyGeneralSetupData.basicInputsVideoUrl != null &&
-            CompanyGeneralSetupData.basicInputsVideoUrl
-                .toString()
-                .isNotEmpty) {
+            CompanyGeneralSetupData.basicInputsVideoUrl.toString().isNotEmpty) {
           basicInputsUrl =
               Uri.parse(CompanyGeneralSetupData.basicInputsVideoUrl.toString());
         }
@@ -488,14 +483,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (CompanyGeneralSetupData.reportsEnglishDesc != null &&
             CompanyGeneralSetupData.reportsEnglishDesc.toString().isNotEmpty) {
-          reportsEnglishDesc =
-              CompanyGeneralSetupData.reportsEnglishDesc.toString();
+          reportsEnglishDesc = CompanyGeneralSetupData.reportsEnglishDesc.toString();
         }
       }
-
-      //print(customers.length.toString());
-      //print('After Set List');
-      //print(MenuPermissionList[0].menuId.toString());
 
       return CompanyGeneralSetupData;
     }, onError: (e) {
@@ -503,15 +493,11 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
-  //Set Menu Permissions
   setMenuPermissions() {
     //Set Menu Permission
-    Future<List<MenuPermission>> futureMenuPermission = _employeeApiService
-        .getEmployeePermission(empCode).then((data) {
-      print('Berfore Set List');
+    Future<List<MenuPermission>> futureMenuPermission = _employeeApiService.getEmployeePermission(empCode).then((data) {
       MenuPermissionList = data;
-      //print(customers.length.toString());
-      print('After Set List');
+
       print(MenuPermissionList[0].menuId.toString());
 
 
@@ -522,9 +508,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   setEmployeeData() {
-    //Set Menu Permission
    _employeeApiService.getEmployeeByEmpCode(empCode).then((data) {
-      print('Berfore Set Empz Data');
       empUserCode = data.userCode!;
       empUserId = data.userId!;
       isManager = data.isManager;
@@ -543,7 +527,6 @@ class _LoginScreenState extends State<LoginScreen> {
     Future<List<Item>> futureBalancedItems = _itemsApiService.getOfferItems().then((data) {
       itemsWithBalance = data;
 
-      print("Items offer: " + itemsWithBalance.toString());
       return itemsWithBalance;
     }, onError: (e) {
       print(e);
@@ -553,7 +536,6 @@ class _LoginScreenState extends State<LoginScreen> {
     Future<List<Item>> futureNonBalancedItems = _itemsApiService.getItems().then((data) {
       itemsWithOutBalance = data;
 
-      print("Items invoice: " + itemsWithOutBalance.toString());
       return itemsWithOutBalance;
     }, onError: (e) {
       print(e);
@@ -562,7 +544,6 @@ class _LoginScreenState extends State<LoginScreen> {
   setCompanyLogo(){
       try {
         Uint8List decodedBytes = base64Decode(companyLogo).buffer.asUint8List();
-        print('Decoded logoCompany length: ${decodedBytes.length}');
         companyLogoDecoded = decodedBytes;
       } catch (e) {
         print('Error decoding base64String: $e');
@@ -579,7 +560,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
 
-  //Start Login
   startLogin(bool isLive) async {
     print(branchCodeSelectedValue);
     if (branchCodeSelectedValue.toString().isEmpty || branchCodeSelectedValue == null) {
@@ -589,24 +569,19 @@ class _LoginScreenState extends State<LoginScreen> {
 
     int branchLoginCode = int.parse(branchCodeSelectedValue!);
     if (isLive) {
-      // Live
-      Login log = await _loginService.logApi2(context, _emailController.text,
-          _passwordController.text, branchLoginCode);
+      Login log = await _loginService.logApi2(context, _emailController.text, _passwordController.text, branchLoginCode);
 
-      //Token
       if (log.token!.isNotEmpty) {
         token = log.token!;
-        empCode = log.empCode!; // Nasr Add This
-        print('xxxxxxxxxxxxo');
+        empCode = log.empCode!;
         print(empCode);
         if (baseUrl.toString().isEmpty){      // Edited for Log in without entering URL in settings
-          baseUrl =  Uri.parse( urlString + "/api/");
+          baseUrl =  Uri.parse( "$urlString/api/");
         }
-        String url = baseUrl.toString(); // Default APi Add By Nasr
+        String url = baseUrl.toString();
 
         if (url.isEmpty) {
-          String urlString1 = urlString + "/api/"; // Default APi Add By Nasr
-          //String urlString = "http://webapi.4linkerp.com/api/"; // Default APi Add By Nasr
+          String urlString1 = "$urlString/api/"; // Default Api
           baseUrl = Uri.parse(urlString1);
         }
 
@@ -624,18 +599,15 @@ class _LoginScreenState extends State<LoginScreen> {
           setItemsOfferData();
           await setItemInvoiceData();
           setCompanyLogo();
-          print('Yes :');
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
         }
       }
     }
     else{
-      //Demo
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
   }
 
-  //Quick Login
   startQuickLogin() async {
 
     _emailController.text = 'admin';
@@ -648,22 +620,17 @@ class _LoginScreenState extends State<LoginScreen> {
     if (log.token!.isNotEmpty) {
 
       token = log.token!;
-      branchCode = 1; // Default Branch Add By Nasr
-      print('tokenz :' + token);
-      print('empCode :' + log.empCode.toString());
+      branchCode = 1;
+      print('empCode :${log.empCode}');
 
-      String url = baseUrl.toString(); // Default APi Add By Nasr
+      String url = baseUrl.toString();
       if (url.isEmpty) {
-        String urlString1 = urlString +"/api/";  //"http://www.sudokuano.net/api/"; // Default APi Add By Nasr
-        //String urlString = "http://webapi.4linkerp.com/api/";  //"http://www.sudokuano.net/api/"; // Default APi Add By Nasr
+        String urlString1 = "$urlString/api/";
         baseUrl = Uri.parse(urlString1);
       }
 
-      //checkUserGroupData
       EmployeeGroupStatus employeeGroupStatus = await _employeeApiService.checkUserGroupData(empCode);
 
-
-      //print('Permission :'  + employeeGroupStatus.statusCode.toString());
       if (employeeGroupStatus.statusCode == 1) // Has Permission
         {
         await setDashboardItems();
@@ -674,16 +641,9 @@ class _LoginScreenState extends State<LoginScreen> {
         setItemsOfferData();
         setItemInvoiceData();
         setCompanyLogo();
-        print('Yes :');
+
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
       }
     }
-
   }
-
-//#endregion
-
-
-
-
 }

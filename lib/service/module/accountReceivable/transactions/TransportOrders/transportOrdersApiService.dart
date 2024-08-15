@@ -5,16 +5,18 @@ import 'package:flutter/material.dart';
 import '../../../../../common/globals.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
-import '../../../../../data/model/modules/module/accountreceivable/transactions/branchRequests/branchRequestH.dart';
+import '../../../../../data/model/modules/module/accountreceivable/transactions/transportOrders/transportOrder.dart';
 
-class BranchRequestHApiService{
-  String searchApi= baseUrl.toString()  + '/api/v1/branchrequestheaders/search';
-  String createApi= baseUrl.toString()  + '/api/v1/branchrequestheaders';
-  String updateApi= baseUrl.toString()  + '/api/v1/branchrequestheaders/';
-  String deleteApi= baseUrl.toString()  + '/api/v1/branchrequestheaders/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/branchrequestheaders/';
 
-  Future<List<BranchRequestH>?> getBranchRequestH() async {
+class TransportOrderApiService{
+
+  String searchApi= baseUrl.toString()  + '/api/v1/transportertransportorders/search';
+  String createApi= baseUrl.toString()  + '/api/v1/transportertransportorders';
+  String updateApi= baseUrl.toString()  + '/api/v1/transportertransportorders/';
+  String deleteApi= baseUrl.toString()  + '/api/v1/transportertransportorders/';
+  String getByIdApi= baseUrl.toString()  + '/api/v1/transportertransportorders/';
+
+  Future<List<TransportOrder>?> getTransportOrder() async {
 
     Map data = {
       'Search':{
@@ -31,35 +33,36 @@ class BranchRequestHApiService{
       },
       body: jsonEncode(data),
     );
-    print('BranchRequestH $searchApi');
-    print('BranchRequestH $data');
+    print('TransportOrder $data');
     if (response.statusCode == 200) {
-      print('branchRequest After ');
       List<dynamic> data = jsonDecode(response.body)['data'];
-      print(data);
-      List<BranchRequestH> list = [];
+      List<TransportOrder> list = [];
       if (data.isNotEmpty) {
-        list = data.map((item) => BranchRequestH.fromJson(item)).toList();
+        list = data.map((item) => TransportOrder.fromJson(item)).toList();
       }
-      print('branchRequest Finish');
+      print('transportOrder Finish');
       return  list;
     } else {
-      print('branchRequest Failure');
-      throw "Failed to load branchRequestH list";
+      print('transportOrder Failure');
+      throw "Failed to load TransportOrder list";
     }
   }
 
-  Future<int> createBranchRequestH(BuildContext context ,BranchRequestH branchRequestH) async {
-    print('save branchRequestH 0');
+  Future<int> createTransportOrder(BuildContext context ,TransportOrder transportOrder) async {
+    print('save transportOrder 0');
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'fromBranch': branchCode,
-      'TrxSerial': branchRequestH.trxSerial,
-      'TrxDate': branchRequestH.trxDate,
-      'StoreCode': branchRequestH.storeCode,
-      'toStoreCode': branchRequestH.toStoreCode,
-      'notes': branchRequestH.notes,
+      'TrxSerial': transportOrder.trxSerial,
+      'TrxDate': transportOrder.trxDate,
+      'CustomerCode': transportOrder.customerCode,
+      'CarCode': transportOrder.carCode,
+      'DriverCode': transportOrder.driverCode,
+      'fromCityCode': transportOrder.fromCityCode,
+      'toCityCode': transportOrder.toCityCode,
+      'dizelAllowance': transportOrder.dizelAllowance,
+      'transportationFees': transportOrder.transportationFees,
+      'driverBonus': transportOrder.driverBonus,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,
@@ -72,13 +75,12 @@ class BranchRequestHApiService{
       "flgDelete": false,
       "confirmed": true,
       "isConfirmed":true,
-      "typeCode": "1",
       "year" : financialYearCode,
       "addBy": empUserId,
 
     };
 
-    print('save branchRequestH: ' + data.toString());
+    print('save transportOrder: ' + data.toString());
 
     final http.Response response = await http.post(
       Uri.parse(createApi),
@@ -88,37 +90,39 @@ class BranchRequestHApiService{
       },
       body: jsonEncode(data),
     );
-
-    print('save branchRequestH 2');
     print('createApi $createApi');
 
     if (response.statusCode == 200) {
 
-      print('save branchRequestH 3');
       FN_showToast(context,'save_success'.tr() ,Colors.black);
 
       return  1;
 
     } else {
-      print('save branchRequestH Error');
-      throw Exception('Failed to post branchRequestH');
+      print('save transportOrder Error');
+      throw Exception('Failed to post transportOrder');
     }
 
   }
 
-  Future<int> updateBranchRequestH(BuildContext context ,int id, BranchRequestH branchRequestH) async {
+  Future<int> updateTransportOrder(BuildContext context ,int id, TransportOrder transportOrder) async {
 
     print('Start Update');
 
     Map data = {
-      'id': branchRequestH.id,
+      'id': transportOrder.id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'TrxSerial': branchRequestH.trxSerial,
-      'TrxDate': branchRequestH.trxDate,
-      'StoreCode': branchRequestH.storeCode,
-      'toStoreCode': branchRequestH.toStoreCode,
-      'notes': branchRequestH.notes,
+      'TrxSerial': transportOrder.trxSerial,
+      'TrxDate': transportOrder.trxDate,
+      'CustomerCode': transportOrder.customerCode,
+      'CarCode': transportOrder.carCode,
+      'DriverCode': transportOrder.driverCode,
+      'fromCityCode': transportOrder.fromCityCode,
+      'toCityCode': transportOrder.toCityCode,
+      'dizelAllowance': transportOrder.dizelAllowance,
+      'transportationFees': transportOrder.transportationFees,
+      'driverBonus': transportOrder.driverBonus,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,
@@ -131,7 +135,6 @@ class BranchRequestHApiService{
       "flgDelete": false,
       "confirmed": true,
       "isConfirmed":true,
-      "typeCode": "1",
       "year" : financialYearCode,
       "editBy": empUserId,
 
@@ -147,9 +150,7 @@ class BranchRequestHApiService{
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after');
     if (response.statusCode == 200) {
-      print('Start Update done ' );
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
@@ -160,7 +161,7 @@ class BranchRequestHApiService{
 
   }
 
-  Future<void> deleteBranchRequestH(BuildContext context ,int? id) async {
+  Future<void> deleteTransportOrder(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
     print('url' + apiDel);
@@ -181,7 +182,7 @@ class BranchRequestHApiService{
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);
     } else {
-      throw "Failed to delete a branchRequestH.";
+      throw "Failed to delete a transportOrder.";
     }
   }
 }

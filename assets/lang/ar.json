@@ -753,7 +753,9 @@
     "fuelAllowance": "بدل محروقات",
     "fromLocation": "من موقع",
     "toLocation": "الى موقع",
-    "receive": "استلام"
+    "receive": "استلام",
+    "please_select_from_city": "من فضلك اختر من مدينة",
+    "please_select_to_city": "من فضلك اختر الى مدينة"
 
 }
 

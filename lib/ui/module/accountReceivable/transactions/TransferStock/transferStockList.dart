@@ -7,7 +7,7 @@ import '../../../../../common/globals.dart';
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../data/model/modules/module/accountreceivable/transactions/transferStock/transferStockH.dart';
 import '../../../../../helpers/toast.dart';
-import '../../../../../service/module/accountReceivable/transactions/TransactionStock/transactionStockApiService.dart';
+import '../../../../../service/module/accountReceivable/transactions/TransferStock/transferStockApiService.dart';
 import '../../../../../utils/permissionHelper.dart';
 
 TransferStockApiService _apiService = TransferStockApiService();

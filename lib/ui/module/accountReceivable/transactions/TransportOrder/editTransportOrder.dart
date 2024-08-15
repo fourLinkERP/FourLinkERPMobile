@@ -2,11 +2,15 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/TransportOrders/transportOrdersApiService.dart';
+import 'package:supercharged/supercharged.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../data/model/modules/module/accountreceivable/basicInputs/CityHeaders/cityHeaders.dart';
+import '../../../../../data/model/modules/module/accountreceivable/transactions/transportOrders/transportOrder.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Drivers/driver.dart';
 import '../../../../../data/model/modules/module/carMaintenance/carCars/carCar.dart';
 import '../../../../../helpers/hex_decimal.dart';
+import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/CityHeaders/cityHeadersApiService.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Driver/driverApiService.dart';
 import '../../../../../service/module/carMaintenance/carCars/carApiService.dart';
@@ -14,13 +18,16 @@ import '../../../../../theme/fitness_app_theme.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:intl/intl.dart';
 
+TransportOrderApiService _transportOrderApiService = TransportOrderApiService();
 CustomerApiService _customerApiService = CustomerApiService();
 CityApiService _cityApiService = CityApiService();
 CarApiService _carApiService = CarApiService();
 DriverApiService _driverApiService = DriverApiService();
 
 class EditTransferOrderDataWidget extends StatefulWidget {
-  const EditTransferOrderDataWidget({Key? key}) : super(key: key);
+   EditTransferOrderDataWidget(this.transportOrder);
+
+   final TransportOrder transportOrder;
 
   @override
   State<EditTransferOrderDataWidget> createState() => _EditTransferOrderDataWidgetState();
@@ -33,7 +40,7 @@ class _EditTransferOrderDataWidgetState extends State<EditTransferOrderDataWidge
   List<Car> cars = [];
   List<Driver> drivers = [];
 
-  int? id = 0;
+  int id = 0;
   final _addFormKey = GlobalKey<FormState>();
   final _dropdownCustomerFormKey = GlobalKey<FormState>();
   final _dropdownFromLocationFormKey = GlobalKey<FormState>();
@@ -42,8 +49,8 @@ class _EditTransferOrderDataWidgetState extends State<EditTransferOrderDataWidge
   final _dropdownDriverFormKey = GlobalKey<FormState>();
   final _trxSerialController = TextEditingController();
   final _trxDateController = TextEditingController();
-  final _driverReply = TextEditingController();
-  final _transportationFare = TextEditingController();
+  final _driverBonus = TextEditingController();
+  final _transportationFee = TextEditingController();
   final _fuelAllowance = TextEditingController();
 
   String? selectedCustomerValue;
@@ -60,9 +67,21 @@ class _EditTransferOrderDataWidgetState extends State<EditTransferOrderDataWidge
 
   @override
   initState() {
-    super.initState();
 
-    fillCompos();
+    id = widget.transportOrder.id!;
+    _trxSerialController.text = widget.transportOrder.trxSerial.toString();
+    _trxDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.transportOrder.trxDate!.toString()));
+    selectedCustomerValue = widget.transportOrder.customerCode;
+    selectedCarValue = widget.transportOrder.carCode;
+    selectedDriverValue =  widget.transportOrder.driverCode;
+    selectedFromLocationValue =  widget.transportOrder.fromCityCode;
+    selectedToLocationValue = widget.transportOrder.toCityCode;
+    _transportationFee.text = widget.transportOrder.transportationFees.toString();
+    _fuelAllowance.text = widget.transportOrder.dizelAllowance.toString();
+    _driverBonus.text = widget.transportOrder.driverBonus.toString();
+
+    _fillCompos();
+    super.initState();
   }
 
   @override
@@ -70,7 +89,7 @@ class _EditTransferOrderDataWidgetState extends State<EditTransferOrderDataWidge
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // saveMaintenanceOrder(context);
+          saveTransportOrder(context);
         },
         child: Container(
           decoration: BoxDecoration(
@@ -177,7 +196,7 @@ class _EditTransferOrderDataWidgetState extends State<EditTransferOrderDataWidge
                                 child: SizedBox(
                                   width: 220,
                                   child: DropdownSearch<Customer>(
-                                    selectedItem: null,
+                                    selectedItem: customerItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
@@ -239,7 +258,7 @@ class _EditTransferOrderDataWidgetState extends State<EditTransferOrderDataWidge
                                 child: SizedBox(
                                   width: 220,
                                   child: DropdownSearch<City>(
-                                    selectedItem: null,
+                                    selectedItem: fromLocationItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
@@ -302,7 +321,7 @@ class _EditTransferOrderDataWidgetState extends State<EditTransferOrderDataWidge
                                 child: SizedBox(
                                   width: 220,
                                   child: DropdownSearch<City>(
-                                    selectedItem: null,
+                                    selectedItem: toLocationItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
@@ -365,7 +384,7 @@ class _EditTransferOrderDataWidgetState extends State<EditTransferOrderDataWidge
                                 child: SizedBox(
                                   width: 220,
                                   child: DropdownSearch<Car>(
-                                    selectedItem: null,
+                                    selectedItem: carItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
@@ -488,7 +507,7 @@ class _EditTransferOrderDataWidgetState extends State<EditTransferOrderDataWidge
                             child: SizedBox(
                               width: 200,
                               child: TextFormField(
-                                controller: _driverReply,
+                                controller: _driverBonus,
                                 enabled: true,
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
@@ -511,7 +530,7 @@ class _EditTransferOrderDataWidgetState extends State<EditTransferOrderDataWidge
                             child: SizedBox(
                               width: 200,
                               child: TextFormField(
-                                controller: _transportationFare,
+                                controller: _transportationFee,
                                 enabled: true,
                                 keyboardType: TextInputType.text,
                                 decoration: InputDecoration(
@@ -591,7 +610,7 @@ class _EditTransferOrderDataWidgetState extends State<EditTransferOrderDataWidge
     );
   }
 
-  fillCompos(){
+  _fillCompos(){
 
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
@@ -685,5 +704,52 @@ class _EditTransferOrderDataWidgetState extends State<EditTransferOrderDataWidge
     setState(() {
 
     });
+  }
+  saveTransportOrder(BuildContext context) async {
+
+    if (_trxSerialController.text.isEmpty) {
+      FN_showToast(context, 'please_Set_Invoice_Serial'.tr(), Colors.black);
+      return;
+    }
+
+    if (_trxDateController.text.isEmpty) {
+      FN_showToast(context, 'please_Set_Invoice_Date'.tr(), Colors.black);
+      return;
+    }
+    if (selectedCustomerValue == null || selectedCustomerValue!.isEmpty) {
+      FN_showToast(context, 'please_Set_Customer'.tr(), Colors.black);
+      return;
+    }
+    if (selectedCarValue == null || selectedCarValue!.isEmpty) {
+      FN_showToast(context, 'please_select_car'.tr(), Colors.black);
+      return;
+    }
+    if (selectedDriverValue == null || selectedDriverValue!.isEmpty) {
+      FN_showToast(context, 'please_select_driver'.tr(), Colors.black);
+      return;
+    }
+    if (selectedFromLocationValue == null || selectedFromLocationValue!.isEmpty) {
+      FN_showToast(context, 'please_select_from_city'.tr(), Colors.black);
+      return;
+    }
+    if (selectedToLocationValue == null || selectedToLocationValue!.isEmpty) {
+      FN_showToast(context, 'please_select_to_city'.tr(), Colors.black);
+      return;
+    }
+    await _transportOrderApiService.updateTransportOrder(context, id,TransportOrder(
+      id: id,
+      trxSerial: _trxSerialController.text,
+      trxDate: _trxDateController.text,
+      customerCode: selectedCustomerValue,
+      carCode: selectedCarValue,
+      driverCode: selectedDriverValue,
+      fromCityCode: selectedFromLocationValue,
+      toCityCode: selectedToLocationValue,
+      driverBonus: _driverBonus.text.toInt(),
+      dizelAllowance: _fuelAllowance.text.toInt(),
+      transportationFees: _transportationFee.text.toInt(),
+
+    ));
+    Navigator.pop(context);
   }
 }
