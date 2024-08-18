@@ -147,38 +147,42 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
                       Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Serial :".tr(),
                           style: const TextStyle(fontWeight: FontWeight.bold))),
                       const SizedBox(width: 10),
-                      SizedBox(
-                        width: 100,
-                        child: textFormFields(
-                          controller: _checkStoreSerialController,
-                          enable: false,
-                          textInputType: TextInputType.name,
+                      Expanded(
+                        child: SizedBox(
+                          width: 100,
+                          child: textFormFields(
+                            controller: _checkStoreSerialController,
+                            enable: false,
+                            textInputType: TextInputType.name,
+                          ),
                         ),
                       ),
                       const SizedBox(width: 10),
                       Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Date :".tr(),
                           style: const TextStyle(fontWeight: FontWeight.bold))),
                       const SizedBox(width: 10),
-                      SizedBox(
-                        width: 100,
-                        child: TextFormField(
-                          enabled: true,
-                          controller: _checkStoreToDateController,
-                          onTap: () async {
-                            DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(1950),
-                                lastDate: DateTime(2050));
+                      Expanded(
+                        child: SizedBox(
+                          width: 100,
+                          child: TextFormField(
+                            enabled: true,
+                            controller: _checkStoreToDateController,
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1950),
+                                  lastDate: DateTime(2050));
 
-                            if (pickedDate != null) {
-                              _checkStoreToDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                            }
-                          },
-                          keyboardType: TextInputType.datetime,
-                          decoration: InputDecoration(
-                            filled: true,
-                            fillColor: Colors.red[50],
+                              if (pickedDate != null) {
+                                _checkStoreToDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                              }
+                            },
+                            keyboardType: TextInputType.datetime,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.red[50],
+                            ),
                           ),
                         ),
                       ),

@@ -123,36 +123,40 @@ class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataW
                     Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Serial :".tr(),
                         style: const TextStyle(fontWeight: FontWeight.bold))),
                     const SizedBox(width: 10),
-                    SizedBox(
-                      width: 100,
-                      child: textFormFields(
-                        controller: _trxSerialController,
-                        enable: false,
-                        textInputType: TextInputType.name,
+                    Expanded(
+                      child: SizedBox(
+                        width: 100,
+                        child: textFormFields(
+                          controller: _trxSerialController,
+                          enable: false,
+                          textInputType: TextInputType.name,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 10),
                     Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Date :".tr(),
                         style: const TextStyle(fontWeight: FontWeight.bold))),
                     const SizedBox(width: 10),
-                    SizedBox(
-                      width: 100,
-                      child: textFormFields(
-                        enable: false,
-                        controller: _trxDateController,
-                        hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1950),
-                              lastDate: DateTime(2050));
+                    Expanded(
+                      child: SizedBox(
+                        width: 100,
+                        child: textFormFields(
+                          enable: false,
+                          controller: _trxDateController,
+                          hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1950),
+                                lastDate: DateTime(2050));
 
-                          if (pickedDate != null) {
-                            _trxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                          }
-                        },
-                        textInputType: TextInputType.datetime,
+                            if (pickedDate != null) {
+                              _trxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                            }
+                          },
+                          textInputType: TextInputType.datetime,
+                        ),
                       ),
                     ),
                   ],
@@ -354,8 +358,6 @@ class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataW
                             ),
                           ),
                         ),
-                        const SizedBox(width: 10),
-
                       ],
                     ),
                   ],
@@ -480,7 +482,7 @@ class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataW
     Navigator.pop(context);
   }
   getDriverData() {
-    if (drivers != null) {
+    if (drivers.isNotEmpty) {
       for(var i = 0; i < drivers.length; i++){
         if(drivers[i].driverCode == selectedDriverValue){
           driverItem = drivers[drivers.indexOf(drivers[i])];

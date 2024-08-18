@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
-import 'dart:io';
+//import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -14,7 +14,6 @@ import 'package:fourlinkmobileapp/data/model/modules/module/general/receipt/rece
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 import 'package:fourlinkmobileapp/service/general/receipt/pdfReceipt.dart';
-import 'package:fourlinkmobileapp/service/module/administration/basicInputs/compayApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/utils/permissionHelper.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -30,9 +29,9 @@ import '../../../../../service/module/accountReceivable/transactions/SalesInvoic
 import 'addSalesInvoiceDataWidget.dart';
 import 'detailSalesInvoiceWidget.dart';
 import 'editSalesInvoiceDataWidget.dart';
-import 'package:pdf/widgets.dart' as pw;
+//import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
-import 'package:image/image.dart' as img;
+//import 'package:image/image.dart' as img;
 
 SalesInvoiceHApiService _apiService= SalesInvoiceHApiService();
 SalesInvoiceDApiService _apiDService= SalesInvoiceDApiService();
@@ -50,25 +49,21 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
   List<SalesInvoiceH> _salesInvoices = [];
   List<SalesInvoiceH> _salesInvoicesSearch = [];
   List<SalesInvoiceD> _salesInvoicesD = [];
-  List<SalesInvoiceH> _founded = [];
   List<WidgetsToImageController> imageControllers  = [] ;
   List<GlobalKey> imageGlobalKeys  = [] ;
 
   @override
   void initState() {
-    // TODO: implement initState
-    print('okkkkkkkkkkk');
-    getData();
+    _getData();
 
     super.initState();
     setState(() {
-      _founded = _salesInvoices!;
     });
   }
 
 
 
-  void getData() async {
+  void _getData() async {
     try {
       List<SalesInvoiceH>? futureSalesInvoiceH = await _apiService.getSalesInvoicesH();
 
@@ -76,7 +71,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
         _salesInvoices = futureSalesInvoiceH;
         _salesInvoicesSearch = List.from(_salesInvoices);
 
-        if(_salesInvoices.length >0)
+        if(_salesInvoices.isNotEmpty)
           {
             for(var i = 0; i < _salesInvoices.length; i++){
               {
@@ -87,11 +82,10 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
           }
 
         if (_salesInvoices.isNotEmpty) {
-          _salesInvoices.sort((a, b) =>
-              int.parse(b.salesInvoicesSerial!).compareTo(int.parse(a.salesInvoicesSerial!)));
+          _salesInvoices.sort((a, b) => int.parse(b.salesInvoicesSerial!).compareTo(int.parse(a.salesInvoicesSerial!)));
 
           setState(() {
-            _founded = _salesInvoices!;
+
           });
         }
       }
@@ -108,11 +102,11 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
   void onSearch(String search) {
     if (search.isEmpty) {
       setState(() {
-        _salesInvoices = List.from(_salesInvoicesSearch!);
+        _salesInvoices = List.from(_salesInvoicesSearch);
       });
     } else {
       setState(() {
-        _salesInvoices = List.from(_salesInvoicesSearch!);
+        _salesInvoices = List.from(_salesInvoicesSearch);
         _salesInvoices = _salesInvoices.where((salesInvoice) =>
             salesInvoice.customerName!.toLowerCase().contains(search)).toList();
       });
@@ -126,7 +120,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
           title: SizedBox(
             child: Column(
               children: [
@@ -188,7 +182,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-
                 splashColor: Colors.white.withOpacity(0.1),
                 highlightColor: Colors.transparent,
                 focusColor: Colors.transparent,
@@ -214,9 +207,8 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       if(isAllowAdd)
       {
         Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSalesInvoiceHDataWidget(),
-        ))
-            .then((value) {
-          getData();
+        )).then((value) {
+          _getData();
         });
       }
       else
@@ -235,7 +227,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
         final result = await Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => EditSalesInvoiceHDataWidget(customer)),
-        ).then((value) => getData());
+        ).then((value) => _getData());
 
       }
       else
@@ -248,11 +240,10 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
 
       int menuId=6204;
       bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
-      //isAllowPrint = true;
       if(isAllowPrint)
       {
-        bool IsReceipt =true;
-        if(IsReceipt)
+        bool isReceipt =true;
+        if(isReceipt)
           {
             DateTime date = DateTime.parse(invoiceH.salesInvoicesDate.toString());
             final dueDate = date.add(Duration(days: 7));
@@ -263,22 +254,20 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             _salesInvoicesD = (await futureSalesInvoiceD)!;
 
             List<InvoiceItem> invoiceItems=[];
-            print('Before Sales Invoice : ' + invoiceH.id.toString() );
-            if(_salesInvoicesD != null)
+            //print('Before Sales Invoice : ${invoiceH.id}' );
+            if(_salesInvoicesD.isNotEmpty)
             {
-              print('In Sales Invoice' );
-              print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString() );
+              print('_salesInvoicesD >> ${_salesInvoicesD.length}' );
               for(var i = 0; i < _salesInvoicesD.length; i++){
-                double qty= (_salesInvoicesD[i].displayQty != null) ? double.parse(_salesInvoicesD[i].displayQty.toStringAsFixed(2))  : 0;
-                double vat=(_salesInvoicesD[i].displayTotalTaxValue != null) ? double.parse(_salesInvoicesD[i].displayTotalTaxValue.toStringAsFixed(2)) : 0 ;
-                double price =( _salesInvoicesD[i].displayPrice != null) ? double.parse(_salesInvoicesD[i].displayPrice.toStringAsFixed(2)) : 0;
-                double total =( _salesInvoicesD[i].displayNetValue != null) ? double.parse(_salesInvoicesD[i].displayNetValue.toStringAsFixed(2)) : 0;
+                double qty= (_salesInvoicesD[i].displayQty != 0) ? double.parse(_salesInvoicesD[i].displayQty.toStringAsFixed(2))  : 0;
+                double vat=(_salesInvoicesD[i].displayTotalTaxValue != 0) ? double.parse(_salesInvoicesD[i].displayTotalTaxValue.toStringAsFixed(2)) : 0 ;
+                double price =( _salesInvoicesD[i].displayPrice != 0) ? double.parse(_salesInvoicesD[i].displayPrice.toStringAsFixed(2)) : 0;
+                double total =( _salesInvoicesD[i].displayNetValue != 0) ? double.parse(_salesInvoicesD[i].displayNetValue.toStringAsFixed(2)) : 0;
 
-                //InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
-                InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
+                InvoiceItem invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
                     date: date, quantity: qty  , vat: vat  , unitPrice: price , totalValue : total );
 
-                invoiceItems.add(_invoiceItem);
+                invoiceItems.add(invoiceItem);
               }
             }
 
@@ -288,14 +277,10 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             double totalAfterVat =( invoiceH.totalNet != null) ? double.parse(invoiceH.totalNet!.toStringAsFixed(2)) : 0;
             double totalAmount =( invoiceH.totalAfterDiscount != null) ? double.parse(invoiceH.totalAfterDiscount!.toStringAsFixed(2)) : 0;
             double totalQty =( invoiceH.totalQty != null) ? double.parse(invoiceH.totalQty!.toStringAsFixed(2)) : 0;
-            double rowsCount =( invoiceH.rowsCount != null) ? double.parse(invoiceH.rowsCount.toStringAsFixed(2))   : 0;
-            //String TafqeetName = "";
+            double rowsCount =( invoiceH.rowsCount != 0) ? double.parse(invoiceH.rowsCount.toStringAsFixed(2))   : 0;
             String tafqeetName =  invoiceH.tafqeetName.toString();
 
-            print('taftaf');
-            print(tafqeetName);
-
-            final invoice = Invoice(   //ToDO
+            final invoice = Invoice(
                 supplier: Vendor(
                   vendorNameAra: 'Sarah Field',
                   address1: 'Sarah Street 9, Beijing, China',
@@ -324,37 +309,30 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
 
 
             String invoiceDate =DateFormat('yyyy-MM-dd hh:mm').format(DateTime.parse(invoiceH.salesInvoicesDate.toString()));
-            final receipt = Receipt(   //ToDO
+            final receipt = Receipt(
                 receiptHeader: ReceiptHeader(
                     companyName: langId == 1 ? companyName : companyName,
                   companyInvoiceTypeName: (invoiceH.invoiceTypeCode == "1") ?'فاتورة ضريبية':'فاتورة ضريبية مبسطة',
                   companyInvoiceTypeName2: langId==1?'Simplified Tax Invoice':'Simplified Tax Invoice',
-                  companyVatNumber: langId==1? "الرقم الضريبي  " + companyTaxID : 'Vat No' + companyTaxID,   //'302211485800003':'VAT No  302211485800003',
-                  companyCommercialName: langId==1? 'ترخيص رقم ' + companyCommercialID  :'Registeration No '+ companyCommercialID,   //'ترخيص رقم 450714529009'  :'Registeration No 450714529009',
-                  companyInvoiceNo: langId==1?'رقم الفاتورة ' + invoiceH.salesInvoicesSerial.toString() :'Invoice No  ' + invoiceH.salesInvoicesSerial.toString(),
-                  companyDate: langId==1? "التاريخ  " + invoiceDate  : "Date : " + invoiceDate ,
-                  companyAddress: langId==1? 'العنوان : ' + companyAddress :'العنوان : ' + companyAddress ,        //'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
-                  companyPhone: langId==1? 'Tel No : '+ companyMobile :'Tel No :' + companyMobile,        //'Tel No :+966539679540':'Tel No :+966539679540',
-                  customerName: langId==1? "العميل : " + invoiceH.customerName.toString() : "Customer : " + invoiceH.customerName.toString() ,
-                  customerTaxNo:  langId==1?  "الرقم الضريبي  " + invoiceH.taxNumber.toString() :'VAT No ' + invoiceH.taxNumber.toString(),
+                  companyVatNumber: langId==1? "الرقم الضريبي  $companyTaxID" : 'Vat No$companyTaxID',
+                  companyCommercialName: langId==1? 'ترخيص رقم $companyCommercialID'  :'Registeration No $companyCommercialID',
+                  companyInvoiceNo: langId==1?'رقم الفاتورة ${invoiceH.salesInvoicesSerial}' :'Invoice No  ${invoiceH.salesInvoicesSerial}',
+                  companyDate: langId==1? "التاريخ  $invoiceDate"  : "Date : $invoiceDate" ,
+                  companyAddress: langId==1? 'العنوان : $companyAddress' :'العنوان : $companyAddress' ,
+                  companyPhone: langId==1? 'Tel No : $companyMobile' :'Tel No :$companyMobile',
+                  customerName: langId==1? "العميل : ${invoiceH.customerName}" : "Customer : ${invoiceH.customerName}" ,
+                  customerTaxNo:  langId==1?  "الرقم الضريبي  ${invoiceH.taxNumber}" :'VAT No ${invoiceH.taxNumber}',
                   salesInvoicesTypeName:  (invoiceH.salesInvoicesTypeCode.toString() == "1") ?(langId==1?"فاتورة نقدي" : "Cash Invoice" ) : (langId==1?"فاتورة أجل" : "Credit Invoice" )  ,
                   tafqeetName : tafqeetName
                 ),
                 invoice: invoice
          );
 
-            print(invoice.info.totalQty);
-
-            print('indexxxxxxxxx');
-            print(index);
             final bytesx = await imageControllers[index].capture();
             var bytesImg = bytesx as Uint8List;
 
             final pdfFile = await pdfReceipt.generate(receipt,bytesImg);  // , _base64StringToUint8List(companyLogo)
             PdfApi.openFile(pdfFile);
-
-            //var boundary = globalKey.currentContext!.findRenderObject();
-            ///ui.Image image = await x.toImage(pixelRatio: 3.0);
        }
        else{
 
@@ -375,20 +353,9 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       var image = await boundary.toImage();
       ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
       pngBytes = byteData!.buffer.asUint8List();
-      // final tempDir = await getExternalStorageDirectory();
-      // final file = await new File('${tempDir.path}/shareqr.png').create();
-      // await file.writeAsBytes(pngBytes);
-      // await Share.shareFiles([file.path], text: content);
-
 
     return pngBytes;
   }
-
-  // static Future bytesToImage(Uint8List imgBytes) async{
-  //   ui.Codec codec = await ui.instantiateImageCodec(imgBytes);
-  //   ui.FrameInfo frame = await codec.getNextFrame();
-  //   return frame.image;
-  // }
 
     _deleteItem(BuildContext context,int? id) async {
 
@@ -428,14 +395,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
 
     }
 
-  // Future<void> renderImage() async {
-  //   //Get the render object from context.
-  //   final RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
-  //   //Convert to the image
-  //   final ui.Image image = await boundary.toImage();
-  // }
-
-
     Widget buildSalesInvoices(){
       if(_salesInvoices.isEmpty){
         return const Center(child: CircularProgressIndicator());
@@ -458,7 +417,6 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                         );
                       },
                       child: ListTile(
-                        //leading: Image.asset('assets/fitness_app/salesCart.png'),
                         leading:  SizedBox(
                           width: 55,
                           height: 55,
@@ -478,19 +436,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                                 ),
                               ),
                             )
-
-                        )
-                        //   RepaintBoundary(
-                        //     key: imageGlobalKeys[index],
-                        //       child:  ZatcaFatoora.simpleQRCode(
-                        //         fatooraData: ZatcaFatooraDataModel(
-                        //           businessName: companyTitle,
-                        //           vatRegistrationNumber: companyVatNo,
-                        //           date:   DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString()),
-                        //           totalAmountIncludingVat: _salesInvoices[index].totalNet!.toDouble(),
-                        //         ),
-                        //       )
-                        //   ),
+                          )
                         ),
                         title: Text("${'serial'.tr()} : ${_salesInvoices[index].salesInvoicesSerial}"),
                         subtitle: Column(
@@ -499,11 +445,11 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                             Container(
                                 height: 20,
                                 color: Colors.white30,
-                                child: Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString())))),
+                                child: Text("${'date'.tr()} : ${DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesInvoices[index].salesInvoicesDate.toString()))}")),
                             Container(
                                 height: 20,
                                 color: Colors.white30,
-                                child: Text('customer'.tr() + " : " + _salesInvoices[index].customerName.toString())),
+                                child: Text("${'customer'.tr()} : ${_salesInvoices[index].customerName}")),
                             const SizedBox(width: 5),
                             SizedBox(
                                 child: Row(
@@ -516,11 +462,11 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                                   size: 20.0,
                                     weight: 10,
                                 ),
-                              label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
-                              onPressed: () {
-                                _navigateToEditScreen(context,_salesInvoices[index]);
-                              },
-                              style: ElevatedButton.styleFrom(
+                                  label: Text('edit'.tr(),style:const TextStyle(color: Colors.white) ),
+                                  onPressed: () {
+                                    _navigateToEditScreen(context,_salesInvoices[index]);
+                                    },
+                                  style: ElevatedButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(5),
                                 ),
@@ -532,10 +478,10 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                                     width: 1,
                                       color: Color.fromRGBO(0, 136, 134, 1)
                                   )
-                              ),
-                            )
+                                  ),
+                                )
                                 ),
-                            const SizedBox(width: 5),
+                                    const SizedBox(width: 5),
                               Center(
                                   child: ElevatedButton.icon(
                                     icon: const Icon(
