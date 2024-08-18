@@ -37,19 +37,18 @@ String apiPassword="";//Will Set On App Preference
 //Company And Branch
 int systemCode = 1;
 String systemName= '';
-int companyCode = 0;//Will Set On App Preference
-int branchCode = 0; //Will Set On App Preference
-String companyName= '';  //'Test Company';
+int companyCode = 0;
+int branchCode = 0;
+String companyName= '';
 String companyTaxID = '';
 String companyCommercialID = '';
 String companyAddress = '';
 String companyMobile = '';
 String companyLogo = '';
 Uint8List companyLogoDecoded = Uint8List(0);
-String branchName= '';  //'Test Branch';
+String branchName= '';
 String branchLatitude ='';
 String branchLongitude = '';
-// RequestTypeCode & TransactionId
 
 List<Item> itemsWithBalance = [];
 List<Item> itemsWithOutBalance = [];

@@ -56,13 +56,14 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
 
     print('Items offer 1');
     Map data = {
+      'Search': {
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
         'EmpCode': empCode,
         "IsIgnoreBalance": true
+      }
     };
 
-    print('Items offer 2');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -71,16 +72,14 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
       },
       body: jsonEncode(data),
     );
-    print("Items Api: " + searchApi);
-    print('Items offer 4');
+    print("Items Api: $searchApi");
+    print('itemSearchData: $data');
     if (response.statusCode == 200) {
-      print('Items offer 5');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<Item> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => Item.fromJson(item)).toList();
       }
-      print('Items offer 1 Finish');
       return  list;
 
     } else {

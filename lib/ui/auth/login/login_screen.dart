@@ -337,22 +337,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                 ),
                               ),
-                              Container(
-                                margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
-                                alignment: Alignment.center,
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    startQuickLogin();
-                                  },
-                                  child: Text(
-                                    '<- الدخول السريع'.tr(),
-                                    style: const TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
+                              // Container(
+                              //   margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
+                              //   alignment: Alignment.center,
+                              //   child: GestureDetector(
+                              //     onTap: () async {
+                              //       startQuickLogin();
+                              //     },
+                              //     child: Text(
+                              //       '<- الدخول السريع'.tr(),
+                              //       style: const TextStyle(
+                              //         color: Colors.red,
+                              //         fontWeight: FontWeight.bold,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
 
                               Align(
                                 alignment: FractionalOffset.bottomCenter,
@@ -633,14 +633,14 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (employeeGroupStatus.statusCode == 1) // Has Permission
         {
-        await setDashboardItems();
-        setMenuPermissions();
-        setCompanyGeneralSetup();
-        setCompanyGeneralEmailSetup();
-        setEmployeeData();
-        setItemsOfferData();
-        setItemInvoiceData();
-        setCompanyLogo();
+          await setDashboardItems();
+          setMenuPermissions();
+          setCompanyGeneralSetup();
+          setCompanyGeneralEmailSetup();
+          setEmployeeData();
+          setItemsOfferData();
+          setItemInvoiceData();
+          setCompanyLogo();
 
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
       }

@@ -12,9 +12,9 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   String searchApi= baseUrl.toString()  + '/api/v1/salesofferheaders/searchdata';
   String createApi= baseUrl.toString()  + '/api/v1/salesofferheaders';
-  String updateApi= baseUrl.toString()  + '/api/v1/salesofferheaders/';  // Add ID For Edit
+  String updateApi= baseUrl.toString()  + '/api/v1/salesofferheaders/';
   String deleteApi= baseUrl.toString()  + '/api/v1/salesofferheaders/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/salesofferheaders/';  // Add ID For Get
+  String getByIdApi= baseUrl.toString()  + '/api/v1/salesofferheaders/';
 
   Future<List<SalesOfferH>?> getSalesOffersH() async {
 
@@ -44,12 +44,12 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       print('Offer Ok ');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesOfferH> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => SalesOfferH.fromJson(item)).toList();
       }
       return  list;
     } else {
-      print('Invoice Failure');
+      print('Offer Failure');
       throw "Failed to load Offer list";
     }
   }
@@ -82,7 +82,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'OfferTypeCode': invoice.offerTypeCode, //Sales Invoice Type
+      'OfferTypeCode': invoice.offerTypeCode,
       'OfferSerial': invoice.offerSerial,
       'OfferDate': invoice.offerDate,
       'toDate': invoice.toDate,

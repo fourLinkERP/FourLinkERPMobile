@@ -32,7 +32,6 @@ class EditMaintenanceOrder extends StatefulWidget {
 
 class _EditMaintenanceOrderState extends State<EditMaintenanceOrder> {
 
-  final MaintenanceOrderHApiService api = MaintenanceOrderHApiService();
   int id = 0;
   int detailsId = 0;
   final _addFormKey = GlobalKey<FormState>();
@@ -64,7 +63,6 @@ class _EditMaintenanceOrderState extends State<EditMaintenanceOrder> {
     _trxDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.maintenanceOrderH.trxDate!.toString()));
     _complaintController.text = widget.maintenanceOrderH.complaint!;
     _notesController.text = widget.maintenanceOrderH.notes!;
-   // selectedCarValue =
 
     fillCompos();
 
@@ -91,8 +89,7 @@ class _EditMaintenanceOrderState extends State<EditMaintenanceOrder> {
             shape: BoxShape.circle,
             boxShadow: <BoxShadow>[
               BoxShadow(
-                  color: FitnessAppTheme.nearlyDarkBlue
-                      .withOpacity(0.4),
+                  color: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.4),
                   offset: const Offset(2.0, 14.0),
                   blurRadius: 16.0),
             ],
@@ -135,35 +132,39 @@ class _EditMaintenanceOrderState extends State<EditMaintenanceOrder> {
                     Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Serial :".tr(),
                         style: const TextStyle(fontWeight: FontWeight.bold))),
                     const SizedBox(width: 10),
-                    SizedBox(
-                      width: 100,
-                      child: textFormFields(
-                        controller: _trxSerialController,
-                        enable: false,
-                        textInputType: TextInputType.name,
+                    Expanded(
+                      child: SizedBox(
+                        width: 100,
+                        child: textFormFields(
+                          controller: _trxSerialController,
+                          enable: false,
+                          textInputType: TextInputType.name,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 10),
                     Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Date :".tr(),
                         style: const TextStyle(fontWeight: FontWeight.bold))),
                     const SizedBox(width: 10),
-                    SizedBox(
-                      width: 100,
-                      child: textFormFields(
-                        enable: false,
-                        controller: _trxDateController,
-                        onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1950),
-                              lastDate: DateTime(2050));
+                    Expanded(
+                      child: SizedBox(
+                        width: 100,
+                        child: textFormFields(
+                          enable: false,
+                          controller: _trxDateController,
+                          onTap: () async {
+                            DateTime? pickedDate = await showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime(1950),
+                                lastDate: DateTime(2050));
 
-                          if (pickedDate != null) {
-                            _trxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                          }
-                        },
-                        textInputType: TextInputType.datetime,
+                            if (pickedDate != null) {
+                              _trxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                            }
+                          },
+                          textInputType: TextInputType.datetime,
+                        ),
                       ),
                     ),
                   ],
@@ -180,69 +181,80 @@ class _EditMaintenanceOrderState extends State<EditMaintenanceOrder> {
                                 width: 60,
                                 child: Text('${"car".tr()} :', style: const TextStyle(fontWeight: FontWeight.bold))),
                             const SizedBox(width: 10),
-                            SizedBox(
-                              width: 220,
-                              child: DropdownSearch<MaintenanceCar>(
-                                selectedItem: carItem,
-                                popupProps: PopupProps.menu(
-                                  itemBuilder: (context, item, isSelected) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                                      decoration: !isSelected ? null
-                                          : BoxDecoration(
+                            Expanded(
+                              child: SizedBox(
+                                width: 220,
+                                child: DropdownSearch<MaintenanceCar>(
+                                  selectedItem: carItem,
+                                  popupProps: PopupProps.menu(
+                                    itemBuilder: (context, item, isSelected) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                                        decoration: !isSelected ? null
+                                            : BoxDecoration(
 
-                                        border: Border.all(color: Colors.black12),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.white,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text((langId==1)? item.carNameAra.toString() : item.carNameEng.toString()),
-                                      ),
-                                    );
+                                          border: Border.all(color: Colors.black12),
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.white,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text((langId==1)? item.carNameAra.toString() : item.carNameEng.toString()),
+                                        ),
+                                      );
+                                    },
+                                    showSearchBox: true,
+
+                                  ),
+
+                                  items: cars,
+                                  itemAsString: (MaintenanceCar u) => (langId==1)? u.carNameAra.toString() : u.carNameEng.toString(),
+
+                                  onChanged: (value){
+                                    selectedCarValue = value!.carCode.toString();
+                                    selectedDriverValue = value.driverCode.toString();
+                                    getDriverData();
                                   },
-                                  showSearchBox: true,
+
+                                  filterFn: (instance, filter){
+                                    if((langId==1)? instance.carNameAra!.contains(filter) : instance.carNameEng!.contains(filter)){
+                                      print(filter);
+                                      return true;
+                                    }
+                                    else{
+                                      return false;
+                                    }
+                                  },
+                                  dropdownDecoratorProps: DropDownDecoratorProps(
+                                    dropdownSearchDecoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.red[50],
+                                    ),),
 
                                 ),
-
-                                items: cars,
-                                itemAsString: (MaintenanceCar u) => (langId==1)? u.carNameAra.toString() : u.carNameEng.toString(),
-
-                                onChanged: (value){
-                                  selectedCarValue = value!.carCode.toString();
-                                },
-
-                                filterFn: (instance, filter){
-                                  if((langId==1)? instance.carNameAra!.contains(filter) : instance.carNameEng!.contains(filter)){
-                                    print(filter);
-                                    return true;
-                                  }
-                                  else{
-                                    return false;
-                                  }
-                                },
-                                dropdownDecoratorProps: const DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-
-                                  ),),
-
                               ),
                             ),
                           ],
                         )),
-                    const SizedBox(height: 20.0,),
+                    const SizedBox(height: 20.0),
                     Row(
                       children: [
                         SizedBox(
                             width: 80,
-                            child: Text("meter_reading".tr() + " :", style: const TextStyle(fontWeight: FontWeight.bold))),
+                            child: Text("${"meter_reading".tr()} :", style: const TextStyle(fontWeight: FontWeight.bold))),
                         const SizedBox(width: 10),
-                        SizedBox(
-                          width: 200,
-                          child: textFormFields(
-                            controller: _counterReadingController,
-                            enable: true,
-                            textInputType: TextInputType.number,
+                        Expanded(
+                          child: SizedBox(
+                            width: 200,
+                            child: TextFormField(
+                              controller: _counterReadingController,
+                              enabled: true,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.red[50]
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -253,55 +265,57 @@ class _EditMaintenanceOrderState extends State<EditMaintenanceOrder> {
                         child: Row(
                           children: [
                             SizedBox(
-                                width: 80,
+                                width: 60,
                                 child: Text('${"driver".tr()} :', style: const TextStyle(fontWeight: FontWeight.bold))),
                             const SizedBox(width: 10),
-                            SizedBox(
-                              width: 200,
-                              child: DropdownSearch<Driver>(
-                                selectedItem: driverItem,
-                                popupProps: PopupProps.menu(
-                                  itemBuilder: (context, item, isSelected) {
-                                    return Container(
-                                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                                      decoration: !isSelected ? null
-                                          : BoxDecoration(
+                            Expanded(
+                              child: SizedBox(
+                                width: 200,
+                                child: DropdownSearch<Driver>(
+                                  selectedItem: driverItem,
+                                  enabled: false,
+                                  popupProps: PopupProps.menu(
+                                    itemBuilder: (context, item, isSelected) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                                        decoration: !isSelected ? null
+                                            : BoxDecoration(
 
-                                        border: Border.all(color: Colors.black12),
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.white,
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text((langId==1)? item.driverNameAra.toString() : item.driverNameEng.toString()),
-                                      ),
-                                    );
+                                          border: Border.all(color: Colors.black12),
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.white,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text((langId==1)? item.driverNameAra.toString() : item.driverNameEng.toString()),
+                                        ),
+                                      );
+                                    },
+                                    showSearchBox: true,
+                                  ),
+
+                                  items: drivers,
+                                  itemAsString: (Driver u) => (langId==1)? u.driverNameAra.toString() : u.driverNameEng.toString(),
+
+                                  onChanged: (value){
+                                    selectedDriverValue = value!.driverCode.toString();
                                   },
-                                  showSearchBox: true,
+
+                                  filterFn: (instance, filter){
+                                    if((langId==1)? instance.driverNameAra!.contains(filter) : instance.driverNameEng!.contains(filter)){
+                                      print(filter);
+                                      return true;
+                                    }
+                                    else{
+                                      return false;
+                                    }
+                                  },
+                                  dropdownDecoratorProps: const DropDownDecoratorProps(
+                                    dropdownSearchDecoration: InputDecoration(
+
+                                    ),),
 
                                 ),
-
-                                items: drivers,
-                                itemAsString: (Driver u) => (langId==1)? u.driverNameAra.toString() : u.driverNameEng.toString(),
-
-                                onChanged: (value){
-                                  selectedDriverValue = value!.driverCode.toString();
-                                },
-
-                                filterFn: (instance, filter){
-                                  if((langId==1)? instance.driverNameAra!.contains(filter) : instance.driverNameEng!.contains(filter)){
-                                    print(filter);
-                                    return true;
-                                  }
-                                  else{
-                                    return false;
-                                  }
-                                },
-                                dropdownDecoratorProps: const DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-
-                                  ),),
-
                               ),
                             ),
                           ],
@@ -310,15 +324,21 @@ class _EditMaintenanceOrderState extends State<EditMaintenanceOrder> {
                     Row(
                       children: [
                         SizedBox(
-                            width: 80,
+                            width: 60,
                             child: Text("${"complaint".tr()} :", style: const TextStyle(fontWeight: FontWeight.bold))),
                         const SizedBox(width: 10),
-                        SizedBox(
-                          width: 200,
-                          child: textFormFields(
-                            controller: _complaintController,
-                            enable: true,
-                            textInputType: TextInputType.name,
+                        Expanded(
+                          child: SizedBox(
+                            width: 200,
+                            child: TextFormField(
+                              controller: _complaintController,
+                              enabled: true,
+                              keyboardType: TextInputType.text,
+                              decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.red[50]
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -329,23 +349,23 @@ class _EditMaintenanceOrderState extends State<EditMaintenanceOrder> {
                         Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
                             child: Text('notes'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
                         const SizedBox(width: 10.0,),
-                        SizedBox(
-                          height: 80,
-                          width: 230,
-                          child: defaultFormField(
-                            controller: _notesController,
-                            type: TextInputType.text,
-                            colors: Colors.blueGrey,
-                            validate: (String? value) {
-                              if (value!.isEmpty) {
-                                return 'notes must be non empty';
-                              }
-                              return null;
-                            },
+                        Expanded(
+                          child: SizedBox(
+                            height: 80,
+                            width: 230,
+                            child: defaultFormField(
+                              controller: _notesController,
+                              type: TextInputType.text,
+                              colors: Colors.blueGrey,
+                              validate: (String? value) {
+                                if (value!.isEmpty) {
+                                  return 'notes must be non empty';
+                                }
+                                return null;
+                              },
+                            ),
                           ),
                         ),
-                        const SizedBox(width: 10),
-
                       ],
                     ),
                   ],
@@ -437,7 +457,7 @@ class _EditMaintenanceOrderState extends State<EditMaintenanceOrder> {
     });
   }
   getCarData() {
-    if (cars != null) {
+    if (cars.isNotEmpty) {
       for(var i = 0; i < cars.length; i++){
         if(cars[i].carCode == maintenanceOrderDLst[0].carCode){
           carItem = cars[cars.indexOf(cars[i])];
@@ -450,7 +470,7 @@ class _EditMaintenanceOrderState extends State<EditMaintenanceOrder> {
     });
   }
   getDriverData() {
-    if (drivers != null) {
+    if (drivers.isNotEmpty) {
       for(var i = 0; i < cars.length; i++){
         if(drivers[i].driverCode == maintenanceOrderDLst[0].driverCode){
           driverItem = drivers[drivers.indexOf(drivers[i])];

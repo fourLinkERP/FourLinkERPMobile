@@ -31,17 +31,13 @@ class BranchRequestHApiService{
       },
       body: jsonEncode(data),
     );
-    print('BranchRequestH $searchApi');
-    print('BranchRequestH $data');
     if (response.statusCode == 200) {
-      print('branchRequest After ');
+      print('branchRequest success');
       List<dynamic> data = jsonDecode(response.body)['data'];
-      print(data);
       List<BranchRequestH> list = [];
       if (data.isNotEmpty) {
         list = data.map((item) => BranchRequestH.fromJson(item)).toList();
       }
-      print('branchRequest Finish');
       return  list;
     } else {
       print('branchRequest Failure');
@@ -50,7 +46,6 @@ class BranchRequestHApiService{
   }
 
   Future<int> createBranchRequestH(BuildContext context ,BranchRequestH branchRequestH) async {
-    print('save branchRequestH 0');
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
@@ -77,7 +72,6 @@ class BranchRequestHApiService{
       "addBy": empUserId,
 
     };
-
     print('save branchRequestH: ' + data.toString());
 
     final http.Response response = await http.post(
