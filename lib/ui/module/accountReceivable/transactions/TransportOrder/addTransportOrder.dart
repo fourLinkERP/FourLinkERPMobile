@@ -2,21 +2,23 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/transportOrders/transportOrder.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carCars/carCar.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/CityHeaders/cityHeadersApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/CustomersTransportationPriceListD/customerTransportationPriceDApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/TransportOrders/transportOrdersApiService.dart';
-import 'package:fourlinkmobileapp/service/module/carMaintenance/carCars/carApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:intl/intl.dart';
 import 'package:supercharged/supercharged.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../data/model/modules/module/accountreceivable/basicInputs/CityHeaders/cityHeaders.dart';
+import '../../../../../data/model/modules/module/accountreceivable/basicInputs/CustomersTransportationPriceListD/customerTransportationPriceListD.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Drivers/driver.dart';
+import '../../../../../data/model/modules/module/carMaintenance/maintenanceCars/maintenanceCar.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Driver/driverApiService.dart';
+import '../../../../../service/module/carMaintenance/maintenanceCars/maintenanceCarApiService.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 
@@ -24,8 +26,9 @@ TransportOrderApiService _transportOrderApiService = TransportOrderApiService();
 NextSerialApiService _nextSerialApiService = NextSerialApiService();
 CustomerApiService _customerApiService = CustomerApiService();
 CityApiService _cityApiService = CityApiService();
-CarApiService _carApiService = CarApiService();
+MaintenanceCarApiService _carMaintenanceApiService = MaintenanceCarApiService();
 DriverApiService _driverApiService = DriverApiService();
+CustomerTransportationPriceDApiService _customerTransportationPriceD = CustomerTransportationPriceDApiService();
 
 class AddTransferOrderDataWidget extends StatefulWidget {
   const AddTransferOrderDataWidget({Key? key}) : super(key: key);
@@ -38,8 +41,9 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
 
   List<Customer> customers = [];
   List<City> cities = [];
-  List<Car> cars = [];
+  List<MaintenanceCar> cars = [];
   List<Driver> drivers = [];
+  List<CustomerTransportationPriceListD> priceListD = [];
 
   final _addFormKey = GlobalKey<FormState>();
   final _dropdownCustomerFormKey = GlobalKey<FormState>();
@@ -49,9 +53,9 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
   final _dropdownDriverFormKey = GlobalKey<FormState>();
   final _trxSerialController = TextEditingController();
   final _trxDateController = TextEditingController();
-  final _driverBonus = TextEditingController();
-  final _transportationFee = TextEditingController();
-  final _fuelAllowance = TextEditingController();
+  final _driverReplyController = TextEditingController();
+  final _transportationFeeController = TextEditingController();
+  final _fuelAllowanceController = TextEditingController();
 
   String? selectedCustomerValue;
   String? selectedFromLocationValue;
@@ -209,12 +213,14 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
 
                                     onChanged: (value){
                                       selectedCustomerValue = value!.customerCode.toString();
-
+                                      if(selectedCustomerValue != null && selectedFromLocationValue != null && selectedToLocationValue != null)
+                                      {
+                                        getCustomerTransportationPriceD(selectedCustomerValue, selectedFromLocationValue, selectedToLocationValue);
+                                      }
                                     },
 
                                     filterFn: (instance, filter){
                                       if((langId==1)? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)){
-                                        print(filter);
                                         return true;
                                       }
                                       else{
@@ -272,12 +278,14 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
 
                                     onChanged: (value){
                                       selectedFromLocationValue = value!.cityCode.toString();
-
+                                      if(selectedCustomerValue != null && selectedFromLocationValue != null && selectedToLocationValue != null)
+                                      {
+                                        getCustomerTransportationPriceD(selectedCustomerValue, selectedFromLocationValue, selectedToLocationValue);
+                                      }
                                     },
 
                                     filterFn: (instance, filter){
                                       if((langId==1)? instance.cityName!.contains(filter) : instance.cityName!.contains(filter)){
-                                        print(filter);
                                         return true;
                                       }
                                       else{
@@ -335,7 +343,10 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
 
                                     onChanged: (value){
                                       selectedToLocationValue = value!.cityCode.toString();
-
+                                      if(selectedCustomerValue != null && selectedFromLocationValue != null && selectedToLocationValue != null)
+                                        {
+                                          getCustomerTransportationPriceD(selectedCustomerValue, selectedFromLocationValue, selectedToLocationValue);
+                                        }
                                     },
 
                                     filterFn: (instance, filter){
@@ -370,7 +381,7 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
                               Expanded(
                                 child: SizedBox(
                                   width: 220,
-                                  child: DropdownSearch<Car>(
+                                  child: DropdownSearch<MaintenanceCar>(
                                     selectedItem: null,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
@@ -394,12 +405,12 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
                                     ),
 
                                     items: cars,
-                                    itemAsString: (Car u) => (langId==1)? u.carNameAra.toString() : u.carNameEng.toString(),
+                                    itemAsString: (MaintenanceCar u) => (langId==1)? u.carNameAra.toString() : u.carNameEng.toString(),
 
                                     onChanged: (value){
                                       selectedCarValue = value!.carCode.toString();
-                                      //selectedDriverValue = value.driverCode.toString();
-                                      //getDriverData();
+                                      selectedDriverValue = value.driverCode.toString();
+                                      getDriverData();
                                     },
 
                                     filterFn: (instance, filter){
@@ -436,7 +447,7 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
                                   width: 200,
                                   child: DropdownSearch<Driver>(
                                     selectedItem: driverItem,
-                                    enabled: true,
+                                    enabled: false,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
@@ -494,7 +505,7 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
                             child: SizedBox(
                               width: 200,
                               child: TextFormField(
-                                controller: _driverBonus,
+                                controller: _driverReplyController,
                                 enabled: true,
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
@@ -517,7 +528,7 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
                             child: SizedBox(
                               width: 200,
                               child: TextFormField(
-                                controller: _transportationFee,
+                                controller: _transportationFeeController,
                                 enabled: true,
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
@@ -540,7 +551,7 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
                             child: SizedBox(
                               width: 200,
                               child: TextFormField(
-                                controller: _fuelAllowance,
+                                controller: _fuelAllowanceController,
                                 enabled: true,
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
@@ -630,7 +641,7 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
       print(e);
     });
 
-    Future<List<Car>> futureCar = _carApiService.getCars().then((data) {
+    Future<List<MaintenanceCar>> futureCar = _carMaintenanceApiService.getMaintenanceCars().then((data) {
       cars = data;
       setState(() {
 
@@ -642,15 +653,23 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
 
     Future<List<Driver>> futureDriver = _driverApiService.getDrivers().then((data) {
       drivers = data;
-      setState(() {
-
-      });
+      getDriverData();
       return drivers;
     }, onError: (e) {
       print(e);
     });
   }
 
+  getDriverData() {
+    if (drivers.isNotEmpty) {
+      for(var i = 0; i < drivers.length; i++){
+        if(drivers[i].driverCode == selectedDriverValue){
+          driverItem = drivers[drivers.indexOf(drivers[i])];
+        }
+      }
+    }
+    setState(() {});
+  }
   saveTransportOrder(BuildContext context) async {
 
     if (_trxSerialController.text.isEmpty) {
@@ -690,11 +709,27 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
       driverCode: selectedDriverValue,
       fromCityCode: selectedFromLocationValue,
       toCityCode: selectedToLocationValue,
-      driverBonus: _driverBonus.text.toInt(),
-      dizelAllowance: _fuelAllowance.text.toInt(),
-      transportationFees: _transportationFee.text.toInt(),
+      driverBonus: _driverReplyController.text.toInt(),
+      dizelAllowance: _fuelAllowanceController.text.toInt(),
+      transportationFees: _transportationFeeController.text.toInt(),
 
     ));
     Navigator.pop(context);
+  }
+  getCustomerTransportationPriceD(String? cusCode, String? fromLoc, String? toLoc) {
+    Future<List<CustomerTransportationPriceListD>> futurePrice =
+     _customerTransportationPriceD.getCustomerTransportationPrice(cusCode, fromLoc, toLoc).then((data) {
+      priceListD = data;
+      _driverReplyController.text = priceListD[0].driverReply.toString();
+      _fuelAllowanceController.text = priceListD[0].dizelAllowance.toString();
+      _transportationFeeController.text = priceListD[0].displayPrice.toString();
+      setState(() {
+
+      });
+      return priceListD;
+    }, onError: (e) {
+      print(e);
+    });
+
   }
 }

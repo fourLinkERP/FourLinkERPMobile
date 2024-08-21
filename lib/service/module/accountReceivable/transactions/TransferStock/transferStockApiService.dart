@@ -16,7 +16,7 @@ class TransferStockApiService{
     Map data = {
       'Search':{
         'CompanyCode': companyCode,
-        'BranchCode': branchCode,
+        //'BranchCode': branchCode,
         'StoreCode': storeCode
       }
     };
@@ -52,7 +52,7 @@ class TransferStockApiService{
     Map data = {
       'Search':{
         'TrxSerial': trxSerial,
-        'BranchCode': branchCode,
+        //'BranchCode': branchCode,
         'TrxTypeCode': typeCode
       }
     };

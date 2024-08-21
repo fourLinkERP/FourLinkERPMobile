@@ -76,8 +76,8 @@ class _EditBranchRequestDataWidgetState extends State<EditBranchRequestDataWidge
     id = widget.branchRequestH.id!;
     _trxSerialController.text = widget.branchRequestH.trxSerial.toString();
     _trxDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.branchRequestH.trxDate!.toString()));
-    selectedStoreValue = widget.branchRequestH.storeCode!;
-    selectedToStoreValue = widget.branchRequestH.toStoreCode!;
+    selectedStoreValue = widget.branchRequestH.toStoreCode!;
+    selectedToStoreValue = widget.branchRequestH.storeCode!;
 
     _notesController.text = widget.branchRequestH.notes!;
 
@@ -657,6 +657,7 @@ class _EditBranchRequestDataWidgetState extends State<EditBranchRequestDataWidge
       units = data;
       if(data.isNotEmpty){
         unitItem = data[0];
+        selectedUnitName = unitItem?.unitNameAra;
       }
       setState(() {
 

@@ -755,7 +755,8 @@
     "toLocation": "الى موقع",
     "receive": "استلام",
     "please_select_from_city": "من فضلك اختر من مدينة",
-    "please_select_to_city": "من فضلك اختر الى مدينة"
+    "please_select_to_city": "من فضلك اختر الى مدينة",
+    "currentStore": "المخزن الحالي"
 
 }
 

@@ -58,10 +58,11 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
   String? selectedItemValue;
   String? selectedItemName;
   String? selectedFromStoreValue;
-  String? selectedToStoreValue;
+  String? selectedToStoreValue = storeCode;
   String? selectedUnitValue;
   String? selectedUnitName;
 
+  Stores? toStoreItem = Stores(storeCode: "", storeNameAra: "", storeNameEng: "", id: 0);
   Item?  itemItem=Item(itemCode: "",itemNameAra: "",itemNameEng: "",id: 0);
   Unit?  unitItem=Unit(unitCode: "",unitNameAra: "",unitNameEng: "",id: 0);
 
@@ -70,6 +71,7 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
     super.initState();
 
     fillCompos();
+
   }
 
   DateTime get pickedDate => DateTime.now();
@@ -253,7 +255,7 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
                               child: SizedBox(
                                 width: 200,
                                 child: DropdownSearch<Stores>(
-                                  selectedItem: null,
+                                  selectedItem: toStoreItem,
                                   popupProps: PopupProps.menu(
                                     itemBuilder: (context, item, isSelected) {
                                       return Container(
@@ -562,9 +564,7 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
 
     Future<List<Stores>> futureStore = _storesApiService.getStores().then((data) {
       stores = data;
-      setState(() {
-
-      });
+      getToStoreData();
       return stores;
     }, onError: (e) {
       print(e);
@@ -604,6 +604,19 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
       ),
     );
   }
+  getToStoreData() {
+    if (stores.isNotEmpty) {
+      for(var i = 0; i < stores.length; i++){
+        if(stores[i].storeCode == selectedToStoreValue){
+          toStoreItem = stores[stores.indexOf(stores[i])];
+
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
   changeItemUnit(String itemCode) {
     units = [];
     Future<List<Unit>> unit = _unitsApiService.getItemUnit(itemCode).then((data) {
@@ -611,6 +624,7 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
       units = data;
       if(data.isNotEmpty){
         unitItem = data[0];
+        selectedUnitName = unitItem?.unitNameAra;
       }
       setState(() {
 
@@ -705,7 +719,7 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
 
   saveBranchRequest(BuildContext context) async {
     //Items
-    if (_branchRequestDLst.length <= 0) {
+    if (_branchRequestDLst.isEmpty) {
       FN_showToast(context, 'please_Insert_One_Item_At_Least'.tr(), Colors.black);
       return;
     }

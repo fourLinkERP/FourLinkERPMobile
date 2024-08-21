@@ -20,7 +20,6 @@ import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/SalesInvoices/salesInvoiceHApiService.dart';
 import 'package:fourlinkmobileapp/service/module/general/inventoryOperation/inventoryOperationApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
-import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesInvoices/salesInvoiceList.dart';
 import 'package:fourlinkmobileapp/utils/email.dart';
 import 'package:supercharged/supercharged.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
@@ -31,7 +30,6 @@ import '../../../../../helpers/toast.dart';
 import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
-import '../../../../../utils/permissionHelper.dart';
 
 //APIS
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
@@ -44,12 +42,6 @@ UnitApiService _unitsApiService = UnitApiService();
 TafqeetApiService _tafqeetApiService= TafqeetApiService();
 InventoryOperationApiService _inventoryOperationApiService = InventoryOperationApiService();
 
-//List Models
-List<Customer> customers=[];
-List<SalesInvoiceType> salesInvoiceTypes=[];
-List<SalesInvoiceD> SalesInvoiceDLst = <SalesInvoiceD>[];
-List<Item> items=[];
-List<Unit> units=[];
 
 
 int lineNum=1;
@@ -69,7 +61,7 @@ double  totalBeforeTax = 0;
 double  totalTax = 0;
 double  totalAfterDiscount = 0;
 double  totalNet = 0;
-WidgetsToImageController WidgetImage= WidgetsToImageController();
+
 
 class EditSalesInvoiceHDataWidget extends StatefulWidget {
   EditSalesInvoiceHDataWidget(this.salesInvoicesH);
@@ -89,9 +81,10 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
   final _salesInvoicesSerialController = TextEditingController();
   List<SalesInvoiceD> salesInvoiceDLst = <SalesInvoiceD>[];
   List<SalesInvoiceD> selected = [];
-  List<DropdownMenuItem<String>> menuSalesInvoiceTypes = [ ];
-  List<DropdownMenuItem<String>> menuCustomers = [ ];
-  List<DropdownMenuItem<String>> menuItems = [ ];
+  List<Customer> customers=[];
+  List<SalesInvoiceType> salesInvoiceTypes=[];
+  List<Item> items=[];
+  List<Unit> units=[];
 
   String? selectedCustomerValue = "";
   String? selectedCustomerEmail = "";
@@ -142,7 +135,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
   final _netAftertaxController = TextEditingController(); //Tax Value
   final _costPriceController = TextEditingController(); //Cost Price
 
-  static const int numItems = 0;
+  WidgetsToImageController widgetImage= WidgetsToImageController();
 
   SalesInvoiceType?  salesInvoiceTypeItem=SalesInvoiceType(salesInvoicesTypeCode: "",salesInvoicesTypeNameAra: "",salesInvoicesTypeNameEng: "",id: 0);
   Customer?  customerItem=Customer(customerCode: "",customerNameAra: "",customerNameEng: "",id: 0);
@@ -950,7 +943,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
                           ],
                         ),
                         WidgetsToImage(
-                            controller:WidgetImage,
+                            controller:widgetImage,
                             child :Container(
                               padding: const EdgeInsets.all(1),
                               color: Colors.white,
@@ -1125,47 +1118,33 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
 
   saveInvoice(BuildContext context) async {
 
-    //Items
     if(salesInvoiceDLst.isEmpty){
       FN_showToast(context,'please_Insert_One_Item_At_Least'.tr(),Colors.black);
       return;
     }
 
-    //Serial
     if(_salesInvoicesSerialController.text.isEmpty){
       FN_showToast(context,'please_Set_Invoice_Serial'.tr(),Colors.black);
       return;
     }
 
-    //Date
     if(_salesInvoicesDateController.text.isEmpty){
       FN_showToast(context,'please_Set_Invoice_Date'.tr(),Colors.black);
       return;
     }
 
-    //Customer
     if(selectedCustomerValue == null || selectedCustomerValue!.isEmpty){
       FN_showToast(context,'please_Set_Customer'.tr(),Colors.black);
       return;
     }
-    final bytesx = await WidgetImage.capture();
+    final bytesx = await widgetImage.capture();
     var InvoiceQRCode = bytesx as Uint8List;
     String base64String ='';
-    if (InvoiceQRCode != null) {
+    if (InvoiceQRCode.isNotEmpty) {
       base64String = base64Encode(InvoiceQRCode);
 
       print(base64String.toString());
     }
-
-    // //Currency
-    // if(currencyCodeSelectedValue == null || currencyCodeSelectedValue!.isEmpty){
-    //   FN_showToast(context,'Please Set Currency',Colors.black);
-    //   return;
-    // }
-
-    // final bytesx = await WidgetImage.capture();
-    // var InvoiceQRCode = bytesx as Uint8List;
-
     await _salesInvoiceHApiService.updateSalesInvoiceH(context,id,SalesInvoiceH(
 
       salesInvoicesCase: 1,
@@ -1191,8 +1170,8 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
 
     for(var i = 0; i < salesInvoiceDLst.length; i++){
 
-      SalesInvoiceD _salesInvoiceD = salesInvoiceDLst[i];
-      if(_salesInvoiceD.isUpdate == false)
+      SalesInvoiceD salesInvoiceD = salesInvoiceDLst[i];
+      if(salesInvoiceD.isUpdate == false)
       {
         //Add
         _salesInvoiceDApiService.createSalesInvoiceD(context,SalesInvoiceD(
@@ -1200,31 +1179,28 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
           salesInvoicesCase: 1,
           salesInvoicesSerial: _salesInvoicesSerialController.text,
           salesInvoicesTypeCode: selectedTypeValue,
-          itemCode: _salesInvoiceD.itemCode,
-          lineNum: _salesInvoiceD.lineNum,
-          price: _salesInvoiceD.price,
-          displayPrice: _salesInvoiceD.price,
-          qty: _salesInvoiceD.qty,
-          displayQty: _salesInvoiceD.displayQty,
-          total: _salesInvoiceD.total,
-          displayTotal: _salesInvoiceD.total,
-          totalTaxValue: _salesInvoiceD.totalTaxValue,
-          discountValue: _salesInvoiceD.discountValue,
-          displayDiscountValue: _salesInvoiceD.discountValue,
-          costPrice: _salesInvoiceD.costPrice,
-          netAfterDiscount: _salesInvoiceD.netAfterDiscount,
-          displayTotalTaxValue: _salesInvoiceD.displayTotalTaxValue,
-          displayNetValue: _salesInvoiceD.displayNetValue,
-          storeCode: "1" // For Now
+          itemCode: salesInvoiceD.itemCode,
+          lineNum: salesInvoiceD.lineNum,
+          price: salesInvoiceD.price,
+          displayPrice: salesInvoiceD.price,
+          qty: salesInvoiceD.qty,
+          displayQty: salesInvoiceD.displayQty,
+          total: salesInvoiceD.total,
+          displayTotal: salesInvoiceD.total,
+          totalTaxValue: salesInvoiceD.totalTaxValue,
+          discountValue: salesInvoiceD.discountValue,
+          displayDiscountValue: salesInvoiceD.discountValue,
+          costPrice: salesInvoiceD.costPrice,
+          netAfterDiscount: salesInvoiceD.netAfterDiscount,
+          displayTotalTaxValue: salesInvoiceD.displayTotalTaxValue,
+          displayNetValue: salesInvoiceD.displayNetValue,
+          storeCode: "1"
         ));
 
       }
     }
     Navigator.pop(context) ;
   }
-
-
-//#region General Widgets - To Be Moved To General Locations
 
   Widget textFormFields({controller, hintText,onTap, onSaved, textInputType,enable=true})  {
     return TextFormField(
@@ -1256,13 +1232,6 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
             width: 2,
           ),
         ),
-        // border: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(20),
-        //   borderSide: BorderSide(
-        //     color: lColor,
-        //     width: 2,
-        //   ),
-        // ),
       ),
     );
   }
@@ -1317,16 +1286,11 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
   getSalesInvoiceTypeData() {
     if (salesInvoiceTypes.isNotEmpty) {
       for(var i = 0; i < salesInvoiceTypes.length; i++){
-        menuSalesInvoiceTypes.add(DropdownMenuItem(child: Text(salesInvoiceTypes[i].
-        salesInvoicesTypeNameAra.toString()),value: salesInvoiceTypes[i].salesInvoicesTypeCode.toString()));
         if(salesInvoiceTypes[i].salesInvoicesTypeCode == selectedTypeValue){
-          // print('in amr3');
           salesInvoiceTypeItem = salesInvoiceTypes[salesInvoiceTypes.indexOf(salesInvoiceTypes[i])];
           selectedTypeValue = salesInvoiceTypeItem!.salesInvoicesTypeCode.toString();
         }
-
       }
-
     }
     setState(() {
 
@@ -1334,18 +1298,12 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
   }
 
   getCustomerData() {
-    if (customers != null) {
+    if (customers.isNotEmpty) {
       for(var i = 0; i < customers.length; i++){
-        menuCustomers.add(DropdownMenuItem(child: Text(customers[i].customerNameAra.toString()),
-            value: customers[i].customerCode.toString()));
-
         if(customers[i].customerCode == selectedCustomerValue){
-          // print('in amr3');
           customerItem = customers[customers.indexOf(customers[i])];
           selectedCustomerEmail = customerItem!.email.toString();
-          //selectedCustomerValue = salesInvoiceTypeItem!.salesInvoicesTypeCode.toString();
         }
-
       }
     }
     setState(() {
@@ -1356,32 +1314,13 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
   getSalesInvoiceData() {
     if (salesInvoiceDLst.isNotEmpty) {
       for(var i = 0; i < salesInvoiceDLst.length; i++){
-
-        SalesInvoiceD _salesInvoiceD=salesInvoiceDLst[i];
-        _salesInvoiceD.isUpdate=true;
-
+        SalesInvoiceD salesInvoiceD=salesInvoiceDLst[i];
+        salesInvoiceD.isUpdate=true;
       }
     }
     setState(() {
-      //salesInvoiceDLst = salesInvoiceDLst;
     });
   }
-
-  getItemData() {
-    if (items.isNotEmpty) {
-      for(var i = 0; i < items.length; i++){
-        menuItems.add(DropdownMenuItem(value: items[i].itemCode.toString(), child: Text(items[i].itemNameAra.
-        toString())));
-      }
-    }
-    setState(() {
-
-    });
-  }
-
-//#endregion
-
-  //#region Calc
 
   calcTotalPriceRow() {
     double price=0;
@@ -1395,8 +1334,6 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     {
       qtyVal=double.parse(_displayQtyController.text);
     }
-
-    print('toGetUnittotal');
     var total = qtyVal * price;
     _displayTotalController.text = total.toString();
     _totalController.text = total.toString();
@@ -1410,20 +1347,14 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     double netAfterDiscount=total - discount;
 
     _netAfterDiscountController.text = netAfterDiscount.toString();
-
-
-    print('toGetUnittotal2');
-    print( netAfterDiscount);
-    print('totalonz3');
     setItemTaxValue(selectedItemValue.toString(),netAfterDiscount);
 
 
   }
 
-  // Item Units - Change Item Units
   changeItemUnit(String itemCode) {
     units = [];
-    Future<List<Unit>> Units = _unitsApiService.getItemUnit(itemCode).then((data) {
+    Future<List<Unit>> futureUnits = _unitsApiService.getItemUnit(itemCode).then((data) {
       units = data;
       if(data.isNotEmpty){
         unitItem = data[0];
@@ -1436,17 +1367,11 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     });
   }
 
-  //Item Tax Value
-    setItemTaxValue(String itemCode , double netValue  ){
-      //Serial
-      Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemTaxValue(itemCode, netValue).then((data) {
-        print('cccc0');
+  setItemTaxValue(String itemCode , double netValue  ){
+    Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemTaxValue(itemCode, netValue).then((data) {
         InventoryOperation inventoryOperation = data;
-
         setState(() {
-          print('cccc');
           double tax = (inventoryOperation.itemTaxValue != null) ? inventoryOperation.itemTaxValue   : 0;
-          print(tax.toString());
           _taxController.text = tax.toString();
           double nextAfterDiscount = 0 ;
           if(_netAfterDiscountController.text.isNotEmpty)
@@ -1455,21 +1380,15 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
           }
           double netTotal = nextAfterDiscount + tax;
           _netAftertaxController.text=netTotal.toString();
-
-
         });
-
-
         return inventoryOperation;
       }, onError: (e) {
         print(e);
       });
     }
 
-  //Item Cost
-    setItemCostPrice(String itemCode , String storeCode, int MatrixSerialCode,String trxDate  ){
-      //Serial
-      Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemCostPrice(itemCode, storeCode, MatrixSerialCode ,trxDate).then((data) {
+    setItemCostPrice(String itemCode , String storeCode, int matrixSerialCode,String trxDate  ){
+      Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemCostPrice(itemCode, storeCode, matrixSerialCode ,trxDate).then((data) {
 
         InventoryOperation inventoryOperation = data;
 
@@ -1484,11 +1403,8 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
       });
     }
 
-  //Item Quantity
     setItemQty(String itemCode , String unitCode,int qty ){
-      //Serial
       Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemQty(itemCode, unitCode, qty  ).then((data) {
-
         InventoryOperation inventoryOperation = data;
 
         setState(() {
@@ -1497,18 +1413,14 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
 
         });
 
-
         return inventoryOperation;
       }, onError: (e) {
         print(e);
       });
     }
 
-  //Item Price
     setItemPrice(String itemCode , String unitCode,String criteria, String customerCode ){
-      //Serial
       Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SalesInvoicesType",criteria, customerCode).then((data) {
-
         double sellPrice = data;
 
         setState(() {
@@ -1524,21 +1436,14 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
       });
     }
 
-  //Item Price
     setMaxDiscount(double? discountValue, double totalValue ,String empCode ){
-      //Serial
       Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getUserMaxDiscountResult(discountValue, totalValue,empCode ).then((data) {
-        print('In Max Discount');
         InventoryOperation inventoryOperation = data;
-
         setState(() {
 
           if(inventoryOperation.isExeedUserMaxDiscount == true)
           {
-            //Toaster
             FN_showToast(context,'current_discount_exceed_user_discount'.tr(),Colors.black);
-
-            //Reset Value
             _displayDiscountController.text = "";
             _discountController.text="";
             calcTotalPriceRow();
@@ -1546,9 +1451,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
           else{
             calcTotalPriceRow();
           }
-
         });
-
 
         return inventoryOperation;
       }, onError: (e) {
@@ -1556,13 +1459,8 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
       });
     }
 
-
-  //#region Tafqeet
-
     setTafqeet(String currencyCode , String currencyValue ){
-      //Serial
       Future<Tafqeet>  futureTafqeet = _tafqeetApiService.getTafqeet(currencyCode, currencyValue ).then((data) {
-
         Tafqeet tafqeet = data;
         _tafqitNameArabicController.text = tafqeet.fullTafqitArabicName.toString();
         _tafqitNameEnglishController.text = tafqeet.fullTafqitEnglishName.toString();
@@ -1570,27 +1468,18 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
 
         });
 
-
         return tafqeet;
       }, onError: (e) {
         print(e);
       });
     }
 
-
-  //#endregion
-
-  //#region Next Serial
     setNextSerial(){
-      //Serial
       Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("AR_SalesInvoicesH", "SalesInvoicesSerial", " And SalesInvoicesCase=1 '").then((data) {
         NextSerial nextSerial = data;
 
-        //Date
         DateTime now = DateTime.now();
         _salesInvoicesDateController.text =DateFormat('yyyy-MM-dd').format(now);
-
-        //print(customers.length.toString());
         _salesInvoicesSerialController.text = nextSerial.nextSerial.toString();
         return nextSerial;
       }, onError: (e) {
@@ -1598,24 +1487,14 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
       });
     }
 
-  //#endregion
-
-  //#endregion
-
-
   fillCombos(){
-  print('start Fill Combos');
-//Sales Invoice Type
     Future<List<SalesInvoiceType>> futureSalesInvoiceType = _salesInvoiceTypeApiService.getSalesInvoicesTypes().then((data) {
       salesInvoiceTypes = data;
-      //print(customers.length.toString());
       getSalesInvoiceTypeData();
       return salesInvoiceTypes;
     }, onError: (e) {
-      //print(e);
     });
 
-    //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
       getCustomerData();
@@ -1624,21 +1503,19 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
       print(e);
     });
 
-    //Items
-    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
+    Future<List<Item>> futureItems = _itemsApiService.getItems().then((data) {
       items = data;
-      //print(customers.length.toString());
-      //getItemData();
+      setState(() {
+
+      });
       return items;
     }, onError: (e) {
       print(e);
     });
 
-    //Sales Invoice Details
     Future<List<SalesInvoiceD>> futureSalesInvoice = _salesInvoiceDApiService.getSalesInvoicesD(id).then((data) {
       salesInvoiceDLst = data;
-      print('hobaaaaaaaaaaaz');
-      print(salesInvoiceDLst.length.toString());
+
       getSalesInvoiceData();
       return salesInvoiceDLst;
     }, onError: (e) {
@@ -1646,59 +1523,6 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     });
 
   }
-
-  // setItemPrice(String itemCode , String unitCode,String criteria ){
-  //   //Serial
-  //   Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SalesInvoicesType",criteria ).then((data) {
-  //
-  //     double sellPrice = data;
-  //     _priceController.text = sellPrice.toString();
-  //     setState(() {
-  //
-  //     });
-  //
-  //
-  //     return sellPrice;
-  //   }, onError: (e) {
-  //     print(e);
-  //   });
-  // }
-
-  // setItemCostPrice(String itemCode , String storeCode, int MatrixSerialCode,String trxDate  ){
-  //   //Serial
-  //   Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemCostPrice(itemCode, storeCode, MatrixSerialCode ,trxDate).then((data) {
-  //
-  //     InventoryOperation inventoryOperation = data;
-  //
-  //     setState(() {
-  //       _costPriceController.text = inventoryOperation.itemCostPrice.toString();
-  //     });
-  //
-  //
-  //     return inventoryOperation;
-  //   }, onError: (e) {
-  //     print(e);
-  //   });
-  // }
-
-  // setItemQty(String itemCode , String unitCode,int qty ){
-  //   //Serial
-  //   Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemQty(itemCode, unitCode, qty  ).then((data) {
-  //
-  //     InventoryOperation inventoryOperation = data;
-  //
-  //     setState(() {
-  //       _displayQtyController.text = inventoryOperation.itemFactorQty.toString();
-  //     });
-  //
-  //
-  //     return inventoryOperation;
-  //   }, onError: (e) {
-  //     print(e);
-  //   });
-  // }
-
-
   sendEmail(){
     //Get Email Setting
     String username =  EmailSettingData.userName.toString();
@@ -1706,8 +1530,6 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     String smtpServer =  EmailSettingData.smtpServer.toString();
     int port =  EmailSettingData.smtpPort as int;
     String displayName =  EmailSettingData.userDisplayName.toString();
-
-    //Pass Customer
 
     //Call Function
     String subject = (langId == 1)?"فاتورة رقم ":"Invoice No ";
@@ -1748,10 +1570,8 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
         _salesInvoiceDApiService.deleteSalesInvoiceD(context, id);
         salesInvoiceDLst.removeAt(indexToRemove);
 
-        // Recalculate the parameters based on the remaining rows
         recalculateParameters();
 
-        // Trigger a rebuild
         setState(() {});
       }
     }

@@ -1,4 +1,3 @@
-
 import 'dart:core';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -408,7 +407,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
       return Center(child: Text("No_Data_To_Show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     }else{
       return Container(
-        color: const Color.fromRGBO(240, 242, 246,1), // Main Color
+        color: const Color.fromRGBO(240, 242, 246,1),
         child: ListView.builder(
             itemCount: _salesOffers.isEmpty ? 0 : _salesOffers.length,
             itemBuilder: (BuildContext context, int index) {

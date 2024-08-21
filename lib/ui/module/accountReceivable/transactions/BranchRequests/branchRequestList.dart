@@ -9,10 +9,16 @@ import 'package:intl/intl.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../data/model/modules/module/accountreceivable/transactions/branchRequests/branchRequestD.dart';
+import '../../../../../data/model/modules/module/general/report/formulas.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
+import '../../../../../service/general/Pdf/pdf_api.dart';
+import '../../../../../service/module/general/reportUtility/reportUtilityApiService.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import '../../../../../utils/permissionHelper.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:core';
+import 'dart:io';
 
 //APIs
 BranchRequestHApiService _apiService = BranchRequestHApiService();
@@ -265,7 +271,7 @@ class _BranchRequestListState extends State<BranchRequestList> {
                                         ),
                                         label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
-                                          //_navigateToPrintScreen(context,_branchRequests[index],index);
+                                          _toPrintScreen(context, " And Id = ${_branchRequests[index].id}");
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -326,6 +332,43 @@ class _BranchRequestListState extends State<BranchRequestList> {
     {
       FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
     }
+
+  }
+  _toPrintScreen(BuildContext context ,String criteria){
+    print("criteria: $criteria");
+    String menuId="5215";
+    ReportUtilityApiService reportUtilityApiService = ReportUtilityApiService();
+
+    List<Formulas>  formulasList;
+    formulasList = [
+      Formulas(columnName: 'companyName',columnValue:companyName),
+      Formulas(columnName: 'branchName',columnValue:branchName),
+      Formulas(columnName: 'year',columnValue:financialYearCode),
+      Formulas(columnName: 'userName',columnValue:empName),
+      Formulas(columnName: 'printTime',columnValue:DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()))
+    ];
+
+    final report = reportUtilityApiService.getReportData(menuId, criteria, formulasList).then((data) async{
+
+      final outputFilePath = 'BranchRequest.pdf';
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File('${dir.path}/$outputFilePath');
+      await file.writeAsBytes(data);
+
+      if(file.lengthSync() > 0)
+      {
+        print('to Print Report');
+        PdfApi.openFile(file);
+      }
+      else
+      {
+        FN_showToast(context,'noDataToPrint'.tr() ,Colors.black);
+      }
+
+    }, onError: (e) {
+      print(e);
+    });
+
 
   }
 }

@@ -515,7 +515,7 @@ class _LoginScreenState extends State<LoginScreen> {
       isIt = data.isIt;
       storeCode = data.storeCode!;
       isEditPrice = data.isEditPrice;
-      print('After Set Emp Data');
+      print('storeCode: $storeCode');
       print(empUserId);
 
     }, onError: (e) {

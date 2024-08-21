@@ -649,6 +649,7 @@
     "fuelAllowance": "Fuel Allowance",
     "fromLocation": "From location",
     "toLocation": "To location",
-    "receive": "Receive"
+    "receive": "Receive",
+    "currentStore": "Current Store"
 
 }

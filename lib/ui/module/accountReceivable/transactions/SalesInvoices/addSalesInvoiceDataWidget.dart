@@ -21,11 +21,9 @@ import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/SalesInvoices/salesInvoiceHApiService.dart';
 import 'package:fourlinkmobileapp/service/module/general/inventoryOperation/inventoryOperationApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
-import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/SalesInvoices/Details/addSalesInvoiceDetailsDataWidget.dart';
 import 'package:fourlinkmobileapp/utils/email.dart';
 import 'package:supercharged/supercharged.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/basicInputs/Customers/addCustomerDataWidget.dart';
-import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/salesInvoices/salesInvoiceList.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
 import 'package:zatca_fatoora_flutter/zatca_fatoora_flutter.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
@@ -34,23 +32,20 @@ import '../../../../../helpers/toast.dart';
 import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
-import '../../../../../utils/permissionHelper.dart';
 
 //APIS;
 NextSerialApiService _nextSerialApiService = NextSerialApiService();
-SalesInvoicesTypeApiService _salesInvoiceTypeApiService = SalesInvoicesTypeApiService();  //*
+SalesInvoicesTypeApiService _salesInvoiceTypeApiService = SalesInvoicesTypeApiService();
 SalesInvoiceHApiService _salesInvoiceHApiService = SalesInvoiceHApiService();
 SalesInvoiceDApiService _salesInvoiceDApiService = SalesInvoiceDApiService();
 InventoryOperationApiService _inventoryOperationApiService = InventoryOperationApiService();
 CustomerApiService _customerApiService = CustomerApiService();
-ItemApiService _itemsApiService = ItemApiService();
 UnitApiService _unitsApiService = UnitApiService();
 TafqeetApiService _tafqeetApiService = TafqeetApiService();
 
 //List Models
 List<Customer> customers = [];
 List<SalesInvoiceType> salesInvoiceTypes = [];
-List<Item> items = [];
 List<Unit> units = [];
 
 int lineNum = 1;
@@ -70,7 +65,7 @@ double totalBeforeTax = 0;
 double totalTax = 0;
 double totalAfterDiscount = 0;
 double totalNet = 0;
-WidgetsToImageController WidgetImage= WidgetsToImageController();
+WidgetsToImageController widgetImage= WidgetsToImageController();
 bool isLoading = true;
 
 
@@ -84,25 +79,22 @@ class AddSalesInvoiceHDataWidget extends StatefulWidget {
 class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget> {
   _AddSalesInvoiceHDataWidgetState();
 
-  List<SalesInvoiceD> SalesInvoiceDLst = <SalesInvoiceD>[];
+  List<SalesInvoiceD> salesInvoiceDLst = <SalesInvoiceD>[];
   List<SalesInvoiceD> selected = [];
-  List<DropdownMenuItem<String>> menuSalesInvoiceTypes = [];
-  List<DropdownMenuItem<String>> menuCustomers = [];
-  List<DropdownMenuItem<String>> menuItems = [];
-  List<DropdownMenuItem<String>> menuUnits = [];
 
-  String? selectedCustomerValue = null;
-  String? selectedCustomerEmail = null;
+
+  String? selectedCustomerValue;
+  String? selectedCustomerEmail;
   String? selectedTypeValue = "1";
-  String? selectedItemValue = null;
-  String? selectedItemName = null;
-  String? selectedUnitValue = null;
-  String? selectedUnitName = null;
-  String? price = null;
-  String? qty = null;
-  String? vat = null;
-  String? discount = null;
-  String? total = null;
+  String? selectedItemValue;
+  String? selectedItemName;
+  String? selectedUnitValue;
+  String? selectedUnitName;
+  String? price;
+  String? qty;
+  String? vat;
+  String? discount;
+  String? total;
 
 
   final _addFormKey = GlobalKey<FormState>();
@@ -115,7 +107,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
   //Totals
   final _totalQtyController = TextEditingController(); //Total Qty
   final _rowsCountController = TextEditingController(); //Total Rows Count
-  final _invoiceDiscountController = TextEditingController();
   final _invoiceDiscountPercentController = TextEditingController(); //Invoice Discount Percent
   final _invoiceDiscountValueController = TextEditingController(); //InvoiceDiscountValue
   final _totalValueController = TextEditingController(); //Total Value
@@ -124,8 +115,8 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
   final _totalTaxController = TextEditingController(); //Total Tax
   final _totalBeforeTaxController = TextEditingController(); // Total Before Tax
   final _totalNetController = TextEditingController(); // Total Net
-  final _tafqitNameArabicController = TextEditingController(); //Arabic Tafqeet
-  final _tafqitNameEnglishController = TextEditingController(); //English Tafqeet
+  final _tafqitNameArabicController = TextEditingController();
+  final _tafqitNameEnglishController = TextEditingController();
 
   //Footer
   final _dropdownItemFormKey = GlobalKey<FormState>(); //Item
@@ -140,20 +131,16 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
   final _discountController = TextEditingController(); //Discount Value
   final _netAfterDiscountController = TextEditingController(); //Discount Value
   final _taxController = TextEditingController(); //Tax Value
-  final _netAftertaxController = TextEditingController(); //Tax Value
-  final _costPriceController = TextEditingController(); //Cost Price
-  final _descriptionNameArabicController = TextEditingController();
-  final _descriptionNameEnglishController = TextEditingController();
+  final _netAfterTaxController = TextEditingController(); //Tax Value
+  final _costPriceController = TextEditingController();
 
-
-  final _dropdownTaxFormKey = GlobalKey<FormState>();
-  static const int numItems = 0;
 
   SalesInvoiceType? salesInvoiceTypeItem = SalesInvoiceType(
       salesInvoicesTypeCode: "",
       salesInvoicesTypeNameAra: "",
       salesInvoicesTypeNameEng: "",
-      id: 0); //*
+      id: 0);
+  Customer? customerItem = Customer(customerCode: "", customerNameAra: "", customerNameEng: "", id: 0);
   Item? itemItem = Item(itemCode: "", itemNameAra: "", itemNameEng: "", id: 0);
   Unit? unitItem = Unit(unitCode: "", unitNameAra: "", unitNameEng: "", id: 0);
 
@@ -182,7 +169,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     totalBeforeTax = 0;
     totalNet = 0;
     _salesInvoicesDateController.text = DateTime.now().toString();
-    print('generalSetupSalesInvoicesTypeCode >> $generalSetupSalesInvoicesTypeCode');
     if (generalSetupSalesInvoicesTypeCode.toString().isNotEmpty) {
       selectedTypeValue = generalSetupSalesInvoicesTypeCode;
     }
@@ -335,43 +321,45 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                             Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Serial :".tr(),
                                 style: const TextStyle(fontWeight: FontWeight.bold))),
                             const SizedBox(width: 10),
-                            SizedBox(
-                              width: 100,
-                              child: textFormFields(
-                                controller: _salesInvoicesSerialController,
-                                enable: false,
-                                //hintText: "serial".tr(),
-                                onSaved: (val) {
-                                  salesInvoicesSerial = val;
-                                },
-                                textInputType: TextInputType.name,
+                            Expanded(
+                              child: SizedBox(
+                                width: 100,
+                                child: textFormFields(
+                                  controller: _salesInvoicesSerialController,
+                                  enable: false,
+                                  onSaved: (val) {
+                                    salesInvoicesSerial = val;
+                                  },
+                                  textInputType: TextInputType.name,
+                                ),
                               ),
                             ),
                             const SizedBox(width: 10),
                             Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text("Date :".tr(),
                                 style: const TextStyle(fontWeight: FontWeight.bold))),
                             const SizedBox(width: 10),
-                            SizedBox(
-                              width: 100,
-                              child: textFormFields(
-                                enable: false,
-                                controller: _salesInvoicesDateController,
-                                hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
-                                onTap: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1950),
-                                      lastDate: DateTime(2050));
+                            Expanded(
+                              child: SizedBox(
+                                width: 100,
+                                child: textFormFields(
+                                  enable: false,
+                                  controller: _salesInvoicesDateController,
+                                  onTap: () async {
+                                    DateTime? pickedDate = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(1950),
+                                        lastDate: DateTime(2050));
 
-                                  if (pickedDate != null) {
-                                    _salesInvoicesDateController.text = DateFormat('yyyy-MM-ddTHH:mm:ss').format(pickedDate);
-                                  }
-                                },
-                                onSaved: (val) {
-                                  salesInvoicesDate = val;
-                                },
-                                textInputType: TextInputType.datetime,
+                                    if (pickedDate != null) {
+                                      _salesInvoicesDateController.text = DateFormat('yyyy-MM-ddTHH:mm:ss').format(pickedDate);
+                                    }
+                                  },
+                                  onSaved: (val) {
+                                    salesInvoicesDate = val;
+                                  },
+                                  textInputType: TextInputType.datetime,
+                                ),
                               ),
                             ),
                           ],
@@ -411,7 +399,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                             );
                                           },
                                           showSearchBox: true,
-
                                         ),
 
                                         items: customers,
@@ -419,7 +406,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                         (langId == 1) ? u.customerNameAra.toString() : u.customerNameEng.toString(),
                                         onChanged: (value) {
                                           selectedCustomerValue = value!.customerCode.toString();
-                                          selectedCustomerEmail = value.email.toString();// i've changed value!
+                                          selectedCustomerEmail = value.email.toString();
                                         },
 
                                         filterFn: (instance, filter) {
@@ -496,7 +483,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                           onChanged: (value) {
                                             selectedItemValue = value!.itemCode.toString();
                                             selectedItemName = (langId == 1) ? value.itemNameAra.toString() : value.itemNameEng.toString();
-                                            //_displayQtyController.text = "1";
                                             changeItemUnit(selectedItemValue.toString());
                                             selectedUnitValue = "1";
                                             String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
@@ -507,7 +493,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                                 selectedItemValue.toString(),
                                                 selectedUnitValue.toString(), qty
                                             );
-                                            //Cost Price
                                             setItemCostPrice(selectedItemValue.toString(), "1", 0, _salesInvoicesDateController.text);
                                           },
 
@@ -530,7 +515,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                         ),
                                       ),
                                     ),
-
                                   ],
                                 )
                             ),
@@ -738,7 +722,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                               DataColumn(label: Text("net".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
                               DataColumn(label: Text("action".tr(), style: const TextStyle(color: Colors.white),),),
                             ],
-                            rows: SalesInvoiceDLst.map((p) =>
+                            rows: salesInvoiceDLst.map((p) =>
                                   DataRow(cells: [
                                     DataCell(SizedBox(width: 5, child: Text(p.lineNum.toString()))),
                                     DataCell(SizedBox(width: 50, child: Text(p.itemName.toString()))),
@@ -791,11 +775,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                   width: 80,
                                   child: textFormFields(
                                     controller: _rowsCountController,
-                                    //hintText: "rowsCount".tr(),
                                     enable: false,
-                                    onSaved: (val) {
-                                      total = val;
-                                    },
                                     textInputType: TextInputType.number,
                                   ),
                                 ),
@@ -816,11 +796,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                   width: 70,
                                   child: textFormFields(
                                     controller: _totalValueController,
-                                    //hintText: "totalValue".tr(),
                                     enable: false,
-                                    onSaved: (val) {
-                                      total = val;
-                                    },
                                     textInputType: TextInputType.number,
                                   ),
                                 ),
@@ -859,9 +835,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                               child: textFormFields(
                                 controller: _totalAfterDiscountController,
                                 enable: false,
-                                onSaved: (val) {
-                                  total = val;
-                                },
                                 textInputType: TextInputType.number,
                               ),
                             ),
@@ -878,9 +851,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                               child: textFormFields(
                                 controller: _totalBeforeTaxController,
                                 enable: false,
-                                onSaved: (val) {
-                                  total = val;
-                                },
                                 textInputType: TextInputType.number,
                               ),
                             ),
@@ -898,11 +868,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                   width: 80,
                                   child: textFormFields(
                                     controller: _totalTaxController,
-                                    //hintText: "totalTax".tr(),
                                     enable: false,
-                                    onSaved: (val) {
-                                      total = val;
-                                    },
                                     textInputType: TextInputType.number,
                                   ),
                                 ),
@@ -918,11 +884,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                   width: 80,
                                   child: textFormFields(
                                     controller: _totalNetController,
-                                    //hintText: "total".tr(),
                                     enable: false,
-                                    onSaved: (val) {
-                                      total = val;
-                                    },
                                     textInputType: TextInputType.number,
                                   ),
                                 ),
@@ -938,21 +900,16 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                               Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
                                   child: Text('tafqitNameArabic'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
                               const SizedBox(width: 10),
-                              SizedBox(
-                                width: 230,
-                                child: TextFormField(
-                                  controller: _tafqitNameArabicController,
-                                  decoration: const InputDecoration(
-                                    // hintText: '',
+                              Expanded(
+                                child: SizedBox(
+                                  width: 230,
+                                  child: TextFormField(
+                                    controller: _tafqitNameArabicController,
+                                    decoration: const InputDecoration(
+
+                                    ),
+                                    enabled: false,
                                   ),
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'please_enter_value'.tr();
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  enabled: false,
-                                  onChanged: (value) {},
                                 ),
                               ),
                             ],
@@ -965,28 +922,22 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                               Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
                                   child: Text('tafqitNameEnglish'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
                               const SizedBox(width: 10),
-                              SizedBox(
-                                width: 230,
-                                child: TextFormField(
-                                  controller: _tafqitNameEnglishController,
-                                  decoration: const InputDecoration(
-                                    // hintText: '',
+                              Expanded(
+                                child: SizedBox(
+                                  width: 230,
+                                  child: TextFormField(
+                                    controller: _tafqitNameEnglishController,
+                                    decoration: const InputDecoration(
+                                    ),
+                                    enabled: false,
                                   ),
-                                  enabled: false,
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'please_enter_value'.tr();
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  onChanged: (value) {},
                                 ),
                               ),
                             ],
                           ),
                         ),
                         WidgetsToImage(
-                            controller:WidgetImage,
+                            controller:widgetImage,
                             child :Container(
                               padding: const EdgeInsets.all(1),
                               color: Colors.white,
@@ -1013,12 +964,9 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     );
   }
 
-//#region Business Function
-
-// Item Units - Change Item Units
   changeItemUnit(String itemCode) {
     units = [];
-    Future<List<Unit>> Units = _unitsApiService.getItemUnit(itemCode).then((data) {
+    Future<List<Unit>> futureUnits = _unitsApiService.getItemUnit(itemCode).then((data) {
       units = data;
       if(data.isNotEmpty){
         unitItem = data[0];
@@ -1031,25 +979,20 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     });
   }
 
-//Item Tax Value
   setItemTaxValue(String itemCode, double netValue) {
-    //Serial
     Future<InventoryOperation> futureInventoryOperation = _inventoryOperationApiService
         .getItemTaxValue(itemCode, netValue).then((data) {
-      print('cccc0');
       InventoryOperation inventoryOperation = data;
 
       setState(() {
-        print('cccc');
         double tax = (inventoryOperation.itemTaxValue != null) ? inventoryOperation.itemTaxValue : 0;
-        print(tax.toString());
         _taxController.text = tax.toString();
         double nextAfterDiscount = 0;
         if (_netAfterDiscountController.text.isNotEmpty) {
           nextAfterDiscount = double.parse(_netAfterDiscountController.text);
         }
         double netTotal = nextAfterDiscount + tax;
-        _netAftertaxController.text = netTotal.toString();
+        _netAfterTaxController.text = netTotal.toString();
       });
 
       return inventoryOperation;
@@ -1057,11 +1000,10 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       print(e);
     });
   }
-//Item Cost
-  setItemCostPrice(String itemCode, String storeCode, int MatrixSerialCode, String trxDate) {
+  setItemCostPrice(String itemCode, String storeCode, int matrixSerialCode, String trxDate) {
     //Serial
     Future<InventoryOperation> futureInventoryOperation = _inventoryOperationApiService
-        .getItemCostPrice(itemCode, storeCode, MatrixSerialCode, trxDate).then((data) {
+        .getItemCostPrice(itemCode, storeCode, matrixSerialCode, trxDate).then((data) {
       InventoryOperation inventoryOperation = data;
 
       setState(() {
@@ -1074,9 +1016,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     });
   }
 
-//Item Quantity
   setItemQty(String itemCode, String unitCode, int qty) {
-    //Serial
     Future<InventoryOperation> futureInventoryOperation =
     _inventoryOperationApiService.getItemQty(itemCode, unitCode, qty).then((data) {
       InventoryOperation inventoryOperation = data;
@@ -1093,9 +1033,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     });
   }
 
-//Item Price
   setItemPrice(String itemCode, String unitCode, String criteria,String customerCode) {
-    //Serial
     Future<double> futureSellPrice = _salesInvoiceDApiService
         .getItemSellPriceData(itemCode, unitCode, "View_AR_SalesInvoicesType", criteria, customerCode).then((data) {
       double sellPrice = data;
@@ -1112,20 +1050,15 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     });
   }
 
-//Item Price
   setMaxDiscount(double? discountValue, double totalValue, String empCode) {
-    //Serial
     Future<InventoryOperation> futureInventoryOperation =
     _inventoryOperationApiService.getUserMaxDiscountResult(discountValue, totalValue, empCode).then((data) {
-      print('In Max Discount');
+
       InventoryOperation inventoryOperation = data;
 
       setState(() {
         if (inventoryOperation.isExeedUserMaxDiscount == true) {
-          //Toaster
           FN_showToast(context, 'current_discount_exceed_user_discount'.tr(), Colors.black);
-
-          //Reset Value
           _displayDiscountController.text = "";
           _discountController.text = "";
           calcTotalPriceRow();
@@ -1135,18 +1068,13 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
         }
       });
 
-
       return inventoryOperation;
     }, onError: (e) {
       print(e);
     });
   }
 
-
-//#region Tafqeet
-
   setTafqeet(String currencyCode, String currencyValue) {
-
 
     Future<Tafqeet> futureTafqeet = _tafqeetApiService.getTafqeet(
         currencyCode, currencyValue).then((data) {
@@ -1159,95 +1087,74 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
       });
 
-
       return tafqeet;
     }, onError: (e) {
       print(e);
     });
   }
 
-
-//#endregion
-
-//#region Next Serial
   setNextSerial() {
-    //Serial
     Future<NextSerial> futureSerial = _nextSerialApiService.getNextSerial(
-        "AR_SalesInvoicesH", "SalesInvoicesSerial",   //Table Name - Field Name - Case
-        " And SalesInvoicesCase=1  ").then((data) {   // We Work On On serial Without Type
+        "AR_SalesInvoicesH", "SalesInvoicesSerial", " And SalesInvoicesCase=1  ").then((data) {
       NextSerial nextSerial = data;
 
-      //Date
       DateTime now = DateTime.now();
       _salesInvoicesDateController.text = DateFormat('yyyy-MM-dd').format(now);
-
-      //print(customers.length.toString());
       _salesInvoicesSerialController.text = nextSerial.nextSerial.toString();
+
       return nextSerial;
     }, onError: (e) {
       print(e);
     });
   }
-
-//#endregion
-
-//#endregion
-
-//#region Save
-
-//Add Row
   addInvoiceRow() {
-    //Item
     if (selectedItemValue == null || selectedItemValue!.isEmpty) {
       FN_showToast(context, 'please_enter_item'.tr(), Colors.black);
       return;
     }
-    //Price
+
     if (_displayPriceController.text.isEmpty) {
       FN_showToast(context, 'please_enter_Price'.tr(), Colors.black);
       return;
     }
 
-    //Quantity
     if (_displayQtyController.text.isEmpty) {
       FN_showToast(context, 'please_enter_quantity'.tr(), Colors.black);
       return;
     }
 
-    SalesInvoiceD _salesInvoiceD = SalesInvoiceD();
-    _salesInvoiceD.itemCode = selectedItemValue;
-    _salesInvoiceD.itemName = selectedItemName;
-    _salesInvoiceD.unitCode = selectedUnitValue;
-    _salesInvoiceD.displayQty = (_displayQtyController.text.isNotEmpty) ? double.parse(_displayQtyController.text) : 0;
-    _salesInvoiceD.qty = (_displayQtyController.text.isNotEmpty) ? double.parse(_displayQtyController.text) : 0;
-    _salesInvoiceD.costPrice = (_costPriceController.text.isNotEmpty) ? double.parse(_costPriceController.text) : 0;
-    _salesInvoiceD.displayPrice = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
-    _salesInvoiceD.price = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
-    _salesInvoiceD.total = _salesInvoiceD.qty * _salesInvoiceD.price;
-    _salesInvoiceD.displayTotal = _salesInvoiceD.displayQty * _salesInvoiceD.displayPrice;
-    _salesInvoiceD.displayDiscountValue = (_displayDiscountController.text.isNotEmpty) ? double.parse(_displayDiscountController.text) : 0;
-    _salesInvoiceD.discountValue = _salesInvoiceD.displayDiscountValue;
-    _salesInvoiceD.netAfterDiscount = _salesInvoiceD.displayTotal - _salesInvoiceD.displayDiscountValue;
-    setItemTaxValue(selectedItemValue.toString(), _salesInvoiceD.netAfterDiscount);
-    _salesInvoiceD.displayTotalTaxValue = (0.15 * _salesInvoiceD.netAfterDiscount); //(_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
-    _salesInvoiceD.totalTaxValue = (_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
-    _salesInvoiceD.displayNetValue = _salesInvoiceD.netAfterDiscount + _salesInvoiceD.displayTotalTaxValue ;
-    _salesInvoiceD.netValue = _salesInvoiceD.netAfterDiscount + _salesInvoiceD.totalTaxValue;
+    SalesInvoiceD salesInvoiceD = SalesInvoiceD();
+    salesInvoiceD.itemCode = selectedItemValue;
+    salesInvoiceD.itemName = selectedItemName;
+    salesInvoiceD.unitCode = selectedUnitValue;
+    salesInvoiceD.displayQty = (_displayQtyController.text.isNotEmpty) ? double.parse(_displayQtyController.text) : 0;
+    salesInvoiceD.qty = (_displayQtyController.text.isNotEmpty) ? double.parse(_displayQtyController.text) : 0;
+    salesInvoiceD.costPrice = (_costPriceController.text.isNotEmpty) ? double.parse(_costPriceController.text) : 0;
+    salesInvoiceD.displayPrice = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
+    salesInvoiceD.price = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
+    salesInvoiceD.total = salesInvoiceD.qty * salesInvoiceD.price;
+    salesInvoiceD.displayTotal = salesInvoiceD.displayQty * salesInvoiceD.displayPrice;
+    salesInvoiceD.displayDiscountValue = (_displayDiscountController.text.isNotEmpty) ? double.parse(_displayDiscountController.text) : 0;
+    salesInvoiceD.discountValue = salesInvoiceD.displayDiscountValue;
+    salesInvoiceD.netAfterDiscount = salesInvoiceD.displayTotal - salesInvoiceD.displayDiscountValue;
+    setItemTaxValue(selectedItemValue.toString(), salesInvoiceD.netAfterDiscount);
+    salesInvoiceD.displayTotalTaxValue = (0.15 * salesInvoiceD.netAfterDiscount); //(_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
+    salesInvoiceD.totalTaxValue = (_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
+    salesInvoiceD.displayNetValue = salesInvoiceD.netAfterDiscount + salesInvoiceD.displayTotalTaxValue ;
+    salesInvoiceD.netValue = salesInvoiceD.netAfterDiscount + salesInvoiceD.totalTaxValue;
 
-    print('Add Product 10');
+    salesInvoiceD.lineNum = lineNum;
 
-    _salesInvoiceD.lineNum = lineNum;
+    salesInvoiceDLst.add(salesInvoiceD);
 
-    SalesInvoiceDLst.add(_salesInvoiceD);
-
-    totalQty += _salesInvoiceD.displayQty;
-    totalPrice +=  _salesInvoiceD.total ;
-    totalDiscount += _salesInvoiceD.displayDiscountValue;
+    totalQty += salesInvoiceD.displayQty;
+    totalPrice +=  salesInvoiceD.total ;
+    totalDiscount += salesInvoiceD.displayDiscountValue;
 
     rowsCount += 1;
     totalAfterDiscount = totalPrice - totalDiscount;
     totalBeforeTax = totalAfterDiscount;
-    totalTax += _salesInvoiceD.displayTotalTaxValue;
+    totalTax += salesInvoiceD.displayTotalTaxValue;
     totalNet = totalBeforeTax + totalTax;
 
     _totalQtyController.text = totalQty.toString();
@@ -1260,10 +1167,8 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     _totalNetController.text = totalNet.toString();
     setTafqeet("2", _totalNetController.text);
 
-    //
     lineNum++;
 
-    //FN_showToast(context,'login_success'.tr(),Colors.black);
     FN_showToast(context, 'add_Item_Done'.tr(), Colors.black);
 
     setState(() {
@@ -1277,7 +1182,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       _displayTotalController.text = "";
       _displayDiscountController.text = "";
       _netAfterDiscountController.text = "";
-      _netAftertaxController.text = "";
+      _netAfterTaxController.text = "";
       _displayPriceController.text = "";
       itemItem = Item(itemCode: "", itemNameAra: "", itemNameEng: "", id: 0);
       unitItem = Unit(unitCode: "", unitNameAra: "", unitNameEng: "", id: 0);
@@ -1306,36 +1211,28 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     );
 
     if (confirmed!) {
-      // Find the index of the row with the given lineNum
-      int indexToRemove = SalesInvoiceDLst.indexWhere((p) => p.lineNum == lineNum);
+      int indexToRemove = salesInvoiceDLst.indexWhere((p) => p.lineNum == lineNum);
 
       if (indexToRemove != -1) {
-        // Remove the row
-        SalesInvoiceDLst.removeAt(indexToRemove);
-
-        // Recalculate the parameters based on the remaining rows
+        salesInvoiceDLst.removeAt(indexToRemove);
         recalculateParameters();
 
-        // Trigger a rebuild
         setState(() {});
       }
     }
   }
   void recalculateParameters() {
-    //SalesInvoiceH _salesInvoiceH = SalesInvoiceH();
     totalQty = 0;
     totalTax = 0;
     totalDiscount = 0;
-    rowsCount = SalesInvoiceDLst.length;
+    rowsCount = salesInvoiceDLst.length;
     totalNet = 0;
     totalPrice = 0;
     totalBeforeTax = 0;
     totalAfterDiscount = 0;
     totalBeforeTax = 0;
-    //_salesInvoiceH.tafqitNameArabic = _tafqitNameArabicController.text;
-    //_salesInvoiceH.tafqitNameEnglish = _tafqitNameEnglishController.text;
 
-    for (var row in SalesInvoiceDLst) {
+    for (var row in salesInvoiceDLst) {
       totalQty += row.displayQty;
       totalTax += row.displayTotalTaxValue;
       totalDiscount += row.displayDiscountValue;
@@ -1345,7 +1242,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       totalPrice  += row.netAfterDiscount;
     }
 
-    // Update your controllers or other widgets if needed
     _totalQtyController.text = totalQty.toString();
     _totalTaxController.text = totalTax.toString();
     _totalDiscountController.text = totalDiscount.toString();
@@ -1357,10 +1253,8 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     setTafqeet("2", _totalNetController.text);
   }
 
-//Save
   saveInvoice(BuildContext context) async {
-    //Items
-    if (SalesInvoiceDLst.length <= 0) {
+    if (salesInvoiceDLst.isEmpty) {
       FN_showToast(context, 'please_Insert_One_Item_At_Least'.tr(), Colors.black);
       return;
     }
@@ -1370,42 +1264,26 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
         return;
       }
 
-    //Serial
     if (_salesInvoicesSerialController.text.isEmpty) {
       FN_showToast(context, 'please_Set_Invoice_Serial'.tr(), Colors.black);
       return;
     }
 
-    //Date
     if (_salesInvoicesDateController.text.isEmpty) {
       FN_showToast(context, 'please_Set_Invoice_Date'.tr(), Colors.black);
       return;
     }
 
-    //Customer
     if (selectedCustomerValue == null || selectedCustomerValue!.isEmpty) {
       FN_showToast(context, 'please_Set_Customer'.tr(), Colors.black);
       return;
     }
-    final bytesx = await WidgetImage.capture();
-    var InvoiceQRCode = bytesx as Uint8List;
+    final bytesx = await widgetImage.capture();
+    var invoiceQRCode = bytesx as Uint8List;
     String base64String ='';
-    if (InvoiceQRCode != null) {
-      base64String = base64Encode(InvoiceQRCode);
-
-      print(base64String.toString());
+    if (invoiceQRCode.isNotEmpty) {
+      base64String = base64Encode(invoiceQRCode);
     }
-
-    // final bytesx = await WidgetImage.capture();
-    // var InvoiceQRCode = bytesx as Uint8List;
-    // print(InvoiceQRCode.toString());
-    // print('Size of Uint8List: ${InvoiceQRCode.length} bytes');
-
-    // //Currency
-    // if(currencyCodeSelectedValue == null || currencyCodeSelectedValue!.isEmpty){
-    //   FN_showToast(context,'Please Set Currency',Colors.black);
-    //   return;
-    // }
 
     await _salesInvoiceHApiService.createSalesInvoiceH(context, SalesInvoiceH(
 
@@ -1433,153 +1311,96 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
     //Save Footer For Now
 
-    for (var i = 0; i < SalesInvoiceDLst.length; i++) {
-      SalesInvoiceD _salesInvoiceD = SalesInvoiceDLst[i];
-      if (_salesInvoiceD.isUpdate == false) {
+    for (var i = 0; i < salesInvoiceDLst.length; i++) {
+      SalesInvoiceD salesInvoiceD = salesInvoiceDLst[i];
+      if (salesInvoiceD.isUpdate == false) {
         //Add
         _salesInvoiceDApiService.createSalesInvoiceD(context, SalesInvoiceD(
-
             salesInvoicesCase: 1,
             salesInvoicesSerial: _salesInvoicesSerialController.text,
             salesInvoicesTypeCode: selectedTypeValue,
-            itemCode: _salesInvoiceD.itemCode,
-            lineNum: _salesInvoiceD.lineNum,
-            price: _salesInvoiceD.price,
-            displayPrice: _salesInvoiceD.price,
-            qty: _salesInvoiceD.qty,
-            displayQty: _salesInvoiceD.displayQty,
-            total: _salesInvoiceD.total,
-            displayTotal: _salesInvoiceD.total,
-            totalTaxValue: _salesInvoiceD.totalTaxValue,
-            discountValue: _salesInvoiceD.discountValue,
-            displayDiscountValue: _salesInvoiceD.discountValue,
-            costPrice: _salesInvoiceD.costPrice,
-            netAfterDiscount: _salesInvoiceD.netAfterDiscount,
-            displayTotalTaxValue: _salesInvoiceD.displayTotalTaxValue,
-            displayNetValue: _salesInvoiceD.displayNetValue,
-            unitCode: _salesInvoiceD.unitCode,
-            netValue: _salesInvoiceD.netValue,
-            netBeforeTax: _salesInvoiceD.netBeforeTax,
+            itemCode: salesInvoiceD.itemCode,
+            lineNum: salesInvoiceD.lineNum,
+            price: salesInvoiceD.price,
+            displayPrice: salesInvoiceD.price,
+            qty: salesInvoiceD.qty,
+            displayQty: salesInvoiceD.displayQty,
+            total: salesInvoiceD.total,
+            displayTotal: salesInvoiceD.total,
+            totalTaxValue: salesInvoiceD.totalTaxValue,
+            discountValue: salesInvoiceD.discountValue,
+            displayDiscountValue: salesInvoiceD.discountValue,
+            costPrice: salesInvoiceD.costPrice,
+            netAfterDiscount: salesInvoiceD.netAfterDiscount,
+            displayTotalTaxValue: salesInvoiceD.displayTotalTaxValue,
+            displayNetValue: salesInvoiceD.displayNetValue,
+            unitCode: salesInvoiceD.unitCode,
+            netValue: salesInvoiceD.netValue,
+            netBeforeTax: salesInvoiceD.netBeforeTax,
             year: 2024,
             storeCode: "1" // For Now
         ));
       }
     }
-    //print To Send
     sendEmail();
 
     Navigator.pop(context);
   }
 
-//#endregion
-
-//#region Get
-
-  getCustomerData() {
-    for (var i = 0; i < customers.length; i++) {
-      menuCustomers.add(DropdownMenuItem(
-          value: customers[i].customerCode.toString(),
-          child: Text(customers[i].customerNameAra.toString())));
-    }
-      setState(() {
-
-    });
-  }
-
   getSalesInvoiceTypeData() {
     for (var i = 0; i < salesInvoiceTypes.length; i++) {
-      menuSalesInvoiceTypes.add(
-          DropdownMenuItem(value: salesInvoiceTypes[i].salesInvoicesTypeCode.toString(), child: Text(salesInvoiceTypes[i].
-          salesInvoicesTypeNameAra.toString())));
       if (salesInvoiceTypes[i].salesInvoicesTypeCode == selectedTypeValue) {
         salesInvoiceTypeItem = salesInvoiceTypes[salesInvoiceTypes.indexOf(salesInvoiceTypes[i])];
       }
     }
-    //selectedTypeValue = "1";
     setNextSerial();
       setState(() {});
   }
 
-  getItemData() {
-    if (items != null) {
-      for(var i = 0; i < items.length; i++){
-        menuItems.add(DropdownMenuItem(child: Text((langId==1)?items[i].itemNameAra.toString() : items[i].itemNameEng.toString()   ),value: items[i].itemCode.toString()));
+  getCustomerData() {
+    if (customers.isNotEmpty) {
+      for(var i = 0; i < customers.length; i++){
+        if(customers[i].customerCode == selectedCustomerValue){
+          customerItem = customers[customers.indexOf(customers[i])];
+          selectedCustomerEmail = customerItem!.email.toString();
+        }
+
       }
     }
     setState(() {
 
     });
   }
-
-  getUnitData() {
-    for (var i = 0; i < units.length; i++) {
-      menuUnits.add(DropdownMenuItem(value: units[i].unitCode.toString(), child: Text(
-          (langId == 1) ? units[i].unitNameAra.toString() : units[i].unitNameEng.toString())));
-    }
-      setState(() {
-
-    });
-  }
-
   fillCombos() {
-    //Sales Invoice Type
     Future<List<SalesInvoiceType>> futureSalesInvoiceType = _salesInvoiceTypeApiService
         .getSalesInvoicesTypes().then((data) {
       salesInvoiceTypes = data;
-      //print(customers.length.toString());
       getSalesInvoiceTypeData();
       return salesInvoiceTypes;
     }, onError: (e) {
       print(e);
     });
 
-
-    //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
+      setState(() {
 
-      getCustomerData();
+      });
       return customers;
     }, onError: (e) {
       print(e);
     });
 
-    // //Items
-    // Future<List<Item>> futureItems = _itemsApiService.getItems().then((data) {
-    //   items = data;
-    //
-    //   getItemData();
-    //   return items;
-    // }, onError: (e) {
-    //   print(e);
-    // });
-
-    //Units
-    Future<List<Unit>> Units = _unitsApiService.getUnits().then((data) {
+    Future<List<Unit>> futureUnits = _unitsApiService.getUnits().then((data) {
       units = data;
-      //getItemData();
+      setState(() {
+
+      });
       return units;
     }, onError: (e) {
       print(e);
     });
   }
-
-//#endregion
-
-//#region Navigate
-
-  // _navigateToAddDetailScreen(BuildContext context, String invoiceSerial) async {
-  //   final result = await Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => AddSalesInvoiceDetailDataWidget(invoiceSerial)),
-  //   );
-  //   //).then((value) => getData());
-  //
-  // }
-
-//#endregion
-
-//#region General Widgets - To Be Moved To General Locations
 
   Widget textFormFields(
       {controller, hintText, onTap, onSaved, textInputType, enable = true}) {
@@ -1612,13 +1433,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
             width: 2,
           ),
         ),
-        // border: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(20),
-        //   borderSide: BorderSide(
-        //     color: lColor,
-        //     width: 2,
-        //   ),
-        // ),
       ),
     );
   }
@@ -1665,10 +1479,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     );
   }
 
-//#endregion
-
-//#region Calc
-
   calcTotalPriceRow() {
     double price = 0;
     if (_priceController.text.isNotEmpty) {
@@ -1680,11 +1490,9 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       qtyVal = double.parse(_displayQtyController.text);
     }
 
-    print('toGetUnitTotal');
     var total = qtyVal * price;
     _displayTotalController.text = total.toString();
     _totalController.text = total.toString();
-    print(total);
 
     double discount = 0;
     if (_displayDiscountController.text.isNotEmpty) {
@@ -1693,16 +1501,8 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
     double netAfterDiscount = total - discount;
     _netAfterDiscountController.text = netAfterDiscount.toString();
-
-    print('toGetUnitTotal2');
-    print(netAfterDiscount);
-    print('totalonz3');
     setItemTaxValue(selectedItemValue.toString(), netAfterDiscount);
   }
-
-
-//#endregion
-
 
   sendEmail() {
     //Get Email Setting
@@ -1712,20 +1512,17 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     int port = EmailSettingData.smtpPort as int;
     String displayName = EmailSettingData.userDisplayName.toString();
 
-    //Pass Customer
-
-    //Call Function
     String subject = (langId == 1) ? "فاتورة رقم " : "Invoice No ";
     subject += _salesInvoicesSerialController.text;
 
     String text = (langId == 1) ? "فاتورة رقم " : "Invoice No ";
     text += _salesInvoicesSerialController.text;
 
-    print('send Email To' + selectedCustomerEmail.toString());
+    print('send Email To$selectedCustomerEmail');
     //Customer Email
     String recepiant = selectedCustomerEmail.toString();
 
-    print('send Email To' + recepiant.toString());
+    print('send Email To$recepiant');
 
     Email.sendMail(Username: username,
         Password: password,
@@ -1747,10 +1544,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
     double invoiceDiscountValue = percent * totalBeforeDiscount / 100;
     _invoiceDiscountValueController.text = invoiceDiscountValue.toString();
-  }
-
-  calcDiscountPercentFromValue() {
-
   }
 
 
