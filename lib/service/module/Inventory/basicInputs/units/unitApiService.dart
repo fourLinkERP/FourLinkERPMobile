@@ -57,17 +57,14 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/units/uni
     }
   }
 
-  Future<List<Unit>> getItemUnit(String ItemCode) async {
-    print('Item Unit 1');
+  Future<List<Unit>> getItemUnit(String itemCode) async {
     Map data = {
       'CompanyCode': companyCode,
-      'BranchCode': branchCode,
-      'ItemCode': ItemCode
+      'ItemCode': itemCode
     };
 
-    String searchItemUnitUrl = updateApi + "searchItemUnit";
-    print('Item Unit  2');
-    print('Item Unit  2 ' + data.toString());
+    String searchItemUnitUrl = "${updateApi}searchItemUnit";
+    print('Item Unit  2 $data');
     final http.Response response = await http.post(
       Uri.parse(searchItemUnitUrl),
       headers: <String, String>{
@@ -76,21 +73,15 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/units/uni
       },
       body: jsonEncode(data),
     );
-
-    print('Item Unit  3');
     if (response.statusCode == 200) {
-      print('Item Unit  4');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<Unit> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => Unit.fromJson(item)).toList();
       }
-      print('Item Unit  5 Success');
-      print('Item Unit  6 ' + list.length.toString());
+
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => SalesInvoice.fromJson(data))
-      //     .toList();
+
     } else {
       print('Item Unit  Error');
       throw "Failed to load customer list";

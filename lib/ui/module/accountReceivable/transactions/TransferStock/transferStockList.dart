@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Stores/storesApiService.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/TransferStock/editTransferStock.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../common/globals.dart';
 import '../../../../../cubit/app_cubit.dart';
+import '../../../../../data/model/modules/module/accountreceivable/basicInputs/Stores/store.dart';
 import '../../../../../data/model/modules/module/accountreceivable/transactions/transferStock/transferStockH.dart';
+import '../../../../../data/model/modules/module/general/report/formulas.dart';
 import '../../../../../helpers/toast.dart';
+import '../../../../../service/general/Pdf/pdf_api.dart';
 import '../../../../../service/module/accountReceivable/transactions/TransferStock/transferStockApiService.dart';
+import '../../../../../service/module/general/reportUtility/reportUtilityApiService.dart';
 import '../../../../../utils/permissionHelper.dart';
 
+
 TransferStockApiService _apiService = TransferStockApiService();
+StoresApiService _storesApiService = StoresApiService();
 
 class TransferStockList extends StatefulWidget {
   const TransferStockList({Key? key}) : super(key: key);
@@ -23,13 +30,17 @@ class _TransferStockListState extends State<TransferStockList> {
 
    List<TransferStockH> _receivingTransfers = [];
    List<TransferStockH> _receivingTransferSearch = [];
+   List<Stores> stores = [];
+   String? selectedStoreName;
+
+   Stores? storeItem = Stores(storeCode: "", storeNameAra: "", storeNameEng: "", id: 0);
 
    @override
    void initState() {
      getData();
+     _fillCompo();
      super.initState();
 
-     setState(() {});
    }
    void getData() async {
      try {
@@ -82,7 +93,20 @@ class _TransferStockListState extends State<TransferStockList> {
           ),
         ),
       ),
-      body: buildTransfersRequests(),
+      body: Container(
+        height: 1100,
+        child: Column(
+          children: [
+            const SizedBox(height: 10.0),
+            Center(
+              child: Text("${"currentStore".tr()}: $selectedStoreName",
+                style: const TextStyle(color: Color.fromRGBO(144, 16, 46, 1), fontSize: 17, fontWeight: FontWeight.bold),),
+            ),
+            const SizedBox(height: 10.0),
+            buildTransfersRequests(),
+          ],
+        ),
+      ),
     );
   }
   Widget buildTransfersRequests(){
@@ -91,8 +115,9 @@ class _TransferStockListState extends State<TransferStockList> {
     }
     else{
       print("receiveTransfer length: ${_receivingTransfers.length}");
-      return Container(
-        color: const Color.fromRGBO(240, 242, 246,1),
+      return SizedBox(
+        height: 130,
+        //color: const Color.fromRGBO(240, 242, 246,1),
 
         child: ListView.builder(
             itemCount: _receivingTransfers.isEmpty ? 0 : _receivingTransfers.length,
@@ -181,6 +206,27 @@ class _TransferStockListState extends State<TransferStockList> {
      {
        FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
      }
+   }
+   _fillCompo(){
+     Future<List<Stores>> futureStore = _storesApiService.getStores().then((data) {
+       stores = data;
+       getStoreData();
+       return stores;
+     }, onError: (e) {
+       print(e);
+     });
+   }
+   getStoreData() {
+     if (stores.isNotEmpty) {
+       for(var i = 0; i < stores.length; i++){
+         if(stores[i].storeCode == storeCode){
+           storeItem = stores[stores.indexOf(stores[i])];
+           selectedStoreName = storeItem?.storeName;
+         }
+       }
+     }
+     setState(() {
 
+     });
    }
 }

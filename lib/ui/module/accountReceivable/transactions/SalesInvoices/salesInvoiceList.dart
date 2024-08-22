@@ -104,6 +104,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       setState(() {
         _salesInvoices = List.from(_salesInvoicesSearch);
       });
+
     } else {
       setState(() {
         _salesInvoices = List.from(_salesInvoicesSearch);

@@ -49,6 +49,7 @@ class BranchRequestHApiService{
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
+      'ToBranchCode': 1,
       'fromBranch': 1,
       'TrxSerial': branchRequestH.trxSerial,
       'TrxDate': branchRequestH.trxDate,
@@ -83,7 +84,6 @@ class BranchRequestHApiService{
       body: jsonEncode(data),
     );
 
-    print('save branchRequestH 2');
     print('createApi $createApi');
 
     if (response.statusCode == 200) {
