@@ -56,8 +56,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
         _salesOffersSearch = List.from(_salesOffers);
 
         if (_salesOffers.isNotEmpty) {
-          _salesOffers.sort((a, b) =>
-              int.parse(b.offerSerial!).compareTo(int.parse(a.offerSerial!)));
+          _salesOffers.sort((a, b) => int.parse(b.offerSerial!).compareTo(int.parse(a.offerSerial!)));
 
           setState(() {
           });
@@ -75,11 +74,13 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
   }
 
 
-  onSearch(String search) {
+  void onSearch(String search) {
 
     if(search.isEmpty)
       {
-        getData();
+        setState(() {
+          _salesOffers = List.from(_salesOffersSearch);
+        });
       }
 
     setState(() {
@@ -94,7 +95,7 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
           title: SizedBox(
             height: 38,
             child: TextField(
@@ -241,9 +242,8 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
   }
 
   _toPrintScreen(BuildContext context ,String criteria){
-    print("criteria: $criteria");
+
     String menuId="6202";
-    //API Reference
     ReportUtilityApiService reportUtilityApiService = ReportUtilityApiService();
 
     List<Formulas>  formulasList;
@@ -256,18 +256,15 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
       Formulas(columnName: 'printTime',columnValue:DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()))
     ];
 
-    //report Api
     final report = reportUtilityApiService.getReportData(menuId, criteria, formulasList).then((data) async{
-      print('Data Fetched');
 
-      final outputFilePath = 'SalesQuotions.pdf';
+      const outputFilePath = 'SalesQuotions.pdf';
       final dir = await getApplicationDocumentsDirectory();
       final file = File('${dir.path}/$outputFilePath');
       await file.writeAsBytes(data);
 
       if(file.lengthSync() > 0)
       {
-        print('to Print Report');
         PdfApi.openFile(file);
       }
       else
@@ -424,12 +421,12 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/quotion.png'),
-                      title: Text('serial'.tr() + " : " + _salesOffers[index].offerSerial.toString()),
+                      title: Text("${'serial'.tr()} : ${_salesOffers[index].offerSerial}"),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
-                          Container(height: 20, color: Colors.white30, child: Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesOffers[index].offerDate.toString())))),
-                          Container(height: 20, color: Colors.white30, child: Text('customer'.tr() + " : " + _salesOffers[index].customerName.toString())),
+                          Container(height: 20, color: Colors.white30, child: Text("${'date'.tr()} : ${DateFormat('yyyy-MM-dd').format(DateTime.parse(_salesOffers[index].offerDate.toString()))}")),
+                          Container(height: 20, color: Colors.white30, child: Text("${'customer'.tr()} : ${_salesOffers[index].customerName}")),
                           const SizedBox(width: 5),
                           SizedBox(
                               child: Row(
@@ -499,7 +496,6 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                                         label: Text('print'.tr(),style:const TextStyle(color: Colors.white,) ),
                                         onPressed: () {
                                           _toPrintScreen(context, " And Id = ${_salesOffers[index].id}");
-                                          //_navigateToPrintScreen(context,_salesOffers[index],index);
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
@@ -525,7 +521,6 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
                 );
             }),
       );
-
     }
    }
 }

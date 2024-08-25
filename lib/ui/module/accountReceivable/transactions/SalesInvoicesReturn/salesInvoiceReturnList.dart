@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:core';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
@@ -22,12 +21,10 @@ import '../../../../../data/model/modules/module/general/receipt/receiptHeader.d
 import '../../../../../service/general/Pdf/pdf_api.dart';
 import '../../../../../service/module/accountReceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnDApiService.dart';
 import '../../../../../service/module/accountReceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnHApiService.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
-
 import 'addSalesInvoiceReturnWidget.dart';
 import 'detailSalesInvoiceReturnWidget.dart';
-import 'editSalesInvoiceReturnWidget.dart';
+// import 'editSalesInvoiceReturnWidget.dart';
 import 'dart:ui';
 import 'package:flutter/rendering.dart';
 import 'package:fourlinkmobileapp/service/general/receipt/pdfReceipt.dart';
@@ -49,7 +46,6 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
   List<SalesInvoiceReturnH> _salesInvoices = [];
   List<SalesInvoiceReturnH> _salesInvoicesSearch = [];
   List<SalesInvoiceReturnD> _salesInvoicesD = [];
-  List<SalesInvoiceReturnH> _founded = [];
   List<WidgetsToImageController> imageControllers = [];
 
   List<GlobalKey> imageGlobalKeys = [];
@@ -64,10 +60,6 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
     getData();
 
     super.initState();
-
-    setState(() {
-      _founded = _salesInvoices!;
-    });
   }
 
   void getData() async {
@@ -79,7 +71,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
         _salesInvoices = futureSalesInvoiceReturnH;
         _salesInvoicesSearch = List.from(_salesInvoices);
 
-        if (_salesInvoices.length > 0) {
+        if (_salesInvoices.isNotEmpty) {
           for (var i = 0; i < _salesInvoices.length; i++) {
             {
               imageControllers.add(WidgetsToImageController());
@@ -89,12 +81,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
         }
 
         if (_salesInvoices.isNotEmpty) {
-          _salesInvoices.sort((a, b) =>
-              int.parse(b.salesInvoicesSerial!).compareTo(
-                  int.parse(a.salesInvoicesSerial!)));
-          setState(() {
-            _founded = _salesInvoices!;
-          });
+          _salesInvoices.sort((a, b) => int.parse(b.salesInvoicesSerial!).compareTo(int.parse(a.salesInvoicesSerial!)));
         }
       }
     } catch (error) {
@@ -103,20 +90,18 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
   }
 
   void getDetailData(int? headerId) async {
-    Future<List<
-        SalesInvoiceReturnD>?> futureSalesInvoiceReturnD = _apiReturnDService
-        .getSalesInvoiceReturnD(headerId);
+    Future<List<SalesInvoiceReturnD>?> futureSalesInvoiceReturnD = _apiReturnDService.getSalesInvoiceReturnD(headerId);
     _salesInvoicesD = (await futureSalesInvoiceReturnD)!;
   }
 
   void onSearch(String search) {
     if (search.isEmpty) {
       setState(() {
-        _salesInvoices = List.from(_salesInvoicesSearch!);
+        _salesInvoices = List.from(_salesInvoicesSearch);
       });
     } else {
       setState(() {
-        _salesInvoices = List.from(_salesInvoicesSearch!);
+        _salesInvoices = List.from(_salesInvoicesSearch);
         _salesInvoices = _salesInvoices.where((salesInvoice) =>
             salesInvoice.customerName!.toLowerCase().contains(search)).toList();
       });
@@ -134,7 +119,6 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
           title: SizedBox(
             child: Column(
               children: [
-
                 TextField(
                   controller: searchValueController,
                   onChanged: (searchValue) => onSearch(searchValue),
@@ -156,13 +140,6 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
 
                   ),
                 ),
-                //),
-                // IconButton(
-                //   icon: const Icon(Icons.search, size: 25.0, color: Colors.white,),
-                //   onPressed: () {
-                //     onSearch(searchValueController.text.toString());
-                //   },
-                // )
               ],
             ),
           ),
@@ -180,8 +157,6 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
           backgroundColor: Colors.transparent,
 
           child: Container(
-
-            // alignment: Alignment.center,s
             decoration: BoxDecoration(
               color: FitnessAppTheme.nearlyDarkBlue,
               gradient: LinearGradient(
@@ -194,8 +169,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
               shape: BoxShape.circle,
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                    color: FitnessAppTheme.nearlyDarkBlue
-                        .withOpacity(0.4),
+                    color: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.4),
                     offset: const Offset(2.0, 14.0),
                     blurRadius: 16.0),
               ],
@@ -203,13 +177,10 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
             child: Material(
               color: Colors.transparent,
               child: InkWell(
-
                 splashColor: Colors.white.withOpacity(0.1),
                 highlightColor: Colors.transparent,
                 focusColor: Colors.transparent,
                 onTap: () {
-                  // widget.addClick;
-                  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSalesInvoiceHDataWidget()));
                   _navigateToAddScreen(context);
                 },
                 child: const Icon(
@@ -225,14 +196,12 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
   }
 
   _navigateToAddScreen(BuildContext context) async {
-    // CircularProgressIndicator();
     int menuId = 6207;
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if (isAllowAdd) {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => AddSalesInvoiceReturnHWidget(),
-      ))
-          .then((value) {
+      )).then((value) {
         getData();
       });
     }
@@ -241,29 +210,27 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
     }
   }
 
-  _navigateToEditScreen(BuildContext context,
-      SalesInvoiceReturnH customer) async {
-    int menuId = 6207;
-    bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
-    if (isAllowEdit) {
-      final result = await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => EditSalesInvoiceReturnHWidget(customer)),
-      ).then((value) => getData());
-    }
-    else {
-      FN_showToast(context, 'you_dont_have_edit_permission'.tr(), Colors.black);
-    }
-  }
+  // _navigateToEditScreen(BuildContext context, SalesInvoiceReturnH customer) async {
+  //   int menuId = 6207;
+  //   bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
+  //   if (isAllowEdit) {
+  //     final result = await Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //           builder: (context) => EditSalesInvoiceReturnHWidget(customer)),
+  //     ).then((value) => getData());
+  //   }
+  //   else {
+  //     FN_showToast(context, 'you_dont_have_edit_permission'.tr(), Colors.black);
+  //   }
+  // }
 
   _navigateToPrintScreen(BuildContext context, SalesInvoiceReturnH invoiceH, int index) async {
     int menuId = 6207;
     bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
-    //isAllowPrint = true;
     if (isAllowPrint) {
-      bool IsReceipt = true;
-      if (IsReceipt) {
+      bool isReceipt = true;
+      if (isReceipt) {
         DateTime date = DateTime.parse(invoiceH.salesInvoicesDate.toString());
         final dueDate = date.add(Duration(days: 7));
 
@@ -271,28 +238,14 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
         _salesInvoicesD = (await futureSalesInvoiceReturnD)!;
 
         List<InvoiceItem> invoiceItems = [];
-        print('Before Sales Invoice : ' + invoiceH.id.toString());
-        if (_salesInvoicesD != null) {
-          print('In Sales Invoice');
-          print('_salesInvoicesD >> ' + _salesInvoicesD.length.toString());
+        if (_salesInvoicesD.isNotEmpty) {
           for (var i = 0; i < _salesInvoicesD.length; i++) {
-            double qty = (_salesInvoicesD[i].displayQty != null) ? double.parse(
-                _salesInvoicesD[i].displayQty.toStringAsFixed(2)) : 0;
-            //double vat=0;
-            double vat = (_salesInvoicesD[i].displayTotalTaxValue != null)
-                ? double.parse(
-                _salesInvoicesD[i].displayTotalTaxValue.toStringAsFixed(2))
-                : 0;
-            //double price =_salesInvoicesD[i].displayPrice! as double;
-            double price = (_salesInvoicesD[i].displayPrice != null) ? double
-                .parse(_salesInvoicesD[i].displayPrice.toStringAsFixed(2)) : 0;
-            double total = (_salesInvoicesD[i].displayNetValue != null)
-                ? double.parse(
-                _salesInvoicesD[i].displayNetValue.toStringAsFixed(2))
-                : 0;
+            double qty = (_salesInvoicesD[i].displayQty != 0) ? double.parse(_salesInvoicesD[i].displayQty.toStringAsFixed(2)) : 0;
+            double vat = (_salesInvoicesD[i].displayTotalTaxValue != 0) ? double.parse(_salesInvoicesD[i].displayTotalTaxValue.toStringAsFixed(2)) : 0;
+            double price = (_salesInvoicesD[i].displayPrice != 0) ? double.parse(_salesInvoicesD[i].displayPrice.toStringAsFixed(2)) : 0;
+            double total = (_salesInvoicesD[i].displayNetValue != 0) ? double.parse(_salesInvoicesD[i].displayNetValue.toStringAsFixed(2)) : 0;
 
-            //InvoiceItem _invoiceItem= InvoiceItem(description: _salesInvoicesD[i].itemName.toString(),
-            InvoiceItem _invoiceItem = InvoiceItem(
+            InvoiceItem invoiceItem = InvoiceItem(
                 description: _salesInvoicesD[i].itemName.toString(),
                 date: date,
                 quantity: qty,
@@ -300,7 +253,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                 unitPrice: price,
                 totalValue: total);
 
-            invoiceItems.add(_invoiceItem);
+            invoiceItems.add(invoiceItem);
           }
         }
 
@@ -316,12 +269,9 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
             .parse(invoiceH.totalAfterDiscount!.toStringAsFixed(2)) : 0;
         double totalQty = (invoiceH.totalQty != null) ? double.parse(
             invoiceH.totalQty!.toStringAsFixed(2)) : 0;
-        double rowsCount = (invoiceH.rowsCount != null) ? double.parse(
+        double rowsCount = (invoiceH.rowsCount != 0) ? double.parse(
             invoiceH.rowsCount.toStringAsFixed(2)) : 0;
         String tafqeetName = (langId == 1) ? invoiceH.tafqitNameArabic.toString() : invoiceH.tafqitNameEnglish.toString();
-
-        print('taftaf');
-        print(tafqeetName);
 
         final invoice = Invoice( //ToDO
             supplier: Vendor(
@@ -358,38 +308,27 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                 companyName: langId == 1 ? companyName : companyName,
                 companyInvoiceTypeName: (invoiceH.invoiceTypeCode == "1") ? 'فاتورة ضريبية' : 'فاتورة ضريبية مبسطة',
                 companyInvoiceTypeName2: langId == 1 ? 'Simplified Tax Invoice' : 'Simplified Tax Invoice',
-                companyVatNumber: langId==1? "الرقم الضريبي  " + companyTaxID : 'Vat No' + companyTaxID,   //'302211485800003':'VAT No  302211485800003',
-                companyCommercialName: langId==1? 'ترخيص رقم ' + companyCommercialID  :'Registeration No '+ companyCommercialID,   //'ترخيص رقم 450714529009'  :'Registeration No 450714529009',
-                companyInvoiceNo: langId == 1 ? 'رقم مرتجع الفاتورة ' + invoiceH.salesInvoicesSerial.toString() : 'Invoice Return No ' + invoiceH.salesInvoicesSerial.toString(),
-                companyDate: langId == 1 ? "التاريخ  " + invoiceDate : "Date : " + invoiceDate,
-                companyAddress: langId==1? 'العنوان : ' + companyAddress :'العنوان : ' + companyAddress ,        //'العنوان : الرياض - ص ب 14922':'العنوان  الرياض - ص ب 14922',
-                companyPhone: langId==1? 'Tel No : '+ companyMobile :'Tel No :' + companyMobile,        //'Tel No :+966539679540':'Tel No :+966539679540',
-                customerName: langId == 1 ? "العميل : " + invoiceH.customerName.toString() : "Customer : " + invoiceH.customerName.toString(),
-                customerTaxNo:  langId==1?  "الرقم الضريبي  " + invoiceH.taxNumber.toString() : 'Vat No' + invoiceH.taxNumber.toString(),
+                companyVatNumber: langId==1? "الرقم الضريبي  $companyTaxID" : 'Vat No$companyTaxID',
+                companyCommercialName: langId==1? 'ترخيص رقم $companyCommercialID'  :'Registeration No $companyCommercialID',
+                companyInvoiceNo: langId == 1 ? 'رقم مرتجع الفاتورة ${invoiceH.salesInvoicesSerial}' : 'Invoice Return No ${invoiceH.salesInvoicesSerial}',
+                companyDate: langId == 1 ? "التاريخ  $invoiceDate" : "Date : $invoiceDate",
+                companyAddress: langId==1? 'العنوان : $companyAddress' :'العنوان : $companyAddress' ,
+                companyPhone: langId==1? 'Tel No : $companyMobile' :'Tel No :$companyMobile',
+                customerName: langId == 1 ? "العميل : ${invoiceH.customerName}" : "Customer : ${invoiceH.customerName}",
+                customerTaxNo:  langId==1?  "الرقم الضريبي  ${invoiceH.taxNumber}" : 'Vat No${invoiceH.taxNumber}',
                 salesInvoicesTypeName: (invoiceH.salesInvoicesTypeCode.toString() == "1") ? (langId == 1 ? invoiceH.salesInvoicesTypeName : invoiceH.salesInvoicesTypeName) : (langId == 1 ? invoiceH.salesInvoicesTypeName : invoiceH.salesInvoicesTypeName),
                 tafqeetName: tafqeetName
             ),
             invoice: invoice
         );
-
-        print('xOXOXOXO');
-        print(invoice.info.totalQty);
-
-
-        print('indexxxxxxxxx');
-        print(index);
         final bytesx = await imageControllers[index].capture();
         var bytesImg = bytesx as Uint8List;
 
-        final pdfFile = await pdfReceipt.generate(receipt, bytesImg);  // , _base64StringToUint8List(companyLogo)
+        final pdfFile = await pdfReceipt.generate(receipt, bytesImg);
         PdfApi.openFile(pdfFile);
 
-        //var boundary = globalKey.currentContext!.findRenderObject();
         ///ui.Image image = await x.toImage(pixelRatio: 3.0);
-
-
       }
-      else {}
     }
     else {
       FN_showToast(
@@ -449,10 +388,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                 Card(
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) =>
-                              DetailSalesInvoiceReturnHWidget(
-                                  _salesInvoices[index])),);
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceReturnHWidget(_salesInvoices[index])),);
                     },
                     child: ListTile(
                       leading: SizedBox(
@@ -468,10 +404,8 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                                   businessName: companyName,
                                   vatRegistrationNumber: companyTaxID,
                                   date: DateTime.parse(
-                                      _salesInvoices[index].salesInvoicesDate
-                                          .toString()),
-                                  totalAmountIncludingVat: _salesInvoices[index]
-                                      .totalNet!.toDouble(),
+                                      _salesInvoices[index].salesInvoicesDate.toString()),
+                                  totalAmountIncludingVat: _salesInvoices[index].totalNet!.toDouble(),
                                   vat: _salesInvoices[index].totalNet!,
                                 ),
                               ),
@@ -479,8 +413,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
 
                         ),
                       ),
-                      title: Text('serial'.tr() + " : " +
-                          _salesInvoices[index].salesInvoicesSerial.toString()),
+                      title: Text("${'serial'.tr()} : ${_salesInvoices[index].salesInvoicesSerial}"),
                       subtitle: Column(
                         crossAxisAlignment: langId == 1 ? CrossAxisAlignment
                             .start : CrossAxisAlignment.end,
@@ -488,16 +421,12 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Text('date'.tr() + " : " + DateFormat(
-                                  'yyyy-MM-dd').format(DateTime.parse(
-                                  _salesInvoices[index].salesInvoicesDate
-                                      .toString())))),
+                              child: Text("${'date'.tr()} : ${DateFormat('yyyy-MM-dd').format(DateTime.parse(
+                                  _salesInvoices[index].salesInvoicesDate.toString()))}")),
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Text('customer'.tr() + " : " +
-                                  _salesInvoices[index].customerName
-                                      .toString())),
+                              child: Text("${'customer'.tr()} : ${_salesInvoices[index].customerName}")),
                           const SizedBox(width: 5),
                           SizedBox(
                               child: Row(
@@ -609,14 +538,5 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
       );
     }
   }
-  Uint8List _base64StringToUint8List(String base64String) {
-    try {
-      Uint8List decodedBytes = base64Decode(base64String).buffer.asUint8List();
-      print('Decoded logoCompany length: ${decodedBytes.length}');
-      return decodedBytes;
-    } catch (e) {
-      print('Error decoding base64String: $e');
-      return Uint8List(0);
-    }
-  }
+
 }

@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Stores/storesApiService.dart';
-import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/TransferStock/editTransferStock.dart';
+import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/TransferStock/editTransferStock.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:intl/intl.dart';
-
 import '../../../../../common/globals.dart';
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../data/model/modules/module/accountreceivable/basicInputs/Stores/store.dart';
 import '../../../../../data/model/modules/module/accountreceivable/transactions/transferStock/transferStockH.dart';
-import '../../../../../data/model/modules/module/general/report/formulas.dart';
 import '../../../../../helpers/toast.dart';
-import '../../../../../service/general/Pdf/pdf_api.dart';
 import '../../../../../service/module/accountReceivable/transactions/TransferStock/transferStockApiService.dart';
-import '../../../../../service/module/general/reportUtility/reportUtilityApiService.dart';
 import '../../../../../utils/permissionHelper.dart';
 
 
@@ -32,6 +28,7 @@ class _TransferStockListState extends State<TransferStockList> {
    List<TransferStockH> _receivingTransferSearch = [];
    List<Stores> stores = [];
    String? selectedStoreName;
+   bool isTransfer = true;
 
    Stores? storeItem = Stores(storeCode: "", storeNameAra: "", storeNameEng: "", id: 0);
 
@@ -124,6 +121,7 @@ class _TransferStockListState extends State<TransferStockList> {
             itemBuilder: (BuildContext context, int index) {
               return
                 Card(
+                  color: isTransfer ? Colors.red[50] : Colors.white,
                   child: InkWell(
                     onTap: () {
 

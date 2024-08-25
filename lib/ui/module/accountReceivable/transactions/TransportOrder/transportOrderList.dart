@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/transportOrders/transportOrder.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/TransportOrders/transportOrdersApiService.dart';
-import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/TransportOrder/addTransportOrder.dart';
-import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/TransportOrder/editTransportOrder.dart';
+import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/TransportOrder/addTransportOrder.dart';
+import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/TransportOrder/editTransportOrder.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:intl/intl.dart';
 
@@ -66,7 +66,7 @@ class _TransportOrderListState extends State<TransportOrderList> {
       });
     } else {
       setState(() {
-        _transferOrders = List.from( _transferOrdersSearch!);
+        _transferOrders = List.from( _transferOrdersSearch);
         _transferOrders =  _transferOrders.where((maintenanceOrderH) =>
             maintenanceOrderH.trxSerial!.toLowerCase().contains(search)).toList();
       });
@@ -78,7 +78,7 @@ class _TransportOrderListState extends State<TransportOrderList> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
         title: SizedBox(
           child: Column(
             children: [
@@ -185,6 +185,7 @@ class _TransportOrderListState extends State<TransportOrderList> {
             itemBuilder: (BuildContext context, int index) {
               return
                 Card(
+                  color: Colors.white,
                   child: InkWell(
                     onTap: () {
                     },

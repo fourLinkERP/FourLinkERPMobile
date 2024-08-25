@@ -12,10 +12,9 @@ import 'package:fourlinkmobileapp/data/model/modules/module/inventory/basicInput
 import 'package:fourlinkmobileapp/data/model/modules/module/inventory/basicInputs/units/units.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/service/general/tafqeet/tafqeetApiService.dart';
-import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/items/itemApiService.dart';
 import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/units/unitApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
-import 'package:fourlinkmobileapp/service/module/accountReceivable/setup/SalesInvoiceTypes/salesInvoiceType.dart'; // *
+import 'package:fourlinkmobileapp/service/module/accountReceivable/setup/SalesInvoiceTypes/salesInvoiceType.dart';
 import 'package:fourlinkmobileapp/service/module/general/inventoryOperation/inventoryOperationApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 
@@ -32,23 +31,19 @@ import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/accountReceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnDApiService.dart';
 import '../../../../../service/module/accountReceivable/transactions/SalesInvoicesReturn/salesInvoiceReturnHApiService.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
-import '../../../../../utils/permissionHelper.dart';
 
 //APIS;
 NextSerialApiService _nextSerialApiService = NextSerialApiService();
-SalesInvoicesTypeApiService _salesInvoiceTypeApiService = SalesInvoicesTypeApiService();  //*
+SalesInvoicesTypeApiService _salesInvoiceTypeApiService = SalesInvoicesTypeApiService();
 SalesInvoiceReturnHApiService _salesInvoiceReturnHApiService = SalesInvoiceReturnHApiService();
 SalesInvoiceReturnDApiService _salesInvoiceReturnDApiService = SalesInvoiceReturnDApiService();
 InventoryOperationApiService _inventoryOperationApiService = InventoryOperationApiService();
 CustomerApiService _customerApiService = CustomerApiService();
-ItemApiService _itemsApiService = ItemApiService();
 UnitApiService _unitsApiService = UnitApiService();
 TafqeetApiService _tafqeetApiService = TafqeetApiService();
 
-//List Models
 List<Customer> customers = [];
-List<SalesInvoiceType> salesInvoiceTypes = [];  //*
-//List<Item> items = [];
+List<SalesInvoiceType> salesInvoiceTypes = [];
 List<Unit> units = [];
 
 int lineNum = 1;
@@ -68,13 +63,13 @@ double totalBeforeTax = 0;
 double totalTax = 0;
 double totalAfterDiscount = 0;
 double totalNet = 0;
-WidgetsToImageController WidgetImage= WidgetsToImageController();
+WidgetsToImageController widgetImage= WidgetsToImageController();
 
-bool isLoading = true;  //*
+bool isLoading = true;
 
 
 class AddSalesInvoiceReturnHWidget extends StatefulWidget {
-  AddSalesInvoiceReturnHWidget();
+  const AddSalesInvoiceReturnHWidget({super.key});
 
   @override
   _AddSalesInvoiceReturnHWidgetState createState() => _AddSalesInvoiceReturnHWidgetState();
@@ -83,25 +78,25 @@ class AddSalesInvoiceReturnHWidget extends StatefulWidget {
 class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWidget> {
   _AddSalesInvoiceReturnHWidgetState();
 
-  List<SalesInvoiceReturnD> SalesInvoiceReturnDLst = <SalesInvoiceReturnD>[];
+  List<SalesInvoiceReturnD> salesInvoiceReturnDLst = <SalesInvoiceReturnD>[];
   List<SalesInvoiceReturnD> selected = [];
   List<DropdownMenuItem<String>> menuSalesInvoiceTypes = [];
   List<DropdownMenuItem<String>> menuCustomers = [];
   List<DropdownMenuItem<String>> menuItems = [];
   List<DropdownMenuItem<String>> menuUnits = [];
 
-  String? selectedCustomerValue = null;
-  String? selectedCustomerEmail = null;
+  String? selectedCustomerValue;
+  String? selectedCustomerEmail;
   String? selectedTypeValue = "1";
-  String? selectedItemValue = null;
-  String? selectedItemName = null;
-  String? selectedUnitValue = null;
-  String? selectedUnitName = null;
-  String? price = null;
-  String? qty = null;
-  String? vat = null;
-  String? discount = null;
-  String? total = null;
+  String? selectedItemValue;
+  String? selectedItemName;
+  String? selectedUnitValue;
+  String? selectedUnitName;
+  String? price;
+  String? qty;
+  String? vat;
+  String? discount;
+  String? total;
 
 
   final _addFormKey = GlobalKey<FormState>();
@@ -122,8 +117,8 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
   final _totalTaxController = TextEditingController(); //Total Tax
   final _totalBeforeTaxController = TextEditingController(); // Total Before Tax
   final _totalNetController = TextEditingController(); // Total Net
-  final _tafqitNameArabicController = TextEditingController(); //Arabic Tafqeet
-  final _tafqitNameEnglishController = TextEditingController(); //English Tafqeet
+  final _tafqitNameArabicController = TextEditingController();
+  final _tafqitNameEnglishController = TextEditingController();
 
   //Footer
   final _dropdownItemFormKey = GlobalKey<FormState>(); //Item
@@ -140,18 +135,12 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
   final _taxController = TextEditingController(); //Tax Value
   final _netAftertaxController = TextEditingController(); //Tax Value
   final _costPriceController = TextEditingController(); //Cost Price
-  final _descriptionNameArabicController = TextEditingController();
-  final _descriptionNameEnglishController = TextEditingController();
-
-
-  final _dropdownTaxFormKey = GlobalKey<FormState>();
-  static const int numItems = 0;
 
   SalesInvoiceType? salesInvoiceTypeItem = SalesInvoiceType(
       salesInvoicesTypeCode: "",
       salesInvoicesTypeNameAra: "",
       salesInvoicesTypeNameEng: "",
-      id: 0); //*
+      id: 0);
   Item? itemItem = Item(itemCode: "", itemNameAra: "", itemNameEng: "", id: 0);
   Unit? unitItem = Unit(unitCode: "", unitNameAra: "", unitNameEng: "", id: 0);
 
@@ -161,7 +150,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     super.initState();
     fetchData();
 
-    //Reset Values
     lineNum = 1;
     productPrice = 0;
     productQuantity = 0;
@@ -181,7 +169,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     totalNet = 0;
     _salesInvoicesDateController.text = DateTime.now().toString();
 
-    print('generalSetupSalesInvoicesTypeCode >> $generalSetupSalesInvoicesTypeCode');
     if (generalSetupSalesInvoicesTypeCode.toString().isNotEmpty) {
       selectedTypeValue = generalSetupSalesInvoicesTypeCode;
     }
@@ -190,10 +177,8 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
   }
 
   void fetchData() async {
-    // Simulate fetching data
     await Future.delayed(const Duration(milliseconds: 50));
 
-    // Set isLoading to false when data is retrieved
     setState(() {
       isLoading = false;
     });
@@ -264,7 +249,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                     child: Column(
                       crossAxisAlignment: langId == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                       children: <Widget>[
-
                         Form(
                             key: _dropdownTypeFormKey,
                             child: Column(
@@ -554,9 +538,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                           if (selectedUnitValue != null &&
                                               selectedItemValue != null && selectedCustomerValue != null) {
                                             String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=2 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
-                                            //Item Price
                                             setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
-                                            //Factor
                                             int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                             setItemQty(selectedItemValue.toString(), selectedUnitValue.toString(), qty);
                                           }
@@ -714,7 +696,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                               DataColumn(label: Text("net".tr(), style: const TextStyle(color: Colors.white),), numeric: true,),
                               DataColumn(label: Text("action".tr(), style: const TextStyle(color: Colors.white),),),
                             ],
-                            rows: SalesInvoiceReturnDLst.map((p) =>
+                            rows: salesInvoiceReturnDLst.map((p) =>
                                 DataRow(cells: [
                                   DataCell(SizedBox(width: 5, child: Text(p.lineNum.toString()))),
                                   DataCell(SizedBox(width: 50, child: Text(p.itemName.toString()))),
@@ -781,44 +763,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                         ),
 
                         const SizedBox(height: 20),
-                        // Row(
-                        //   children: [
-                        //     Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft, child: Text('invoiceDiscountPercent'.tr(),
-                        //         style: const TextStyle(fontWeight: FontWeight.bold))),
-                        //     const SizedBox(width: 10),
-                        //     SizedBox(
-                        //       width: 150,
-                        //       child: TextFormField(
-                        //         controller: _invoiceDiscountPercentController,
-                        //         enabled: true,
-                        //         onChanged: (value) {
-                        //
-                        //         },
-                        //         keyboardType: TextInputType.number,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // const SizedBox(height: 15),
-                        // Row(
-                        //   children: [
-                        //     Align(alignment: langId == 1 ? Alignment.bottomRight : Alignment.bottomLeft,
-                        //         child: Text('invoiceDiscountValue'.tr(),style: const TextStyle(fontWeight: FontWeight.bold))),
-                        //     const SizedBox(width: 10),
-                        //     SizedBox(
-                        //       width: 150,
-                        //       child: TextFormField(
-                        //         enabled: true,
-                        //         controller: _invoiceDiscountValueController,
-                        //         onChanged: (value) {
-                        //
-                        //         },
-                        //         keyboardType: TextInputType.number,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-                        // const SizedBox(height: 20),
                         Row(
                           children: [
                             Row(
@@ -830,7 +774,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                   width: 70,
                                   child: textFormFields(
                                     controller: _totalValueController,
-                                    //hintText: "totalValue".tr(),
                                     enable: false,
                                     onSaved: (val) {
                                       total = val;
@@ -891,7 +834,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                               width: 160,
                               child: textFormFields(
                                 controller: _totalBeforeTaxController,
-                                //hintText: "totalBeforeTax".tr(),
                                 enable: false,
                                 onSaved: (val) {
                                   total = val;
@@ -913,7 +855,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                   width: 80,
                                   child: textFormFields(
                                     controller: _totalTaxController,
-                                    //hintText: "totalTax".tr(),
                                     enable: false,
                                     onSaved: (val) {
                                       total = val;
@@ -933,7 +874,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                   width: 80,
                                   child: textFormFields(
                                     controller: _totalNetController,
-                                    //hintText: "total".tr(),
                                     enable: false,
                                     onSaved: (val) {
                                       total = val;
@@ -946,50 +886,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                           ],
                         ),
                         const SizedBox(height: 20),
-                        // Container(
-                        //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                        //   child: Row(
-                        //     children: <Widget>[
-                        //       Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameArabic'.tr(),
-                        //           style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                        //       const SizedBox(width: 10),
-
-                        //       SizedBox(
-                        //         width: 206,
-                        //         child: TextFormField(
-                        //           controller: _descriptionNameArabicController,
-                        //           decoration: const InputDecoration(
-                        //             hintText: '',
-                        //           ),
-
-                        //           onChanged: (value) {},
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        // Container(
-                        //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                        //   child: Row(
-                        //     children: <Widget>[
-                        //       Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameEnglish'.tr(),
-                        //           style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                        //       const SizedBox(width: 10),
-
-                        //       SizedBox(
-                        //         width: 200,
-                        //         child: TextFormField(
-                        //           controller: _descriptionNameEnglishController,
-                        //           decoration: const InputDecoration(
-                        //             hintText: '',
-                        //           ),
-
-                        //           onChanged: (value) {},
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
                         Container(
                           margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                           child: Row(
@@ -1001,15 +897,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                 width: 230,
                                 child: TextFormField(
                                   controller: _tafqitNameArabicController,
-                                  decoration: const InputDecoration(
-                                    // hintText: '',
-                                  ),
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'please_enter_value'.tr();
-                                  //   }
-                                  //   return null;
-                                  // },
                                   enabled: false,
                                   onChanged: (value) {},
                                 ),
@@ -1028,16 +915,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                 width: 230,
                                 child: TextFormField(
                                   controller: _tafqitNameEnglishController,
-                                  decoration: const InputDecoration(
-                                    // hintText: '',
-                                  ),
                                   enabled: false,
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'please_enter_value'.tr();
-                                  //   }
-                                  //   return null;
-                                  // },
                                   onChanged: (value) {},
                                 ),
                               ),
@@ -1045,7 +923,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                           ),
                         ),
                         WidgetsToImage(
-                            controller:WidgetImage,
+                            controller:widgetImage,
                             child :Container(
                               padding: const EdgeInsets.all(1),
                               color: Colors.white,
@@ -1059,9 +937,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
                                 ),
                               ),
                             )
-
                         ),
-
                       ],
                     )
                 )
@@ -1073,11 +949,9 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
   }
 
 
-//#region Business Function
   changeItemUnit(String itemCode) {
-    //Units
     units = [];
-    Future<List<Unit>> Units = _unitsApiService.getItemUnit(itemCode).then((data) {
+    Future<List<Unit>> futureUnits = _unitsApiService.getItemUnit(itemCode).then((data) {
 
       units = data;
       if(data.isNotEmpty){
@@ -1095,16 +969,12 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     });
   }
 
-//Item Tax Value
   setItemTaxValue(String itemCode, double netValue) {
-    //Serial
     Future<InventoryOperation> futureInventoryOperation = _inventoryOperationApiService
         .getItemTaxValue(itemCode, netValue).then((data) {
-      print('cccc0');
       InventoryOperation inventoryOperation = data;
 
       setState(() {
-        print('cccc');
         double tax = (inventoryOperation.itemTaxValue != null) ? inventoryOperation.itemTaxValue : 0;
         print(tax.toString());
         _taxController.text = tax.toString();
@@ -1122,11 +992,9 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
       print(e);
     });
   }
-//Item Cost
-  setItemCostPrice(String itemCode, String storeCode, int MatrixSerialCode, String trxDate) {
-    //Serial
+  setItemCostPrice(String itemCode, String storeCode, int matrixSerialCode, String trxDate) {
     Future<InventoryOperation> futureInventoryOperation = _inventoryOperationApiService
-        .getItemCostPrice(itemCode, storeCode, MatrixSerialCode, trxDate).then((data) {
+        .getItemCostPrice(itemCode, storeCode, matrixSerialCode, trxDate).then((data) {
       InventoryOperation inventoryOperation = data;
 
       setState(() {
@@ -1139,9 +1007,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     });
   }
 
-//Item Quantity
   setItemQty(String itemCode, String unitCode, int qty) {
-    //Serial
     Future<InventoryOperation> futureInventoryOperation =
     _inventoryOperationApiService.getItemQty(itemCode, unitCode, qty).then((data) {
       InventoryOperation inventoryOperation = data;
@@ -1158,9 +1024,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     });
   }
 
-//Item Price
   setItemPrice(String itemCode, String unitCode, String criteria, String customerCode) {
-    //Serial
     Future<double> futureSellPrice = _salesInvoiceReturnDApiService
         .getItemSellPriceData(itemCode, unitCode, "View_AR_SalesInvoicesType", criteria, customerCode).then((data) {
       double sellPrice = data;
@@ -1177,20 +1041,15 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     });
   }
 
-//Item Price
   setMaxDiscount(double? discountValue, double totalValue, String empCode) {
-    //Serial
     Future<InventoryOperation> futureInventoryOperation =
     _inventoryOperationApiService.getUserMaxDiscountResult(discountValue, totalValue, empCode).then((data) {
-      print('In Max Discount');
       InventoryOperation inventoryOperation = data;
 
       setState(() {
         if (inventoryOperation.isExeedUserMaxDiscount == true) {
-          //Toaster
           FN_showToast(context, 'current_discount_exceed_user_discount'.tr(), Colors.black);
 
-          //Reset Value
           _displayDiscountController.text = "";
           _discountController.text = "";
           calcTotalPriceRow();
@@ -1200,18 +1059,13 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
         }
       });
 
-
       return inventoryOperation;
     }, onError: (e) {
       print(e);
     });
   }
 
-
-//#region Tafqeet
-
   setTafqeet(String currencyCode, String currencyValue) {
-    //Serial
     Future<Tafqeet> futureTafqeet = _tafqeetApiService.getTafqeet(
         currencyCode, currencyValue).then((data) {
       Tafqeet tafqeet = data;
@@ -1230,23 +1084,14 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     });
   }
 
-
-//#endregion
-
-
-//#region Next Serial
   setNextSerial() {
-    //Serial
     Future<NextSerial> futureSerial = _nextSerialApiService.getNextSerial(
-        "AR_SalesInvoicesH", "SalesInvoicesSerial",     //Table Name - Field Name - Case
-        " And SalesInvoicesCase=2  ").then((data) {     // We Work On On serial Without Type
+        "AR_SalesInvoicesH", "SalesInvoicesSerial",
+        " And SalesInvoicesCase=2  ").then((data) {
       NextSerial nextSerial = data;
 
-      //Date
       DateTime now = DateTime.now();
       _salesInvoicesDateController.text = DateFormat('yyyy-MM-dd').format(now);
-
-      //print(customers.length.toString());
       _salesInvoicesSerialController.text = nextSerial.nextSerial.toString();
       return nextSerial;
     }, onError: (e) {
@@ -1254,13 +1099,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     });
   }
 
-//#endregion
-
-//#endregion
-
-//#region Save
-
-//Add Row
   addInvoiceRow() {
     //Item
     if (selectedItemValue == null || selectedItemValue!.isEmpty) {
@@ -1279,52 +1117,47 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
       return;
     }
 
-    SalesInvoiceReturnD _salesInvoiceReturnD = SalesInvoiceReturnD();
-    //Item
-    _salesInvoiceReturnD.itemCode = selectedItemValue;
-    _salesInvoiceReturnD.itemName = selectedItemName;
-    _salesInvoiceReturnD.unitCode = selectedUnitValue;
-    _salesInvoiceReturnD.displayQty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
-    _salesInvoiceReturnD.qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+    SalesInvoiceReturnD salesInvoiceReturnD = SalesInvoiceReturnD();
 
-    //Cost Price
-    _salesInvoiceReturnD.costPrice =
+    salesInvoiceReturnD.itemCode = selectedItemValue;
+    salesInvoiceReturnD.itemName = selectedItemName;
+    salesInvoiceReturnD.unitCode = selectedUnitValue;
+    salesInvoiceReturnD.displayQty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+    salesInvoiceReturnD.qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+
+    salesInvoiceReturnD.costPrice =
     (_costPriceController.text.isNotEmpty) ? double.parse(_costPriceController.text) : 0;
 
-    //Price
-    _salesInvoiceReturnD.displayPrice = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
-    _salesInvoiceReturnD.price = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
+    salesInvoiceReturnD.displayPrice = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
+    salesInvoiceReturnD.price = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
 
-    //Total
-    _salesInvoiceReturnD.total = _salesInvoiceReturnD.qty * _salesInvoiceReturnD.price;
-    _salesInvoiceReturnD.displayTotal = _salesInvoiceReturnD.displayQty * _salesInvoiceReturnD.displayPrice;
-    //discount
-    _salesInvoiceReturnD.displayDiscountValue =
+    salesInvoiceReturnD.total = salesInvoiceReturnD.qty * salesInvoiceReturnD.price;
+    salesInvoiceReturnD.displayTotal = salesInvoiceReturnD.displayQty * salesInvoiceReturnD.displayPrice;
+
+    salesInvoiceReturnD.displayDiscountValue =
     (_displayDiscountController.text.isNotEmpty) ? double.parse(_displayDiscountController.text) : 0;
-    _salesInvoiceReturnD.discountValue = _salesInvoiceReturnD.displayDiscountValue;
-    //Net After Discount
-    _salesInvoiceReturnD.netAfterDiscount = _salesInvoiceReturnD.displayTotal - _salesInvoiceReturnD.displayDiscountValue;
-    setItemTaxValue(selectedItemValue.toString(), _salesInvoiceReturnD.netAfterDiscount);
-    _salesInvoiceReturnD.displayTotalTaxValue = (0.15 * _salesInvoiceReturnD.netAfterDiscount); //(_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
-    _salesInvoiceReturnD.totalTaxValue = (_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
+    salesInvoiceReturnD.discountValue = salesInvoiceReturnD.displayDiscountValue;
+
+    salesInvoiceReturnD.netAfterDiscount = salesInvoiceReturnD.displayTotal - salesInvoiceReturnD.displayDiscountValue;
+    setItemTaxValue(selectedItemValue.toString(), salesInvoiceReturnD.netAfterDiscount);
+    salesInvoiceReturnD.displayTotalTaxValue = (0.15 * salesInvoiceReturnD.netAfterDiscount); //(_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
+    salesInvoiceReturnD.totalTaxValue = (_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
     //Total Net
-    _salesInvoiceReturnD.displayNetValue = _salesInvoiceReturnD.netAfterDiscount + _salesInvoiceReturnD.displayTotalTaxValue ;
-    _salesInvoiceReturnD.netValue = _salesInvoiceReturnD.netAfterDiscount + _salesInvoiceReturnD.totalTaxValue;
+    salesInvoiceReturnD.displayNetValue = salesInvoiceReturnD.netAfterDiscount + salesInvoiceReturnD.displayTotalTaxValue ;
+    salesInvoiceReturnD.netValue = salesInvoiceReturnD.netAfterDiscount + salesInvoiceReturnD.totalTaxValue;
 
-    print('Add Product 10');
+    salesInvoiceReturnD.lineNum = lineNum;
 
-    _salesInvoiceReturnD.lineNum = lineNum;
+    salesInvoiceReturnDLst.add(salesInvoiceReturnD);
 
-    SalesInvoiceReturnDLst.add(_salesInvoiceReturnD);
-
-    totalQty += _salesInvoiceReturnD.displayQty;
-    totalPrice +=  _salesInvoiceReturnD.total ;
-    totalDiscount += _salesInvoiceReturnD.displayDiscountValue;
+    totalQty += salesInvoiceReturnD.displayQty;
+    totalPrice +=  salesInvoiceReturnD.total ;
+    totalDiscount += salesInvoiceReturnD.displayDiscountValue;
 
     rowsCount += 1;
     totalAfterDiscount = totalPrice - totalDiscount;
     totalBeforeTax = totalAfterDiscount;
-    totalTax += _salesInvoiceReturnD.displayTotalTaxValue;
+    totalTax += salesInvoiceReturnD.displayTotalTaxValue;
     totalNet = totalBeforeTax + totalTax;
 
     _totalQtyController.text = totalQty.toString();
@@ -1337,10 +1170,8 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     _totalNetController.text = totalNet.toString();
     setTafqeet("2", _totalNetController.text);
 
-    //
     lineNum++;
 
-    //FN_showToast(context,'login_success'.tr(),Colors.black);
     FN_showToast(context, 'add_Item_Done'.tr(), Colors.black);
 
     setState(() {
@@ -1382,38 +1213,28 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     );
 
     if (confirmed!) {
-      // Find the index of the row with the given lineNum
-      int indexToRemove = SalesInvoiceReturnDLst.indexWhere((p) => p.lineNum == lineNum);
+      int indexToRemove = salesInvoiceReturnDLst.indexWhere((p) => p.lineNum == lineNum);
 
       if (indexToRemove != -1) {
-        // Remove the row
-        SalesInvoiceReturnDLst.removeAt(indexToRemove);
-
-        // Recalculate the parameters based on the remaining rows
+        salesInvoiceReturnDLst.removeAt(indexToRemove);
         recalculateParameters();
 
-
-
-        // Trigger a rebuild
         setState(() {});
       }
     }
   }
   void recalculateParameters() {
-    //SalesInvoiceH _salesInvoiceH = SalesInvoiceH();
     totalQty = 0;
     totalTax = 0;
     totalDiscount = 0;
-    rowsCount = SalesInvoiceReturnDLst.length;
+    rowsCount = salesInvoiceReturnDLst.length;
     totalNet = 0;
     totalPrice = 0;
     totalBeforeTax = 0;
     totalAfterDiscount = 0;
     totalBeforeTax = 0;
-    //_salesInvoiceH.tafqitNameArabic = _tafqitNameArabicController.text;
-    //_salesInvoiceH.tafqitNameEnglish = _tafqitNameEnglishController.text;
 
-    for (var row in SalesInvoiceReturnDLst) {
+    for (var row in salesInvoiceReturnDLst) {
       totalQty += row.displayQty;
       totalTax += row.displayTotalTaxValue;
       totalDiscount += row.displayDiscountValue;
@@ -1422,26 +1243,7 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
       totalBeforeTax += row.netAfterDiscount;
       totalPrice  += row.netAfterDiscount;
     }
-    // void recalculateHeaderParameters() {
-    //   _salesInvoiceH.totalValue = 0;
-    //   // Calculate totalValue based on the remaining rows
-    //   for (var row in SalesInvoiceDLst) {
-    //     _salesInvoiceH.totalValue += row.displayTotal;
-    //   }
-    //
-    //   // Calculate tafqitNameArabic and tafqitNameEnglish based on your logic
-    //   // ...
-    //
-    //   // Update your controllers or other widgets if needed
-    //   _totalValueController.text = _salesInvoiceH.totalValue.toString();
-    //   _tafqitNameArabicController.text = _salesInvoiceH.tafqitNameArabic;
-    //   _tafqitNameEnglishController.text = _salesInvoiceH.tafqitNameEnglish;
-    // }
 
-    // Calculate invoiceDiscountPercent and invoiceDiscountValue based on your logic
-    // ...
-
-    // Update your controllers or other widgets if needed
     _totalQtyController.text = totalQty.toString();
     _totalTaxController.text = totalTax.toString();
     _totalDiscountController.text = totalDiscount.toString();
@@ -1453,46 +1255,33 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     setTafqeet("2", _totalNetController.text);
   }
 
-//Save
   saveInvoice(BuildContext context) async {
-    print('323434');
-    //Items
-    if (SalesInvoiceReturnDLst.length <= 0) {
+    if (salesInvoiceReturnDLst.isEmpty) {
       FN_showToast(context, 'please_Insert_One_Item_At_Least'.tr(), Colors.black);
       return;
     }
 
-    //Serial
     if (_salesInvoicesSerialController.text.isEmpty) {
       FN_showToast(context, 'please_Set_Invoice_Serial'.tr(), Colors.black);
       return;
     }
 
-    //Date
     if (_salesInvoicesDateController.text.isEmpty) {
       FN_showToast(context, 'please_Set_Invoice_Date'.tr(), Colors.black);
       return;
     }
 
-    //Customer
     if (selectedCustomerValue == null || selectedCustomerValue!.isEmpty) {
       FN_showToast(context, 'please_Set_Customer'.tr(), Colors.black);
       return;
     }
-    final bytesx = await WidgetImage.capture();
-    var InvoiceQRCode = bytesx as Uint8List;
+    final bytesx = await widgetImage.capture();
+    var invoiceQRCode = bytesx as Uint8List;
     String base64String ='';
-    if (InvoiceQRCode != null) {
-      base64String = base64Encode(InvoiceQRCode);
+    if (invoiceQRCode.isNotEmpty) {
+      base64String = base64Encode(invoiceQRCode);
 
-      print(base64String.toString());
     }
-
-    // //Currency
-    // if(currencyCodeSelectedValue == null || currencyCodeSelectedValue!.isEmpty){
-    //   FN_showToast(context,'Please Set Currency',Colors.black);
-    //   return;
-    // }
 
     await _salesInvoiceReturnHApiService.createSalesInvoiceReturnH(context, SalesInvoiceReturnH(
 
@@ -1515,125 +1304,75 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
       tafqitNameArabic: _tafqitNameArabicController.text,
       tafqitNameEnglish: _tafqitNameEnglishController.text,
         invoiceQRCodeBase64: base64String
-
     ));
 
-    //Save Footer For Now
+    for (var i = 0; i < salesInvoiceReturnDLst.length; i++) {
+      SalesInvoiceReturnD salesInvoiceReturnD = salesInvoiceReturnDLst[i];
+      if (salesInvoiceReturnD.isUpdate == false) {
 
-    for (var i = 0; i < SalesInvoiceReturnDLst.length; i++) {
-      SalesInvoiceReturnD _salesInvoiceReturnD = SalesInvoiceReturnDLst[i];
-      if (_salesInvoiceReturnD.isUpdate == false) {
-        //Add
         _salesInvoiceReturnDApiService.createSalesInvoiceReturnD(context, SalesInvoiceReturnD(
 
             salesInvoicesCase: 2,
             salesInvoicesSerial: _salesInvoicesSerialController.text,
             salesInvoicesTypeCode: selectedTypeValue,
-            itemCode: _salesInvoiceReturnD.itemCode,
-            lineNum: _salesInvoiceReturnD.lineNum,
-            price: _salesInvoiceReturnD.price,
-            displayPrice: _salesInvoiceReturnD.price,
-            qty: _salesInvoiceReturnD.qty,
-            displayQty: _salesInvoiceReturnD.displayQty,
-            total: _salesInvoiceReturnD.total,
-            displayTotal: _salesInvoiceReturnD.total,
-            totalTaxValue: _salesInvoiceReturnD.totalTaxValue,
-            discountValue: _salesInvoiceReturnD.discountValue,
-            displayDiscountValue: _salesInvoiceReturnD.discountValue,
-            costPrice: _salesInvoiceReturnD.costPrice,
-            netAfterDiscount: _salesInvoiceReturnD.netAfterDiscount,
-            displayTotalTaxValue: _salesInvoiceReturnD.displayTotalTaxValue,
-            displayNetValue: _salesInvoiceReturnD.displayNetValue,
-            unitCode: _salesInvoiceReturnD.unitCode,
-            netValue: _salesInvoiceReturnD.netValue,
-            netBeforeTax: _salesInvoiceReturnD.netBeforeTax,
-            storeCode: "1" // For Now
+            itemCode: salesInvoiceReturnD.itemCode,
+            lineNum: salesInvoiceReturnD.lineNum,
+            price: salesInvoiceReturnD.price,
+            displayPrice: salesInvoiceReturnD.price,
+            qty: salesInvoiceReturnD.qty,
+            displayQty: salesInvoiceReturnD.displayQty,
+            total: salesInvoiceReturnD.total,
+            displayTotal: salesInvoiceReturnD.total,
+            totalTaxValue: salesInvoiceReturnD.totalTaxValue,
+            discountValue: salesInvoiceReturnD.discountValue,
+            displayDiscountValue: salesInvoiceReturnD.discountValue,
+            costPrice: salesInvoiceReturnD.costPrice,
+            netAfterDiscount: salesInvoiceReturnD.netAfterDiscount,
+            displayTotalTaxValue: salesInvoiceReturnD.displayTotalTaxValue,
+            displayNetValue: salesInvoiceReturnD.displayNetValue,
+            unitCode: salesInvoiceReturnD.unitCode,
+            netValue: salesInvoiceReturnD.netValue,
+            netBeforeTax: salesInvoiceReturnD.netBeforeTax,
+            storeCode: "1"
 
         ));
       }
     }
-    //print To Send
     sendEmail();
-
     Navigator.pop(context);
-  }
-
-//#endregion
-
-//#region Get
-
-  getCustomerData() {
-    for (var i = 0; i < customers.length; i++) {
-      menuCustomers.add(DropdownMenuItem(value: customers[i].customerCode.toString(),
-          child: Text(customers[i].customerNameAra.toString())));
-    }
-    setState(() {
-
-    });
   }
 
   getSalesInvoiceTypeData() {
     for (var i = 0; i < salesInvoiceTypes.length; i++) {
-      menuSalesInvoiceTypes.add(
-          DropdownMenuItem(value: salesInvoiceTypes[i].salesInvoicesTypeCode.toString(), child: Text(salesInvoiceTypes[i].
-          salesInvoicesTypeNameAra.toString())));
       if (salesInvoiceTypes[i].salesInvoicesTypeCode == selectedTypeValue) {
-        // print('in amr3');
         salesInvoiceTypeItem = salesInvoiceTypes[salesInvoiceTypes.indexOf(salesInvoiceTypes[i])];
-        // print('in amr4');
-        // print(customerTypeItem );
       }
     }
-    //selectedTypeValue = "1";
     setNextSerial();
     setState(() {});
   }
 
-  getUnitData() {
-    for (var i = 0; i < units.length; i++) {
-      menuUnits.add(DropdownMenuItem(value: units[i].unitCode.toString(),
-          child: Text((langId == 1) ? units[i].unitNameAra.toString() : units[i].unitNameEng.toString())));
-    }
-    setState(() {
-
-    });
-  }
-
   fillCombos() {
-    //Sales Invoice Type
     Future<List<SalesInvoiceType>> futureSalesInvoiceType = _salesInvoiceTypeApiService
         .getSalesInvoicesReturnTypes().then((data) {
       salesInvoiceTypes = data;
-      //print(customers.length.toString());
       getSalesInvoiceTypeData();
       return salesInvoiceTypes;
     }, onError: (e) {
       print(e);
     });
 
-
-    //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
+      setState(() {
 
-      getCustomerData();
+      });
       return customers;
     }, onError: (e) {
       print(e);
     });
 
-    // //Items
-    // Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
-    //   items = data;
-    //
-    //   getItemData();
-    //   return items;
-    // }, onError: (e) {
-    //   print(e);
-    // });
-
-    //Units
-    Future<List<Unit>> Units = _unitsApiService.getUnits().then((data) {
+    Future<List<Unit>> futureUnits = _unitsApiService.getUnits().then((data) {
       units = data;
 
       return units;
@@ -1641,22 +1380,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
       print(e);
     });
   }
-
-//#endregion
-
-//#region Navigate
-
-  // _navigateToAddDetailScreen(BuildContext context, String invoiceSerial) async {
-  //   final result = await Navigator.push(context,
-  //     MaterialPageRoute(builder: (context) => AddSalesInvoiceReturnDetailDataWidget(invoiceSerial)),
-  //   );
-  //   //).then((value) => getData());
-  //
-  // }
-
-//#endregion
-
-//#region General Widgets - To Be Moved To General Locations
 
   Widget textFormFields(
       {controller, hintText, onTap, onSaved, textInputType, enable = true}) {
@@ -1689,13 +1412,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
             width: 2,
           ),
         ),
-        // border: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(20),
-        //   borderSide: BorderSide(
-        //     color: lColor,
-        //     width: 2,
-        //   ),
-        // ),
       ),
     );
   }
@@ -1742,10 +1458,6 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     );
   }
 
-//#endregion
-
-//#region Calc
-
   calcTotalPriceRow() {
     double price = 0;
     if (_priceController.text.isNotEmpty) {
@@ -1757,11 +1469,9 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
       qtyVal = double.parse(_displayQtyController.text);
     }
 
-    print('toGetUnitTotal');
     var total = qtyVal * price;
     _displayTotalController.text = total.toString();
     _totalController.text = total.toString();
-    print(total);
 
     double discount = 0;
     if (_displayDiscountController.text.isNotEmpty) {
@@ -1770,19 +1480,10 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
 
     double netAfterDiscount = total - discount;
     _netAfterDiscountController.text = netAfterDiscount.toString();
-
-    print('toGetUnitTotal2');
-    print(netAfterDiscount);
-    print('totalonz3');
     setItemTaxValue(selectedItemValue.toString(), netAfterDiscount);
   }
 
-
-//#endregion
-
-
   sendEmail() {
-    //Get Email Setting
     String username = EmailSettingData.userName.toString();
     String password = EmailSettingData.userPassword.toString();
     String smtpServer = EmailSettingData.smtpServer.toString();
@@ -1798,11 +1499,11 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     String text = (langId == 1) ? "فاتورة رقم " : "Invoice No ";
     text += _salesInvoicesSerialController.text;
 
-    print('send Email To' + selectedCustomerEmail.toString());
+    print('send Email To$selectedCustomerEmail');
     //Customer Email
     String recepiant = selectedCustomerEmail.toString();
 
-    print('send Email To' + recepiant.toString());
+    print('send Email To$recepiant');
 
     Email.sendMail(Username: username,
         Password: password,
@@ -1818,17 +1519,8 @@ class _AddSalesInvoiceReturnHWidgetState extends State<AddSalesInvoiceReturnHWid
     double totalPrice = (_totalValueController.text.isNotEmpty) ? double.parse(_totalValueController.text) : 0;
     double totalBeforeDiscount = totalQuantity + totalPrice;
 
-    // _totalDiscountController.text = totalDiscount.toString();
-    // _totalValueController.text = totalPrice.toString();
-    // double totalValue = (_total) ?  : 0;
-
     double invoiceDiscountValue = percent * totalBeforeDiscount / 100;
     _invoiceDiscountValueController.text = invoiceDiscountValue.toString();
   }
-
-  calcDiscountPercentFromValue() {
-
-  }
-
 
 }
