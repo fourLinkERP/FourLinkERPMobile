@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/shippingPermission/ShippingPermissionH.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/shippingPermission/shippingPermissionH.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 class DetailShippingPermissionWidget extends StatefulWidget {

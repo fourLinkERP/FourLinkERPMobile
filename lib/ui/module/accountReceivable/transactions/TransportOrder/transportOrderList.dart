@@ -308,9 +308,7 @@ class _TransportOrderListState extends State<TransportOrderList> {
     if(isAllowEdit)
     {
 
-      final result = await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => EditTransferOrderDataWidget(transportOrder)),
+      await Navigator.push(context, MaterialPageRoute(builder: (context) => EditTransferOrderDataWidget(transportOrder)),
       ).then((value) => getData());
 
     }
@@ -333,9 +331,9 @@ class _TransportOrderListState extends State<TransportOrderList> {
       Formulas(columnName: 'printTime',columnValue:DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()))
     ];
 
-    final report = reportUtilityApiService.getReportData(menuId, criteria, formulasList).then((data) async{
+    reportUtilityApiService.getReportData(menuId, criteria, formulasList).then((data) async{
 
-      final outputFilePath = 'TransferOrder.pdf';
+      const outputFilePath = 'TransferOrder.pdf';
       final dir = await getApplicationDocumentsDirectory();
       final file = File('${dir.path}/$outputFilePath');
       await file.writeAsBytes(data);

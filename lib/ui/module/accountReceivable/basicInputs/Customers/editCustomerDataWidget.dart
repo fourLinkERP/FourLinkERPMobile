@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
@@ -9,12 +8,11 @@ import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/ba
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import '../../../../../common/login_components.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/salesMen/salesMan.dart';
-import '../../../../../data/model/modules/module/accountreceivable/basicInputs/CustomerGroups/CustomerGroup.dart';
-import '../../../../../data/model/modules/module/accountreceivable/basicInputs/Customers/PreventCustomerWithoutAttachments.dart';
+import '../../../../../data/model/modules/module/accountreceivable/basicInputs/CustomerGroups/customerGroup.dart';
+import '../../../../../data/model/modules/module/accountreceivable/basicInputs/Customers/preventCustomerWithoutAttachments.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/CustomerGroups/customerGroupApiService.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';

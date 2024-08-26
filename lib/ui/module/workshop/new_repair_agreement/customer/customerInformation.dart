@@ -15,7 +15,7 @@ import '../../../../../common/login_components.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customerTypes/customerType.dart';
-import '../../../../../data/model/modules/module/accountreceivable/basicInputs/CustomerGroups/CustomerGroup.dart';
+import '../../../../../data/model/modules/module/accountreceivable/basicInputs/CustomerGroups/customerGroup.dart';
 import '../../../../../data/model/modules/module/carMaintenance/carCars/carCar.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../helpers/toast.dart';

@@ -5,7 +5,7 @@ import '../../../../../common/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
-import '../../../../../data/model/modules/module/accountreceivable/transactions/shippingPermission/ShippingPermissionD.dart';
+import '../../../../../data/model/modules/module/accountreceivable/transactions/shippingPermission/shippingPermissionD.dart';
 
 class ShippingPermissionDApiService{
 

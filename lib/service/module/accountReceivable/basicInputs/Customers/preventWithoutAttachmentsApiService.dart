@@ -2,7 +2,7 @@
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../../../../../data/model/modules/module/accountreceivable/basicInputs/Customers/PreventCustomerWithoutAttachments.dart';
+import '../../../../../data/model/modules/module/accountreceivable/basicInputs/Customers/preventCustomerWithoutAttachments.dart';
 
 class PreventWithoutAttachApiService{
 

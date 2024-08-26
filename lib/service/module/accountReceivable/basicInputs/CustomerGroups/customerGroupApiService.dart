@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/basicInputs/CustomerGroups/CustomerGroup.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/basicInputs/CustomerGroups/customerGroup.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';

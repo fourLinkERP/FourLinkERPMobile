@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/receipt/stockShippingReceipt.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/shippingPermission/ShippingPermissionD.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/shippingPermission/ShippingPermissionH.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/shippingPermission/shippingPermissionD.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/shippingPermission/shippingPermissionH.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/stock/stockShipping.dart';
 import 'package:fourlinkmobileapp/service/general/receipt/pdfShippingReceipt.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/ShippingPermission/shippingPermissionDApiService.dart';
@@ -44,7 +44,7 @@ class _ShippingPermissionHListPageState extends State<ShippingPermissionHListPag
     super.initState();
 
     setState(() {
-      _founded = _shippingPermissions!;
+      _founded = _shippingPermissions;
     });
   }
   void getData() async {
@@ -60,7 +60,7 @@ class _ShippingPermissionHListPageState extends State<ShippingPermissionHListPag
               int.parse(b.trxSerial!).compareTo(int.parse(a.trxSerial!)));
 
           setState(() {
-            _founded = _shippingPermissions!;
+            _founded = _shippingPermissions;
           });
         }
       }
@@ -327,10 +327,8 @@ class _ShippingPermissionHListPageState extends State<ShippingPermissionHListPag
     if(isAllowEdit)
     {
 
-      final result = await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => EditShippingPermissionDataWidget(shippingH)),
-      ).then((value) => getData());
+      final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+          EditShippingPermissionDataWidget(shippingH)),).then((value) => getData());
 
     }
     else

@@ -194,9 +194,7 @@ class _TransferStockListState extends State<TransferStockList> {
      if(isAllowEdit)
      {
 
-       final result = await Navigator.push(
-         context,
-         MaterialPageRoute(builder: (context) => EditReceiveTransfers(transferStockH)),
+       await Navigator.push(context, MaterialPageRoute(builder: (context) => EditReceiveTransfers(transferStockH)),
        ).then((value) => getData());
 
      }
