@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/models/dashboard/dashboard_slider_data.dart';
 import '../../theme/fitness_app_theme.dart';
 import '../../helpers/hex_decimal.dart';
-import '../../ui/module/HR/hrMain/MainHR.dart';
-import '../../ui/module/requests/generalList/ReqistsList.dart';
+import '../../ui/module/HR/hrMain/mainHR.dart';
+import '../../ui/module/requests/generalList/reqistsList.dart';
 import '../../ui/module/workshop/workshop_home/workshopMainScreen.dart';
 import '../MainTransactions.dart';
  

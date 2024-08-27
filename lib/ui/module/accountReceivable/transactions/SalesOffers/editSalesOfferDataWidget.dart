@@ -39,7 +39,6 @@ TafqeetApiService _tafqeetApiService= TafqeetApiService();
 SalesInvoiceDApiService _salesInvoiceDApiService= SalesInvoiceDApiService();
 InventoryOperationApiService _inventoryOperationApiService = InventoryOperationApiService();
 
-//List Models
 List<Customer> customers=[];
 List<SalesOfferType> salesOfferTypes=[];
 List<Item> items=[];
@@ -79,26 +78,22 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
   String serial = "";
   List<SalesOfferD> salesOfferDLst = <SalesOfferD>[];
   List<SalesOfferD> selected = [];
-  List<DropdownMenuItem<String>> menuSalesOfferTypes = [ ];
-  List<DropdownMenuItem<String>> menuCustomers = [ ];
-  List<DropdownMenuItem<String>> menuItems = [ ];
 
   String? selectedCustomerValue = "";
   String? selectedTypeValue = "";
-  String? selectedItemValue = null;
-  String? selectedItemName = null;
-  String? selectedUnitValue = null;
-  String? selectedUnitName = null;
-  String? price = null;
-  String? qty = null;
-  String? vat = null;
-  String? discount = null;
-  String? total = null;
+  String? selectedItemValue;
+  String? selectedItemName;
+  String? selectedUnitValue;
+  String? selectedUnitName;
+  String? price;
+  String? qty;
+  String? vat;
+  String? discount;
+  String? total;
 
 
   final _addFormKey = GlobalKey<FormState>();
 
-  //Header
   final _dropdownTypeFormKey = GlobalKey<FormState>(); //Type
   final _offerSerialController = TextEditingController(); //Serial
   final _offerDateController = TextEditingController(); //Date
@@ -112,7 +107,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
   final _totalValueController = TextEditingController(); //Total Value
   final _totalDiscountController = TextEditingController(); //Total Discount
   final _totalAfterDiscountController = TextEditingController(); //Total After Discount
-  final _totalTotalBeforeTaxController = TextEditingController(); //Total Before Tax
+  //final _totalTotalBeforeTaxController = TextEditingController(); //Total Before Tax
   final _totalTaxController = TextEditingController(); //Total Tax
   final _totalBeforeTaxController = TextEditingController(); // Total Before Tax
   final _totalNetController = TextEditingController(); // Total Net
@@ -134,10 +129,6 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
   final _taxController = TextEditingController(); //Tax Value
   final _netAftertaxController = TextEditingController(); //Tax Value
   final _costPriceController = TextEditingController(); //Cost Price
-  final _descriptionNameArabicController = TextEditingController();
-  final _descriptionNameEnglishController = TextEditingController();
-
-  static const int numItems = 0;
 
   SalesOfferType?  salesOfferTypeItem=SalesOfferType(offersTypeCode: "",offersTypeNameAra: "",offersTypeNameEng: "",id: 0);
   Customer?  customerItem=Customer(customerCode: "",customerNameAra: "",customerNameEng: "",id: 0);
@@ -168,7 +159,6 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     _offerDateController.text = (widget.salesOffersH.offerDate) != null ? DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.salesOffersH.offerDate!.toString())) : "";
     _toDateController.text = (widget.salesOffersH.toDate) != null ? DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.salesOffersH.toDate!.toString())) : "";
     selectedCustomerValue = widget.salesOffersH.customerCode.toString();
-    print("selectedCustomerValue : $selectedCustomerValue");
     selectedTypeValue = widget.salesOffersH.offerTypeCode!;
     _totalController.text = widget.salesOffersH.totalNet.toString();
 
@@ -180,7 +170,6 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     _totalNetController.text = widget.salesOffersH.totalNet.toString();
 
     _totalValueController.text = widget.salesOffersH.totalValue.toString();
-    print("salesOffersH.totalValue = " + widget.salesOffersH.totalValue.toString());
     _invoiceDiscountPercentController.text = widget.salesOffersH.invoiceDiscountPercent.toString();
     _invoiceDiscountValueController.text = widget.salesOffersH.invoiceDiscountValue.toString();
     _totalAfterDiscountController.text = widget.salesOffersH.totalAfterDiscount.toString();
@@ -194,33 +183,28 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     summeryTotal =(widget.salesOffersH.totalNet != null)? double.parse(_totalNetController.text) : 0;
     setTafqeet("1" ,summeryTotal.toString());
 
-    //Sales Invoice Type
     Future<List<SalesOfferType>> futureSalesOfferType = _salesOfferTypeApiService.getSalesOffersTypes().then((data) {
       salesOfferTypes = data;
 
       getSalesOfferTypeData();
       return salesOfferTypes;
     }, onError: (e) {
-      //print(e);
     });
 
-    //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
       getCustomerData();
-      setState(() {
 
-      });
       return customers;
     }, onError: (e) {
       print(e);
     });
 
-    //Items
-    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
+    Future<List<Item>> futureItems = _itemsApiService.getItems().then((data) {
       items = data;
-      //print(customers.length.toString());
-      getItemData();
+      setState(() {
+
+      });
       return items;
     }, onError: (e) {
       print(e);
@@ -1007,11 +991,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                   width: 80,
                                   child: textFormFields(
                                     controller: _totalTaxController,
-                                    //hintText: "totalTax".tr(),
                                     enable: false,
-                                    onSaved: (val) {
-                                      total = val;
-                                    },
                                     textInputType: TextInputType.number,
                                   ),
                                 ),
@@ -1024,11 +1004,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                               width: 80,
                               child: textFormFields(
                                 controller: _totalNetController,
-                                //hintText: "total".tr(),
                                 enable: false,
-                                onSaved: (val) {
-                                  total = val;
-                                },
                                 textInputType: TextInputType.number,
                               ),
                             ),
@@ -1046,12 +1022,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                 width: 210,
                                 child: TextFormField(
                                   controller: _tafqitNameArabicController,
-                                  decoration: const InputDecoration(
-                                    // hintText: '',
-                                  ),
-
                                   enabled: false,
-                                  onChanged: (value) {},
                                 ),
                               ),
                             ],
@@ -1068,24 +1039,12 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
                                 width: 210,
                                 child: TextFormField(
                                   controller: _tafqitNameEnglishController,
-                                  decoration: const InputDecoration(
-                                    // hintText: '',
-                                  ),
                                   enabled: false,
-                                  // validator: (value) {
-                                  //   if (value!.isEmpty) {
-                                  //     return 'please_enter_value'.tr();
-                                  //   }
-                                  //   return null;
-                                  // },
-                                  onChanged: (value) {},
                                 ),
                               ),
                             ],
                           ),
                         )
-
-
                       ],
                     )
                 )
@@ -1097,86 +1056,6 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
   }
 
   addInvoiceRow() {
-
-    // print('hontaaaaaaaaa');
-    //
-    // //Item
-    // if(selectedItemValue == null || selectedItemValue!.isEmpty){
-    //   FN_showToast(context,'please_enter_item'.tr(),Colors.black);
-    //   return;
-    // }
-    // //Price
-    // if(_priceController.text.isEmpty){
-    //   FN_showToast(context,'please_enter_Price'.tr(),Colors.black);
-    //   return;
-    // }
-    //
-    // //Quantity
-    // if(_qtyController.text.isEmpty){
-    //   FN_showToast(context,'please_enter_quantity'.tr(),Colors.black);
-    //   return;
-    // }
-    //
-    // productPrice = (_priceController.text.isEmpty) ? 0 : double.parse(_priceController.text);
-    // productQuantity = (_qtyController.text.isEmpty) ? 0 : int.parse(_qtyController.text);
-    // productTotal = productPrice * productQuantity;
-    // productDiscount = (_discountController.text.isEmpty) ? 0 : double.parse(_discountController.text);
-    // productTotalAfterDiscount = (productTotal - productDiscount);
-    // productVat = (_vatController.text.isEmpty) ? 0 : double.parse(_vatController.text);
-    // productTotalAfterVat = (productTotalAfterDiscount + productVat);
-    //
-    // print(' productTotalAfterVat ' + productTotalAfterVat.toString());
-    //
-    // SalesOfferD _salesOfferD= new SalesOfferD();
-    // _salesOfferD.itemCode= selectedItemValue;
-    // // var item = items.firstWhere((element) => element.itemCode == selectedItemValue) ;
-    // // _salesOfferD.itemName=item.itemNameAra.toString();
-    // _salesOfferD.itemName= selectedItemName;
-    // _salesOfferD.qty= productQuantity;
-    // _salesOfferD.displayQty= productQuantity;
-    // _salesOfferD.price = productPrice;
-    // _salesOfferD.displayPrice= productPrice;
-    // _salesOfferD.displayTotalTaxValue = productVat;
-    // _salesOfferD.totalTaxValue = productVat;
-    // _salesOfferD.discountValue = productDiscount;
-    // _salesOfferD.displayDiscountValue = productDiscount;
-    // _salesOfferD.displayTotal = productTotalAfterVat;
-    // _salesOfferD.total = productTotalAfterVat;
-    //
-    // _salesOfferD.lineNum = lineNum;
-    //
-    // salesOfferDLst.add(_salesOfferD);
-    //
-    // totalQty += productQuantity;
-    // rowsCount += 1;
-    // totalDiscount += productDiscount;
-    // totalBeforeTax += (productPrice * productQuantity) - productDiscount  ;
-    // totalTax += productVat;
-    // summeryTotal += productTotalAfterVat;
-    //
-    // _totalQtyController.text = totalQty.toString();
-    // _rowsCountController.text = rowsCount.toString();
-    // _totalDiscountController.text = totalDiscount.toString();
-    // _totalBeforeTaxController.text = totalBeforeTax.toString();
-    // _totalTaxController.text = totalTax.toString();
-    // _totalController.text = summeryTotal.toString();
-    // setTafqeet("1" ,_totalController.text);
-    //
-    // lineNum++;
-    //
-    // //FN_showToast(context,'login_success'.tr(),Colors.black);
-    // FN_showToast(context,'add_Item_Done'.tr(),Colors.black);
-    //
-    // setState(() {
-    //   _priceController.text= "";
-    //   _qtyController.text ="";
-    //   _discountController.text ="" ;
-    //   _vatController.text ="";
-    //   itemItem=Item(itemCode: "",itemNameAra: "",itemNameEng: "",id: 0);
-    //   unitItem=Unit(unitCode: "",unitNameAra: "",unitNameEng: "",id: 0);
-    //   selectedItemValue="";
-    //   selectedUnitValue="";
-    // });
 
     if(selectedItemValue == null || selectedItemValue!.isEmpty){
       FN_showToast(context,'please_enter_item'.tr(),Colors.black);
@@ -1381,15 +1260,11 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
           netAfterDiscount: _salesOfferD.netAfterDiscount,
           displayTotalTaxValue: _salesOfferD.displayTotalTaxValue,
           displayNetValue: _salesOfferD.displayNetValue,
-          storeCode: "1" // For Now
+          storeCode: "1"
         ));
-
-
 
       }
     }
-
-
 
     Navigator.pop(context) ;
   }
@@ -1416,19 +1291,14 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
       int indexToRemove = salesOfferDLst.indexWhere((p) => p.lineNum == lineNum);
 
       if (indexToRemove != -1) {
-        // Remove the row
         salesOfferDLst.removeAt(indexToRemove);
-
-        // Recalculate the parameters based on the remaining rows
         recalculateParameters();
 
-        // Trigger a rebuild
         setState(() {});
       }
     }
   }
   void recalculateParameters() {
-    //SalesInvoiceH _salesInvoiceH = SalesInvoiceH();
     totalQty = 0;
     totalTax = 0;
     totalDiscount = 0;
@@ -1438,8 +1308,6 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     totalBeforeTax = 0;
     totalAfterDiscount = 0;
     totalBeforeTax = 0;
-    //_salesInvoiceH.tafqitNameArabic = _tafqitNameArabicController.text;
-    //_salesInvoiceH.tafqitNameEnglish = _tafqitNameEnglishController.text;
 
     for (var row in salesOfferDLst) {
       totalQty += row.displayQty;
@@ -1464,33 +1332,26 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
   }
 
   getSalesOfferTypeData() {
-    if (salesOfferTypes != null) {
+    if (salesOfferTypes.isNotEmpty) {
       for(var i = 0; i < salesOfferTypes.length; i++){
-        menuSalesOfferTypes.add(DropdownMenuItem(value: salesOfferTypes[i].offersTypeCode.toString(), child: Text(salesOfferTypes[i].
-        offersTypeNameAra.toString())));
         if(salesOfferTypes[i].offersTypeCode == selectedTypeValue){
-          // print('in amr3');
           salesOfferTypeItem = salesOfferTypes[salesOfferTypes.indexOf(salesOfferTypes[i])];
           selectedTypeValue = salesOfferTypeItem!.offersTypeCode.toString();
         }
-
       }
-
     }
     setState(() {
 
     });
   }
 
-
   getCustomerData() {
-    if (customers != null) {
+    if (customers.isNotEmpty) {
       for(var i = 0; i < customers.length; i++){
 
         if(customers[i].customerCode == selectedCustomerValue){
           customerItem = customers[customers.indexOf(customers[i])];
         }
-
       }
     }
     setState(() {
@@ -1499,12 +1360,11 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
   }
 
   getSalesOfferData() {
-    print('Hobaaz List' + salesOfferDLst.length.toString());
     if (salesOfferDLst.isNotEmpty) {
       for(var i = 0; i < salesOfferDLst.length; i++){
 
-        SalesOfferD _salesOfferD=salesOfferDLst[i];
-        _salesOfferD.isUpdate=true;
+        SalesOfferD salesOfferD=salesOfferDLst[i];
+        salesOfferD.isUpdate=true;
 
       }
     }
@@ -1512,43 +1372,27 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
 
     });
   }
-
-  getItemData() {
-    if (items != null) {
-      for(var i = 0; i < items.length; i++){
-        menuItems.add(DropdownMenuItem(child: Text(items[i].itemNameAra.
-        toString()),value: items[i].itemCode.toString()));
-      }
-    }
-    setState(() {
-
-    });
-  }
-
-
-  //#region Calc
 
   calcTotalPriceRow()
   {
     double price=0;
-    if(!_priceController.text.isEmpty)
+    if(_priceController.text.isNotEmpty)
     {
       price=double.parse(_priceController.text);
     }
 
     double qtyVal=0;
-    if(!_displayQtyController.text.isEmpty)
+    if(_displayQtyController.text.isNotEmpty)
     {
       qtyVal=double.parse(_displayQtyController.text);
     }
 
-    print('toGetUnittotal');
     var total = qtyVal * price;
     _displayTotalController.text = total.toString();
     _totalController.text = total.toString();
 
     double discount=0;
-    if(!_displayDiscountController.text.isEmpty)
+    if(_displayDiscountController.text.isNotEmpty)
     {
       discount=double.parse(_displayDiscountController.text);
     }
@@ -1556,27 +1400,13 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     double netAfterDiscount=total - discount;
 
     _netAfterDiscountController.text = netAfterDiscount.toString();
-
-
-    print('toGetUnittotal2');
-    print( netAfterDiscount);
-    print('totalonz3');
     setItemTaxValue(selectedItemValue.toString(),netAfterDiscount);
-
 
   }
 
-//#endregion
-
-
-
-
-//#region Business Function
-
-  // Item Units - Change Item Units
   changeItemUnit(String itemCode) {
     units = [];
-    Future<List<Unit>> Units = _unitsApiService.getItemUnit(itemCode).then((data) {
+    Future<List<Unit>> futureUnits = _unitsApiService.getItemUnit(itemCode).then((data) {
       units = data;
       if(data.isNotEmpty){
         unitItem = data[0];
@@ -1593,36 +1423,30 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
   setItemTaxValue(String itemCode , double netValue  ){
     //Serial
     Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemTaxValue(itemCode, netValue).then((data) {
-      print('cccc0');
       InventoryOperation inventoryOperation = data;
 
       setState(() {
-        print('cccc');
-        double tax = (inventoryOperation.itemTaxValue != null) ? inventoryOperation.itemTaxValue   : 0;
-        print(tax.toString());
+        double tax = (inventoryOperation.itemTaxValue != 0) ? inventoryOperation.itemTaxValue   : 0;
         _taxController.text = tax.toString();
         double nextAfterDiscount = 0 ;
-        if(!_netAfterDiscountController.text.isEmpty)
+        if(_netAfterDiscountController.text.isNotEmpty)
         {
           nextAfterDiscount = double.parse(_netAfterDiscountController.text);
         }
         double netTotal = nextAfterDiscount + tax;
         _netAftertaxController.text=netTotal.toString();
-
-
       });
-
 
       return inventoryOperation;
     }, onError: (e) {
-      print(e);
+
     });
   }
 
   //Item Cost
-  setItemCostPrice(String itemCode , String storeCode, int MatrixSerialCode,String trxDate  ){
+  setItemCostPrice(String itemCode , String storeCode, int matrixSerialCode,String trxDate  ){
     //Serial
-    Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemCostPrice(itemCode, storeCode, MatrixSerialCode ,trxDate).then((data) {
+    Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemCostPrice(itemCode, storeCode, matrixSerialCode ,trxDate).then((data) {
 
       InventoryOperation inventoryOperation = data;
 
@@ -1630,16 +1454,13 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
         _costPriceController.text = inventoryOperation.itemCostPrice.toString();
       });
 
-
       return inventoryOperation;
     }, onError: (e) {
       print(e);
     });
   }
 
-  //Item Quantity
   setItemQty(String itemCode , String unitCode,int qty ){
-    //Serial
     Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemQty(itemCode, unitCode, qty  ).then((data) {
 
       InventoryOperation inventoryOperation = data;
@@ -1647,9 +1468,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
       setState(() {
         _qtyController.text = (inventoryOperation.itemFactorQty != null) ? inventoryOperation.itemFactorQty.toString() : "1";
         calcTotalPriceRow();
-
       });
-
 
       return inventoryOperation;
     }, onError: (e) {
@@ -1657,9 +1476,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     });
   }
 
-  //Item Price
   setItemPrice(String itemCode , String unitCode,String criteria, String? customerCode){
-    //Serial
     Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_OffersType",criteria, customerCode).then((data) {
 
       double sellPrice = data;
@@ -1677,21 +1494,15 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     });
   }
 
-  //Item Price
   setMaxDiscount(double? discountValue, double totalValue ,String empCode ){
-    //Serial
     Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getUserMaxDiscountResult(discountValue, totalValue,empCode ).then((data) {
-      print('In Max Discount');
       InventoryOperation inventoryOperation = data;
 
       setState(() {
 
         if(inventoryOperation.isExeedUserMaxDiscount == true)
         {
-          //Toaster
           FN_showToast(context,'current_discount_exceed_user_discount'.tr(),Colors.black);
-
-          //Reset Value
           _displayDiscountController.text = "";
           _discountController.text="";
           calcTotalPriceRow();
@@ -1709,11 +1520,7 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     });
   }
 
-
-  //#region Tafqeet
-
   setTafqeet(String currencyCode , String currencyValue ){
-    //Serial
     Future<Tafqeet>  futureTafqeet = _tafqeetApiService.getTafqeet(currencyCode, currencyValue ).then((data) {
 
       Tafqeet tafqeet = data;
@@ -1723,27 +1530,18 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
 
       });
 
-
       return tafqeet;
     }, onError: (e) {
       print(e);
     });
   }
 
-
-  //#endregion
-
-  //#region Next Serial
   setNextSerial(){
-    //Serial
     Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("AR_OffersH", "OfferSerial", " And OfferTypeCode='" + selectedTypeValue.toString() + "'").then((data) {
       NextSerial nextSerial = data;
 
-      //Date
       DateTime now = DateTime.now();
       _offerDateController.text =DateFormat('yyyy-MM-dd').format(now);
-
-      //print(customers.length.toString());
       _offerSerialController.text = nextSerial.nextSerial.toString();
       return nextSerial;
     }, onError: (e) {
@@ -1751,10 +1549,6 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
     });
   }
 
-//#endregion
-
-
-//#region General Widgets - To Be Moved To General Locations
 
   Widget textFormFields({controller, hintText,onTap, onSaved, textInputType,enable=true})  {
     return TextFormField(
@@ -1786,59 +1580,10 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
             width: 2,
           ),
         ),
-        // border: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(20),
-        //   borderSide: BorderSide(
-        //     color: lColor,
-        //     width: 2,
-        //   ),
-        // ),
       ),
     );
   }
 
-  Widget headLines({required String number, required String title}) {
-    return Column(
-      crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              number,
-              style: TextStyle(
-
-                color: Colors.black87,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(width: 10),
-            Container(
-              height: 25,
-              width: 3,
-              color: Color.fromRGBO(144, 16, 46, 1),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              title,
-              style: TextStyle(
-                color: Colors.black87,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        const Divider(
-          thickness: 3,
-          color: Color.fromRGBO(144, 16, 46, 1),
-        )
-      ],
-    );
-  }
   deleteOfferRow(BuildContext context, int? id) async {
     final result = await showDialog<bool>(
       context: context,
@@ -1875,6 +1620,5 @@ class _EditSalesOfferHDataWidgetState extends State<EditSalesOfferHDataWidget> {
       FN_showToast(context, 'you_dont_have_delete_permission'.tr(), Colors.black);
     }
   }
-//#endregion
 
 }

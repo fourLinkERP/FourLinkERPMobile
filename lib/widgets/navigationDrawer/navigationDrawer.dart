@@ -13,7 +13,7 @@ import '../../helpers/navigator.dart';
 import '../../theme/app_theme.dart';
 import '../../ui/auth/login/login_screen.dart';
 import '../../ui/module/Lawyer/lawyerCaseFollowUp/lawyerCaseFollowUpReport.dart';
-import '../../ui/module/requests/generalList/ReqistsList.dart';
+import '../../ui/module/requests/generalList/reqistsList.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/Employees/employeeApiService.dart';
 //import '../../ui/setting/send_email.dart';

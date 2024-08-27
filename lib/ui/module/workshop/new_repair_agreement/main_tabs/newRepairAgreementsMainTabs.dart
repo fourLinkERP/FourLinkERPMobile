@@ -7,7 +7,7 @@ import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/Review
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/customer/customerInformation.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/customer_requests/customerRequests.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/external_detection/externalDetection.dart';
-import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/indicators/Indicators.dart';
+import 'package:fourlinkmobileapp/ui/module/workshop/new_repair_agreement/indicators/indicator.dart';
 import 'package:fourlinkmobileapp/ui/module/workshop/workshop_home/workshopMainScreen.dart';
 import 'package:supercharged/supercharged.dart';
 

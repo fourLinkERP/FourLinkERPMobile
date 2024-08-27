@@ -10,7 +10,7 @@ import '../../theme/fitness_app_theme.dart';
 import '../../ui/general/ChartsAndWidgetsPage.dart';
 import '../../ui/general/TodayWorkPage.dart';
 import '../../ui/module/requests/Tabs/myDuties.dart';
-import '../../ui/module/requests/generalList/ReqistsList.dart';
+import '../../ui/module/requests/generalList/reqistsList.dart';
 import '../../widgets/navigationDrawer/navigationDrawer.dart';
 import '../../widgets/ui_view/body_measurement.dart';
 import '../../widgets/ui_view/glass_view.dart';
