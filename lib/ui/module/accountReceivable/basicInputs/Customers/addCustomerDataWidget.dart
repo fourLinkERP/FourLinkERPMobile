@@ -268,7 +268,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
             )
           ],
         ),
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
       ),
 
       body: Form(

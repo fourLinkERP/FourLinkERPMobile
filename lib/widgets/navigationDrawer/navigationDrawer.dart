@@ -53,7 +53,7 @@ class _navigationDrawerState extends State<navigationDrawer> {
 
     var brightness = MediaQuery.of(context).platformBrightness;
     bool isLightMode = brightness == Brightness.light;
-    print("systemCode : " + systemCode.toString());
+    print("systemCode : $systemCode");
     return Drawer(
       backgroundColor: AppTheme.white, //isLightMode ? AppTheme.white : AppTheme.nearlyBlack,
       child: systemCode == 2 ? ListView(

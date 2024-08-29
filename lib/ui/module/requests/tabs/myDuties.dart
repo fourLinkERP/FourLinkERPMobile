@@ -92,7 +92,7 @@ class _MyDutiesState extends State<MyDuties> {
                     onTap: () {},
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/responsability.jpg'),
-                      title: Text('request_type'.tr() + " : " + duties[index].requestTypeName.toString()),
+                      title: Text("${'request_type'.tr()} : ${duties[index].requestTypeName}"),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
@@ -101,12 +101,12 @@ class _MyDutiesState extends State<MyDuties> {
                               color: Colors.white30,
                               child: Row(
                                 children: [
-                                  Text('date'.tr() + " : "  + DateFormat('yyyy-MM-dd').format(DateTime.parse(duties[index].trxDate.toString())))  ,
+                                  Text("${'date'.tr()} : ${DateFormat('yyyy-MM-dd').format(DateTime.parse(duties[index].trxDate.toString()))}")  ,
                                 ],
                               )),
                           Container(height: 20, color: Colors.white30, child: Row(
                             children: [
-                              Text('employee'.tr() + " : " + duties[index].requestEmpName.toString()),
+                              Text("${'employee'.tr()} : ${duties[index].requestEmpName}"),
                             ],
                           )),
                           const SizedBox(width: 5),
@@ -115,7 +115,7 @@ class _MyDutiesState extends State<MyDuties> {
                                 children: <Widget>[
                                   Expanded(
                                     child: Center(
-                                        child: Container(
+                                        child: SizedBox(
                                           width: 120,
                                           child: ElevatedButton.icon(
                                             icon: const Icon(
@@ -159,7 +159,7 @@ class _MyDutiesState extends State<MyDuties> {
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: Center(
-                                        child: Container(
+                                        child: SizedBox(
                                           width: 120,
                                           child: ElevatedButton.icon(
                                             icon: const Icon(

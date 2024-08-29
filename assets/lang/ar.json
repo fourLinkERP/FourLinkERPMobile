@@ -756,7 +756,23 @@
     "receive": "استلام",
     "please_select_from_city": "من فضلك اختر من مدينة",
     "please_select_to_city": "من فضلك اختر الى مدينة",
-    "currentStore": "المخزن الحالي"
+    "currentStore": "المخزن الحالي",
+    "teachers": "المدرسين",
+    "students": "الطلاب",
+    "subjects": "المواد الدراسية",
+    "qualifications": "المؤهلات",
+    "searchTeachers": "بحث عن مدرس",
+    "add_teacher": "اضافة مدرس",
+    "nationality": "الجنسية",
+    "nationalId": "رقم الهوية",
+    "birthDate": "تاريخ الميلاد",
+    "searchSubjects": "بحث عن مادة",
+    "add_subject": "اضافة مادة دراسية",
+    "teacherCode": "كود المدرس",
+    "hoursNumber": "عدد الساعات",
+    "add_student": "اضافة طالب",
+    "searchStudents": "بحث عن طالب",
+    "qualification": "المؤهل"
 
 }
 

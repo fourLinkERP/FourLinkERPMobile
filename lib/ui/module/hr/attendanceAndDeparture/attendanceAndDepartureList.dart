@@ -8,8 +8,6 @@ import '../../../../common/globals.dart';
 import '../../../../cubit/app_cubit.dart';
 import '../../../../cubit/app_states.dart';
 import '../../../../data/model/modules/module/hr/attendanceAndDeparture/AttendanceAndDeparture.dart';
-import '../../../../helpers/hex_decimal.dart';
-import '../../../../theme/fitness_app_theme.dart';
 import 'addDeparture.dart';
 
 AttendanceApiService _apiService = AttendanceApiService();
@@ -162,7 +160,6 @@ class _AttendanceAndDepartureListState extends State<AttendanceAndDepartureList>
     );
   }
   Widget buildAttendance(){
-    //return Center(child: Text("No Data To Show", style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     if(State is AppErrorState){
       return const Center(child: Text('no data'));
     }

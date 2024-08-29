@@ -650,6 +650,22 @@
     "fromLocation": "From location",
     "toLocation": "To location",
     "receive": "Receive",
-    "currentStore": "Current Store"
+    "currentStore": "Current Store",
+    "teachers": "Teachers",
+    "students": "Students",
+    "subjects": "Subjects",
+    "qualifications": "Qualifications",
+    "searchTeachers": "Search for a teacher",
+    "add_teacher": "Add Teacher",
+    "nationality": "Nationality",
+    "nationalId": "National Id",
+    "birthDate": "Birth Date",
+    "searchSubjects": "Search for a subject",
+    "add_subject": "Add Subject",
+    "teacherCode": "Teacher code",
+    "hoursNumber": "Number of Hours",
+    "add_student": "Add Student",
+    "searchStudents": "Search for a students",
+    "qualification": "Qualification"
 
 }
