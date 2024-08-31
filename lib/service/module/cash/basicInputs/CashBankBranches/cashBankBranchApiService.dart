@@ -18,9 +18,9 @@ import '../../../../../common/globals.dart';
     Map data = {
       'Search': {
         'CompanyCode': companyCode,
-        "bankbranchCode": "1"
-        // 'EmpCode': empCode,
-        // "IsWorkWithPerm": true
+        //"bankbranchCode": "1"
+         'EmpCode': empCode,
+         "IsWorkWithPerm": true
       }
     };
 
