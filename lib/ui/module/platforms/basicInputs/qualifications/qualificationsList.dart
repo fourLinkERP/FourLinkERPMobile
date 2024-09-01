@@ -1,102 +1,55 @@
+
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/service/module/platforms/basicInputs/teachersApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../../cubit/app_cubit.dart';
-import '../../../../../data/model/modules/module/platforms/basicInputs/teachers.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import '../../../../../utils/permissionHelper.dart';
-import 'addTeacherScreen.dart';
+import 'addQualificationScreen.dart';
 
-TeacherApiService _apiService = TeacherApiService();
-
-class TeachersListPage extends StatefulWidget {
-  const TeachersListPage({Key? key}) : super(key: key);
+class QualificationsListPage extends StatefulWidget {
+  const QualificationsListPage({Key? key}) : super(key: key);
 
   @override
-  State<TeachersListPage> createState() => _TeachersListPageState();
+  State<QualificationsListPage> createState() => _QualificationsListPageState();
 }
 
-class _TeachersListPageState extends State<TeachersListPage> {
+class _QualificationsListPageState extends State<QualificationsListPage> {
 
-  final _searchValueController = TextEditingController();
-   List<Teacher> _teachers = [];
-   List<Teacher> _teachersSearch = [];
-
-   @override
-   void initState() {
-
-     getData();
-     super.initState();
-     AppCubit.get(context).CheckConnection();
-   }
-
-   void getData() async {
-     try {
-       List<Teacher>? futureTeacher = await _apiService.getTeachers();
-
-       if (futureTeacher.isNotEmpty) {
-         _teachers = futureTeacher;
-         _teachersSearch = List.from(_teachers);
-
-         if (_teachers.isNotEmpty) {
-           _teachers.sort((a, b) => b.teacherNameAra!.compareTo(a.teacherNameAra!));
-
-           setState(() {});
-         }
-       }
-     } catch (error) {
-       AppCubit.get(context).EmitErrorState();
-     }
-   }
-
-   void onSearch(String search) {
-     if (search.isEmpty) {
-       setState(() {
-         _teachers = List.from(_teachersSearch);
-       });
-     } else {
-       setState(() {
-         _teachers = List.from(_teachersSearch);
-         _teachers = _teachers.where((checkStoreH) =>
-             checkStoreH.teacherNameAra!.toLowerCase().contains(search)).toList();
-       });
-     }
-   }
+  final List _qualifications = [];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),    //Color.fromRGBO(144, 16, 46, 1), // Main Color
-        title: SizedBox(
-          height: 38,
-          child: TextField(
-            controller: _searchValueController,
-            onChanged: (value) => onSearch(value),
-            decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                contentPadding: const EdgeInsets.all(0),
-                prefixIcon: Icon(Icons.search, color: Colors.grey.shade500,),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(50),
-                    borderSide: BorderSide.none
-                ),
-                hintStyle: const TextStyle(
-                  fontSize: 14,
-                  color: Color.fromRGBO(144, 16, 46, 1),     //Color.fromRGBO(144, 16, 46, 1) //Main Font Color
-                ),
-                hintText: "searchTeachers".tr()
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+          title: SizedBox(
+            height: 38,
+            child: TextField(
+              //onChanged: (value) => onSearch(value),
+              decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.white,
+                  contentPadding: const EdgeInsets.all(0),
+                  prefixIcon: Icon(Icons.search, color: Colors.grey.shade500,),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(50),
+                      borderSide: BorderSide.none
+                  ),
+                  hintStyle: const TextStyle(
+                    fontSize: 14,
+                    color: Color.fromRGBO(144, 16, 46, 1),
+                  ),
+                  hintText: "searchQualifications".tr()
+              ),
             ),
           ),
         ),
-      ),
-      body: SafeArea(child: buildTeacher()),
-      floatingActionButton: FloatingActionButton(
+        body: SafeArea(child: buildStudent()),
+        floatingActionButton: FloatingActionButton(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(90.0))),
           backgroundColor: Colors.transparent,
@@ -139,9 +92,10 @@ class _TeachersListPageState extends State<TeachersListPage> {
         )
     );
   }
-  Widget buildTeacher() {
 
-    if (_teachers.isEmpty) {
+  Widget buildStudent() {
+
+    if (_qualifications.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -152,13 +106,13 @@ class _TeachersListPageState extends State<TeachersListPage> {
         padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
         color: const Color.fromRGBO(240, 242, 246, 1),
         child: ListView.builder(
-            itemCount: _teachers.isEmpty ? 0 : _teachers.length,
+            itemCount: _qualifications.isEmpty ? 0 : _qualifications.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: InkWell(
                   child: ListTile(
                     leading: Image.asset('assets/fitness_app/clients.png'),
-                    title: Text("${'code'.tr()} : ${_teachers[index].teacherCode}",
+                    title: Text("${'code'.tr()} : ${_qualifications[index].customerCode}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         )),
@@ -168,11 +122,11 @@ class _TeachersListPageState extends State<TeachersListPage> {
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'arabicName'.tr()} : ${_teachers[index].teacherNameAra}")),
+                            child: Text("${'descriptionNameArabic'.tr()} : ${_qualifications[index].customerNameAra}")),
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'englishName'.tr()} : ${_teachers[index].teacherNameEng}")
+                            child: Text("${'descriptionNameEnglish'.tr()} : ${_qualifications[index].customerNameEng}")
                         ),
                         const SizedBox(width: 5),
                         SizedBox(
@@ -224,7 +178,7 @@ class _TeachersListPageState extends State<TeachersListPage> {
                                           ),
                                           label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                           onPressed: () {
-                                            _deleteItem(context,_teachers[index].id);
+                                            _deleteItem(context,_qualifications[index].id);
                                           },
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -283,11 +237,11 @@ class _TeachersListPageState extends State<TeachersListPage> {
   }
 
   _navigateToAddScreen(BuildContext context) async {
-    int menuId=58102;
+    int menuId=58105;
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if(isAllowAdd)
     {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddTeacherScreen(),
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddQualificationsScreen(),
       ));
       //     .then((value) {
       //   getData();
@@ -298,21 +252,4 @@ class _TeachersListPageState extends State<TeachersListPage> {
       FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
     }
   }
-
-  // _navigateToEditScreen(BuildContext context, customer) async {
-  //   int menuId=6103;
-  //   bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
-  //   if(isAllowAdd){
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => EditCustomerDataWidget(customer)),
-  //     ).then((value) {
-  //       getData();
-  //     });
-  //   }
-  //   else
-  //   {
-  //     FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
-  //   }
-  // }
 }

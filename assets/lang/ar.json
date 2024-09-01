@@ -772,7 +772,10 @@
     "hoursNumber": "عدد الساعات",
     "add_student": "اضافة طالب",
     "searchStudents": "بحث عن طالب",
-    "qualification": "المؤهل"
+    "qualification": "المؤهل",
+    "searchQualifications": "بحث عن مؤهل",
+    "add_qualification": "اضافة مؤهل",
+    "stop_dealing": "ايقاف التعامل"
 
 }
 

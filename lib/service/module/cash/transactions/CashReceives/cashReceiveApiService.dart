@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
-
+import 'package:intl/intl.dart';
  
  class CashReceiveApiService {
 
@@ -47,7 +47,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<CashReceive> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => CashReceive.fromJson(item)).toList();
         print(data.toString());
       }
@@ -91,6 +91,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'trxSerial': cash.trxSerial,
       'trxDate': cash.trxDate,
       'Year': financialYearCode,
+      "SalesManCode": cash.salesManCode,
       'RefNo': cash.refNo,
       'Description': cash.description,
       'TargetId': cash.targetId,
@@ -106,7 +107,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'DescriptionEng': cash.descriptionNameEnglish,
       'TafqitNameArabic': cash.tafqitNameArabic,
       'TafqitNameEnglish': cash.tafqitNameEnglish,
-      'addBy': empUserId,
+      "addBy": empUserId,
+      "addTime": DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()),
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,

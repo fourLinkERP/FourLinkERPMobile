@@ -132,8 +132,6 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
 
   }
 
-  String arabicNameHint = 'arabicNameHint'.tr();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

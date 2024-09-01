@@ -23,7 +23,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'BranchCode': branchCode
     };
 
-    print('Customer 1');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -35,17 +34,12 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
     if (response.statusCode == 200) {
-      print('Customer 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<Customer> list = [];
       if (data.isNotEmpty) {
         list = data.map((item) => Customer.fromJson(item)).toList();
       }
-      print('Customer 3');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => Customer.fromJson(data))
-      //     .toList();
     } else {
       print('Customer Failed');
       throw "Failed to load customer list";
@@ -71,44 +65,15 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
     if (response.statusCode == 200) {
-      print('Customer 22');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<Customer> list = [];
       if (data.isNotEmpty) {
         list = data.map((item) => Customer.fromJson(item)).toList();
       }
-      print('Customer 33');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => Customer.fromJson(data))
-      //     .toList();
     } else {
       print('NewCustomer Failed');
       throw "Failed to load customer list";
-    }
-  }
-
-  Future<Customer> getCustomerById(int id) async {
-
-    var data = {
-      // "id": id
-    };
-
-    String apiGet=getByIdApi + id.toString();
-
-    var response = await http.post(Uri.parse(apiGet),
-        body: json.encode(data)
-        ,headers: {
-          'Content-Type': 'application/json; charset=UTF-8',
-          'Authorization': 'Bearer $token'
-        });
-
-    if (response.statusCode == 200) {
-
-      return Customer.fromJson(json.decode(response.body));
-
-    } else {
-      throw Exception('Failed to load a case');
     }
   }
 

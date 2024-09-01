@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/inventory/Items/itemList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/qualifications/qualificationsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/students/studentsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/subjects/subjetsList.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -132,7 +133,7 @@ class MainBasicInputs extends StatelessWidget {
                         int menuId=58105;
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
                         if(isAllowed){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SalesManListPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => QualificationsListPage()));
                         }
                         else
                         {

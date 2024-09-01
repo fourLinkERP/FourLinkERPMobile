@@ -24,7 +24,7 @@ class _StudentsListPageState extends State<StudentsListPage> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),    //Color.fromRGBO(144, 16, 46, 1), // Main Color
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
           title: SizedBox(
             height: 38,
             child: TextField(

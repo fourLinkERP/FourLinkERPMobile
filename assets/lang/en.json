@@ -666,6 +666,9 @@
     "hoursNumber": "Number of Hours",
     "add_student": "Add Student",
     "searchStudents": "Search for a students",
-    "qualification": "Qualification"
+    "qualification": "Qualification",
+    "searchQualifications": "Search for a Qualification",
+    "add_qualification": "Add Qualification",
+    "stop_dealing": "Stop dealing"
 
 }

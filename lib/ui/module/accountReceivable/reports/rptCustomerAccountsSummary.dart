@@ -17,18 +17,14 @@ import '../../../../../../service/module/accountReceivable/basicInputs/Customers
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../../service/module/accountReceivable/basicInputs/CustomerTypes/customerTypeApiService.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/inventory/basicInputs/units/units.dart';
-import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/units/unitApiService.dart';
 import '../../../../common/login_components.dart';
 import '../../../../data/model/modules/module/accountReceivable/transactions/salesInvoices/salesInvoiceH.dart';
-import '../../../../service/module/general/NextSerial/generalApiService.dart';
 import 'package:intl/intl.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
-NextSerialApiService _nextSerialApiService = NextSerialApiService();
 CustomerApiService _customerApiService= CustomerApiService();
 CustomerTypeApiService _customerTypeApiService= CustomerTypeApiService();
-UnitApiService _unitsApiService = UnitApiService();
 BranchApiService _branchApiService = BranchApiService();
 SalesManApiService _salesManApiService = SalesManApiService();
 
@@ -42,9 +38,9 @@ String? startDate;
 String? endDate;
 String? salesInvoicesEndDate;
 List<DropdownMenuItem<String>> menuCustomerType = [ ];
-String? customerTypeSelectedValue = null;
-String? branchSelectedValue = null;
-String? salesManSelectedValue = null;
+String? customerTypeSelectedValue;
+String? branchSelectedValue;
+String? salesManSelectedValue;
 String? salesManSelectedName;
 
 
@@ -65,24 +61,16 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
   List<SalesMan> salesMen=[];
 
 
-
-  final _dropdownTypeFormKey = GlobalKey<FormState>();
   final _addFormKey = GlobalKey<FormState>();
-  final _dropdownCustomerFormKey = GlobalKey<FormState>();
   final _dropdownCustomerTypeFormKey = GlobalKey<FormState>();
   final _dropdownBranchFormKey = GlobalKey<FormState>();
   final _dropdownSalesManFormKey = GlobalKey<FormState>();
-  final _salesInvoicesDateController = TextEditingController();
 
 
   Customer?  customerItem=Customer(customerCode: "",customerNameAra: "",customerNameEng: "",id: 0);
   Branch?  branchItem=Branch(branchCode: 0,branchNameAra: "",branchNameEng: "",id: 0);
   SalesMan?  salesManItem=SalesMan(salesManCode: "",salesManNameAra: "",salesManNameEng: "",id: 0);
 
-  String? _dropdownValue ;
-  String arabicNameHint = 'arabicNameHint';
-
-  get salesInvoiceTypeItem => null;
 
   @override void initState() {
 
@@ -97,50 +85,9 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
 
   }
 
-  void dropDownCallBack(String? selectedValue){
-    if(selectedValue is String){
-      setState(() {
-        _dropdownValue = selectedValue;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //   },
-      //   child: Container(
-      //     decoration: BoxDecoration(
-      //       color: FitnessAppTheme.nearlyDarkBlue,
-      //       gradient: LinearGradient(
-      //           colors: [
-      //             FitnessAppTheme.nearlyDarkBlue,
-      //             HexColor('#6A88E5'),
-      //           ],
-      //           begin: Alignment.topLeft,
-      //           end: Alignment.bottomRight),
-      //       shape: BoxShape.circle,
-      //       boxShadow: <BoxShadow>[
-      //         BoxShadow(
-      //             color: FitnessAppTheme.nearlyDarkBlue
-      //                 .withOpacity(0.4),
-      //             offset: const Offset(2.0, 14.0),
-      //             blurRadius: 16.0),
-      //       ],
-      //     ),
-      //     child: const Material(
-      //       color: Colors.transparent,
-      //       child: Icon(
-      //         Icons.data_saver_on,
-      //         color: FitnessAppTheme.white,
-      //         size: 46,
-      //       ),
-      //     ),
-      //   ),
-      // ),
-
       appBar: AppBar(
         centerTitle: true,
         title: Row(crossAxisAlignment: langId == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,

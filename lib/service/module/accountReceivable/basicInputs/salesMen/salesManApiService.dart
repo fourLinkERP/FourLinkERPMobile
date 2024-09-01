@@ -13,9 +13,9 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
 
   String searchApi= baseUrl.toString()  + '/api/v1/salesMans/searchdata';
   String createApi= baseUrl.toString()  + '/api/v1/salesMans';
-  String updateApi= baseUrl.toString()  + '/api/v1/salesMans/';  // Add ID For Edit
+  String updateApi= baseUrl.toString()  + '/api/v1/salesMans/';
   String deleteApi= baseUrl.toString()  + '/api/v1/salesMans/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/salesMans/';  // Add ID For Get
+  String getByIdApi= baseUrl.toString()  + '/api/v1/salesMans/';
 
   Future<List<SalesMan>>  getSalesMans() async {
     print('Sales Man 1');
@@ -74,14 +74,15 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
       body: jsonEncode(data),
     );
 
-    print('data sales Man: ' + data.toString());
+    print('data sales Man: $data');
     if (response.statusCode == 200) {
       print('report sales Man 3');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesMan> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => SalesMan.fromJson(item)).toList();
       }
+      print('sales Man $list');
       return  list;
 
     } else {

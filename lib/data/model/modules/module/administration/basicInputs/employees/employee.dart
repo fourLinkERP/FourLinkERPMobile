@@ -4,9 +4,9 @@ class Employee {
   int? id;
   String? empCode ;
   String? empNameAra ;
-  String?  empNameEng;
-  String?  userCode;
-  String?  userId;
+  String? empNameEng;
+  String? userCode;
+  String? userId;
   bool? isManager;
   bool? isIt;
   bool? isEditPrice;
@@ -25,7 +25,6 @@ class Employee {
     this.isEditPrice,
     this.storeCode
 
-    //image
     });
 
   factory Employee.fromJson(Map<String, dynamic> json) {

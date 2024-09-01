@@ -36,12 +36,11 @@ class CashReceive {
   String?  companyCommercial ;
   String?  companyVat ;
   String?  boxName ;
-
+  String? salesManCode;
 
 
   CashReceive({
     this.id,
-    //General Info
     this.trxKind,
     this.trxDate,
     this.targetId,
@@ -70,7 +69,8 @@ class CashReceive {
     this.companyAddress='',
     this.companyCommercial='',
     this.companyVat='',
-    this.boxName=''
+    this.boxName='',
+    this.salesManCode
     //image
     });
 
@@ -98,6 +98,7 @@ class CashReceive {
       targetNameAra: (json['targetNameAra'] != null) ? json['targetNameAra'] as String : "",
       targetNameEng: (json['targetNameEng'] != null) ? json['targetNameEng'] as String : "",
       boxName: (json['boxName'] != null) ? json['boxName'] as String : "",
+      salesManCode: (json['salesManCode'] != null) ? json['salesManCode'] as String : "",
 
     );
   }
