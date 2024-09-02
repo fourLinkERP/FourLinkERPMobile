@@ -10,6 +10,7 @@ class Teacher{
   String? address;
   String? birthdate;
   String? hiringDate;
+  String? nationalityCode;
 
   Teacher({
     this.id,
@@ -21,12 +22,13 @@ class Teacher{
     this.email,
     this.address,
     this.birthdate,
-    this.hiringDate
+    this.hiringDate,
+    this.nationalityCode
 
 });
   factory Teacher.fromJson(Map<String, dynamic> json) {
     return Teacher(
-      id: (json["id"] != null) ? json["teacherCode"] as int : 0,
+      id: (json["id"] != null) ? json["id"] as int : 0,
       teacherCode: (json["teacherCode"] != null) ? json["teacherCode"] as String : "",
       teacherNameAra: (json["teacherNameAra"] != null) ? json["teacherNameAra"] as String : "",
       teacherNameEng: (json["teacherNameEng"] != null) ? json["teacherNameEng"] as String : "",
@@ -36,6 +38,7 @@ class Teacher{
       address: (json["address"] != null) ? json["address"] as String : "",
       birthdate: (json["birthdate"] != null) ? json["birthdate"] as String : "",
       hiringDate: (json["hiringDate"] != null) ? json["hiringDate"] as String : "",
+      nationalityCode: (json["nationalityCode"] != null) ? json["nationalityCode"] as String : ""
 
     );
   }

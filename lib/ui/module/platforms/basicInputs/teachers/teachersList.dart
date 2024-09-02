@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/service/module/platforms/basicInputs/teachersApiService.dart';
+import 'package:fourlinkmobileapp/service/module/platforms/basicInputs/teachers/teachersApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../../cubit/app_cubit.dart';
-import '../../../../../data/model/modules/module/platforms/basicInputs/teachers.dart';
+import '../../../../../data/model/modules/module/platforms/basicInputs/teachers/teacher.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../theme/fitness_app_theme.dart';
@@ -42,7 +42,7 @@ class _TeachersListPageState extends State<TeachersListPage> {
          _teachersSearch = List.from(_teachers);
 
          if (_teachers.isNotEmpty) {
-           _teachers.sort((a, b) => b.teacherNameAra!.compareTo(a.teacherNameAra!));
+           _teachers.sort((a, b) => b.teacherCode!.compareTo(a.teacherCode!));
 
            setState(() {});
          }
@@ -60,8 +60,8 @@ class _TeachersListPageState extends State<TeachersListPage> {
      } else {
        setState(() {
          _teachers = List.from(_teachersSearch);
-         _teachers = _teachers.where((checkStoreH) =>
-             checkStoreH.teacherNameAra!.toLowerCase().contains(search)).toList();
+         _teachers = _teachers.where((teacher) =>
+             teacher.teacherNameAra!.toLowerCase().contains(search)).toList();
        });
      }
    }
@@ -288,10 +288,9 @@ class _TeachersListPageState extends State<TeachersListPage> {
     if(isAllowAdd)
     {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddTeacherScreen(),
-      ));
-      //     .then((value) {
-      //   getData();
-      // });
+      )).then((value) {
+        getData();
+      });
     }
     else
     {

@@ -37,9 +37,9 @@ class _AddEmployeeDataWidgetState extends State<AddEmployeeDataWidget> {
   List<Branch> branches=[];
   List<Job> jobs=[];
 
-  String? selectedCompanyCode = null;
-  String? selectedBranchCode = null;
-  String? selectedJobCode = null;
+  String? selectedCompanyCode;
+  String? selectedBranchCode;
+  String? selectedJobCode;
 
   final EmployeeApiService api = EmployeeApiService();
   final _addFormKey = GlobalKey<FormState>();

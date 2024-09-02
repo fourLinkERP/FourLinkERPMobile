@@ -1,6 +1,14 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../common/globals.dart';
+import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
+import '../../../../../data/model/modules/module/platforms/basicInputs/nationalities/nationality.dart';
+import '../../../../../service/module/general/NextSerial/generalApiService.dart';
+import '../../../../../service/module/platforms/basicInputs/nationalities/nationalitiesApiService.dart';
+
+NextSerialApiService _nextSerialApiService= NextSerialApiService();
+NationalityApiService _nationalityApiService = NationalityApiService();
 
 class AddStudentScreen extends StatefulWidget {
   const AddStudentScreen({Key? key}) : super(key: key);
@@ -11,16 +19,42 @@ class AddStudentScreen extends StatefulWidget {
 
 class _AddStudentScreenState extends State<AddStudentScreen> {
 
+  List<Nationality> _nationalities = [];
   final _codeController = TextEditingController();
   final _nameAraController = TextEditingController();
   final _nameEngController = TextEditingController();
-  final _nationalityController = TextEditingController();
   final _nationalIdController = TextEditingController();
   final _birthDateController = TextEditingController();
   final _addressController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   final _qualificationController = TextEditingController();
+  String? selectedNationalityValue;
+
+  @override
+  void initState(){
+    super.initState();
+
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("TRC_TrainingCenterStudents", "StudentCode", " And CompanyCode=$companyCode And BranchCode=$branchCode" ).then((data) {
+      NextSerial nextSerial = data;
+
+      _codeController.text = nextSerial.nextSerial.toString();
+      return nextSerial;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<Nationality>> futureNationality = _nationalityApiService.getNationalities().then((data) {
+      _nationalities = data;
+      setState(() {
+
+      });
+      return _nationalities;
+    }, onError: (e) {
+      print(e);
+    });
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -193,21 +227,45 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                           SizedBox(
                             height: 50,
                             width: 195,
-                            child: TextFormField(
-                              controller: _nationalityController,
-                              keyboardType: TextInputType.text,
-                              enabled: true,
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    borderSide:  const BorderSide(color: Colors.blueGrey, width: 1.0) ),
+                            child: DropdownSearch<Nationality>(
+                              enabled: false,
+                              selectedItem: null,
+                              popupProps: PopupProps.menu(
+                                itemBuilder: (context, item, isSelected) {
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                                    decoration: !isSelected ? null
+                                        : BoxDecoration(
+
+                                      border: Border.all(color: Theme.of(context).primaryColor),
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.white,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text((langId==1)? item.nationalityNameAra.toString():  item.nationalityNameEng.toString(),
+                                        textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                    ),
+                                  );
+                                },
+                                showSearchBox: true,
                               ),
-                              validator: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'code must be non empty';
-                                }
-                                return null;
+                              items: _nationalities,
+                              itemAsString: (Nationality u) => u.nationalityNameAra.toString(),
+                              onChanged: (value){
+                                selectedNationalityValue =  value!.nationalityCode.toString();
                               },
+                              filterFn: (instance, filter){
+                                if(instance.nationalityNameAra!.contains(filter)){
+                                  print(filter);
+                                  return true;
+                                }
+                                else{
+                                  return false;
+                                }
+                              },
+
                             ),
                           ),
                           const SizedBox(height: 15),

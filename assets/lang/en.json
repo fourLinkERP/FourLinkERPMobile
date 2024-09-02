@@ -653,15 +653,15 @@
     "currentStore": "Current Store",
     "teachers": "Teachers",
     "students": "Students",
-    "subjects": "Subjects",
+    "materials": "Materials",
     "qualifications": "Qualifications",
     "searchTeachers": "Search for a teacher",
     "add_teacher": "Add Teacher",
     "nationality": "Nationality",
     "nationalId": "National Id",
     "birthDate": "Birth Date",
-    "searchSubjects": "Search for a subject",
-    "add_subject": "Add Subject",
+    "searchMaterials": "Search for a material",
+    "add_material": "Add Material",
     "teacherCode": "Teacher code",
     "hoursNumber": "Number of Hours",
     "add_student": "Add Student",
@@ -669,6 +669,7 @@
     "qualification": "Qualification",
     "searchQualifications": "Search for a Qualification",
     "add_qualification": "Add Qualification",
-    "stop_dealing": "Stop dealing"
+    "stop_dealing": "Stop dealing",
+    "hiringDate": "Hiring date"
 
 }

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/platforms/basicInputs/materials/material.dart';
+import 'package:fourlinkmobileapp/service/module/platforms/basicInputs/materials/materialApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../../cubit/app_cubit.dart';
@@ -6,19 +8,64 @@ import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import '../../../../../utils/permissionHelper.dart';
-import 'addSubjectScreen.dart';
+import 'addMaterialScreen.dart';
 
-class SubjectsListPage extends StatefulWidget {
-  const SubjectsListPage({Key? key}) : super(key: key);
+MaterialApiService _apiService = MaterialApiService();
+
+class MaterialsListPage extends StatefulWidget {
+  const MaterialsListPage({Key? key}) : super(key: key);
 
   @override
-  State<SubjectsListPage> createState() => _SubjectsListPageState();
+  State<MaterialsListPage> createState() => _MaterialsListPageState();
 }
 
-class _SubjectsListPageState extends State<SubjectsListPage> {
-  
-  final List _subjects = [];
-  
+class _MaterialsListPageState extends State<MaterialsListPage> {
+
+  final _searchValueController = TextEditingController();
+  List<Materials> _materials = [];
+  List<Materials> _materialsSearch = [];
+
+  @override
+  void initState() {
+
+    getData();
+    super.initState();
+    AppCubit.get(context).CheckConnection();
+  }
+
+  void getData() async {
+    try {
+      List<Materials>? futureTeacher = await _apiService.getMaterials();
+
+      if (futureTeacher.isNotEmpty) {
+        _materials = futureTeacher;
+        _materialsSearch = List.from(_materials);
+
+        if (_materials.isNotEmpty) {
+          _materials.sort((a, b) => b.educationalMaterialCode!.compareTo(a.educationalMaterialCode!));
+
+          setState(() {});
+        }
+      }
+    } catch (error) {
+      AppCubit.get(context).EmitErrorState();
+    }
+  }
+
+  void onSearch(String search) {
+    if (search.isEmpty) {
+      setState(() {
+        _materials = List.from(_materialsSearch);
+      });
+    } else {
+      setState(() {
+        _materials = List.from(_materialsSearch);
+        _materials = _materials.where((material) =>
+            material.educationalMaterialNameAra!.toLowerCase().contains(search)).toList();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +75,8 @@ class _SubjectsListPageState extends State<SubjectsListPage> {
           title: SizedBox(
             height: 38,
             child: TextField(
-              //onChanged: (value) => onSearch(value),
+              controller: _searchValueController,
+              onChanged: (value) => onSearch(value),
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -42,7 +90,7 @@ class _SubjectsListPageState extends State<SubjectsListPage> {
                     fontSize: 14,
                     color: Color.fromRGBO(144, 16, 46, 1),
                   ),
-                  hintText: "searchSubjects".tr()
+                  hintText: "searchMaterials".tr()
               ),
             ),
           ),
@@ -94,7 +142,7 @@ class _SubjectsListPageState extends State<SubjectsListPage> {
 
   Widget buildSubject() {
 
-    if (_subjects.isEmpty) {
+    if (_materials.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -105,13 +153,13 @@ class _SubjectsListPageState extends State<SubjectsListPage> {
         padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
         color: const Color.fromRGBO(240, 242, 246, 1),
         child: ListView.builder(
-            itemCount: _subjects.isEmpty ? 0 : _subjects.length,
+            itemCount: _materials.isEmpty ? 0 : _materials.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: InkWell(
                   child: ListTile(
                     leading: Image.asset('assets/fitness_app/clients.png'),
-                    title: Text("${'code'.tr()} : ${_subjects[index].customerCode}",
+                    title: Text("${'code'.tr()} : ${_materials[index].educationalMaterialCode}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         )),
@@ -121,11 +169,11 @@ class _SubjectsListPageState extends State<SubjectsListPage> {
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'arabicName'.tr()} : ${_subjects[index].customerNameAra}")),
+                            child: Text("${'arabicName'.tr()} : ${_materials[index].educationalMaterialNameAra}")),
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'englishName'.tr()} : ${_subjects[index].customerNameEng}")
+                            child: Text("${'englishName'.tr()} : ${_materials[index].educationalMaterialNameEng}")
                         ),
                         const SizedBox(width: 5),
                         SizedBox(
@@ -177,7 +225,7 @@ class _SubjectsListPageState extends State<SubjectsListPage> {
                                           ),
                                           label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                           onPressed: () {
-                                            _deleteItem(context,_subjects[index].id);
+                                            _deleteItem(context,_materials[index].id);
                                           },
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -211,29 +259,6 @@ class _SubjectsListPageState extends State<SubjectsListPage> {
 
   _deleteItem(BuildContext context, int? id) async {
     FN_showToast(context, "not_allowed_to_delete".tr(), Colors.red);
-
-    // final result = await showDialog<bool>(
-    //   context: context,
-    //   builder: (context) => AlertDialog(
-    //     title: const Text('Are you sure?'),
-    //     content: const Text('This action will permanently delete this data'),
-    //     actions: [
-    //       TextButton(
-    //         onPressed: () => Navigator.pop(context, false),
-    //         child: const Text('Cancel'),
-    //       ),
-    //       TextButton(
-    //         onPressed: () => Navigator.pop(context, true),
-    //         child: const Text('Delete'),
-    //       ),
-    //     ],
-    //   ),
-    // );
-    //
-    // if (result == null || !result) {
-    //   return;
-    // }
-    // var res = _apiService.deleteCustomer(context, id).then((value) => getData());
   }
 
   _navigateToAddScreen(BuildContext context) async {
@@ -241,11 +266,10 @@ class _SubjectsListPageState extends State<SubjectsListPage> {
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if(isAllowAdd)
     {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSubjectScreen(),
-      ));
-      //     .then((value) {
-      //   getData();
-      // });
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddMaterialScreen(),
+      )).then((value) {
+        getData();
+      });
     }
     else
     {

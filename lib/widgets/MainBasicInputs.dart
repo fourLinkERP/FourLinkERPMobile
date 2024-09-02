@@ -5,14 +5,13 @@ import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/inventory/Items/itemList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/qualifications/qualificationsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/students/studentsList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/subjects/subjetsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/subjects/materialsList.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../common/globals.dart';
 import '../helpers/toast.dart';
 import '../ui/module/accountReceivable/basicInputs/Salesman/salesmanList.dart';
 import '../ui/module/accountReceivable/basicInputs/customers/customerList.dart';
-import '../ui/module/cash/transactions/CashReceive/cashReceiveList.dart';
 import '../ui/module/platforms/basicInputs/teachers/teachersList.dart';
 import '../utils/permissionHelper.dart';
 
@@ -38,7 +37,7 @@ class MainBasicInputs extends StatelessWidget {
 
     List<String> areaListDataTitle = systemCode == 8 ? <String>[
       'teachers'.tr(),
-      'subjects'.tr(),
+      'materials'.tr(),
       'students'.tr(),
       'qualifications'.tr()
     ] : <String>[
@@ -109,7 +108,7 @@ class MainBasicInputs extends StatelessWidget {
                         int menuId=58103;
                         bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
                         if(isAllowAdd){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SubjectsListPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => MaterialsListPage()));
                         }
                         else
                         {

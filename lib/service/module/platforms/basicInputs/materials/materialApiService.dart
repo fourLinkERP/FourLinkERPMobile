@@ -1,20 +1,20 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/platforms/basicInputs/teachers.dart';
+import '../../../../../common/globals.dart';
 import 'package:http/http.dart' as http;
-import '../../../../common/globals.dart';
-import '../../../../helpers/toast.dart';
+import '../../../../../helpers/toast.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import '../../../../../data/model/modules/module/platforms/basicInputs/materials/material.dart';
 
-class TeacherApiService{
+class MaterialApiService{
 
-  String searchApi= '$baseUrl/api/v1/trainingcenterteachers/search';
-  String createApi= '$baseUrl/api/v1/trainingcenterteachers';
-  String updateApi= '$baseUrl/api/v1/trainingcenterteachers/';
-  String deleteApi= '$baseUrl/api/v1/trainingcenterteachers/';
+  String searchApi= '$baseUrl/api/v1/trainingcentereducationalmaterials/search';
+  String createApi= '$baseUrl/api/v1/trainingcentereducationalmaterials';
+  String updateApi= '$baseUrl/api/v1/trainingcentereducationalmaterials/';
+  String deleteApi= '$baseUrl/api/v1/trainingcentereducationalmaterials/';
 
-  Future<List<Teacher>>  getTeachers() async {
+  Future<List<Materials>>  getMaterials() async {
 
     Map data = {
       'CompanyCode': companyCode,
@@ -33,30 +33,27 @@ class TeacherApiService{
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body)['data'];
-      List<Teacher> list = [];
+      List<Materials> list = [];
       if (data.isNotEmpty) {
-        list = data.map((item) => Teacher.fromJson(item)).toList();
+        list = data.map((item) => Materials.fromJson(item)).toList();
       }
       return  list;
     } else {
-      print('Teacher Failed');
-      throw "Failed to load teacher list";
+      print('Material Failed');
+      throw "Failed to load Material list";
     }
   }
 
-  Future<int> createTeacher(BuildContext context ,Teacher teacher) async {
+  Future<int> createMaterial(BuildContext context ,Materials materials) async {
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'teacherCode': teacher.teacherCode,
-      'teacherNameAra': teacher.teacherNameAra,
-      'teacherNameEng': teacher.teacherNameEng,
-      'address': teacher.address,
-      'mobile': teacher.mobile,
-      'email': teacher.email,
-      'birthdate': teacher.birthdate,
-      'hiringDate': teacher.hiringDate,
-      'idNo': teacher.idNo,
+      'educationalMaterialCode': materials.educationalMaterialCode,
+      'educationalMaterialNameAra': materials.educationalMaterialNameAra,
+      'educationalMaterialNameEng': materials.educationalMaterialNameEng,
+      'teacherCode': materials.teacherCode,
+      'hoursCount': materials.hoursCount,
+      'notes': materials.notes,
       "notActive": false,
       "flgDelete": false,
       "isDeleted": false,
@@ -69,7 +66,7 @@ class TeacherApiService{
       "isLinkWithTaxAuthority": true
     };
 
-    print('save teacher: $data');
+    print('save material: $data');
 
     final http.Response response = await http.post(
       Uri.parse(createApi),
@@ -89,7 +86,7 @@ class TeacherApiService{
     }
   }
 
-  Future<int> updateTeacher(BuildContext context ,int id, Teacher teacher) async {
+  Future<int> updateMaterial(BuildContext context ,int id, Materials materials) async {
 
     print('Start Update');
 
@@ -97,15 +94,12 @@ class TeacherApiService{
       'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'teacherCode': teacher.teacherCode,
-      'teacherNameAra': teacher.teacherNameAra,
-      'teacherNameEng': teacher.teacherNameEng,
-      'address': teacher.address,
-      'mobile': teacher.mobile,
-      'email': teacher.email,
-      'birthdate': teacher.birthdate,
-      'hiringDate': teacher.hiringDate,
-      'idNo': teacher.idNo,
+      'educationalMaterialCode': materials.educationalMaterialCode,
+      'educationalMaterialNameAra': materials.educationalMaterialNameAra,
+      'educationalMaterialNameEng': materials.educationalMaterialNameEng,
+      'teacherCode': materials.teacherCode,
+      'hoursCount': materials.hoursCount,
+      'notes': materials.notes,
       "confirmed": false,
       "isActive": true,
       "isBlocked": false,
@@ -138,7 +132,7 @@ class TeacherApiService{
     }
   }
 
-  Future<void> deleteTeacher(BuildContext context ,int? id) async {
+  Future<void> deleteMaterial(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
 
@@ -154,7 +148,8 @@ class TeacherApiService{
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);
     } else {
-      throw "Failed to delete a teacher";
+      throw "Failed to delete a material";
     }
   }
+
 }
