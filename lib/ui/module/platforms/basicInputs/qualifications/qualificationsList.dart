@@ -1,13 +1,16 @@
 
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/platforms/basicInputs/qualifications/qualification.dart';
+import 'package:fourlinkmobileapp/service/module/platforms/basicInputs/qualifications/qualificationApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import '../../../../../utils/permissionHelper.dart';
 import 'addQualificationScreen.dart';
+
+QualificationApiService _apiService = QualificationApiService();
 
 class QualificationsListPage extends StatefulWidget {
   const QualificationsListPage({Key? key}) : super(key: key);
@@ -18,7 +21,50 @@ class QualificationsListPage extends StatefulWidget {
 
 class _QualificationsListPageState extends State<QualificationsListPage> {
 
-  final List _qualifications = [];
+  final _searchValueController = TextEditingController();
+  List<Qualification> _qualifications = [];
+  List<Qualification> _qualificationsSearch = [];
+
+  @override
+  void initState() {
+
+    getData();
+    super.initState();
+    AppCubit.get(context).CheckConnection();
+  }
+
+  void getData() async {
+    try {
+      List<Qualification>? futureStudent = await _apiService.getQualifications();
+
+      if (futureStudent.isNotEmpty) {
+        _qualifications = futureStudent;
+        _qualificationsSearch = List.from(_qualifications);
+
+        if (_qualifications.isNotEmpty) {
+          _qualifications.sort((a, b) => b.qualificationCode!.compareTo(a.qualificationCode!));
+
+          setState(() {});
+        }
+      }
+    } catch (error) {
+      AppCubit.get(context).EmitErrorState();
+    }
+  }
+
+  void onSearch(String search) {
+    if (search.isEmpty) {
+      setState(() {
+        _qualifications = List.from(_qualificationsSearch);
+      });
+    } else {
+      setState(() {
+        _qualifications = List.from(_qualificationsSearch);
+        _qualifications = _qualifications.where((qualification) =>
+            qualification.qualificationNameAra!.toLowerCase().contains(search)).toList();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +75,8 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
           title: SizedBox(
             height: 38,
             child: TextField(
-              //onChanged: (value) => onSearch(value),
+              controller: _searchValueController,
+              onChanged: (value) => onSearch(value),
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -111,8 +158,8 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
               return Card(
                 child: InkWell(
                   child: ListTile(
-                    leading: Image.asset('assets/fitness_app/clients.png'),
-                    title: Text("${'code'.tr()} : ${_qualifications[index].customerCode}",
+                    leading: Image.asset('assets/fitness_app/qualifications.png'),
+                    title: Text("${'code'.tr()} : ${_qualifications[index].qualificationCode}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         )),
@@ -122,11 +169,11 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'descriptionNameArabic'.tr()} : ${_qualifications[index].customerNameAra}")),
+                            child: Text("${'descriptionNameArabic'.tr()} : ${_qualifications[index].qualificationNameAra}")),
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'descriptionNameEnglish'.tr()} : ${_qualifications[index].customerNameEng}")
+                            child: Text("${'descriptionNameEnglish'.tr()} : ${_qualifications[index].qualificationNameEng}")
                         ),
                         const SizedBox(width: 5),
                         SizedBox(
@@ -241,11 +288,10 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if(isAllowAdd)
     {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddQualificationsScreen(),
-      ));
-      //     .then((value) {
-      //   getData();
-      // });
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddQualificationsScreen(),
+      )).then((value) {
+        getData();
+      });
     }
     else
     {

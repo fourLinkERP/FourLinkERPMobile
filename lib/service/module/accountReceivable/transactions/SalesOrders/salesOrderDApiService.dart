@@ -42,13 +42,11 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
 
 
     if (response.statusCode == 200) {
-      print('B 1');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesOrderD> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => SalesOrderD.fromJson(item)).toList();
       }
-      print('B 1 Finish');
       return  list;
 
     } else {
@@ -89,7 +87,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       'lineNum': order.lineNum,
       'itemCode': order.itemCode,
       'unitCode': order.unitCode,
-      // 'storeCode': order.storeCode,
+      'storeCode': storeCode,
       'notes': order.notes,
       'displayPrice': order.displayPrice,
       'Price': order.price,

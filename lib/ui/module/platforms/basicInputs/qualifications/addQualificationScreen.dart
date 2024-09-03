@@ -1,7 +1,14 @@
 
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/platforms/basicInputs/qualifications/qualification.dart';
+import 'package:fourlinkmobileapp/service/module/general/NextSerial/generalApiService.dart';
+import 'package:fourlinkmobileapp/service/module/platforms/basicInputs/qualifications/qualificationApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../common/globals.dart';
+import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
+import '../../../../../helpers/toast.dart';
+
+NextSerialApiService _nextSerialApiService = NextSerialApiService();
 
 class AddQualificationsScreen extends StatefulWidget {
   const AddQualificationsScreen({Key? key}) : super(key: key);
@@ -12,11 +19,26 @@ class AddQualificationsScreen extends StatefulWidget {
 
 class _AddQualificationsScreenState extends State<AddQualificationsScreen> {
 
+  QualificationApiService api = QualificationApiService();
   final _codeController = TextEditingController();
   final _descNameAraController = TextEditingController();
   final _descNameEngController = TextEditingController();
   final _notesController = TextEditingController();
-  bool? _isCheckedMemory = false;
+  bool? _notActive = false;
+
+  @override
+  void initState(){
+    super.initState();
+
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("PL_Qualifications", "QualificationCode", " And CompanyCode=$companyCode And BranchCode=$branchCode" ).then((data) {
+      NextSerial nextSerial = data;
+
+      _codeController.text = nextSerial.nextSerial.toString();
+      return nextSerial;
+    }, onError: (e) {
+      print(e);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,13 +79,13 @@ class _AddQualificationsScreenState extends State<AddQualificationsScreen> {
                         SizedBox(
                             width: 120,
                             height: 50,
-                            child: Center(child: Text('descriptionNameArabic'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                            child: Center(child: Text('arabicName'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
                         ),
                         const SizedBox(height: 15),
                         SizedBox(
                             width: 120,
                             height: 50,
-                            child: Center(child: Text('descriptionNameEnglish'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
+                            child: Center(child: Text('englishName'.tr(), style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 15)))
                         ),
                         const SizedBox(height: 15),
                         SizedBox(
@@ -160,10 +182,10 @@ class _AddQualificationsScreenState extends State<AddQualificationsScreen> {
                             height: 50,
                             width: 195,
                             child: CheckboxListTile(
-                              value: _isCheckedMemory,
+                              value: _notActive,
                               onChanged: (bool? newValue){
                                 setState(() {
-                                  _isCheckedMemory = newValue;
+                                  _notActive = newValue;
                                 });
                               },
                               activeColor: const Color.fromRGBO(144, 16, 46, 1),
@@ -192,17 +214,63 @@ class _AddQualificationsScreenState extends State<AddQualificationsScreen> {
                             ),
                           ),
                           const SizedBox(height: 15),
-
                         ],
                       ),
                     ),
                   ],
-                )
+                ),
+                const SizedBox(height: 30,),
+                Center(
+                  child: SizedBox(
+                    width: 200,
+                    height: 50,
+                    child: Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: const Size(100, 55),
+                          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 20.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(80),
+                          ),
+                        ),
+                        onPressed: () {
+                          saveQualification(context);
+                        },
+                        child: Text('Save'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 15),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+  saveQualification(BuildContext context) async{
+
+    if(_descNameAraController.text.isEmpty)
+    {
+      FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
+      return;
+    }
+    if(_descNameEngController.text.isEmpty)
+    {
+      FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
+      return;
+    }
+    await api.createQualification(context,Qualification(
+        qualificationCode: _codeController.text ,
+        qualificationNameAra: _descNameAraController.text ,
+        qualificationNameEng: _descNameEngController.text ,
+        notActive: _notActive,
+        notes: _notesController.text,
+    ));
+
+    Navigator.pop(context);
   }
 }

@@ -5,7 +5,7 @@ import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/inventory/Items/itemList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/qualifications/qualificationsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/students/studentsList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/subjects/materialsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/materials/materialsList.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../common/globals.dart';

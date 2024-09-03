@@ -1,9 +1,13 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/service/module/platforms/basicInputs/students/studentApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../data/model/modules/module/platforms/basicInputs/nationalities/nationality.dart';
+import '../../../../../data/model/modules/module/platforms/basicInputs/students/student.dart';
+import '../../../../../helpers/toast.dart';
+import 'package:intl/intl.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 import '../../../../../service/module/platforms/basicInputs/nationalities/nationalitiesApiService.dart';
 
@@ -19,6 +23,7 @@ class AddStudentScreen extends StatefulWidget {
 
 class _AddStudentScreenState extends State<AddStudentScreen> {
 
+  StudentApiService api = StudentApiService();
   List<Nationality> _nationalities = [];
   final _codeController = TextEditingController();
   final _nameAraController = TextEditingController();
@@ -228,7 +233,6 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             height: 50,
                             width: 195,
                             child: DropdownSearch<Nationality>(
-                              enabled: false,
                               selectedItem: null,
                               popupProps: PopupProps.menu(
                                 itemBuilder: (context, item, isSelected) {
@@ -295,18 +299,23 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                             width: 195,
                             child: TextFormField(
                               controller: _birthDateController,
-                              keyboardType: TextInputType.text,
+                              keyboardType: TextInputType.datetime,
                               enabled: true,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide:  const BorderSide(color: Colors.blueGrey, width: 1.0) ),
                               ),
-                              validator: (String? value) {
-                                if (value!.isEmpty) {
-                                  return 'code must be non empty';
+                              onTap: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1950),
+                                    lastDate: DateTime(2050));
+
+                                if (pickedDate != null) {
+                                  _birthDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                                 }
-                                return null;
                               },
                             ),
                           ),
@@ -399,12 +408,65 @@ class _AddStudentScreenState extends State<AddStudentScreen> {
                       ),
                     ),
                   ],
-                )
+                ),
+                const SizedBox(height: 30,),
+                Center(
+                  child: SizedBox(
+                    width: 200,
+                    height: 50,
+                    child: Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: const Size(100, 55),
+                          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 20.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(80),
+                          ),
+                        ),
+                        onPressed: () {
+                          saveStudent(context);
+                        },
+                        child: Text('Save'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 15),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  saveStudent(BuildContext context) async{
+
+    if(_nameAraController.text.isEmpty)
+    {
+      FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
+      return;
+    }
+    if(_nameEngController.text.isEmpty)
+    {
+      FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
+      return;
+    }
+    await api.createStudent(context,Student(
+        studentCode: _codeController.text ,
+        studentNameAra: _nameAraController.text ,
+        studentNameEng: _nameEngController.text ,
+        nationalityCode: selectedNationalityValue,
+        nationalityId: _nationalIdController.text,
+        address: _addressController.text,
+        email: _emailController.text,
+        mobileNo: _phoneController.text,
+        birthDate: _birthDateController.text,
+        qualificationCode: _qualificationController.text
+    ));
+
+    Navigator.pop(context);
   }
 }

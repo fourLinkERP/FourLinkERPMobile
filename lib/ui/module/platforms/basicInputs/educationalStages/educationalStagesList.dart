@@ -1,71 +1,22 @@
+
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/platforms/basicInputs/students/student.dart';
-import 'package:fourlinkmobileapp/service/module/platforms/basicInputs/students/studentApiService.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/students/addStudentScreen.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../theme/fitness_app_theme.dart';
-import '../../../../../utils/permissionHelper.dart';
 
-StudentApiService _apiService = StudentApiService();
-
-class StudentsListPage extends StatefulWidget {
-  const StudentsListPage({Key? key}) : super(key: key);
+class EducationalStagesListPage extends StatefulWidget {
+  const EducationalStagesListPage({Key? key}) : super(key: key);
 
   @override
-  State<StudentsListPage> createState() => _StudentsListPageState();
+  State<EducationalStagesListPage> createState() => _EducationalStagesListPageState();
 }
 
-class _StudentsListPageState extends State<StudentsListPage> {
-
-  final _searchValueController = TextEditingController();
-  List<Student> _students = [];
-  List<Student> _studentsSearch = [];
-
-  @override
-  void initState() {
-
-    getData();
-    super.initState();
-    AppCubit.get(context).CheckConnection();
-  }
-
-  void getData() async {
-    try {
-      List<Student>? futureStudent = await _apiService.getStudents();
-
-      if (futureStudent.isNotEmpty) {
-        _students = futureStudent;
-        _studentsSearch = List.from(_students);
-
-        if (_students.isNotEmpty) {
-          _students.sort((a, b) => b.studentCode!.compareTo(a.studentCode!));
-
-          setState(() {});
-        }
-      }
-    } catch (error) {
-      AppCubit.get(context).EmitErrorState();
-    }
-  }
-
-  void onSearch(String search) {
-    if (search.isEmpty) {
-      setState(() {
-        _students = List.from(_studentsSearch);
-      });
-    } else {
-      setState(() {
-        _students = List.from(_studentsSearch);
-        _students = _students.where((student) =>
-            student.studentNameAra!.toLowerCase().contains(search)).toList();
-      });
-    }
-  }
-
+class _EducationalStagesListPageState extends State<EducationalStagesListPage> {
+  
+  final List _stages = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,8 +26,8 @@ class _StudentsListPageState extends State<StudentsListPage> {
           title: SizedBox(
             height: 38,
             child: TextField(
-              controller: _searchValueController,
-              onChanged: (value) => onSearch(value),
+              // controller: _searchValueController,
+              // onChanged: (value) => onSearch(value),
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -90,18 +41,18 @@ class _StudentsListPageState extends State<StudentsListPage> {
                     fontSize: 14,
                     color: Color.fromRGBO(144, 16, 46, 1),
                   ),
-                  hintText: "searchStudents".tr()
+                  hintText: "searchStages".tr()
               ),
             ),
           ),
         ),
-        body: SafeArea(child: buildStudent()),
+        body: SafeArea(child: buildStage()),
         floatingActionButton: FloatingActionButton(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(90.0))),
           backgroundColor: Colors.transparent,
           onPressed: () {
-            _navigateToAddScreen(context);
+            //_navigateToAddScreen(context);
           },
           tooltip: 'Increment',
           child: Container(
@@ -126,7 +77,7 @@ class _StudentsListPageState extends State<StudentsListPage> {
                 highlightColor: Colors.transparent,
                 focusColor: Colors.transparent,
                 onTap: () {
-                  _navigateToAddScreen(context);
+                  //_navigateToAddScreen(context);
                 },
                 child: const Icon(
                   Icons.add,
@@ -139,9 +90,9 @@ class _StudentsListPageState extends State<StudentsListPage> {
         )
     );
   }
-  Widget buildStudent() {
+  Widget buildStage() {
 
-    if (_students.isEmpty) {
+    if (_stages.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -152,13 +103,13 @@ class _StudentsListPageState extends State<StudentsListPage> {
         padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
         color: const Color.fromRGBO(240, 242, 246, 1),
         child: ListView.builder(
-            itemCount: _students.isEmpty ? 0 : _students.length,
+            itemCount: _stages.isEmpty ? 0 : _stages.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: InkWell(
                   child: ListTile(
                     leading: Image.asset('assets/fitness_app/students.jpeg'),
-                    title: Text("${'code'.tr()} : ${_students[index].studentCode}",
+                    title: Text("${'code'.tr()} : ${_stages[index].studentCode}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         )),
@@ -167,11 +118,11 @@ class _StudentsListPageState extends State<StudentsListPage> {
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'arabicName'.tr()} : ${_students[index].studentNameAra}")),
+                            child: Text("${'arabicName'.tr()} : ${_stages[index].studentNameAra}")),
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'englishName'.tr()} : ${_students[index].studentNameEng}")
+                            child: Text("${'englishName'.tr()} : ${_stages[index].studentNameEng}")
                         ),
                         const SizedBox(width: 5),
                         SizedBox(
@@ -223,7 +174,7 @@ class _StudentsListPageState extends State<StudentsListPage> {
                                           ),
                                           label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                           onPressed: () {
-                                            _deleteItem(context,_students[index].id);
+                                            _deleteItem(context,_stages[index].id);
                                           },
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -279,21 +230,5 @@ class _StudentsListPageState extends State<StudentsListPage> {
     //   return;
     // }
     // var res = _apiService.deleteCustomer(context, id).then((value) => getData());
-  }
-
-  _navigateToAddScreen(BuildContext context) async {
-    int menuId=58104;
-    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
-    if(isAllowAdd)
-    {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddStudentScreen(),
-      )).then((value) {
-        getData();
-      });
-    }
-    else
-    {
-      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
-    }
   }
 }

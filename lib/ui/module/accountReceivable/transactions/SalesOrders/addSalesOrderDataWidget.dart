@@ -27,7 +27,7 @@ import '../../../../../helpers/toast.dart';
 import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
-import '../../basicInputs/Customers/addCustomerDataWidget.dart';
+
 //APIS
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
 SalesOrdersTypeApiService _salesOrderTypeApiService= SalesOrdersTypeApiService();

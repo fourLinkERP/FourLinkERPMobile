@@ -51,7 +51,7 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
       print("Sales order success");
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesOrderH> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => SalesOrderH.fromJson(item)).toList();
       }
       return  list;
@@ -110,6 +110,7 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
       'totalBeforeTax': order.totalBeforeTax,
       'totalValue': order.totalValue,
       'addBy': empUserId,
+      'storeCode': storeCode,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,

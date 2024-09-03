@@ -158,7 +158,7 @@ class _MaterialsListPageState extends State<MaterialsListPage> {
               return Card(
                 child: InkWell(
                   child: ListTile(
-                    leading: Image.asset('assets/fitness_app/clients.png'),
+                    leading: Image.asset('assets/fitness_app/subjects.png'),
                     title: Text("${'code'.tr()} : ${_materials[index].educationalMaterialCode}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,

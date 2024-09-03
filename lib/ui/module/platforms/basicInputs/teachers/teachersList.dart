@@ -71,7 +71,7 @@ class _TeachersListPageState extends State<TeachersListPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),    //Color.fromRGBO(144, 16, 46, 1), // Main Color
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
         title: SizedBox(
           height: 38,
           child: TextField(
@@ -88,7 +88,7 @@ class _TeachersListPageState extends State<TeachersListPage> {
                 ),
                 hintStyle: const TextStyle(
                   fontSize: 14,
-                  color: Color.fromRGBO(144, 16, 46, 1),     //Color.fromRGBO(144, 16, 46, 1) //Main Font Color
+                  color: Color.fromRGBO(144, 16, 46, 1),
                 ),
                 hintText: "searchTeachers".tr()
             ),
@@ -157,7 +157,7 @@ class _TeachersListPageState extends State<TeachersListPage> {
               return Card(
                 child: InkWell(
                   child: ListTile(
-                    leading: Image.asset('assets/fitness_app/clients.png'),
+                    leading: Image.asset('assets/fitness_app/teachers.png'),
                     title: Text("${'code'.tr()} : ${_teachers[index].teacherCode}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
