@@ -1,21 +1,19 @@
+
 import 'dart:convert';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/basicInputs/customerGroups/customerGroup.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
-import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/helpers/toast.dart';
+import '../../../../../data/model/modules/module/platforms/basicInputs/educationalStages/education_stage.dart';
+import '../../../../../helpers/toast.dart';
 
+class EducationStageApiService{
+  String searchApi= '$baseUrl/api/v1/trainingcentereducationstages/search';
+  String createApi= '$baseUrl/api/v1/trainingcentereducationstages';
+  String updateApi= '$baseUrl/api/v1/trainingcentereducationstages/';
+  String deleteApi= '$baseUrl/api/v1/trainingcentereducationstages/';
 
-class CustomerGroupApiService {
-
-  String searchApi= baseUrl.toString()  + '/api/v1/customergroups/search';
-  String createApi= baseUrl.toString()  + '/api/v1/customergroups';
-  String updateApi= baseUrl.toString()  + '/api/v1/customergroups/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + '/api/v1/customergroups/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/customergroups/';  // Add ID For Get
-
-  Future<List<CustomerGroup>>  getCustomerGroups() async {
+  Future<List<EducationStage>>  getEducationStages() async {
 
     Map data = {
       'CompanyCode': companyCode,
@@ -31,30 +29,29 @@ class CustomerGroupApiService {
       body: jsonEncode(data),
     );
 
+
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body)['data'];
-      List<CustomerGroup> list = [];
+      List<EducationStage> list = [];
       if (data.isNotEmpty) {
-        list = data.map((item) => CustomerGroup.fromJson(item)).toList();
+        list = data.map((item) => EducationStage.fromJson(item)).toList();
       }
-      print('CustomerGroup success');
       return  list;
-
     } else {
-      print('CustomerGroup Failed');
-      throw "Failed to load CustomerGroup list";
+      print('EducationStage Failed');
+      throw "Failed to load EducationStage list";
     }
   }
 
-  Future<int> createCustomerGroup(BuildContext context ,CustomerGroup customerGroup) async {
+  Future<int> createEducationStage(BuildContext context ,EducationStage educationStage) async {
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'cusGroupsCode': customerGroup.cusGroupsCode,
-      'cusGroupsNameAra': customerGroup.cusGroupsNameAra,
-      'cusGroupsNameEng': customerGroup.cusGroupsNameEng,
-      'descriptionAra': customerGroup.descriptionAra,
-      'descriptionEng': customerGroup.descriptionEng,
+      'educationStageCode': educationStage.educationStageCode,
+      'educationStageNameAra': educationStage.educationStageNameAra,
+      'educationStageNameEng': educationStage.educationStageNameEng,
+      'descriptionAra': educationStage.descriptionAra,
+      'descriptionEng': educationStage.descriptionEng,
       "notActive": false,
       "flgDelete": false,
       "isDeleted": false,
@@ -64,9 +61,10 @@ class CustomerGroupApiService {
       "isImported": false,
       "isSynchronized": false,
       "postedToGL": false,
-      "isLinkWithTaxAuthority": true,
-
+      "isLinkWithTaxAuthority": true
     };
+
+    print('save educationStage: $data');
 
     final http.Response response = await http.post(
       Uri.parse(createApi),
@@ -78,19 +76,15 @@ class CustomerGroupApiService {
     );
 
     if (response.statusCode == 200) {
-
       FN_showToast(context,'save_success'.tr() ,Colors.black);
 
       return  1;
-
     } else {
-
-      throw Exception('Failed to post customerGroup');
+      throw Exception('Failed to post educationStage');
     }
-
   }
 
-  Future<int> updateCustomerGroup(BuildContext context ,int id, CustomerGroup customerGroup) async {
+  Future<int> updateEducationStage(BuildContext context ,int id, EducationStage educationStage) async {
 
     print('Start Update');
 
@@ -98,11 +92,12 @@ class CustomerGroupApiService {
       'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'cusGroupsCode': customerGroup.cusGroupsCode,
-      'cusGroupsNameAra': customerGroup.cusGroupsNameAra,
-      'cusGroupsNameEng': customerGroup.cusGroupsNameEng,
-      'descriptionAra': customerGroup.descriptionAra,
-      'descriptionEng': customerGroup.descriptionEng,
+      'educationStageCode': educationStage.educationStageCode,
+      'educationStageNameAra': educationStage.educationStageNameAra,
+      'educationStageNameEng': educationStage.educationStageNameEng,
+      'descriptionAra': educationStage.descriptionAra,
+      'descriptionEng': educationStage.descriptionEng,
+      "notActive": false,
       "confirmed": false,
       "isActive": true,
       "isBlocked": false,
@@ -111,12 +106,11 @@ class CustomerGroupApiService {
       "isLinkWithTaxAuthority": false,
       "isSynchronized": false,
       "isSystem": false,
-      "notActive": false,
       "flgDelete": false
     };
 
     String apiUpdate =updateApi + id.toString();
-    print('Start Update apiUpdate ' + apiUpdate );
+    print('Start Update apiUpdate $apiUpdate' );
 
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data)
@@ -125,7 +119,6 @@ class CustomerGroupApiService {
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after ' );
     if (response.statusCode == 200) {
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
@@ -134,32 +127,25 @@ class CustomerGroupApiService {
       print('Start Update error ' );
       throw Exception('Failed to update a case');
     }
-
   }
 
-  Future<void> deleteCustomerGroup(BuildContext context ,int? id) async {
+  Future<void> deleteEducationStage(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
-    print('url' + apiDel);
-    var data = {
 
+    var data = {
     };
 
-    print('before response');
     var response = await http.delete(Uri.parse(apiDel),
         body: json.encode(data)
         ,headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
         });
-
-    print('after response');
-
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);
     } else {
-      throw "Failed to delete a customerGroup.";
+      throw "Failed to delete a educationStage";
     }
   }
-
 }

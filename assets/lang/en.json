@@ -671,6 +671,12 @@
     "add_qualification": "Add Qualification",
     "stop_dealing": "Stop dealing",
     "hiringDate": "Hiring date",
-    "searchStages": "Search Educational Stages"
+    "searchStages": "Search Educational Stages",
+    "add_stage": "Add Educational Stage",
+    "educationStages": "Education Stages",
+    "searchCustomerGroups": "Search Customer Groups",
+    "add_customer_group": "Add Customer Group",
+    "customer_groups": "Customer Groups",
+    "specializations": "Specializations"
 
 }

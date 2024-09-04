@@ -1,29 +1,29 @@
 
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/platforms/basicInputs/qualifications/qualification.dart';
-import 'package:fourlinkmobileapp/service/module/platforms/basicInputs/qualifications/qualificationApiService.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/basicInputs/customerGroups/customerGroup.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/customerGroups/customerGroupApiService.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/customerGroups/addCustomerGroupScreen.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import '../../../../../utils/permissionHelper.dart';
-import 'addQualificationScreen.dart';
 
-QualificationApiService _apiService = QualificationApiService();
+CustomerGroupApiService _apiService = CustomerGroupApiService();
 
-class QualificationsListPage extends StatefulWidget {
-  const QualificationsListPage({Key? key}) : super(key: key);
+class CustomerGroupsListPage extends StatefulWidget {
+  const CustomerGroupsListPage({Key? key}) : super(key: key);
 
   @override
-  State<QualificationsListPage> createState() => _QualificationsListPageState();
+  State<CustomerGroupsListPage> createState() => _CustomerGroupsListPageState();
 }
 
-class _QualificationsListPageState extends State<QualificationsListPage> {
+class _CustomerGroupsListPageState extends State<CustomerGroupsListPage> {
 
   final _searchValueController = TextEditingController();
-  List<Qualification> _qualifications = [];
-  List<Qualification> _qualificationsSearch = [];
+  List<CustomerGroup> _customerGroups = [];
+  List<CustomerGroup> _customerGroupsSearch = [];
 
   @override
   void initState() {
@@ -35,14 +35,14 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
 
   void getData() async {
     try {
-      List<Qualification>? futureStudent = await _apiService.getQualifications();
+      List<CustomerGroup>? futureCusGroup = await _apiService.getCustomerGroups();
 
-      if (futureStudent.isNotEmpty) {
-        _qualifications = futureStudent;
-        _qualificationsSearch = List.from(_qualifications);
+      if (futureCusGroup.isNotEmpty) {
+        _customerGroups = futureCusGroup;
+        _customerGroupsSearch = List.from(_customerGroups);
 
-        if (_qualifications.isNotEmpty) {
-          _qualifications.sort((a, b) => b.qualificationCode!.compareTo(a.qualificationCode!));
+        if (_customerGroups.isNotEmpty) {
+          _customerGroups.sort((a, b) => b.cusGroupsCode!.compareTo(a.cusGroupsCode!));
 
           setState(() {});
         }
@@ -55,17 +55,17 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
   void onSearch(String search) {
     if (search.isEmpty) {
       setState(() {
-        _qualifications = List.from(_qualificationsSearch);
+        _customerGroups = List.from(_customerGroupsSearch);
       });
     } else {
       setState(() {
-        _qualifications = List.from(_qualificationsSearch);
-        _qualifications = _qualifications.where((qualification) =>
-            qualification.qualificationNameAra!.toLowerCase().contains(search)).toList();
+        _customerGroups = List.from(_customerGroupsSearch);
+        _customerGroups = _customerGroups.where((group) =>
+            group.cusGroupsNameAra!.toLowerCase().contains(search)).toList();
       });
     }
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,12 +90,12 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
                     fontSize: 14,
                     color: Color.fromRGBO(144, 16, 46, 1),
                   ),
-                  hintText: "searchQualifications".tr()
+                  hintText: "searchCustomerGroups".tr()
               ),
             ),
           ),
         ),
-        body: SafeArea(child: buildQualification()),
+        body: SafeArea(child: buildCustomerGroup()),
         floatingActionButton: FloatingActionButton(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(90.0))),
@@ -139,10 +139,9 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
         )
     );
   }
+  Widget buildCustomerGroup() {
 
-  Widget buildQualification() {
-
-    if (_qualifications.isEmpty) {
+    if (_customerGroups.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -153,27 +152,26 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
         padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
         color: const Color.fromRGBO(240, 242, 246, 1),
         child: ListView.builder(
-            itemCount: _qualifications.isEmpty ? 0 : _qualifications.length,
+            itemCount: _customerGroups.isEmpty ? 0 : _customerGroups.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: InkWell(
                   child: ListTile(
-                    leading: Image.asset('assets/fitness_app/qualifications.png'),
-                    title: Text("${'code'.tr()} : ${_qualifications[index].qualificationCode}",
+                    leading: Image.asset('assets/fitness_app/customer_groups.png'),
+                    title: Text("${'code'.tr()} : ${_customerGroups[index].cusGroupsCode}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Column(
                       children: <Widget>[
-
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'descriptionNameArabic'.tr()} : ${_qualifications[index].qualificationNameAra}")),
+                            child: Text("${'arabicName'.tr()} : ${_customerGroups[index].cusGroupsNameAra}")),
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'descriptionNameEnglish'.tr()} : ${_qualifications[index].qualificationNameEng}")
+                            child: Text("${'englishName'.tr()} : ${_customerGroups[index].cusGroupsNameEng}")
                         ),
                         const SizedBox(width: 5),
                         SizedBox(
@@ -225,7 +223,7 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
                                           ),
                                           label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                           onPressed: () {
-                                            _deleteItem(context,_qualifications[index].id);
+                                            _deleteItem(context,_customerGroups[index].id);
                                           },
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -256,6 +254,21 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
       );
     }
   }
+  _navigateToAddScreen(BuildContext context) async {
+    int menuId=58106;
+    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    if(isAllowAdd)
+    {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddCustomerGroupScreen(),
+      )).then((value) {
+        getData();
+      });
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    }
+  }
   _deleteItem(BuildContext context, int? id) async {
     FN_showToast(context, "not_allowed_to_delete".tr(), Colors.red);
 
@@ -281,21 +294,5 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
     //   return;
     // }
     // var res = _apiService.deleteCustomer(context, id).then((value) => getData());
-  }
-
-  _navigateToAddScreen(BuildContext context) async {
-    int menuId=58105;
-    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
-    if(isAllowAdd)
-    {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddQualificationsScreen(),
-      )).then((value) {
-        getData();
-      });
-    }
-    else
-    {
-      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
-    }
   }
 }

@@ -777,7 +777,13 @@
     "add_qualification": "اضافة مؤهل",
     "stop_dealing": "ايقاف التعامل",
     "hiringDate": "تاريخ التعيين",
-    "searchStages": "بحث المراحل التعليمية"
+    "searchStages": "بحث المراحل التعليمية",
+    "add_stage": "تسجيل مرحلة تعليمية جديدة",
+    "educationStages": "المراحل التعليمية",
+    "searchCustomerGroups": "بحث مجموعات العملاء",
+    "add_customer_group": "اضافة مجموعة عملاء جديدة",
+    "customer_groups": "مجموعات العملاء",
+    "specializations": "التخصصات"
 
 }
 

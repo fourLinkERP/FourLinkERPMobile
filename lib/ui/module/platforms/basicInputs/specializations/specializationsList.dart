@@ -7,16 +7,18 @@ import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 
-class EducationalStagesListPage extends StatefulWidget {
-  const EducationalStagesListPage({Key? key}) : super(key: key);
+class SpecializationsListPage extends StatefulWidget {
+  const SpecializationsListPage({Key? key}) : super(key: key);
 
   @override
-  State<EducationalStagesListPage> createState() => _EducationalStagesListPageState();
+  State<SpecializationsListPage> createState() => _SpecializationsListPageState();
 }
 
-class _EducationalStagesListPageState extends State<EducationalStagesListPage> {
+class _SpecializationsListPageState extends State<SpecializationsListPage> {
+
+  final _searchValueController = TextEditingController();
+  final List _specializations = [];
   
-  final List _stages = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,8 +28,8 @@ class _EducationalStagesListPageState extends State<EducationalStagesListPage> {
           title: SizedBox(
             height: 38,
             child: TextField(
-              // controller: _searchValueController,
-              // onChanged: (value) => onSearch(value),
+              controller: _searchValueController,
+              //onChanged: (value) => onSearch(value),
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -41,12 +43,12 @@ class _EducationalStagesListPageState extends State<EducationalStagesListPage> {
                     fontSize: 14,
                     color: Color.fromRGBO(144, 16, 46, 1),
                   ),
-                  hintText: "searchStages".tr()
+                  hintText: "searchQualifications".tr()
               ),
             ),
           ),
         ),
-        body: SafeArea(child: buildStage()),
+        body: SafeArea(child: buildSpecialization()),
         floatingActionButton: FloatingActionButton(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(90.0))),
@@ -90,9 +92,9 @@ class _EducationalStagesListPageState extends State<EducationalStagesListPage> {
         )
     );
   }
-  Widget buildStage() {
+  Widget buildSpecialization() {
 
-    if (_stages.isEmpty) {
+    if (_specializations.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -103,26 +105,27 @@ class _EducationalStagesListPageState extends State<EducationalStagesListPage> {
         padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
         color: const Color.fromRGBO(240, 242, 246, 1),
         child: ListView.builder(
-            itemCount: _stages.isEmpty ? 0 : _stages.length,
+            itemCount: _specializations.isEmpty ? 0 : _specializations.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: InkWell(
                   child: ListTile(
-                    leading: Image.asset('assets/fitness_app/students.jpeg'),
-                    title: Text("${'code'.tr()} : ${_stages[index].studentCode}",
+                    leading: Image.asset('assets/fitness_app/qualifications.png'),
+                    title: Text("${'code'.tr()} : ${_specializations[index].qualificationCode}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Column(
                       children: <Widget>[
+
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'arabicName'.tr()} : ${_stages[index].studentNameAra}")),
+                            child: Text("${'descriptionNameArabic'.tr()} : ${_specializations[index].qualificationNameAra}")),
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'englishName'.tr()} : ${_stages[index].studentNameEng}")
+                            child: Text("${'descriptionNameEnglish'.tr()} : ${_specializations[index].qualificationNameEng}")
                         ),
                         const SizedBox(width: 5),
                         SizedBox(
@@ -174,7 +177,7 @@ class _EducationalStagesListPageState extends State<EducationalStagesListPage> {
                                           ),
                                           label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                           onPressed: () {
-                                            _deleteItem(context,_stages[index].id);
+                                            _deleteItem(context,_specializations[index].id);
                                           },
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(

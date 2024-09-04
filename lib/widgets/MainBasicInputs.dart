@@ -3,7 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/inventory/Items/itemList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/customerGroups/customerGroupsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/educationStages/educationStagesList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/qualifications/qualificationsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/specializations/specializationsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/students/studentsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/materials/materialsList.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -28,6 +31,10 @@ class MainBasicInputs extends StatelessWidget {
       'assets/fitness_app/subjects.png',
       'assets/fitness_app/students.jpeg',
       'assets/fitness_app/qualifications.png',
+      'assets/fitness_app/customer_groups.png',
+      'assets/fitness_app/educationStages.jpeg',
+      'assets/fitness_app/specializations.jpg'
+
     ] : <String>[
       'assets/fitness_app/products.png',
       'assets/fitness_app/clients.png',
@@ -39,7 +46,11 @@ class MainBasicInputs extends StatelessWidget {
       'teachers'.tr(),
       'materials'.tr(),
       'students'.tr(),
-      'qualifications'.tr()
+      'qualifications'.tr(),
+      'customer_groups'.tr(),
+      'educationStages'.tr(),
+      'specializations'.tr()
+
     ] : <String>[
 
       'items'.tr(),
@@ -96,7 +107,7 @@ class MainBasicInputs extends StatelessWidget {
                         int menuId=58102;
                         bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
                         if(isAllowAdd){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => TeachersListPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const TeachersListPage()));
                         }
                         else
                         {
@@ -108,7 +119,7 @@ class MainBasicInputs extends StatelessWidget {
                         int menuId=58103;
                         bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
                         if(isAllowAdd){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => MaterialsListPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const MaterialsListPage()));
                         }
                         else
                         {
@@ -120,7 +131,7 @@ class MainBasicInputs extends StatelessWidget {
                         int menuId=58104;
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
                         if(isAllowed){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsListPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const StudentsListPage()));
                         }
                         else
                         {
@@ -132,7 +143,44 @@ class MainBasicInputs extends StatelessWidget {
                         int menuId=58105;
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
                         if(isAllowed){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => QualificationsListPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const QualificationsListPage()));
+                        }
+                        else
+                        {
+                          FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                        }
+                      }
+                      else  if(index == 4)
+                      {
+                        int menuId=58106;
+                        bool isAllowed = PermissionHelper.checkAddPermission(menuId);
+                        if(isAllowed){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const CustomerGroupsListPage()));
+                        }
+                        else
+                        {
+                          FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                        }
+                      }
+
+                      else  if(index == 5)
+                      {
+                        int menuId=58108;
+                        bool isAllowed = PermissionHelper.checkAddPermission(menuId);
+                        if(isAllowed){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const EducationStagesListPage()));
+                        }
+                        else
+                        {
+                          FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                        }
+                      }
+                      else  if(index == 6)
+                      {
+                        int menuId=58107;
+                        bool isAllowed = PermissionHelper.checkAddPermission(menuId);
+                        if(isAllowed){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const SpecializationsListPage()));
                         }
                         else
                         {

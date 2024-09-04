@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/dto.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carCars/customerCar.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/carMaintenance/carGroups/carGroup.dart';
-import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/CustomerGroups/customerGroupApiService.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/customerGroups/customerGroupApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/CustomerTypes/customerTypeApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:fourlinkmobileapp/service/module/carMaintenance/carGroups/carGroupApiService.dart';
@@ -15,7 +15,7 @@ import '../../../../../common/login_components.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customerTypes/customerType.dart';
-import '../../../../../data/model/modules/module/accountreceivable/basicInputs/CustomerGroups/customerGroup.dart';
+import '../../../../../data/model/modules/module/accountreceivable/basicInputs/customerGroups/customerGroup.dart';
 import '../../../../../data/model/modules/module/carMaintenance/carCars/carCar.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../helpers/toast.dart';
@@ -25,8 +25,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
-
 
 // APIs
 CarGroupApiService _carGroupApiService = CarGroupApiService();

@@ -10,14 +10,14 @@ import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/ba
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/basicInputs/Customers/preventCustomerWithoutAttachments.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
-import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/CustomerGroups/customerGroupApiService.dart';
+import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/customerGroups/customerGroupApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/SalesMen/salesManApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../../../common/login_components.dart';
-import '../../../../../data/model/modules/module/accountreceivable/basicInputs/CustomerGroups/customerGroup.dart';
+import '../../../../../data/model/modules/module/accountreceivable/basicInputs/customerGroups/customerGroup.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';

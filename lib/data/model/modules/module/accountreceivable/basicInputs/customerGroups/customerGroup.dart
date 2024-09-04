@@ -5,15 +5,16 @@ class CustomerGroup {
   String? cusGroupsCode ;
   String? cusGroupsNameAra ;
   String?  cusGroupsNameEng;
-
+  String? descriptionAra;
+  String? descriptionEng;
 
   CustomerGroup({
     this.id,
     this.cusGroupsCode ,
     this.cusGroupsNameAra,
     this.cusGroupsNameEng,
-
-    //image
+    this.descriptionAra,
+    this.descriptionEng
   });
 
   factory CustomerGroup.fromJson(Map<String, dynamic> json) {
@@ -22,9 +23,8 @@ class CustomerGroup {
       cusGroupsCode: (json['cusGroupsCode'] != null) ? json['cusGroupsCode'] as String:" ",
       cusGroupsNameAra: (json['cusGroupsNameAra'] != null) ? json['cusGroupsNameAra'] as String:" ",
       cusGroupsNameEng: (json['cusGroupsNameEng'] != null) ? json['cusGroupsNameEng'] as String:" ",
-
-      //image: json['image'] as String,
-
+      descriptionAra: (json['descriptionAra'] != null) ? json['descriptionAra'] as String:" ",
+      descriptionEng: (json['descriptionEng'] != null) ? json['descriptionEng'] as String:" "
     );
   }
 

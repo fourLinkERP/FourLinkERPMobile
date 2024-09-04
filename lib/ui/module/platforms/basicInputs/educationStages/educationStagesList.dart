@@ -1,29 +1,30 @@
 
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/platforms/basicInputs/qualifications/qualification.dart';
-import 'package:fourlinkmobileapp/service/module/platforms/basicInputs/qualifications/qualificationApiService.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/platforms/basicInputs/educationalStages/education_stage.dart';
+import 'package:fourlinkmobileapp/service/module/platforms/basicInputs/educationStages/educationStagesApiService.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/educationStages/addEducationStageScreen.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
+
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import '../../../../../utils/permissionHelper.dart';
-import 'addQualificationScreen.dart';
 
-QualificationApiService _apiService = QualificationApiService();
+EducationStageApiService _apiService = EducationStageApiService();
 
-class QualificationsListPage extends StatefulWidget {
-  const QualificationsListPage({Key? key}) : super(key: key);
+class EducationStagesListPage extends StatefulWidget {
+  const EducationStagesListPage({Key? key}) : super(key: key);
 
   @override
-  State<QualificationsListPage> createState() => _QualificationsListPageState();
+  State<EducationStagesListPage> createState() => _EducationStagesListPageState();
 }
 
-class _QualificationsListPageState extends State<QualificationsListPage> {
+class _EducationStagesListPageState extends State<EducationStagesListPage> {
 
   final _searchValueController = TextEditingController();
-  List<Qualification> _qualifications = [];
-  List<Qualification> _qualificationsSearch = [];
+  List<EducationStage> _stages = [];
+  List<EducationStage> _stagesSearch = [];
 
   @override
   void initState() {
@@ -35,14 +36,14 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
 
   void getData() async {
     try {
-      List<Qualification>? futureStudent = await _apiService.getQualifications();
+      List<EducationStage>? futureStage = await _apiService.getEducationStages();
 
-      if (futureStudent.isNotEmpty) {
-        _qualifications = futureStudent;
-        _qualificationsSearch = List.from(_qualifications);
+      if (futureStage.isNotEmpty) {
+        _stages = futureStage;
+        _stagesSearch = List.from(_stages);
 
-        if (_qualifications.isNotEmpty) {
-          _qualifications.sort((a, b) => b.qualificationCode!.compareTo(a.qualificationCode!));
+        if (_stages.isNotEmpty) {
+          _stages.sort((a, b) => b.educationStageCode!.compareTo(a.educationStageCode!));
 
           setState(() {});
         }
@@ -55,13 +56,13 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
   void onSearch(String search) {
     if (search.isEmpty) {
       setState(() {
-        _qualifications = List.from(_qualificationsSearch);
+        _stages = List.from(_stagesSearch);
       });
     } else {
       setState(() {
-        _qualifications = List.from(_qualificationsSearch);
-        _qualifications = _qualifications.where((qualification) =>
-            qualification.qualificationNameAra!.toLowerCase().contains(search)).toList();
+        _stages = List.from(_stagesSearch);
+        _stages = _stages.where((stage) =>
+            stage.educationStageNameAra!.toLowerCase().contains(search)).toList();
       });
     }
   }
@@ -90,12 +91,12 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
                     fontSize: 14,
                     color: Color.fromRGBO(144, 16, 46, 1),
                   ),
-                  hintText: "searchQualifications".tr()
+                  hintText: "searchStages".tr()
               ),
             ),
           ),
         ),
-        body: SafeArea(child: buildQualification()),
+        body: SafeArea(child: buildStage()),
         floatingActionButton: FloatingActionButton(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(90.0))),
@@ -139,10 +140,9 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
         )
     );
   }
+  Widget buildStage() {
 
-  Widget buildQualification() {
-
-    if (_qualifications.isEmpty) {
+    if (_stages.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -153,27 +153,26 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
         padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
         color: const Color.fromRGBO(240, 242, 246, 1),
         child: ListView.builder(
-            itemCount: _qualifications.isEmpty ? 0 : _qualifications.length,
+            itemCount: _stages.isEmpty ? 0 : _stages.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: InkWell(
                   child: ListTile(
-                    leading: Image.asset('assets/fitness_app/qualifications.png'),
-                    title: Text("${'code'.tr()} : ${_qualifications[index].qualificationCode}",
+                    leading: Image.asset('assets/fitness_app/educationStages.jpeg'),
+                    title: Text("${'code'.tr()} : ${_stages[index].educationStageCode}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Column(
                       children: <Widget>[
-
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'descriptionNameArabic'.tr()} : ${_qualifications[index].qualificationNameAra}")),
+                            child: Text("${'arabicName'.tr()} : ${_stages[index].educationStageNameAra}")),
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'descriptionNameEnglish'.tr()} : ${_qualifications[index].qualificationNameEng}")
+                            child: Text("${'englishName'.tr()} : ${_stages[index].educationStageNameEng}")
                         ),
                         const SizedBox(width: 5),
                         SizedBox(
@@ -225,7 +224,7 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
                                           ),
                                           label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                           onPressed: () {
-                                            _deleteItem(context,_qualifications[index].id);
+                                            _deleteItem(context,_stages[index].id);
                                           },
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -256,6 +255,21 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
       );
     }
   }
+  _navigateToAddScreen(BuildContext context) async {
+    int menuId=58108;
+    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    if(isAllowAdd)
+    {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddEducationStageScreen(),
+      )).then((value) {
+        getData();
+      });
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    }
+  }
   _deleteItem(BuildContext context, int? id) async {
     FN_showToast(context, "not_allowed_to_delete".tr(), Colors.red);
 
@@ -281,21 +295,5 @@ class _QualificationsListPageState extends State<QualificationsListPage> {
     //   return;
     // }
     // var res = _apiService.deleteCustomer(context, id).then((value) => getData());
-  }
-
-  _navigateToAddScreen(BuildContext context) async {
-    int menuId=58105;
-    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
-    if(isAllowAdd)
-    {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddQualificationsScreen(),
-      )).then((value) {
-        getData();
-      });
-    }
-    else
-    {
-      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
-    }
   }
 }
