@@ -20,7 +20,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
     Map data = {
       'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      //'BranchCode': branchCode
     };
 
     final http.Response response = await http.post(
@@ -50,7 +50,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
     Map data = {
       'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      //'BranchCode': branchCode
     };
 
     print('Customer 11');
@@ -108,12 +108,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       "isImported": false,
       "isSynchronized": false,
       "postedToGL": false,
-      "isLinkWithTaxAuthority": true,
-
-      // 'address': customer.address,
-      // 'city': customer.city,
-      // 'country': customer.country,
-      // 'status': customer.status
+      "isLinkWithTaxAuthority": true
     };
 
     print('save customer: ' + data.toString());
@@ -177,11 +172,9 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
         });
-
-    print('Start Update after ' );
     if (response.statusCode == 200) {
       print('Start Update done ' );
-      //var data = jsonDecode(response.body)['data'];
+
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;

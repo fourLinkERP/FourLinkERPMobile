@@ -3,19 +3,20 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/inventory/Items/itemList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/customerGroups/customerGroupsList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/educationStages/educationStagesList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/qualifications/qualificationsList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/specializations/specializationsList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/students/studentsList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms/basicInputs/materials/materialsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/customerGroups/customerGroupsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/educationStages/educationStagesList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/platforms/platformsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/qualifications/qualificationsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/specializations/specializationsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/students/studentsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/materials/materialsList.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../common/globals.dart';
 import '../helpers/toast.dart';
 import '../ui/module/accountReceivable/basicInputs/Salesman/salesmanList.dart';
 import '../ui/module/accountReceivable/basicInputs/customers/customerList.dart';
-import '../ui/module/platforms/basicInputs/teachers/teachersList.dart';
+import '../ui/module/platforms_management/basicInputs/teachers/teachersList.dart';
 import '../utils/permissionHelper.dart';
 
 
@@ -27,6 +28,7 @@ class MainBasicInputs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<String> areaListData = systemCode == 8 ? <String>[
+      'assets/fitness_app/platforms.png',
       'assets/fitness_app/teachers.png',
       'assets/fitness_app/subjects.png',
       'assets/fitness_app/students.jpeg',
@@ -43,6 +45,7 @@ class MainBasicInputs extends StatelessWidget {
     ];
 
     List<String> areaListDataTitle = systemCode == 8 ? <String>[
+      'platforms'.tr(),
       'teachers'.tr(),
       'materials'.tr(),
       'students'.tr(),
@@ -104,6 +107,18 @@ class MainBasicInputs extends StatelessWidget {
                     onTap: () {
                       if(index == 0)
                       {
+                        int menuId=58101;
+                        bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+                        if(isAllowAdd){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const PlatformsListPage()));
+                        }
+                        else
+                        {
+                          FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                        }
+                      }
+                      if(index == 1)
+                      {
                         int menuId=58102;
                         bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
                         if(isAllowAdd){
@@ -114,7 +129,7 @@ class MainBasicInputs extends StatelessWidget {
                           FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                         }
                       }
-                      else if(index == 1)
+                      else if(index == 2)
                       {
                         int menuId=58103;
                         bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
@@ -126,7 +141,7 @@ class MainBasicInputs extends StatelessWidget {
                           FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                         }
                       }
-                      else  if(index == 2)
+                      else  if(index == 3)
                       {
                         int menuId=58104;
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
@@ -138,7 +153,7 @@ class MainBasicInputs extends StatelessWidget {
                           FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                         }
                       }
-                      else  if(index == 3)
+                      else  if(index == 4)
                       {
                         int menuId=58105;
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
@@ -150,7 +165,7 @@ class MainBasicInputs extends StatelessWidget {
                           FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                         }
                       }
-                      else  if(index == 4)
+                      else  if(index == 5)
                       {
                         int menuId=58106;
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
@@ -163,7 +178,7 @@ class MainBasicInputs extends StatelessWidget {
                         }
                       }
 
-                      else  if(index == 5)
+                      else  if(index == 6)
                       {
                         int menuId=58108;
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
@@ -175,7 +190,7 @@ class MainBasicInputs extends StatelessWidget {
                           FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                         }
                       }
-                      else  if(index == 6)
+                      else  if(index == 7)
                       {
                         int menuId=58107;
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
@@ -194,10 +209,10 @@ class MainBasicInputs extends StatelessWidget {
                         Padding(
                           padding:
                           const EdgeInsets.only(top: 16, left: 16, right: 16),
-                          child: Image.asset(areaListData[index] !),
+                          child: Image.asset(areaListData[index]),
                         ),
                         const SizedBox(height: 20.0),
-                        Text(areaListDataTitle[index]!)
+                        Text(areaListDataTitle[index])
                       ],
                     ),
                   ),
@@ -232,7 +247,7 @@ class MainBasicInputs extends StatelessWidget {
                         int menuId=5105;
                         bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
                         if(isAllowAdd){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => ItemListPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const ItemListPage()));
                         }
                         else
                         {
@@ -244,7 +259,7 @@ class MainBasicInputs extends StatelessWidget {
                         int menuId=6103;
                         bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
                         if(isAllowAdd){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerListPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const CustomerListPage()));
                         }
                         else
                         {
@@ -256,7 +271,7 @@ class MainBasicInputs extends StatelessWidget {
                         int menuId=6122;
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
                         if(isAllowed){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => SalesManListPage()));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const SalesManListPage()));
                         }
                         else
                         {
@@ -270,10 +285,10 @@ class MainBasicInputs extends StatelessWidget {
                         Padding(
                           padding:
                           const EdgeInsets.only(top: 16, left: 16, right: 16),
-                          child: Image.asset(areaListData[index] !),
+                          child: Image.asset(areaListData[index]),
                         ),
                         const SizedBox(height: 20.0),
-                        Text(areaListDataTitle[index]!)
+                        Text(areaListDataTitle[index])
                       ],
                     ),
                   ),

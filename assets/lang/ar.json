@@ -783,7 +783,13 @@
     "searchCustomerGroups": "بحث مجموعات العملاء",
     "add_customer_group": "اضافة مجموعة عملاء جديدة",
     "customer_groups": "مجموعات العملاء",
-    "specializations": "التخصصات"
+    "specializations": "التخصصات",
+    "searchSpecialization": "بحث عن تخصص",
+    "add_specialization": "تسجيل تخصص",
+    "platforms": "المنصات",
+    "searchPlatforms": "بحث عن منصة",
+    "add_platform": "تسجيل منصة جديدة",
+    "platformLink": "لينك المنصة"
 
 }
 

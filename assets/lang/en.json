@@ -677,6 +677,12 @@
     "searchCustomerGroups": "Search Customer Groups",
     "add_customer_group": "Add Customer Group",
     "customer_groups": "Customer Groups",
-    "specializations": "Specializations"
+    "specializations": "Specializations",
+    "searchSpecialization": "Search for Specialization",
+    "add_specialization": "Add specialization",
+    "platforms": "Platforms",
+    "searchPlatforms": "Search for Platform",
+    "add_platform": "Add new platform",
+    "platformLink": "Platform Link"
 
 }
