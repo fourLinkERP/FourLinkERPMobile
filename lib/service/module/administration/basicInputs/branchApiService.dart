@@ -11,7 +11,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<List<Branch>>  getBranches() async {
 
-    String searchApi= baseUrl.toString() + '/api/v1/branches/loginsearch';
+    String searchApi= '$baseUrl/api/v1/branches/loginsearch';
 
     Map data = {
       'CompanyCode': companyCode
@@ -33,18 +33,12 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
     if (response.statusCode == 200) {
-      print('Branch 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
-      print(data);
       List<Branch> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => Branch.fromJson(item)).toList();
       }
-      print('Branch 3');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => Branch.fromJson(data))
-      //     .toList();
     } else {
       print('Branch Failed');
       throw "Failed to load branch list";

@@ -1,19 +1,19 @@
 
 import 'dart:convert';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
-import '../../../../../data/model/modules/module/platforms_management/basicInputs/students/student.dart';
+import '../../../../../data/model/modules/module/platforms_management/basicInputs/educationYears/education_year.dart';
 import '../../../../../helpers/toast.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 
-class StudentApiService{
-  String searchApi= '$baseUrl/api/v1/trainingcenterstudents/search';
-  String createApi= '$baseUrl/api/v1/trainingcenterstudents';
-  String updateApi= '$baseUrl/api/v1/trainingcenterstudents/';
-  String deleteApi= '$baseUrl/api/v1/trainingcenterstudents/';
+class EducationYearApiService{
+  String searchApi= '$baseUrl/api/v1/trainingcentereducationyears/search';
+  String createApi= '$baseUrl/api/v1/trainingcentereducationyears';
+  String updateApi= '$baseUrl/api/v1/trainingcentereducationyears/';
+  String deleteApi= '$baseUrl/api/v1/trainingcentereducationyears/';
 
-  Future<List<Student>>  getStudents() async { // getStudents({int page = 1, int limit = 10})
+  Future<List<EducationYear>>  getEducationYears() async {
 
     Map data = {
       'CompanyCode': companyCode,
@@ -32,31 +32,26 @@ class StudentApiService{
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body)['data'];
-      List<Student> list = [];
+      List<EducationYear> list = [];
       if (data.isNotEmpty) {
-        list = data.map((item) => Student.fromJson(item)).toList();
+        list = data.map((item) => EducationYear.fromJson(item)).toList();
       }
       return  list;
     } else {
-      print('Student Failed');
-      throw "Failed to load student list";
+      print('EducationYear Failed');
+      throw "Failed to load EducationYear list";
     }
   }
 
-  Future<int> createStudent(BuildContext context ,Student student) async {
+  Future<int> createEducationYear(BuildContext context ,EducationYear educationYear) async {
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'studentCode': student.studentCode,
-      'studentNameAra': student.studentNameAra,
-      'studentNameEng': student.studentNameEng,
-      'nationalityCode': student.nationalityCode,
-      'nationalityId': student.nationalityId,
-      'email': student.email,
-      'address': student.address,
-      'birthDate': student.birthDate,
-      'mobileNo': student.mobileNo,
-      'qualificationCode': student.qualificationCode,
+      'educationYearCode': educationYear.educationYearCode,
+      'educationYearNameAra': educationYear.educationYearNameAra,
+      'educationYearNameEng': educationYear.educationYearNameEng,
+      'descriptionAra': educationYear.descriptionAra,
+      'descriptionEng': educationYear.descriptionEng,
       "notActive": false,
       "flgDelete": false,
       "isDeleted": false,
@@ -69,7 +64,7 @@ class StudentApiService{
       "isLinkWithTaxAuthority": true
     };
 
-    print('save student: $data');
+    print('save educationYear: $data');
 
     final http.Response response = await http.post(
       Uri.parse(createApi),
@@ -85,26 +80,24 @@ class StudentApiService{
 
       return  1;
     } else {
-      throw Exception('Failed to post student');
+      throw Exception('Failed to post educationYear');
     }
   }
 
-  Future<int> updateStudent(BuildContext context ,int id, Student student) async {
+  Future<int> updateEducationYear(BuildContext context ,int id, EducationYear educationYear) async {
 
     print('Start Update');
 
     Map data = {
       'id': id,
-      'studentCode': student.studentCode,
-      'studentNameAra': student.studentNameAra,
-      'studentNameEng': student.studentNameEng,
-      'nationalityCode': student.nationalityCode,
-      'nationalityId': student.nationalityId,
-      'email': student.email,
-      'address': student.address,
-      'birthDate': student.birthDate,
-      'mobileNo': student.mobileNo,
-      'qualificationCode': student.qualificationCode,
+      'CompanyCode': companyCode,
+      'BranchCode': branchCode,
+      'educationYearCode': educationYear.educationYearCode,
+      'educationYearNameAra': educationYear.educationYearNameAra,
+      'educationYearNameEng': educationYear.educationYearNameEng,
+      'descriptionAra': educationYear.descriptionAra,
+      'descriptionEng': educationYear.descriptionEng,
+      "notActive": false,
       "confirmed": false,
       "isActive": true,
       "isBlocked": false,
@@ -113,7 +106,6 @@ class StudentApiService{
       "isLinkWithTaxAuthority": false,
       "isSynchronized": false,
       "isSystem": false,
-      "notActive": false,
       "flgDelete": false
     };
 
@@ -137,7 +129,7 @@ class StudentApiService{
     }
   }
 
-  Future<void> deleteStudent(BuildContext context ,int? id) async {
+  Future<void> deleteEducationYear(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
 
@@ -153,7 +145,7 @@ class StudentApiService{
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);
     } else {
-      throw "Failed to delete a student";
+      throw "Failed to delete a educationYear";
     }
   }
 }

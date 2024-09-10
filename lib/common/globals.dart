@@ -15,13 +15,13 @@ bool isLive = false;
 List<Employee> employees = [];
 
 //Url - Token
-String urlString = "http://api.abr-alsharq.com";
+String urlString = "http://api.sudokuano.net:8102";
 //String urlString = "http://webapi.4linkerp.com";
 //String urlString = "https://kreazmobileapi.4linkerp.com";
 //String urlString="http://www.sudokuano.net";
 //String urlString="http://kraezapi.4linkweb.com:8092";
 //String urlString="http://Report.15mayclub.com";
-String reportUrlString = "http://report.abr-alsharq.com";
+String reportUrlString = "http://report.sudokuano.net:9180";
 //String reportUrlString = "http://webreport.4linkerp.com";
 //String reportUrlString = "http://mobileapi.4linkerp.com";
 //String reportUrlString = "http://kraezreports.4linkweb.com:8094";
@@ -49,6 +49,7 @@ Uint8List companyLogoDecoded = Uint8List(0);
 String branchName= '';
 String branchLatitude ='';
 String branchLongitude = '';
+int rememberMeValue = 0;
 
 List<Item> itemsWithBalance = [];
 List<Item> itemsWithOutBalance = [];

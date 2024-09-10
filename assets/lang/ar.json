@@ -747,7 +747,7 @@
     "searchTransferOrders": "بحث امر النقل",
     "transfer_order": "امر نقل",
     "add_transfer_order": "اضافة امر نقل",
-    "TransferOrder": "امر نقل",
+    "transferOrder": "امر نقل",
     "driverReply": "رد السائق",
     "transportationFare": "أجرة النقل",
     "fuelAllowance": "بدل محروقات",
@@ -789,7 +789,15 @@
     "platforms": "المنصات",
     "searchPlatforms": "بحث عن منصة",
     "add_platform": "تسجيل منصة جديدة",
-    "platformLink": "لينك المنصة"
+    "platformLink": "لينك المنصة",
+    "stages_classes": "الصفوف التعليمية",
+    "searchStagesClasses": "بحث الصفوف الدراسية",
+    "remember_me": "تذكرني!",
+    "salary_envelope_statement": "تقرير بيان ظرف الراتب",
+    "employee_statement": "تقرير كشف حساب موظف",
+    "add_year": "تسجيل عام دراسي جديد",
+    "searchEducationYears": "بحث الاعوام الدراسية",
+    "education_years": "الاعوام الدراسية"
 
 }
 

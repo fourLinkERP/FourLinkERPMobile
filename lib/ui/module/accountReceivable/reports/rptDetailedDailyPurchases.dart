@@ -37,9 +37,9 @@ String? startDate;
 String? endDate;
 String? salesInvoicesEndDate;
 List<DropdownMenuItem<String>> menuCustomerType = [ ];
-String? customerTypeSelectedValue = null;
-String? branchSelectedValue = null;
-String? salesManSelectedValue = null;
+String? customerTypeSelectedValue;
+String? branchSelectedValue;
+String? salesManSelectedValue;
 
 
 class RptDetailedDailyPurchases extends StatefulWidget {
@@ -51,14 +51,12 @@ class RptDetailedDailyPurchases extends StatefulWidget {
 
 class _RptDetailedDailyPurchasesState extends State<RptDetailedDailyPurchases> {
 
-  List<DropdownMenuItem<String>> menuCustomers = [ ];
   List<Customer> customers =[];
   List<CustomerType> customerTypes=[];
   List<Branch> branches=[];
   List<SalesMan> salesMen=[];
 
   final _addFormKey = GlobalKey<FormState>();
-  final _dropdownCustomerFormKey = GlobalKey<FormState>();
   final _dropdownCustomerTypeFormKey = GlobalKey<FormState>();
   final _dropdownBranchFormKey = GlobalKey<FormState>();
   final _dropdownSalesManFormKey = GlobalKey<FormState>();
@@ -67,23 +65,10 @@ class _RptDetailedDailyPurchasesState extends State<RptDetailedDailyPurchases> {
   Branch?  branchItem=Branch(branchCode: 0,branchNameAra: "",branchNameEng: "",id: 0);
   SalesMan?  salesManItem=SalesMan(salesManCode: "",salesManNameAra: "",salesManNameEng: "",id: 0);
 
-  String? _dropdownValue ;
-  String arabicNameHint = 'arabicNameHint';
-
-  get salesInvoiceTypeItem => null;
-
   @override void initState() {
 
     super.initState();
     _fillCombos();
-  }
-
-  void dropDownCallBack(String? selectedValue){
-    if(selectedValue is String){
-      setState(() {
-        _dropdownValue = selectedValue;
-      });
-    }
   }
 
   @override
@@ -427,7 +412,6 @@ class _RptDetailedDailyPurchasesState extends State<RptDetailedDailyPurchases> {
   }
   _fillCombos(){
 
-    //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
 
@@ -438,7 +422,6 @@ class _RptDetailedDailyPurchasesState extends State<RptDetailedDailyPurchases> {
       print(e);
     });
 
-    //Branches
     Future<List<Branch>> futureBranches = _branchApiService.getBranches().then((data) {
       branches = data;
 
@@ -449,7 +432,6 @@ class _RptDetailedDailyPurchasesState extends State<RptDetailedDailyPurchases> {
       print(e);
     });
 
-    //Sales Man
     Future<List<SalesMan>> futureSalesMen = _salesManApiService.getReportSalesMen().then((data) {
       salesMen = data;
       salesManSelectedValue = salesMen[0].salesManCode.toString();
@@ -486,7 +468,6 @@ class _RptDetailedDailyPurchasesState extends State<RptDetailedDailyPurchases> {
   }
 
   printReport(BuildContext context ,String criteria){
-    print('Start Report');
     print(criteria);
     String menuId="7305";
     //API Reference
@@ -502,7 +483,7 @@ class _RptDetailedDailyPurchasesState extends State<RptDetailedDailyPurchases> {
     final report = reportUtilityApiService.getReportData(menuId,criteria , formulasList).then((data) async {
       print('Data Fetched');
 
-      final outputFilePath = 'DetailedDailyPurchasesReport.pdf';
+      const outputFilePath = 'DetailedDailyPurchasesReport.pdf';
       final dir = await getApplicationDocumentsDirectory();
       final file = File('${dir.path}/$outputFilePath');
       await file.writeAsBytes(data);
@@ -530,34 +511,34 @@ class _RptDetailedDailyPurchasesState extends State<RptDetailedDailyPurchases> {
   {
     String criteria="";
 
-    if(startDateController.text.isNotEmpty && startDateController != null)
+    if(startDateController.text.isNotEmpty)
     {
-      criteria += " And TrxDate >='" + startDateController.text + "' ";
+      criteria += " And TrxDate >='${startDateController.text}' ";
     }
 
-    if(endDateController.text.isNotEmpty && endDateController != null)
+    if(endDateController.text.isNotEmpty)
     {
-      criteria += " And TrxDate <='" + endDateController.text + "' ";
+      criteria += " And TrxDate <='${endDateController.text}' ";
     }
 
     if(selectedCustomerValue.toString().isNotEmpty && selectedCustomerValue != null)
     {
-      criteria += " And CustomerCode =N'" + selectedCustomerValue.toString() + "' ";
+      criteria += " And CustomerCode =N'$selectedCustomerValue' ";
     }
 
     if(selectedTypeValue.toString().isNotEmpty && selectedTypeValue != null)
     {
-      criteria += " And CustomerTypeCode =N'" + selectedTypeValue.toString() + "' ";
+      criteria += " And CustomerTypeCode =N'$selectedTypeValue' ";
     }
 
     if(branchSelectedValue.toString().isNotEmpty && branchSelectedValue != null)
     {
-      criteria += " And BranchCode =N'" + branchSelectedValue.toString() + "' ";
+      criteria += " And BranchCode =N'$branchSelectedValue' ";
     }
 
     if(salesManSelectedValue.toString().isNotEmpty && salesManSelectedValue != null)
     {
-      criteria += " And SalesManCode =N'" + salesManSelectedValue.toString() + "' ";
+      criteria += " And SalesManCode =N'$salesManSelectedValue' ";
     }
 
     return criteria;

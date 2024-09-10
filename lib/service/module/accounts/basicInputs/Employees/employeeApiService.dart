@@ -6,20 +6,19 @@ import '../../../../../common/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
-import '../../../../../common/globals.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/EmployeeAdvance.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/EmployeeContract.dart';
 
 
  class EmployeeApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/employees/search';
-  String getContractApi= baseUrl.toString()  + '/api/v1/employees/getemployeecontractdata';
-  String getEmployeeAdvanceApi = baseUrl.toString()  + '/api/v1/crmemployeeadvanceheaders/searchdata';
-  String createApi= baseUrl.toString()  + '/api/v1/employees';
-  String updateApi= baseUrl.toString()  + '/api/v1/employees/';
-  String deleteApi= baseUrl.toString()  + '/api/v1/employees/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/employees/';
+  String searchApi= '$baseUrl/api/v1/employees/search';
+  String getContractApi= '$baseUrl/api/v1/employees/getemployeecontractdata';
+  String getEmployeeAdvanceApi = '$baseUrl/api/v1/crmemployeeadvanceheaders/searchdata';
+  String createApi= '$baseUrl/api/v1/employees';
+  String updateApi= '$baseUrl/api/v1/employees/';
+  String deleteApi= '$baseUrl/api/v1/employees/';
+  String getByIdApi= '$baseUrl/api/v1/employees/';
 
   Future<List<Employee>>  getEmployees() async {
 
@@ -28,7 +27,6 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
       'BranchCode': branchCode
     };
 
-    print('Employee 1');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -39,7 +37,6 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
     );
 
     if (response.statusCode == 200) {
-      print('Employee 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<Employee> list = [];
       if (data.isNotEmpty) {

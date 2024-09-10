@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
@@ -11,14 +10,13 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
 
  class SalesManApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/salesMans/searchdata';
-  String createApi= baseUrl.toString()  + '/api/v1/salesMans';
-  String updateApi= baseUrl.toString()  + '/api/v1/salesMans/';
-  String deleteApi= baseUrl.toString()  + '/api/v1/salesMans/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/salesMans/';
+  String searchApi= '$baseUrl/api/v1/salesMans/searchdata';
+  String createApi= '$baseUrl/api/v1/salesMans';
+  String updateApi= '$baseUrl/api/v1/salesMans/';
+  String deleteApi= '$baseUrl/api/v1/salesMans/';
+  String getByIdApi= '$baseUrl/api/v1/salesMans/';
 
   Future<List<SalesMan>>  getSalesMans() async {
-    print('Sales Man 1');
     Map data = {
       'Search': {
         'CompanyCode': companyCode,
@@ -35,15 +33,13 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
       body: jsonEncode(data),
     );
 
-    print('Sales Man 2');
     if (response.statusCode == 200) {
-      print('Sales Man 3');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesMan> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => SalesMan.fromJson(item)).toList();
       }
-      print('Sales Man 4');
+      print('Sales Man success');
       return  list;
 
     } else {
@@ -76,7 +72,6 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
 
     print('data sales Man: $data');
     if (response.statusCode == 200) {
-      print('report sales Man 3');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesMan> list = [];
       if (data.isNotEmpty) {
@@ -124,12 +119,7 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
       'salesManNameAra': salesMan.salesManNameAra,
       'salesManNameEng': salesMan.salesManNameEng,
       'address': salesMan.address,
-      'tel1': salesMan.tel1,
-      // 'age': salesMan.age,
-      // 'address': salesMan.address,
-      // 'city': salesMan.city,
-      // 'country': salesMan.country,
-      // 'status': salesMan.status
+      'tel1': salesMan.tel1
     };
 
     final http.Response response = await http.post(
@@ -141,23 +131,15 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
       body: jsonEncode(data),
     );
 
-
-
     if (response.statusCode == 200) {
 
-      //print('B 1');
-      //var data = jsonDecode(response.body)['data'];
-      //print('B 1 Finish');
       FN_showToast(context,'save_success'.tr() ,Colors.black);
 
       return  1;
 
-
     } else {
       throw Exception('Failed to post salesMan');
     }
-
-    return  0;
   }
 
   Future<int> updateSalesMan(BuildContext context ,int id, SalesMan salesMan) async {
@@ -184,19 +166,13 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after ' );
     if (response.statusCode == 200) {
-      print('Start Update done ' );
-      //var data = jsonDecode(response.body)['data'];
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
     } else {
-      print('Start Update error ' );
       throw Exception('Failed to update a case');
     }
-
-    return 0;
   }
 
   Future<void> deleteSalesMan(BuildContext context ,int? id) async {

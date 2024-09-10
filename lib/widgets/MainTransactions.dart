@@ -62,8 +62,8 @@ class MainTransactions extends StatelessWidget {
         'shipping_permission'.tr(),
         'maintenance_order'.tr(),
         'branchRequest'.tr(),
-        'ReceiveTransfers'.tr(),
-        'TransferOrder'.tr()
+        'receiveTransfers'.tr(),
+        'transferOrder'.tr()
 
       ];
 

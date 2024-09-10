@@ -683,6 +683,14 @@
     "platforms": "Platforms",
     "searchPlatforms": "Search for Platform",
     "add_platform": "Add new platform",
-    "platformLink": "Platform Link"
+    "platformLink": "Platform Link",
+    "stages_classes": "Stages Classes",
+    "searchStagesClasses": "Search for Stage Class",
+    "remember_me": "Remember Me",
+    "salary_envelope_statement": "Salary Envelope Statement",
+    "employee_statement": "Employee Statement",
+    "add_year": "Add Eduction Year",
+    "searchEducationYears": "Search For Education Year",
+    "education_years": "Education Years"
 
 }

@@ -1,91 +1,67 @@
+
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/platforms_management/basicInputs/students/student.dart';
-import 'package:fourlinkmobileapp/service/module/platforms_management/basicInputs/students/studentApiService.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/students/addStudentScreen.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/platforms_management/basicInputs/stagesClasses/stageClass.dart';
+import 'package:fourlinkmobileapp/service/module/platforms_management/basicInputs/stagesClasses/stageClassApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import '../../../../../utils/permissionHelper.dart';
+import 'addStageClassScreen.dart';
 
-StudentApiService _apiService = StudentApiService();
+StageClassApiService _apiService = StageClassApiService();
 
-class StudentsListPage extends StatefulWidget {
-  const StudentsListPage({Key? key}) : super(key: key);
+class StagesClassesListPage extends StatefulWidget {
+  const StagesClassesListPage({Key? key}) : super(key: key);
 
   @override
-  State<StudentsListPage> createState() => _StudentsListPageState();
+  State<StagesClassesListPage> createState() => _StagesClassesListPageState();
 }
 
-class _StudentsListPageState extends State<StudentsListPage> {
+class _StagesClassesListPageState extends State<StagesClassesListPage> {
 
   final _searchValueController = TextEditingController();
-  List<Student> _students = [];
-  List<Student> _studentsSearch = [];
-  final ScrollController _scrollController = ScrollController();
-  bool isLoading = false;
-  int currentPage = 1;
+  List<StageClass> _stagesClasses = [];
+  List<StageClass> _stagesClassesSearch = [];
 
   @override
   void initState() {
-    super.initState();
+
     getData();
+    super.initState();
     AppCubit.get(context).CheckConnection();
-
-    _scrollController.addListener(_scrollListener);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
   }
 
   void getData() async {
     try {
-      setState(() {
-        isLoading = true;
-      });
+      List<StageClass>? futureStage = await _apiService.getStageClasses();
 
-      List<Student>? futureStudent = await _apiService.getStudents();  // _apiService.getStudents(page: currentPage);
+      if (futureStage.isNotEmpty) {
+        _stagesClasses = futureStage;
+        _stagesClassesSearch = List.from(_stagesClasses);
 
-      if (futureStudent.isNotEmpty) {
-        _students.addAll(futureStudent);
-        _studentsSearch = List.from(_students);
+        if (_stagesClasses.isNotEmpty) {
+          _stagesClasses.sort((a, b) => b.educationStagesClassCode!.compareTo(a.educationStagesClassCode!));
 
-        if (_students.isNotEmpty) {
-          _students.sort((a, b) => b.studentCode!.compareTo(a.studentCode!));
+          setState(() {});
         }
       }
-      setState(() {
-        isLoading = false;
-      });
     } catch (error) {
-      setState(() {
-        isLoading = false;
-      });
       AppCubit.get(context).EmitErrorState();
-    }
-  }
-
-  void _scrollListener() {
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent && !isLoading) {
-      currentPage++;  // Increase page number
-      getData();  // Fetch next page of data
     }
   }
 
   void onSearch(String search) {
     if (search.isEmpty) {
       setState(() {
-        _students = List.from(_studentsSearch);
+        _stagesClasses = List.from(_stagesClassesSearch);
       });
     } else {
       setState(() {
-        _students = List.from(_studentsSearch);
-        _students = _students.where((student) =>
-            student.studentNameAra!.toLowerCase().contains(search)).toList();
+        _stagesClasses = List.from(_stagesClassesSearch);
+        _stagesClasses = _stagesClasses.where((stage) =>
+            stage.educationStagesClassNameAra!.toLowerCase().contains(search)).toList();
       });
     }
   }
@@ -114,12 +90,12 @@ class _StudentsListPageState extends State<StudentsListPage> {
                     fontSize: 14,
                     color: Color.fromRGBO(144, 16, 46, 1),
                   ),
-                  hintText: "searchStudents".tr()
+                  hintText: "searchStagesClasses".tr()
               ),
             ),
           ),
         ),
-        body: SafeArea(child: buildStudent()),
+        body: SafeArea(child: buildStagesClasses()),
         floatingActionButton: FloatingActionButton(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(90.0))),
@@ -163,9 +139,10 @@ class _StudentsListPageState extends State<StudentsListPage> {
         )
     );
   }
-  Widget buildStudent() {
 
-    if (_students.isEmpty && !isLoading) {
+  Widget buildStagesClasses() {
+
+    if (_stagesClasses.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -176,30 +153,27 @@ class _StudentsListPageState extends State<StudentsListPage> {
         padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
         color: const Color.fromRGBO(240, 242, 246, 1),
         child: ListView.builder(
-            controller: _scrollController,
-            itemCount: _students.length + (isLoading ? 1 : 0),
+            itemCount: _stagesClasses.isEmpty ? 0 : _stagesClasses.length,
             itemBuilder: (BuildContext context, int index) {
-              if (index == _students.length) {
-                return const Center(child: CircularProgressIndicator());  // Show loader at the bottom
-              }
               return Card(
                 child: InkWell(
                   child: ListTile(
-                    leading: Image.asset('assets/fitness_app/students.jpeg'),
-                    title: Text("${'code'.tr()} : ${_students[index].studentCode}",
+                    leading: Image.asset('assets/fitness_app/stages_classes.png'),
+                    title: Text("${'code'.tr()} : ${_stagesClasses[index].educationStagesClassCode}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Column(
                       children: <Widget>[
+
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'arabicName'.tr()} : ${_students[index].studentNameAra}")),
+                            child: Text("${'arabicName'.tr()} : ${_stagesClasses[index].educationStagesClassNameAra}")),
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'englishName'.tr()} : ${_students[index].studentNameEng}")
+                            child: Text("${'englishName'.tr()} : ${_stagesClasses[index].educationStagesClassNameEng}")
                         ),
                         const SizedBox(width: 5),
                         SizedBox(
@@ -251,7 +225,7 @@ class _StudentsListPageState extends State<StudentsListPage> {
                                           ),
                                           label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                           onPressed: () {
-                                            _deleteItem(context,_students[index].id);
+                                            _deleteItem(context,_stagesClasses[index].id);
                                           },
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -284,14 +258,37 @@ class _StudentsListPageState extends State<StudentsListPage> {
   }
   _deleteItem(BuildContext context, int? id) async {
     FN_showToast(context, "not_allowed_to_delete".tr(), Colors.red);
+
+    // final result = await showDialog<bool>(
+    //   context: context,
+    //   builder: (context) => AlertDialog(
+    //     title: const Text('Are you sure?'),
+    //     content: const Text('This action will permanently delete this data'),
+    //     actions: [
+    //       TextButton(
+    //         onPressed: () => Navigator.pop(context, false),
+    //         child: const Text('Cancel'),
+    //       ),
+    //       TextButton(
+    //         onPressed: () => Navigator.pop(context, true),
+    //         child: const Text('Delete'),
+    //       ),
+    //     ],
+    //   ),
+    // );
+    //
+    // if (result == null || !result) {
+    //   return;
+    // }
+    // var res = _apiService.deleteCustomer(context, id).then((value) => getData());
   }
 
   _navigateToAddScreen(BuildContext context) async {
-    int menuId=58104;
+    int menuId=58109;
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if(isAllowAdd)
     {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddStudentScreen(),
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddStageClassScreen(),
       )).then((value) {
         getData();
       });

@@ -28,21 +28,6 @@ CustomerTypeApiService _customerTypeApiService= CustomerTypeApiService();
 BranchApiService _branchApiService = BranchApiService();
 SalesManApiService _salesManApiService = SalesManApiService();
 
-final startDateController = TextEditingController();
-final endDateController = TextEditingController();
-String? selectedCustomerValue;
-String? selectedCustomerEmail;
-String? selectedTypeValue = "";
-String? selectedUnitValue;
-String? startDate;
-String? endDate;
-String? salesInvoicesEndDate;
-List<DropdownMenuItem<String>> menuCustomerType = [ ];
-String? customerTypeSelectedValue;
-String? branchSelectedValue;
-String? salesManSelectedValue;
-String? salesManSelectedName;
-
 
 class RptCustomerAccountsSummary extends StatefulWidget {
   const RptCustomerAccountsSummary({Key? key}) : super(key: key);
@@ -53,13 +38,26 @@ class RptCustomerAccountsSummary extends StatefulWidget {
 
 class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> {
 
-  List<DropdownMenuItem<String>> menuCustomers = [ ];
   List<Customer> customers =[];
   List<Unit> units =[];
   List<CustomerType> customerTypes=[];
   List<Branch> branches=[];
   List<SalesMan> salesMen=[];
 
+  final startDateController = TextEditingController();
+  final endDateController = TextEditingController();
+  String? selectedCustomerValue;
+  String? selectedCustomerEmail;
+  String? selectedTypeValue = "";
+  String? selectedUnitValue;
+  String? startDate;
+  String? endDate;
+  String? salesInvoicesEndDate;
+  List<DropdownMenuItem<String>> menuCustomerType = [ ];
+  String? customerTypeSelectedValue;
+  String? branchSelectedValue;
+  String? salesManSelectedValue;
+  String? salesManSelectedName;
 
   final _addFormKey = GlobalKey<FormState>();
   final _dropdownCustomerTypeFormKey = GlobalKey<FormState>();
@@ -429,7 +427,6 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
 
   _fillCombos(){
 
-    //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
 
@@ -440,8 +437,7 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
       print(e);
     });
 
-    //Branches
-    Future<List<Branch>> Branches = _branchApiService.getBranches().then((data) {
+    Future<List<Branch>> futureBranches = _branchApiService.getBranches().then((data) {
       branches = data;
 
       setState(() {
@@ -451,7 +447,6 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
       print(e);
     });
 
-    //Sales Man
     Future<List<SalesMan>> futureSalesMen = _salesManApiService.getReportSalesMen().then((data) {
       salesMen = data;
       salesManSelectedValue = salesMen[0].salesManCode.toString();
@@ -461,7 +456,6 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
       print(e);
     });
 
-    //Units
     Future<List<CustomerType>> futureCustomerType = _customerTypeApiService.getCustomerTypes().then((data) {
       customerTypes = data;
       setState(() {
@@ -486,33 +480,7 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
     });
   }
 
-}
 
-
-
-  Widget headLines({required String title}) {
-    return Column(
-      crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
-      children: [
-
-            Text(
-              title,
-              style: const TextStyle(
-                color: Colors.black87,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-        const SizedBox(
-          height: 10,
-        ),
-        const Divider(
-          thickness: 3,
-          color: Color.fromRGBO(144, 16, 46, 1),
-        )
-      ],
-    );
-  }
   Widget textFormFields({controller, hintText,onTap, onSaved, textInputType,enable=true})  {
     return TextFormField(
       controller: controller,
@@ -543,32 +511,19 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
             width: 2,
           ),
         ),
-        // border: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(20),
-        //   borderSide: BorderSide(
-        //     color: lColor,
-        //     width: 2,
-        //   ),
-        // ),
       ),
     );
   }
 
 
-
-
-
-
-  /////////////////////////////////////////////// Print Report ///////////////////////////////////////////////////////////////////////
   printReport(BuildContext context ,String criteria){
-    print('Start Report');
+
     print(criteria);
     String menuId="6301";
-    //API Reference
     ReportUtilityApiService reportUtilityApiService = ReportUtilityApiService();
 
     List<Formulas>  formulasList ;
-    //Formula
+
     formulasList = [
       Formulas(columnName: 'companyName',columnValue: companyName),
       Formulas(columnName: 'branchName',columnValue: branchName),
@@ -579,19 +534,17 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
       Formulas(columnName: 'toDate',columnValue: endDateController.text)
     ];
 
-    //report Api
     final report = reportUtilityApiService.getReportData(
-      menuId, criteria, formulasList).then((data) async {
+        menuId, criteria, formulasList).then((data) async {
       print('Data Fetched');
 
-      final outputFilePath = 'customerAccountReport.pdf';
+      const outputFilePath = 'customerAccountReport.pdf';
       final dir = await getApplicationDocumentsDirectory();
       final file = File('${dir.path}/$outputFilePath');
       await file.writeAsBytes(data);
 
       if(file.lengthSync() > 0)
       {
-        print('to Print Report');
         PdfApi.openFile(file);
       }
       else
@@ -604,81 +557,46 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
       print(e);
     });
 
-
   }
 
 
-
-
-String getCriteria()
-{
-  String criteria="";
-
-
-  if(startDateController.text.isNotEmpty && startDateController != null)
+  String getCriteria()
   {
-    criteria += " And TrxDate >='" + startDateController.text + "' ";
+    String criteria="";
+
+
+    if(startDateController.text.isNotEmpty)
+    {
+      criteria += " And TrxDate >='${startDateController.text}' ";
+    }
+
+    if(endDateController.text.isNotEmpty)
+    {
+      criteria += " And TrxDate <='${endDateController.text}' ";
+    }
+
+    if(selectedCustomerValue.toString().isNotEmpty && selectedCustomerValue != null)
+    {
+      criteria += " And CustomerCode =N'$selectedCustomerValue' ";
+    }
+
+    if(selectedTypeValue.toString().isNotEmpty && selectedTypeValue != null)
+    {
+      criteria += " And CustomerTypeCode =N'$selectedTypeValue' ";
+    }
+
+    if(branchSelectedValue.toString().isNotEmpty && branchSelectedValue != null)
+    {
+      criteria += " And BranchCode =N'$branchSelectedValue' ";
+    }
+
+    if(salesManSelectedValue.toString().isNotEmpty && salesManSelectedValue != null)
+    {
+      criteria += " And SalesManCode =N'$salesManSelectedValue' ";
+    }
+
+    return criteria;
   }
-
-  if(endDateController.text.isNotEmpty && endDateController != null)
-  {
-    criteria += " And TrxDate <='" + endDateController.text + "' ";
-  }
-
-  if(selectedCustomerValue.toString().isNotEmpty && selectedCustomerValue != null)
-  {
-    criteria += " And CustomerCode =N'" + selectedCustomerValue.toString() + "' ";
-  }
-
-  if(selectedTypeValue.toString().isNotEmpty && selectedTypeValue != null)
-  {
-    criteria += " And CustomerTypeCode =N'" + selectedTypeValue.toString() + "' ";
-  }
-
-  if(branchSelectedValue.toString().isNotEmpty && branchSelectedValue != null)
-  {
-      criteria += " And BranchCode =N'" + branchSelectedValue.toString() + "' ";
-  }
-
-  if(salesManSelectedValue.toString().isNotEmpty && salesManSelectedValue != null)
-  {
-    criteria += " And SalesManCode =N'" + salesManSelectedValue.toString() + "' ";
-  }
-
-  // let parameter = this.customerBalanceReportForm.value;
-  //
-  // if (parameter != null )
-  // {
-  // let fromDate = this.utilityService.getDateFromDateString(parameter.fromDate);
-  // let toDate = this.utilityService.getDateFromDateString(parameter.toDate);
-  //
-  // if (!this.utilityService.isEmptyValue(fromDate))
-  // {
-  // criteria += " And SalesInvoicesDate >='" + fromDate + "' ";
-  // }
-  //
-  // if (!this.utilityService.isEmptyValue(toDate))
-  // {
-  // criteria += " And SalesInvoicesDate <='" + toDate + "' ";
-  // }
-  //
-  // if (!this.utilityService.isEmptyValue(parameter.fromCustomerCode))
-  // {
-  // criteria += " And CustomerCode >= N'" + parameter.fromCustomerCode + "' ";
-  // }
-  //
-  // if (!this.utilityService.isEmptyValue(parameter.toCustomerCode))
-  // {
-  // criteria += " And CustomerCode <= N'" +  parameter.toCustomerCode  + "' ";
-  // }
-  //
-  // if (!this.utilityService.isEmptyValue(parameter.salesManCode))
-  // {
-  // criteria += " And SalesManCode = N'" + parameter.salesManCode  + "' ";
-  // }
-  // }
-
-  return criteria;
 
 }
 

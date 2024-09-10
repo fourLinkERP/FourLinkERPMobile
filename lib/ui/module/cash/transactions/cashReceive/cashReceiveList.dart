@@ -1,14 +1,11 @@
 
-import 'dart:convert';
 import 'dart:core';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/cubit/app_states.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/cash/transactions/cashReceives/cashReceive.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
-import 'package:fourlinkmobileapp/service/general/cash/cash_receive_report.dart';
 import 'package:fourlinkmobileapp/service/module/cash/transactions/CashReceives/cashReceiveApiService.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/cash/transactions/CashReceive/editCashReceiveDataWidget.dart';
@@ -39,19 +36,15 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
   bool isLoading=true;
   List<CashReceive> _cashReceives = [];
   List<CashReceive> _cashReceivesSearch = [];
-  List<CashReceive> _founded = [];
 
 
   @override
   void initState() {
-    // TODO: implement initState
-    print('okkkkkkkkkkk');
+  
     _getData();
 
     super.initState();
-    setState(() {
-      _founded = _cashReceives!;
-    });
+    
   }
 
   void _getData() async {
@@ -64,7 +57,6 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
         if (_cashReceives.isNotEmpty) {
           _cashReceives.sort((a, b) => int.parse(b.trxSerial!).compareTo(int.parse(a.trxSerial!)));
           setState(() {
-            _founded = _cashReceives!;
           });
         }
       }
@@ -78,11 +70,11 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
   void onSearch(String search) {
     if (search.isEmpty) {
       setState(() {
-        _cashReceives = List.from(_cashReceivesSearch!);
+        _cashReceives = List.from(_cashReceivesSearch);
       });
     } else {
       setState(() {
-        _cashReceives = List.from(_cashReceivesSearch!);
+        _cashReceives = List.from(_cashReceivesSearch);
         _cashReceives = _cashReceives.where((cashReceive) => cashReceive.trxSerial!.toLowerCase().contains(search)).toList();
       });
     }
@@ -118,7 +110,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
             ),
           ),
         ),
-        body: BuildcashReceives(),
+        body: buildCashReceives(),
 
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -127,7 +119,6 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
           backgroundColor: Colors.transparent,
           tooltip: 'Increment',
           child: Container(
-            // alignment: Alignment.center,s
             decoration: BoxDecoration(
               color: FitnessAppTheme.nearlyDarkBlue,
               gradient: LinearGradient(
@@ -154,8 +145,6 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
                 highlightColor: Colors.transparent,
                 focusColor: Colors.transparent,
                 onTap: (){
-                  // widget.addClick;
-                  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSalesInvoiceHDataWidget()));
                   _navigateToAddScreen(context);
                 },
                 child: const Icon(
@@ -167,48 +156,6 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
             ),
           ),
         )
-    );
-  }
-
-  customerComponent({required CashReceive customer}) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
-      padding: const EdgeInsets.only(top: 10, bottom: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-              children: [
-                SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(50),
-                      child: Image.asset('assets/images/clients.png'),
-                    )
-                ),
-                const SizedBox(width: 10),
-                Column(
-                    crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                    children: [
-                      Text(customer.targetCode!, style: const TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.w500)),
-                      //SizedBox(height: 5,),
-                      //Text(customer.customerNameEng!, style: TextStyle(color: Colors.grey[500])),
-                    ]
-                )
-              ]
-          ),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                // user.isFollowedByMe = !user.isFollowedByMe;
-              });
-            },
-          )
-
-        ],
-      ),
     );
   }
 
@@ -241,7 +188,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
     // bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
     // if(isAllowDelete)
     // {
-    //   print('lahoiiiiiiiiiiiiii');
+    // 
     //   var res = _apiService.deleteCashReceive(context,id).then((value) => _getData());
     // }
     // else
@@ -309,9 +256,8 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
 
     //report Api
     final report = reportUtilityApiService.getReportData(menuId, criteria, formulasList).then((data) async{
-      print('Data Fetched');
-
-      final outputFilePath = 'Receipt_Voucher.pdf';
+    
+      const outputFilePath = 'Receipt_Voucher.pdf';
       final dir = await getApplicationDocumentsDirectory();
       final file = File('${dir.path}/$outputFilePath');
       await file.writeAsBytes(data);
@@ -334,46 +280,44 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
 
   }
 
-  _navigateToPrintScreen (BuildContext context, CashReceive receive) async {
-    
-    print('hohoooooooooooz');
-    int menuId=3203;
-    bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
-    if(isAllowPrint)
-    {
-      print('hohoooooooooooz2');
-      DateTime date = DateTime.parse(receive.trxDate.toString());
-      final dueDate = date.add(Duration(days: 7));
-
-      receive.receiveTitle=langId==1?' سند قبض':' سند قبض';
-      receive.receiveTitleDesc=langId==1?'Receipt Voucher':'Receipt Voucher';
-
-      receive.companyName= langId == 1 ? companyName : companyName;
-      receive.companyAddress= langId==1?  companyAddress : companyAddress;
-      receive.companyCommercial= langId==1?  companyCommercialID  : companyCommercialID;
-      receive.companyVat= langId==1?  companyTaxID : companyTaxID;
-      
-      final pdfFile = await CashReceiveReport.generate(receive, _base64StringToUint8List(companyLogo));
-      PdfApi.openFile(pdfFile);
-    }
-    else
-    {
-      FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
-    }
-  }
-  Uint8List _base64StringToUint8List(String base64String) {
-    try {
-      Uint8List decodedBytes = base64Decode(base64String).buffer.asUint8List();
-      print('Decoded logoCompany length: ${decodedBytes.length}');
-      return decodedBytes;
-    } catch (e) {
-      print('Error decoding base64String: $e');
-      return Uint8List(0);
-    }
-  }
+  // _navigateToPrintScreen (BuildContext context, CashReceive receive) async {
+  //  
+  //   int menuId=3203;
+  //   bool isAllowPrint = PermissionHelper.checkPrintPermission(menuId);
+  //   if(isAllowPrint)
+  //   {
+  //     DateTime date = DateTime.parse(receive.trxDate.toString());
+  //     final dueDate = date.add(Duration(days: 7));
+  //
+  //     receive.receiveTitle=langId==1?' سند قبض':' سند قبض';
+  //     receive.receiveTitleDesc=langId==1?'Receipt Voucher':'Receipt Voucher';
+  //
+  //     receive.companyName= langId == 1 ? companyName : companyName;
+  //     receive.companyAddress= langId==1?  companyAddress : companyAddress;
+  //     receive.companyCommercial= langId==1?  companyCommercialID  : companyCommercialID;
+  //     receive.companyVat= langId==1?  companyTaxID : companyTaxID;
+  //    
+  //     final pdfFile = await CashReceiveReport.generate(receive, _base64StringToUint8List(companyLogo));
+  //     PdfApi.openFile(pdfFile);
+  //   }
+  //   else
+  //   {
+  //     FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
+  //   }
+  // }
+  // Uint8List _base64StringToUint8List(String base64String) {
+  //   try {
+  //     Uint8List decodedBytes = base64Decode(base64String).buffer.asUint8List();
+  //     print('Decoded logoCompany length: ${decodedBytes.length}');
+  //     return decodedBytes;
+  //   } catch (e) {
+  //     print('Error decoding base64String: $e');
+  //     return Uint8List(0);
+  //   }
+  // }
 
 
-   Widget BuildcashReceives(){
+   Widget buildCashReceives(){
     if(State is AppErrorState){
       return const Center(child: Text('no data'));
     }
@@ -384,7 +328,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
       return Container(
         color: const Color.fromRGBO(240, 242, 246,1), // Main Color
         child: ListView.builder(
-            itemCount: _cashReceives == null ? 0 : _cashReceives.length,
+            itemCount: _cashReceives.isEmpty ? 0 : _cashReceives.length,
             itemBuilder: (BuildContext context, int index) {
               return
                 Card(
@@ -399,18 +343,18 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/sales.png'),
-                      title: Text('serial'.tr() + " : " + _cashReceives[index].trxSerial.toString()),
+                      title: Text("${'serial'.tr()} : ${_cashReceives[index].trxSerial}"),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_cashReceives[index].trxDate.toString())))),
+                              child: Text("${'date'.tr()} : ${DateFormat('yyyy-MM-dd').format(DateTime.parse(_cashReceives[index].trxDate.toString()))}")),
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Text('cash_target_code'.tr() + " : " + ((langId==1) ?_cashReceives[index].targetNameAra.toString() : _cashReceives[index].targetNameEng.toString()))),
+                              child: Text("${'cash_target_code'.tr()} : ${(langId==1) ?_cashReceives[index].targetNameAra.toString() : _cashReceives[index].targetNameEng.toString()}")),
                           const SizedBox(width: 5),
                           Container(
                               child: Row(
@@ -498,67 +442,14 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
                                       )),
                                 ],
                               ))
-                          // Container(
-                          //     child: Row(
-                          //       children: <Widget>[
-                          //         ElevatedButton(
-                          //           style: ButtonStyle(
-                          //               backgroundColor: MaterialStateProperty.all(Colors.green),
-                          //               padding:
-                          //               MaterialStateProperty.all(const EdgeInsets.all(2)),
-                          //               textStyle: MaterialStateProperty.all(
-                          //                   const TextStyle(fontSize: 14, color: Colors.white))),
-                          //           child: Text('edit'.tr()),
-                          //           onPressed: () {
-                          //             _navigateToEditScreen(context,_cashReceives[index]);
-                          //
-                          //           },
-                          //         ),
-                          //         SizedBox(width: 10),
-                          //         ElevatedButton(
-                          //           style: ButtonStyle(
-                          //               backgroundColor: MaterialStateProperty.all(Colors.redAccent),
-                          //               padding:
-                          //               MaterialStateProperty.all(const EdgeInsets.all(2)),
-                          //               textStyle: MaterialStateProperty.all(
-                          //                   const TextStyle(fontSize: 14, color: Colors.white))),
-                          //           child: Text('delete'.tr()),
-                          //           onPressed: () {
-                          //             _deleteItem(context,_cashReceives[index].id);
-                          //
-                          //
-                          //           },
-                          //         ),
-                          //         SizedBox(width: 10),
-                          //         ElevatedButton(
-                          //           style: ButtonStyle(
-                          //               backgroundColor: MaterialStateProperty.all(Colors.amberAccent),
-                          //               padding:
-                          //               MaterialStateProperty.all(const EdgeInsets.all(2)),
-                          //               textStyle: MaterialStateProperty.all(
-                          //                   const TextStyle(fontSize: 14, color: Colors.white))),
-                          //           child: Text('Print'.tr()),
-                          //           onPressed: () {
-                          //             //_deleteItem(context,_cashReceives[index].id);
-                          //
-                          //             _navigateToPrintScreen(context,_cashReceives[index]);
-                          //           },
-                          //         ),
-                          //
-                          //       ],
-                          //     ))
                         ],
                       ),
                     ),
                   ),
 
-
-
                 );
             }),
-
       );
-
     }
    }
 }

@@ -117,10 +117,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const SizedBox(height: 10.0),
                       Text(
-                         companyName,
+                        companyName,
                         style: const TextStyle(
-                            color: Color.fromRGBO(144, 16, 46, 1),
-                            fontWeight: FontWeight.bold,
+                          color: Color.fromRGBO(144, 16, 46, 1),
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 10.0),
@@ -508,7 +508,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   setEmployeeData() {
-   _employeeApiService.getEmployeeByEmpCode(empCode).then((data) {
+    _employeeApiService.getEmployeeByEmpCode(empCode).then((data) {
       empUserCode = data.userCode!;
       empUserId = data.userId!;
       isManager = data.isManager;
@@ -542,12 +542,12 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
   setCompanyLogo(){
-      try {
-        Uint8List decodedBytes = base64Decode(companyLogo).buffer.asUint8List();
-        companyLogoDecoded = decodedBytes;
-      } catch (e) {
-        print('Error decoding base64String: $e');
-      }
+    try {
+      Uint8List decodedBytes = base64Decode(companyLogo).buffer.asUint8List();
+      companyLogoDecoded = decodedBytes;
+    } catch (e) {
+      print('Error decoding base64String: $e');
+    }
   }
   setDashboardItems() async {
     Future<List<DashboardItems>> futureDashboard = _dashboardItemsApiService.getDashboardItems().then((data) async {
@@ -586,11 +586,11 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         //checkUserGroupData
-        EmployeeGroupStatus employeeGroupStatus = await _employeeApiService
-            .checkUserGroupData(empCode);
+        // EmployeeGroupStatus employeeGroupStatus = await _employeeApiService
+        //     .checkUserGroupData(empCode);
 
-        if (employeeGroupStatus.statusCode == 1) // Has Permission
-        {
+        // if (employeeGroupStatus.statusCode == 1) // Has Permission
+        //     {
           await setDashboardItems();
           setMenuPermissions();
           setCompanyGeneralSetup();
@@ -600,7 +600,7 @@ class _LoginScreenState extends State<LoginScreen> {
           await setItemInvoiceData();
           setCompanyLogo();
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-        }
+       // }
       }
     }
     else{
@@ -632,15 +632,15 @@ class _LoginScreenState extends State<LoginScreen> {
       EmployeeGroupStatus employeeGroupStatus = await _employeeApiService.checkUserGroupData(empCode);
 
       if (employeeGroupStatus.statusCode == 1) // Has Permission
-        {
-          await setDashboardItems();
-          setMenuPermissions();
-          setCompanyGeneralSetup();
-          setCompanyGeneralEmailSetup();
-          setEmployeeData();
-          setItemsOfferData();
-          setItemInvoiceData();
-          setCompanyLogo();
+          {
+        await setDashboardItems();
+        setMenuPermissions();
+        setCompanyGeneralSetup();
+        setCompanyGeneralEmailSetup();
+        setEmployeeData();
+        setItemsOfferData();
+        setItemInvoiceData();
+        setCompanyLogo();
 
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
       }

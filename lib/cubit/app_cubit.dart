@@ -1,7 +1,4 @@
 
-
-
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/network/cache_helper.dart';
@@ -16,11 +13,11 @@ class AppCubit extends Cubit<AppStates>{
   static AppCubit  get(context)=>BlocProvider.of(context);
 
 
-   var Conection;
-   CheckConnection()async{
-Conection = await InternetConnectionChecker().hasConnection;
-print(Conection);
-   }
+  var Conection;
+  CheckConnection()async{
+    Conection = await InternetConnectionChecker().hasConnection;
+    print(Conection);
+  }
 
   bool? internet;
   bool isArabic=true;
@@ -34,32 +31,32 @@ print(Conection);
     emit(AppErrorState());
   }
 
-void emitState(){
-  emit(AppChangeState());
-}
+  void emitState(){
+    emit(AppChangeState());
+  }
 
-   GetData()async{
+  GetData()async{
 
     print('Start Cubit Data');
-     await CacheHelper.getString('EMAIL').then((value) =>
-     {
-       apiUserName=(value != null)? value.toString() : "" //Edit by Rahma "http://www.sudokuano.net/api/"
-     });
+    await CacheHelper.getString('EMAIL').then((value) =>
+    {
+      apiUserName=(value != null)? value.toString() : "" //Edit by Rahma "http://api.sudokuano.net:8012"
+    });
     print('apiUserName Var1');
     print(apiUserName);
 
-     await CacheHelper.getString('PASS').then((value) =>
-     {
-       apiPassword=(value != null)? value.toString() : ""
-     });
+    await CacheHelper.getString('PASS').then((value) =>
+    {
+      apiPassword=(value != null)? value.toString() : ""
+    });
     print('apiUserPass Var1');
     print(apiPassword);
 
 
-     await CacheHelper.getString('API').then((value) =>
-     {
-       urlString = (value != null)? value.toString() : ""
-     });
+    await CacheHelper.getString('API').then((value) =>
+    {
+      urlString = (value != null)? value.toString() : ""
+    });
 
     await CacheHelper.getString('REPORT_API').then((value) =>
     {
@@ -70,10 +67,10 @@ void emitState(){
     print('apiAPI Var1');
     print(urlString);
 
-     await CacheHelper.getString('FinancialYearCode').then((value) =>
-     {
-       financialYearCode = (value != null)? value.toString() : "2024"
-     });
+    await CacheHelper.getString('FinancialYearCode').then((value) =>
+    {
+      financialYearCode = (value != null)? value.toString() : "2024"
+    });
     await CacheHelper.getString('CompanyTaxId').then((value) =>
     {
       companyTaxID = (value != null)? value.toString() : ""
@@ -101,10 +98,10 @@ void emitState(){
     print(financialYearCode);
 
 
-     await CacheHelper.getInt('CompanyCode').then((value) =>
-     {
-       companyCode= (value != null)? value  : 1
-     });
+    await CacheHelper.getInt('CompanyCode').then((value) =>
+    {
+      companyCode= (value != null)? value  : 1
+    });
     print('CompanyCode Var1');
     print(companyCode);
 

@@ -8,6 +8,8 @@ import '../../theme/fitness_app_theme.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../ui/module/accountReceivable/reports/rptDailySales.dart';
+import '../../ui/module/accountReceivable/reports/rptEmployeeStatemant.dart';
+import '../../ui/module/accountReceivable/reports/rptSalaryEnvelopeStatement.dart';
 import '../../ui/module/accountreceivable/reports/rptCustomerBalances.dart';
 import '../../ui/module/accountreceivable/reports/rptDailyPurchases.dart';
 import '../../ui/module/accountreceivable/reports/rptDetailedDailyPurchases.dart';
@@ -34,6 +36,8 @@ class _ReportsAreaListViewState extends State<ReportsAreaListView>
     'assets/fitness_app/report.png',
     'assets/fitness_app/report.png',
     'assets/fitness_app/report.png',
+    'assets/fitness_app/report.png',
+    'assets/fitness_app/report.png'
   ];
 
   List<String> areaListDataTitle = <String>[
@@ -43,6 +47,8 @@ class _ReportsAreaListViewState extends State<ReportsAreaListView>
     'detailedDailyPurchaseReport'.tr(),
     'detailedDailySalesReport'.tr(),
     'customerBalancesReport'.tr(),
+    'salary_envelope_statement'.tr(),
+    'employee_statement'.tr(),
   ];
 
   @override
@@ -169,33 +175,35 @@ class AreaView extends StatelessWidget {
                   onTap: () {
                     if(text == 'customeraccountreport'.tr())
                     {
-                      print('okz1');
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => RptCustomerAccountsSummary()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RptCustomerAccountsSummary()));
                     }
                     else if(text == 'dailySalesreport'.tr())
                     {
-                      print('okz2');
-                      Navigator.push(context, MaterialPageRoute( builder: (context) => RptDailySales()));
+                      Navigator.push(context, MaterialPageRoute( builder: (context) => const RptDailySales()));
                     }
                     else  if(text == 'dailyPurchaseReport'.tr())
                     {
-                      print('okz3');
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => RptDailyPurchases()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RptDailyPurchases()));
                     }
                     else  if(text == 'detailedDailyPurchaseReport'.tr())
                     {
-                      print('okz4');
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => RptDetailedDailyPurchases()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RptDetailedDailyPurchases()));
                     }
                     else  if(text == 'detailedDailySalesReport'.tr())
                     {
-                      print('okz5');
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => RptDetailedDailySales()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RptDetailedDailySales()));
                     }
                     else  if(text == 'customerBalancesReport'.tr())
                     {
-                      print('okz6');
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => RptCustomerBalances()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RptCustomerBalances()));
+                    }
+                    else  if(text == 'salary_envelope_statement'.tr())
+                    {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RptSalaryEnvelopeStatement()));
+                    }
+                    else  if(text == 'employee_statement'.tr())
+                    {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RptEmployeeStatement()));
                     }
 
                   },

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
+import 'package:fourlinkmobileapp/ui/module/accountReceivable/reports/rptSalaryEnvelopeStatement.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/reports/rptCustomerBalances.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/reports/rptDailyPurchases.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/reports/rptDetailedDailyPurchases.dart';
@@ -30,7 +31,7 @@ class MainReports extends StatelessWidget {
       'assets/fitness_app/report.png',
       'assets/fitness_app/report.png',
       'assets/fitness_app/report.png',
-
+      'assets/fitness_app/report.png'
     ];
 
     List<String> areaListDataTitle = <String>[
@@ -40,6 +41,7 @@ class MainReports extends StatelessWidget {
       'detailedDailyPurchaseReport'.tr(),
       'detailedDailySalesReport'.tr(),
       'customerBalancesReport'.tr(),
+      'salary_envelope_statement'.tr(),
     ];
 
 
@@ -92,33 +94,31 @@ class MainReports extends StatelessWidget {
                     onTap: () {
                       if(areaListDataTitle[index] == 'customeraccountreport'.tr())
                       {
-                        print('okz1');
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => RptCustomerAccountsSummary()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const RptCustomerAccountsSummary()));
                       }
                       else if(areaListDataTitle[index] == 'dailySalesreport'.tr())
                       {
-                        print('okz2');
-                        Navigator.push(context, MaterialPageRoute( builder: (context) => RptDailySales()));
+                        Navigator.push(context, MaterialPageRoute( builder: (context) => const RptDailySales()));
                       }
                       else  if(areaListDataTitle[index] == 'dailyPurchaseReport'.tr())
                       {
-                        print('okz3');
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => RptDailyPurchases()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const RptDailyPurchases()));
                       }
                       else  if(areaListDataTitle[index] == 'detailedDailyPurchaseReport'.tr())
-                          {
-                        print('okz4');
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => RptDetailedDailyPurchases()));
+                      {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const RptDetailedDailyPurchases()));
                       }
                       else  if(areaListDataTitle[index] == 'detailedDailySalesReport'.tr())
                       {
-                        print('okz5');
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => RptDetailedDailySales()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const RptDetailedDailySales()));
                       }
                       else  if(areaListDataTitle[index] == 'customerBalancesReport'.tr())
                       {
-                        print('okz6');
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => RptCustomerBalances()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const RptCustomerBalances()));
+                      }
+                      else  if(areaListDataTitle[index] == 'salary_envelope_statement'.tr())
+                      {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const RptSalaryEnvelopeStatement()));
                       }
 
                     },
@@ -127,10 +127,10 @@ class MainReports extends StatelessWidget {
                         Padding(
                           padding:
                           const EdgeInsets.only(top: 16, left: 16, right: 16),
-                          child: Image.asset(areaListData[index] !),
+                          child: Image.asset(areaListData[index]),
                         ),
                         const SizedBox(height: 20.0),
-                        Text(areaListDataTitle[index]!)
+                        Text(areaListDataTitle[index])
                       ],
                     ),
                   ),

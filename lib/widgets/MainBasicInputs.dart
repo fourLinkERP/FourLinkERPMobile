@@ -5,9 +5,11 @@ import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/inventory/Items/itemList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/customerGroups/customerGroupsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/educationStages/educationStagesList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/educationYears/educationYearsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/platforms/platformsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/qualifications/qualificationsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/specializations/specializationsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/stagesClasses/stagesClassesList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/students/studentsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/materials/materialsList.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -35,7 +37,9 @@ class MainBasicInputs extends StatelessWidget {
       'assets/fitness_app/qualifications.png',
       'assets/fitness_app/customer_groups.png',
       'assets/fitness_app/educationStages.jpeg',
-      'assets/fitness_app/specializations.jpg'
+      'assets/fitness_app/specializations.jpg',
+      'assets/fitness_app/stages_classes.png',
+      'assets/fitness_app/education_years.png'
 
     ] : <String>[
       'assets/fitness_app/products.png',
@@ -52,7 +56,9 @@ class MainBasicInputs extends StatelessWidget {
       'qualifications'.tr(),
       'customer_groups'.tr(),
       'educationStages'.tr(),
-      'specializations'.tr()
+      'specializations'.tr(),
+      'stages_classes'.tr(),
+      'education_years'.tr()
 
     ] : <String>[
 
@@ -202,6 +208,30 @@ class MainBasicInputs extends StatelessWidget {
                           FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                         }
                       }
+                      else  if(index == 8)
+                      {
+                        int menuId=58109;
+                        bool isAllowed = PermissionHelper.checkAddPermission(menuId);
+                        if(isAllowed){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const StagesClassesListPage()));
+                        }
+                        else
+                        {
+                          FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                        }
+                      }
+                      else  if(index == 9)
+                      {
+                        int menuId=58111;
+                        bool isAllowed = PermissionHelper.checkAddPermission(menuId);
+                        if(isAllowed){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const EducationYearsListPage()));
+                        }
+                        else
+                        {
+                          FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                        }
+                      }
 
                     },
                     child: Column(
@@ -209,7 +239,7 @@ class MainBasicInputs extends StatelessWidget {
                         Padding(
                           padding:
                           const EdgeInsets.only(top: 16, left: 16, right: 16),
-                          child: Image.asset(areaListData[index]),
+                          child: Image.asset(areaListData[index] , height: 70.0, width: 70.0),
                         ),
                         const SizedBox(height: 20.0),
                         Text(areaListDataTitle[index])
