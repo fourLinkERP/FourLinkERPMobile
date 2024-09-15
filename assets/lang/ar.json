@@ -797,7 +797,14 @@
     "employee_statement": "تقرير كشف حساب موظف",
     "add_year": "تسجيل عام دراسي جديد",
     "searchEducationYears": "بحث الاعوام الدراسية",
-    "education_years": "الاعوام الدراسية"
+    "education_years": "الاعوام الدراسية",
+    "searchEducationTypes": "بحث انواع التعليم",
+    "add_type": "تسجيل نوع تعليم جديد",
+    "education_types": "انواع التعليم",
+    "add_student_parent": "اضافة ولي أمر",
+    "student_parents": "أولياء الأمور",
+    "searchStudentParents": "بحث اولياء الامور",
+    "attendance_and_departure_statement": "تقرير بيان الحضور و الانصراف"
 
 }
 

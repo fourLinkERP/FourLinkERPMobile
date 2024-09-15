@@ -1,30 +1,29 @@
 
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/platforms_management/basicInputs/educationYears/education_year.dart';
-import 'package:fourlinkmobileapp/service/module/platforms_management/basicInputs/educationYears/educationYearsApiService.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/platforms_management/basicInputs/studentParents/student_parent.dart';
+import 'package:fourlinkmobileapp/service/module/platforms_management/basicInputs/studentParents/student_parents_api_service.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import '../../../../../utils/permissionHelper.dart';
-import 'addEducationalYearScreen.dart';
+import 'addStudentParentsScreen.dart';
 
-EducationYearApiService _apiService = EducationYearApiService();
+StudentParentApiService _apiService = StudentParentApiService();
 
-class EducationYearsListPage extends StatefulWidget {
-  const EducationYearsListPage({Key? key}) : super(key: key);
+class StudentParentsListPage extends StatefulWidget {
+  const StudentParentsListPage({Key? key}) : super(key: key);
 
   @override
-  State<EducationYearsListPage> createState() => _EducationYearsListPageState();
+  State<StudentParentsListPage> createState() => _StudentParentsListPageState();
 }
 
-class _EducationYearsListPageState extends State<EducationYearsListPage> {
+class _StudentParentsListPageState extends State<StudentParentsListPage> {
 
   final _searchValueController = TextEditingController();
-  List<EducationYear> _years = [];
-  List<EducationYear> _yearsSearch = [];
+  List<StudentParent> _studentParents = [];
+  List<StudentParent> _studentParentsSearch = [];
 
   @override
   void initState() {
@@ -36,14 +35,14 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
 
   void getData() async {
     try {
-      List<EducationYear>? futureStage = await _apiService.getEducationYears();
+      List<StudentParent>? futureStage = await _apiService.getStudentParents();
 
       if (futureStage.isNotEmpty) {
-        _years = futureStage;
-        _yearsSearch = List.from(_years);
+        _studentParents = futureStage;
+        _studentParentsSearch = List.from(_studentParents);
 
-        if (_years.isNotEmpty) {
-          _years.sort((a, b) => b.educationYearCode!.compareTo(a.educationYearCode!));
+        if (_studentParents.isNotEmpty) {
+          _studentParents.sort((a, b) => b.studentParentCode!.compareTo(a.studentParentCode!));
 
           setState(() {});
         }
@@ -56,13 +55,13 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
   void onSearch(String search) {
     if (search.isEmpty) {
       setState(() {
-        _years = List.from(_yearsSearch);
+        _studentParents = List.from(_studentParentsSearch);
       });
     } else {
       setState(() {
-        _years = List.from(_yearsSearch);
-        _years = _years.where((stage) =>
-            stage.educationYearNameAra!.toLowerCase().contains(search)).toList();
+        _studentParents = List.from(_studentParentsSearch);
+        _studentParents = _studentParents.where((studentParent) =>
+            studentParent.studentParentNameAra!.toLowerCase().contains(search)).toList();
       });
     }
   }
@@ -91,12 +90,12 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
                     fontSize: 14,
                     color: Color.fromRGBO(144, 16, 46, 1),
                   ),
-                  hintText: "searchEducationYears".tr()
+                  hintText: "searchStudentParents".tr()
               ),
             ),
           ),
         ),
-        body: SafeArea(child: buildEducationalYear()),
+        body: SafeArea(child: buildStudentParents()),
         floatingActionButton: FloatingActionButton(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(90.0))),
@@ -141,9 +140,9 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
     );
   }
 
-  Widget buildEducationalYear() {
+  Widget buildStudentParents() {
 
-    if (_years.isEmpty) {
+    if (_studentParents.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -154,26 +153,27 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
         padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
         color: const Color.fromRGBO(240, 242, 246, 1),
         child: ListView.builder(
-            itemCount: _years.isEmpty ? 0 : _years.length,
+            itemCount: _studentParents.isEmpty ? 0 : _studentParents.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: InkWell(
                   child: ListTile(
-                    leading: Image.asset('assets/fitness_app/education_years.png',height: 70.0, width: 70.0,),
-                    title: Text("${'code'.tr()} : ${_years[index].educationYearCode}",
+                    leading: Image.asset('assets/fitness_app/student_parents.png'),
+                    title: Text("${'code'.tr()} : ${_studentParents[index].studentParentCode}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         )),
                     subtitle: Column(
                       children: <Widget>[
+
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'arabicName'.tr()} : ${_years[index].educationYearNameAra}")),
+                            child: Text("${'arabicName'.tr()} : ${_studentParents[index].studentParentNameAra}")),
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'englishName'.tr()} : ${_years[index].educationYearNameEng}")
+                            child: Text("${'englishName'.tr()} : ${_studentParents[index].studentParentNameEng}")
                         ),
                         const SizedBox(width: 5),
                         SizedBox(
@@ -225,7 +225,7 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
                                           ),
                                           label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                           onPressed: () {
-                                            _deleteItem(context,_years[index].id);
+                                            _deleteItem(context,_studentParents[index].id);
                                           },
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -256,12 +256,39 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
       );
     }
   }
+  _deleteItem(BuildContext context, int? id) async {
+    FN_showToast(context, "not_allowed_to_delete".tr(), Colors.red);
+
+    // final result = await showDialog<bool>(
+    //   context: context,
+    //   builder: (context) => AlertDialog(
+    //     title: const Text('Are you sure?'),
+    //     content: const Text('This action will permanently delete this data'),
+    //     actions: [
+    //       TextButton(
+    //         onPressed: () => Navigator.pop(context, false),
+    //         child: const Text('Cancel'),
+    //       ),
+    //       TextButton(
+    //         onPressed: () => Navigator.pop(context, true),
+    //         child: const Text('Delete'),
+    //       ),
+    //     ],
+    //   ),
+    // );
+    //
+    // if (result == null || !result) {
+    //   return;
+    // }
+    // var res = _apiService.deleteCustomer(context, id).then((value) => getData());
+  }
+
   _navigateToAddScreen(BuildContext context) async {
-    int menuId=58111;
+    int menuId=58114;
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if(isAllowAdd)
     {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddEducationalYearScreen(),
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddStudentParentScreen(),
       )).then((value) {
         getData();
       });
@@ -271,8 +298,5 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
       FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
     }
   }
-
-  _deleteItem(BuildContext context, int? id) async {
-    FN_showToast(context, "not_allowed_to_delete".tr(), Colors.red);
-  }
+  
 }

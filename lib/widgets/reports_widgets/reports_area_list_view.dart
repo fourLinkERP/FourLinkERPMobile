@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/ui/module/accountPayable/vendors/vendorlist.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/basicInputs/salesman/old/salesmanlist.dart';
+import 'package:fourlinkmobileapp/ui/module/accountReceivable/reports/rptAttendanceAndDepartureStatement.dart';
 import 'package:fourlinkmobileapp/ui/module/inventory/product/productslist.dart';
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/reports/rptCustomerAccountsSummary.dart';
 import '../../theme/fitness_app_theme.dart';
@@ -37,6 +38,7 @@ class _ReportsAreaListViewState extends State<ReportsAreaListView>
     'assets/fitness_app/report.png',
     'assets/fitness_app/report.png',
     'assets/fitness_app/report.png',
+    'assets/fitness_app/report.png',
     'assets/fitness_app/report.png'
   ];
 
@@ -49,6 +51,7 @@ class _ReportsAreaListViewState extends State<ReportsAreaListView>
     'customerBalancesReport'.tr(),
     'salary_envelope_statement'.tr(),
     'employee_statement'.tr(),
+    'attendance_and_departure_statement'.tr()
   ];
 
   @override
@@ -204,6 +207,10 @@ class AreaView extends StatelessWidget {
                     else  if(text == 'employee_statement'.tr())
                     {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const RptEmployeeStatement()));
+                    }
+                    else  if(text == 'attendance_and_departure_statement'.tr())
+                    {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RptAttendanceAndDepartureStatement()));
                     }
 
                   },

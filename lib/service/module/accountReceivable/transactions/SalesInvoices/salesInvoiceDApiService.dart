@@ -9,19 +9,18 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
  class SalesInvoiceDApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/salesinvoicedetails/searchData';
-  String createApi= baseUrl.toString()  + '/api/v1/salesinvoicedetails';
-  String updateApi= baseUrl.toString()  + '/api/v1/salesinvoicedetails/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + '/api/v1/salesinvoicedetails/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/salesinvoicedetails/';  // Add ID For Get
+  String searchApi= '$baseUrl/api/v1/salesinvoicedetails/searchData';
+  String createApi= '$baseUrl/api/v1/salesinvoicedetails';
+  String updateApi= '$baseUrl/api/v1/salesinvoicedetails/';
+  String deleteApi= '$baseUrl/api/v1/salesinvoicedetails/';
+  String getByIdApi= '$baseUrl/api/v1/salesinvoicedetails/';
 
   Future<List<SalesInvoiceD>> getSalesInvoicesD(int? headerId) async {
-    print('Booter 1 SalesInvoiceD');
     Map data = {
       'HeaderId': headerId
     };
 
-    print('Booter 2  SalesInvoiceD' + data.toString());
+    print('SalesInvoiceD$data');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -31,32 +30,27 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       body: jsonEncode(data),
     );
 
-    print('Booter 3 SalesInvoiceD');
     if (response.statusCode == 200) {
-      print('Booter 4 SalesInvoiceD');
+
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesInvoiceD> list = [];
       if (data.isNotEmpty) {
         list = data.map((item) => SalesInvoiceD.fromJson(item)).toList();
       }
-      print('B 1 Finish SalesInvoiceD');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => SalesInvoice.fromJson(data))
-      //     .toList();
     } else {
-      print('Booter Error');
-      throw "Failed to load customer list";
+      print('salesInD Error');
+      throw "Failed to load salesInvoiceD list";
     }
   }
 
-  Future<double>  getItemSellPriceData(String? ItemCode,String? UnitCode,String? tableName,String? criteria, String? customerCode) async {
+  Future<double>  getItemSellPriceData(String? itemCode,String? unitCode,String? tableName,String? criteria, String? customerCode) async {
 
     String sellItemApi = "${updateApi}searchItemSellPriceData";
     print('ItemSellPriceData 1');
     Map data = {
-      'ItemCode': ItemCode,
-      'UnitCode': UnitCode,
+      'ItemCode': itemCode,
+      'UnitCode': unitCode,
       'CompanyCode' : companyCode,
       'BranchCode' : branchCode,
       'TableName': tableName,
@@ -66,7 +60,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     };
 
 
-    print('ItemSellPriceData 2');
     print(data);
     final http.Response response = await http.post(
       Uri.parse(sellItemApi),
@@ -77,15 +70,10 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       body: jsonEncode(data),
     );
 
-    print('ItemSellPriceData 4');
     if (response.statusCode == 200) {
-      print('ItemSellPriceData 5');
       print('ItemSellPriceData ' + (json.decode(response.body)).toDouble().toString());
 
       return  (json.decode(response.body)).toDouble();
-      // return await json.decode(res.body)['data']
-      //     .map((data) => NextSerial.fromJson(data))
-      //     .toList();
     } else {
       print('ItemSellPriceData Failure');
       throw "Failed to load ItemSellPriceData";
@@ -122,8 +110,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'SalesInvoicesCase': 1, //Sales Invoice Case =1
-      'SalesInvoicesTypeCode': invoice.salesInvoicesTypeCode, //Sales Invoice Type
+      'SalesInvoicesCase': 1,
+      'SalesInvoicesTypeCode': invoice.salesInvoicesTypeCode,
       'salesInvoicesSerial': invoice.salesInvoicesSerial,
       'lineNum': invoice.lineNum,
       'itemCode': invoice.itemCode,
@@ -156,15 +144,9 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       "confirmed": true,
       'addBy': empUserId,
       "year" : financialYearCode
-      // 'age': customer.age,
-      // 'address': customer.address,
-      // 'city': customer.city,
-      // 'country': customer.country,
-      // 'status': customer.status
 
     };
 
-    print('Start Create D' );
     final http.Response response = await http.post(
       Uri.parse(createApi),
       headers: <String, String>{
@@ -174,26 +156,17 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       body: jsonEncode(data),
     );
 
-    print('Start Create D2' );
     print('save details: ' + data.toString());
 
     if (response.statusCode == 200) {
-
-      //print('B 1');
-      //var data = jsonDecode(response.body)['data'];
-      //print('B 1 Finish');
-      //FN_showToast(context,'save_success'.tr() ,Colors.black);
-      print('Start Create D3' );
+      print('Create D success' );
       return  1;
 
 
     } else {
       print('Error Create D' );
-      //return  1;
       throw Exception('Failed to post sales Invoice');
     }
-
-    return  0;
   }
 
   Future<int> updateSalesInvoiceD(BuildContext context ,int id, SalesInvoiceD invoice) async {
@@ -241,7 +214,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     };
 
     String apiUpdate =updateApi + id.toString();
-    print('Start Update apiUpdate ' + apiUpdate );
+    print('Start Update apiUpdate $apiUpdate' );
 
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data)
@@ -250,10 +223,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after ' );
     if (response.statusCode == 200) {
-      print('Start Update done ' );
-      //var data = jsonDecode(response.body)['data'];
+
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
@@ -261,8 +232,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       print('Start Update error ' );
       throw Exception('Failed to update a case');
     }
-
-    return 0;
   }
 
   Future<void> deleteSalesInvoiceD(BuildContext context ,int? id) async {  //Future<void> deleteSalesInvoiceD(BuildContext context ,int? id) async {

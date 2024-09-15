@@ -162,6 +162,7 @@ class _RptSalaryEnvelopeStatementState extends State<RptSalaryEnvelopeStatement>
                               width: 200,
                               child: DropdownSearch<Employee>(
                                 selectedItem: employeeItem,
+                                enabled: (isManager == true || isIt == true) ? true : false,
                                 popupProps: PopupProps.menu(
                                   itemBuilder: (context, item, isSelected) {
                                     return Container(

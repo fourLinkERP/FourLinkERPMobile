@@ -13,7 +13,6 @@ import 'package:fourlinkmobileapp/data/model/modules/module/inventory/basicInput
 import 'package:fourlinkmobileapp/data/model/modules/module/inventory/basicInputs/units/units.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/service/general/tafqeet/tafqeetApiService.dart';
-import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/items/itemApiService.dart';
 import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/units/unitApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/setup/SalesInvoiceTypes/salesInvoiceType.dart'; // *
@@ -477,7 +476,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                             showSearchBox: true,
 
                                           ),
-                                          items: itemsWithOutBalance,
+                                          items: itemsWithOutBalance,  /// items: itemsWithOutBalance
                                           itemAsString: (Item u) => (langId == 1) ? u.itemNameAra.toString() : u.itemNameEng.toString(),
 
                                           onChanged: (value) {
@@ -487,7 +486,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                             selectedUnitValue = "1";
                                             String criteria = " And CompanyCode=$companyCode And SalesInvoicesCase=1 And SalesInvoicesTypeCode=N'$selectedTypeValue'";
                                             setItemPrice(selectedItemValue.toString(), selectedUnitValue.toString(), criteria, selectedCustomerValue.toString());
-                                            //Factor
                                             int qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
                                             setItemQty(
                                                 selectedItemValue.toString(),

@@ -1,25 +1,26 @@
 
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/platforms_management/basicInputs/educationYears/education_year.dart';
-import 'package:fourlinkmobileapp/service/module/platforms_management/basicInputs/educationYears/educationYearsApiService.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/platforms_management/basicInputs/educationTypes/education_type.dart';
+import 'package:fourlinkmobileapp/service/module/platforms_management/basicInputs/educationTypes/education_types_api_service.dart';
+
 import '../../../../../common/globals.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
 
-class AddEducationalYearScreen extends StatefulWidget {
-  const AddEducationalYearScreen({Key? key}) : super(key: key);
+class AddEducationTypeScreen extends StatefulWidget {
+  const AddEducationTypeScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddEducationalYearScreen> createState() => _AddEducationalYearScreenState();
+  State<AddEducationTypeScreen> createState() => _AddEducationTypeScreenState();
 }
 
-class _AddEducationalYearScreenState extends State<AddEducationalYearScreen> {
+class _AddEducationTypeScreenState extends State<AddEducationTypeScreen> {
 
-  final EducationYearApiService _api = EducationYearApiService();
+  final EducationTypeApiService _api = EducationTypeApiService();
   final _codeController = TextEditingController();
   final _nameAraController = TextEditingController();
   final _nameEngController = TextEditingController();
@@ -30,7 +31,7 @@ class _AddEducationalYearScreenState extends State<AddEducationalYearScreen> {
   void initState(){
     super.initState();
 
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("TRC_TrainingCenterEducationYears", "EducationYearCode", " And CompanyCode=$companyCode And BranchCode=$branchCode" ).then((data) {
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("TRC_TrainingCenterEducationTypes", "EducationTypeCode", " And CompanyCode=$companyCode And BranchCode=$branchCode" ).then((data) {
       NextSerial nextSerial = data;
 
       _codeController.text = nextSerial.nextSerial.toString();
@@ -51,7 +52,7 @@ class _AddEducationalYearScreenState extends State<AddEducationalYearScreen> {
             const SizedBox(width: 1),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 11, 2, 2),
-              child: Text('add_year'.tr(),
+              child: Text('add_type'.tr(),
                   style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.0)),
             )
           ],
@@ -242,7 +243,7 @@ class _AddEducationalYearScreenState extends State<AddEducationalYearScreen> {
                           ),
                         ),
                         onPressed: () {
-                          saveEducationYear(context);
+                          saveEducationType(context);
                         },
                         child: Text('Save'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
                       ),
@@ -258,7 +259,7 @@ class _AddEducationalYearScreenState extends State<AddEducationalYearScreen> {
     );
   }
 
-  saveEducationYear(BuildContext context) async{
+  saveEducationType(BuildContext context) async{
 
     if(_nameAraController.text.isEmpty)
     {
@@ -270,10 +271,10 @@ class _AddEducationalYearScreenState extends State<AddEducationalYearScreen> {
       FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
       return;
     }
-    await _api.createEducationYear(context,EducationYear(
-        educationYearCode: _codeController.text ,
-        educationYearNameAra: _nameAraController.text ,
-        educationYearNameEng: _nameEngController.text ,
+    await _api.createEducationType(context,EducationType(
+        educationTypeCode: _codeController.text ,
+        educationTypeNameAra: _nameAraController.text ,
+        educationTypeNameEng: _nameEngController.text ,
         descriptionAra: _descNameAraController.text,
         descriptionEng: _descNameEngController.text
     ));

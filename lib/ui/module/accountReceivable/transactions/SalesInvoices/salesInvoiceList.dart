@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
-//import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -29,9 +28,7 @@ import '../../../../../service/module/accountReceivable/transactions/SalesInvoic
 import 'addSalesInvoiceDataWidget.dart';
 import 'detailSalesInvoiceWidget.dart';
 import 'editSalesInvoiceDataWidget.dart';
-//import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
-//import 'package:image/image.dart' as img;
 
 SalesInvoiceHApiService _apiService= SalesInvoiceHApiService();
 SalesInvoiceDApiService _apiDService= SalesInvoiceDApiService();
@@ -402,7 +399,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       }
       else{
         return Container(
-          color: const Color.fromRGBO(240, 242, 246,1),// Main Color
+          color: const Color.fromRGBO(240, 242, 246,1),
 
           child: ListView.builder(
               itemCount: _salesInvoices.isEmpty ? 0 : _salesInvoices.length,

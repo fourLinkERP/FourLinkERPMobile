@@ -12,7 +12,6 @@ import 'package:fourlinkmobileapp/data/model/modules/module/inventory/basicInput
 import 'package:fourlinkmobileapp/data/model/modules/module/inventory/basicInputs/units/units.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/service/general/tafqeet/tafqeetApiService.dart';
-import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/items/itemApiService.dart';
 import 'package:fourlinkmobileapp/service/module/Inventory/basicInputs/units/unitApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/setup/SalesInvoiceTypes/salesInvoiceType.dart';
@@ -37,7 +36,6 @@ SalesInvoicesTypeApiService _salesInvoiceTypeApiService= SalesInvoicesTypeApiSer
 SalesInvoiceHApiService _salesInvoiceHApiService= SalesInvoiceHApiService();
 SalesInvoiceDApiService _salesInvoiceDApiService= SalesInvoiceDApiService();
 CustomerApiService _customerApiService= CustomerApiService();
-ItemApiService _itemsApiService = ItemApiService();
 UnitApiService _unitsApiService = UnitApiService();
 TafqeetApiService _tafqeetApiService= TafqeetApiService();
 InventoryOperationApiService _inventoryOperationApiService = InventoryOperationApiService();
@@ -83,25 +81,24 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
   List<SalesInvoiceD> selected = [];
   List<Customer> customers=[];
   List<SalesInvoiceType> salesInvoiceTypes=[];
-  List<Item> items=[];
+  //List<Item> items=[];
   List<Unit> units=[];
 
   String? selectedCustomerValue = "";
   String? selectedCustomerEmail = "";
   String? selectedTypeValue = "";
-  String? selectedItemValue = null;
-  String? selectedItemName = null;
-  String? selectedUnitValue = null;
-  String? selectedUnitName = null;
-  String? price = null;
-  String? qty = null;
-  String? vat = null;
-  String? discount = null;
-  String? total = null;
+  String? selectedItemValue;
+  String? selectedItemName;
+  String? selectedUnitValue;
+  String? selectedUnitName;
+  String? price;
+  String? qty;
+  String? vat;
+  String? discount;
+  String? total;
 
   //Header
   final _dropdownTypeFormKey = GlobalKey<FormState>(); //Type
-  final _serialController = TextEditingController(); //Serial
   final _salesInvoicesDateController = TextEditingController(); //Date
   final _dropdownCustomerFormKey = GlobalKey<FormState>(); //Customer
   //Totals
@@ -112,7 +109,6 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
   final _totalValueController = TextEditingController(); //Total Value
   final _totalDiscountController = TextEditingController(); //Total Discount
   final _totalAfterDiscountController = TextEditingController(); //Total After Discount
-  final _totalTotalBeforeTaxController = TextEditingController(); //Total Before Tax
   final _totalTaxController = TextEditingController(); //Total Tax
   final _totalBeforeTaxController = TextEditingController(); // Total Before Tax
   final _totalNetController = TextEditingController(); // Total Net
@@ -191,7 +187,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
     summeryTotal =(widget.salesInvoicesH.totalNet != null)? double.parse(_totalNetController.text) : 0;
     setTafqeet("1" ,summeryTotal.toString());
 
-    fillCombos();
+    _fillCompos();
 
 
     super.initState();
@@ -468,7 +464,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
 
                                           ),
 
-                                          items: itemsWithOutBalance,
+                                          items: itemsWithOutBalance,  /// items: itemsWithOutBalance
                                           itemAsString: (Item u) => (langId==1)? u.itemNameAra.toString() : u.itemNameEng.toString(),
 
                                           onChanged: (value){
@@ -1487,7 +1483,7 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
       });
     }
 
-  fillCombos(){
+  _fillCompos(){
     Future<List<SalesInvoiceType>> futureSalesInvoiceType = _salesInvoiceTypeApiService.getSalesInvoicesTypes().then((data) {
       salesInvoiceTypes = data;
       getSalesInvoiceTypeData();
@@ -1499,16 +1495,6 @@ class _EditSalesInvoiceHDataWidgetState extends State<EditSalesInvoiceHDataWidge
       customers = data;
       getCustomerData();
       return customers;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<Item>> futureItems = _itemsApiService.getItems().then((data) {
-      items = data;
-      setState(() {
-
-      });
-      return items;
     }, onError: (e) {
       print(e);
     });

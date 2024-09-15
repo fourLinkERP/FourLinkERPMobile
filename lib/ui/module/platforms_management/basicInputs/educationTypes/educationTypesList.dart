@@ -1,30 +1,29 @@
-
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/platforms_management/basicInputs/educationYears/education_year.dart';
-import 'package:fourlinkmobileapp/service/module/platforms_management/basicInputs/educationYears/educationYearsApiService.dart';
+import 'package:fourlinkmobileapp/service/module/platforms_management/basicInputs/educationTypes/education_types_api_service.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../../cubit/app_cubit.dart';
+import '../../../../../data/model/modules/module/platforms_management/basicInputs/educationTypes/education_type.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import '../../../../../utils/permissionHelper.dart';
-import 'addEducationalYearScreen.dart';
+import 'addEducationTypeScreen.dart';
 
-EducationYearApiService _apiService = EducationYearApiService();
+EducationTypeApiService _apiService = EducationTypeApiService();
 
-class EducationYearsListPage extends StatefulWidget {
-  const EducationYearsListPage({Key? key}) : super(key: key);
+class EducationTypesListPage extends StatefulWidget {
+  const EducationTypesListPage({Key? key}) : super(key: key);
 
   @override
-  State<EducationYearsListPage> createState() => _EducationYearsListPageState();
+  State<EducationTypesListPage> createState() => _EducationTypesListPageState();
 }
 
-class _EducationYearsListPageState extends State<EducationYearsListPage> {
+class _EducationTypesListPageState extends State<EducationTypesListPage> {
 
   final _searchValueController = TextEditingController();
-  List<EducationYear> _years = [];
-  List<EducationYear> _yearsSearch = [];
+  List<EducationType> _educationTypes = [];
+  List<EducationType> _educationTypesSearch = [];
 
   @override
   void initState() {
@@ -36,14 +35,14 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
 
   void getData() async {
     try {
-      List<EducationYear>? futureStage = await _apiService.getEducationYears();
+      List<EducationType>? futureStage = await _apiService.getEducationTypes();
 
       if (futureStage.isNotEmpty) {
-        _years = futureStage;
-        _yearsSearch = List.from(_years);
+        _educationTypes = futureStage;
+        _educationTypesSearch = List.from(_educationTypes);
 
-        if (_years.isNotEmpty) {
-          _years.sort((a, b) => b.educationYearCode!.compareTo(a.educationYearCode!));
+        if (_educationTypes.isNotEmpty) {
+          _educationTypes.sort((a, b) => b.educationTypeCode!.compareTo(a.educationTypeCode!));
 
           setState(() {});
         }
@@ -56,13 +55,13 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
   void onSearch(String search) {
     if (search.isEmpty) {
       setState(() {
-        _years = List.from(_yearsSearch);
+        _educationTypes = List.from(_educationTypesSearch);
       });
     } else {
       setState(() {
-        _years = List.from(_yearsSearch);
-        _years = _years.where((stage) =>
-            stage.educationYearNameAra!.toLowerCase().contains(search)).toList();
+        _educationTypes = List.from(_educationTypesSearch);
+        _educationTypes = _educationTypes.where((stage) =>
+            stage.educationTypeNameAra!.toLowerCase().contains(search)).toList();
       });
     }
   }
@@ -91,12 +90,12 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
                     fontSize: 14,
                     color: Color.fromRGBO(144, 16, 46, 1),
                   ),
-                  hintText: "searchEducationYears".tr()
+                  hintText: "searchEducationTypes".tr()
               ),
             ),
           ),
         ),
-        body: SafeArea(child: buildEducationalYear()),
+        body: SafeArea(child: buildEducationType()),
         floatingActionButton: FloatingActionButton(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(90.0))),
@@ -140,10 +139,9 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
         )
     );
   }
+  Widget buildEducationType() {
 
-  Widget buildEducationalYear() {
-
-    if (_years.isEmpty) {
+    if (_educationTypes.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
@@ -154,13 +152,13 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
         padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
         color: const Color.fromRGBO(240, 242, 246, 1),
         child: ListView.builder(
-            itemCount: _years.isEmpty ? 0 : _years.length,
+            itemCount: _educationTypes.isEmpty ? 0 : _educationTypes.length,
             itemBuilder: (BuildContext context, int index) {
               return Card(
                 child: InkWell(
                   child: ListTile(
-                    leading: Image.asset('assets/fitness_app/education_years.png',height: 70.0, width: 70.0,),
-                    title: Text("${'code'.tr()} : ${_years[index].educationYearCode}",
+                    leading: Image.asset('assets/fitness_app/education_types.png',height: 70.0, width: 70.0,),
+                    title: Text("${'code'.tr()} : ${_educationTypes[index].educationTypeCode}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         )),
@@ -169,11 +167,11 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'arabicName'.tr()} : ${_years[index].educationYearNameAra}")),
+                            child: Text("${'arabicName'.tr()} : ${_educationTypes[index].educationTypeNameAra}")),
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'englishName'.tr()} : ${_years[index].educationYearNameEng}")
+                            child: Text("${'englishName'.tr()} : ${_educationTypes[index].educationTypeNameEng}")
                         ),
                         const SizedBox(width: 5),
                         SizedBox(
@@ -225,7 +223,7 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
                                           ),
                                           label: Text('delete'.tr(),style:const TextStyle(color: Colors.white,) ),
                                           onPressed: () {
-                                            _deleteItem(context,_years[index].id);
+                                            _deleteItem(context,_educationTypes[index].id);
                                           },
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -257,11 +255,11 @@ class _EducationYearsListPageState extends State<EducationYearsListPage> {
     }
   }
   _navigateToAddScreen(BuildContext context) async {
-    int menuId=58111;
+    int menuId=58113;
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if(isAllowAdd)
     {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddEducationalYearScreen(),
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddEducationTypeScreen(),
       )).then((value) {
         getData();
       });

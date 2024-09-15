@@ -5,11 +5,13 @@ import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/inventory/Items/itemList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/customerGroups/customerGroupsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/educationStages/educationStagesList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/educationTypes/educationTypesList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/educationYears/educationYearsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/platforms/platformsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/qualifications/qualificationsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/specializations/specializationsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/stagesClasses/stagesClassesList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/studentParents/studentParentsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/students/studentsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/materials/materialsList.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -39,7 +41,9 @@ class MainBasicInputs extends StatelessWidget {
       'assets/fitness_app/educationStages.jpeg',
       'assets/fitness_app/specializations.jpg',
       'assets/fitness_app/stages_classes.png',
-      'assets/fitness_app/education_years.png'
+      'assets/fitness_app/education_years.png',
+      'assets/fitness_app/education_types.png',
+      'assets/fitness_app/student_parents.png'
 
     ] : <String>[
       'assets/fitness_app/products.png',
@@ -58,7 +62,9 @@ class MainBasicInputs extends StatelessWidget {
       'educationStages'.tr(),
       'specializations'.tr(),
       'stages_classes'.tr(),
-      'education_years'.tr()
+      'education_years'.tr(),
+      'education_types'.tr(),
+      'student_parents'.tr()
 
     ] : <String>[
 
@@ -226,6 +232,30 @@ class MainBasicInputs extends StatelessWidget {
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
                         if(isAllowed){
                           Navigator.push(context, MaterialPageRoute(builder: (context) => const EducationYearsListPage()));
+                        }
+                        else
+                        {
+                          FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                        }
+                      }
+                      else  if(index == 10)
+                      {
+                        int menuId=58113;
+                        bool isAllowed = PermissionHelper.checkAddPermission(menuId);
+                        if(isAllowed){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const EducationTypesListPage()));
+                        }
+                        else
+                        {
+                          FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                        }
+                      }
+                      else  if(index == 11)
+                      {
+                        int menuId=58114;
+                        bool isAllowed = PermissionHelper.checkAddPermission(menuId);
+                        if(isAllowed){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const StudentParentsListPage()));
                         }
                         else
                         {

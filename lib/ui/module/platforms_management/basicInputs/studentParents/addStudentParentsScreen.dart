@@ -1,25 +1,25 @@
-
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/platforms_management/basicInputs/educationYears/education_year.dart';
-import 'package:fourlinkmobileapp/service/module/platforms_management/basicInputs/educationYears/educationYearsApiService.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/platforms_management/basicInputs/studentParents/student_parent.dart';
+import 'package:fourlinkmobileapp/service/module/platforms_management/basicInputs/studentParents/student_parents_api_service.dart';
+
 import '../../../../../common/globals.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../helpers/toast.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
 
-class AddEducationalYearScreen extends StatefulWidget {
-  const AddEducationalYearScreen({Key? key}) : super(key: key);
+class AddStudentParentScreen extends StatefulWidget {
+  const AddStudentParentScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddEducationalYearScreen> createState() => _AddEducationalYearScreenState();
+  State<AddStudentParentScreen> createState() => _AddStudentParentScreenState();
 }
 
-class _AddEducationalYearScreenState extends State<AddEducationalYearScreen> {
+class _AddStudentParentScreenState extends State<AddStudentParentScreen> {
 
-  final EducationYearApiService _api = EducationYearApiService();
+  final StudentParentApiService _api = StudentParentApiService();
   final _codeController = TextEditingController();
   final _nameAraController = TextEditingController();
   final _nameEngController = TextEditingController();
@@ -30,7 +30,7 @@ class _AddEducationalYearScreenState extends State<AddEducationalYearScreen> {
   void initState(){
     super.initState();
 
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("TRC_TrainingCenterEducationYears", "EducationYearCode", " And CompanyCode=$companyCode And BranchCode=$branchCode" ).then((data) {
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("TRC_TrainingCenterStudentParents", "StudentParentCode", " And CompanyCode=$companyCode And BranchCode=$branchCode" ).then((data) {
       NextSerial nextSerial = data;
 
       _codeController.text = nextSerial.nextSerial.toString();
@@ -51,7 +51,7 @@ class _AddEducationalYearScreenState extends State<AddEducationalYearScreen> {
             const SizedBox(width: 1),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 11, 2, 2),
-              child: Text('add_year'.tr(),
+              child: Text('add_student_parent'.tr(),
                   style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.0)),
             )
           ],
@@ -242,7 +242,7 @@ class _AddEducationalYearScreenState extends State<AddEducationalYearScreen> {
                           ),
                         ),
                         onPressed: () {
-                          saveEducationYear(context);
+                          saveStudentParent(context);
                         },
                         child: Text('Save'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
                       ),
@@ -258,7 +258,7 @@ class _AddEducationalYearScreenState extends State<AddEducationalYearScreen> {
     );
   }
 
-  saveEducationYear(BuildContext context) async{
+  saveStudentParent(BuildContext context) async{
 
     if(_nameAraController.text.isEmpty)
     {
@@ -270,14 +270,15 @@ class _AddEducationalYearScreenState extends State<AddEducationalYearScreen> {
       FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
       return;
     }
-    await _api.createEducationYear(context,EducationYear(
-        educationYearCode: _codeController.text ,
-        educationYearNameAra: _nameAraController.text ,
-        educationYearNameEng: _nameEngController.text ,
+    await _api.createStudentParent(context,StudentParent(
+        studentParentCode: _codeController.text ,
+        studentParentNameAra: _nameAraController.text ,
+        studentParentNameEng: _nameEngController.text ,
         descriptionAra: _descNameAraController.text,
         descriptionEng: _descNameEngController.text
     ));
 
     Navigator.pop(context);
   }
+
 }

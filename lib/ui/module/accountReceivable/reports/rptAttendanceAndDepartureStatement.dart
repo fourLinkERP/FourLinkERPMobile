@@ -17,14 +17,14 @@ import 'package:path_provider/path_provider.dart';
 
 EmployeeApiService _employeeApiService= EmployeeApiService();
 
-class RptEmployeeStatement extends StatefulWidget {
-  const RptEmployeeStatement({Key? key}) : super(key: key);
+class RptAttendanceAndDepartureStatement extends StatefulWidget {
+  const RptAttendanceAndDepartureStatement({Key? key}) : super(key: key);
 
   @override
-  State<RptEmployeeStatement> createState() => _RptEmployeeStatementState();
+  State<RptAttendanceAndDepartureStatement> createState() => _RptAttendanceAndDepartureStatementState();
 }
 
-class _RptEmployeeStatementState extends State<RptEmployeeStatement> {
+class _RptAttendanceAndDepartureStatementState extends State<RptAttendanceAndDepartureStatement> {
 
   List<Employee> employees =[];
 
@@ -46,6 +46,7 @@ class _RptEmployeeStatementState extends State<RptEmployeeStatement> {
 
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +58,7 @@ class _RptEmployeeStatementState extends State<RptEmployeeStatement> {
             const SizedBox(width: 1,),
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 11, 2, 10),
-              child: Text('employee_statement'.tr(),
+              child: Text('attendance_and_departure_statement'.tr(),
                 style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.0),),
             )
           ],
@@ -312,7 +313,7 @@ class _RptEmployeeStatementState extends State<RptEmployeeStatement> {
   printReport(BuildContext context ,String criteria){
 
     print(criteria);
-    String menuId="10305";
+    String menuId="10317";
     ReportUtilityApiService reportUtilityApiService = ReportUtilityApiService();
 
     List<Formulas>  formulasList ;

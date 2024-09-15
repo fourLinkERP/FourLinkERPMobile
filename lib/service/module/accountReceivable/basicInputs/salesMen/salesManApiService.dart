@@ -19,8 +19,8 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
   Future<List<SalesMan>>  getSalesMans() async {
     Map data = {
       'Search': {
-        'CompanyCode': companyCode,
-        'BranchCode': branchCode
+        'CompanyCode': companyCode
+        //'BranchCode': branchCode
       }
     };
 
@@ -53,7 +53,6 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
     Map data = {
       'Search': {
         'CompanyCode': companyCode,
-        'BranchCode': branchCode,
         'EmpCode': empCode,
         "isShowTransactionsByUser": true,
         "isManager": isManager,

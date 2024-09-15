@@ -691,6 +691,13 @@
     "employee_statement": "Employee Statement",
     "add_year": "Add Eduction Year",
     "searchEducationYears": "Search For Education Year",
-    "education_years": "Education Years"
+    "education_years": "Education Years",
+    "searchEducationTypes": "Search for Education Type",
+    "add_type": "Add Education Type",
+    "education_types": "Education Types",
+    "add_student_parent": "Add Student Parent",
+    "student_parents": "Student Parents",
+    "searchStudentParents": "Search for Student Parents",
+    "attendance_and_departure_statement": "Attendance and departure statement"
 
 }
