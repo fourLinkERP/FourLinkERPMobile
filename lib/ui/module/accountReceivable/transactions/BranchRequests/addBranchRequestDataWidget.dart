@@ -556,7 +556,7 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
       NextSerial nextSerial = data;
 
       _trxSerialController.text = nextSerial.nextSerial.toString();
-      _trxDateController.text = _trxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+      _trxDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
       return nextSerial;
     }, onError: (e) {
       print(e);

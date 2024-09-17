@@ -11,6 +11,7 @@ import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/pla
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/qualifications/qualificationsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/specializations/specializationsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/stagesClasses/stagesClassesList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/streamTypes/streamTypesList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/studentParents/studentParentsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/students/studentsList.dart';
 import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/materials/materialsList.dart';
@@ -43,7 +44,8 @@ class MainBasicInputs extends StatelessWidget {
       'assets/fitness_app/stages_classes.png',
       'assets/fitness_app/education_years.png',
       'assets/fitness_app/education_types.png',
-      'assets/fitness_app/student_parents.png'
+      'assets/fitness_app/student_parents.png',
+      'assets/fitness_app/stream_types.png'
 
     ] : <String>[
       'assets/fitness_app/products.png',
@@ -64,7 +66,8 @@ class MainBasicInputs extends StatelessWidget {
       'stages_classes'.tr(),
       'education_years'.tr(),
       'education_types'.tr(),
-      'student_parents'.tr()
+      'student_parents'.tr(),
+      'stream_types'.tr()
 
     ] : <String>[
 
@@ -256,6 +259,18 @@ class MainBasicInputs extends StatelessWidget {
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
                         if(isAllowed){
                           Navigator.push(context, MaterialPageRoute(builder: (context) => const StudentParentsListPage()));
+                        }
+                        else
+                        {
+                          FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                        }
+                      }
+                      else  if(index == 12)
+                      {
+                        int menuId=58115;
+                        bool isAllowed = PermissionHelper.checkAddPermission(menuId);
+                        if(isAllowed){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const StreamTypesListPage()));
                         }
                         else
                         {

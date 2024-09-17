@@ -804,7 +804,23 @@
     "add_student_parent": "اضافة ولي أمر",
     "student_parents": "أولياء الأمور",
     "searchStudentParents": "بحث اولياء الامور",
-    "attendance_and_departure_statement": "تقرير بيان الحضور و الانصراف"
+    "attendance_and_departure_statement": "تقرير بيان الحضور و الانصراف",
+    "searchStreamTypes": "بحث انواع الاستريم",
+    "stream_types": "أنواع الاستريم",
+    "add_stream_type": "تسجيل نوع استريم جديد",
+    "streamUrl": "لينك نوع الدفق",
+    "please_enter_url": "من فضلك ادخل لينك نوع التدفق",
+    "searchCashPaymentOrder": "بحث امر صرف مالي",
+    "cash_payment_order": "أمر صرف مالي",
+    "add_cash_payment": "اضافة أمر صرف مالي",
+    "currency_code": "العملة",
+    "currency_rate": "معدل التحويل",
+    "target_name": "اسم المستفيد",
+    "description": "الوصف",
+    "please_enter_total": "من فضلك ادخل الاجمالي",
+    "please_enter_target_type": "من فضلك اختر نوع المستفيد",
+    "please_enter_target_code": "من فضلك اختر اسم المستفيد",
+    "please_enter_currency_code": "من فضلك اختر العملة"
 
 }
 

@@ -758,7 +758,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
   getBoxTypeData() {
     if (boxTypes.isNotEmpty) {
       for(var i = 0; i < boxTypes.length; i++){
-        if(boxTypes[i].code == "1"){
+        if(boxTypes[i].code == 1){
           boxTypeItem = boxTypes[boxTypes.indexOf(boxTypes[i])];
         }
 
@@ -832,7 +832,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
   setTargetCode(String targetType) {
 
     if(targetType == "1")
-        {
+    {
       if (customers.isNotEmpty) {
         for(var i = 0; i < customers.length; i++){
           targetCodes.add(TargetCode(code: customers[i].customerCode,nameAra: customers[i].customerNameAra

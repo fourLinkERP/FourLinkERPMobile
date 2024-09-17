@@ -698,6 +698,22 @@
     "add_student_parent": "Add Student Parent",
     "student_parents": "Student Parents",
     "searchStudentParents": "Search for Student Parents",
-    "attendance_and_departure_statement": "Attendance and departure statement"
+    "attendance_and_departure_statement": "Attendance and departure statement",
+    "searchStreamTypes": "Search for Stream Type",
+    "stream_types": "Stream Types",
+    "add_stream_type": "Add Stream Type",
+    "streamUrl": "Stream Type Url",
+    "please_enter_url": "Please enter stream type url",
+    "searchCashPaymentOrder": "Search Financial Exchange Order",
+    "cash_payment_order": "Financial exchange order",
+    "add_cash_payment": "Add Cash Payment Order",
+    "currency_code": "Currency code",
+    "currency_rate": "Currency rate",
+    "target_name": "Target name",
+    "description": "Description",
+    "please_enter_total": "Please enter total",
+    "please_enter_target_type": "Please select target type",
+    "please_enter_target_code": "please select  target code",
+    "please_enter_currency_code": "please select  currency"
 
 }

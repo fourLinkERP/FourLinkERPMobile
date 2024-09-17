@@ -1,5 +1,6 @@
 import'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestVacation/requestVacationList.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/cashPaymentOrders/cashPaymentOrdersList.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestAdvance/requestAdvanceList.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/RequestSalaryIncrease/requestSalaryIncreaseList.dart';
@@ -94,7 +95,22 @@ class NewRequest extends StatelessWidget {
             },
             child: Text('Request resource requirements'.tr(),style: const TextStyle(color: Colors.white, fontSize: 17.0,),),
           ),
-          
+          const SizedBox(height: 30),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              fixedSize: const Size(80, 55),
+              backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+              padding: const EdgeInsets.symmetric(
+                  vertical: 10.0, horizontal: 20.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(80),
+              ),
+            ),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>  const CashPaymentOrdersList()));
+            },
+            child: Text('cash_payment_order'.tr(),style: const TextStyle(color: Colors.white, fontSize: 17.0,),),
+          ),
         ],
       ),
     );
