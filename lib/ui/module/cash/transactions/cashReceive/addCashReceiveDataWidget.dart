@@ -590,8 +590,6 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                       itemAsString: (BoxCode u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
 
                                       onChanged: (value){
-                                        //v.text = value!.cusTypesCode.toString();
-
                                         boxCodeSelectedValue = value!.code;
                                         print('boxCodeSelectedValue Is >> ' + boxCodeSelectedValue.toString());
                                       },
@@ -607,8 +605,6 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                       },
                                       dropdownDecoratorProps: const DropDownDecoratorProps(
                                         dropdownSearchDecoration: InputDecoration(
-                                          //labelText: "box_code".tr(),
-
                                         ),),
 
                                     ),
@@ -628,23 +624,25 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                 style: const TextStyle(fontWeight: FontWeight.bold)) ),
                             const SizedBox(width: 10),
 
-                            SizedBox(
-                              width: 200,
-                              child: TextFormField(
-                                keyboardType: TextInputType.number,
-                                controller: _valueController,
-                                decoration: const InputDecoration(
-                                  hintText: '',
+                            Expanded(
+                              child: SizedBox(
+                                width: 200,
+                                child: TextFormField(
+                                  keyboardType: TextInputType.number,
+                                  controller: _valueController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'please_enter_value'.tr();
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    setTafqeet("1" ,value.toString());
+                                  },
                                 ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'please_enter_value'.tr();
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {
-                                  setTafqeet("1" ,value.toString());
-                                },
                               ),
                             ),
                           ],
@@ -658,14 +656,16 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                 style: const TextStyle(fontWeight: FontWeight.bold)) ),
                             const SizedBox(width: 10),
 
-                            SizedBox(
-                              width: 206,
-                              child: TextFormField(
-                                controller: _descriptionNameArabicController,
-                                decoration: const InputDecoration(
-                                  hintText: '',
-                                ),
+                            Expanded(
+                              child: SizedBox(
+                                width: 205,
+                                child: TextFormField(
+                                  controller: _descriptionNameArabicController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
 
+                                ),
                               ),
                             ),
                           ],
@@ -679,12 +679,61 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                 style: const TextStyle(fontWeight: FontWeight.bold)) ),
                             const SizedBox(width: 10),
 
-                            SizedBox(
-                              width: 200,
-                              child: TextFormField(
-                                controller: _descriptionNameEnglishController,
-                                decoration: const InputDecoration(
-                                  hintText: '',
+                            Expanded(
+                              child: SizedBox(
+                                width: 205,
+                                child: TextFormField(
+                                  controller: _descriptionNameEnglishController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                        child: Row(
+                          children: <Widget>[
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameArabic'.tr(),
+                                style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                            const SizedBox(width: 10),
+
+                            Expanded(
+                              child: SizedBox(
+                                width: 205,
+                                child: TextFormField(
+                                  enabled: false,
+                                  controller: _tafqitNameArabicController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                        child: Row(
+                          children: <Widget>[
+                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameEnglish'.tr(),
+                                style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                            const SizedBox(width: 10),
+
+                            Expanded(
+                              child: SizedBox(
+                                width: 205,
+                                child: TextFormField(
+                                  enabled: false,
+                                  controller: _tafqitNameEnglishController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
                                 ),
                               ),
                             ),
@@ -699,20 +748,22 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                             Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('statement'.tr(),
                                 style: const TextStyle(fontWeight: FontWeight.bold)) ),
                             const SizedBox(width: 10),
-                            SizedBox(
-                              width: 210,
-                              child: TextFormField(
-                                controller: _statementController,
-                                decoration: const InputDecoration(
-                                  hintText: '',
+                            Expanded(
+                              child: SizedBox(
+                                width: 210,
+                                child: TextFormField(
+                                  controller: _statementController,
+                                  decoration: const InputDecoration(
+                                    hintText: '',
+                                  ),
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'please_enter_statement'.tr();
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {},
                                 ),
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'please_enter_statement'.tr();
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {},
                               ),
                             ),
                           ],
@@ -830,7 +881,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
   }
 
   setTargetCode(String targetType) {
-
+    targetCodes = [];
     if(targetType == "1")
     {
       if (customers.isNotEmpty) {
@@ -838,17 +889,15 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
           targetCodes.add(TargetCode(code: customers[i].customerCode,nameAra: customers[i].customerNameAra
               ,nameEng: customers[i].customerNameEng));
         }
-        //targetType="CUS";
+        setState(() {
+
+        });
       }
     }
-
-    setState(() {
-       //cashTargetCodeItem=TargetCode(code: "" ,nameAra: "",nameEng: "",id: 0);
-    });
-
   }
 
   saveCashReceive(BuildContext context) async {
+    setTafqeet("1", _valueController.text);
     //Serial
     if(_cashReceiveSerialController.text.isEmpty){
       FN_showToast(context,'please_Set_Invoice_Serial'.tr(),Colors.black);

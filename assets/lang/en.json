@@ -714,6 +714,7 @@
     "please_enter_total": "Please enter total",
     "please_enter_target_type": "Please select target type",
     "please_enter_target_code": "please select  target code",
-    "please_enter_currency_code": "please select  currency"
+    "please_enter_currency_code": "please select  currency",
+    "edit_cash_payment": "Edit Cash Payment Order"
 
 }

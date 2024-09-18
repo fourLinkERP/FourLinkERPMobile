@@ -182,7 +182,7 @@ import 'package:intl/intl.dart';
       'DescriptionEng': cash.descriptionNameEnglish,
       'TafqitNameArabic': cash.tafqitNameArabic,
       'TafqitNameEnglish': cash.tafqitNameEnglish,
-      'addBy': empUserId,
+      'editBy': empUserId,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,

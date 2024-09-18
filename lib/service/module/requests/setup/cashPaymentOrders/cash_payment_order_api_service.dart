@@ -16,8 +16,10 @@ class CashPaymentOrderApiService{
   Future<List<CashPaymentOrder>>  getCashPaymentOrders() async {
 
     Map data = {
-      'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      "Search":{
+        "CompanyCode": companyCode,
+        "BranchCode": branchCode
+      }
     };
 
     final http.Response response = await http.post(
@@ -36,10 +38,12 @@ class CashPaymentOrderApiService{
       if (data.isNotEmpty) {
         list = data.map((item) => CashPaymentOrder.fromJson(item)).toList();
       }
+      print("CashPayment success");
       return  list;
+
     } else {
-      print('CashPaymentOrder Failed');
-      throw "Failed to load cashPaymentOrder list";
+      print("CashPayment failed");
+      throw "Failed to load cash list";
     }
   }
 
@@ -47,7 +51,7 @@ class CashPaymentOrderApiService{
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'paymentOrderTypeCode': "1",
+      'PaymentOrderTypeCode': "1",
       'TrxSerial': cashPaymentOrder.trxSerial,
       'TrxDate': cashPaymentOrder.trxDate,
       'targetType': cashPaymentOrder.targetType,
@@ -56,16 +60,17 @@ class CashPaymentOrderApiService{
       'currencyRate': cashPaymentOrder.currencyRate,
       'total': cashPaymentOrder.total,
       'description': cashPaymentOrder.description,
-      "notActive": false,
-      "flgDelete": false,
-      "isDeleted": false,
       "isActive": true,
       "isBlocked": false,
-      "isSystem": false,
+      "isDeleted": false,
       "isImported": false,
+      "isLinkWithTaxAuthority": false,
       "isSynchronized": false,
+      "isSystem": false,
+      "notActive": false,
       "postedToGL": false,
-      "isLinkWithTaxAuthority": true,
+      "flgDelete": false,
+      "confirmed": true,
       'addBy': empUserId
     };
 

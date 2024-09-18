@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-
+import 'package:intl/intl.dart';
 import '../../../../../data/model/modules/module/requests/setup/cashPaymentOrders/cash_payment_order.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
@@ -29,17 +29,17 @@ class _CashPaymentOrdersListState extends State<CashPaymentOrdersList> {
   @override
   void initState() {
 
-    getData();
+    _getData();
     super.initState();
-    AppCubit.get(context).CheckConnection();
   }
 
-  void getData() async {
+  void _getData() async {
     try {
-      List<CashPaymentOrder>? futureStage = await _apiService.getCashPaymentOrders();
+      List<CashPaymentOrder>? futureCash = await _apiService.getCashPaymentOrders();
 
-      if (futureStage.isNotEmpty) {
-        _cashPaymentOrders = futureStage;
+      if (futureCash.isNotEmpty) {
+        _cashPaymentOrders = futureCash;
+        print("length : ${_cashPaymentOrders.length}");
         _cashPaymentOrdersSearch = List.from(_cashPaymentOrders);
 
         if (_cashPaymentOrders.isNotEmpty) {
@@ -62,7 +62,7 @@ class _CashPaymentOrdersListState extends State<CashPaymentOrdersList> {
       setState(() {
         _cashPaymentOrders = List.from(_cashPaymentOrdersSearch);
         _cashPaymentOrders = _cashPaymentOrders.where((cash) =>
-            cash.targetName!.toLowerCase().contains(search)).toList();
+            cash.trxSerial!.toLowerCase().contains(search)).toList();
       });
     }
   }
@@ -96,7 +96,7 @@ class _CashPaymentOrdersListState extends State<CashPaymentOrdersList> {
             ),
           ),
         ),
-        body: SafeArea(child: buildFinancialExchangeOrder()),
+        body: SafeArea(child: buildCashPaymentOrder()),
         floatingActionButton: FloatingActionButton(
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(90.0))),
@@ -141,15 +141,12 @@ class _CashPaymentOrdersListState extends State<CashPaymentOrdersList> {
     );
   }
 
-  Widget buildFinancialExchangeOrder() {
+  Widget buildCashPaymentOrder() {
 
     if (_cashPaymentOrders.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
-
-    if (AppCubit.get(context).Conection == false) {
-      return const Center(child: Text('no internet connection'));
-    } else {
+    else {
       return Container(
         padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
         color: const Color.fromRGBO(240, 242, 246, 1),
@@ -170,11 +167,11 @@ class _CashPaymentOrdersListState extends State<CashPaymentOrdersList> {
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'target_name'.tr()} : ${_cashPaymentOrders[index].targetName}")),
+                            child: Text("${'date'.tr()} : ${DateFormat('yyyy-MM-dd').format(DateTime.parse(_cashPaymentOrders[index].trxDate.toString()))}")),
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'total'.tr()} : ${_cashPaymentOrders[index].total}")
+                            child: Text("${'total'.tr()} : ${_cashPaymentOrders[index].total.toString()}")
                         ),
                         const SizedBox(width: 5),
                         SizedBox(
@@ -267,9 +264,9 @@ class _CashPaymentOrdersListState extends State<CashPaymentOrdersList> {
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if(isAllowAdd)
     {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddCashPaymentOrderScreen(),
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddCashPaymentOrderScreen(),
       )).then((value) {
-        getData();
+        _getData();
       });
     }
     else

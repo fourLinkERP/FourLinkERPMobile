@@ -696,20 +696,12 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                                 const SizedBox(width: 10),
 
                                 SizedBox(
-                                  width: 206,
+                                  width: 205,
                                   child: TextFormField(
                                     controller: _descriptionNameArabicController,
                                     decoration: const InputDecoration(
                                       hintText: '',
                                     ),
-                                    // validator: (value) {
-                                    //   if (value!.isEmpty) {
-                                    //     return 'please_enter_value'.tr();
-                                    //   }
-                                    //   return null;
-                                    // },
-                                    //enabled: false,
-                                    onChanged: (value) {},
                                   ),
                                 ),
                               ],
@@ -724,73 +716,60 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
                                 const SizedBox(width: 10),
 
                                 SizedBox(
-                                  width: 200,
+                                  width: 205,
                                   child: TextFormField(
                                     controller: _descriptionNameEnglishController,
                                     decoration: const InputDecoration(
                                       hintText: '',
                                     ),
-                                    // validator: (value) {
-                                    //   if (value!.isEmpty) {
-                                    //     return 'please_enter_value'.tr();
-                                    //   }
-                                    //   return null;
-                                    // },
-                                    //enabled: false,
-                                    onChanged: (value) {},
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          // Container(
-                          //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                          //   child: Column(
-                          //     crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                          //     children: <Widget>[
-                          //       Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameArabic'.tr(),
-                          //           style: const TextStyle(fontWeight: FontWeight.bold))),
-                          //       TextFormField(
-                          //         controller: _tafqitNameArabicController,
-                          //         decoration: const InputDecoration(
-                          //           hintText: '',
-                          //         ),
-                          //         // validator: (value) {
-                          //         //   if (value!.isEmpty) {
-                          //         //     return 'please_enter_value'.tr();
-                          //         //   }
-                          //         //   return null;
-                          //         // },
-                          //         enabled: false,
-                          //         onChanged: (value) {},
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          // Container(
-                          //   margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                          //   child: Column(
-                          //     crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                          //     children: <Widget>[
-                          //       Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameEnglish'.tr(),
-                          //           style: const TextStyle(fontWeight: FontWeight.bold))),
-                          //       TextFormField(
-                          //         controller: _tafqitNameEnglishController,
-                          //         decoration: const InputDecoration(
-                          //           hintText: '',
-                          //         ),
-                          //         enabled: false,
-                          //         // validator: (value) {
-                          //         //   if (value!.isEmpty) {
-                          //         //     return 'please_enter_value'.tr();
-                          //         //   }
-                          //         //   return null;
-                          //         // },
-                          //         onChanged: (value) {},
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                            child: Row(
+                              children: <Widget>[
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameArabic'.tr(),
+                                    style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                                const SizedBox(width: 10),
+
+                                SizedBox(
+                                  width: 205,
+                                  child: TextFormField(
+                                    enabled: false,
+                                    controller: _tafqitNameArabicController,
+                                    decoration: const InputDecoration(
+                                      hintText: '',
+                                    ),
+
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                            child: Row(
+                              children: <Widget>[
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameEnglish'.tr(),
+                                    style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                                const SizedBox(width: 10),
+
+                                SizedBox(
+                                  width: 205,
+                                  child: TextFormField(
+                                    enabled: false,
+                                    controller: _tafqitNameEnglishController,
+                                    decoration: const InputDecoration(
+                                      hintText: '',
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           Container(
                             margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                             child: Row(
@@ -928,7 +907,6 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
 
       });
 
-
       return tafqeet;
     }, onError: (e) {
       print(e);
@@ -937,47 +915,66 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
 
   setBoxCode(String cashBoxType) {
     boxCodes=[];
-    print('hokkaaaaaz0');
+
     if(cashBoxType == "1")//BankBranch
-    {
-      if (cashBankBranches != null) {
+        {
+      if (cashBankBranches.isNotEmpty) {
         for(var i = 0; i < cashBankBranches.length; i++){
           boxCodes.add(BoxCode(code: cashBankBranches[i].bankBranchCode,nameAra: cashBankBranches[i].bankBranchNameAra
-          ,nameEng: cashBankBranches[i].bankBranchNameEng));
-
-          print('hokkaaaaaz');
-          if(boxTypes[i].code.toString() == boxCodeSelectedValue.toString()){
-            print('bokaaaaz');
-            boxCodeItem = boxCodes[boxCodes.indexOf(boxCodes[i])];
-            // print('in amr4');
-            // print(customerTypeItem );
-          }
-
+              ,nameEng: cashBankBranches[i].bankBranchNameEng));
         }
       }
     }
     else if(cashBoxType == "2")//Safes
-    {
-      if (cashSafes != null) {
+        {
+      if (cashSafes.isNotEmpty) {
         for(var i = 0; i < cashSafes.length; i++){
           boxCodes.add(BoxCode(code: cashSafes[i].safeCode,nameAra: cashSafes[i].safeNameAra
               ,nameEng: cashSafes[i].safeNameEng));
-
-          if(boxTypes[i].code.toString() == boxCodeSelectedValue.toString()){
-            // print('in amr3');
-            boxCodeItem = boxCodes[boxCodes.indexOf(boxCodes[i])];
-            // print('in amr4');
-            // print(customerTypeItem );
-          }
         }
       }
     }
 
     setState(() {
-      //boxCodeItem=BoxCode(code: "",nameAra: "",nameEng: "",id: 0);
+      boxCodeItem=BoxCode(code: "",nameAra: "",nameEng: "",id: 0);
     });
 
   }
+
+  // setBoxCode(String cashBoxType) {
+  //   boxCodes=[];
+  //   if(cashBoxType == "1")
+  //   {
+  //     if (cashBankBranches.isNotEmpty) {
+  //       for(var i = 0; i < cashBankBranches.length; i++){
+  //         boxCodes.add(BoxCode(code: cashBankBranches[i].bankBranchCode,nameAra: cashBankBranches[i].bankBranchNameAra
+  //         ,nameEng: cashBankBranches[i].bankBranchNameEng));
+  //
+  //         if(boxTypes[i].code.toString() == boxCodeSelectedValue.toString()){
+  //           boxCodeItem = boxCodes[boxCodes.indexOf(boxCodes[i])];
+  //         }
+  //
+  //       }
+  //     }
+  //   }
+  //   else if(cashBoxType == "2")//Safes
+  //   {
+  //     if (cashSafes.isNotEmpty) {
+  //       for(var i = 0; i < cashSafes.length; i++){
+  //         boxCodes.add(BoxCode(code: cashSafes[i].safeCode,nameAra: cashSafes[i].safeNameAra
+  //             ,nameEng: cashSafes[i].safeNameEng));
+  //         if(boxTypes[i].code.toString() == boxCodeSelectedValue.toString()){
+  //           boxCodeItem = boxCodes[boxCodes.indexOf(boxCodes[i])];
+  //         }
+  //       }
+  //     }
+  //   }
+  //
+  //   setState(() {
+  //     //boxCodeItem=BoxCode(code: "",nameAra: "",nameEng: "",id: 0);
+  //   });
+  //
+  // }
 
   setTargetCode(String targetType) {
     targetCodes=[];
@@ -1012,7 +1009,7 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
 
 
   saveCashReceive(BuildContext context) {
-
+    setTafqeet("1", _valueController.text);
     //Serial
     if(_cashReceiveSerialController.text.isEmpty){
       FN_showToast(context,'please_Set_Invoice_Serial'.tr(),Colors.black);

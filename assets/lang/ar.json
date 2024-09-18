@@ -820,7 +820,8 @@
     "please_enter_total": "من فضلك ادخل الاجمالي",
     "please_enter_target_type": "من فضلك اختر نوع المستفيد",
     "please_enter_target_code": "من فضلك اختر اسم المستفيد",
-    "please_enter_currency_code": "من فضلك اختر العملة"
+    "please_enter_currency_code": "من فضلك اختر العملة",
+    "edit_cash_payment": "تعديل امر صرف مالي"
 
 }
 

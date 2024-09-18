@@ -206,9 +206,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if(isAllowAdd)
     {
-      Navigator.of(context)
-          .push(MaterialPageRoute(
-        builder: (context) => AddCashReceiveDataWidget(),
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddCashReceiveDataWidget(),
       )).then((value) {
         _getData();
       });

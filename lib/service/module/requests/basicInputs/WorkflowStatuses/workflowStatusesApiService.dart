@@ -18,7 +18,6 @@ class StatusesApiService {
 
   Future<List<Status>>  getStatuses() async {
 
-    print('Status 1');
     Map data = {
       'Search':{
         'CompanyCode': companyCode,

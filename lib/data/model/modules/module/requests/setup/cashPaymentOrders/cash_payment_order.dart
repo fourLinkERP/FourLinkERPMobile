@@ -24,7 +24,7 @@ class CashPaymentOrder{
     this.description
 });
 
-  factory CashPaymentOrder.fromJson(Map<dynamic, String> json){
+  factory CashPaymentOrder.fromJson(Map<String, dynamic> json) {
     return CashPaymentOrder(
       id: (json["id"] != null) ? json["id"] as int : 0,
       trxSerial: (json["trxSerial"] != null) ? json["trxSerial"] as String : "",

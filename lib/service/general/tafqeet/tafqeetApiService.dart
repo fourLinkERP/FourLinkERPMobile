@@ -28,7 +28,7 @@ import '../../../../../common/globals.dart';
         });
 
     if (response.statusCode == 200) {
-
+      print("data tafqeet: " + data.toString());
       return Tafqeet.fromJson(json.decode(response.body));
 
     } else {
