@@ -90,7 +90,7 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
     Map data = {
       'Search': {
         'CompanyCode': companyCode,
-        'BranchCode': branchCode,
+        //'BranchCode': branchCode,
         'EmpCode': employeeCode
       }
     };

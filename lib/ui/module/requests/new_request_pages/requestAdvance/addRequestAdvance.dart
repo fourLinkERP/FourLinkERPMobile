@@ -266,7 +266,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               height: 50,
                               width: 210,
                               child: DropdownSearch<Employee>(
-                                enabled: false,
+                                enabled: true,
                                 selectedItem: employeeItem,
                                 popupProps: PopupProps.menu(
                                   itemBuilder: (context, item, isSelected) {
@@ -311,7 +311,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               height: 50,
                               width: 210,
                               child: DropdownSearch<Job>(
-                                enabled: false,
+                                enabled: true,
                                 selectedItem: jobItem,
                                 popupProps: PopupProps.menu(
                                   itemBuilder: (context, item, isSelected) {

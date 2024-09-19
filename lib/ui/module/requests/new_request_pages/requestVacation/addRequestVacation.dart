@@ -87,7 +87,11 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   initState() {
     super.initState();
     _vacationRequestMessageController.text = "Request vacation".tr();
-
+    print('Started Request Vacation');
+    print('costCenterCode');
+    print(costCenterCode);
+    print(empCode);
+    print(jobCode);
     fillCompos();
 
   }
