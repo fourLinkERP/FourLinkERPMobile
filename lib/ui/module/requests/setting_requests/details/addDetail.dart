@@ -5,20 +5,15 @@ import 'package:fourlinkmobileapp/data/model/modules/module/requests/basicInputs
 import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/UserGroups/userGroupApiService.dart';
 import 'package:flutter/services.dart';
 import 'package:fourlinkmobileapp/service/module/requests/SettingRequests/settingRequestDApiService.dart';
-import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import 'package:supercharged/supercharged.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../common/login_components.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
-import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
 import '../../../../../data/model/modules/module/requests/basicInputs/settingRequests/SettingRequestH.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
-import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 
-//APIs
-NextSerialApiService _settingRequestCodeApiService = NextSerialApiService();
+
 EmployeeApiService _employeeApiService = EmployeeApiService();
 GroupApiService _groupApiService = GroupApiService();
 
@@ -38,17 +33,14 @@ class _AddReqDetailsState extends State<AddReqDetails> {
   List<SettingRequestD> selected = [];
   List<Employee> employees = [];
   List<UserGroup> groups = [];
-  List<DropdownMenuItem<String>> menuEmployees = [];
-  List<DropdownMenuItem<String>> menuGroups = [];
 
-  String? selectedEmployeeValue = null;
-  String? selectedAlternativeEmployeeValue = null;
-  String? selectedGroupValue = null;
+  String? selectedEmployeeValue;
+  String? selectedAlternativeEmployeeValue;
+  String? selectedGroupValue;
 
   final SettingRequestDApiService api = SettingRequestDApiService();
   int lineNum = 1;
   final _addFormKey = GlobalKey<FormState>();
-  final _settingRequestCodeController = TextEditingController();
   final _levelsController = TextEditingController();
   final _emailReceiversController = TextEditingController();
   final _whatsappReceiversController = TextEditingController();
@@ -59,18 +51,12 @@ class _AddReqDetailsState extends State<AddReqDetails> {
   @override
   initState() {
     super.initState();
-    Future<NextSerial>  futureSerial = _settingRequestCodeApiService.getNextSerial("WFW_SettingRequestsH", "SettingRequestCode", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
-      NextSerial nextSerial = data;
-      _settingRequestCodeController.text = nextSerial.nextSerial.toString();
-      return nextSerial;
-    }, onError: (e) {
-      print(e);
-    });
 
     Future<List<Employee>> futureEmployees = _employeeApiService.getEmployees().then((data) {
       employees = data;
+      setState(() {
 
-      getEmployeesData();
+      });
       return employees;
     }, onError: (e) {
       print(e);
@@ -78,8 +64,9 @@ class _AddReqDetailsState extends State<AddReqDetails> {
 
     Future<List<UserGroup>> futureGroups = _groupApiService.getUserGroups().then((data) {
       groups = data;
+      setState(() {
 
-      getGroupsData();
+      });
       return groups;
     }, onError: (e) {
       print(e);
@@ -114,7 +101,6 @@ class _AddReqDetailsState extends State<AddReqDetails> {
                             scrollDirection: Axis.horizontal,
                             children: [
                               Column(
-                                //mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const SizedBox(height: 10),
                                   SizedBox(
@@ -466,44 +452,7 @@ class _AddReqDetailsState extends State<AddReqDetails> {
       ),
     );
   }
-  getGroupsData() {
-    if (groups.isNotEmpty) {
-      for(var i = 0; i < groups.length; i++){
-        menuGroups.add(
-          DropdownMenuItem(
-              value: groups[i].groupId.toString(),
-              child: Text((langId==1)?  groups[i].groupNameAra.toString() : groups[i].groupNameEng.toString())),
-        );
-      }
-    }
-    setState(() {
 
-    });
-  }
-  getEmployeesData() {
-    if (employees.isNotEmpty) {
-      for(var i = 0; i < employees.length; i++){
-        menuEmployees.add(DropdownMenuItem(
-            value: employees[i].empCode.toString(),
-            child: Text((langId==1)? employees[i].empNameAra.toString() : employees[i].empNameEng.toString())));
-      }
-    }
-    setState(() {
-
-    });
-  }
-  setNextSerial() {
-    //Serial
-    Future<NextSerial> futureSerial = _settingRequestCodeApiService.getNextSerial(
-        "WFW_SettingRequestsH", "SettingRequestCode",
-      " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString(),).then((data) {
-      NextSerial nextSerial = data;
-      _settingRequestCodeController.text = nextSerial.nextSerial.toString();
-      return nextSerial;
-    }, onError: (e) {
-      print(e);
-    });
-  }
   saveSettingRequestD(BuildContext context)
   {
     if (selectedEmployeeValue!.isEmpty) {
@@ -521,7 +470,6 @@ class _AddReqDetailsState extends State<AddReqDetails> {
     }
 
     api.createSettingRequestD(context, SettingRequestD(
-
       settingRequestCode: widget.settingReqH.settingRequestCode,
       lineNum: lineNum,
       levels: int.parse(_levelsController.text),

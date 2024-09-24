@@ -1,3 +1,4 @@
+import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 class DashboardSliderListData {
@@ -17,7 +18,25 @@ class DashboardSliderListData {
   List<String>? meals;
   int kacl;
 
-  static List<DashboardSliderListData> tabIconsList = <DashboardSliderListData>[
+  static List<DashboardSliderListData> tabIconsList = systemCode == 10 ? <DashboardSliderListData>[
+
+    DashboardSliderListData(
+      imagePath: 'assets/fitness_app/newbranch.png',
+      titleTxt: 'HR'.tr(),
+      kacl: 0,
+      meals: <String>['', ''],
+      startColor: '#FE95B6',
+      endColor: '#FF5287',
+    ),
+    DashboardSliderListData(
+      imagePath: 'assets/fitness_app/newtruck.png',
+      titleTxt: 'workFlow'.tr(),
+      kacl: 0,
+      meals: <String>['', ''],
+      startColor: '#6F72CA',
+      endColor: '#1E1466',
+    ),
+  ] : <DashboardSliderListData>[
     DashboardSliderListData(
       imagePath: 'assets/fitness_app/car.png',
       titleTxt: 'Work Shop'.tr(),
@@ -26,14 +45,6 @@ class DashboardSliderListData {
       startColor: '#FA7D82',
       endColor: '#FFB295',
     ),
-    // DashboardSliderListData(
-    //   imagePath: 'assets/fitness_app/newinventory.png',
-    //   titleTxt: 'purchase'.tr(),
-    //   kacl: 0,
-    //   meals: <String>['', ''],
-    //   startColor: '#FA7D82',
-    //   endColor: '#FFB295',
-    // ),
     DashboardSliderListData(
       imagePath: 'assets/fitness_app/salesCart.png',
       titleTxt: 'Sales'.tr(),

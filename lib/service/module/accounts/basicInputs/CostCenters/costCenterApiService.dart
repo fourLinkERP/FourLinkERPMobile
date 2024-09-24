@@ -19,7 +19,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
     Map data = {
       'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      'BranchCode': branchCode,
+      'AccountNatureCode': 2
     };
 
     print('CostCenter 1');

@@ -29,7 +29,7 @@ class RequestVacationList extends StatefulWidget {
 
 class _RequestVacationListState extends State<RequestVacationList> {
 
-  bool isLoading = true;
+  bool _isLoading = true;
   List<VacationRequests> vacationRequests = [];
  // List<VacationRequests> vacationRequestsFiltered = [];
   List<VacationRequests> _founded = [];
@@ -41,8 +41,12 @@ class _RequestVacationListState extends State<RequestVacationList> {
 
     getData();
     super.initState();
+    _simulateLoading();
+  }
+  void _simulateLoading() async {
+    await Future.delayed(const Duration(seconds: 5));
     setState(() {
-      _founded = vacationRequests;
+      _isLoading = false;
     });
   }
   List<VacationRequests> filterListByEmployeeCode() {
@@ -70,11 +74,9 @@ class _RequestVacationListState extends State<RequestVacationList> {
         elevation: 0,
         backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
         title: SizedBox(
-          //height: 60,
           child: Column(
             crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
             children: [
-              //Align(child: Text('serial'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
               TextField(
                 onChanged: (value) => onSearch(value),
                 decoration: InputDecoration(
@@ -102,12 +104,10 @@ class _RequestVacationListState extends State<RequestVacationList> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             _navigateToAddScreen(context);
-            //Navigator.push(context, MaterialPageRoute(builder: (context) =>  RequestVacation()));
           },
           backgroundColor: Colors.transparent,
           tooltip: 'Increment',
           child: Container(
-            // alignment: Alignment.center,s
             decoration: BoxDecoration(
               color: FitnessAppTheme.nearlyDarkBlue,
               gradient: LinearGradient(
@@ -148,44 +148,37 @@ class _RequestVacationListState extends State<RequestVacationList> {
     );
   }
   _navigateToAddScreen(BuildContext context) async {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddRequestVacation(),
-    )).then((value) {
-        getData();
-    });
 
-    // int menuId=45201;
-    // bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
-    // if(isAllowAdd)
-    // {
-    //   Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddRequestVacation(),
-    //   )).then((value) {
-    //     getData();
-    //   });
-    //
-    // }
-    // else
-    // {
-    //   FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
-    // }
+    int menuId=45201;
+    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    if(isAllowAdd)
+    {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddRequestVacation(),
+      )).then((value) {
+        getData();
+      });
+
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    }
 
   }
   _navigateToEditScreen (BuildContext context, VacationRequests requests) async {
-    final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-        EditRequestVacationTabs(requests)),).then((value) => getData());
+    int menuId=45201;
+    bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
+    if(isAllowEdit)
+    {
 
-    // int menuId=45201;
-    // bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
-    // if(isAllowEdit)
-    // {
-    //
-    //   final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-    //       EditRequestVacationTabs(requests)),).then((value) => getData());
-    //
-    // }
-    // else
-    // {
-    //   FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
-    // }
+      await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+          EditRequestVacationTabs(requests)),).then((value) => getData());
+
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_edit_permission'.tr(),Colors.black);
+    }
 
   }
   _deleteItem(BuildContext context,int? id) async {
@@ -225,23 +218,23 @@ class _RequestVacationListState extends State<RequestVacationList> {
   }
 
   Widget buildVacationRequests(){
-    if(State is AppErrorState){
-      return const Center(child: Text('no data'));
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (State is AppErrorState) {
+      return const Center(child: Text('No data'));
     }
     if(AppCubit.get(context).Conection==false){
       return const Center(child: Text('no internet connection'));
 
     }
-    // else if(vacationRequestsFiltered.isEmpty && AppCubit.get(context).Conection==true){
-    //   return const Center(child: CircularProgressIndicator());
-    // }
     List<VacationRequests>? vacationRequestsFiltered = filterListByEmployeeCode();
 
     if (vacationRequestsFiltered.isEmpty) {
-      return Center(child: CircularProgressIndicator());
+      return Center(child: Text("no_data_to_show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     }
     else{
-      //print("Success..................");
       return Container(
         margin: const EdgeInsets.only(top: 5,),
         color: const Color.fromRGBO(240, 242, 246,1),// Main Color

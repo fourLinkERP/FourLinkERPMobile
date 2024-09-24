@@ -30,6 +30,7 @@ class ApprovalsState extends State<Approvals> {
     this.vacationRequest = requests;
   }
 
+  bool _isLoading = true;
   //WorkFlowProcess? process = WorkFlowProcess(empCode: "",levelCode: "");
   List<WorkFlowProcess> processes = [];
   List<WorkFlowProcess> _founded = [];
@@ -37,11 +38,15 @@ class ApprovalsState extends State<Approvals> {
   @override
   void initState() {
     AppCubit.get(context).CheckConnection();
-
     getData();
     super.initState();
+    _simulateLoading();
+  }
+
+  void _simulateLoading() async {
+    await Future.delayed(const Duration(seconds: 5));
     setState(() {
-      _founded = processes;
+      _isLoading = false;
     });
   }
 
@@ -55,12 +60,10 @@ class ApprovalsState extends State<Approvals> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             _navigateToAddScreen(context);
-            //Navigator.push(context, MaterialPageRoute(builder: (context) =>  RequestVacation()));
           },
           backgroundColor: Colors.transparent,
           tooltip: 'Increment',
           child: Container(
-            // alignment: Alignment.center,
             decoration: BoxDecoration(
               color: FitnessAppTheme.nearlyDarkBlue,
               gradient: LinearGradient(
@@ -101,6 +104,9 @@ class ApprovalsState extends State<Approvals> {
     );
   }
   Widget buildApprovals(){
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     if(State is AppErrorState){
       return const Center(child: Text('no data'));
     }
@@ -108,8 +114,8 @@ class ApprovalsState extends State<Approvals> {
       return const Center(child: Text('no internet connection'));
 
     }
-    else if(processes.isEmpty && AppCubit.get(context).Conection==true){
-      return Center(child: Text("No Data To Show", style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
+    if(processes.isEmpty && AppCubit.get(context).Conection==true){
+      return Center(child: Text("no_data_to_show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     }
     else{
       print("Success to load approvals............");

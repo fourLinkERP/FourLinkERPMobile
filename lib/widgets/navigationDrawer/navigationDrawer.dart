@@ -184,21 +184,21 @@ class _navigationDrawerState extends State<navigationDrawer> {
             onTap: () =>
                 Navigator.pushReplacementNamed(context, pageRoutes.home),
           ),
-          createDrawerBodyItem(
-              icon: Icons.file_copy,
-              text: 'basicInputs'.tr(),
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainBasicInputs()),);
-              }
-          ),
-          createDrawerBodyItem(
-              icon: Icons.record_voice_over_sharp,
-              text: 'transactions'.tr(),
-              onTap: () =>{
-                Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainTransactions()),)
-              }
-            //Navigator.pushReplacementNamed(context, pageRoutes.transaction),
-          ),
+          // createDrawerBodyItem(
+          //     icon: Icons.file_copy,
+          //     text: 'basicInputs'.tr(),
+          //     onTap: () {
+          //       Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainBasicInputs()),);
+          //     }
+          // ),
+          // createDrawerBodyItem(
+          //     icon: Icons.record_voice_over_sharp,
+          //     text: 'transactions'.tr(),
+          //     onTap: () =>{
+          //       Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainTransactions()),)
+          //     }
+          //   //Navigator.pushReplacementNamed(context, pageRoutes.transaction),
+          // ),
           createDrawerBodyItem(
               icon: Icons.book,
               text: 'reports'.tr(),

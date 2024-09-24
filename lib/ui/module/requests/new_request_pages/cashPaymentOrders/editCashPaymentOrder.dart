@@ -1,9 +1,12 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/cashPaymentOrders/cash_payment_order.dart';
+import 'package:fourlinkmobileapp/service/module/requests/setup/cashPaymentOrders/cash_payment_order_api_service.dart';
+import 'package:supercharged/supercharged.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../data/model/modules/module/cash/basicInputs/cashTargetTypes/cashTargetType.dart';
 import '../../../../../data/model/modules/module/requests/basicInputs/accounts/account.dart';
+import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/cash/basicInputs/CashTargetTypes/cashTargetTypeApiService.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/cash/basicInputs/cashTargetCodes/targetCode.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/basicInputs/Customers/customerApiService.dart';
@@ -33,6 +36,7 @@ class EditCashPaymentOrderScreen extends StatefulWidget {
 
 class _EditCashPaymentOrderScreenState extends State<EditCashPaymentOrderScreen> {
 
+  final CashPaymentOrderApiService _api = CashPaymentOrderApiService();
   int id = 0;
   final _addFormKey = GlobalKey<FormState>();
   final _trxSerialController = TextEditingController();
@@ -41,8 +45,7 @@ class _EditCashPaymentOrderScreenState extends State<EditCashPaymentOrderScreen>
   final _totalController = TextEditingController();
   final _descriptionController = TextEditingController();
 
-  String? targetType;
-  int? targetTypeIdSelectedValue;
+  String? targetTypeIdSelectedValue;
   String? targetCodeSelectedValue = "";
   String? selectedCurrencyCode;
 
@@ -55,12 +58,25 @@ class _EditCashPaymentOrderScreenState extends State<EditCashPaymentOrderScreen>
 
   CashTargetType?  cashTargetTypeItem=CashTargetType(code: 0,typeNameAra: "",typeNameEng: "",id: 0);
   TargetCode?  cashTargetCodeItem=TargetCode(code: "" ,nameAra: "",nameEng: "",id: 0);
+  CurrencyH? currencyItem = CurrencyH(currencyCode: 0, currencyNameAra: "", currencyNameEng: "", id: 0);
 
   @override
   void initState(){
     super.initState();
     targetCodes=[];
     _fillCompos();
+
+    id = widget.cashPayment.id!;
+    _trxSerialController.text = widget.cashPayment.trxSerial!;
+    _trxDateController.text = DateFormat('yyyy-MM-dd').format(DateTime.parse(widget.cashPayment.trxDate.toString()));
+    _currencyRateController.text = widget.cashPayment.currencyRate.toString();
+    _totalController.text = widget.cashPayment.total.toString();
+    _descriptionController.text = widget.cashPayment.description!;
+    selectedCurrencyCode = widget.cashPayment.currencyCode.toString();
+    targetTypeIdSelectedValue = widget.cashPayment.targetType;
+    targetCodeSelectedValue = widget.cashPayment.targetCode;
+    print("targetTypeIdSelectedValue: ${targetTypeIdSelectedValue!}");
+    setTargetCode(targetTypeIdSelectedValue.toString());
   }
 
   @override
@@ -187,7 +203,6 @@ class _EditCashPaymentOrderScreenState extends State<EditCashPaymentOrderScreen>
                         children: [
                           SizedBox(
                             height: 50,
-                            //width: 200,
                             child: DropdownSearch<CashTargetType>(
                               validator: (value) => value == null ? "select_a_cash_target_Type".tr() : null,
                               selectedItem: cashTargetTypeItem,
@@ -216,7 +231,7 @@ class _EditCashPaymentOrderScreenState extends State<EditCashPaymentOrderScreen>
                               itemAsString: (CashTargetType u) =>(langId ==1 )? u.typeNameAra.toString() : u.typeNameEng.toString(),
 
                               onChanged: (value){
-                                targetTypeIdSelectedValue = value!.code;
+                                targetTypeIdSelectedValue = value!.code.toString();
                                 setTargetCode(targetTypeIdSelectedValue.toString());
                               },
 
@@ -296,6 +311,7 @@ class _EditCashPaymentOrderScreenState extends State<EditCashPaymentOrderScreen>
                             height: 50,
                             //width: 200,
                             child: DropdownSearch<CurrencyH>(
+                              selectedItem: currencyItem,
                               popupProps: PopupProps.menu(
                                 itemBuilder: (context, item, isSelected) {
                                   return Container(
@@ -427,7 +443,7 @@ class _EditCashPaymentOrderScreenState extends State<EditCashPaymentOrderScreen>
                           ),
                         ),
                         onPressed: () {
-                          //saveCashPaymentOrder(context);
+                          updateCashPaymentOrder(context);
                         },
                         child: Text('Save'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
                       ),
@@ -447,9 +463,8 @@ class _EditCashPaymentOrderScreenState extends State<EditCashPaymentOrderScreen>
 
     Future<List<CashTargetType>> futureCashTargetType = _cashTargetTypeApiService.getCashTargetTypes().then((data) {
       targetTypes = data;
-      setState(() {
-
-      });
+      getTargetTypeData();
+      setTargetCode(targetTypeIdSelectedValue.toString());
       return targetTypes;
     }, onError: (e) {
       print(e);
@@ -457,9 +472,7 @@ class _EditCashPaymentOrderScreenState extends State<EditCashPaymentOrderScreen>
 
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
-      setState(() {
-
-      });
+      getCurrencyCodeData();
       return customers;
     }, onError: (e) {
       print(e);
@@ -495,6 +508,32 @@ class _EditCashPaymentOrderScreenState extends State<EditCashPaymentOrderScreen>
       print(e);
     });
   }
+  getTargetTypeData() {
+    if (targetTypes.isNotEmpty) {
+      for(var i = 0; i < targetTypes.length; i++){
+        if(targetTypes[i].code.toString() == targetTypeIdSelectedValue){
+          cashTargetTypeItem = targetTypes[targetTypes.indexOf(targetTypes[i])];
+          setTargetCode(targetTypeIdSelectedValue.toString());
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
+
+  getCurrencyCodeData() {
+    if (currencyH.isNotEmpty) {
+      for(var i = 0; i < currencyH.length; i++){
+        if(currencyH[i].currencyCode.toString() == selectedCurrencyCode){
+          currencyItem = currencyH[currencyH.indexOf(currencyH[i])];
+        }
+      }
+    }
+    setState(() {
+
+    });
+  }
   setTargetCode(String targetType) {
     targetCodes = [];
     if(targetType == "1")
@@ -503,10 +542,13 @@ class _EditCashPaymentOrderScreenState extends State<EditCashPaymentOrderScreen>
         for(var i = 0; i < customers.length; i++){
           targetCodes.add(TargetCode(code: customers[i].customerCode,nameAra: customers[i].customerNameAra
               ,nameEng: customers[i].customerNameEng));
-        }
-        setState(() {
+          if(targetCodes[i].code.toString() == targetCodeSelectedValue.toString()){
+            cashTargetCodeItem = targetCodes[targetCodes.indexOf(targetCodes[i])];
+            setState(() {
 
-        });
+            });
+          }
+        }
       }
     }
     else if(targetType == "2")
@@ -515,6 +557,12 @@ class _EditCashPaymentOrderScreenState extends State<EditCashPaymentOrderScreen>
         for(var i = 0; i < vendors.length; i++){
           targetCodes.add(TargetCode(code: vendors[i].vendorCode.toString(),nameAra: vendors[i].vendorNameAra
               ,nameEng: vendors[i].vendorNameEng));
+          if(targetCodes[i].code.toString() == targetCodeSelectedValue.toString()){
+            cashTargetCodeItem = targetCodes[targetCodes.indexOf(targetCodes[i])];
+            setState(() {
+
+            });
+          }
         }
         setState(() {
 
@@ -527,11 +575,53 @@ class _EditCashPaymentOrderScreenState extends State<EditCashPaymentOrderScreen>
         for(var i = 0; i < vendors.length; i++){
           targetCodes.add(TargetCode(code: accounts[i].accountCode.toString(),nameAra: accounts[i].accountNameAra
               ,nameEng: accounts[i].accountNameEng));
+          if(targetCodes[i].code.toString() == targetCodeSelectedValue.toString()){
+            cashTargetCodeItem = targetCodes[targetCodes.indexOf(targetCodes[i])];
+            setState(() {
+
+            });
+          }
         }
         setState(() {
 
         });
       }
     }
+  }
+
+  updateCashPaymentOrder(BuildContext context) async{
+
+    if(targetTypeIdSelectedValue.toString().isEmpty)
+    {
+      FN_showToast(context,'please_enter_target_type'.tr() ,Colors.black);
+      return;
+    }
+    if(targetCodeSelectedValue.toString().isEmpty)
+    {
+      FN_showToast(context,'please_enter_target_code'.tr() ,Colors.black);
+      return;
+    }
+    if(selectedCurrencyCode.toString().isEmpty)
+    {
+      FN_showToast(context,'please_enter_currency_code'.tr() ,Colors.black);
+      return;
+    }
+    if(_totalController.text.isEmpty)
+    {
+      FN_showToast(context,'please_enter_total'.tr() ,Colors.black);
+      return;
+    }
+    await _api.updateCashPaymentOrder(context,id,CashPaymentOrder(
+      trxSerial: _trxSerialController.text ,
+      trxDate: _trxDateController.text ,
+      targetType: targetTypeIdSelectedValue.toString() ,
+      targetCode: targetCodeSelectedValue,
+      currencyCode: int.parse(selectedCurrencyCode!),
+      currencyRate: _currencyRateController.text.toInt(),
+      total: _totalController.text.toInt(),
+      description: _descriptionController.text,
+    ));
+
+    Navigator.pop(context);
   }
 }

@@ -31,29 +31,24 @@ class RequestAdvanceList extends StatefulWidget {
 
 class _RequestAdvanceListState extends State<RequestAdvanceList> {
 
-  bool isLoading = true;
+  bool _isLoading = true;
   List<AdvanceRequests> advanceRequests = [];
   List<AdvanceRequests> _founded = [];
 
   @override
   void initState() {
     AppCubit.get(context).CheckConnection();
-    Timer(const Duration(seconds: 15), () {
-      setState(() {
-        if(advanceRequests.isEmpty){
-          isLoading = false;
-        }
-        // <-- Code run after delay
-      });
-    });
-
     getData();
     super.initState();
-    setState(() {
-      _founded = advanceRequests;
-    });
+    _simulateLoading();
   }
 
+  void _simulateLoading() async {
+    await Future.delayed(const Duration(seconds: 5));
+    setState(() {
+      _isLoading = false;
+    });
+  }
   DateTime get pickedDate => DateTime.now();
 
   @override
@@ -61,9 +56,8 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
           title: SizedBox(
-            //height: 60,
             child: Column(
               crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
               children: [
@@ -98,7 +92,6 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
           backgroundColor: Colors.transparent,
           tooltip: 'Increment',
           child: Container(
-            // alignment: Alignment.center,s
             decoration: BoxDecoration(
               color: FitnessAppTheme.nearlyDarkBlue,
               gradient: LinearGradient(
@@ -140,18 +133,20 @@ class _RequestAdvanceListState extends State<RequestAdvanceList> {
     );
   }
   Widget buildAdvanceRequests(){
-    if (advanceRequests.isEmpty) {
+    if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
-    if(State is AppErrorState){
-      return const Center(child: Text('no data'));
+
+    if (State is AppErrorState) {
+      return const Center(child: Text('No data'));
     }
+
     if(AppCubit.get(context).Conection==false){
       return const Center(child: Text('no internet connection'));
 
     }
-    else if(advanceRequests.isEmpty&&AppCubit.get(context).Conection==true){
-      return const Center(child: CircularProgressIndicator());
+    if (advanceRequests.isEmpty) {
+      return Center(child: Text("no_data_to_show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     }
     else{
       return Container(

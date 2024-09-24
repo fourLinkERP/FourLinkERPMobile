@@ -63,11 +63,11 @@ class _EditCheckStoreDataWidgetState extends State<EditCheckStoreDataWidget> {
   double totalQty = 0;
   int rowsCount = 0;
 
-  String? selectedItemValue = null;
-  String? selectedItemName = null;
-  String? selectedStoreValue = null;
-  String? selectedUnitValue = null;
-  String? selectedUnitName = null;
+  String? selectedItemValue;
+  String? selectedItemName;
+  String? selectedStoreValue;
+  String? selectedUnitValue;
+  String? selectedUnitName;
   String itemBarcode = '';
   String itemCode = '';
   String scanBarcodeResult = '';
@@ -78,7 +78,7 @@ class _EditCheckStoreDataWidgetState extends State<EditCheckStoreDataWidget> {
 
   @override
   void initState() {
-   // lineNum = 1;
+
     productQuantity = 0;
     totalQty = 0;
     rowsCount = 0;
@@ -114,8 +114,7 @@ class _EditCheckStoreDataWidgetState extends State<EditCheckStoreDataWidget> {
             shape: BoxShape.circle,
             boxShadow: <BoxShadow>[
               BoxShadow(
-                  color: FitnessAppTheme.nearlyDarkBlue
-                      .withOpacity(0.4),
+                  color: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.4),
                   offset: const Offset(2.0, 14.0),
                   blurRadius: 16.0),
             ],
@@ -570,15 +569,15 @@ class _EditCheckStoreDataWidgetState extends State<EditCheckStoreDataWidget> {
     if (checkStoreDLst.isNotEmpty) {
       for(var i = 0; i < checkStoreDLst.length; i++){
 
-        CheckStoreD _checkStoreD= checkStoreDLst[i];
-        _checkStoreD.isUpdate=true;
+        CheckStoreD checkStoreD= checkStoreDLst[i];
+        checkStoreD.isUpdate=true;
       }
     }
     setState(() {
     });
   }
   getStoreData() {
-    if (stores != null) {
+    if (stores.isNotEmpty) {
       for(var i = 0; i < stores.length; i++){
         if(stores[i].storeCode == selectedStoreValue){
           storeItem = stores[stores.indexOf(stores[i])];

@@ -97,7 +97,7 @@ class VacationRequestsApiService {
       // 'advanceBalance': request.advanceBalance,
       // 'latestVacationDate': request.latestVacationDate,
       'notes': request.notes,
-      "confirmed": false,
+      "confirmed": true,
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,

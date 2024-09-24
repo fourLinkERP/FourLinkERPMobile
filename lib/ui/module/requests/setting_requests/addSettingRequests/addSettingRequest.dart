@@ -6,7 +6,6 @@ import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/RequestTyp
 import 'package:fourlinkmobileapp/service/module/requests/SettingRequests/settingRequestHApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:supercharged/supercharged.dart';
 import '../../../../../common/globals.dart';
 import 'package:dropdown_search/dropdown_search.dart';
@@ -15,17 +14,26 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/CostCenter
 import '../../../../../data/model/modules/module/accounts/basicInputs/Departments/Department.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/RequestTypes/RequestType.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
+import '../../../../../data/model/modules/module/requests/basicInputs/settingRequests/SettingRequestD.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/accounts/basicInputs/CostCenters/costCenterApiService.dart';
 import '../../../../../service/module/accounts/basicInputs/Departments/departmentApiService.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
+import '../../../../../service/module/requests/SettingRequests/settingRequestDApiService.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/UserGroups/UserGroup.dart';
+import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/UserGroups/userGroupApiService.dart';
+import '../../../../../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
+import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 
-// APIs
+
+SettingRequestDApiService _settingRequestDApiService = SettingRequestDApiService();
 NextSerialApiService _settingRequestCodeApiService= NextSerialApiService();
 MenuApiService _menuApiService = MenuApiService();
 RequestTypeApiService _requestTypeApiService = RequestTypeApiService();
 DepartmentApiService _departmentApiService = DepartmentApiService();
 CostCenterApiService _costCenterApiService = CostCenterApiService();
+EmployeeApiService _employeeApiService = EmployeeApiService();
+GroupApiService _groupApiService = GroupApiService();
 
 class AddSettingRequest extends StatefulWidget {
   AddSettingRequest();
@@ -37,22 +45,26 @@ class AddSettingRequest extends StatefulWidget {
 class _AddSettingRequestState extends State<AddSettingRequest> {
   _AddSettingRequestState();
 
-  // List Models
+  List<SettingRequestD> settingRequestDLst = <SettingRequestD>[];
   List<Menu> menus = [];
   List<RequestType> requestTypes = [];
   List<Department> departments = [];
   List<CostCenter> costCenters =[];
+  List<Employee> employees = [];
+  List<UserGroup> groups = [];
 
-  List<DropdownMenuItem<String>> menuMenus = [];
-  List<DropdownMenuItem<String>> menuRequestTypes = [];
-  List<DropdownMenuItem<String>> menuDepartments = [];
-  List<DropdownMenuItem<String>> menuCostCenters = [];
-
-  String? selectedRequestTypeValue = null;
-  String? selectedDepartmentValue = null;
-  int? selectedrelatedTransactionValue = null;
-  int? selectedrelatedTransactionDesValue = null;
-  String? selectedCostCenterValue = null;
+  int lineNum = 1;
+  String? selectedRequestTypeValue;
+  String? selectedDepartmentValue;
+  int? selectedRelatedTransactionValue;
+  int? selectedRelatedTransactionDesValue;
+  String? selectedCostCenterValue;
+  String? selectedEmployeeValue;
+  String? selectedEmployeeName;
+  String? selectedAlternativeEmployeeValue;
+  String? selectedAlternativeEmployeeName;
+  String? selectedGroupValue;
+  String? selectedGroupName;
 
   final SettingRequestHApiService api = SettingRequestHApiService();
   final _addFormKey = GlobalKey<FormState>();
@@ -61,55 +73,17 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
   final _settingNameEngController = TextEditingController();
   final _numberOfLevelsController = TextEditingController();
   final _sendEmailController = TextEditingController();
+  final _emailReceiversController = TextEditingController();
+  final _whatsappReceiversController = TextEditingController();
+  final _smsReceiversController = TextEditingController();
   final _descriptionAraController = TextEditingController();
   final _descriptionEngController = TextEditingController();
 
   @override
   initState() {
     super.initState();
-
-    Future<NextSerial>  futureSerial = _settingRequestCodeApiService.getNextSerial("WFW_SettingRequestsH", "SettingRequestCode", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
-      NextSerial nextSerial = data;
-      _settingRequestCodeController.text = nextSerial.nextSerial.toString();
-      return nextSerial;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<RequestType>> futureRequestType = _requestTypeApiService.getRequestTypes().then((data) {
-      requestTypes = data;
-
-      getRequestTypeData();
-      return requestTypes;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<CostCenter>> futureCostCenter = _costCenterApiService.getCostCenters().then((data) {
-      costCenters = data;
-
-      getCostCenterData();
-      return costCenters;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<Department>> futureDepartment = _departmentApiService.getDepartments().then((data) {
-      departments = data;
-      getDepartmentData();
-      return departments;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<Menu>> futureMenu = _menuApiService.getMenus().then((data) {
-      menus = data;
-
-      getMenuData();
-      return menus;
-    }, onError: (e) {
-      print(e);
-    });
+    lineNum = 1;
+    _fillCompos();
 
   }
   DateTime get pickedDate => DateTime.now();
@@ -139,7 +113,7 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
                       children: [
                         Container(
                           margin: const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
-                          height: 850,
+                          height: 1300,
                           child: ListView(
                             scrollDirection: Axis.horizontal,
                             children: [
@@ -206,6 +180,44 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
                                     child: Text("approval_procedure".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
                                   ),
                                   const SizedBox(height: 20),
+                                  //////////////////////////////////////////////////////////////////////////  D
+                                  SizedBox(
+                                    height: 50,
+                                    width: 100,
+                                    child: Text("group".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 50,
+                                    width: 100,
+                                    child: Text("creator_employee".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 50,
+                                    width: 100,
+                                    child: Text("alternative_employee".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 100,
+                                    child: Text("email_receivers".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 100,
+                                    child: Text("sms_receivers".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 100,
+                                    child: Text("whatsapp_receivers".tr(), style: const TextStyle(fontWeight: FontWeight.bold)),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  /////////////////////////////////////////////////////////////////////////////////////// D
                                   SizedBox(
                                     height: 50,
                                     width: 100,
@@ -408,8 +420,6 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
                                         items: departments,
                                         itemAsString: (Department u) => u.departmentNameAra.toString(),
                                         onChanged: (value){
-                                          //v.text = value!.cusTypesCode.toString();
-                                          //print(value!.id);
                                           selectedDepartmentValue =  value!.departmentCode.toString();
                                         },
                                         filterFn: (instance, filter){
@@ -460,7 +470,6 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
                                               child: Padding(
                                                 padding: const EdgeInsets.all(8.0),
                                                 child: Text((langId==1)? item.menuAraName.toString():  item.menuLatName.toString(),
-                                                  //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
                                                   textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
                                               ),
@@ -471,9 +480,7 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
                                         items: menus,
                                         itemAsString: (Menu u) => u.menuAraName.toString(),
                                         onChanged: (value){
-                                          //v.text = value!.cusTypesCode.toString();
-                                          //print(value!.id);
-                                          selectedrelatedTransactionValue =  value!.menuId;
+                                          selectedRelatedTransactionValue =  value!.menuId;
                                         },
                                         filterFn: (instance, filter){
                                           if(instance.menuAraName!.contains(filter)){
@@ -507,7 +514,6 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
                                               child: Padding(
                                                 padding: const EdgeInsets.all(8.0),
                                                 child: Text((langId==1)? item.menuAraName.toString():  item.menuLatName.toString(),
-                                                  //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
                                                   textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
                                               ),
@@ -518,9 +524,7 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
                                         items: menus,
                                         itemAsString: (Menu u) => u.menuAraName.toString(),
                                         onChanged: (value){
-                                          //v.text = value!.cusTypesCode.toString();
-                                          //print(value!.id);
-                                          selectedrelatedTransactionDesValue =  value!.menuId;
+                                          selectedRelatedTransactionDesValue =  value!.menuId;
                                         },
                                         filterFn: (instance, filter){
                                           if(instance.menuAraName!.contains(filter)){
@@ -534,6 +538,177 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
                                       ),
                                     ),
                                   ),
+                                  const SizedBox(height: 20),
+                                  ////////////////////////////////////////////////////////////////////// D
+                                  SizedBox(
+                                    height: 50,
+                                    width: 210,
+                                    child: Center(
+                                      child: DropdownSearch<UserGroup>(
+                                        popupProps: PopupProps.menu(
+                                          itemBuilder: (context, item, isSelected) {
+                                            return Container(
+                                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                                              decoration: !isSelected ? null
+                                                  : BoxDecoration(
+
+                                                border: Border.all(color: Theme.of(context).primaryColor),
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: Colors.white,
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text((langId==1)? item.groupNameAra.toString():  item.groupNameEng.toString(),
+                                                  textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                              ),
+                                            );
+                                          },
+                                          showSearchBox: true,
+                                        ),
+                                        items: groups,
+                                        itemAsString: (UserGroup u) => u.groupNameAra.toString(),
+                                        onChanged: (value){
+                                          selectedGroupValue =  value!.groupId.toString();
+                                          selectedGroupName = (langId==1)? value.groupNameAra : value.groupNameEng;
+                                        },
+                                        filterFn: (instance, filter){
+                                          if(instance.groupNameAra!.contains(filter)){
+                                            print(filter);
+                                            return true;
+                                          }
+                                          else{
+                                            return false;
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 50,
+                                    width: 210,
+                                    child: Center(
+                                      child: DropdownSearch<Employee>(
+                                        popupProps: PopupProps.menu(
+                                          itemBuilder: (context, item, isSelected) {
+                                            return Container(
+                                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                                              decoration: !isSelected ? null
+                                                  : BoxDecoration(
+
+                                                border: Border.all(color: Theme.of(context).primaryColor),
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: Colors.white,
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text((langId==1)? item.empNameAra.toString():  item.empNameEng.toString(),
+                                                  textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                              ),
+                                            );
+                                          },
+                                          showSearchBox: true,
+                                        ),
+                                        items: employees,
+                                        itemAsString: (Employee u) => u.empNameAra.toString(),
+                                        onChanged: (value){
+                                          selectedEmployeeValue =  value!.empCode.toString();
+                                          selectedEmployeeName = (langId==1)? value.empNameAra:  value.empNameEng;
+                                        },
+                                        filterFn: (instance, filter){
+                                          if(instance.empNameAra!.contains(filter)){
+                                            print(filter);
+                                            return true;
+                                          }
+                                          else{
+                                            return false;
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 50,
+                                    width: 210,
+                                    child: Center(
+                                      child: DropdownSearch<Employee>(
+                                        popupProps: PopupProps.menu(
+                                          itemBuilder: (context, item, isSelected) {
+                                            return Container(
+                                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                                              decoration: !isSelected ? null
+                                                  : BoxDecoration(
+
+                                                border: Border.all(color: Theme.of(context).primaryColor),
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: Colors.white,
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Text((langId==1)? item.empNameAra.toString():  item.empNameEng.toString(),
+                                                  textAlign: langId==1?TextAlign.right:TextAlign.left,),
+
+                                              ),
+                                            );
+                                          },
+                                          showSearchBox: true,
+                                        ),
+                                        items: employees,
+                                        itemAsString: (Employee u) => u.empNameAra.toString(),
+                                        onChanged: (value){
+                                          selectedAlternativeEmployeeValue =  value!.empCode.toString();
+                                          selectedAlternativeEmployeeName = (langId==1)? value.empNameAra:  value.empNameEng;
+                                        },
+                                        filterFn: (instance, filter){
+                                          if(instance.empNameAra!.contains(filter)){
+                                            print(filter);
+                                            return true;
+                                          }
+                                          else{
+                                            return false;
+                                          }
+                                        },
+
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 210,
+                                    child: defaultFormField(
+                                      controller: _emailReceiversController,
+                                      label: 'email_receivers'.tr(),
+                                      type: TextInputType.text,
+                                      colors: Colors.blueGrey,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 210,
+                                    child: defaultFormField(
+                                      controller: _smsReceiversController,
+                                      label: 'sms_receivers'.tr(),
+                                      type: TextInputType.text,
+                                      colors: Colors.blueGrey,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  SizedBox(
+                                    height: 55,
+                                    width: 210,
+                                    child: defaultFormField(
+                                      controller: _whatsappReceiversController,
+                                      label: 'whatsapp_receivers'.tr(),
+                                      type: TextInputType.text,
+                                      colors: Colors.blueGrey,
+                                    ),
+                                  ),
+                                  ////////////////////////////////////////////////////////////////////////// D
                                   const SizedBox(height: 20),
                                   SizedBox(
                                     height: 50,
@@ -569,10 +744,76 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
                                   ),
                                 ],
                               ),
+                              const SizedBox(height: 20.0),
                             ],
                           ),
                         ),
+                        SizedBox(
+                          child: Center(
+                            child: ElevatedButton.icon(
+                              icon: const Icon(
+                                Icons.edit,
+                                color: Color.fromRGBO(144, 16, 46, 1),
+                                size: 20.0,
+                                weight: 10,
+                              ),
+                              label: Text('add_level'.tr(),
+                                  style: const TextStyle(color: Color.fromRGBO(144, 16, 46, 1))),
+                              onPressed: () {
+                                addLevelRow();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  padding: const EdgeInsets.all(7),
+                                  backgroundColor: Colors.white,
+                                  foregroundColor: Colors.black,
+                                  elevation: 0,
+                                  side: const BorderSide(
+                                      width: 1,
+                                      color: Color.fromRGBO(144, 16, 46, 1)
+                                  )
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: DataTable(
+                            border: TableBorder.all(),
 
+                            headingRowColor: MaterialStateProperty.all(const Color.fromRGBO(144, 16, 46, 1)),
+                            columnSpacing: 20,
+                            columns: [
+                              DataColumn(label: Text("level".tr(),style: const TextStyle(color: Colors.white),),),
+                              DataColumn(label: Text("group".tr(),style: const TextStyle(color: Colors.white),),),
+                              DataColumn(label: Text("creator_employee".tr(),style: const TextStyle(color: Colors.white),),),
+                              DataColumn(label: Text("alternative_employee".tr(),style: const TextStyle(color: Colors.white),)),
+                              DataColumn(label: Text("email_receivers".tr(),style: const TextStyle(color: Colors.white),),),
+                              DataColumn(label: Text("sms_receivers".tr(),style: const TextStyle(color: Colors.white),),),
+                              DataColumn(label: Text("whatsapp_receivers".tr(),style: const TextStyle(color: Colors.white),),),
+                              DataColumn(label: Text("action".tr(), style: const TextStyle(color: Colors.white),),),
+                            ],
+                            rows: settingRequestDLst.map((p) =>
+                                DataRow(cells: [
+                                  DataCell(SizedBox(width: 5, child: Text(p.lineNum.toString()))),
+                                  DataCell(SizedBox(width: 50, child: Text(p.groupName.toString()))),
+                                  DataCell(SizedBox(child: Text(p.empName.toString()))),
+                                  DataCell(SizedBox(child: Text(p.alternativeEmpName.toString()))),
+                                  DataCell(SizedBox(child: Text(p.emailReceivers.toString()))),
+                                  DataCell(SizedBox(child: Text(p.smsReceivers.toString()))),
+                                  DataCell(SizedBox(child: Text(p.whatsappReceivers.toString()))),
+                                  DataCell(IconButton(icon: Icon(Icons.delete_forever, size: 30.0, color: Colors.red.shade600,),
+                                    onPressed: () {
+                                      deleteLevelRow(context,p.lineNum);
+                                    },
+                                  )),
+                                ]),
+                            ).toList(),
+                          ),
+                        ),
                       ]
                   ),
                 ),
@@ -605,57 +846,7 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
 
     );
   }
-  getCostCenterData() {
-    if (costCenters.isNotEmpty) {
-      for(var i = 0; i < costCenters.length; i++){
-        menuCostCenters.add(
-            DropdownMenuItem(
-                value: costCenters[i].costCenterCode.toString(),
-                child: Text((langId==1)?  costCenters[i].costCenterNameAra.toString() : costCenters[i].costCenterNameEng.toString())));
-      }
-    }
-    setState(() {
 
-    });
-  }
-  getRequestTypeData() {
-    if (requestTypes.isNotEmpty) {
-      for(var i = 0; i < requestTypes.length; i++){
-        menuCostCenters.add(
-            DropdownMenuItem(
-                value: requestTypes[i].requestTypeCode.toString(),
-                child: Text((langId==1)?  requestTypes[i].requestTypeNameAra.toString() : requestTypes[i].requestTypeNameEng.toString())));
-      }
-    }
-    setState(() {
-
-    });
-  }
-  getMenuData() {
-    if (menus.isNotEmpty) {
-      for(var i = 0; i < menus.length; i++){
-        menuMenus.add(DropdownMenuItem(
-            value: menus[i].menuId.toString(),
-            child: Text((langId==1)?  menus[i].menuAraName.toString() : menus[i].menuLatName.toString())));
-      }
-    }
-    setState(() {
-
-    });
-  }
-
-  getDepartmentData() {
-    if (departments.isNotEmpty) {
-      for(var i = 0; i < departments.length; i++){
-        menuDepartments.add(DropdownMenuItem(
-            value: departments[i].departmentCode.toString(),
-            child: Text((langId==1)?  departments[i].departmentNameAra.toString() : departments[i].departmentNameEng.toString())));
-      }
-    }
-    setState(() {
-
-    });
-  }
   Widget textFormFields({controller, hintText, onTap, onSaved, textInputType, enable = true}) {
     return TextFormField(
       controller: controller,
@@ -692,30 +883,33 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
     );
   }
   saveSettingRequest(BuildContext context) async {
+    if(settingRequestDLst.isEmpty){
+      FN_showToast(context,'please_Insert_One_level_At_Least'.tr(),Colors.black);
+      return;
+    }
     if (selectedCostCenterValue == null || selectedCostCenterValue!.isEmpty) {
-      FN_showToast(context, 'please set cost center value'.tr(), Colors.red);
+      FN_showToast(context, 'please_set_cost_center_value'.tr(), Colors.red);
       return;
     }
 
     if (selectedDepartmentValue == null || selectedDepartmentValue!.isEmpty) {
-      FN_showToast(context, 'please set a department'.tr(), Colors.red);
+      FN_showToast(context, 'please_set_a_department'.tr(), Colors.red);
       return;
     }
-    if (selectedrelatedTransactionValue == null) {
-      FN_showToast(context, 'please set a value'.tr(), Colors.red);
+    if (selectedRelatedTransactionValue == null || selectedRelatedTransactionValue == 0) {
+      FN_showToast(context, 'please_set_related_transaction_value'.tr(), Colors.red);
       return;
     }
 
-    if (selectedrelatedTransactionDesValue == null) {
-      FN_showToast(context, 'please set a value'.tr(), Colors.red);
+    if (selectedRelatedTransactionDesValue == null || selectedRelatedTransactionDesValue == 0) {
+      FN_showToast(context, 'please_set_related_transaction_des_value'.tr(), Colors.red);
       return;
     }
 
     await api.createSettingRequestH(context, SettingRequestH(
-
       requestTypeCode: selectedRequestTypeValue,
-      relatedTransactionMenuId: selectedrelatedTransactionValue,
-      relatedTransactionDestinationMenuId: selectedrelatedTransactionDesValue,
+      relatedTransactionMenuId: selectedRelatedTransactionValue,
+      relatedTransactionDestinationMenuId: selectedRelatedTransactionDesValue,
       costCenterCode1: selectedCostCenterValue,
       departmentCode: selectedDepartmentValue,
       settingRequestCode: _settingRequestCodeController.text,
@@ -726,7 +920,167 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
       descriptionAra: _descriptionAraController.text,
       descriptionEng: _descriptionEngController.text,
     ));
-    requestTypeCode = selectedRequestTypeValue!;
+    for (var i = 0; i < settingRequestDLst.length; i++) {
+      SettingRequestD settingRequestD = settingRequestDLst[i];
+      if (settingRequestD.isUpdate == false) {
+        //Add
+        _settingRequestDApiService.createSettingRequestD(context, SettingRequestD(
+          settingRequestCode: _settingRequestCodeController.text,
+          lineNum: settingRequestD.lineNum,
+          levels: settingRequestD.lineNum,
+          groupCode: settingRequestD.groupCode,
+          empCode: settingRequestD.empCode,
+          alternativeEmpCode: settingRequestD.alternativeEmpCode,
+          emailReceivers: settingRequestD.emailReceivers,
+          smsReceivers: settingRequestD.smsReceivers,
+          whatsappReceivers: settingRequestD.whatsappReceivers,
+          // descriptionAra: _descriptionAraController.text,
+          // descriptionEng: _descriptionEngController.text,
+        ));
+      }
+    }
     Navigator.pop(context);
+  }
+  _fillCompos()
+  {
+    Future<NextSerial>  futureSerial = _settingRequestCodeApiService.getNextSerial("WFW_SettingRequestsH", "SettingRequestCode", " And CompanyCode="+ companyCode.toString() + " And BranchCode=" + branchCode.toString() ).then((data) {
+      NextSerial nextSerial = data;
+      _settingRequestCodeController.text = nextSerial.nextSerial.toString();
+      return nextSerial;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<RequestType>> futureRequestType = _requestTypeApiService.getRequestTypes().then((data) {
+      requestTypes = data;
+      setState(() {
+
+      });
+      return requestTypes;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<CostCenter>> futureCostCenter = _costCenterApiService.getCostCenters().then((data) {
+      costCenters = data;
+
+      setState(() {
+
+      });
+      return costCenters;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<Department>> futureDepartment = _departmentApiService.getDepartments().then((data) {
+      departments = data;
+      setState(() {
+
+      });
+      return departments;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<Menu>> futureMenu = _menuApiService.getMenus().then((data) {
+      menus = data;
+
+      setState(() {
+
+      });
+      return menus;
+    }, onError: (e) {
+      print(e);
+    });
+    Future<List<Employee>> futureEmployees = _employeeApiService.getEmployees().then((data) {
+      employees = data;
+      setState(() {
+
+      });
+      return employees;
+    }, onError: (e) {
+      print(e);
+    });
+
+    Future<List<UserGroup>> futureGroups = _groupApiService.getUserGroups().then((data) {
+      groups = data;
+      setState(() {
+
+      });
+      return groups;
+    }, onError: (e) {
+      print(e);
+    });
+  }
+  addLevelRow() {
+    if (selectedEmployeeValue!.isEmpty || selectedEmployeeValue == null) {
+      FN_showToast(context, 'please_set_employee'.tr(), Colors.red);
+      return;
+    }
+
+    if (selectedAlternativeEmployeeValue!.isEmpty|| selectedAlternativeEmployeeValue == null) {
+      FN_showToast(context, 'please_set_alternative'.tr(), Colors.red);
+      return;
+    }
+    if (selectedGroupValue == null || selectedGroupValue!.isEmpty) {
+      FN_showToast(context, 'please_set_a_group'.tr(), Colors.red);
+      return;
+    }
+
+    SettingRequestD settingRequestD = SettingRequestD();
+    settingRequestD.groupCode = selectedGroupValue?.toInt();
+    settingRequestD.groupName = selectedGroupName;
+    settingRequestD.empCode = selectedEmployeeValue;
+    settingRequestD.empName = selectedEmployeeName;
+    settingRequestD.alternativeEmpCode = selectedAlternativeEmployeeValue;
+    settingRequestD.alternativeEmpName = selectedAlternativeEmployeeName;
+    settingRequestD.emailReceivers = _emailReceiversController.text;
+    settingRequestD.smsReceivers = _smsReceiversController.text;
+    settingRequestD.whatsappReceivers = _whatsappReceiversController.text;
+
+    settingRequestD.lineNum = lineNum;
+
+    settingRequestDLst.add(settingRequestD);
+    lineNum++;
+
+    FN_showToast(context, 'add_level_Done'.tr(), Colors.black);
+
+    setState(() {
+      selectedEmployeeValue = "";
+      selectedGroupValue = "";
+      selectedAlternativeEmployeeValue = "";
+      _emailReceiversController.text = "";
+      _smsReceiversController.text = "";
+      _whatsappReceiversController.text = "";
+
+    });
+  }
+  void deleteLevelRow(BuildContext context, int? lineNum) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Are you sure?'),
+        content: const Text('This action will permanently delete this data'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed!) {
+      int indexToRemove = settingRequestDLst.indexWhere((p) => p.lineNum == lineNum);
+
+      if (indexToRemove != -1) {
+        settingRequestDLst.removeAt(indexToRemove);
+        setState(() {});
+      }
+    }
   }
 }

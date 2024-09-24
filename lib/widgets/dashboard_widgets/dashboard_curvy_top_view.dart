@@ -79,7 +79,8 @@ class _DashboardCurvyTopViewState extends State<DashboardCurvyTopView> {
                                             Padding(
                                               padding: const EdgeInsets.only(left: 4, bottom: 2),
                                               child: Text(
-                                                dashboardItems[2].widgetName != null? dashboardItems[2].widgetName! : 'Sales'.tr(),
+                                                dashboardItems.length > 4 ?
+                                                (dashboardItems[2].widgetName != null? dashboardItems[2].widgetName! : 'Sales'.tr() ): 'Sales'.tr(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontFamily: FitnessAppTheme.fontName,
@@ -102,7 +103,8 @@ class _DashboardCurvyTopViewState extends State<DashboardCurvyTopView> {
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 4, bottom: 3),
                                                   child: Text(
-                                                      dashboardItems[2].widgetValue != null ? '${(dashboardItems[2].widgetValue)?.toInt()}' : '1127',
+                                                    dashboardItems.length > 4 ?
+                                                    (dashboardItems[2].widgetValue != null ? '${(dashboardItems[2].widgetValue)?.toInt()}' : '1127') : '1127',
                                                     textAlign: TextAlign.center,
                                                     style: const TextStyle(
                                                       fontFamily: FitnessAppTheme.fontName,
@@ -114,7 +116,8 @@ class _DashboardCurvyTopViewState extends State<DashboardCurvyTopView> {
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 4, bottom: 3),
                                                   child: Text(
-                                                    dashboardItems[2].widgetDesc != null? dashboardItems[2].widgetDesc!: 'item'.tr(),
+                                                    dashboardItems.length > 4 ?
+                                                    (dashboardItems[2].widgetDesc != null? dashboardItems[2].widgetDesc!: 'item'.tr()) : 'item'.tr(),
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontFamily: FitnessAppTheme.fontName,
@@ -153,7 +156,8 @@ class _DashboardCurvyTopViewState extends State<DashboardCurvyTopView> {
                                               padding: const EdgeInsets.only(
                                                   left: 4, bottom: 2),
                                               child: Text(
-                                                dashboardItems[3].widgetName != null ? dashboardItems[3].widgetName! : 'purchase'.tr(),
+                                                dashboardItems.length > 4 ?
+                                                (dashboardItems[3].widgetName != null ? dashboardItems[3].widgetName! : 'purchase'.tr()) : 'purchase'.tr(),
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                   fontFamily: FitnessAppTheme.fontName,
@@ -176,7 +180,8 @@ class _DashboardCurvyTopViewState extends State<DashboardCurvyTopView> {
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 4, bottom: 3),
                                                   child: Text(
-                                                    dashboardItems[3].widgetValue != null ? '${(dashboardItems[3].widgetValue)?.toInt()}' : '2145',
+                                                    dashboardItems.length > 4 ?
+                                                    (dashboardItems[3].widgetValue != null ? '${(dashboardItems[3].widgetValue)?.toInt()}' : '2145') : '2145',
                                                     textAlign: TextAlign.center,
                                                     style: const TextStyle(
                                                       fontFamily: FitnessAppTheme.fontName,
@@ -189,7 +194,8 @@ class _DashboardCurvyTopViewState extends State<DashboardCurvyTopView> {
                                                 Padding(
                                                   padding: const EdgeInsets.only(left: 8, bottom: 3),
                                                   child: Text(
-                                                    dashboardItems[3].widgetDesc != null ? dashboardItems[3].widgetDesc! : 'item'.tr(),
+                                                    dashboardItems.length > 4 ?
+                                                    (dashboardItems[3].widgetDesc != null ? dashboardItems[3].widgetDesc! : 'item'.tr()) : 'item'.tr(),
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                       fontFamily: FitnessAppTheme.fontName,
@@ -236,7 +242,8 @@ class _DashboardCurvyTopViewState extends State<DashboardCurvyTopView> {
                                         crossAxisAlignment: CrossAxisAlignment.center,
                                         children: <Widget>[
                                           Text(
-                                            dashboardItems[5].widgetValue != null ? dashboardItems[5].widgetValue! :'${(1503 * widget.animation!.value).toInt()}',
+                                            dashboardItems.length > 4 ?
+                                            (dashboardItems[5].widgetValue != null ? dashboardItems[5].widgetValue! :'${(1503 * widget.animation!.value).toInt()}'): '1503',
                                             textAlign: TextAlign.center,
                                             style: const TextStyle(
                                               fontFamily: FitnessAppTheme.fontName,
@@ -247,7 +254,8 @@ class _DashboardCurvyTopViewState extends State<DashboardCurvyTopView> {
                                             ),
                                           ),
                                           Text(
-                                            dashboardItems[5].widgetName != null ? dashboardItems[5].widgetName! : 'dayrevenu'.tr(),
+                                            dashboardItems.length > 4 ?
+                                            (dashboardItems[5].widgetName != null ? dashboardItems[5].widgetName! : 'dayrevenu'.tr()) : 'dayrevenu'.tr(),
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                               fontFamily: FitnessAppTheme.fontName,
@@ -304,7 +312,8 @@ class _DashboardCurvyTopViewState extends State<DashboardCurvyTopView> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  dashboardItems[0].widgetName != null ? dashboardItems[0].widgetName! : 'customers'.tr(),
+                                  dashboardItems.length > 4 ?
+                                 (dashboardItems[0].widgetName != null ? dashboardItems[0].widgetName! : 'customers'.tr()) : 'customers'.tr(),
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(
                                     fontFamily: FitnessAppTheme.fontName,
@@ -343,7 +352,8 @@ class _DashboardCurvyTopViewState extends State<DashboardCurvyTopView> {
                                 Padding(
                                   padding: const EdgeInsets.only(top: 6),
                                   child: Text(
-                                    dashboardItems[0].widgetValue != null ? dashboardItems[0].widgetValue! : '',
+                                    dashboardItems.length > 4 ?
+                                    (dashboardItems[0].widgetValue != null ? dashboardItems[0].widgetValue! : '' ): '1502',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                       fontFamily: FitnessAppTheme.fontName,
@@ -367,7 +377,8 @@ class _DashboardCurvyTopViewState extends State<DashboardCurvyTopView> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      dashboardItems[1].widgetName != null ? dashboardItems[1].widgetName! : 'vendors'.tr(),
+                                      dashboardItems.length > 4 ?
+                                      (dashboardItems[1].widgetName != null ? dashboardItems[1].widgetName! : 'vendors'.tr() ): 'vendors'.tr(),
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
                                         fontFamily: FitnessAppTheme.fontName,
@@ -406,7 +417,8 @@ class _DashboardCurvyTopViewState extends State<DashboardCurvyTopView> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 6),
                                       child: Text(
-                                        dashboardItems[1].widgetValue != null ? dashboardItems[1].widgetValue! : '',
+                                        dashboardItems.length > 4 ?
+                                        (dashboardItems[1].widgetValue != null ? dashboardItems[1].widgetValue! : '') : '120',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: FitnessAppTheme.fontName,
@@ -431,7 +443,8 @@ class _DashboardCurvyTopViewState extends State<DashboardCurvyTopView> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      dashboardItems[4].widgetName != null ? dashboardItems[4].widgetName! :'salesman'.tr(),
+                                      dashboardItems.length > 4 ?
+                                      (dashboardItems[4].widgetName != null ? dashboardItems[4].widgetName! :'salesman'.tr() ): 'salesman'.tr(),
                                       style: const TextStyle(
                                         fontFamily: FitnessAppTheme.fontName,
                                         fontWeight: FontWeight.w500,
@@ -469,7 +482,8 @@ class _DashboardCurvyTopViewState extends State<DashboardCurvyTopView> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 6),
                                       child: Text(
-                                        dashboardItems[4].widgetValue != null ? dashboardItems[4].widgetValue! : '103',
+                                        dashboardItems.length > 4 ?
+                                        (dashboardItems[4].widgetValue != null ? dashboardItems[4].widgetValue! : '103') : '103',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontFamily: FitnessAppTheme.fontName,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/common/globals.dart';
 import 'package:fourlinkmobileapp/models/dashboard/dashboard_slider_data.dart';
 import '../../theme/fitness_app_theme.dart';
 import '../../helpers/hex_decimal.dart';
@@ -236,16 +237,25 @@ class MealsView extends StatelessWidget {
                                         padding: const EdgeInsets.all(6.0),
                                         child: InkWell(
                                           onTap: (){
-                                            if(index==0){
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  WorkshopHome()),);
-                                            }else if(index==1){
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainTransactions()),);
-                                              //Navigator.push(context, MaterialPageRoute(builder: (context) =>  SalesPage()),);
-                                            }else if(index==2){
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  MainHR()),);
-                                            }else if(index==3){
-                                              Navigator.push(context, MaterialPageRoute(builder: (context) =>  Requests()),);
-                                            }
+                                            systemCode == 10 ? {
+                                              if(index==0){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => MainHR()),)
+                                              }
+                                              else if(index==1){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) =>  Requests()),)
+                                              }
+                                            } :
+                                            {
+                                              if(index==0){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => WorkshopHome()),)
+                                              }else if(index==1){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => MainTransactions()),)
+                                              }else if(index==2){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => MainHR()),)
+                                              }else if(index==3){
+                                                Navigator.push(context, MaterialPageRoute(builder: (context) => Requests()),)
+                                              }
+                                            };
                                           },
                                           child: Icon(
                                             Icons.add,

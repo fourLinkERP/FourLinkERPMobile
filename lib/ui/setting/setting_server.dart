@@ -23,7 +23,7 @@ class LoginSettingPage extends StatefulWidget {
 }
 
 class _LoginSettingPageState extends State<LoginSettingPage> {
-  final double _headerHeight = 250;
+
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
@@ -50,14 +50,6 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
   @override
   void initState() {
 
-    // _systemApiService.getSystems().then((data) {
-    //   setState(() {
-    //     systems = data;
-    //   });
-    // }).catchError((error) {
-    //   print('Error fetching systems: $error');
-    // });
-
     super.initState();
 
     _emailController = TextEditingController();
@@ -79,7 +71,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
             SafeArea(
               child: Container(
                   padding: const EdgeInsets.fromLTRB(5, 10, 5, 10),
-                  margin: const EdgeInsets.fromLTRB(5, 10, 5, 10),  // This will be the login form
+                  margin: const EdgeInsets.fromLTRB(5, 10, 5, 10),
                   child: Column(
                     children: [
                       //const SizedBox(height: 30.0),
@@ -87,7 +79,7 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                           key: _formKey,
                           child: Column(
                             children: [
-                              Container(
+                              SizedBox(
                                 child: Image.asset('assets/images/logo.png',
                                   width: 150,height: 150,),
                               ),
@@ -129,8 +121,8 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                                 child: ElevatedButton(
                                   onPressed: () async {
                                     try {
-                                      searchCompanies = _APiController.text + '/api/v1/companies/loginsearch';
-                                      searchSystems = _APiController.text + '/api/v1/systems/systemsearch';
+                                      searchCompanies = '${_APiController.text}/api/v1/companies/loginsearch';
+                                      searchSystems = '${_APiController.text}/api/v1/systems/systemsearch';
                                       print("Entered API: $searchCompanies");
 
                                       // Fetch the companies
@@ -317,7 +309,6 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                               ),
                               const SizedBox(height: 8.0),
                               Container(
-                                //decoration: ThemeHelper().inputBoxDecorationShaddow(),
                                 child: defaultFormField(
                                   controller: _passwordController,
                                   label: 'password'.tr(),

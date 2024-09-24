@@ -5,6 +5,8 @@ import 'package:fourlinkmobileapp/ui/module/requests/Tabs/newRequest.dart';
 import 'package:fourlinkmobileapp/ui/module/requests/Tabs/myDuties.dart';
 
 import '../../../../common/globals.dart';
+import '../../../../helpers/toast.dart';
+import '../../../../utils/permissionHelper.dart';
 import '../setting_requests/SettingRequestsList/settingRequestList.dart';
 class Requests extends StatefulWidget {
   final int initialIndex;
@@ -29,12 +31,12 @@ class _RequestsState extends State<Requests> {
           title:ListTile(
                 leading: Image.asset('assets/images/logowhite2.png', scale: 3),
                 title: Text('Requests'.tr(),
-                  style: const TextStyle(color: Colors.white),),
+                  style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
             trailing: IconButton(
               icon: const Icon(Icons.settings, color: Colors.white,),
               iconSize: 30.0,
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingRequestList(),));
+                _navigateToListScreen(context);
               },
             ),
               ),
@@ -57,5 +59,19 @@ class _RequestsState extends State<Requests> {
         ),
       ),
     );
+  }
+  _navigateToListScreen(BuildContext context) async {
+    int menuId=45401;
+    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    if(isAllowAdd)
+    {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingRequestList(),
+      ));
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+    }
+
   }
 }

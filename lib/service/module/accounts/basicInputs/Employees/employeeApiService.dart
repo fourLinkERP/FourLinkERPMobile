@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -24,7 +25,7 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
 
     Map data = {
       'CompanyCode': companyCode,
-      'BranchCode': branchCode
+      //'BranchCode': branchCode
     };
 
     final http.Response response = await http.post(
@@ -37,6 +38,7 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
     );
 
     if (response.statusCode == 200) {
+      print('Employee success');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<Employee> list = [];
       if (data.isNotEmpty) {
@@ -95,7 +97,6 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
       }
     };
 
-    print('Employee 1');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -103,6 +104,11 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/
         'Authorization': 'Bearer $token'
       },
       body: jsonEncode(data),
+    ).timeout(
+      const Duration(seconds: 10),
+      onTimeout: () {
+        throw TimeoutException('The connection has timed out, please try again later.');
+      },
     );
 
     if (response.statusCode == 200) {

@@ -25,9 +25,8 @@ import 'package:supercharged/supercharged.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import '../../../../../service/module/general/NextSerial/generalApiService.dart';
-//APIS
-NextSerialApiService _nextSerialApiService= NextSerialApiService();
+
+
 TafqeetApiService _tafqeetApiService= TafqeetApiService();
 CashTypeTypeApiService _cashTypeTypeApiService= CashTypeTypeApiService();
 CashTargetTypeApiService _cashTargetTypeApiService= CashTargetTypeApiService();
@@ -37,8 +36,7 @@ CustomerApiService _customerApiService= CustomerApiService(); //Customer
 CashSafeApiService _cashSafeApiService= CashSafeApiService(); //Cash
 CashBankBranchApiService _cashBankBranchApiService= CashBankBranchApiService(); //Bank
 
-//List Models
-// List<Customer> customers=[];
+
 List<CashType> cashTypes=[];
 List<CashTargetType> cashTargetTypes=[];
 List<TargetCode> targetCodes=[];
@@ -70,7 +68,7 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
   List<DropdownMenuItem<String>> menuCashSafes = [ ];
   List<DropdownMenuItem<String>> menuCashBankBranches = [ ];
 
-  // String? customerCodeSelectedValue = null;
+
   String? targetType = "CUS";
   String? typeCodeSelectedValue = "1";
   int? cashTargetTypeIdSelectedValue = 1;
@@ -844,17 +842,10 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
   getBoxTypeData() {
     if (boxTypes != null) {
       for(var i = 0; i < boxTypes.length; i++){
-        menuCashReceiveTypes.add(DropdownMenuItem(child: Text(boxTypes[i].
-        nameAra.toString()),value: cashTypes[i].code.toString()));
         if(boxTypes[i].code == boxTypeSelectedValue){
-          // print('in amr3');
           boxTypeItem = boxTypes[boxTypes.indexOf(boxTypes[i])];
-          // print('in amr4');
-          // print(customerTypeItem );
         }
-
       }
-      //typeCodeSelectedValue = "1";
     }
     setState(() {
     });
@@ -980,13 +971,11 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
     targetCodes=[];
 
     if(targetType == "1")//Customer
-        {
-      if (customers != null) {
+      {
+      if (customers.isNotEmpty) {
         for(var i = 0; i < customers.length; i++){
           targetCodes.add(TargetCode(code: customers[i].customerCode,nameAra: customers[i].customerNameAra
               ,nameEng: customers[i].customerNameEng));
-
-          print('ToTarget0');
           if(boxTypes[i].code.toString() == cashTargetCodeSelectedValue.toString()){
             cashTargetCodeItem = targetCodes[targetCodes.indexOf(targetCodes[i])];
             setState(() {
@@ -994,15 +983,12 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
             });
           }
         }
-
         targetType="CUS";
       }
-
     }
 
-
     setState(() {
-       //cashTargetCodeItem=TargetCode(code: "" ,nameAra: "",nameEng: "",id: 0);
+
     });
 
   }
@@ -1092,60 +1078,8 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
             width: 2,
           ),
         ),
-        // border: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(20),
-        //   borderSide: BorderSide(
-        //     color: lColor,
-        //     width: 2,
-        //   ),
-        // ),
       ),
     );
   }
-
-  Widget headLines({required String number, required String title}) {
-    return Column(
-      crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              number,
-              style: TextStyle(
-
-                color: Colors.black87,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(width: 10),
-            Container(
-              height: 25,
-              width: 3,
-              color: Color.fromRGBO(144, 16, 46, 1),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              title,
-              style: TextStyle(
-                color: Colors.black87,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        const Divider(
-          thickness: 3,
-          color: Color.fromRGBO(144, 16, 46, 1),
-        )
-      ],
-    );
-  }
-
-//#endregion
 
 }

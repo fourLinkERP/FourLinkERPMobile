@@ -6,7 +6,7 @@ import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/CostCenter
 import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/VacationTypes/VacationType.dart';
 import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/VacationTypes/vacationTypeApiService.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Departments/Department.dart';
-import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/Departments/departmentApiService.dart';
+// import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/Departments/departmentApiService.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import 'package:fourlinkmobileapp/service/module/accounts/basicInputs/Employees/employeeApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -16,18 +16,15 @@ import 'package:intl/intl.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/requests/setup/vacationRequest.dart';
 import 'package:fourlinkmobileapp/service/module/requests/setup/requestVacationApiService.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/general/nextSerial/nextSerial.dart';
-import 'package:supercharged/supercharged.dart';
 import '../../../../../common/globals.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/accounts/basicInputs/Jobs/jobApiService.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 // APIs
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
 VacationTypeApiService _vacationTypeApiService = VacationTypeApiService();
-DepartmentApiService _departmentApiService = DepartmentApiService();
+// DepartmentApiService _departmentApiService = DepartmentApiService();
 EmployeeApiService _employeeApiService = EmployeeApiService();
 CostCenterApiService _costCenterApiService = CostCenterApiService();
 JobApiService _jobApiService = JobApiService();
@@ -51,22 +48,15 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   List<VacationType> vacationTypes = [];
   List<Department> departments = [];
   List<Employee> employees = [];
-
   List<Job> jobs = [];
   List<CostCenter> costCenters =[];
 
 
-  List<DropdownMenuItem<String>> menuDepartments = [];
-  List<DropdownMenuItem<String>> menuVacationTypes = [];
-  List<DropdownMenuItem<String>> menuEmployees = [];
-  List<DropdownMenuItem<String>> menuCostCenters = [];
-  List<DropdownMenuItem<String>> menuJobs = [];
-
   String? selectedEmployeeValue = empCode;
   String? selectedJobValue = jobCode;
   String? selectedCostCenterValue = costCenterCode;
-  String? selectedDepartmentValue = null;
-  String? selectedVacationTypeValue = null;
+  String? selectedDepartmentValue;
+  String? selectedVacationTypeValue;
 
   final VacationRequestsApiService api = VacationRequestsApiService();
   final _addFormKey = GlobalKey<FormState>();
@@ -87,11 +77,11 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
   initState() {
     super.initState();
     _vacationRequestMessageController.text = "Request vacation".tr();
-    print('Started Request Vacation');
-    print('costCenterCode');
-    print(costCenterCode);
-    print(empCode);
-    print(jobCode);
+    // print('Started Request Vacation');
+    // print('costCenterCode');
+    // print(costCenterCode);
+    // print(empCode);
+    // print(jobCode);
     fillCompos();
 
   }
@@ -291,7 +281,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                     label: 'message_title'.tr(),
                                     type: TextInputType.text,
                                     colors: Colors.blueGrey,
-                                    //prefix: null,
                                     validate: (String? value) {
                                       if (value!.isEmpty) {
                                         return 'required_field'.tr();
@@ -305,7 +294,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                   height: 50,
                                   width: 210,
                                   child: DropdownSearch<CostCenter>(
-                                    enabled: false,
+                                    enabled: (isManager == true || isIt == true) ? true : false,
                                      selectedItem: costCenterItem,
                                       popupProps: PopupProps.menu(
                                         itemBuilder: (context, item, isSelected) {
@@ -397,7 +386,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                   height: 50,
                                   width: 210,
                                   child: DropdownSearch<Employee>(
-                                    enabled: false,
+                                    enabled: (isManager == true || isIt == true) ? true : false,
                                     selectedItem: employeeItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, employeeItem, isSelected) {
@@ -423,7 +412,7 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                     items: employees,
                                     itemAsString: (Employee u) => u.empNameAra.toString(),
                                     onChanged: (value){
-                                      selectedEmployeeValue =  empCode.toString();//value!.empCode.toString();
+                                      selectedEmployeeValue =  value!.empCode.toString();
                                     },
                                     filterFn: (instance, filter){
                                       if(instance.empNameAra!.contains(filter)){
@@ -440,9 +429,8 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                 SizedBox(
                                   height: 50,
                                   width: 210,
-                                  // child: Center(),
                                   child: DropdownSearch<Job>(
-                                    enabled: false,
+                                    enabled: (isManager == true || isIt == true) ? true : false,
                                     selectedItem: jobItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
@@ -486,7 +474,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                 SizedBox(
                                   height: 50,
                                   width: 210,
-
                                   child: DropdownSearch<VacationType>(
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
@@ -580,7 +567,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                     label: 'notes'.tr(),
                                     type: TextInputType.text,
                                     colors: Colors.blueGrey,
-                                    //prefix: null,
                                     validate: (String? value) {
                                       if (value!.isEmpty) {
                                         return 'notes must be non empty';
@@ -666,19 +652,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
     );
   }
 
-  getVacationTypeData() {
-    if (vacationTypes.isNotEmpty) {
-      for(var i = 0; i < vacationTypes.length; i++){
-        menuVacationTypes.add(
-            DropdownMenuItem(
-                value: vacationTypes[i].vacationTypeCode.toString(),
-                child: Text((langId==1)?  vacationTypes[i].vacationTypeNameAra.toString() : vacationTypes[i].vacationTypeNameEng.toString())));
-      }
-    }
-    setState(() {
-
-    });
-  }
   getEmployeesData() {
     if (employees.isNotEmpty) {
       for(var i = 0; i < employees.length; i++){
@@ -718,18 +691,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
     });
   }
 
-  getDepartmentData() {
-    if (departments.isNotEmpty) {
-      for(var i = 0; i < departments.length; i++){
-        menuDepartments.add(DropdownMenuItem(
-            value: departments[i].departmentCode.toString(),
-            child: Text((langId==1)?  departments[i].departmentNameAra.toString() : departments[i].departmentNameEng.toString())));
-      }
-    }
-    setState(() {
-
-    });
-  }
   saveVacationRequest(BuildContext context) async
   {
     if (selectedVacationTypeValue == null) {
@@ -754,10 +715,10 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
     }
 
     await api.createVacationRequest(context, VacationRequests(
-        costCenterCode1: costCenterCode,
+        costCenterCode1: selectedCostCenterValue,
         requestTypeCode: "2",
-        empCode: empCode,
-        jobCode: jobCode,
+        empCode: selectedEmployeeValue,
+        jobCode: selectedJobValue,
         vacationTypeCode: selectedVacationTypeValue,
         //departmentCode: selectedDepartmentValue,
         trxDate: _vacationRequestTrxDateController.text,
@@ -787,16 +748,23 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
     Future<List<VacationType>> futureVacationType = _vacationTypeApiService.getVacationTypes().then((data) {
       vacationTypes = data;
 
-      getVacationTypeData();
+      setState(() {
+
+      });
       return vacationTypes;
     }, onError: (e) {
       print(e);
     });
 
-    Future<List<Employee>> futureEmployees = _employeeApiService.getEmployeesFiltrated(empCode).then((data) {
-      print("empCode in addVacation: " + empCode);
+    Future<List<Employee>> futureEmployees = (isManager == true || isIt == true) ? _employeeApiService.getEmployees().then((data) {
       employees = data;
-      print('employees:  ' + employees.toString());
+
+      getEmployeesData();
+      return employees;
+    }, onError: (e) {
+      print(e);
+    }) : _employeeApiService.getEmployeesFiltrated(empCode).then((data) {
+      employees = data;
 
       getEmployeesData();
       return employees;
@@ -822,15 +790,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
       print(e);
     });
 
-    Future<List<Department>> futureDepartment = _departmentApiService.getDepartments().then((data) {
-      departments = data;
-      setState(() {
-
-      });
-      return departments;
-    }, onError: (e) {
-      print(e);
-    });
   }
   bool _validateDates() {
     String fromDateStr = _fromDateController.text;
@@ -884,8 +843,8 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
           actions: [
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                primary: Colors.red, // background
-                onPrimary: Colors.white, // foreground
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red, // foreground
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),

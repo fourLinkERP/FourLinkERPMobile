@@ -3,14 +3,17 @@ import 'dart:async';
 import'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/requests/basicInputs/settingRequests/SettingRequestH.dart';
 import 'package:fourlinkmobileapp/service/module/requests/SettingRequests/settingRequestHApiService.dart';
-import 'package:fourlinkmobileapp/ui/module/requests/setting_requests/EditSettingRequests/editSettingRequestTabs.dart';
+//import 'package:fourlinkmobileapp/ui/module/requests/setting_requests/EditSettingRequests/editSettingRequestTabs.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/setting_requests/EditSettingRequests/editSettingRequests.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../../common/globals.dart';
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../cubit/app_states.dart';
 import '../../../../../helpers/hex_decimal.dart';
+import '../../../../../helpers/toast.dart';
 import '../../../../../theme/fitness_app_theme.dart';
+import '../../../../../utils/permissionHelper.dart';
 import '../AddSettingRequests/addSettingRequest.dart';
 
 //API
@@ -276,17 +279,34 @@ class _SettingRequestListState extends State<SettingRequestList> {
     }
   }
   _navigateToAddScreen(BuildContext context) async {
-
+    int menuId=45401;
+    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    if(isAllowAdd)
+    {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSettingRequest(),
       )).then((value) {
         getData();
       });
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    }
 
   }
   _navigateToEditScreen (BuildContext context, SettingRequestH settingRequests) async {
 
-      final result = await Navigator.push(context, MaterialPageRoute(builder: (context) =>
-          EditSettingRequestTabs(settingRequests)),).then((value) => getData());
+    int menuId=45401;
+    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    if(isAllowAdd)
+    {
+      await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+          EditSettingRequests(settingRequests)),).then((value) => getData());
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    }
 
   }
 
@@ -296,19 +316,18 @@ class _SettingRequestListState extends State<SettingRequestList> {
       getData();
     }
     setState(() {
-      settingRequestsH = _founded.where((SettingRequestH) =>
-          SettingRequestH.settingRequestCode!.toLowerCase().contains(search)).toList();
+      settingRequestsH = _founded.where((settingRequestH) =>
+          settingRequestH.settingRequestCode!.toLowerCase().contains(search)).toList();
     });
   }
   void getData() async {
     Future<List<SettingRequestH>?> futureSettingRequests = _apiService.getSettingRequestH ().catchError((Error){
-      print('Error ${Error}');
       AppCubit.get(context).EmitErrorState();
     });
     settingRequestsH = (await futureSettingRequests)!;
     if (settingRequestsH.isNotEmpty) {
       setState(() {
-        _founded = settingRequestsH!;
+        _founded = settingRequestsH;
 
       });
     }

@@ -9,6 +9,7 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Department
 import '../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Jobs/Job.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/VacationTypes/VacationType.dart';
+import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/accounts/basicInputs/CostCenters/costCenterApiService.dart';
 import '../../../../../service/module/accounts/basicInputs/Departments/departmentApiService.dart';
 import '../../../../../service/module/accounts/basicInputs/Employees/employeeApiService.dart';
@@ -51,17 +52,17 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
   Employee?  empItem= Employee(empCode: "",empNameAra: "",empNameEng: "",id: 0);
   Job?  jobItem= Job(jobCode: "",jobNameAra: "",jobNameEng: "",id: 0);
 
-  String? selectedEmployeeValue = null;
-  String? selectedDepartmentValue = null;
-  String? selectedJobValue = null;
-  String? selectedVacationTypeValue = null;
-  String? selectedCostCenterValue = null;
+  String? selectedEmployeeValue;
+  String? selectedDepartmentValue;
+  String? selectedJobValue;
+  String? selectedVacationTypeValue;
+  String? selectedCostCenterValue;
 
   final VacationRequestsApiService api = VacationRequestsApiService();
   final _addFormKey = GlobalKey<FormState>();
   int id = 0;
-  final _vacationRequestSerialController = TextEditingController(); // Serial
-  final _vacationRequestTrxDateController = TextEditingController(); // Date
+  final _vacationRequestSerialController = TextEditingController();
+  final _vacationRequestTrxDateController = TextEditingController();
   final _fromDateController = TextEditingController();
   final _toDateController = TextEditingController();
   final _vacationRequestMessageController = TextEditingController();
@@ -77,6 +78,8 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
 
   @override
   initState() {
+    super.initState();
+
     fillCompos();
 
     id = widget.requests.id!;
@@ -99,7 +102,7 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
     selectedCostCenterValue = widget.requests.costCenterCode1!;
     selectedEmployeeValue = widget.requests.empCode!;
     selectedJobValue = widget.requests.jobCode!;
-    super.initState();
+
   }
 
   @override
@@ -120,9 +123,7 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                           scrollDirection: Axis.horizontal,
                           children: [
                             Column(
-                              //mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                //const SizedBox(height: 10,),
                                 SizedBox(
                                   height: 50,
                                   width: 100,
@@ -672,27 +673,39 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
   updateVacationRequest(BuildContext context)
   {
 
+    if (selectedVacationTypeValue == null) {
+      FN_showToast(context, 'please_set_vacation_type'.tr(), Colors.black);
+      return;
+    }
+    if (selectedJobValue == null) {
+      FN_showToast(context, 'please_set_job'.tr(), Colors.black);
+      return;
+    }
+    if (_fromDateController.text.isEmpty) {
+      FN_showToast(context, 'please_set_from_date'.tr(), Colors.black);
+      return;
+    }
+    if (_toDateController.text.isEmpty) {
+      FN_showToast(context, 'please_set_to_date'.tr(), Colors.black);
+      return;
+    }
+    if(!_validateDates())
+    {
+      return;
+    }
     api.updateVacationRequest(context,id, VacationRequests(
-      costCenterCode1: selectedCostCenterValue,
-      empCode: selectedEmployeeValue,
-      jobCode: selectedJobValue,
-      vacationTypeCode: selectedVacationTypeValue,
-      //departmentCode: selectedDepartmentValue,
-      trxDate: _vacationRequestTrxDateController.text,
-      trxSerial: _vacationRequestSerialController.text,
-      messageTitle: _vacationRequestMessageController.text,
-      vacationStartDate: _fromDateController.text,
-      vacationEndDate: _toDateController.text,
-      requestDays: _vacationRequestRequestedDaysController.text.toInt(),
-      vacationBalance: _vacationRequestVacationBalanceController.text.toInt(),
-      allowBalance: _vacationRequestAllowedBalanceController.text.toInt(),
-      empBalance: _vacationRequestEmployeeBalanceController.text.toInt(),
-      advanceBalance: _vacationRequestAdvanceBalanceController.text.toInt(),
-      ruleBalance: _vacationRequestListBalanceController.text.toInt(),
-      notes: _vacationRequestNoteController.text,
-      latestVacationDate: _vacationRequestLastSalaryDateController.text,
-      vacationDueDate: _vacationRequestDueDateController.text,
-
+        costCenterCode1: selectedCostCenterValue,
+        requestTypeCode: "2",
+        empCode: selectedEmployeeValue,
+        jobCode: selectedJobValue,
+        vacationTypeCode: selectedVacationTypeValue,
+        //departmentCode: selectedDepartmentValue,
+        trxDate: _vacationRequestTrxDateController.text,
+        trxSerial: _vacationRequestSerialController.text,
+        messageTitle: _vacationRequestMessageController.text,
+        vacationStartDate: _fromDateController.text,
+        vacationEndDate: _toDateController.text,
+        notes: _vacationRequestNoteController.text
     ));
     Navigator.pop(context);
   }
@@ -739,5 +752,72 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
     }, onError: (e) {
       print(e);
     });
+  }
+
+  bool _validateDates() {
+    String fromDateStr = _fromDateController.text;
+    String toDateStr = _toDateController.text;
+
+    if (_fromDateController.text.isEmpty) {
+      FN_showToast(context, 'please_set_from_date'.tr(), Colors.black);
+      return false;
+    }
+    if (_toDateController.text.isEmpty) {
+      FN_showToast(context, 'please_set_to_date'.tr(), Colors.black);
+      return false;
+    }
+    if (fromDateStr.isNotEmpty && toDateStr.isNotEmpty) {
+      DateTime fromDate = DateTime.parse(fromDateStr);
+      DateTime toDate = DateTime.parse(toDateStr);
+
+      if (toDate.isBefore(fromDate)) {
+        // Show an error message or handle the error
+        _showModernAlertDialog(context, "Invalid Dates", "To Date should be after or the same as From Date.");
+        return false;
+      } else {
+        print("Dates are valid");
+        return true;
+      }
+    }
+    return true;
+  }
+  void _showModernAlertDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          title: Row(
+            children: [
+              const Icon(Icons.warning, color: Colors.red),
+              const SizedBox(width: 8),
+              Text(title),
+            ],
+          ),
+          content: Text(
+            message,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black54,
+            ),
+          ),
+          actions: [
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red, // foreground
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

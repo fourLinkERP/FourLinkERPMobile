@@ -552,6 +552,7 @@ class _AddCashPaymentOrderScreenState extends State<AddCashPaymentOrderScreen> {
       }
     }
   }
+
   saveCashPaymentOrder(BuildContext context) async{
 
     if(targetTypeIdSelectedValue.toString().isEmpty)

@@ -36,8 +36,6 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
 
   List<Employee> employees = [];
   List<Job> jobs = [];
-  List<DropdownMenuItem<String>> menuEmployees = [];
-  List<DropdownMenuItem<String>> menuJobs = [];
 
   String? selectedEmployeeValue = empCode;
   String? selectedJobValue = jobCode;
@@ -229,7 +227,6 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                                 controller: _advanceTrxSerialController,
                                 type: TextInputType.text,
                                 colors: Colors.blueGrey,
-                                //prefix: null,
                                 validate: (String? value) {
                                   if (value!.isEmpty) {
                                     return 'required_field'.tr();
@@ -266,7 +263,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               height: 50,
                               width: 210,
                               child: DropdownSearch<Employee>(
-                                enabled: true,
+                                enabled: (isManager == true || isIt == true) ? true : false,
                                 selectedItem: employeeItem,
                                 popupProps: PopupProps.menu(
                                   itemBuilder: (context, item, isSelected) {
@@ -311,7 +308,7 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
                               height: 50,
                               width: 210,
                               child: DropdownSearch<Job>(
-                                enabled: true,
+                                enabled: (isManager == true || isIt == true) ? true : false,
                                 selectedItem: jobItem,
                                 popupProps: PopupProps.menu(
                                   itemBuilder: (context, item, isSelected) {
@@ -829,7 +826,14 @@ class _AddRequestAdvanceState extends State<AddRequestAdvance> {
       print(e);
     });
 
-    Future<List<Employee>> futureEmployees = _employeeApiService.getEmployeesFiltrated(empCode).then((data) {
+    Future<List<Employee>> futureEmployees = (isManager == true || isIt == true) ? _employeeApiService.getEmployees().then((data) {
+      employees = data;
+
+      getEmployeesData();
+      return employees;
+    }, onError: (e) {
+      print(e);
+    }) : _employeeApiService.getEmployeesFiltrated(empCode).then((data) {
       employees = data;
 
       getEmployeesData();

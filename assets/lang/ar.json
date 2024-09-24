@@ -821,7 +821,17 @@
     "please_enter_target_type": "من فضلك اختر نوع المستفيد",
     "please_enter_target_code": "من فضلك اختر اسم المستفيد",
     "please_enter_currency_code": "من فضلك اختر العملة",
-    "edit_cash_payment": "تعديل امر صرف مالي"
+    "edit_cash_payment": "تعديل امر صرف مالي",
+    "please_set_related_transaction_value": "من فضلك اختر الشاشة المرتبطة",
+    "please_set_related_transaction_des_value": "من فضلك اختر شاشة الاجراء",
+    "please_set_cost_center_value": "من فضلك اختر مركز التكلفة",
+    "please_set_a_department": "من فضلك اخر القسم",
+    "no_data_to_show": "لا يوجد بيانات",
+    "add_level": "اضافة مستوى",
+    "please_set_alternative": "من فضلك اخر البديل",
+    "please_set_a_group": "من فضلك اختر المجموعة",
+    "add_level_Done": "تم اضافة مستوى",
+    "please_Insert_One_level_At_Least": "من فضلك اضف مستوى على الاقل"
 
 }
 

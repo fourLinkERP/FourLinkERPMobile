@@ -715,6 +715,16 @@
     "please_enter_target_type": "Please select target type",
     "please_enter_target_code": "please select  target code",
     "please_enter_currency_code": "please select  currency",
-    "edit_cash_payment": "Edit Cash Payment Order"
+    "edit_cash_payment": "Edit Cash Payment Order",
+    "please_set_related_transaction_value": "please select related transaction value",
+    "please_set_related_transaction_des_value": "please select related transaction destination value",
+    "please_set_cost_center_value": "please select cost center",
+    "please_set_a_department": "please select department",
+    "no_data_to_show": "No Data To Show",
+    "add_level": "Add level",
+    "please_set_alternative": "please select alternative employee",
+    "please_set_a_group": "please select a group",
+    "add_level_Done": "Add Level Done",
+    "please_Insert_One_level_At_Least": "please insert one level at least"
 
 }

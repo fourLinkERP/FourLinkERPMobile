@@ -61,8 +61,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final CompanyGeneralSetupGeneralSetupApiService _companyGeneralSetupGeneralSetupApiService =  CompanyGeneralSetupGeneralSetupApiService();
 
   //Controls
-  late TextEditingController _emailController;
-  late TextEditingController _passwordController;
+  final  _emailController = TextEditingController() ;
+  final _passwordController = TextEditingController();
 
   List<Branch> branches = [];
 
@@ -77,8 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _emailController = TextEditingController();
-    _passwordController = TextEditingController();
+    _emailController.text = apiUserName;   // _emailController = TextEditingController();
+    _passwordController.text = apiPassword;   //  _passwordController = TextEditingController();
 
     Future<List<Branch>> futureBranch = _branchApiService.getBranches().then((data) {
       branches = data;
@@ -140,6 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: defaultFormField(
                                   controller: _emailController,
                                   label: 'user_name'.tr(),
+                                  enable: false,
                                   type: TextInputType.emailAddress,
                                   colors: Colors.blueGrey,
                                   prefix: Icons.email,
@@ -156,6 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: defaultFormField(
                                   controller: _passwordController,
                                   label: 'password'.tr(),
+                                  enable: false,
                                   type: TextInputType.text,
                                   colors: Colors.blueGrey,
                                   prefix: Icons.lock,
@@ -586,11 +588,11 @@ class _LoginScreenState extends State<LoginScreen> {
         }
 
         //checkUserGroupData
-        EmployeeGroupStatus employeeGroupStatus = await _employeeApiService
-            .checkUserGroupData(empCode);
-
-        if (employeeGroupStatus.statusCode == 1) // Has Permission
-          {
+        // EmployeeGroupStatus employeeGroupStatus = await _employeeApiService
+        //     .checkUserGroupData(empCode);
+        //
+        // if (employeeGroupStatus.statusCode == 1) // Has Permission
+        // {
           await setDashboardItems();
           setMenuPermissions();
           setCompanyGeneralSetup();
@@ -600,7 +602,7 @@ class _LoginScreenState extends State<LoginScreen> {
           await setItemInvoiceData();
           setCompanyLogo();
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-        }
+       // }
       }
     }
     else{

@@ -107,7 +107,7 @@ class SettingRequestDApiService {
 
     };
 
-    print('to print body');
+    print('to print setting D body: ');
     print(data.toString());
 
     final http.Response response = await http.post(

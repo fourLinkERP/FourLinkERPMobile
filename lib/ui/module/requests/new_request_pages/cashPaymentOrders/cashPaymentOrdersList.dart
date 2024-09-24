@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/ui/module/requests/new_request_pages/cashPaymentOrders/editCashPaymentOrder.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:intl/intl.dart';
 import '../../../../../data/model/modules/module/requests/setup/cashPaymentOrders/cash_payment_order.dart';
@@ -190,7 +191,7 @@ class _CashPaymentOrdersListState extends State<CashPaymentOrdersList> {
                                           ),
                                           label: Text('edit'.tr(),style:const TextStyle(color: Colors.white)),
                                           onPressed: () {
-
+                                            _navigateToEditScreen(context,_cashPaymentOrders[index]);
                                           },
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
@@ -273,6 +274,21 @@ class _CashPaymentOrdersListState extends State<CashPaymentOrdersList> {
     {
       FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
     }
+  }
+  _navigateToEditScreen (BuildContext context, CashPaymentOrder cashPaymentOrder) async {
+
+    int menuId=45401;
+    bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
+    if(isAllowAdd)
+    {
+      await Navigator.push(context, MaterialPageRoute(builder: (context) =>
+          EditCashPaymentOrderScreen(cashPaymentOrder)),).then((value) => _getData());
+    }
+    else
+    {
+      FN_showToast(context,'you_dont_have_add_permission'.tr(),Colors.black);
+    }
+
   }
   
 }

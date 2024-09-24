@@ -29,6 +29,7 @@ class AdvanceApprovalsState extends State<AdvanceApprovals> {
   AdvanceApprovalsState(AdvanceRequests requests) {
     this.advanceRequest = requests;
   }
+  bool _isLoading = true;
 
   //WorkFlowProcess? process = WorkFlowProcess(empCode: "",levelCode: "");
   List<WorkFlowProcess> processes = [];
@@ -37,11 +38,14 @@ class AdvanceApprovalsState extends State<AdvanceApprovals> {
   @override
   void initState() {
     AppCubit.get(context).CheckConnection();
-
     getData();
     super.initState();
+    _simulateLoading();
+  }
+  void _simulateLoading() async {
+    await Future.delayed(const Duration(seconds: 5));
     setState(() {
-      _founded = processes;
+      _isLoading = false;
     });
   }
 
@@ -55,12 +59,10 @@ class AdvanceApprovalsState extends State<AdvanceApprovals> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             _navigateToAddScreen(context);
-            //Navigator.push(context, MaterialPageRoute(builder: (context) =>  RequestVacation()));
           },
           backgroundColor: Colors.transparent,
           tooltip: 'Increment',
           child: Container(
-            // alignment: Alignment.center,
             decoration: BoxDecoration(
               color: FitnessAppTheme.nearlyDarkBlue,
               gradient: LinearGradient(
@@ -101,6 +103,9 @@ class AdvanceApprovalsState extends State<AdvanceApprovals> {
     );
   }
   Widget buildAdvanceApprovals(){
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     if(State is AppErrorState){
       return const Center(child: Text('no data'));
     }
@@ -109,7 +114,7 @@ class AdvanceApprovalsState extends State<AdvanceApprovals> {
 
     }
     else if(processes.isEmpty && AppCubit.get(context).Conection==true){
-      return Center(child: Text("No Data To Show", style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
+      return Center(child: Text("no_data_to_show", style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     }
     else{
       print("Success to load approvals............");

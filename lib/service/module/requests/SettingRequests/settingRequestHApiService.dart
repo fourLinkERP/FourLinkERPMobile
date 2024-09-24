@@ -132,6 +132,7 @@ class SettingRequestHApiService {
     print('Start Update');
 
     Map data = {
+      'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
       'settingRequestCode': addSettingRequestH.settingRequestCode,
@@ -157,19 +158,18 @@ class SettingRequestHApiService {
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-
+      "year": 2024
     };
-
+    print('to print setting H body: ');
+    print(data.toString());
     String apiUpdate =updateApi + id.toString();
     print('Start Update apiUpdate ' + apiUpdate );
-
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data),
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
         });
-    print('Start Update after ' );
     if (response.statusCode == 200) {
       print('Start Update done ' );
       FN_showToast(context,'update_success'.tr() ,Colors.black);
