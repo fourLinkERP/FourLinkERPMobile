@@ -27,21 +27,6 @@ BranchApiService _branchApiService = BranchApiService();
 SalesManApiService _salesManApiService = SalesManApiService();
 
 
-final startDateController = TextEditingController();
-final endDateController = TextEditingController();
-String? selectedCustomerValue;
-String? selectedCustomerEmail;
-String? selectedTypeValue = "";
-String? selectedUnitValue;
-String? startDate;
-String? endDate;
-String? salesInvoicesEndDate;
-List<DropdownMenuItem<String>> menuCustomerType = [ ];
-String? customerTypeSelectedValue;
-String? branchSelectedValue;
-String? salesManSelectedValue;
-
-
 class RptDetailedDailyPurchases extends StatefulWidget {
   const RptDetailedDailyPurchases({Key? key}) : super(key: key);
 
@@ -60,6 +45,21 @@ class _RptDetailedDailyPurchasesState extends State<RptDetailedDailyPurchases> {
   final _dropdownCustomerTypeFormKey = GlobalKey<FormState>();
   final _dropdownBranchFormKey = GlobalKey<FormState>();
   final _dropdownSalesManFormKey = GlobalKey<FormState>();
+
+
+  final startDateController = TextEditingController();
+  final endDateController = TextEditingController();
+  String? selectedCustomerValue;
+  String? selectedCustomerEmail;
+  String? selectedTypeValue = "";
+  String? selectedUnitValue;
+  String? salesInvoicesEndDate;
+  List<DropdownMenuItem<String>> menuCustomerType = [ ];
+  String? customerTypeSelectedValue;
+  String? branchSelectedValue;
+  String? salesManSelectedValue;
+  bool? _isCheckedFrom = false;
+  bool? _isCheckedTo = false;
 
   Customer?  customerItem=Customer(customerCode: "",customerNameAra: "",customerNameEng: "",id: 0);
   Branch?  branchItem=Branch(branchCode: 0,branchNameAra: "",branchNameEng: "",id: 0);
@@ -142,54 +142,74 @@ class _RptDetailedDailyPurchasesState extends State<RptDetailedDailyPurchases> {
                         const SizedBox(width: 5),
                         Column(
                           children: [
-                            SizedBox(
-                              height: 50,
-                              width: 200,
-                              child: defaultFormField(
-                                controller: startDateController,
-                                type: TextInputType.datetime,
-                                enable: true,
-                                colors: Colors.blueGrey,
-                                onTab: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1950),
-                                      lastDate: DateTime(2050));
+                            Row(
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                  width: 200,
+                                  child: defaultFormField(
+                                    controller: startDateController,
+                                    type: TextInputType.datetime,
+                                    enable: true,
+                                    colors: Colors.blueGrey,
+                                    onTab: () async {
+                                      DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1950),
+                                          lastDate: DateTime(2050));
 
-                                  if (pickedDate != null) {
-                                    startDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                  }
-                                },
-                                onSaved: (val) {
-                                  startDate = val;
-                                },
-                              ),
+                                      if (pickedDate != null) {
+                                        startDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 5.0),
+                                Checkbox(
+                                  value: _isCheckedFrom,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _isCheckedFrom = value;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 20),
-                            SizedBox(
-                              height: 50,
-                              width: 200,
-                              child: defaultFormField(
-                                controller: endDateController,
-                                type: TextInputType.datetime,
-                                enable: true,
-                                colors: Colors.blueGrey,
-                                onTab: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1950),
-                                      lastDate: DateTime(2050));
+                            Row(
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                  width: 200,
+                                  child: defaultFormField(
+                                    controller: endDateController,
+                                    type: TextInputType.datetime,
+                                    enable: true,
+                                    colors: Colors.blueGrey,
+                                    onTab: () async {
+                                      DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1950),
+                                          lastDate: DateTime(2050));
 
-                                  if (pickedDate != null) {
-                                    endDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                  }
-                                },
-                                onSaved: (val) {
-                                  endDate = val;
-                                },
-                              ),
+                                      if (pickedDate != null) {
+                                        endDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 5.0),
+                                Checkbox(
+                                  value: _isCheckedTo,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _isCheckedTo = value;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 20),
                             SizedBox(
@@ -476,8 +496,8 @@ class _RptDetailedDailyPurchasesState extends State<RptDetailedDailyPurchases> {
     List<Formulas>  formulasList ;
     //Formula
     formulasList = [
-      new Formulas(columnName: 'companyName',columnValue: companyName) ,
-      new Formulas(columnName: 'branchName',columnValue: branchName)
+       Formulas(columnName: 'companyName',columnValue: companyName) ,
+       Formulas(columnName: 'branchName',columnValue: branchName)
     ];
 
     final report = reportUtilityApiService.getReportData(menuId,criteria , formulasList).then((data) async {
@@ -511,12 +531,12 @@ class _RptDetailedDailyPurchasesState extends State<RptDetailedDailyPurchases> {
   {
     String criteria="";
 
-    if(startDateController.text.isNotEmpty)
+    if(_isCheckedFrom == true)
     {
       criteria += " And TrxDate >='${startDateController.text}' ";
     }
 
-    if(endDateController.text.isNotEmpty)
+    if(_isCheckedTo == true)
     {
       criteria += " And TrxDate <='${endDateController.text}' ";
     }

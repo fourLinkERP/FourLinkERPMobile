@@ -26,20 +26,6 @@ BranchApiService _branchApiService = BranchApiService();
 SalesManApiService _salesManApiService = SalesManApiService();
 
 
-final startDateController = TextEditingController();
-final endDateController = TextEditingController();
-String? selectedCustomerValue;
-String? selectedCustomerEmail;
-String? selectedTypeValue = "";
-String? selectedUnitValue;
-String? startDate;
-String? endDate;
-String? salesInvoicesEndDate;
-List<DropdownMenuItem<String>> menuCustomerType = [ ];
-String? customerTypeSelectedValue = null;
-String? branchSelectedValue = null;
-String? salesManSelectedValue = null;
-
 class RptDetailedDailySales extends StatefulWidget {
   const RptDetailedDailySales({Key? key}) : super(key: key);
 
@@ -49,39 +35,40 @@ class RptDetailedDailySales extends StatefulWidget {
 
 class _RptDetailedDailySalesState extends State<RptDetailedDailySales> {
 
-  List<DropdownMenuItem<String>> menuCustomers = [ ];
   List<Customer> customers =[];
   List<CustomerType> customerTypes=[];
   List<Branch> branches=[];
   List<SalesMan> salesMen=[];
 
   final _addFormKey = GlobalKey<FormState>();
-  final _dropdownCustomerFormKey = GlobalKey<FormState>();
   final _dropdownCustomerTypeFormKey = GlobalKey<FormState>();
   final _dropdownBranchFormKey = GlobalKey<FormState>();
   final _dropdownSalesManFormKey = GlobalKey<FormState>();
+
+  final startDateController = TextEditingController();
+  final endDateController = TextEditingController();
+  String? selectedCustomerValue;
+  String? selectedCustomerEmail;
+  String? selectedTypeValue = "";
+  String? selectedUnitValue;
+  String? salesInvoicesEndDate;
+  List<DropdownMenuItem<String>> menuCustomerType = [ ];
+  String? customerTypeSelectedValue;
+  String? branchSelectedValue;
+  String? salesManSelectedValue;
+  bool? _isCheckedFrom = false;
+  bool? _isCheckedTo = false;
+
 
   Customer?  customerItem=Customer(customerCode: "",customerNameAra: "",customerNameEng: "",id: 0);
   Branch?  branchItem=Branch(branchCode: 0,branchNameAra: "",branchNameEng: "",id: 0);
   SalesMan?  salesManItem=SalesMan(salesManCode: "",salesManNameAra: "",salesManNameEng: "",id: 0);
 
-  String? _dropdownValue ;
-  String arabicNameHint = 'arabicNameHint';
-
-  get salesInvoiceTypeItem => null;
 
   @override void initState() {
 
     super.initState();
     _fillCombos();
-  }
-
-  void dropDownCallBack(String? selectedValue){
-    if(selectedValue is String){
-      setState(() {
-        _dropdownValue = selectedValue;
-      });
-    }
   }
 
   @override
@@ -155,54 +142,74 @@ class _RptDetailedDailySalesState extends State<RptDetailedDailySales> {
                         const SizedBox(width: 5),
                         Column(
                           children: [
-                            SizedBox(
-                              height: 50,
-                              width: 200,
-                              child: defaultFormField(
-                                controller: startDateController,
-                                type: TextInputType.datetime,
-                                enable: true,
-                                colors: Colors.blueGrey,
-                                onTab: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1950),
-                                      lastDate: DateTime(2050));
+                            Row(
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                  width: 200,
+                                  child: defaultFormField(
+                                    controller: startDateController,
+                                    type: TextInputType.datetime,
+                                    enable: true,
+                                    colors: Colors.blueGrey,
+                                    onTab: () async {
+                                      DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1950),
+                                          lastDate: DateTime(2050));
 
-                                  if (pickedDate != null) {
-                                    startDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                  }
-                                },
-                                onSaved: (val) {
-                                  startDate = val;
-                                },
-                              ),
+                                      if (pickedDate != null) {
+                                        startDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 5.0),
+                                Checkbox(
+                                  value: _isCheckedFrom,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _isCheckedFrom = value;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 20),
-                            SizedBox(
-                              height: 50,
-                              width: 200,
-                              child: defaultFormField(
-                                controller: endDateController,
-                                type: TextInputType.datetime,
-                                enable: true,
-                                colors: Colors.blueGrey,
-                                onTab: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1950),
-                                      lastDate: DateTime(2050));
+                            Row(
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                  width: 200,
+                                  child: defaultFormField(
+                                    controller: endDateController,
+                                    type: TextInputType.datetime,
+                                    enable: true,
+                                    colors: Colors.blueGrey,
+                                    onTab: () async {
+                                      DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1950),
+                                          lastDate: DateTime(2050));
 
-                                  if (pickedDate != null) {
-                                    endDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                  }
-                                },
-                                onSaved: (val) {
-                                  endDate = val;
-                                },
-                              ),
+                                      if (pickedDate != null) {
+                                        endDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 5.0),
+                                Checkbox(
+                                  value: _isCheckedTo,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _isCheckedTo = value;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 20),
                             SizedBox(
@@ -527,14 +534,14 @@ class _RptDetailedDailySalesState extends State<RptDetailedDailySales> {
   String getCriteria() {
     String criteria="";
 
-    if(startDateController.text.isNotEmpty && startDateController != null)
+    if(_isCheckedFrom == true)
     {
-      criteria += " And TrxDate >='" + startDateController.text + "' ";
+      criteria += " And TrxDate >='${startDateController.text}' ";
     }
 
-    if(endDateController.text.isNotEmpty && endDateController != null)
+    if(_isCheckedTo == true)
     {
-      criteria += " And TrxDate <='" + endDateController.text + "' ";
+      criteria += " And TrxDate <='${endDateController.text}' ";
     }
 
     if(selectedCustomerValue.toString().isNotEmpty && selectedCustomerValue != null)

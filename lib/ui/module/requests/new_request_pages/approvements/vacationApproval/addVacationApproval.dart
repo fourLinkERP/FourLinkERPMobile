@@ -6,7 +6,6 @@ import 'package:fourlinkmobileapp/service/module/requests/basicInputs/WorkflowSt
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../../common/globals.dart';
 import '../../../../../../common/login_components.dart';
-import '../../../../../../cubit/app_cubit.dart';
 import '../../../../../../data/model/modules/module/accounts/basicInputs/Employees/Employee.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accounts/basicInputs/Levels/Level.dart';
 import '../../../../../../data/model/modules/module/requests/basicInputs/WorkflowStatuses/workflowStatuses.dart';
@@ -41,9 +40,9 @@ class _AddApprovalState extends State<AddApproval> {
   List<DropdownMenuItem<String>> menuLevels = [];
   List<DropdownMenuItem<String>> menuStatuses = [];
 
-  String? selectedEmployeeValue = null;
-  String? selectedLevelValue = null;
-  String? selectedStatusValue = null;
+  String? selectedEmployeeValue;
+  String? selectedLevelValue;
+  String? selectedStatusValue;
 
   final WorkFlowProcessApiService api = WorkFlowProcessApiService();
   final statusController = TextEditingController();
@@ -69,7 +68,9 @@ class _AddApprovalState extends State<AddApproval> {
     Future<List<Level>> futureLevels = _levelApiService.getLevels().then((data) {
       levels = data;
 
-      getLevelsData();
+      setState(() {
+
+      });
       return levels;
     }, onError: (e) {
       print(e);
@@ -82,7 +83,9 @@ class _AddApprovalState extends State<AddApproval> {
       }
       statuses = data;
 
-      getStatusesData();
+      setState(() {
+
+      });
       return statuses;
     }, onError: (e) {
       print(e);
@@ -198,7 +201,6 @@ class _AddApprovalState extends State<AddApproval> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text((langId==1)? item.levelNameAra.toString():  item.levelNameEng.toString(),
-                                      //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
                                       textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
                                   ),
@@ -220,14 +222,6 @@ class _AddApprovalState extends State<AddApproval> {
                                 return false;
                               }
                             },
-                            // dropdownDecoratorProps: const DropDownDecoratorProps(
-                            //   dropdownSearchDecoration: InputDecoration(
-                            //     labelStyle: TextStyle(
-                            //       color: Colors.black,
-                            //     ),
-                            //     icon: Icon(Icons.keyboard_arrow_down),
-                            //   ),
-                            // ),
 
                           ),
                         ),
@@ -240,7 +234,6 @@ class _AddApprovalState extends State<AddApproval> {
                         width: 220,
                         height: 55,
                         decoration: BoxDecoration(
-                          //color: Colors.grey,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Center(
@@ -258,7 +251,6 @@ class _AddApprovalState extends State<AddApproval> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text((langId==1)? item.workFlowStatusNameAra.toString():  item.workFlowStatusNameEng.toString(),
-                                      //textDirection: langId==1? TextDirection.RTL : TextDirection.LTR,
                                       textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
                                   ),
@@ -293,10 +285,8 @@ class _AddApprovalState extends State<AddApproval> {
                         height: 55,
                         child: defaultFormField(
                           controller: notesController,
-                          label: 'notes'.tr(),
                           type: TextInputType.text,
                           colors: Colors.blueGrey,
-                          //prefix: null,
                           validate: (String? value) {
                             if (value!.isEmpty) {
                               return 'notes must be non empty';
@@ -364,36 +354,7 @@ class _AddApprovalState extends State<AddApproval> {
     });
   }
 
-  getLevelsData() {
-    if (levels.isNotEmpty) {
-      for(var i = 0; i < levels.length; i++){
-        menuLevels.add(
-            DropdownMenuItem(
-            value: levels[i].levelCode.toString(),
-            child: Text((langId==1)? levels[i].levelNameAra.toString() : levels[i].levelNameEng.toString())
-            ),
-        );
-      }
-    }
-    setState(() {
 
-    });
-  }
-  getStatusesData() {
-    if (statuses.isNotEmpty) {
-      for(var i = 0; i < statuses.length; i++){
-        menuStatuses.add(
-          DropdownMenuItem(
-              value: statuses[i].workFlowStatusCode.toString(),
-              child: Text((langId==1)? statuses[i].workFlowStatusNameAra.toString() : statuses[i].workFlowStatusNameEng.toString())
-          ),
-        );
-      }
-    }
-    setState(() {
-
-    });
-  }
   saveWorkflowProcess(BuildContext context) async
   {
     if (selectedEmployeeValue == null) {
@@ -409,7 +370,7 @@ class _AddApprovalState extends State<AddApproval> {
       FN_showToast(context, 'please_set_status'.tr(), Colors.black);
       return;
     }
-    if (notesController.text.isEmpty) {
+    if (selectedStatusValue != "4" && notesController.text.isEmpty) {
       FN_showToast(context, 'please_write_note'.tr(), Colors.black);
       return;
     }

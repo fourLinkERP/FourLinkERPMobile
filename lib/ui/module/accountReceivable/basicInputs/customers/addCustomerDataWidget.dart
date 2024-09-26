@@ -113,6 +113,7 @@ class _AddCustomerDataWidgetState extends State<AddCustomerDataWidget> {
     Future<List<SalesMan>> futureSalesMen = _salesManApiService.getReportSalesMen().then((data) {
       salesMen = data;
       selectedSalesManValue = salesMen[0].salesManCode.toString();
+      print("selectedSalesManValue = " + selectedSalesManValue!);
       getSalesManData();
       return salesMen;
     }, onError: (e) {

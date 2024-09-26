@@ -50,8 +50,6 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
   String? selectedCustomerEmail;
   String? selectedTypeValue = "";
   String? selectedUnitValue;
-  String? startDate;
-  String? endDate;
   String? salesInvoicesEndDate;
   List<DropdownMenuItem<String>> menuCustomerType = [ ];
   String? customerTypeSelectedValue;
@@ -64,6 +62,8 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
   final _dropdownBranchFormKey = GlobalKey<FormState>();
   final _dropdownSalesManFormKey = GlobalKey<FormState>();
 
+  bool? _isCheckedFrom = false;
+  bool? _isCheckedTo = false;
 
   Customer?  customerItem=Customer(customerCode: "",customerNameAra: "",customerNameEng: "",id: 0);
   Branch?  branchItem=Branch(branchCode: 0,branchNameAra: "",branchNameEng: "",id: 0);
@@ -162,54 +162,74 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
                         const SizedBox(width: 5),
                         Column(
                           children: [
-                            SizedBox(
-                              height: 50,
-                              width: 200,
-                              child: defaultFormField(
-                                controller: startDateController,
-                                type: TextInputType.datetime,
-                                enable: true,
-                                colors: Colors.blueGrey,
-                                onTab: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1950),
-                                      lastDate: DateTime(2050));
+                            Row(
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                  width: 200,
+                                  child: defaultFormField(
+                                    controller: startDateController,
+                                    type: TextInputType.datetime,
+                                    enable: true,
+                                    colors: Colors.blueGrey,
+                                    onTab: () async {
+                                      DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1950),
+                                          lastDate: DateTime(2050));
 
-                                  if (pickedDate != null) {
-                                    startDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                  }
-                                },
-                                onSaved: (val) {
-                                  startDate = val;
-                                },
-                              ),
+                                      if (pickedDate != null) {
+                                        startDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 5.0),
+                                Checkbox(
+                                  value: _isCheckedFrom,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _isCheckedFrom = value;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 20),
-                            SizedBox(
-                              height: 50,
-                              width: 200,
-                              child: defaultFormField(
-                                controller: endDateController,
-                                type: TextInputType.datetime,
-                                enable: true,
-                                colors: Colors.blueGrey,
-                                onTab: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1950),
-                                      lastDate: DateTime(2050));
+                            Row(
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                  width: 200,
+                                  child: defaultFormField(
+                                    controller: endDateController,
+                                    type: TextInputType.datetime,
+                                    enable: true,
+                                    colors: Colors.blueGrey,
+                                    onTab: () async {
+                                      DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1950),
+                                          lastDate: DateTime(2050));
 
-                                  if (pickedDate != null) {
-                                    endDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                  }
-                                },
-                                onSaved: (val) {
-                                  endDate = val;
-                                },
-                              ),
+                                      if (pickedDate != null) {
+                                        endDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 5.0),
+                                Checkbox(
+                                  value: _isCheckedTo,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _isCheckedTo = value;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 20),
                             SizedBox(
@@ -280,7 +300,6 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Text((langId==1)? item.cusTypesNameAra.toString():  item.cusTypesNameEng.toString(),
-                                            //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
                                             textAlign: langId==1?TextAlign.right:TextAlign.left,),
 
                                         ),
@@ -291,7 +310,7 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
                                   items: customerTypes,
                                   itemAsString: (CustomerType u) => u.cusTypesNameAra.toString(),
                                   onChanged: (value){
-
+                                    customerTypeSelectedValue = value?.cusTypesCode.toString();
                                   },
                                 ),
                               ),
@@ -310,7 +329,6 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
                                         decoration: !isSelected
                                             ? null
                                             : BoxDecoration(
-
                                           border: Border.all(color: Theme.of(context).primaryColor),
                                           borderRadius: BorderRadius.circular(5),
                                           color: Colors.white,
@@ -328,7 +346,7 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
                                   items: branches,
                                   itemAsString: (Branch u) => u.branchNameAra.toString(),
                                   onChanged: (value){
-
+                                    branchSelectedValue = value?.branchCode.toString();
                                   },
                                   filterFn: (instance, filter){
                                     if(instance.branchNameAra!.contains(filter)){
@@ -565,12 +583,12 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
     String criteria="";
 
 
-    if(startDateController.text.isNotEmpty)
+    if(_isCheckedFrom == true)
     {
       criteria += " And TrxDate >='${startDateController.text}' ";
     }
 
-    if(endDateController.text.isNotEmpty)
+    if(_isCheckedTo == true)
     {
       criteria += " And TrxDate <='${endDateController.text}' ";
     }

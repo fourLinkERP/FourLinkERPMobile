@@ -238,7 +238,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                   height: 50,
                                   width: 210,
                                   child: defaultFormField(
-
                                     enable: false,
                                     controller: _vacationRequestSerialController,
                                     type: TextInputType.text,
@@ -280,6 +279,7 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                   height: 60,
                                   width: 210,
                                   child: defaultFormField(
+                                    enable: false,
                                     controller: _vacationRequestMessageController,
                                     label: 'message_title'.tr(),
                                     type: TextInputType.text,
@@ -291,18 +291,14 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                       }
                                       return null;
                                     },
-                                    // onSaved: (val) {
-                                    //   vacationRequestMessage = val;
-                                    //   return null;
-                                    // },
                                   ),
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
                                   height: 50,
                                   width: 210,
-
                                   child: DropdownSearch<CostCenter>(
+                                    enabled: false,
                                     selectedItem: costCenterItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
@@ -318,7 +314,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                           child: Padding(
                                             padding: const EdgeInsets.only(left: 5.0, right: 5.0),
                                             child: Text((langId==1)? item.costCenterNameAra.toString():  item.costCenterNameEng.toString(),
-                                              //textDirection: langId==1? TextDirection.rtl :TextDirection.ltr,
                                               textAlign: langId==1?TextAlign.right:TextAlign.left,
                                             ),
 
@@ -349,6 +344,7 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                   height: 50,
                                   width: 210,
                                   child: DropdownSearch<Employee>(
+                                    enabled: false,
                                     selectedItem: empItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
@@ -391,6 +387,7 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                   height: 50,
                                   width: 210,
                                   child: DropdownSearch<Job>(
+                                    enabled: false,
                                     selectedItem: jobItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
@@ -432,6 +429,7 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                   height: 50,
                                   width: 210,
                                   child: DropdownSearch<VacationType>(
+                                    enabled: false,
                                     selectedItem: vacationTypeItem,
                                     popupProps: PopupProps.menu(
                                       itemBuilder: (context, item, isSelected) {
@@ -457,7 +455,6 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                     items: vacationTypes,
                                     itemAsString: (VacationType u) => u.vacationTypeNameAra.toString(),
                                     onChanged: (value){
-
                                       selectedVacationTypeValue =  value!.vacationTypeCode.toString();
                                     },
                                     filterFn: (instance, filter){
@@ -476,6 +473,7 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                   height: 60,
                                   width: 210,
                                   child: defaultFormField(
+                                    enable: false,
                                     label: 'from_date'.tr(),
                                     controller: _fromDateController,
                                     onTab: () async {
@@ -498,6 +496,7 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                   height: 60,
                                   width: 210,
                                   child: defaultFormField(
+                                    enable: false,
                                     label: 'to_date'.tr(),
                                     controller: _toDateController,
                                     onTab: () async {
@@ -520,21 +519,19 @@ class _EditRequestVacationState extends State<EditRequestVacation> {
                                   height: 50,
                                   width: 210,
                                   child: defaultFormField(
+                                    enable: false,
                                     controller: _vacationRequestNoteController,
                                     label: 'notes'.tr(),
                                     type: TextInputType.text,
                                     colors: Colors.blueGrey,
-                                    //prefix: null,
                                     validate: (String? value) {
                                       if (value!.isEmpty) {
                                         return 'notes must be non empty';
                                       }
                                       return null;
                                     },
-
                                   ),
                                 ),
-
                               ],
                             ),
                           ],

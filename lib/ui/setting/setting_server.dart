@@ -8,7 +8,6 @@ import 'package:fourlinkmobileapp/network/cache_helper.dart';
 import 'package:fourlinkmobileapp/service/module/administration/basicInputs/compayApiService.dart';
 import 'package:fourlinkmobileapp/service/module/administration/basicInputs/systemApiService.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
-import '../../theme/theme_helper.dart';
 import 'package:fourlinkmobileapp/common/login_components.dart';
 
 //APIS
@@ -58,6 +57,16 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
     _APiReportController = TextEditingController();
     _FinancialyearController = TextEditingController();
 
+    if(urlString.isNotEmpty)
+      {
+        _APiController.text = urlString;
+      }
+
+    if(reportUrlString.isNotEmpty)
+    {
+      _APiReportController.text = reportUrlString;
+    }
+
   }
 
   @override
@@ -74,7 +83,6 @@ class _LoginSettingPageState extends State<LoginSettingPage> {
                   margin: const EdgeInsets.fromLTRB(5, 10, 5, 10),
                   child: Column(
                     children: [
-                      //const SizedBox(height: 30.0),
                       Form(
                           key: _formKey,
                           child: Column(

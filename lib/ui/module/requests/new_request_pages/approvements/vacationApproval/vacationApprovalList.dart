@@ -31,9 +31,7 @@ class ApprovalsState extends State<Approvals> {
   }
 
   bool _isLoading = true;
-  //WorkFlowProcess? process = WorkFlowProcess(empCode: "",levelCode: "");
   List<WorkFlowProcess> processes = [];
-  List<WorkFlowProcess> _founded = [];
 
   @override
   void initState() {
@@ -44,7 +42,7 @@ class ApprovalsState extends State<Approvals> {
   }
 
   void _simulateLoading() async {
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 3));
     setState(() {
       _isLoading = false;
     });
@@ -103,77 +101,142 @@ class ApprovalsState extends State<Approvals> {
         )
     );
   }
-  Widget buildApprovals(){
+  Widget buildApprovals() {
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
-    if(State is AppErrorState){
+    if (State is AppErrorState) {
       return const Center(child: Text('no data'));
     }
-    if(AppCubit.get(context).Conection==false){
+    if (AppCubit.get(context).Conection == false) {
       return const Center(child: Text('no internet connection'));
-
     }
-    if(processes.isEmpty && AppCubit.get(context).Conection==true){
-      return Center(child: Text("no_data_to_show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
-    }
-    else{
-      print("Success to load approvals............");
+    if (processes.isEmpty && AppCubit.get(context).Conection == true) {
+      return Center(
+        child: Text(
+          "no_data_to_show".tr(),
+          style: TextStyle(
+            color: Colors.grey[700],
+            fontSize: 20.0,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    } else {
       return Container(
-        margin: const EdgeInsets.only(top: 5,),
-        color: const Color.fromRGBO(240, 242, 246,1),// Main Color
-
+        padding: const EdgeInsets.only(top: 20.0,left: 10.0, right: 10.0),
+        color: const Color.fromRGBO(240, 242, 246, 1),
         child: ListView.builder(
-            itemCount: processes.isEmpty ? 0 : processes.length,
-            itemBuilder: (BuildContext context, int index) {
-              return
-                Card(
-                  margin: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0, bottom: 10.0),
-                  child: InkWell(
-                    onTap: (){
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => DetailSalesInvoiceHWidget(_salesInvoices[index])),
-                      // );
-                    },
-                    child: ListTile(
-                      title: Text("${'employee'.tr()} : ${processes[index].actionEmpName}"),
-                      subtitle: Column(
-                        crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Container(
-                              height: 20,
-                              color: Colors.white30,
-                              child: Row(
-                                children: [
-                                  Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(processes[index].trxDate.toString())))  ,
-                                ],
-                              )),
-                          Container(
-                            height: 20,
-                            color: Colors.white30,
-                            child: Row(
-                              children: [
-                                Text("${'level'.tr()} : ${processes[index].levelCode}"),
-                              ],
-                            )),
-                          Container(
-                            height: 20,
-                            color: Colors.white30,
-                            child: Row(
-                              children: [
-                                Text("${'the_status'.tr()} : ${processes[index].workFlowStatusName}"),
-                              ],
-                            )),
-                        const SizedBox(height: 10),
-                        ],
-                      ),
-                    ),
-                  ),
+          itemCount: processes.length,
+          itemBuilder: (context, index) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildCustomStep(index), // Build custom step
 
-                );
-            }),
+              ],
+            );
+          },
+        ),
       );
     }
   }
+
+  Widget _buildCustomStep(int index) {
+    final process = processes[index];
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Step icon (Person icon instead of step number)
+        Column(
+          children: [
+            Icon(Icons.person, size: 30.0, color: Colors.grey[600]),
+            Container(
+              height: 70, // Adjust to control line height between steps
+              width: 2,
+              color: Colors.grey[400], // Vertical line between steps
+            ),
+          ],
+        ),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Employee name and date
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    process.actionEmpName!,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 5),
+
+              // Level
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '${'level'.tr()} : ${process.levelCode}',
+                    style: TextStyle(
+                      color: Colors.grey[700],
+                      fontSize: 15,
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        DateFormat('dd MMMM').format(
+                            DateTime.parse(process.trxDate.toString())),
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 15,
+                        ),
+                      ),
+                      const SizedBox(height: 5.0),
+                      Text(
+                        DateFormat('hh:mm a').format(DateTime.parse(process.trxDate.toString())),
+                        style: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 5),
+
+              // Status with colored background
+              Container(
+                margin: const EdgeInsets.only(top: 5.0, bottom: 30.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: _getStatusColor(process.workFlowStatusName!),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Text(
+                  process.workFlowStatusName!,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
   _navigateToAddScreen(BuildContext context) async {
 
     // CircularProgressIndicator();
@@ -217,10 +280,20 @@ class ApprovalsState extends State<Approvals> {
     });
     print("+++++++++----" + widget.vacationRequest.id.toString());
     processes = (await futureWorkflowProcess)!;
-    if (processes.isNotEmpty) {
-      setState(() {
-        _founded = processes;
-      });
+    setState(() {
+
+    });
+  }
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'Approved':
+        return Colors.green;
+      case 'Inquiry':
+        return Colors.orange;
+      case 'Refuse':
+        return Colors.red;
+      default:
+        return Colors.grey;
     }
   }
 }

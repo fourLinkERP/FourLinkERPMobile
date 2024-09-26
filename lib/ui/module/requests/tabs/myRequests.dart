@@ -30,7 +30,7 @@ class MyRequests extends StatefulWidget {
 
 class _MyRequestsState extends State<MyRequests> {
 
-  bool isLoading = true;
+  bool _isLoading = true;
   List<MyDuty> myRequests = [];
   List<MyDuty> _founded = [];
   List<VacationRequests> vacationRequests = [];
@@ -42,15 +42,19 @@ class _MyRequestsState extends State<MyRequests> {
 
   @override
   void initState() {
-
+    super.initState();
     AppCubit.get(context).CheckConnection();
 
     getVacationData();
     getAdvanceData();
     getData();
-    super.initState();
+    _simulateLoading();
+  }
+
+  void _simulateLoading() async {
+    await Future.delayed(const Duration(seconds: 3));
     setState(() {
-      _founded = myRequests;
+      _isLoading = false;
     });
   }
 
@@ -63,18 +67,17 @@ class _MyRequestsState extends State<MyRequests> {
   }
 
   Widget buildMyRequests(){
-    if(State is AppErrorState){
-      return const Center(child: Text('no data'));
-    }
-    if(AppCubit.get(context).Conection==false){
-      return const Center(child: Text('no internet connection'));
-
-    }
-    else if(AppCubit.get(context).Conection==true && myRequests.isEmpty){
+    if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
-    if (myRequests.isEmpty) {
-      return Center(child: Text("No Data To Show", style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
+    if (State is AppErrorState) {
+      return const Center(child: Text('no data'));
+    }
+    if (AppCubit.get(context).Conection == false) {
+      return const Center(child: Text('no internet connection'));
+    }
+    if (myRequests.isEmpty && AppCubit.get(context).Conection == true) {
+      return Center(child: Text("no_data_to_show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     }
     else{
       return Container(
@@ -206,10 +209,13 @@ class _MyRequestsState extends State<MyRequests> {
     myRequests = (await futureMyRequests)!;
     print("My Requests list length: "+ myRequests.length.toString());
     if (myRequests.isNotEmpty) {
-      setState(() {
-        _founded = myRequests;
-        String search = '';
+      myRequests.sort((a, b) {
+        DateTime dateA = DateTime.parse(a.trxDate!);
+        DateTime dateB = DateTime.parse(b.trxDate!);
+        return dateB.compareTo(dateA);
       });
+
+      setState(() {});
     }
   }
   onSearch(String search) {

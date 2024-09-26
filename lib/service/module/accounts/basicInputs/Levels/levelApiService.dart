@@ -22,7 +22,6 @@ class LevelApiService {
       'BranchCode': branchCode
     };
 
-    print('Level 1');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{

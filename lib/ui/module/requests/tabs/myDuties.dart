@@ -32,7 +32,7 @@ class MyDuties extends StatefulWidget {
 
 class _MyDutiesState extends State<MyDuties> {
 
-  bool isLoading = true;
+  bool _isLoading = true;
   List<MyDuty> duties = [];
   List<MyDuty> _founded = [];
   List<VacationRequests> vacationRequests = [];
@@ -51,8 +51,13 @@ class _MyDutiesState extends State<MyDuties> {
     getAdvanceData();
     getData();
     super.initState();
+    _simulateLoading();
+  }
+
+  void _simulateLoading() async {
+    await Future.delayed(const Duration(seconds: 3));
     setState(() {
-      _founded = duties;
+      _isLoading = false;
     });
   }
 
@@ -63,25 +68,22 @@ class _MyDutiesState extends State<MyDuties> {
     );
   }
   Widget buildDuties(){
-    if(State is AppErrorState){
-      return const Center(child: Text('no data'));
-    }
-    if(AppCubit.get(context).Conection==false){
-      return const Center(child: Text('no internet connection'));
-
-    }
-    if (duties.length == 0) {
-      return Center(child: Text("No Data To Show", style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
-    }
-
-    else if(AppCubit.get(context).Conection==true && duties.isEmpty){
+    if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
-
+    if (State is AppErrorState) {
+      return const Center(child: Text('no data'));
+    }
+    if (AppCubit.get(context).Conection == false) {
+      return const Center(child: Text('no internet connection'));
+    }
+    if (duties.isEmpty && AppCubit.get(context).Conection == true) {
+      return Center(child: Text("no_data_to_show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
+    }
     else{
       return Container(
         margin: const EdgeInsets.only(top: 5,),
-        color: const Color.fromRGBO(240, 242, 246,1),// Main Color
+        color: const Color.fromRGBO(240, 242, 246,1),
 
         child: ListView.builder(
             itemCount: duties.isEmpty ? 0 : duties.length,
@@ -201,16 +203,18 @@ class _MyDutiesState extends State<MyDuties> {
   }
   void getData() async {
     Future<List<MyDuty>?> futureMyDuty = _apiService.getDuties().catchError((Error){
-      print('Error${Error}');
       AppCubit.get(context).EmitErrorState();
     });
     duties = (await futureMyDuty)!;
-    print("My Duties list length: "+ duties.length.toString());
+    print("My Duties list length: ${duties.length}");
     if (duties.isNotEmpty) {
-      setState(() {
-        _founded = duties;
-        String search = '';
+      duties.sort((a, b) {
+        DateTime dateA = DateTime.parse(a.trxDate!);
+        DateTime dateB = DateTime.parse(b.trxDate!);
+        return dateB.compareTo(dateA);
       });
+
+      setState(() {});
     }
   }
   onSearch(String search) {
@@ -230,7 +234,6 @@ class _MyDutiesState extends State<MyDuties> {
       vacationRequests = (await futureVacationRequests)!;
       if (vacationRequests.isNotEmpty) {
         setState(() {
-          // Set state to update UI after data is fetched
         });
       }
     } catch (e) {

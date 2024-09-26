@@ -5,7 +5,7 @@ import '../../../../../common/globals.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
-
+import 'package:intl/intl.dart';
 
  class CustomerApiService {
 
@@ -34,6 +34,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
     if (response.statusCode == 200) {
+      print('Customer Success');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<Customer> list = [];
       if (data.isNotEmpty) {
@@ -81,6 +82,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
+      'empCode': empCode,
       'customerCode': customer.customerCode,
       'customerNameAra': customer.customerNameAra,
       'customerNameEng': customer.customerNameEng,
@@ -108,7 +110,9 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       "isImported": false,
       "isSynchronized": false,
       "postedToGL": false,
-      "isLinkWithTaxAuthority": true
+      "isLinkWithTaxAuthority": true,
+      "addBy": empUserId,
+      "addTime": DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now())
     };
 
     print('save customer: ' + data.toString());
@@ -160,7 +164,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       "isSynchronized": false,
       "isSystem": false,
       "notActive": false,
-      "flgDelete": false
+      "flgDelete": false,
+      "editBy": empUserId,
     };
 
     String apiUpdate =updateApi + id.toString();
@@ -182,8 +187,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       print('Start Update error ' );
       throw Exception('Failed to update a case');
     }
-
-    return 0;
   }
 
   Future<void> deleteCustomer(BuildContext context ,int? id) async {

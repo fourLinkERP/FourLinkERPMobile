@@ -78,7 +78,6 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     _emailController.text = apiUserName;   // _emailController = TextEditingController();
-    _passwordController.text = apiPassword;   //  _passwordController = TextEditingController();
 
     Future<List<Branch>> futureBranch = _branchApiService.getBranches().then((data) {
       branches = data;
@@ -140,7 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: defaultFormField(
                                   controller: _emailController,
                                   label: 'user_name'.tr(),
-                                  enable: false,
+                                  enable: true,
                                   type: TextInputType.emailAddress,
                                   colors: Colors.blueGrey,
                                   prefix: Icons.email,
@@ -157,7 +156,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: defaultFormField(
                                   controller: _passwordController,
                                   label: 'password'.tr(),
-                                  enable: false,
+                                  enable: true,
                                   type: TextInputType.text,
                                   colors: Colors.blueGrey,
                                   prefix: Icons.lock,
@@ -602,7 +601,7 @@ class _LoginScreenState extends State<LoginScreen> {
           await setItemInvoiceData();
           setCompanyLogo();
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-       // }
+      // }
       }
     }
     else{

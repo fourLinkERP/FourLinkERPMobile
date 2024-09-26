@@ -96,7 +96,7 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
       print(e);
     });
 
-    Future<List<SalesMan>> futureSalesMen = _salesManApiService.getReportSalesMen().then((data) {
+    Future<List<SalesMan>> futureSalesMen = _salesManApiService.getSalesMans().then((data) {
       salesMen = data;
       getSalesManData();
       return salesMen;
@@ -957,7 +957,7 @@ class _EditCustomerDataWidgetState extends State<EditCustomerDataWidget> {
     if (salesMen.isNotEmpty) {
       for(var i = 0; i < salesMen.length; i++){
         if(salesMen[i].salesManCode == selectedSalesManValue){
-          salesManItem = salesMen[salesMen.indexOf(salesMen[0])];
+          salesManItem = salesMen[salesMen.indexOf(salesMen[i])];
 
         }
       }

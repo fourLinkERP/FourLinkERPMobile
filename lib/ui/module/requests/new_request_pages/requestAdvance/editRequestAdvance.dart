@@ -140,7 +140,6 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                             scrollDirection: Axis.horizontal,
                             children: [
                               Column(
-                                //mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const SizedBox(height: 10),
                                   SizedBox(
@@ -263,7 +262,6 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                       controller: _advanceTrxSerialController,
                                       type: TextInputType.text,
                                       colors: Colors.blueGrey,
-                                      //prefix: null,
                                       validate: (String? value) {
                                         if (value!.isEmpty) {
                                           return 'required_field'.tr();
@@ -372,8 +370,6 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                       items: jobs,
                                       itemAsString: (Job u) => u.jobNameAra.toString(),
                                       onChanged: (value){
-                                        //v.text = value!.cusTypesCode.toString();
-                                        //print(value!.id);
                                         selectedJobValue =  value!.jobCode.toString();
                                       },
                                       filterFn: (instance, filter){
@@ -395,10 +391,8 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     child: defaultFormField(
                                       enable: false,
                                       controller: _basicSalaryController,
-                                      //label: 'message_title'.tr(),
                                       type: TextInputType.number,
                                       colors: Colors.blueGrey,
-                                      //prefix: null,
                                       validate: (String? value) {
                                         if (value!.isEmpty) {
                                           return 'required_field'.tr();
@@ -414,7 +408,6 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     child: defaultFormField(
                                       enable: false,
                                       controller: _fullSalaryController,
-                                     // label: 'message_title'.tr(),
                                       type: TextInputType.number,
                                       colors: Colors.blueGrey,
                                       validate: (String? value) {
@@ -514,6 +507,7 @@ class _EditRequestAdvanceState extends State<EditRequestAdvance> {
                                     height: 50,
                                     width: 210,
                                     child: defaultFormField(
+                                      enable: false,
                                       controller: _amountRequiredOfAdvanceController,
                                       type: TextInputType.number,
                                       colors: Colors.blueGrey,

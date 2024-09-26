@@ -35,6 +35,8 @@ class _RptAttendanceAndDepartureStatementState extends State<RptAttendanceAndDep
   String? endDate;
 
   final _addFormKey = GlobalKey<FormState>();
+  bool? _isCheckedFrom = false;
+  bool? _isCheckedTo = false;
 
   Employee?  employeeItem=Employee(empCode: "",empNameAra: "",empNameEng: "",id: 0);
 
@@ -107,54 +109,74 @@ class _RptAttendanceAndDepartureStatementState extends State<RptAttendanceAndDep
                         const SizedBox(width: 5),
                         Column(
                           children: [
-                            SizedBox(
-                              height: 50,
-                              width: 200,
-                              child: defaultFormField(
-                                controller: startDateController,
-                                type: TextInputType.datetime,
-                                enable: true,
-                                colors: Colors.blueGrey,
-                                onTab: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1950),
-                                      lastDate: DateTime(2050));
+                            Row(
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                  width: 200,
+                                  child: defaultFormField(
+                                    controller: startDateController,
+                                    type: TextInputType.datetime,
+                                    enable: true,
+                                    colors: Colors.blueGrey,
+                                    onTab: () async {
+                                      DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1950),
+                                          lastDate: DateTime(2050));
 
-                                  if (pickedDate != null) {
-                                    startDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                  }
-                                },
-                                onSaved: (val) {
-                                  startDate = val;
-                                },
-                              ),
+                                      if (pickedDate != null) {
+                                        startDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 5.0),
+                                Checkbox(
+                                  value: _isCheckedFrom,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _isCheckedFrom = value;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 20),
-                            SizedBox(
-                              height: 50,
-                              width: 200,
-                              child: defaultFormField(
-                                controller: endDateController,
-                                type: TextInputType.datetime,
-                                enable: true,
-                                colors: Colors.blueGrey,
-                                onTab: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1950),
-                                      lastDate: DateTime(2050));
+                            Row(
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                  width: 200,
+                                  child: defaultFormField(
+                                    controller: endDateController,
+                                    type: TextInputType.datetime,
+                                    enable: true,
+                                    colors: Colors.blueGrey,
+                                    onTab: () async {
+                                      DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1950),
+                                          lastDate: DateTime(2050));
 
-                                  if (pickedDate != null) {
-                                    endDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                  }
-                                },
-                                onSaved: (val) {
-                                  endDate = val;
-                                },
-                              ),
+                                      if (pickedDate != null) {
+                                        endDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 5.0),
+                                Checkbox(
+                                  value: _isCheckedTo,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _isCheckedTo = value;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 20),
                             SizedBox(
@@ -358,12 +380,12 @@ class _RptAttendanceAndDepartureStatementState extends State<RptAttendanceAndDep
   {
     String criteria="";
 
-    if(startDateController.text.isNotEmpty)
+    if(_isCheckedFrom == true)
     {
       criteria += " And TrxDate >='${startDateController.text}' ";
     }
 
-    if(endDateController.text.isNotEmpty)
+    if(_isCheckedTo == true)
     {
       criteria += " And TrxDate <='${endDateController.text}' ";
     }

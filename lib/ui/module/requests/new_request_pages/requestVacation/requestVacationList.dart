@@ -44,7 +44,7 @@ class _RequestVacationListState extends State<RequestVacationList> {
     _simulateLoading();
   }
   void _simulateLoading() async {
-    await Future.delayed(const Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 3));
     setState(() {
       _isLoading = false;
     });

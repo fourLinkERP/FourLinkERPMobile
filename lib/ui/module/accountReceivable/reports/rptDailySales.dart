@@ -28,20 +28,6 @@ CustomerTypeApiService _customerTypeApiService= CustomerTypeApiService();
 BranchApiService _branchApiService = BranchApiService();
 SalesManApiService _salesManApiService = SalesManApiService();
 
-final startDateController = TextEditingController();
-final endDateController = TextEditingController();
-String? selectedCustomerValue;
-String? selectedCustomerEmail;
-String? selectedTypeValue = "";
-String? selectedUnitValue;
-String? startDate;
-String? endDate;
-String? salesInvoicesEndDate;
-List<DropdownMenuItem<String>> menuCustomerType = [ ];
-String? customerTypeSelectedValue = null;
-String? branchSelectedValue = null;
-String? salesManSelectedValue = null;
-
 class RptDailySales extends StatefulWidget {
   const RptDailySales({Key? key}) : super(key: key);
 
@@ -58,32 +44,35 @@ class RptDailySalesState extends State<RptDailySales> {
   List<SalesMan> salesMen=[];
 
   final _addFormKey = GlobalKey<FormState>();
-  final _dropdownCustomerFormKey = GlobalKey<FormState>();
   final _dropdownCustomerTypeFormKey = GlobalKey<FormState>();
   final _dropdownBranchFormKey = GlobalKey<FormState>();
   final _dropdownSalesManFormKey = GlobalKey<FormState>();
+
+  final startDateController = TextEditingController();
+  final endDateController = TextEditingController();
+  String? selectedCustomerValue;
+  String? selectedCustomerEmail;
+  String? selectedTypeValue = "";
+  String? selectedUnitValue;
+  String? startDate;
+  String? endDate;
+  String? salesInvoicesEndDate;
+  List<DropdownMenuItem<String>> menuCustomerType = [ ];
+  String? customerTypeSelectedValue;
+  String? branchSelectedValue;
+  String? salesManSelectedValue;
+  bool? _isCheckedFrom = false;
+  bool? _isCheckedTo = false;
 
   Customer?  customerItem=Customer(customerCode: "",customerNameAra: "",customerNameEng: "",id: 0);
   Branch?  branchItem=Branch(branchCode: 0,branchNameAra: "",branchNameEng: "",id: 0);
   SalesMan?  salesManItem=SalesMan(salesManCode: "",salesManNameAra: "",salesManNameEng: "",id: 0);
 
-  String? _dropdownValue ;
-  String arabicNameHint = 'arabicNameHint';
-
-  get salesInvoiceTypeItem => null;
 
   @override void initState() {
 
     super.initState();
     _fillCombos();
-  }
-
-  void dropDownCallBack(String? selectedValue){
-    if(selectedValue is String){
-      setState(() {
-        _dropdownValue = selectedValue;
-      });
-    }
   }
 
   @override
@@ -164,54 +153,74 @@ class RptDailySalesState extends State<RptDailySales> {
                         const SizedBox(width: 5),
                         Column(
                           children: [
-                            SizedBox(
-                              height: 50,
-                              width: 200,
-                              child: defaultFormField(
-                                controller: startDateController,
-                                type: TextInputType.datetime,
-                                enable: true,
-                                colors: Colors.blueGrey,
-                                onTab: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1950),
-                                      lastDate: DateTime(2050));
+                            Row(
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                  width: 200,
+                                  child: defaultFormField(
+                                    controller: startDateController,
+                                    type: TextInputType.datetime,
+                                    enable: true,
+                                    colors: Colors.blueGrey,
+                                    onTab: () async {
+                                      DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1950),
+                                          lastDate: DateTime(2050));
 
-                                  if (pickedDate != null) {
-                                    startDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                  }
-                                },
-                                onSaved: (val) {
-                                  startDate = val;
-                                },
-                              ),
+                                      if (pickedDate != null) {
+                                        startDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 5.0),
+                                Checkbox(
+                                  value: _isCheckedFrom,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _isCheckedFrom = value;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 20),
-                            SizedBox(
-                              height: 50,
-                              width: 200,
-                              child: defaultFormField(
-                                controller: endDateController,
-                                type: TextInputType.datetime,
-                                enable: true,
-                                colors: Colors.blueGrey,
-                                onTab: () async {
-                                  DateTime? pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(1950),
-                                      lastDate: DateTime(2050));
+                            Row(
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                  width: 200,
+                                  child: defaultFormField(
+                                    controller: endDateController,
+                                    type: TextInputType.datetime,
+                                    enable: true,
+                                    colors: Colors.blueGrey,
+                                    onTab: () async {
+                                      DateTime? pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime(1950),
+                                          lastDate: DateTime(2050));
 
-                                  if (pickedDate != null) {
-                                    endDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
-                                  }
-                                },
-                                onSaved: (val) {
-                                  endDate = val;
-                                },
-                              ),
+                                      if (pickedDate != null) {
+                                        endDateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                                      }
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(width: 5.0),
+                                Checkbox(
+                                  value: _isCheckedTo,
+                                  onChanged: (bool? value) {
+                                    setState(() {
+                                      _isCheckedTo = value;
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
                             const SizedBox(height: 20),
                             SizedBox(
@@ -493,73 +502,6 @@ class RptDailySalesState extends State<RptDailySales> {
     });
   }
 
-}
-
-
-
-  Widget headLines({required String title}) {
-    return Column(
-      crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
-      children: [
-
-            Text(
-              title,
-              style: const TextStyle(
-                color: Colors.black87,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-        const SizedBox(
-          height: 10,
-        ),
-        const Divider(
-          thickness: 3,
-          color: Color.fromRGBO(144, 16, 46, 1),
-        )
-      ],
-    );
-  }
-  Widget textFormFields({controller, hintText,onTap, onSaved, textInputType,enable=true})  {
-    return TextFormField(
-      controller: controller,
-      validator: (val) {
-        if (val!.isEmpty) {
-          return "Enter your $hintText first";
-        }
-        return null;
-      },
-      onSaved: onSaved,
-      enabled:enable ,
-      onTap: onTap,
-      keyboardType: textInputType,
-      maxLines: null,
-      decoration: InputDecoration(
-        hintText: hintText,
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: BorderSide(
-            color: dColor,
-            width: 2,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20),
-          borderSide: const BorderSide(
-            color: Colors.red,
-            width: 2,
-          ),
-        ),
-      ),
-    );
-  }
-
-
-
-
-
-
-  /////////////////////////////////////////////// Print Report ///////////////////////////////////////////////////////////////////////
   printReport(BuildContext context ,String criteria){
     print('Start Report');
     print(criteria);
@@ -608,43 +550,79 @@ class RptDailySalesState extends State<RptDailySales> {
 
   }
 
-String getCriteria()
-{
-  String criteria="";
-
-
-  if(startDateController.text.isNotEmpty && startDateController != null)
+  String getCriteria()
   {
-    criteria += " And TrxDate >='" + startDateController.text + "' ";
-  }
+    String criteria="";
 
-  if(endDateController.text.isNotEmpty && endDateController != null)
-  {
-    criteria += " And TrxDate <='" + endDateController.text + "' ";
-  }
 
-  if(selectedCustomerValue.toString().isNotEmpty && selectedCustomerValue != null)
-  {
-    criteria += " And CustomerCode =N'" + selectedCustomerValue.toString() + "' ";
-  }
+    if(_isCheckedFrom == true)
+    {
+      criteria += " And TrxDate >='${startDateController.text}' ";
+    }
 
-  if(selectedTypeValue.toString().isNotEmpty && selectedTypeValue != null)
-  {
-    criteria += " And CustomerTypeCode =N'" + selectedTypeValue.toString() + "' ";
-  }
+    if(_isCheckedTo == true)
+    {
+      criteria += " And TrxDate <='${endDateController.text}' ";
+    }
 
-  if(branchSelectedValue.toString().isNotEmpty && branchSelectedValue != null)
-  {
+    if(selectedCustomerValue.toString().isNotEmpty && selectedCustomerValue != null)
+    {
+      criteria += " And CustomerCode =N'" + selectedCustomerValue.toString() + "' ";
+    }
+
+    if(selectedTypeValue.toString().isNotEmpty && selectedTypeValue != null)
+    {
+      criteria += " And CustomerTypeCode =N'" + selectedTypeValue.toString() + "' ";
+    }
+
+    if(branchSelectedValue.toString().isNotEmpty && branchSelectedValue != null)
+    {
       criteria += " And BranchCode =N'" + branchSelectedValue.toString() + "' ";
-  }
+    }
 
-  if(salesManSelectedValue.toString().isNotEmpty && salesManSelectedValue != null)
-  {
-    criteria += " And SalesManCode =N'" + salesManSelectedValue.toString() + "' ";
-  }
+    if(salesManSelectedValue.toString().isNotEmpty && salesManSelectedValue != null)
+    {
+      criteria += " And SalesManCode =N'" + salesManSelectedValue.toString() + "' ";
+    }
 
-  return criteria;
+    return criteria;
+
+  }
 
 }
+
+  Widget textFormFields({controller, hintText,onTap, onSaved, textInputType,enable=true})  {
+    return TextFormField(
+      controller: controller,
+      validator: (val) {
+        if (val!.isEmpty) {
+          return "Enter your $hintText first";
+        }
+        return null;
+      },
+      onSaved: onSaved,
+      enabled:enable ,
+      onTap: onTap,
+      keyboardType: textInputType,
+      maxLines: null,
+      decoration: InputDecoration(
+        hintText: hintText,
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(
+            color: dColor,
+            width: 2,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: const BorderSide(
+            color: Colors.red,
+            width: 2,
+          ),
+        ),
+      ),
+    );
+  }
 
 
