@@ -10,6 +10,7 @@ import 'package:supercharged/supercharged.dart';
 import '../../../../../common/globals.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import '../../../../../common/login_components.dart';
+import '../../../../../cubit/app_cubit.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/CostCenters/CostCenter.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/Departments/Department.dart';
 import '../../../../../data/model/modules/module/accounts/basicInputs/RequestTypes/RequestType.dart';
@@ -45,6 +46,7 @@ class AddSettingRequest extends StatefulWidget {
 class _AddSettingRequestState extends State<AddSettingRequest> {
   _AddSettingRequestState();
 
+  List<SettingRequestH> settingRequestsH = [];
   List<SettingRequestD> settingRequestDLst = <SettingRequestD>[];
   List<Menu> menus = [];
   List<RequestType> requestTypes = [];
@@ -832,8 +834,9 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
                           borderRadius: BorderRadius.circular(80),
                         ),
                       ),
-                      onPressed: () {
-                        saveSettingRequest(context);
+                      onPressed: () async{
+                        await getData();
+                        await saveSettingRequest(context);
                       },
                       child: Text('Save'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
                     ),
@@ -883,6 +886,10 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
     );
   }
   saveSettingRequest(BuildContext context) async {
+    if(settingRequestsH.isNotEmpty){
+      FN_showToast(context,'existing_request'.tr(),Colors.black);
+      return;
+    }
     if(settingRequestDLst.isEmpty){
       FN_showToast(context,'please_Insert_One_level_At_Least'.tr(),Colors.black);
       return;
@@ -1081,6 +1088,18 @@ class _AddSettingRequestState extends State<AddSettingRequest> {
         settingRequestDLst.removeAt(indexToRemove);
         setState(() {});
       }
+    }
+  }
+   getData() async {
+    Future<List<SettingRequestH>?> futureSettingRequests =
+    api.getSettingRequestHForAdd(selectedRequestTypeValue, selectedCostCenterValue, selectedDepartmentValue).catchError((Error){
+      AppCubit.get(context).EmitErrorState();
+    });
+    settingRequestsH = (await futureSettingRequests)!;
+    if (settingRequestsH.isNotEmpty) {
+      setState(() {
+
+      });
     }
   }
 }

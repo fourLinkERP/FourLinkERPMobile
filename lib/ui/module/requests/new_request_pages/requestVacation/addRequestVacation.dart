@@ -323,7 +323,6 @@ class _AddRequestVacationState extends State<AddRequestVacation> {
                                       },
                                       filterFn: (instance, filter){
                                         if(instance.costCenterNameAra!.contains(filter)){
-                                          print(filter);
                                           return true;
                                         }
                                         else{

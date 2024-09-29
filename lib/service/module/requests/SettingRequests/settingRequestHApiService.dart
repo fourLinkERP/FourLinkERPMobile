@@ -50,6 +50,43 @@ class SettingRequestHApiService {
     }
   }
 
+  Future<List<SettingRequestH>> getSettingRequestHForAdd (String? requestType,String? cost1, String? department) async {
+    Map data = {
+      'Search': {
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode,
+        'requestTypeCode': requestType,
+        'CostCenterCode1': cost1,
+        'DepartmentCode': department
+      }
+    };
+
+    final http.Response response = await http.post(
+      Uri.parse(searchApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200)
+    {
+      print('SettingRequestHAdd Success');
+      List<dynamic> data = jsonDecode(response.body)['data'];
+      List<SettingRequestH> list = [];
+      if(data.isNotEmpty)
+      {
+        list = data.map((item) => SettingRequestH.fromJson(item)).toList(); //SettingRequestH.fromJson
+      }
+      return list;
+    }
+    else {
+      print('SettingRequestH Failed');
+      throw "Failed to load SettingRequestH list";
+    }
+  }
+
   Future<SettingRequestH> getSettingRequestHById(int id) async {
     var data = {
       // "id": id

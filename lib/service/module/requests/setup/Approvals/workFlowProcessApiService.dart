@@ -9,11 +9,12 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/Approvals/
 
 class WorkFlowProcessApiService {
 
-  String searchApi = baseUrl.toString() + '/api/v1/workflowprocess/search';
-  String createApi = baseUrl.toString() + '/api/v1/workflowprocess';
-  String search2Api = baseUrl.toString() + '/api/v1/workflowprocess/processworkflow'; // Add ID For Get
+  String searchApi = '$baseUrl/api/v1/workflowprocess/search';
+  String searchTransApi = '$baseUrl/api/v1/workflowprocess/searchTransactionSequence';
+  String createApi = '$baseUrl/api/v1/workflowprocess';
+  String search2Api = '$baseUrl/api/v1/workflowprocess/processworkflow';
 
-  Future<List<WorkFlowProcess>> getWorkFlowProcesses (String requestTypeCode, int transactionId) async {
+  Future<List<WorkFlowProcess>> getWorkFlowProcesses(String requestTypeCode, int transactionId) async {
     Map data = {
       'Search': {
         'CompanyCode': companyCode,
@@ -25,6 +26,43 @@ class WorkFlowProcessApiService {
 
     final http.Response response = await http.post(
       Uri.parse(searchApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(data),
+    );
+
+    if(response.statusCode == 200)
+    {
+      print('WorkFlowProcess success1');
+      List<dynamic> data = jsonDecode(response.body)['data'];
+      List<WorkFlowProcess> list = [];
+      if(data.isNotEmpty)
+      {
+        list = data.map((item) => WorkFlowProcess.fromJson(item)).toList();
+      }
+      print('WorkFlowProcess success 2');
+      return list;
+    }
+    else {
+      print('WorkFlowProcess Failed');
+      throw "Failed to load WorkFlowProcess list";
+    }
+  }
+
+  Future<List<WorkFlowProcess>> getWorkFlowTransactionProcesses(String requestTypeCode, int transactionId) async {
+    Map data = {
+      'Search': {
+        'CompanyCode': companyCode,
+        'BranchCode': branchCode,
+        'RequestTypeCode': requestTypeCode,
+        'WorkFlowTransactionsId': transactionId
+      }
+    };
+
+    final http.Response response = await http.post(
+      Uri.parse(searchTransApi),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token'

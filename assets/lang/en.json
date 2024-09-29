@@ -726,6 +726,8 @@
     "please_set_a_group": "please select a group",
     "add_level_Done": "Add Level Done",
     "please_Insert_One_level_At_Least": "please insert one level at least",
-    "please_write_note": "please write a note"
+    "please_write_note": "please write a note",
+    "existing_request": "The request type is existing in this cost center and department",
+    "add_meeting_type": "Add Meeting Type"
 
 }

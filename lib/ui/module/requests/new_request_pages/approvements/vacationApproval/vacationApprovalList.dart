@@ -35,9 +35,9 @@ class ApprovalsState extends State<Approvals> {
 
   @override
   void initState() {
-    AppCubit.get(context).CheckConnection();
-    getData();
     super.initState();
+    getData();
+
     _simulateLoading();
   }
 
@@ -163,12 +163,10 @@ class ApprovalsState extends State<Approvals> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Employee name and date
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    process.actionEmpName!,
+                  Text( process.actionEmpName!.isNotEmpty ? process.actionEmpName! : process.empName!,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -274,7 +272,7 @@ class ApprovalsState extends State<Approvals> {
 
   void getData() async {
     Future<List<WorkFlowProcess>?> futureWorkflowProcess =
-    _apiService.getWorkFlowProcesses("2", widget.vacationRequest.id!).catchError((Error){
+    _apiService.getWorkFlowTransactionProcesses("2", widget.vacationRequest.id!).catchError((Error){
       print('Error ${Error}');
       AppCubit.get(context).EmitErrorState();
     });
