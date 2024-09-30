@@ -835,7 +835,11 @@
     "please_write_note": "من فضلك ادخل ملاحظة",
     "existing_request": "نوع الطلب مسجل من قبل برجاء تغيير مركز التكلفة و القسم",
     "add_meeting_type": "تسجيل نوع اجتماع",
-    "meeting_link": "رابط الاجتماع المباشر"
+    "meeting_link": "رابط الاجتماع المباشر",
+    "searchEducationUnits": "بحث الوحدات الدراسية",
+    "add_unit": "تسجيل وحدة دراسية",
+    "stream_meeting": "انواع الاجتماعات",
+    "educational_unit": "الواحدات الدراسية"
 
 }
 

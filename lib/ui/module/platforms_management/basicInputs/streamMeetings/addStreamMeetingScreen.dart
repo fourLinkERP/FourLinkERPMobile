@@ -1,9 +1,12 @@
 
 import 'package:flutter/material.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/platforms_management/basicInputs/streamMeetings/stream_meeting.dart';
+import 'package:fourlinkmobileapp/service/module/platforms_management/basicInputs/streamMeetings/stream_meeting_api_service.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../../common/globals.dart';
 import '../../../../../data/model/modules/module/general/nextSerial/nextSerial.dart';
+import '../../../../../helpers/toast.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 
 NextSerialApiService _nextSerialApiService= NextSerialApiService();
@@ -17,6 +20,7 @@ class AddMeetingTypeScreen extends StatefulWidget {
 
 class _AddMeetingTypeScreenState extends State<AddMeetingTypeScreen> {
 
+  final StreamMeetingApiService _api = StreamMeetingApiService();
   final _codeController = TextEditingController();
   final _nameAraController = TextEditingController();
   final _nameEngController = TextEditingController();
@@ -269,7 +273,7 @@ class _AddMeetingTypeScreenState extends State<AddMeetingTypeScreen> {
                           ),
                         ),
                         onPressed: () {
-                          //saveMeetingType(context);
+                          saveStreamMeeting(context);
                         },
                         child: Text('Save'.tr(),style: const TextStyle(color: Colors.white, fontSize: 18.0,),),
                       ),
@@ -283,5 +287,29 @@ class _AddMeetingTypeScreenState extends State<AddMeetingTypeScreen> {
         ),
       ),
     );
+  }
+
+  saveStreamMeeting(BuildContext context) async{
+
+    if(_nameAraController.text.isEmpty)
+    {
+      FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
+      return;
+    }
+    if(_nameEngController.text.isEmpty)
+    {
+      FN_showToast(context,'please_enter_name'.tr() ,Colors.black);
+      return;
+    }
+    await _api.createStreamMeeting(context,StreamMeeting(
+        streamMeetingCode: _codeController.text ,
+        streamMeetingNameAra: _nameAraController.text ,
+        streamMeetingNameEng: _nameEngController.text ,
+        streamMeetingUrl: _meetingLinkController.text,
+        descriptionAra: _descNameAraController.text,
+        descriptionEng: _descNameEngController.text
+    ));
+
+    Navigator.pop(context);
   }
 }

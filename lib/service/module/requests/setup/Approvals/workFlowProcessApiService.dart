@@ -19,6 +19,7 @@ class WorkFlowProcessApiService {
       'Search': {
         'CompanyCode': companyCode,
         'BranchCode': branchCode,
+        'langId': langId,
         'RequestTypeCode': requestTypeCode,
         'WorkFlowTransactionsId': transactionId
       }

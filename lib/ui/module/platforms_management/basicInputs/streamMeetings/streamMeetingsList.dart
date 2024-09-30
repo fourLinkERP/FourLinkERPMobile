@@ -1,6 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/meetingTypes/addMeetingTypeScreen.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/platforms_management/basicInputs/streamMeetings/stream_meeting.dart';
+import 'package:fourlinkmobileapp/service/module/platforms_management/basicInputs/streamMeetings/stream_meeting_api_service.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/streamMeetings/addStreamMeetingScreen.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../../../../../cubit/app_cubit.dart';
@@ -8,6 +10,8 @@ import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import '../../../../../utils/permissionHelper.dart';
+
+StreamMeetingApiService _apiService = StreamMeetingApiService();
 
 class MeetingTypesListPage extends StatefulWidget {
   const MeetingTypesListPage({Key? key}) : super(key: key);
@@ -19,9 +23,50 @@ class MeetingTypesListPage extends StatefulWidget {
 class _MeetingTypesListPageState extends State<MeetingTypesListPage> {
 
   final _searchValueController = TextEditingController();
-  List _meetingTypes = [];
-  List _meetingTypesSearch = [];
+  List<StreamMeeting> _meetingTypes = [];
+  List<StreamMeeting> _meetingTypesSearch = [];
 
+  @override
+  void initState() {
+
+    getData();
+    super.initState();
+    AppCubit.get(context).CheckConnection();
+  }
+
+  void getData() async {
+    try {
+      List<StreamMeeting>? futureStreamMeeting = await _apiService.getStreamMeetings();
+
+      if (futureStreamMeeting.isNotEmpty) {
+        _meetingTypes = futureStreamMeeting;
+        _meetingTypesSearch = List.from(_meetingTypes);
+
+        if (_meetingTypes.isNotEmpty) {
+          _meetingTypes.sort((a, b) => b.streamMeetingCode!.compareTo(a.streamMeetingCode!));
+
+          setState(() {});
+        }
+      }
+    } catch (error) {
+      AppCubit.get(context).EmitErrorState();
+    }
+  }
+
+  void onSearch(String search) {
+    if (search.isEmpty) {
+      setState(() {
+        _meetingTypes = List.from(_meetingTypesSearch);
+      });
+    } else {
+      setState(() {
+        _meetingTypes = List.from(_meetingTypesSearch);
+        _meetingTypes = _meetingTypes.where((stage) =>
+            stage.streamMeetingNameAra!.toLowerCase().contains(search)).toList();
+      });
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +77,7 @@ class _MeetingTypesListPageState extends State<MeetingTypesListPage> {
             height: 38,
             child: TextField(
               controller: _searchValueController,
-              //onChanged: (value) => onSearch(value),
+              onChanged: (value) => onSearch(value),
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -113,8 +158,8 @@ class _MeetingTypesListPageState extends State<MeetingTypesListPage> {
               return Card(
                 child: InkWell(
                   child: ListTile(
-                    leading: Image.asset('assets/fitness_app/education_types.png',height: 70.0, width: 70.0,),
-                    title: Text("${'code'.tr()} : ${_meetingTypes[index].educationTypeCode}",
+                    leading: Image.asset('assets/fitness_app/stream_meeting.png',height: 70.0, width: 70.0,),
+                    title: Text("${'code'.tr()} : ${_meetingTypes[index].streamMeetingCode}",
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                         )),
@@ -123,11 +168,11 @@ class _MeetingTypesListPageState extends State<MeetingTypesListPage> {
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'arabicName'.tr()} : ${_meetingTypes[index].educationTypeNameAra}")),
+                            child: Text("${'arabicName'.tr()} : ${_meetingTypes[index].streamMeetingNameAra}")),
                         Container(
                             height: 20,
                             color: Colors.white30,
-                            child: Text("${'englishName'.tr()} : ${_meetingTypes[index].educationTypeNameEng}")
+                            child: Text("${'englishName'.tr()} : ${_meetingTypes[index].streamMeetingNameEng}")
                         ),
                         const SizedBox(width: 5),
                         SizedBox(
@@ -217,10 +262,9 @@ class _MeetingTypesListPageState extends State<MeetingTypesListPage> {
     if(isAllowAdd)
     {
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddMeetingTypeScreen(),
-      ));
-      // .then((value) {
-      //   getData();
-      // });
+      )).then((value) {
+        getData();
+      });
     }
     else
     {

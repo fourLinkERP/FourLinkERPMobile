@@ -147,14 +147,13 @@ class ApprovalsState extends State<Approvals> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Step icon (Person icon instead of step number)
         Column(
           children: [
             Icon(Icons.person, size: 30.0, color: Colors.grey[600]),
             Container(
-              height: 70, // Adjust to control line height between steps
+              height: 70,
               width: 2,
-              color: Colors.grey[400], // Vertical line between steps
+              color: Colors.grey[400],
             ),
           ],
         ),
@@ -175,7 +174,17 @@ class ApprovalsState extends State<Approvals> {
                 ],
               ),
               const SizedBox(height: 5),
-
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text( process.actionEmpJobName!.isNotEmpty ? process.actionEmpJobName! : process.empJobName!,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
               // Level
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -191,7 +200,7 @@ class ApprovalsState extends State<Approvals> {
                     children: [
                       Text(
                         DateFormat('dd MMMM').format(
-                            DateTime.parse(process.trxDate.toString())),
+                            DateTime.parse(process.workFlowStatusDate.toString())),
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 15,
@@ -199,7 +208,7 @@ class ApprovalsState extends State<Approvals> {
                       ),
                       const SizedBox(height: 5.0),
                       Text(
-                        DateFormat('hh:mm a').format(DateTime.parse(process.trxDate.toString())),
+                        DateFormat('hh:mm a').format(DateTime.parse(process.workFlowStatusDate.toString())),
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 15,
