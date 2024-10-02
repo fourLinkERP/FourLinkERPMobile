@@ -1,29 +1,30 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/theme/fitness_app_theme.dart';
 import 'package:fourlinkmobileapp/ui/module/inventory/Items/itemList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/customerGroups/customerGroupsList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/educationStages/educationStagesList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/educationTypes/educationTypesList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/educationYears/educationYearsList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/platforms/platformsList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/qualifications/qualificationsList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/specializations/specializationsList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/stagesClasses/stagesClassesList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/streamMeetings/streamMeetingsList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/streamTypes/streamTypesList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/studentParents/studentParentsList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/students/studentsList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/materials/materialsList.dart';
-import 'package:fourlinkmobileapp/ui/module/platforms_management/basicInputs/trainingCenterUnits/trainingCenterUnitsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/customerGroups/customerGroupsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/educationClasses/educationClassesList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/educationStages/educationStagesList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/educationSubjects/educationSubjectsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/educationTypes/educationTypesList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/educationYears/educationYearsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/platforms/platformsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/qualifications/qualificationsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/specializations/specializationsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/stagesClasses/stagesClassesList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/streamMeetings/streamMeetingsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/streamTypes/streamTypesList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/studentParents/studentParentsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/students/studentsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/materials/materialsList.dart';
+import 'package:fourlinkmobileapp/ui/module/platforms/platforms_management/basicInputs/trainingCenterUnits/trainingCenterUnitsList.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 import '../common/globals.dart';
 import '../helpers/toast.dart';
 import '../ui/module/accountReceivable/basicInputs/Salesman/salesmanList.dart';
 import '../ui/module/accountReceivable/basicInputs/customers/customerList.dart';
-import '../ui/module/platforms_management/basicInputs/teachers/teachersList.dart';
+import '../ui/module/platforms/platforms_management/basicInputs/teachers/teachersList.dart';
 import '../utils/permissionHelper.dart';
 
 
@@ -44,7 +45,9 @@ class MainBasicInputs extends StatelessWidget {
       'assets/fitness_app/educationStages.jpeg',
       'assets/fitness_app/specializations.jpg',
       'assets/fitness_app/stages_classes.png',
+      'assets/fitness_app/education_class.png',
       'assets/fitness_app/education_years.png',
+      'assets/fitness_app/education_subject.png',
       'assets/fitness_app/education_types.png',
       'assets/fitness_app/student_parents.png',
       'assets/fitness_app/stream_types.png',
@@ -68,12 +71,15 @@ class MainBasicInputs extends StatelessWidget {
       'educationStages'.tr(),
       'specializations'.tr(),
       'stages_classes'.tr(),
+      'education_classes'.tr(),
       'education_years'.tr(),
+      'education_subjects'.tr(),
       'education_types'.tr(),
       'student_parents'.tr(),
       'stream_types'.tr(),
       'stream_meeting'.tr(),
-      'educational_unit'.tr()
+      'educational_unit'.tr(),
+
 
     ] : <String>[
 
@@ -237,6 +243,18 @@ class MainBasicInputs extends StatelessWidget {
                       }
                       else  if(index == 9)
                       {
+                        int menuId=58110;
+                        bool isAllowed = PermissionHelper.checkAddPermission(menuId);
+                        if(isAllowed){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const EducationClassesListPage()));
+                        }
+                        else
+                        {
+                          FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                        }
+                      }
+                      else  if(index == 10)
+                      {
                         int menuId=58111;
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
                         if(isAllowed){
@@ -247,7 +265,19 @@ class MainBasicInputs extends StatelessWidget {
                           FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                         }
                       }
-                      else  if(index == 10)
+                      else  if(index == 11)
+                      {
+                        int menuId=58112;
+                        bool isAllowed = PermissionHelper.checkAddPermission(menuId);
+                        if(isAllowed){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const EducationSubjectsLisPage()));
+                        }
+                        else
+                        {
+                          FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
+                        }
+                      }
+                      else  if(index == 12)
                       {
                         int menuId=58113;
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
@@ -259,7 +289,7 @@ class MainBasicInputs extends StatelessWidget {
                           FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                         }
                       }
-                      else  if(index == 11)
+                      else  if(index == 13)
                       {
                         int menuId=58114;
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
@@ -271,7 +301,7 @@ class MainBasicInputs extends StatelessWidget {
                           FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                         }
                       }
-                      else  if(index == 12)
+                      else  if(index == 14)
                       {
                         int menuId=58115;
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
@@ -283,7 +313,7 @@ class MainBasicInputs extends StatelessWidget {
                           FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                         }
                       }
-                      else  if(index == 13)
+                      else  if(index == 15)
                       {
                         int menuId=58116;
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);
@@ -295,7 +325,7 @@ class MainBasicInputs extends StatelessWidget {
                           FN_showToast(context,'you_dont_have_view_permission'.tr(),Colors.black);
                         }
                       }
-                      else  if(index == 14)
+                      else  if(index == 16)
                       {
                         int menuId=58117;
                         bool isAllowed = PermissionHelper.checkAddPermission(menuId);

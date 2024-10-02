@@ -36,10 +36,6 @@ class _AddApprovalState extends State<AddApproval> {
   List<Level> levels = [];
   List<Status> statuses = [];
 
-  List<DropdownMenuItem<String>> menuEmployees = [];
-  List<DropdownMenuItem<String>> menuLevels = [];
-  List<DropdownMenuItem<String>> menuStatuses = [];
-
   String? selectedEmployeeValue;
   String? selectedLevelValue;
   String? selectedStatusValue;
@@ -54,11 +50,13 @@ class _AddApprovalState extends State<AddApproval> {
 
 
   @override
-  void initState() {
+  void initState(){
     getData();
     super.initState();
+
     Future<List<Employee>> futureEmployees = _employeeApiService.getEmployeesFiltrated(empCode).then((data) {
       employees = data;
+
       getEmployeesData();
       return employees;
     }, onError: (e) {
@@ -329,9 +327,9 @@ class _AddApprovalState extends State<AddApproval> {
   }
   getData()  {
     Future<WorkFlowProcess?> futureWorkflowProcess = _apiService.get2WorkFlowProcess("2", widget.vacationRequest.id!).then((data){
-      print("+++++++++----" + widget.vacationRequest.id.toString());
+      print("+++++++++----${widget.vacationRequest.id}");
       process = data;
-      print("empCode: "+ process!.empCode.toString() + "  level: "+ process!.levelCode.toString());
+      print("empCode: ${process!.empCode}  level: ${process!.levelCode}");
       if(process!.empCode == empCode || process!.alternativeEmpCode == empCode){
         selectedEmployeeValue = empCode;
         selectedLevelValue = process!.levelCode;
@@ -344,7 +342,7 @@ class _AddApprovalState extends State<AddApproval> {
   getEmployeesData() {
     if (employees.isNotEmpty) {
       for(var i = 0; i < employees.length; i++){
-        if(employees[i].empCode == empCode){
+        if(employees[i].empCode == selectedEmployeeValue){
           employeeItem = employees[employees.indexOf(employees[i])];
         }
       }

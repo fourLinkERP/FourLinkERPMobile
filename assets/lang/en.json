@@ -732,6 +732,11 @@
     "searchEducationUnits": "Search Educational Units",
     "add_unit": "Add Educational Unit",
     "stream_meeting": "Stream Meeting",
-    "educational_unit": "Educational Unit"
+    "educational_unit": "Educational Unit",
+    "education_classes": "Education Classes",
+    "searchEducationClasses": "Search Education Classes",
+    "add_class": "Add Education Class",
+    "searchEducationSubjects": "Search Education Subjects",
+    "education_subjects": "Education Subjects"
 
 }

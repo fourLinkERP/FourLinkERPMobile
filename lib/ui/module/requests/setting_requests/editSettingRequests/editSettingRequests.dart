@@ -1020,6 +1020,8 @@ class _EditSettingRequestsState extends State<EditSettingRequests> {
       settingRequestDLst = data;
       print(settingRequestDLst.length.toString());
       getSettingRequestData();
+      lineNum = settingRequestDLst.length + 1;
+      print("lineNum$lineNum");
       return settingRequestDLst;
     }, onError: (e) {
       print(e);
@@ -1107,7 +1109,6 @@ class _EditSettingRequestsState extends State<EditSettingRequests> {
     settingRequestD.emailReceivers = _emailReceiversController.text;
     settingRequestD.smsReceivers = _smsReceiversController.text;
     settingRequestD.whatsappReceivers = _whatsappReceiversController.text;
-
     settingRequestD.lineNum = lineNum;
 
     settingRequestDLst.add(settingRequestD);

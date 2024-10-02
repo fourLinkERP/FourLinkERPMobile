@@ -839,7 +839,12 @@
     "searchEducationUnits": "بحث الوحدات الدراسية",
     "add_unit": "تسجيل وحدة دراسية",
     "stream_meeting": "انواع الاجتماعات",
-    "educational_unit": "الواحدات الدراسية"
+    "educational_unit": "الواحدات الدراسية",
+    "education_classes": "الفصول الدراسية",
+    "searchEducationClasses": "بحث الفصول الدراسية",
+    "add_class": "تسجيل فصل دراسي",
+    "searchEducationSubjects": "بحث المواد الدراسية",
+    "education_subjects": "المواد الدراسية"
 
 }
 

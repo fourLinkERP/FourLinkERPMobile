@@ -28,7 +28,7 @@ class SettingRequestList extends StatefulWidget {
 
 class _SettingRequestListState extends State<SettingRequestList> {
 
-  bool isLoading = true;
+  bool _isLoading = true;
   List<SettingRequestH> settingRequestsH = [];
   List<SettingRequestH> _founded = [];
 
@@ -38,8 +38,12 @@ class _SettingRequestListState extends State<SettingRequestList> {
 
     getData();
     super.initState();
+    _simulateLoading();
+  }
+  void _simulateLoading() async {
+    await Future.delayed(const Duration(seconds: 3));
     setState(() {
-      _founded = settingRequestsH;
+      _isLoading = false;
     });
   }
 
@@ -128,17 +132,18 @@ class _SettingRequestListState extends State<SettingRequestList> {
     );
   }
   Widget buildSettingRequests(){
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     if(State is AppErrorState){
-      print("failed1..................");
       return const Center(child: Text('no data'));
     }
     if(AppCubit.get(context).Conection==false){
-      print("failed2..................");
       return const Center(child: Text('no internet connection'));
 
     }
-    else if(settingRequestsH.isEmpty && AppCubit.get(context).Conection==true){
-      return const Center(child: CircularProgressIndicator());
+    if(settingRequestsH.isEmpty){
+      return Center(child: Text("no_data_to_show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     }
     else{
       return Container(
