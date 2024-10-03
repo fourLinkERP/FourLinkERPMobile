@@ -25,22 +25,23 @@ class CustomerListPage extends StatefulWidget {
 }
 
 class _CustomerListPageState extends State<CustomerListPage> {
-  bool isLoading = true;
+  bool _isLoading = true;
   List<Customer> _customers = [];
   List<Customer> _founded = [];
 
 
   @override
   void initState() {
-    // TODO: implement initState
+    AppCubit.get(context).CheckConnection();
 
     getData();
     super.initState();
-    AppCubit.get(context).CheckConnection();
-
-
+    _simulateLoading();
+  }
+  void _simulateLoading() async {
+    await Future.delayed(const Duration(seconds: 3));
     setState(() {
-      _founded = _customers;
+      _isLoading = false;
     });
   }
 
@@ -77,7 +78,6 @@ class _CustomerListPageState extends State<CustomerListPage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
-          //Color.fromRGBO(240, 242, 246,1), // Main Color
           title: SizedBox(
             height: 38,
             child: TextField(
@@ -210,13 +210,16 @@ class _CustomerListPageState extends State<CustomerListPage> {
   }
 
   Widget buildCustomer() {
+    if (_isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
     if (_customers.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
 
     if (AppCubit.get(context).Conection == false) {
-      return const Center(child: Text('no internet connection'));
+      return Center(child: Text("no_data_to_show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     } else {
       return Container(
         padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),

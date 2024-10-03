@@ -21,16 +21,24 @@ class EducationSubjectsLisPage extends StatefulWidget {
 
 class _EducationSubjectsLisPageState extends State<EducationSubjectsLisPage> {
 
+  bool _isLoading = true;
   final _searchValueController = TextEditingController();
   List<EducationSubject> _educationSubjects = [];
   List<EducationSubject> _educationSubjectsSearch = [];
 
   @override
   void initState() {
+    AppCubit.get(context).CheckConnection();
 
     getData();
     super.initState();
-    AppCubit.get(context).CheckConnection();
+    _simulateLoading();
+  }
+  void _simulateLoading() async {
+    await Future.delayed(const Duration(seconds: 3));
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   void getData() async {
@@ -76,7 +84,7 @@ class _EducationSubjectsLisPageState extends State<EducationSubjectsLisPage> {
             height: 38,
             child: TextField(
               controller: _searchValueController,
-              //onChanged: (value) => onSearch(value),
+              onChanged: (value) => onSearch(value),
               decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.white,
@@ -141,18 +149,18 @@ class _EducationSubjectsLisPageState extends State<EducationSubjectsLisPage> {
   }
 
   Widget buildEducationSubject() {
-    if (_educationSubjects.isEmpty) {
+    if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
     }
-
-    if (AppCubit
-        .get(context)
-        .Conection == false) {
+    if (AppCubit.get(context).Conection == false) {
       return const Center(child: Text('no internet connection'));
-    } else {
+    }
+    if (_educationSubjects.isEmpty) {
+      return Center(child: Text("no_data_to_show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
+    }
+    else {
       return Container(
-        padding: const EdgeInsets.only(
-            top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
+        padding: const EdgeInsets.only(top: 20.0, bottom: 20.0, left: 10.0, right: 10.0),
         color: const Color.fromRGBO(240, 242, 246, 1),
         child: ListView.builder(
             itemCount: _educationSubjects.isEmpty ? 0 : _educationSubjects.length,
