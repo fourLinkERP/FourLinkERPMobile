@@ -122,10 +122,7 @@ class AppCubit extends Cubit<AppStates>{
     {
       systemName = (value != null)? value.toString() : ""
     });
-    // pass=(await  CacheHelper.getDate('PASS'))!;
-    // Api=(await CacheHelper.getDate('API'))!;
-    // Financialyear=(await CacheHelper.getDate('FY'))!;
-    // companyName=(await CacheHelper.getDate('company name'))!;
+
     print('Cubit Done');
     emit(AppChangeState());
   }

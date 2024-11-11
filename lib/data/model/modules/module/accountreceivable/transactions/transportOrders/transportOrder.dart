@@ -9,9 +9,9 @@ class TransportOrder{
   String? driverCode;
   String? fromCityCode;
   String? toCityCode;
-  int? dizelAllowance;
-  int? transportationFees;
-  int? driverBonus;
+  double? dizelAllowance;
+  double? transportationFees;
+  double? driverBonus;
 
   TransportOrder({
     this.id,
@@ -39,9 +39,9 @@ class TransportOrder{
       driverCode: (json['driverCode'] !=null) ? json['driverCode'] as String : "",
       fromCityCode: (json['fromCityCode'] !=null) ? json['fromCityCode'] as String : "",
       toCityCode: (json['toCityCode'] !=null) ? json['toCityCode'] as String : "",
-      dizelAllowance: (json['dizelAllowance'] !=null) ? json['dizelAllowance'] as int : 0,
-      transportationFees: (json['transportationFees'] !=null) ? json['transportationFees'] as int : 0,
-      driverBonus: (json['driverBonus'] !=null) ? json['driverBonus'] as int : 0,
+      dizelAllowance: (json['dizelAllowance'] !=null) ? json['dizelAllowance'].toDouble() : 0.0,
+      transportationFees: (json['transportationFees'] !=null) ? json['transportationFees'].toDouble() : 0.0,
+      driverBonus: (json['driverBonus'] !=null) ? json['driverBonus'].toDouble() : 0.0,
 
     );
   }

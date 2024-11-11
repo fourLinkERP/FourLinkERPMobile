@@ -77,11 +77,11 @@ class _CustomerInfoState extends State<CustomerInfo> {
 
   CarGroup carGroupItem = CarGroup(groupCode: "", groupNameAra: "", groupNameEng: "", id: 0);
 
-  String? selectedCarGroupValue = null;
-  String? selectedCustomerValue = null;
-  String? selectedCustomerGroupValue = null;
-  String? selectedAddCarGroupValue = null;
-  String? selectedCustomerTypeValue = null;
+  String? selectedCarGroupValue;
+  String? selectedCustomerValue;
+  String? selectedCustomerGroupValue;
+  String? selectedAddCarGroupValue;
+  String? selectedCustomerTypeValue;
   int _value = 1;
   bool isSelected = true;
 

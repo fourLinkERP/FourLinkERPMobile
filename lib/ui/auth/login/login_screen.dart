@@ -160,8 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   type: TextInputType.text,
                                   colors: Colors.blueGrey,
                                   prefix: Icons.lock,
-                                  suffix: isPassword ? Icons.visibility : Icons
-                                      .visibility_off,
+                                  suffix: isPassword ? Icons.visibility : Icons.visibility_off,
                                   isPassword: isPassword,
                                   suffixPressed: () {
                                     setState(() {
@@ -184,8 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       DropdownSearch<Branch>(
                                         selectedItem: null,
                                         popupProps: PopupProps.menu(
-                                          itemBuilder: (context, item,
-                                              isSelected) {
+                                          itemBuilder: (context, item, isSelected) {
                                             return Container(
                                               margin: const EdgeInsets.symmetric(horizontal: 8),
                                               decoration: !isSelected ? null : BoxDecoration(
@@ -338,22 +336,22 @@ class _LoginScreenState extends State<LoginScreen> {
                                   },
                                 ),
                               ),
-                              // Container(
-                              //   margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
-                              //   alignment: Alignment.center,
-                              //   child: GestureDetector(
-                              //     onTap: () async {
-                              //       startQuickLogin();
-                              //     },
-                              //     child: Text(
-                              //       '<- الدخول السريع'.tr(),
-                              //       style: const TextStyle(
-                              //         color: Colors.red,
-                              //         fontWeight: FontWeight.bold,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
+                              Container(
+                                margin: const EdgeInsets.fromLTRB(50, 20, 0, 20),
+                                alignment: Alignment.center,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    startQuickLogin();
+                                  },
+                                  child: Text(
+                                    '<- الدخول السريع'.tr(),
+                                    style: const TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
 
                               Align(
                                 alignment: FractionalOffset.bottomCenter,

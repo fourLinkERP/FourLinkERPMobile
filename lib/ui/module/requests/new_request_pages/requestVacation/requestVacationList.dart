@@ -376,8 +376,8 @@ class _RequestVacationListState extends State<RequestVacationList> {
       getData();
     }
     setState(() {
-      vacationRequests = _founded.where((VacationRequests) =>
-          VacationRequests.trxSerial!.toLowerCase().contains(search)).toList();
+      vacationRequests = _founded.where((vacationRequest) =>
+          vacationRequest.trxSerial!.toLowerCase().contains(search)).toList();
     });
   }
   void getData() async {

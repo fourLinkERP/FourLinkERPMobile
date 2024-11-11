@@ -11,9 +11,6 @@ import '../../data/model/auth/Login.dart';
 class LoginService {
   final Dio _dio = Dio();
   String BASE_URL=  baseUrl.toString() + '/api/tokens';
-  //String BASE_URL= 'http://webapi.4linkerp.com/api/tokens';
-  //String BASE_URL= baseUrl.toString()  + 'tokens/';
-  //password ='123Pa$$word!'
 
   Future<Login> logApi2(BuildContext context ,String email, String password, int branchLogCode ) async {
 
@@ -72,38 +69,5 @@ class LoginService {
 
     return Login();
   }
-
-
-
-  //
-  //  Future<Login> logService(String email, String password) async {
-  //
-  //   var status;
-  //
-  //   final Uri myUrl = Uri.parse(BASE_URL + "api/tokens");
-  //
-  //   var map = new Map<String, String>();
-  //   map['UserNameOrEmail'] = email;
-  //   map['Password'] = password;
-  //   map['tenant'] = this.Tenant;
-  //
-  //   http.Response response = await http.post(
-  //       myUrl,
-  //       body: map
-  //   );
-  //
-  //   if (response.statusCode == 200) {
-  //     // var data = CompletePayment.fromJson(jsonDecode(response.body));
-  //     // var Data = data.result.code;
-  //     Navigator.pushReplacement(
-  //         context,
-  //         MaterialPageRoute(
-  //             builder: (context) =>
-  //                 HomeScreen()));
-  //   }
-  // }
-
-
-
 
 }

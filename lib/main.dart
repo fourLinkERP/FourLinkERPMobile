@@ -79,18 +79,6 @@ class _MyAppState extends State<MyApp> {
         },
         builder: (BuildContext context, Object? state) {
           return MaterialApp(
-
-            // locale:Locale(currentLanguage),
-            // supportedLocales: const [
-            //   Locale('ar'),
-            //   Locale('en'),
-            // ],
-            // localizationsDelegates: const [
-            //   GlobalMaterialLocalizations.delegate,
-            //   GlobalCupertinoLocalizations.delegate,
-            //   GlobalWidgetsLocalizations.delegate
-            // ],
-
             localizationsDelegates: translator.delegates,
             locale:AppCubit.get(context).isArabic?Locale('ar'):Locale('en'),
             supportedLocales: translator.locals(),
@@ -100,25 +88,6 @@ class _MyAppState extends State<MyApp> {
               fontFamily: 'jt',
 
             ),
-            /*       locale: translator.activeLocale,
-      supportedLocales: translator.locals(),
-      localizationsDelegates: [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-        DefaultCupertinoLocalizations.delegate,
-      ],*/
-            /* supportedLocales: [
-        const Locale('en', 'US'), // English
-        const Locale('th', 'TH'), // Thai
-      ],*/
-//        locale: translator.locals().first.toString()=="en_"?Locale("en_"):Locale("ar_"),
-//        supportedLocales: translator.locals(),
-            //  home: Tabs_page()
-            // initialRoute:  _auth ? '/home':'/log_in',
-            /* routes: {
-        '/': (context) => Splash(),
-      },*/
             home:SplashScreen(),
 
             routes:  {

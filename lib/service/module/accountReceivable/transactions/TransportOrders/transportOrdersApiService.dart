@@ -10,18 +10,17 @@ import '../../../../../data/model/modules/module/accountreceivable/transactions/
 
 class TransportOrderApiService{
 
-  String searchApi= baseUrl.toString()  + '/api/v1/transportertransportorders/search';
-  String createApi= baseUrl.toString()  + '/api/v1/transportertransportorders';
-  String updateApi= baseUrl.toString()  + '/api/v1/transportertransportorders/';
-  String deleteApi= baseUrl.toString()  + '/api/v1/transportertransportorders/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/transportertransportorders/';
+  String searchApi= '$baseUrl/api/v1/transportertransportorders/search';
+  String createApi= '$baseUrl/api/v1/transportertransportorders';
+  String updateApi= '$baseUrl/api/v1/transportertransportorders/';
+  String deleteApi= '$baseUrl/api/v1/transportertransportorders/';
+  String getByIdApi= '$baseUrl/api/v1/transportertransportorders/';
 
   Future<List<TransportOrder>?> getTransportOrder() async {
-
     Map data = {
-      'Search':{
-        'CompanyCode': companyCode,
-        'BranchCode': branchCode
+      'Search': {
+        "CompanyCode": companyCode,
+        "BranchCode": branchCode
       }
     };
 
@@ -33,23 +32,32 @@ class TransportOrderApiService{
       },
       body: jsonEncode(data),
     );
-    print('TransportOrder $data');
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<TransportOrder> list = [];
+
       if (data.isNotEmpty) {
-        list = data.map((item) => TransportOrder.fromJson(item)).toList();
+        try {
+          list = data.map((item) {
+            try {
+              return TransportOrder.fromJson(item);
+            } catch (e) {
+              print("Error parsing item: $item");
+              print("Error: $e");
+              return null;
+            }
+          }).where((item) => item != null).cast<TransportOrder>().toList();
+        } catch (e) {
+          print("Error mapping data: $e");
+        }
       }
-      print('transportOrder Finish');
-      return  list;
+      return list;
     } else {
-      print('transportOrder Failure');
       throw "Failed to load TransportOrder list";
     }
   }
 
   Future<int> createTransportOrder(BuildContext context ,TransportOrder transportOrder) async {
-    print('save transportOrder 0');
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
