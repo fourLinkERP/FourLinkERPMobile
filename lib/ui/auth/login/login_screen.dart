@@ -493,34 +493,29 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   setMenuPermissions() {
-    //Set Menu Permission
     Future<List<MenuPermission>> futureMenuPermission = _employeeApiService.getEmployeePermission(empCode).then((data) {
       MenuPermissionList = data;
-
-      print(MenuPermissionList[0].menuId.toString());
-
-
       return MenuPermissionList;
     }, onError: (e) {
       print(e);
     });
   }
 
-  setEmployeeData() {
-    _employeeApiService.getEmployeeByEmpCode(empCode).then((data) {
+  Future<void> setEmployeeData() async {
+    try {
+      final data = await _employeeApiService.getEmployeeByEmpCode(empCode);
       empUserCode = data.userCode!;
       empUserId = data.userId!;
       isManager = data.isManager;
       isIt = data.isIt;
       storeCode = data.storeCode!;
       isEditPrice = data.isEditPrice;
-      print('storeCode: $storeCode');
+      empNotActive = data.notActive!;
+      print('empNotActive: $empNotActive');
       print(empUserId);
-
-    }, onError: (e) {
-      print(e);
-    });
-
+    } catch (e) {
+      print('Error in setEmployeeData: $e');
+    }
   }
   setItemsOfferData(){
     Future<List<Item>> futureBalancedItems = _itemsApiService.getOfferItems().then((data) {
@@ -568,42 +563,41 @@ class _LoginScreenState extends State<LoginScreen> {
 
     int branchLoginCode = int.parse(branchCodeSelectedValue!);
     if (isLive) {
-      Login log = await _loginService.logApi2(context, _emailController.text, _passwordController.text, branchLoginCode);
+      Login log = await _loginService.logApi2(
+          context, _emailController.text, _passwordController.text, branchLoginCode);
 
       if (log.token!.isNotEmpty) {
         token = log.token!;
         empCode = log.empCode!;
         print(empCode);
-        if (baseUrl.toString().isEmpty){      // Edited for Log in without entering URL in settings
-          baseUrl =  Uri.parse( "$urlString/api/");
-        }
-        String url = baseUrl.toString();
 
+        if (baseUrl.toString().isEmpty) {
+          baseUrl = Uri.parse("$urlString/api/");
+        }
+
+        String url = baseUrl.toString();
         if (url.isEmpty) {
-          String urlString1 = "$urlString/api/"; // Default Api
+          String urlString1 = "$urlString/api/"; // Default API
           baseUrl = Uri.parse(urlString1);
         }
 
-        //checkUserGroupData
-        // EmployeeGroupStatus employeeGroupStatus = await _employeeApiService
-        //     .checkUserGroupData(empCode);
-        //
-        // if (employeeGroupStatus.statusCode == 1) // Has Permission
-        // {
-          await setDashboardItems();
-          setMenuPermissions();
-          setCompanyGeneralSetup();
-          setCompanyGeneralEmailSetup();
-          setEmployeeData();
-          setItemsOfferData();
-          await setItemInvoiceData();
-          setCompanyLogo();
+        await setDashboardItems();
+        setMenuPermissions();
+        setCompanyGeneralSetup();
+        setCompanyGeneralEmailSetup();
+        await setEmployeeData();
+        setItemsOfferData();
+        await setItemInvoiceData();
+        setCompanyLogo();
+
+        if (!empNotActive) {
+          print("Emp is Active");
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-      // }
+        } else {
+          print("Emp is Not Active");
+          FN_showToast(context, 'user_not_active'.tr(), Colors.black);
+        }
       }
-    }
-    else{
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
     }
   }
 
@@ -629,7 +623,6 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       // EmployeeGroupStatus employeeGroupStatus = await _employeeApiService.checkUserGroupData(empCode);
-      //
       // if (employeeGroupStatus.statusCode == 1) // Has Permission
       //   {
         await setDashboardItems();
@@ -640,8 +633,17 @@ class _LoginScreenState extends State<LoginScreen> {
         setItemsOfferData();
         setItemInvoiceData();
         setCompanyLogo();
-
+      if(empNotActive == false)
+      {
+        print("user is active");
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+      }
+      else
+      {
+        print("user is not active");
+        FN_showToast(context, 'user_not_active'.tr(), Colors.black);
+        return;
+      }
       }
    // }
   }

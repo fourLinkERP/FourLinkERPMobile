@@ -90,7 +90,6 @@ import 'package:intl/intl.dart';
       'CashTypeCode': cash.cashTypeCode,
       'trxSerial': cash.trxSerial,
       'trxDate': cash.trxDate,
-      'Year': financialYearCode,
       "SalesManCode": cash.salesManCode,
       'RefNo': cash.refNo,
       'Description': cash.description,
@@ -107,8 +106,6 @@ import 'package:intl/intl.dart';
       'DescriptionEng': cash.descriptionNameEnglish,
       'TafqitNameArabic': cash.tafqitNameArabic,
       'TafqitNameEnglish': cash.tafqitNameEnglish,
-      "addBy": empUserId,
-      "addTime": DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()),
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,
@@ -119,10 +116,13 @@ import 'package:intl/intl.dart';
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "confirmed": true
+      "confirmed": true,
+      "Year": financialYearCode,
+      "addBy": empUserId,
+      "addTime": DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()),
 
     };
-    print('Cash Receive Save 1');
+    print('Cash Receive Save');
     print(createApi);
     print(data);
     final http.Response response = await http.post(

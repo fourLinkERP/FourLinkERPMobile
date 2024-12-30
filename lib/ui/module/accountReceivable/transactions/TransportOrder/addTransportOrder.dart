@@ -709,9 +709,9 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
       driverCode: selectedDriverValue,
       fromCityCode: selectedFromLocationValue,
       toCityCode: selectedToLocationValue,
-      driverBonus: _driverReplyController.text.toInt(),
-      dizelAllowance: _fuelAllowanceController.text.toInt(),
-      transportationFees: _transportationFeeController.text.toInt(),
+      driverBonus: _driverReplyController.text.toDouble(),
+      dizelAllowance: _fuelAllowanceController.text.toDouble(),
+      transportationFees: _transportationFeeController.text.toDouble(),
 
     ));
     Navigator.pop(context);

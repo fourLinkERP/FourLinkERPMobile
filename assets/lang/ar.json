@@ -844,7 +844,8 @@
     "searchEducationClasses": "بحث الفصول الدراسية",
     "add_class": "تسجيل فصل دراسي",
     "searchEducationSubjects": "بحث المواد الدراسية",
-    "education_subjects": "المواد الدراسية"
+    "education_subjects": "المواد الدراسية",
+    "user_not_active": "عفواً, لا يوجد لديك صلاحية"
 
 }
 

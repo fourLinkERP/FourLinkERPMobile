@@ -106,10 +106,13 @@ class _MyDutiesState extends State<MyDuties> {
                                   Text("${'date'.tr()} : ${DateFormat('yyyy-MM-dd').format(DateTime.parse(duties[index].trxDate.toString()))}")  ,
                                 ],
                               )),
-                          Container(height: 20, color: Colors.white30, child: Row(
-                            children: [
-                              Text("${'employee'.tr()} : ${duties[index].requestEmpName}"),
-                            ],
+                          Container(
+                              height: 20,
+                              color: Colors.white30,
+                              child: Row(
+                                children: [
+                                  Text("${'employee'.tr()} : ${duties[index].requestEmpName}"),
+                                ],
                           )),
                           const SizedBox(width: 5),
                           SizedBox(

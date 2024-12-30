@@ -40,11 +40,9 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
 
   @override
   void initState() {
-  
+    super.initState();
     _getData();
 
-    super.initState();
-    
   }
 
   void _getData() async {

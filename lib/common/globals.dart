@@ -68,6 +68,7 @@ bool? isEditPrice = false;
 String empUserCode = "A3ddsdwewewq";
 String empUserId = "";
 String empName = "";
+bool empNotActive = false;
 String jobCode = "";
 String jobName = "";
 String costCenterCode = "";
@@ -81,9 +82,9 @@ String currentLanguage='ar'; /// it was en
 DateTime date =DateTime.now();
 
 //Menu Permission
-List<MenuPermission>  MenuPermissionList=[];
+List<MenuPermission> MenuPermissionList=[];
 //Email Settings
-late EmailSetting  EmailSettingData;
+late EmailSetting EmailSettingData;
 //General Setup
 late CompanyGeneralSetup  CompanyGeneralSetupData;
 var basicInputsUrl = Uri.parse('https://www.youtube.com/watch?v=knPqOXK_F5Q');

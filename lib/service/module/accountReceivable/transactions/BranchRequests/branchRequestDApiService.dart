@@ -25,7 +25,6 @@ class BranchRequestDApiService {
       }
     };
 
-    print('BranchRequestD: $data');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -36,17 +35,14 @@ class BranchRequestDApiService {
     );
 
     if (response.statusCode == 200) {
-      print('Booter 3 BranchRequestD');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<BranchRequestD> list = [];
       if (data.isNotEmpty) {
         list = data.map((item) => BranchRequestD.fromJson(item)).toList();
       }
-      print('B 1 Finish BranchRequestD');
       return  list;
     } else {
-      print('Booter Error');
-      throw "Failed to load check store list";
+      throw "Failed to load BranchRequestD list";
     }
   }
 
@@ -98,8 +94,6 @@ class BranchRequestDApiService {
       print('Error Create D' );
       throw Exception('Failed to post branchRequestD');
     }
-
-    return  0;
   }
 
   Future<int> updateBranchRequestD(BuildContext context ,int id, BranchRequestD branchRequestD) async {

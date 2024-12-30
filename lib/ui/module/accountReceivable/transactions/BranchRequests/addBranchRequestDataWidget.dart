@@ -71,7 +71,6 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
     super.initState();
 
     fillCompos();
-
   }
 
   DateTime get pickedDate => DateTime.now();

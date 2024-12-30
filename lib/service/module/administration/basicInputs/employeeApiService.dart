@@ -13,14 +13,13 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<List<Employee>>  getEmployees() async {
 
-    String searchApi= baseUrl.toString()  + '/api/v1/employees/search';
+    String searchApi= '$baseUrl/api/v1/employees/search';
 
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode
     };
 
-    print('Employee 1');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -32,32 +31,28 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
     if (response.statusCode == 200) {
-      print('Employee 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<Employee> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => Employee.fromJson(item)).toList();
       }
 
       return  list;
     } else {
-      print('Employee Failed');
       throw "Failed to load employee list";
     }
   }
 
   Future<Employee> getEmployeeByEmpCode(String empCode) async {
 
-    String searchApi= baseUrl.toString()  + '/api/v1/employees/search';
+    String searchApi= '$baseUrl/api/v1/employees/search';
     var data = {
       "search":{
         'CompanyCode': companyCode,
-        'BranchCode': branchCode,
         'empCode': empCode
       }
     };
 
-    print('Employee 1');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -69,21 +64,15 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 
     if (response.statusCode == 200) {
-      print('Employee 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<Employee> list = [];
        Employee  emp ;
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => Employee.fromJson(item)).toList();
       }
-      print('Employee 3');
       emp= list[0];
       return  emp;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => Employee.fromJson(data))
-      //     .toList();
     } else {
-      print('Employee Failed');
       throw "Failed to load employee list";
     }
 
@@ -119,20 +108,17 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<EmployeeGroupStatus> checkUserGroupData(String empCode) async {
 
-    String getByIdApi= baseUrl.toString()  + '/api/v1/employees/checkUserGroupData';  // Add ID For Get
-    print('checkUserGroupData URL : ' + getByIdApi );
+    String getByIdApi= '$baseUrl/api/v1/employees/checkUserGroupData';
 
-    print('token : ' );
-    print('token : ' + token.toString() );
     var data = {
       'Search': {
         'empCode':empCode,
         'companyCode':companyCode,
-        'branchCode':branchCode
+        //'branchCode':branchCode
       }
     };
 
-    print('checkUserGroupData URL : ' + data.toString() );
+    print('checkUserGroupData URL : $data' );
 
     var response = await http.post(Uri.parse(getByIdApi),
         body: json.encode(data)
@@ -231,9 +217,9 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<void> deleteEmployee(BuildContext context ,int? id) async {
 
-    String deleteApi= baseUrl.toString()  + '/api/v1/employees/';
+    String deleteApi= '$baseUrl/api/v1/employees/';
     String apiDel=deleteApi + id.toString();
-    print('url' + apiDel);
+    print('url$apiDel');
     var data = {
       // "id": id
     };
@@ -258,7 +244,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<List<MenuPermission>>  getEmployeePermission(String empCode) async {
 
-    String searchApi= baseUrl.toString()  + '/api/v1/employees/getEmployeePermission';
+    String searchApi= '$baseUrl/api/v1/employees/getEmployeePermission';
 
     Map data = {
       'Search': {
@@ -266,7 +252,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       }
     };
 
-    print('Employee Perm');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{

@@ -745,9 +745,9 @@ class _EditTransferOrderDataWidgetState extends State<EditTransferOrderDataWidge
       driverCode: selectedDriverValue,
       fromCityCode: selectedFromLocationValue,
       toCityCode: selectedToLocationValue,
-      driverBonus: _driverBonus.text.toInt(),
-      dizelAllowance: _fuelAllowance.text.toInt(),
-      transportationFees: _transportationFee.text.toInt(),
+      driverBonus: _driverBonus.text.toDouble(),
+      dizelAllowance: _fuelAllowance.text.toDouble(),
+      transportationFees: _transportationFee.text.toDouble(),
 
     ));
     Navigator.pop(context);

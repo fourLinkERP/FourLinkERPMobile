@@ -29,28 +29,6 @@ import '../../../../../data/model/modules/module/accountReceivable/basicInputs/s
 import '../../../../../service/module/accountReceivable/basicInputs/SalesMen/salesManApiService.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 import '../../../../../theme/fitness_app_theme.dart';
-//APIS
-NextSerialApiService _nextSerialApiService=NextSerialApiService();
-TafqeetApiService _tafqeetApiService=TafqeetApiService();
-CashTypeTypeApiService _cashTypeTypeApiService=CashTypeTypeApiService();
-CashTargetTypeApiService _cashTargetTypeApiService=CashTargetTypeApiService();
-BoxTypeApiService _boxTypeApiService=BoxTypeApiService();
-CashReceiveApiService _cashReceiveApiService=CashReceiveApiService();
-CustomerApiService _customerApiService=CustomerApiService(); //Customer
-CashSafeApiService _cashSafeApiService=CashSafeApiService(); //Cash
-CashBankBranchApiService _cashBankBranchApiService=CashBankBranchApiService(); //Bank
-SalesManApiService _salesManApiService = SalesManApiService();
-
-//List Models
-// List<Customer> customers=[];
-List<CashType> cashTypes=[];
-List<CashTargetType> cashTargetTypes=[];
-List<TargetCode> targetCodes=[];
-List<BoxType> boxTypes=[];
-List<BoxCode> boxCodes=[];
-List<Customer> customers=[];
-List<CashSafe> cashSafes=[];
-List<CashBankBranch> cashBankBranches=[];
 
 
 class AddCashReceiveDataWidget extends StatefulWidget {
@@ -62,6 +40,27 @@ class AddCashReceiveDataWidget extends StatefulWidget {
 
 class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
   _AddCashReceiveDataWidgetState();
+
+  final NextSerialApiService _nextSerialApiService=NextSerialApiService();
+  final TafqeetApiService _tafqeetApiService=TafqeetApiService();
+  final CashTypeTypeApiService _cashTypeTypeApiService=CashTypeTypeApiService();
+  final CashTargetTypeApiService _cashTargetTypeApiService=CashTargetTypeApiService();
+  final BoxTypeApiService _boxTypeApiService=BoxTypeApiService();
+  final CashReceiveApiService _cashReceiveApiService=CashReceiveApiService();
+  final  CustomerApiService _customerApiService=CustomerApiService(); //Customer
+  final CashSafeApiService _cashSafeApiService=CashSafeApiService(); //Cash
+  final CashBankBranchApiService _cashBankBranchApiService=CashBankBranchApiService(); //Bank
+  final SalesManApiService _salesManApiService = SalesManApiService();
+
+// List<Customer> customers=[];
+  List<CashType> cashTypes=[];
+  List<CashTargetType> cashTargetTypes=[];
+  List<TargetCode> targetCodes=[];
+  List<BoxType> boxTypes=[];
+  List<BoxCode> boxCodes=[];
+  List<Customer> customers=[];
+  List<CashSafe> cashSafes=[];
+  List<CashBankBranch> cashBankBranches=[];
 
   List<SalesMan> salesMen = [];
   String? selectedSalesManValue;
@@ -126,44 +125,41 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-      tooltip: 'save',
-      elevation: 5,
-      highlightElevation: 5,
-      backgroundColor:  Colors.transparent,
-      onPressed: (){
-        saveCashReceive(context);
-      },
-
-      child:Container(
-
-        decoration: BoxDecoration(
-          color: FitnessAppTheme.nearlyDarkBlue,
-          gradient: LinearGradient(
-              colors: [
-                FitnessAppTheme.nearlyDarkBlue,
-                HexColor('#6A88E5'),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight),
-          shape: BoxShape.circle,
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.4),
-                offset: const Offset(2.0, 14.0),
-                blurRadius: 16.0),
-          ],
-        ),
-        child: const Material(
-          color: Colors.transparent,
-          child: Icon(
-            Icons.data_saver_on,
-            color: FitnessAppTheme.white,
-            size: 46,
+        tooltip: 'save',
+        elevation: 5,
+        highlightElevation: 5,
+        backgroundColor:  Colors.transparent,
+        onPressed: (){
+          saveCashReceive(context);
+        },
+        child:Container(
+          decoration: BoxDecoration(
+            color: FitnessAppTheme.nearlyDarkBlue,
+            gradient: LinearGradient(
+                colors: [
+                  FitnessAppTheme.nearlyDarkBlue,
+                  HexColor('#6A88E5'),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight),
+            shape: BoxShape.circle,
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.4),
+                  offset: const Offset(2.0, 14.0),
+                  blurRadius: 16.0),
+            ],
+          ),
+          child: const Material(
+            color: Colors.transparent,
+            child: Icon(
+              Icons.data_saver_on,
+              color: FitnessAppTheme.white,
+              size: 46,
+            ),
           ),
         ),
       ),
-    ),
-
       appBar: AppBar(
         centerTitle: true,
         title: ListTile(
@@ -173,129 +169,126 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
         ),
         backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
       ),
-
       body: Form(
         key: _addFormKey,
         child: SingleChildScrollView(
           child: Card(
             child: Container(
               padding: const EdgeInsets.all(4.0),
-                child: Column(
-                    crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
-                    children: <Widget>[
+              child: Column(
+                  crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
+                  children: <Widget>[
 
-              Form(
-                  key: _dropdownTypeFormKey,
-                  child: Column(
-                    crossAxisAlignment: langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    Form(
+                        key: _dropdownTypeFormKey,
+                        child: Column(
+                          crossAxisAlignment: langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
 
-                      DropdownSearch<CashType>(
-                        validator: (value) => value == null ? "select_a_Type".tr() : null,
-                        selectedItem: cashTypeItem,
-                        popupProps: PopupProps.menu(
-                          itemBuilder: (context, item, isSelected) {
-                            return Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 8),
-                              decoration: !isSelected ? null
-                                  : BoxDecoration(
-                                border: Border.all(color: Theme.of(context).primaryColor),
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
+                            DropdownSearch<CashType>(
+                              validator: (value) => value == null ? "select_a_Type".tr() : null,
+                              selectedItem: cashTypeItem,
+                              popupProps: PopupProps.menu(
+                                itemBuilder: (context, item, isSelected) {
+                                  return Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                                    decoration: !isSelected ? null
+                                        : BoxDecoration(
+                                      border: Border.all(color: Theme.of(context).primaryColor),
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.white,
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text((langId ==1 )?item.descAra.toString():item.descEng.toString()),
+                                    ),
+                                  );
+                                },
+                                showSearchBox: true,
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text((langId ==1 )?item.descAra.toString():item.descEng.toString()),
-                              ),
-                            );
-                          },
-                          showSearchBox: true,
+                              enabled: false,
+                              items: cashTypes,
+                              itemAsString: (CashType u) =>(langId ==1 )? u.descAra.toString() : u.descEng.toString(),
+
+                              onChanged: (value){
+                                selectedTypeCodeValue = value!.code.toString();
+                                boxTypeSelectedValue = 2;
+                                setNextSerial();
+                              },
+
+                              filterFn: (instance, filter){
+                                if((langId ==1 )? instance.descAra!.contains(filter) : instance.descEng!.contains(filter)){
+                                  print(filter);
+                                  return true;
+                                }
+                                else{
+                                  return false;
+                                }
+                              },
+                              dropdownDecoratorProps: DropDownDecoratorProps(
+                                dropdownSearchDecoration: InputDecoration(
+                                  labelText: "type".tr(),
+
+                                ),),
+
+                            ),
+
+                          ],
+                        )),
+                    const SizedBox(height: 20),
+
+                    Row(
+                      children: [
+                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Serial :'.tr(),
+                            style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                        const SizedBox(width: 10),
+                        SizedBox(
+                          width: 100,
+                          child: textFormFields(
+                            controller: _cashReceiveSerialController,
+                            enable: false,
+                            hintText: "serial".tr(),
+                            onSaved: (val) {
+                              cashReceiveSerial = val;
+                            },
+                            textInputType: TextInputType.name,
+                          ),
                         ),
-                        enabled: false,
-                        items: cashTypes,
-                        itemAsString: (CashType u) =>(langId ==1 )? u.descAra.toString() : u.descEng.toString(),
+                        const SizedBox(width: 10),
+                        Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Date :'.tr(),
+                            style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                        const SizedBox(width: 10),
+                        SizedBox(
+                          width: 100,
+                          child: textFormFields(
+                            enable: false,
+                            controller: _cashReceiveDateController,
+                            hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
+                            onTap: () async {
+                              DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1950),
+                                  lastDate: DateTime(2050));
 
-                        onChanged: (value){
-                          //v.text = value!.cusTypesCode.toString();
-                          //print(value!.id);
-                          selectedTypeCodeValue = value!.code.toString();
-                          boxTypeSelectedValue = 2;
-                          setNextSerial();
-                        },
+                              if (pickedDate != null) {
+                                _cashReceiveDateController.text =DateFormat('yyyy-MM-dd').format(pickedDate);
+                              }
+                            },
+                            onSaved: (val) {
+                              cashReceiveDate = val;
+                            },
+                            textInputType: TextInputType.datetime,
+                          ),
+                        ),
 
-                        filterFn: (instance, filter){
-                          if((langId ==1 )? instance.descAra!.contains(filter) : instance.descEng!.contains(filter)){
-                            print(filter);
-                            return true;
-                          }
-                          else{
-                            return false;
-                          }
-                        },
-                        dropdownDecoratorProps: DropDownDecoratorProps(
-                          dropdownSearchDecoration: InputDecoration(
-                            labelText: "type".tr(),
-
-                          ),),
-
-                      ),
-
-                    ],
-                  )),
-              const SizedBox(height: 20),
-
-              Row(
-                children: [
-                  Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Serial :'.tr(),
-                      style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                  const SizedBox(width: 10),
-                  SizedBox(
-                    width: 100,
-                    child: textFormFields(
-                      controller: _cashReceiveSerialController,
-                      enable: false,
-                      hintText: "serial".tr(),
-                      onSaved: (val) {
-                        cashReceiveSerial = val;
-                      },
-                      textInputType: TextInputType.name,
+                      ],
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('Date :'.tr(),
-                    style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                  const SizedBox(width: 10),
-                  SizedBox(
-                    width: 100,
-                    child: textFormFields(
-                      enable: false,
-                      controller: _cashReceiveDateController,
-                      hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1950),
-                            lastDate: DateTime(2050));
 
-                        if (pickedDate != null) {
-                          _cashReceiveDateController.text =DateFormat('yyyy-MM-dd').format(pickedDate);
-                        }
-                      },
-                      onSaved: (val) {
-                        cashReceiveDate = val;
-                      },
-                      textInputType: TextInputType.datetime,
-                    ),
-                  ),
+                    const SizedBox(height: 20),
 
-                ],
-              ),
-
-              const SizedBox(height: 20),
-
-              /*Container(
+                    /*Container(
                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                 child: Column(
                   crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
@@ -317,464 +310,455 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                   ],
                 ),
               ),*/
-                      Row(
-                        children: [
-                          Form(
-                              key: _dropdownCashTargetTypeFormKey,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('cash_target_type'.tr(),
-                                      style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                    Row(
+                      children: [
+                        Form(
+                            key: _dropdownCashTargetTypeFormKey,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('cash_target_type'.tr(),
+                                    style: const TextStyle(fontWeight: FontWeight.bold)) ),
 
-                                  const SizedBox(width: 10),
+                                const SizedBox(width: 10),
 
-                                  SizedBox(
-                                    width: 200,
-                                    child: DropdownSearch<CashTargetType>(
-                                      validator: (value) => value == null ? "select_a_cash_target_Type".tr() : null,
+                                SizedBox(
+                                  width: 200,
+                                  child: DropdownSearch<CashTargetType>(
+                                    validator: (value) => value == null ? "select_a_cash_target_Type".tr() : null,
 
-                                      selectedItem: cashTargetTypeItem,
-                                      popupProps: PopupProps.menu(
+                                    selectedItem: cashTargetTypeItem,
+                                    popupProps: PopupProps.menu(
 
-                                        itemBuilder: (context, item, isSelected) {
-                                          return Container(
-                                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                                            decoration: !isSelected
-                                                ? null
-                                                : BoxDecoration(
+                                      itemBuilder: (context, item, isSelected) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                                          decoration: !isSelected
+                                              ? null
+                                              : BoxDecoration(
 
-                                              border: Border.all(color: Theme.of(context).primaryColor),
-                                              borderRadius: BorderRadius.circular(5),
-                                              color: Colors.white,
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text((langId ==1 )?item.typeNameAra.toString():item.typeNameEng.toString()),
-                                            ),
-                                          );
-                                        },
-                                        showSearchBox: true,
-
-
-                                      ),
-                                      enabled: false,
-
-                                      items: cashTargetTypes,
-                                      itemAsString: (CashTargetType u) =>(langId ==1 )? u.typeNameAra.toString() : u.typeNameEng.toString(),
-
-                                      onChanged: (value){
-                                        //v.text = value!.cusTypesCode.toString();
-                                        //print(value!.id);
-                                        cashTargetTypeIdSelectedValue = value!.code ;
-                                        boxTypeSelectedValue = 2;
-                                        setTargetCode("1"); // setTargetCode(cashTargetTypeIdSelectedValue.toString());
+                                            border: Border.all(color: Theme.of(context).primaryColor),
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: Colors.white,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text((langId ==1 )?item.typeNameAra.toString():item.typeNameEng.toString()),
+                                          ),
+                                        );
                                       },
+                                      showSearchBox: true,
 
-                                      filterFn: (instance, filter){
-                                        if((langId ==1 )? instance.typeNameAra!.contains(filter) : instance.typeNameAra!.contains(filter)){
-                                          print(filter);
-                                          return true;
-                                        }
-                                        else{
-                                          return false;
-                                        }
-                                      },
-                                      dropdownDecoratorProps: const DropDownDecoratorProps(
-                                        dropdownSearchDecoration: InputDecoration(
-                                          //labelText: "cash_target_type".tr(),
-
-                                        ),),
 
                                     ),
+                                    enabled: false,
+
+                                    items: cashTargetTypes,
+                                    itemAsString: (CashTargetType u) =>(langId ==1 )? u.typeNameAra.toString() : u.typeNameEng.toString(),
+
+                                    onChanged: (value){
+                                      //v.text = value!.cusTypesCode.toString();
+                                      //print(value!.id);
+                                      cashTargetTypeIdSelectedValue = value!.code ;
+                                      boxTypeSelectedValue = 2;
+                                      setTargetCode("1"); // setTargetCode(cashTargetTypeIdSelectedValue.toString());
+                                    },
+
+                                    filterFn: (instance, filter){
+                                      if((langId ==1 )? instance.typeNameAra!.contains(filter) : instance.typeNameAra!.contains(filter)){
+                                        print(filter);
+                                        return true;
+                                      }
+                                      else{
+                                        return false;
+                                      }
+                                    },
+                                    dropdownDecoratorProps: const DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        //labelText: "cash_target_type".tr(),
+
+                                      ),),
+
                                   ),
+                                ),
 
-                                ],
-                              )),
+                              ],
+                            )),
 
-                        ],
-                      ),
+                      ],
+                    ),
 
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Form(
-                              key: _dropdownCashTargetCodeFormKey,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('cash_target_code'.tr(),
-                                      style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Form(
+                            key: _dropdownCashTargetCodeFormKey,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('cash_target_code'.tr(),
+                                    style: const TextStyle(fontWeight: FontWeight.bold)) ),
 
-                                  const SizedBox(width: 10),
-                                  SizedBox(
-                                    width: 200,
-                                    child: DropdownSearch<TargetCode>(
-                                      //validator: (value) => value == null ? "select_a_cash_target_Code".tr() : null,
+                                const SizedBox(width: 10),
+                                SizedBox(
+                                  width: 200,
+                                  child: DropdownSearch<TargetCode>(
+                                    //validator: (value) => value == null ? "select_a_cash_target_Code".tr() : null,
 
-                                      selectedItem: cashTargetCodeItem,
-                                      popupProps: PopupProps.menu(
+                                    selectedItem: cashTargetCodeItem,
+                                    popupProps: PopupProps.menu(
 
-                                        itemBuilder: (context, item, isSelected) {
-                                          return Container(
-                                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                                            decoration: !isSelected
-                                                ? null
-                                                : BoxDecoration(
+                                      itemBuilder: (context, item, isSelected) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                                          decoration: !isSelected
+                                              ? null
+                                              : BoxDecoration(
 
-                                              border: Border.all(color: Theme.of(context).primaryColor),
-                                              borderRadius: BorderRadius.circular(5),
-                                              color: Colors.white,
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
-                                            ),
-                                          );
-                                        },
-                                        showSearchBox: true,
-
-
-                                      ),
-                                      enabled: true,
-
-                                      items: targetCodes,
-                                      itemAsString: (TargetCode u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
-
-                                      onChanged: (value){
-                                        //v.text = value!.cusTypesCode.toString();
-                                        //print(value!.id);
-                                        cashTargetCodeSelectedValue = value!.code.toString();
-                                        print('cashTargetCodeSelectedValue Is >> ' + cashTargetCodeSelectedValue.toString());
+                                            border: Border.all(color: Theme.of(context).primaryColor),
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: Colors.white,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
+                                          ),
+                                        );
                                       },
-                                      filterFn: (instance, filter){
-                                        if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
-                                          print(filter);
-                                          return true;
-                                        }
-                                        else{
-                                          return false;
-                                        }
-                                      },
-                                      dropdownDecoratorProps: const DropDownDecoratorProps(
-                                        dropdownSearchDecoration: InputDecoration(
-                                          // labelText: "cash_target_code".tr(),
+                                      showSearchBox: true,
 
-                                        ),),
 
                                     ),
+                                    enabled: true,
+
+                                    items: targetCodes,
+                                    itemAsString: (TargetCode u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
+
+                                    onChanged: (value){
+                                      //v.text = value!.cusTypesCode.toString();
+                                      //print(value!.id);
+                                      cashTargetCodeSelectedValue = value!.code.toString();
+                                      print('cashTargetCodeSelectedValue Is >> ' + cashTargetCodeSelectedValue.toString());
+                                    },
+                                    filterFn: (instance, filter){
+                                      if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
+                                        print(filter);
+                                        return true;
+                                      }
+                                      else{
+                                        return false;
+                                      }
+                                    },
+                                    dropdownDecoratorProps: const DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        // labelText: "cash_target_code".tr(),
+
+                                      ),),
+
                                   ),
+                                ),
 
-                                ],
-                              )),
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Form(
-                              key: _dropdownBoxTypeFormKey,
-                              child: Row(
-                                children: [
-                                  Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('box_type'.tr(),
-                                      style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                              ],
+                            )),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        Form(
+                            key: _dropdownBoxTypeFormKey,
+                            child: Row(
+                              children: [
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('box_type'.tr(),
+                                    style: const TextStyle(fontWeight: FontWeight.bold)) ),
 
-                                  const SizedBox(width: 10),
-                                  SizedBox(
-                                    width: 200,
-                                    child: DropdownSearch<BoxType>(
-                                      validator: (value) => value == null ? "select_a_box_Type".tr() : null,
+                                const SizedBox(width: 10),
+                                SizedBox(
+                                  width: 200,
+                                  child: DropdownSearch<BoxType>(
+                                    validator: (value) => value == null ? "select_a_box_Type".tr() : null,
+                                    selectedItem: boxTypeItem,
+                                    popupProps: PopupProps.menu(
+                                      itemBuilder: (context, item, isSelected) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                                          decoration: !isSelected ? null
+                                              : BoxDecoration(
 
-                                      selectedItem: boxTypeItem,
-                                      popupProps: PopupProps.menu(
-
-                                        itemBuilder: (context, item, isSelected) {
-                                          return Container(
-                                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                                            decoration: !isSelected ? null
-                                                : BoxDecoration(
-
-                                              border: Border.all(color: Theme.of(context).primaryColor),
-                                              borderRadius: BorderRadius.circular(5),
-                                              color: Colors.white,
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
-                                            ),
-                                          );
-                                        },
-                                        showSearchBox: true,
-
-                                      ),
-                                      enabled: true,
-
-                                      items: boxTypes,
-                                      itemAsString: (BoxType u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
-
-                                      onChanged: (value){
-                                        //v.text = value!.cusTypesCode.toString();
-                                        //print(value!.id);
-                                        boxTypeSelectedValue = value!.code;
-                                        setBoxCode(boxTypeSelectedValue.toString());
+                                            border: Border.all(color: Theme.of(context).primaryColor),
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: Colors.white,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
+                                          ),
+                                        );
                                       },
+                                      showSearchBox: true,
+                                    ),
+                                    enabled: true,
+                                    items: boxTypes,
+                                    itemAsString: (BoxType u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
+                                    onChanged: (value){
+                                      boxTypeSelectedValue = value!.code;
+                                      setBoxCode(boxTypeSelectedValue.toString());
+                                    },
 
-                                      filterFn: (instance, filter){
-                                        if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
-                                          print(filter);
-                                          return true;
-                                        }
-                                        else{
-                                          return false;
-                                        }
+                                    filterFn: (instance, filter){
+                                      if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
+                                        print(filter);
+                                        return true;
+                                      }
+                                      else{
+                                        return false;
+                                      }
+                                    },
+                                    dropdownDecoratorProps: const DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+
+                                      ),),
+                                  ),
+                                ),
+
+                              ],
+                            )),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+
+                    //const SizedBox(width: 10),
+                    Row(
+                      children: [
+                        Form(
+                            key: _dropdownBoxCodeFormKey,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('box_code'.tr(),
+                                    style: const TextStyle(fontWeight: FontWeight.bold)) ),
+
+                                const SizedBox(width: 10),
+
+                                SizedBox(
+                                  width: 200,
+                                  child: DropdownSearch<BoxCode>(
+                                    validator: (value) => value == null ? "select_a_box_Code".tr() : null,
+
+                                    selectedItem: boxCodeItem,
+                                    popupProps: PopupProps.menu(
+
+                                      itemBuilder: (context, item, isSelected) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                                          decoration: !isSelected
+                                              ? null
+                                              : BoxDecoration(
+
+                                            border: Border.all(color: Theme.of(context).primaryColor),
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: Colors.white,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
+                                          ),
+                                        );
                                       },
-                                      dropdownDecoratorProps: const DropDownDecoratorProps(
-                                        dropdownSearchDecoration: InputDecoration(
-                                          //labelText: "box_type".tr(),
-
-                                        ),),
+                                      showSearchBox: true,
 
                                     ),
-                                  ),
+                                    enabled: true,
 
-                                ],
-                              )),
+                                    items: boxCodes,
+                                    itemAsString: (BoxCode u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
+
+                                    onChanged: (value){
+                                      boxCodeSelectedValue = value!.code;
+                                      print('boxCodeSelectedValue Is >> ' + boxCodeSelectedValue.toString());
+                                    },
+
+                                    filterFn: (instance, filter){
+                                      if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
+                                        print(filter);
+                                        return true;
+                                      }
+                                      else{
+                                        return false;
+                                      }
+                                    },
+                                    dropdownDecoratorProps: const DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                      ),),
+
+                                  ),
+                                ),
+
+                              ],
+                            )),
+                      ],
+                    ),
+
+
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                      child: Row(
+                        children: <Widget>[
+                          Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('value'.tr(),
+                              style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                          const SizedBox(width: 10),
+
+                          Expanded(
+                            child: SizedBox(
+                              width: 200,
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                controller: _valueController,
+                                decoration: const InputDecoration(
+                                  hintText: '',
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'please_enter_value'.tr();
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  setTafqeet("1" ,value.toString());
+                                },
+                              ),
+                            ),
+                          ),
                         ],
                       ),
-                      const SizedBox(height: 20),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                      child: Row(
+                        children: <Widget>[
+                          Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameArabic'.tr(),
+                              style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                          const SizedBox(width: 10),
 
-                      //const SizedBox(width: 10),
-                      Row(
-                        children: [
-                          Form(
-                              key: _dropdownBoxCodeFormKey,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('box_code'.tr(),
-                                      style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                          Expanded(
+                            child: SizedBox(
+                              width: 205,
+                              child: TextFormField(
+                                controller: _descriptionNameArabicController,
+                                decoration: const InputDecoration(
+                                  hintText: '',
+                                ),
 
-                                  const SizedBox(width: 10),
-
-                                  SizedBox(
-                                    width: 200,
-                                    child: DropdownSearch<BoxCode>(
-                                      validator: (value) => value == null ? "select_a_box_Code".tr() : null,
-
-                                      selectedItem: boxCodeItem,
-                                      popupProps: PopupProps.menu(
-
-                                        itemBuilder: (context, item, isSelected) {
-                                          return Container(
-                                            margin: const EdgeInsets.symmetric(horizontal: 8),
-                                            decoration: !isSelected
-                                                ? null
-                                                : BoxDecoration(
-
-                                              border: Border.all(color: Theme.of(context).primaryColor),
-                                              borderRadius: BorderRadius.circular(5),
-                                              color: Colors.white,
-                                            ),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Text((langId ==1 )?item.nameAra.toString():item.nameEng.toString()),
-                                            ),
-                                          );
-                                        },
-                                        showSearchBox: true,
-
-                                      ),
-                                      enabled: true,
-
-                                      items: boxCodes,
-                                      itemAsString: (BoxCode u) =>(langId ==1 )? u.nameAra.toString() : u.nameEng.toString(),
-
-                                      onChanged: (value){
-                                        boxCodeSelectedValue = value!.code;
-                                        print('boxCodeSelectedValue Is >> ' + boxCodeSelectedValue.toString());
-                                      },
-
-                                      filterFn: (instance, filter){
-                                        if((langId ==1 )? instance.nameAra!.contains(filter) : instance.nameEng!.contains(filter)){
-                                          print(filter);
-                                          return true;
-                                        }
-                                        else{
-                                          return false;
-                                        }
-                                      },
-                                      dropdownDecoratorProps: const DropDownDecoratorProps(
-                                        dropdownSearchDecoration: InputDecoration(
-                                        ),),
-
-                                    ),
-                                  ),
-
-                                ],
-                              )),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                      child: Row(
+                        children: <Widget>[
+                          Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameEnglish'.tr(),
+                              style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                          const SizedBox(width: 10),
 
-
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-                        child: Row(
-                          children: <Widget>[
-                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('value'.tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                            const SizedBox(width: 10),
-
-                            Expanded(
-                              child: SizedBox(
-                                width: 200,
-                                child: TextFormField(
-                                  keyboardType: TextInputType.number,
-                                  controller: _valueController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'please_enter_value'.tr();
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {
-                                    setTafqeet("1" ,value.toString());
-                                  },
+                          Expanded(
+                            child: SizedBox(
+                              width: 205,
+                              child: TextFormField(
+                                controller: _descriptionNameEnglishController,
+                                decoration: const InputDecoration(
+                                  hintText: '',
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                        child: Row(
-                          children: <Widget>[
-                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameArabic'.tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                            const SizedBox(width: 10),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                      child: Row(
+                        children: <Widget>[
+                          Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameArabic'.tr(),
+                              style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                          const SizedBox(width: 10),
 
-                            Expanded(
-                              child: SizedBox(
-                                width: 205,
-                                child: TextFormField(
-                                  controller: _descriptionNameArabicController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
+                          Expanded(
+                            child: SizedBox(
+                              width: 205,
+                              child: TextFormField(
+                                enabled: false,
+                                controller: _tafqitNameArabicController,
+                                decoration: const InputDecoration(
+                                  hintText: '',
+                                ),
 
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                      child: Row(
+                        children: <Widget>[
+                          Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameEnglish'.tr(),
+                              style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                          const SizedBox(width: 10),
+
+                          Expanded(
+                            child: SizedBox(
+                              width: 205,
+                              child: TextFormField(
+                                enabled: false,
+                                controller: _tafqitNameEnglishController,
+                                decoration: const InputDecoration(
+                                  hintText: '',
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                        child: Row(
-                          children: <Widget>[
-                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('descriptionNameEnglish'.tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                            const SizedBox(width: 10),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                      child: Row(
 
-                            Expanded(
-                              child: SizedBox(
-                                width: 205,
-                                child: TextFormField(
-                                  controller: _descriptionNameEnglishController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
+                        children: <Widget>[
+                          Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('statement'.tr(),
+                              style: const TextStyle(fontWeight: FontWeight.bold)) ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: SizedBox(
+                              width: 210,
+                              child: TextFormField(
+                                controller: _statementController,
+                                decoration: const InputDecoration(
+                                  hintText: '',
                                 ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'please_enter_statement'.tr();
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {},
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                        child: Row(
-                          children: <Widget>[
-                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameArabic'.tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                            const SizedBox(width: 10),
+                    ),
 
-                            Expanded(
-                              child: SizedBox(
-                                width: 205,
-                                child: TextFormField(
-                                  enabled: false,
-                                  controller: _tafqitNameArabicController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                        child: Row(
-                          children: <Widget>[
-                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('tafqitNameEnglish'.tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                            const SizedBox(width: 10),
-
-                            Expanded(
-                              child: SizedBox(
-                                width: 205,
-                                child: TextFormField(
-                                  enabled: false,
-                                  controller: _tafqitNameEnglishController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                        child: Row(
-
-                          children: <Widget>[
-                            Align(alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft, child: Text('statement'.tr(),
-                                style: const TextStyle(fontWeight: FontWeight.bold)) ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: SizedBox(
-                                width: 210,
-                                child: TextFormField(
-                                  controller: _statementController,
-                                  decoration: const InputDecoration(
-                                    hintText: '',
-                                  ),
-                                  validator: (value) {
-                                    if (value!.isEmpty) {
-                                      return 'please_enter_statement'.tr();
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {},
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
-            ]),
+                  ]),
+            ),
           ),
-    ),
-    ),
-    ),
+        ),
+      ),
     );
   }
 
@@ -822,7 +806,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
   setNextSerial(){
     //Serial
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("CM_TrxH", "TrxSerial", " And TrxKind=1 And CashTypeCode='" + selectedTypeCodeValue.toString() + "'").then((data) {
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("CM_TrxH", "TrxSerial", " And TrxKind=1 And CashTypeCode='$selectedTypeCodeValue'").then((data) {
       NextSerial nextSerial = data;
 
       //Date
@@ -898,25 +882,22 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
 
   saveCashReceive(BuildContext context) async {
     setTafqeet("1", _valueController.text);
-    //Serial
+
     if(_cashReceiveSerialController.text.isEmpty){
       FN_showToast(context,'please_Set_Invoice_Serial'.tr(),Colors.black);
       return;
     }
 
-    //Date
     if(_cashReceiveDateController.text.isEmpty){
       FN_showToast(context,'please_Set_Invoice_Date'.tr(),Colors.black);
       return;
     }
 
-    //TargetCode
     if(cashTargetCodeSelectedValue == null || cashTargetCodeSelectedValue!.isEmpty){
       FN_showToast(context,'please_Set_TargetCode'.tr(),Colors.black);
       return;
     }
 
-    //BoxCode
     if(boxCodeSelectedValue == null || boxCodeSelectedValue!.isEmpty){
       FN_showToast(context,'please_Set_BoxCode'.tr(),Colors.black);
       return;
@@ -926,7 +907,6 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
       FN_showToast(context,'please_Set_Value'.tr(),Colors.black);
       return;
     }
-
 
     await _cashReceiveApiService.createCashReceive(context,CashReceive(
         trxKind: 1,
@@ -944,7 +924,6 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
         currencyRate: 1,
         value:_valueController.text.toDouble(),
         statement: _statementController.text,
-        year: financialYearCode.toInt(),
         descriptionNameArabic: _descriptionNameArabicController.text,
         descriptionNameEnglish: _descriptionNameEnglishController.text,
         tafqitNameArabic: _tafqitNameArabicController.text,
@@ -952,10 +931,8 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
     ));
 
     Navigator.pop(context) ;
-
   }
 
-//#region General Widgets - To Be Moved To General Locations
 
   Widget textFormFields({controller, hintText,onTap, onSaved, textInputType,enable=true})  {
     return TextFormField(

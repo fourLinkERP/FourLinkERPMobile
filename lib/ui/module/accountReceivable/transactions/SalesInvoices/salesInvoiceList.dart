@@ -105,8 +105,11 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
     } else {
       setState(() {
         _salesInvoices = List.from(_salesInvoicesSearch);
-        _salesInvoices = _salesInvoices.where((salesInvoice) =>
-            salesInvoice.customerName!.toLowerCase().contains(search)).toList();
+        _salesInvoices = _salesInvoices
+            .where((salesInvoice) =>
+            salesInvoice.customerName!.toLowerCase().contains(search))
+            .toList()
+          ..sort((a, b) => int.parse(b.salesInvoicesSerial!).compareTo(int.parse(a.salesInvoicesSerial!)));
       });
     }
   }

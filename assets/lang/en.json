@@ -737,6 +737,7 @@
     "searchEducationClasses": "Search Education Classes",
     "add_class": "Add Education Class",
     "searchEducationSubjects": "Search Education Subjects",
-    "education_subjects": "Education Subjects"
+    "education_subjects": "Education Subjects",
+    "user_not_active": "You don't have permission"
 
 }
