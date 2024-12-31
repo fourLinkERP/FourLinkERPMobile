@@ -76,7 +76,7 @@ String costCenterName = "";
 
 
 //Financial Year
-String financialYearCode = "2024"; //Will Set On App Preference
+String financialYearCode = "2025"; //Will Set On App Preference
 String currentLanguage='ar'; /// it was en
 //Date
 DateTime date =DateTime.now();

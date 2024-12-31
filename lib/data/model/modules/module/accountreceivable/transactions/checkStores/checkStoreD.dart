@@ -35,7 +35,7 @@ class CheckStoreD{
         unitCode: (json['unitCode'] !=null) ? json['unitCode'] as String : "",
         unitName: (json['unitName'] !=null) ? json['unitName'] as String : "",
         registeredBalance: (json['registeredBalance'] != null) ?  json['registeredBalance'].toDouble() : 0.0,
-        year: (json['year']) != null ? json['year'] : 2024
+        year: (json['year']) != null ? json['year'] : 2025
 
     );
   }

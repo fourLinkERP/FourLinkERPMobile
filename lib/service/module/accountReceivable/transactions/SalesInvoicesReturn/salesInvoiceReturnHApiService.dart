@@ -27,11 +27,11 @@ class SalesInvoiceReturnHApiService {
         "isShowTransactionsByUser": true,
         "isManager": isManager,
         "isIt": isIt,
-        'SalesInvoicesCase': 2
+        'SalesInvoicesCase': 2,
+        "Year": int.parse(financialYearCode)
       }
     };
 
-    //print('B 2');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -41,28 +41,22 @@ class SalesInvoiceReturnHApiService {
       body: jsonEncode(data),
     );
 
-    print('InvoiceReturn Before ');
     if (response.statusCode == 200) {
-      print('InvoiceReturn After ');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesInvoiceReturnH> list = [];
       if (data.isNotEmpty) {
         list = data.map((item) => SalesInvoiceReturnH.fromJson(item)).toList();
       }
-      print('Invoice Finish');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => SalesInvoiceReturn.fromJson(data))
-      //     .toList();
+
     } else {
-      //print('Invoice Failure');
       throw "Failed to load invoice list";
     }
   }
 
   Future<SalesInvoiceReturnH> getSalesInvoiceReturnHById(int id) async {
     var data = {
-      // "id": id
+
     };
     String apiGet=getByIdApi + id.toString();
 
@@ -108,7 +102,7 @@ class SalesInvoiceReturnHApiService {
       'totalAfterDiscount': invoice.totalAfterDiscount,
       'totalBeforeTax': invoice.totalBeforeTax,
       'totalValue': invoice.totalValue,
-      "year" : financialYearCode,
+      "year" : int.parse(financialYearCode),
       "isActive": true,
       "isBlocked": false,
       "isDeleted": false,
@@ -123,17 +117,7 @@ class SalesInvoiceReturnHApiService {
       'addBy': empUserId,
       'InvoiceQRCodeBase64': invoice.invoiceQRCodeBase64
 
-
-      // 'Year': invoice.year,
-      // 'CustomerCode': invoice.customerCode,
-      // 'CurrencyCode': invoice.currencyCode,
-      // 'SellOrdersDate': invoice.sellOrdersDate,
-      // 'SalesManCode': invoice.salesManCode,
-      // 'TaxGroupCode': invoice.taxGroupCode,
     };
-
-    print('save invoice 1');
-    print('save ' + data.toString());
 
     final http.Response response = await http.post(
       Uri.parse(createApi),
@@ -144,20 +128,13 @@ class SalesInvoiceReturnHApiService {
       body: jsonEncode(data),
     );
 
-    print('save invoice 2');
-
     if (response.statusCode == 200) {
 
-      //print('B 1');
-      //var data = jsonDecode(response.body)['data'];
-      //print('B 1 Finish');
-      print('save invoice 3');
       FN_showToast(context,'save_success'.tr() ,Colors.black);
 
       return  1;
 
     } else {
-      print('save invoice Error');
       throw Exception('Failed to post sales Invoice');
     }
 
@@ -165,14 +142,12 @@ class SalesInvoiceReturnHApiService {
 
   Future<int> updateSalesInvoiceReturnH(BuildContext context ,int id, SalesInvoiceReturnH invoice) async {
 
-    print('Start Update');
-
     Map data = {
       'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'SalesInvoicesCase': 2, //Sales Invoice Case =2
-      'SalesInvoicesTypeCode': invoice.salesInvoicesTypeCode, //Sales Invoice Type
+      'SalesInvoicesCase': 2,
+      'SalesInvoicesTypeCode': invoice.salesInvoicesTypeCode,
       'salesInvoicesSerial': invoice.salesInvoicesSerial,
       'SalesInvoicesDate': invoice.salesInvoicesDate,
       'CustomerCode': invoice.customerCode,
@@ -202,11 +177,11 @@ class SalesInvoiceReturnHApiService {
       "notActive": false,
       "flgDelete": false,
       'editBy': empUserId,
-      'InvoiceQRCodeBase64' : invoice.invoiceQRCodeBase64
+      'InvoiceQRCodeBase64' : invoice.invoiceQRCodeBase64,
+      "Year": int.parse(financialYearCode)
     };
 
     String apiUpdate =updateApi + id.toString();
-    print('Start Update apiUpdate ' + apiUpdate );
 
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data)
@@ -215,14 +190,11 @@ class SalesInvoiceReturnHApiService {
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after ' );
     if (response.statusCode == 200) {
-      print('Start Update done ' );
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
     } else {
-      print('Start Update error ' );
       throw Exception('Failed to update a case');
     }
 
@@ -231,20 +203,16 @@ class SalesInvoiceReturnHApiService {
   Future<void> deleteSalesInvoiceReturnH(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
-    print('url' + apiDel);
+
     var data = {
-      // "id": id
     };
 
-    print('before response');
     var response = await http.delete(Uri.parse(apiDel),
         body: json.encode(data)
         ,headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
         });
-
-    print('after response');
 
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);

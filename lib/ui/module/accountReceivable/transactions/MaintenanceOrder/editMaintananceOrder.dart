@@ -510,7 +510,7 @@ class _EditMaintenanceOrderState extends State<EditMaintenanceOrder> {
       trxDate: _trxDateController.text,
       complaint: _complaintController.text,
       notes: _notesController.text,
-      year: 2024,
+      year: int.parse(financialYearCode),
 
     ));
       MaintenanceOrderD _maintenanceOrderD = maintenanceOrderDLst[0];
@@ -522,7 +522,7 @@ class _EditMaintenanceOrderState extends State<EditMaintenanceOrder> {
           lineNum: lineNumber,
           driverCode: selectedDriverValue,
           meterReading: _counterReadingController.text,
-          year: 2024,
+          year: int.parse(financialYearCode),
         ));
       }
     Navigator.pop(context) ;

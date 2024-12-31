@@ -84,7 +84,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'BranchCode': branchCode,
       'offerTypeCode': invoice.offerTypeCode, //Sales Invoice Type
       'offerSerial': invoice.offerSerial,
-      'year': invoice.year,
       'lineNum': invoice.lineNum,
       'itemCode': invoice.itemCode,
       'unitCode': invoice.unitCode,
@@ -113,17 +112,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       "isSystem": false,
       "notActive": false,
       "flgDelete": false,
-      'addBy': empUserId
+      'addBy': empUserId,
+      "year": int.parse(financialYearCode)
 
-      // 'age': customer.age,
-      // 'address': customer.address,
-      // 'city': customer.city,
-      // 'country': customer.country,
-      // 'status': customer.status
     };
 
-    print('Start Create D' );
-    print("offerD save: " + data.toString());
     final http.Response response = await http.post(
       Uri.parse(createApi),
       headers: <String, String>{
@@ -133,20 +126,12 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       body: jsonEncode(data),
     );
 
-
-    print('Start Create D2' );
     if (response.statusCode == 200) {
 
-      //print('B 1');
-      //var data = jsonDecode(response.body)['data'];
-      //print('B 1 Finish');
-      // FN_showToast(context,'save_success'.tr() ,Colors.black);
-      print('Start Create D3' );
       return  1;
 
 
     } else {
-      print('Error Create D' );
       throw Exception('Failed to post sales Invoice');
     }
 
@@ -155,14 +140,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<int> updateSalesOfferD(BuildContext context ,int id, SalesOfferD invoice) async {
 
-    print('Start Update');
-
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
       'offerTypeCode': invoice.offerTypeCode, //Sales Invoice Type
       'offerSerial': invoice.offerSerial,
-      'year': invoice.year,
       'lineNum': invoice.lineNum,
       'itemCode': invoice.itemCode,
       'unitCode': invoice.unitCode,
@@ -179,11 +161,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'displayTotalTaxValue': invoice.displayTotalTaxValue,
       'totalTaxValue': invoice.totalTaxValue,
       'netAfterDiscount': invoice.netAfterDiscount,
-      'displayNetValue': invoice.displayNetValue
+      'displayNetValue': invoice.displayNetValue,
+      "year": int.parse(financialYearCode)
     };
 
     String apiUpdate =updateApi + id.toString();
-    print('Start Update apiUpdate ' + apiUpdate );
 
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data)
@@ -192,19 +174,15 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after ' );
     if (response.statusCode == 200) {
-      print('Start Update done ' );
-      //var data = jsonDecode(response.body)['data'];
+
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
     } else {
-      print('Start Update error ' );
       throw Exception('Failed to update a case');
     }
 
-    return 0;
   }
 
   Future<void> deleteSalesOfferD(BuildContext context ,int? id) async {

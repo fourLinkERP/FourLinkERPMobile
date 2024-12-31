@@ -17,7 +17,7 @@ class LoginService {
     Map data = {
       'UserNameOrEmail': email,
       'Password': password,
-      'FinancialYear': financialYearCode,
+      'FinancialYear': int.parse(financialYearCode),
       'CompanyCode': companyCode,
       'BranchCode' : branchLogCode
     };

@@ -111,15 +111,14 @@ class MainTransactions extends StatelessWidget {
                       borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                       splashColor: FitnessAppTheme.nearlyDarkBlue.withOpacity(0.2),
                       onTap: () {
-                        if(areaListData[index] == 'assets/fitness_app/salesCart.png') // Invoice
-                            {
-                          //print('okz1');
+                        if(areaListData[index] == 'assets/fitness_app/salesCart.png')
+                          {
 
                           int menuId=6204;
                           bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                           if(isAllowView)
                           {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => SalesInvoiceHListPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const SalesInvoiceHListPage()));
                           }
                           else
                           {
@@ -132,7 +131,7 @@ class MainTransactions extends StatelessWidget {
                           int menuId = 6207;
                           bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                           if (isAllowView) {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => SalesInvoiceReturnHListPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const SalesInvoiceReturnHListPage()));
                           } else {
                             FN_showToast(context, 'you_dont_have_view_permission'.tr(), Colors.black);
                           }
@@ -143,7 +142,7 @@ class MainTransactions extends StatelessWidget {
                           bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                           if(isAllowView)
                           {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => SalesOfferHListPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const SalesOfferHListPage()));
                           }
                           else
                           {
@@ -158,7 +157,7 @@ class MainTransactions extends StatelessWidget {
                           bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                           if(isAllowView)
                           {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => SalesOrderHListPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const SalesOrderHListPage()));
                           }
                           else
                           {
@@ -172,7 +171,7 @@ class MainTransactions extends StatelessWidget {
                           bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                           if(isAllowView)
                           {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => CashReceiveListPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const CashReceiveListPage()));
                           }
                           else
                           {
@@ -186,7 +185,7 @@ class MainTransactions extends StatelessWidget {
                           bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                           if(isAllowView)
                           {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => SalesOrderHListPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const SalesOrderHListPage()));
                           }
                           else
                           {
@@ -199,7 +198,7 @@ class MainTransactions extends StatelessWidget {
                           bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                           if(isAllowView)
                           {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => CheckStoreList()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const CheckStoreList()));
                           }
                           else
                           {
@@ -213,7 +212,7 @@ class MainTransactions extends StatelessWidget {
                           bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                           if(isAllowView)
                           {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ReceivePermissionHListPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ReceivePermissionHListPage()));
                           }
                           else
                           {

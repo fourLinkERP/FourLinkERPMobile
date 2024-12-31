@@ -69,7 +69,7 @@ class BranchRequestHApiService{
       "confirmed": true,
       "isConfirmed":true,
       "typeCode": "1",
-      "year" : financialYearCode,
+      "year" : int.parse(financialYearCode),
       "addBy": empUserId,
 
     };
@@ -126,7 +126,7 @@ class BranchRequestHApiService{
       "confirmed": true,
       "isConfirmed":true,
       "typeCode": "1",
-      "year" : financialYearCode,
+      "year" : int.parse(financialYearCode),
       "editBy": empUserId,
 
     };

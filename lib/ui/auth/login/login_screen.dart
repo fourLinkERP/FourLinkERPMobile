@@ -9,8 +9,10 @@ import 'package:fourlinkmobileapp/data/model/auth/Login.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/branches/branch.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/companyGeneralSetups/companyGeneralSetup.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/emailSettings/emailSetting.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/employees/employeeGroupStatus.dart';
+import 'package:fourlinkmobileapp/data/model/modules/module/general/period_finance_headers/years.dart';
+// import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/employees/employeeGroupStatus.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/security/menuPermission.dart';
+import 'package:fourlinkmobileapp/service/general/period_finance_headers/years_api_service.dart';
 import 'package:fourlinkmobileapp/service/module/administration/basicInputs/branchApiService.dart';
 import 'package:fourlinkmobileapp/service/module/administration/basicInputs/compayGeneralSetupApiService.dart';
 import 'package:fourlinkmobileapp/service/module/administration/basicInputs/employeeApiService.dart';
@@ -58,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //Services
   final LoginService _loginService =  LoginService();
   final EmployeeApiService _employeeApiService =  EmployeeApiService();
+  final YearApiService _yearApiService = YearApiService();
   final CompanyGeneralSetupGeneralSetupApiService _companyGeneralSetupGeneralSetupApiService =  CompanyGeneralSetupGeneralSetupApiService();
 
   //Controls
@@ -65,8 +68,10 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
 
   List<Branch> branches = [];
+  List<Year> _years = [];
 
   String? branchCodeSelectedValue;
+  String? selectedYearValue;
 
   setSelectedVal(val) {
     setState(() {
@@ -78,16 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     _emailController.text = apiUserName;   // _emailController = TextEditingController();
-
-    Future<List<Branch>> futureBranch = _branchApiService.getBranches().then((data) {
-      branches = data;
-      setState(() {
-
-      });
-      return branches;
-    }, onError: (e) {
-      print(e);
-    });
+    _fillCompos();
 
   }
 
@@ -225,6 +221,48 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                           ),),
                                       ),
+                                      const SizedBox(height: 15.0),
+                                      DropdownSearch<Year>(
+                                        selectedItem: null,
+                                        popupProps: PopupProps.menu(
+                                          itemBuilder: (context, item, isSelected) {
+                                            return Container(
+                                              margin: const EdgeInsets.symmetric(horizontal: 8),
+                                              decoration: !isSelected ? null : BoxDecoration(
+                                                border: Border.all(color: Colors.black12),
+                                                borderRadius: BorderRadius.circular(5),
+                                                color: Colors.white,
+                                              ),
+                                              child: Padding(padding: const EdgeInsets.all(8.0),
+                                                child: Text((langId == 1) ? item.yearNameAra.toString() : item.yearNameEng.toString()),
+                                              ),
+                                            );
+                                          },
+                                          showSearchBox: true,
+                                        ),
+                                        items: _years,
+                                        itemAsString: (Year u) =>
+                                        (langId == 1) ? u.yearNameAra.toString() : u.yearNameEng.toString(),
+                                        onChanged: (value) {
+                                          selectedYearValue = value!.yearCode.toString();
+                                          financialYearCode = selectedYearValue??"2025";
+                                        },
+
+                                        filterFn: (instance, filter) {
+                                          if ((langId == 1) ? instance.yearNameAra!.contains(filter) : instance.yearNameEng!.contains(filter)) {
+
+                                            return true;
+                                          }
+                                          else {
+                                            return false;
+                                          }
+                                        },
+                                        dropdownDecoratorProps: DropDownDecoratorProps(
+                                          dropdownSearchDecoration: InputDecoration(
+                                            labelText: 'financial_year'.tr(),
+
+                                          ),),
+                                      )
                                     ],
                                   )),
                               const SizedBox(height: 15.0),
@@ -625,14 +663,14 @@ class _LoginScreenState extends State<LoginScreen> {
       // EmployeeGroupStatus employeeGroupStatus = await _employeeApiService.checkUserGroupData(empCode);
       // if (employeeGroupStatus.statusCode == 1) // Has Permission
       //   {
-        await setDashboardItems();
-        setMenuPermissions();
-        setCompanyGeneralSetup();
-        setCompanyGeneralEmailSetup();
-        setEmployeeData();
-        setItemsOfferData();
-        setItemInvoiceData();
-        setCompanyLogo();
+      await setDashboardItems();
+      setMenuPermissions();
+      setCompanyGeneralSetup();
+      setCompanyGeneralEmailSetup();
+      setEmployeeData();
+      setItemsOfferData();
+      setItemInvoiceData();
+      setCompanyLogo();
       if(empNotActive == false)
       {
         print("user is active");
@@ -644,7 +682,23 @@ class _LoginScreenState extends State<LoginScreen> {
         FN_showToast(context, 'user_not_active'.tr(), Colors.black);
         return;
       }
-      }
-   // }
+    }
+  }
+
+  _fillCompos() async{
+    List<Branch> futureBranch =  await _branchApiService.getBranches();
+    if(futureBranch.isNotEmpty)
+    {
+      branches = futureBranch;
+      setState(() {
+
+      });
+    }
+    List<Year>? futureYear = await _yearApiService.getYears();
+    if (futureYear!.isNotEmpty) {
+      _years = futureYear;
+      setState(() {
+      });
+    }
   }
 }

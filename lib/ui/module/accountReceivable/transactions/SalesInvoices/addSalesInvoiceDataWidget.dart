@@ -32,41 +32,6 @@ import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 
-//APIS;
-NextSerialApiService _nextSerialApiService = NextSerialApiService();
-SalesInvoicesTypeApiService _salesInvoiceTypeApiService = SalesInvoicesTypeApiService();
-SalesInvoiceHApiService _salesInvoiceHApiService = SalesInvoiceHApiService();
-SalesInvoiceDApiService _salesInvoiceDApiService = SalesInvoiceDApiService();
-InventoryOperationApiService _inventoryOperationApiService = InventoryOperationApiService();
-CustomerApiService _customerApiService = CustomerApiService();
-UnitApiService _unitsApiService = UnitApiService();
-TafqeetApiService _tafqeetApiService = TafqeetApiService();
-
-//List Models
-List<Customer> customers = [];
-List<SalesInvoiceType> salesInvoiceTypes = [];
-List<Unit> units = [];
-
-int lineNum = 1;
-double productPrice = 0;
-int productQuantity = 0;
-double productTotal = 0;
-double productDiscount = 0;
-double productTotalAfterDiscount = 0;
-double productVat = 0;
-double productTotalAfterVat = 0;
-double summeryTotal = 0;
-double totalQty = 0;
-int rowsCount = 0;
-double totalDiscount = 0;
-double totalPrice = 0;
-double totalBeforeTax = 0;
-double totalTax = 0;
-double totalAfterDiscount = 0;
-double totalNet = 0;
-WidgetsToImageController widgetImage= WidgetsToImageController();
-bool isLoading = true;
-
 
 class AddSalesInvoiceHDataWidget extends StatefulWidget {
   AddSalesInvoiceHDataWidget();
@@ -77,6 +42,40 @@ class AddSalesInvoiceHDataWidget extends StatefulWidget {
 
 class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget> {
   _AddSalesInvoiceHDataWidgetState();
+
+  final NextSerialApiService _nextSerialApiService = NextSerialApiService();
+  final SalesInvoicesTypeApiService _salesInvoiceTypeApiService = SalesInvoicesTypeApiService();
+  final SalesInvoiceHApiService _salesInvoiceHApiService = SalesInvoiceHApiService();
+  final SalesInvoiceDApiService _salesInvoiceDApiService = SalesInvoiceDApiService();
+  final InventoryOperationApiService _inventoryOperationApiService = InventoryOperationApiService();
+  final CustomerApiService _customerApiService = CustomerApiService();
+  final UnitApiService _unitsApiService = UnitApiService();
+  final TafqeetApiService _tafqeetApiService = TafqeetApiService();
+
+//List Models
+  List<Customer> customers = [];
+  List<SalesInvoiceType> salesInvoiceTypes = [];
+  List<Unit> units = [];
+
+  int lineNum = 1;
+  double productPrice = 0;
+  int productQuantity = 0;
+  double productTotal = 0;
+  double productDiscount = 0;
+  double productTotalAfterDiscount = 0;
+  double productVat = 0;
+  double productTotalAfterVat = 0;
+  double summeryTotal = 0;
+  double totalQty = 0;
+  int rowsCount = 0;
+  double totalDiscount = 0;
+  double totalPrice = 0;
+  double totalBeforeTax = 0;
+  double totalTax = 0;
+  double totalAfterDiscount = 0;
+  double totalNet = 0;
+  WidgetsToImageController widgetImage= WidgetsToImageController();
+  bool isLoading = true;
 
   List<SalesInvoiceD> salesInvoiceDLst = <SalesInvoiceD>[];
   List<SalesInvoiceD> selected = [];
@@ -1092,8 +1091,8 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
   }
 
   setNextSerial() {
-    Future<NextSerial> futureSerial = _nextSerialApiService.getNextSerial(
-        "AR_SalesInvoicesH", "SalesInvoicesSerial", " And SalesInvoicesCase=1  ").then((data) {
+    Future<NextSerial> futureSerial = _nextSerialApiService.getTransactionNextSerial(
+        "AR_SalesInvoicesH", "SalesInvoicesSerial", " And SalesInvoicesCase=1 ", int.parse(selectedTypeValue??'1'), 6204).then((data) {
       NextSerial nextSerial = data;
 
       DateTime now = DateTime.now();
@@ -1303,7 +1302,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       totalBeforeTax: (_totalBeforeTaxController.text.isNotEmpty) ? _totalBeforeTaxController.text.toDouble() : 0,
       tafqitNameArabic: _tafqitNameArabicController.text,
       tafqitNameEnglish: _tafqitNameEnglishController.text,
-       year: 2024,
+       year: int.parse(financialYearCode),
         invoiceQRCodeBase64: base64String
     ));
 
@@ -1335,7 +1334,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
             unitCode: salesInvoiceD.unitCode,
             netValue: salesInvoiceD.netValue,
             netBeforeTax: salesInvoiceD.netBeforeTax,
-            year: 2024,
+            year: int.parse(financialYearCode),
             storeCode: "1" // For Now
         ));
       }

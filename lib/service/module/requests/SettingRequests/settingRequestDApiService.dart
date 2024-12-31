@@ -103,7 +103,7 @@ class SettingRequestDApiService {
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "year":2024
+      "year": financialYearCode
 
     };
 
@@ -160,7 +160,7 @@ class SettingRequestDApiService {
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "year":2024
+      "year":financialYearCode
 
     };
 

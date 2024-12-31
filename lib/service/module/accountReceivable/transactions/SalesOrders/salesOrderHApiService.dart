@@ -2,26 +2,19 @@ import 'dart:convert';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 import '../../../../../data/model/modules/module/accountReceivable/transactions/salesOrders/salesOrderH.dart';
-import '../../../../../ui/module/accountreceivable/transactions/SalesInvoices/addSalesInvoiceDataWidget.dart';
-import '../../../../../ui/module/accountreceivable/transactions/SalesInvoices/editSalesInvoiceDataWidget.dart';
-import '../../../../../ui/module/accountreceivable/transactions/SalesInvoices/editSalesInvoiceDataWidget.dart';
-import '../../../../../ui/module/accountreceivable/transactions/SalesOffers/addSalesOfferDataWidget.dart';
-import '../../../../../ui/module/accountreceivable/transactions/SalesOffers/addSalesOfferDataWidget.dart';
-import '../../../../../ui/module/accountreceivable/transactions/SalesOffers/editSalesOfferDataWidget.dart';
-import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addSalesOrderDataWidget.dart';
+
  
  class SalesOrderHApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/sellorderheaders/searchData';
-  String createApi= baseUrl.toString()  + '/api/v1/sellorderheaders';
-  String updateApi= baseUrl.toString()  + '/api/v1/sellorderheaders/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + '/api/v1/sellorderheaders/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/sellorderheaders/';  // Add ID For Get
+  String searchApi= '$baseUrl/api/v1/sellorderheaders/searchData';
+  String createApi= '$baseUrl/api/v1/sellorderheaders';
+  String updateApi= '$baseUrl/api/v1/sellorderheaders/';  // Add ID For Edit
+  String deleteApi= '$baseUrl/api/v1/sellorderheaders/';
+  String getByIdApi= '$baseUrl/api/v1/sellorderheaders/';  // Add ID For Get
 
   Future<List<SalesOrderH>?> getSalesOrdersH() async {
 
@@ -33,7 +26,8 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
         "empCode": empUserId,
         "isShowTransactionsByUser": true,
         "isManager": isManager,
-        "isIt": isIt
+        "isIt": isIt,
+        "year": int.parse(financialYearCode)
       }
       //"SellOrdersTypeCode": '1',
     };
@@ -122,11 +116,10 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": true,
-      "Year" : financialYearCode,
+      "Year" : int.parse(financialYearCode),
 
     };
 
-    print("save orderH: " + data.toString());
     final http.Response response = await http.post(
       Uri.parse(createApi),
       headers: <String, String>{
@@ -136,17 +129,11 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
       body: jsonEncode(data),
     );
 
-
-
     if (response.statusCode == 200) {
 
-      //print('B 1');
-      //var data = jsonDecode(response.body)['data'];
-      //print('B 1 Finish');
       FN_showToast(context,'save_success'.tr() ,Colors.black);
 
       return  1;
-
 
     } else {
       throw Exception('Failed to post sales Invoice');
@@ -156,8 +143,6 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
   }
 
   Future<int> updateSalesOrderH(BuildContext context ,int id, SalesOrderH order) async {
-
-    print('Start Update');
 
     Map data = {
       'CompanyCode': companyCode,
@@ -182,11 +167,11 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
       'invoiceDiscountValue': order.invoiceDiscountValue,
       'totalAfterDiscount': order.totalAfterDiscount,
       'totalValue': order.totalValue,
-      'addBy': empUserId
+      'addBy': empUserId,
+      "year": int.parse(financialYearCode)
     };
 
     String apiUpdate =updateApi + id.toString();
-    print('Start Update apiUpdate ' + apiUpdate );
 
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data)
@@ -195,15 +180,12 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after ' );
     if (response.statusCode == 200) {
-      print('Start Update done ' );
-      //var data = jsonDecode(response.body)['data'];
+
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
     } else {
-      print('Start Update error ' );
       throw Exception('Failed to update a case');
     }
 
@@ -213,20 +195,16 @@ import '../../../../../ui/module/accountreceivable/transactions/SalesOrders/addS
   Future<void> deleteSalesOrderH(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
-    print('url' + apiDel);
     var data = {
-      // "id": id
+
     };
 
-    print('before response');
     var response = await http.delete(Uri.parse(apiDel),
         body: json.encode(data)
         ,headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
         });
-
-    print('after response');
 
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);

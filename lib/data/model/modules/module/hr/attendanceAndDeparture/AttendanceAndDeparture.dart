@@ -37,7 +37,7 @@ class AttendanceAndDeparture{
       toTime: (json['toTime'] != null) ? json['toTime'] as String : "",
       attendanceImage: (json['attendanceImage'] != null) ? json['attendanceImage'] as String : "",
       departureImage: (json['departureImage'] != null) ? json['departureImage'] as String : "",
-      year:  (json['year'] != null) ? json['year'] as int : 2024,
+      year:  (json['year'] != null) ? json['year'] as int : 2025,
     );
   }
 

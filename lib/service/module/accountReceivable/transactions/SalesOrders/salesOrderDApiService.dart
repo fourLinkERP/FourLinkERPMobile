@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
 
@@ -11,26 +10,23 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
 
  class SalesOrderDApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/sellorderdetails/searchData';
-  String createApi= baseUrl.toString()  + '/api/v1/sellorderdetails';
-  String updateApi= baseUrl.toString()  + '/api/v1/sellorderdetails/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + '/api/v1/sellorderdetails/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/sellorderdetails/';  // Add ID For Get
+  String searchApi= '$baseUrl/api/v1/sellorderdetails/searchData';
+  String createApi= '$baseUrl/api/v1/sellorderdetails';
+  String updateApi= '$baseUrl/api/v1/sellorderdetails/';
+  String deleteApi= '$baseUrl/api/v1/sellorderdetails/';
+  String getByIdApi= '$baseUrl/api/v1/sellorderdetails/';
 
   Future<List<SalesOrderD>> getSalesOrdersD(int? headerId,String? serial) async {
 
     Map data = {
-
-      // 'SellOrdersSerial': serial,
-      // 'SellOrdersTypeCode':"1",
       'HeaderId': headerId,
       'Search':{
         'SellOrdersSerial': serial,
         'SellOrdersTypeCode':"1",
+        "year": int.parse(financialYearCode)
       }
     };
 
-     print('B 2');
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -50,14 +46,14 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       return  list;
 
     } else {
-      throw "Failed to load customer list";
+      throw "Failed to load sales order list";
     }
   }
 
   Future<SalesOrderD> getSalesOrderDById(int id) async {
 
     var data = {
-      // "id": id
+
     };
 
     String apiGet=getByIdApi + id.toString();
@@ -82,7 +78,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'SellOrdersTypeCode': order.sellOrdersTypeCode, //Sales Invoice Type
+      'SellOrdersTypeCode': order.sellOrdersTypeCode,
       'SellOrdersSerial': order.sellOrdersSerial,
       'lineNum': order.lineNum,
       'itemCode': order.itemCode,
@@ -112,12 +108,11 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": true,
-      "Year" : financialYearCode,
+      "Year" : int.parse(financialYearCode),
       'addBy': empUserId
 
     };
 
-    print("save orderD: " + data.toString());
     final http.Response response = await http.post(
       Uri.parse(createApi),
       headers: <String, String>{
@@ -131,9 +126,6 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
 
     if (response.statusCode == 200) {
 
-      //print('B 1');
-      //var data = jsonDecode(response.body)['data'];
-      //print('B 1 Finish');
       FN_showToast(context,'save_success'.tr() ,Colors.black);
 
       return  1;
@@ -147,8 +139,6 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
   }
 
   Future<int> updateSalesOrderD(BuildContext context ,int id, SalesOrderD order) async {
-
-    print('Start Update');
 
     Map data = {
       'CompanyCode': companyCode,
@@ -172,11 +162,11 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       'displayTotalTaxValue': order.displayTotalTaxValue,
       'totalTaxValue': order.totalTaxValue,
       'netAfterDiscount': order.netAfterDiscount,
-      'displayNetValue': order.displayNetValue
+      'displayNetValue': order.displayNetValue,
+
     };
 
     String apiUpdate =updateApi + id.toString();
-    print('Start Update apiUpdate ' + apiUpdate );
 
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data)
@@ -185,10 +175,8 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after ' );
     if (response.statusCode == 200) {
-      print('Start Update done ' );
-      //var data = jsonDecode(response.body)['data'];
+
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
@@ -197,26 +185,22 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       throw Exception('Failed to update a case');
     }
 
-    return 0;
   }
 
   Future<void> deleteSalesOrderD(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
-    print('url' + apiDel);
+
     var data = {
-      // "id": id
+
     };
 
-    print('before response');
     var response = await http.delete(Uri.parse(apiDel),
         body: json.encode(data)
         ,headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
         });
-
-    print('after response');
 
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);

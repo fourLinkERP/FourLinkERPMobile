@@ -805,8 +805,9 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
   }
 
   setNextSerial(){
-    //Serial
-    Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("CM_TrxH", "TrxSerial", " And TrxKind=1 And CashTypeCode='$selectedTypeCodeValue'").then((data) {
+
+    Future<NextSerial>  futureSerial = _nextSerialApiService.getTransactionNextSerial(
+        "CM_TrxH", "TrxSerial", " And TrxKind=1 And CashTypeCode='$selectedTypeCodeValue'", int.parse(selectedTypeCodeValue??'3'), 3203).then((data) {
       NextSerial nextSerial = data;
 
       //Date

@@ -115,7 +115,7 @@ class ShippingPermissionDApiService{
       "flgDelete": false,
       "confirmed": true,
       "addBy": "1",
-      "year" : financialYearCode,
+      "year" : int.parse(financialYearCode),
       "bonus": 0,
       "displayBonus": 0,
       "taxPositionCode": 0,

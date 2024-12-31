@@ -701,18 +701,18 @@ class _EditCheckStoreDataWidgetState extends State<EditCheckStoreDataWidget> {
     }
 
 
-    CheckStoreD _checkStoreD = CheckStoreD();
-    _checkStoreD.itemCode = selectedItemValue;
-    _checkStoreD.itemName = selectedItemName;
-    _checkStoreD.unitCode = selectedUnitValue;
-    _checkStoreD.unitName = selectedUnitName;
-    _checkStoreD.registeredBalance = (_qtyController.text.isNotEmpty) ? double.parse(_qtyController.text) : 0;
+    CheckStoreD checkStoreD = CheckStoreD();
+    checkStoreD.itemCode = selectedItemValue;
+    checkStoreD.itemName = selectedItemName;
+    checkStoreD.unitCode = selectedUnitValue;
+    checkStoreD.unitName = selectedUnitName;
+    checkStoreD.registeredBalance = (_qtyController.text.isNotEmpty) ? double.parse(_qtyController.text) : 0;
 
-    _checkStoreD.lineNum = lineNum;
+    checkStoreD.lineNum = lineNum;
 
-    checkStoreDLst.add(_checkStoreD);
+    checkStoreDLst.add(checkStoreD);
 
-    totalQty += _checkStoreD.registeredBalance;
+    totalQty += checkStoreD.registeredBalance;
 
     rowsCount += 1;
 
@@ -771,7 +771,6 @@ class _EditCheckStoreDataWidgetState extends State<EditCheckStoreDataWidget> {
       toDate: _checkStoreToDateController.text,
       storeCode: selectedStoreValue.toString(),
       notes: _notesController.text,
-      year: 2024,
 
     ));
 
@@ -779,18 +778,17 @@ class _EditCheckStoreDataWidgetState extends State<EditCheckStoreDataWidget> {
 
     for(var i = 0; i < checkStoreDLst.length; i++){
 
-      CheckStoreD _checkStoreD = checkStoreDLst[i];
-      if(_checkStoreD.isUpdate == false)
+      CheckStoreD checkStoreD = checkStoreDLst[i];
+      if(checkStoreD.isUpdate == false)
       {
         //Add
         _checkStoreDApiService.createCheckStoreD(context,CheckStoreD(
 
             serial: int.parse(_checkStoreSerialController.text),
-            itemCode: _checkStoreD.itemCode,
-            lineNum: _checkStoreD.lineNum,
-            registeredBalance: _checkStoreD.registeredBalance,
-            unitCode: _checkStoreD.unitCode,
-            year: 2024,
+            itemCode: checkStoreD.itemCode,
+            lineNum: checkStoreD.lineNum,
+            registeredBalance: checkStoreD.registeredBalance,
+            unitCode: checkStoreD.unitCode,
             storeCode: selectedStoreValue.toString()
         ));
 

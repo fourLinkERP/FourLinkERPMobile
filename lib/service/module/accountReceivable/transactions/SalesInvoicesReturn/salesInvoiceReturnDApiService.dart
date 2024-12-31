@@ -10,22 +10,18 @@ import '../../../../../data/model/modules/module/accountreceivable/transactions/
 
 class SalesInvoiceReturnDApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/salesinvoicereturndetails/search';
-  String createApi= baseUrl.toString()  + '/api/v1/salesinvoicereturndetails';
-  String updateApi= baseUrl.toString()  + '/api/v1/salesinvoicereturndetails/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + '/api/v1/salesinvoicereturndetails/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/salesinvoicereturndetails/';  // Add ID For Get
+  String searchApi= '$baseUrl/api/v1/salesinvoicereturndetails/search';
+  String createApi= '$baseUrl/api/v1/salesinvoicereturndetails';
+  String updateApi= '$baseUrl/api/v1/salesinvoicereturndetails/';  // Add ID For Edit
+  String deleteApi= '$baseUrl/api/v1/salesinvoicereturndetails/';
+  String getByIdApi= '$baseUrl/api/v1/salesinvoicereturndetails/';  // Add ID For Get
 
   Future<List<SalesInvoiceReturnD>> getSalesInvoiceReturnD(int? headerId) async {
-    print('Booter 1 SalesInvoiceReturnD');
     Map data = {
       'Search':{
         'HeaderId': headerId
       }
     };
-
-    print('Booter 2 SalesInvoiceReturnD');
-    print('Booter 2  SalesInvoiceReturnD' + data.toString());
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -35,41 +31,31 @@ class SalesInvoiceReturnDApiService {
       body: jsonEncode(data),
     );
 
-    print('Booter 3 SalesInvoiceReturnD');
     if (response.statusCode == 200) {
-      print('Booter 4 SalesInvoiceReturnD');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesInvoiceReturnD> list = [];
       if (data.isNotEmpty) {
         list = data.map((item) => SalesInvoiceReturnD.fromJson(item)).toList();
       }
-      print('B 1 Finish SalesInvoiceReturnD');
+
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => SalesInvoiceReturn.fromJson(data))
-      //     .toList();
     } else {
-      print('Booter Error');
       throw "Failed to load salesInvoiceReturnD list";
     }
   }
 
-  Future<double>  getItemSellPriceData(String? ItemCode,String? UnitCode,String? tableName,String? criteria, String? customerCode) async {
+  Future<double>  getItemSellPriceData(String? itemCode,String? unitCode,String? tableName,String? criteria, String? customerCode) async {
 
     String sellItemApi = baseUrl.toString()  + '/api/v1/salesinvoicedetails/' + "searchItemSellPriceData";
-    print('ItemSellPriceData 1');
     Map data = {
-      'ItemCode': ItemCode,
-      'UnitCode': UnitCode,
+      'ItemCode': itemCode,
+      'UnitCode': unitCode,
       'TableName': tableName,
       'Criteria': criteria,
       'ModuleId': 2,
       'CustomerCode': customerCode
     };
 
-
-    print('ItemSellPriceData 2');
-    print(data);
     final http.Response response = await http.post(
       Uri.parse(sellItemApi),
       headers: <String, String>{
@@ -79,11 +65,9 @@ class SalesInvoiceReturnDApiService {
       body: jsonEncode(data),
     );
 
-    print('ItemSellPriceData 4');
-    print(data);
     if (response.statusCode == 200) {
       print('ItemSellPriceData 5');
-      print('ItemSellPriceData ' + (json.decode(response.body)).toDouble().toString());
+      print('ItemSellPriceData ${(json.decode(response.body)).toDouble()}');
 
       return  (json.decode(response.body)).toDouble();
 
@@ -146,7 +130,7 @@ class SalesInvoiceReturnDApiService {
       'displayNetValue': invoice.displayNetValue,
       'netValue': invoice.netValue,
       'netBeforeTax': invoice.netBeforeTax,
-      'year': financialYearCode,
+      'year': int.parse(financialYearCode),
       'addBy': empUserId,
       "isActive": true,
       "isBlocked": false,
@@ -172,34 +156,24 @@ class SalesInvoiceReturnDApiService {
       body: jsonEncode(data),
     );
 
-    print('Start Create ReturnD2' );
-    print('save return: ' + data.toString());
-
     if (response.statusCode == 200) {
-
-      print('Start Create ReturnD3' );
       return  1;
 
-
     } else {
-      print('Error Create ReturnD' );
+
       throw Exception('Failed to post sales Invoice return');
     }
-
-    return  0;
   }
 
   Future<int> updateSalesInvoiceReturnD(BuildContext context ,int id, SalesInvoiceReturnD invoice) async {
 
-    print('Start Update');
-
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'SalesInvoicesCase': 2, //Sales Invoice Case = 2
+      'SalesInvoicesCase': 2,
       'SalesInvoicesTypeCode': invoice.salesInvoicesTypeCode,
       'salesInvoicesSerial': invoice.salesInvoicesSerial,
-      'year': invoice.year,
+      "Year": int.parse(financialYearCode),
       'lineNum': invoice.lineNum,
       'itemCode': invoice.itemCode,
       'unitCode': invoice.unitCode,
@@ -232,7 +206,7 @@ class SalesInvoiceReturnDApiService {
     };
 
     String apiUpdate =updateApi + id.toString();
-    print('Start Update apiUpdate ' + apiUpdate );
+    print('Start Update apiUpdate $apiUpdate' );
 
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data)
@@ -241,10 +215,8 @@ class SalesInvoiceReturnDApiService {
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after ' );
     if (response.statusCode == 200) {
-      print('Start Update done ' );
-      //var data = jsonDecode(response.body)['data'];
+
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
@@ -253,26 +225,22 @@ class SalesInvoiceReturnDApiService {
       throw Exception('Failed to update a case');
     }
 
-    return 0;
   }
 
   Future<void> deleteSalesInvoiceReturnD(BuildContext context ,int? id) async {  //Future<void> deleteSalesInvoiceReturnD(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
-    print('url' + apiDel);
+
     var data = {
-      //"id": id
+
     };
 
-    print('before response');
     var response = await http.delete(Uri.parse(apiDel),
         body: json.encode(data)
         ,headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
         });
-
-    print('after response');
 
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);

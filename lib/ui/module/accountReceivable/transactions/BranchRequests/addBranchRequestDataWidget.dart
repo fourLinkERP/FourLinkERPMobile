@@ -748,7 +748,7 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
       storeCode: selectedToStoreValue.toString(),
       toStoreCode: selectedFromStoreValue.toString(),
       notes: _notesController.text,
-      year: 2024,
+      year: int.parse(financialYearCode),
 
     ));
 
@@ -764,7 +764,7 @@ class _AddBranchRequestDataWidgetState extends State<AddBranchRequestDataWidget>
             lineNum: branchRequestD.lineNum,
             displayQty: branchRequestD.displayQty,
             unitCode: branchRequestD.unitCode,
-            year: 2024,
+            year: int.parse(financialYearCode),
             storeCode: selectedFromStoreValue.toString()
         ));
       }

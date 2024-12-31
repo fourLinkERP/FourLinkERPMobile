@@ -73,7 +73,7 @@ class MaintenanceOrderHApiService{
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": true,
-      "year" : financialYearCode,
+      "year" : int.parse(financialYearCode),
       "addBy": empUserId,
 
     };
@@ -131,7 +131,7 @@ class MaintenanceOrderHApiService{
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": true,
-      "year" : financialYearCode,
+      "year" : int.parse(financialYearCode),
       "editBy": empUserId,
 
     };

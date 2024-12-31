@@ -64,7 +64,7 @@ class ShippingPermissionH{
       trxCase: (json['trxCase'] != null) ? json['trxCase'] as int : 0,
       trxKind: (json['trxKind'] != null) ? json['trxKind'] as int : 0,
       totalQty: (json['totalQty'] !=null) ? json['totalQty'].toDouble() : 0,
-      year: (json['year'] !=null) ? json['year'] as int : 2024,
+      year: (json['year'] !=null) ? json['year'] as int : 2025,
       rowsCount: (json['rowsCount']  != null) ? json['rowsCount'] as int:0,
       targetCode: (json['targetCode'] !=null) ? json['targetCode'] as String : "",
       targetName: (json['targetName'] !=null) ? json['targetName'] as String : "",

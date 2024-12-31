@@ -467,7 +467,7 @@ class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataW
       trxDate: _trxDateController.text,
       complaint: _complaintController.text,
       notes: _notesController.text,
-      year: 2024,
+      year: int.parse(financialYearCode),
 
     ));
     _maintenanceOrderDApiService.createMaintenanceOrderD(context, MaintenanceOrderD(
@@ -477,7 +477,7 @@ class _AddMaintenanceOrderDataWidgetState extends State<AddMaintenanceOrderDataW
       lineNum: lineNumber,
       driverCode: selectedDriverValue,
       meterReading: _counterReadingController.text,
-      year: 2024,
+      year: int.parse(financialYearCode),
     ));
     Navigator.pop(context);
   }

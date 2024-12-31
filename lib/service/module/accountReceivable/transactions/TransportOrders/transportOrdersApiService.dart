@@ -83,7 +83,7 @@ class TransportOrderApiService{
       "flgDelete": false,
       "confirmed": true,
       "isConfirmed":true,
-      "year" : financialYearCode,
+      "year" : int.parse(financialYearCode),
       "addBy": empUserId,
 
     };
@@ -143,7 +143,7 @@ class TransportOrderApiService{
       "flgDelete": false,
       "confirmed": true,
       "isConfirmed":true,
-      "year" : financialYearCode,
+      "year" : int.parse(financialYearCode),
       "editBy": empUserId,
 
     };

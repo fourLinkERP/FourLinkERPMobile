@@ -747,7 +747,6 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
         toDate: _checkStoreToDateController.text,
         storeCode: selectedStoreValue.toString(),
         notes: _notesController.text,
-        year: 2024,
 
     ));
 
@@ -763,7 +762,6 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
             lineNum: _checkStoreD.lineNum,
             registeredBalance: _checkStoreD.registeredBalance,
             unitCode: _checkStoreD.unitCode,
-            year: 2024,
             storeCode: selectedStoreValue.toString()
         ));
       }

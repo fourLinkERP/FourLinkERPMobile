@@ -26,7 +26,8 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
         "empCode": empUserId,
         "isShowTransactionsByUser": true,
         "isManager": isManager,
-        "isIt": isIt
+        "isIt": isIt,
+        "year": int.parse(financialYearCode)
       }
     };
 
@@ -40,9 +41,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       body: jsonEncode(data),
     );
 
-    print('Invoice Before ');
     if (response.statusCode == 200) {
-      print('Invoice After ');
       List<dynamic> data = jsonDecode(response.body)['data'];
       print(data);
       List<SalesInvoiceH> list = [];
@@ -51,11 +50,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       }
      print('Invoice Finish');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => SalesInvoice.fromJson(data))
-      //     .toList();
     } else {
-      //print('Invoice Failure');
       throw "Failed to load invoice list";
     }
   }
@@ -120,22 +115,10 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": true,
-      "year" : financialYearCode,
+      "year" : int.parse(financialYearCode),
       "InvoiceQRCodeBase64": invoice.invoiceQRCodeBase64,
       "addBy": empUserId,
-
-
-
-      // 'Year': invoice.year,
-      // 'CustomerCode': invoice.customerCode,
-      // 'CurrencyCode': invoice.currencyCode,
-      // 'SellOrdersDate': invoice.sellOrdersDate,
-      // 'SalesManCode': invoice.salesManCode,
-      // 'TaxGroupCode': invoice.taxGroupCode,
     };
-
-    print('save invoice 1>>');
-    print('save ' + data.toString());
 
     final http.Response response = await http.post(
       Uri.parse(createApi),
@@ -146,16 +129,8 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       body: jsonEncode(data),
     );
 
-    print('save invoice 2');
-    print('createApi');
-    print(createApi);
-
     if (response.statusCode == 200) {
 
-      //print('B 1');
-      //var data = jsonDecode(response.body)['data'];
-      //print('B 1 Finish');
-      print('save invoice 3');
       FN_showToast(context,'save_success'.tr() ,Colors.black);
 
       return  1;
@@ -175,8 +150,8 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       'id': id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
-      'SalesInvoicesCase': 1, //Sales Invoice Case =1
-      'SalesInvoicesTypeCode': invoice.salesInvoicesTypeCode, //Sales Invoice Type
+      'SalesInvoicesCase': 1,
+      'SalesInvoicesTypeCode': invoice.salesInvoicesTypeCode,
       'salesInvoicesSerial': invoice.salesInvoicesSerial,
       'SalesInvoicesDate': invoice.salesInvoicesDate,
       'CustomerCode': invoice.customerCode,
@@ -206,7 +181,7 @@ import '../../../../../data/model/modules/module/accountReceivable/transactions/
       "notActive": false,
       "flgDelete": false,
       'editBy': empUserId,
-      //,
+      "year": int.parse(financialYearCode),
       'InvoiceQRCodeBase64': invoice.invoiceQRCodeBase64,
     };
 

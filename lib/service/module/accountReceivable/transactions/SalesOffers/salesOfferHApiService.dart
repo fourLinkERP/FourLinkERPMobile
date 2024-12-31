@@ -26,7 +26,8 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
         "empCode": empUserId,
         "isShowTransactionsByUser": true,
         "isManager": isManager,
-        "isIt": isIt
+        "isIt": isIt,
+        "year": int.parse(financialYearCode)
       }
     };
 
@@ -39,9 +40,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       body: jsonEncode(data),
     );
 
-    print('Offer searchData: $data');
     if (response.statusCode == 200) {
-      print('Offer Ok ');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<SalesOfferH> list = [];
       if (data.isNotEmpty) {
@@ -49,7 +48,6 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       }
       return  list;
     } else {
-      print('Offer Failure');
       throw "Failed to load Offer list";
     }
   }
@@ -116,19 +114,9 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'isSynchronized': false ,
       'PostedToGL': false,
       "currencyRate": invoice.currencyRate,
-      'addBy': empUserId
-
-
-      // 'Year': invoice.year,
-      // 'CustomerCode': invoice.customerCode,
-      // 'CurrencyCode': invoice.currencyCode,
-      // 'SellOrdersDate': invoice.sellOrdersDate,
-      // 'SalesManCode': invoice.salesManCode,
-      // 'TaxGroupCode': invoice.taxGroupCode,
+      'addBy': empUserId,
+      "year": int.parse(financialYearCode)
     };
-
-    print('save invoice 1');
-    print('save ' + data.toString());
 
     final http.Response response = await http.post(
       Uri.parse(createApi),
@@ -139,30 +127,20 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       body: jsonEncode(data),
     );
 
-    print('save invoice 2');
-
     if (response.statusCode == 200) {
 
-      //print('B 1');
-      //var data = jsonDecode(response.body)['data'];
-      //print('B 1 Finish');
-      print('save invoice 3');
       FN_showToast(context,'save_success'.tr() ,Colors.black);
 
       return  1;
 
 
     } else {
-      print('save invoice Error');
       throw Exception('Failed to post sales Invoice');
     }
 
-    return  0;
   }
 
   Future<int> updateSalesOfferH(BuildContext context ,int id, SalesOfferH invoice) async {
-
-    print('Start Update');
 
     Map data = {
       'CompanyCode': companyCode,
@@ -189,11 +167,11 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
       'totalAfterDiscount': invoice.totalAfterDiscount,
       'totalBeforeTax': invoice.totalBeforeTax,
       'totalValue': invoice.totalValue,
-      'addBy': empUserId
+      'addBy': empUserId,
+      "year": int.parse(financialYearCode)
     };
 
     String apiUpdate =updateApi + id.toString();
-    print('Start Update apiUpdate ' + apiUpdate );
 
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data)
@@ -202,19 +180,14 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after ' );
     if (response.statusCode == 200) {
-      print('Start Update done ' );
-      //var data = jsonDecode(response.body)['data'];
+
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
     } else {
-      print('Start Update error ' );
       throw Exception('Failed to update a case');
     }
-
-    return 0;
   }
 
   Future<void> deleteSalesOfferH(BuildContext context ,int? id) async {

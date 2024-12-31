@@ -113,7 +113,7 @@ class ReceivePermissionDApiService{
       "flgDelete": false,
       "confirmed": true,
       'addBy': empUserId,
-      "year" : financialYearCode,
+      "year" : int.parse(financialYearCode),
       "bonus": 0,
       "displayBonus": 0,
       "taxPositionCode": 0,

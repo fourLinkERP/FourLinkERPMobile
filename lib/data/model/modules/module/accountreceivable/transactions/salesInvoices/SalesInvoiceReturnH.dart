@@ -80,7 +80,7 @@ class SalesInvoiceReturnH {
       salesInvoicesTypeCode: (json['salesInvoicesTypeCode'] != null) ? json['salesInvoicesTypeCode'] as String : "",
       salesInvoicesTypeName: (json['salesInvoicesTypeName'] != null) ? json['salesInvoicesTypeName'] as String : "",
       salesInvoicesSerial: (json['salesInvoicesSerial'] != null) ? json['salesInvoicesSerial'] as String : "",
-      year: (json['year'] != null) ? json['year'] as int : 2024,
+      year: (json['year'] != null) ? json['year'] as int : 2025,
       customerCode: (json['customerCode'] != null) ? json['customerCode'] as String : "",
       customerName: (json['customerName'] != null) ? json['customerName'] as String : "",
       salesInvoicesDate: (json['salesInvoicesDate'] != null) ? json['salesInvoicesDate'] as String : pickedDate,

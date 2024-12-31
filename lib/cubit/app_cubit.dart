@@ -69,7 +69,7 @@ class AppCubit extends Cubit<AppStates>{
 
     await CacheHelper.getString('FinancialYearCode').then((value) =>
     {
-      financialYearCode = (value != null)? value.toString() : "2024"
+      financialYearCode = (value != null)? value.toString() : "2025"
     });
     await CacheHelper.getString('CompanyTaxId').then((value) =>
     {

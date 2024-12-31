@@ -235,7 +235,6 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
   }
 
   _toPrintScreen(BuildContext context ,String criteria){
-    print("criteria: " + criteria);
     String menuId="3203";
     //API Reference
     ReportUtilityApiService reportUtilityApiService = ReportUtilityApiService();

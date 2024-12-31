@@ -28,7 +28,8 @@ import 'package:intl/intl.dart';
         "EmpCode": empUserId,
         "isShowTransactionsByUser": true,
         "isManager": isManager,
-        "isIt": isIt
+        "isIt": isIt,
+        "year": int.parse(financialYearCode)
       }
     };
 
@@ -40,16 +41,11 @@ import 'package:intl/intl.dart';
       },
       body: jsonEncode(data),
     );
-
-    print('Cash Receive List');
-    print(searchApi);
-    print(data);
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<CashReceive> list = [];
       if (data.isNotEmpty) {
         list = data.map((item) => CashReceive.fromJson(item)).toList();
-        print(data.toString());
       }
       return  list;
 
@@ -117,14 +113,11 @@ import 'package:intl/intl.dart';
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": true,
-      "Year": financialYearCode,
+      "Year": int.parse(financialYearCode),
       "addBy": empUserId,
       "addTime": DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now()),
 
     };
-    print('Cash Receive Save');
-    print(createApi);
-    print(data);
     final http.Response response = await http.post(
       Uri.parse(createApi),
       headers: <String, String>{
@@ -134,29 +127,17 @@ import 'package:intl/intl.dart';
       body: jsonEncode(data),
     );
 
-
-    print('Cash Receive Save 2');
     if (response.statusCode == 200) {
 
-      //print('B 1');
-      //var data = jsonDecode(response.body)['data'];
-      //print('B 1 Finish');
       FN_showToast(context,'save_success'.tr() ,Colors.black);
-      print('Cash Receive Save 3');
       return  1;
 
-
     } else {
-      print('Cash Receive Save 4');
       throw Exception('Failed to post Cash Receive');
     }
-
-    return  0;
   }
 
   Future<int> updateCashReceive(BuildContext context ,int id, CashReceive cash) async {
-
-    print('Start Update');
 
     Map data = {
       'Id': id,
@@ -166,7 +147,7 @@ import 'package:intl/intl.dart';
       'CashTypeCode': cash.cashTypeCode,
       'trxSerial': cash.trxSerial,
       'trxDate': cash.trxDate,
-      'Year': financialYearCode,
+      'Year': int.parse(financialYearCode),
       'RefNo': cash.refNo,
       'Description': cash.description,
       'TargetId': cash.targetId,
@@ -193,12 +174,11 @@ import 'package:intl/intl.dart';
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "confirmed": true
+      "confirmed": true,
+      "year": int.parse(financialYearCode)
     };
 
     String apiUpdate =updateApi + id.toString();
-    print('Start Update apiUpdate ' + apiUpdate );
-    print(data);
 
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data)
@@ -207,15 +187,12 @@ import 'package:intl/intl.dart';
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after ' );
     if (response.statusCode == 200) {
-      print('Start Update done ' );
-      //var data = jsonDecode(response.body)['data'];
+
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
     } else {
-      print('Start Update error ' );
       throw Exception('Failed to update a case');
     }
 
@@ -225,9 +202,7 @@ import 'package:intl/intl.dart';
   Future<void> deleteCashReceive(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
-    print('url' + apiDel);
     var data = {
-      // "id": id
     };
 
     print('before response');
@@ -237,8 +212,6 @@ import 'package:intl/intl.dart';
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
         });
-
-    print('after response');
 
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);

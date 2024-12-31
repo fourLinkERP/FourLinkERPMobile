@@ -9,14 +9,13 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
 class CheckStoreDApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/checkstorestempddetails/search';
-  String createApi= baseUrl.toString()  + '/api/v1/checkstorestempddetails';
-  String updateApi= baseUrl.toString()  + '/api/v1/checkstorestempddetails/';
-  String deleteApi= baseUrl.toString()  + '/api/v1/checkstorestempddetails/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/checkstorestempddetails/';
+  String searchApi= '$baseUrl/api/v1/checkstorestempddetails/search';
+  String createApi= '$baseUrl/api/v1/checkstorestempddetails';
+  String updateApi= '$baseUrl/api/v1/checkstorestempddetails/';
+  String deleteApi= '$baseUrl/api/v1/checkstorestempddetails/';
+  String getByIdApi= '$baseUrl/api/v1/checkstorestempddetails/';
 
   Future<List<CheckStoreD>> getCheckStoreD(int? headerId) async {
-    print('Booter 1 CheckStoreD');
     Map data = {
       'Search':{
         'CompanyCode': companyCode,
@@ -25,7 +24,6 @@ class CheckStoreDApiService {
       }
     };
 
-    print('Booter 2  CheckStoreD' + data.toString());
     final http.Response response = await http.post(
       Uri.parse(searchApi),
       headers: <String, String>{
@@ -36,16 +34,15 @@ class CheckStoreDApiService {
     );
 
     if (response.statusCode == 200) {
-      print('Booter 3 CheckStoreD');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<CheckStoreD> list = [];
       if (data.isNotEmpty) {
         list = data.map((item) => CheckStoreD.fromJson(item)).toList();
       }
-      print('B 1 Finish CheckStoreD');
+
       return  list;
     } else {
-      print('Booter Error');
+
       throw "Failed to load check store list";
     }
   }
@@ -72,11 +69,10 @@ class CheckStoreDApiService {
       "flgDelete": false,
       "confirmed": true,
       'addBy': empUserId,
-      "year" : financialYearCode
+      "Year": int.parse(financialYearCode)
 
     };
 
-    print('Start Create D' + data.toString());
     final http.Response response = await http.post(
       Uri.parse(createApi),
       headers: <String, String>{
@@ -86,33 +82,24 @@ class CheckStoreDApiService {
       body: jsonEncode(data),
     );
 
-    print('Start Create D2' );
-    print('save details: ' + data.toString());
-
     if (response.statusCode == 200) {
 
-      print('Start Create D3' );
       return  1;
 
 
     } else {
-      print('Error Create D' );
-      //return  1;
+
       throw Exception('Failed to post checkStoreD');
     }
-
-    return  0;
   }
 
   Future<int> updateCheckStoreD(BuildContext context ,int id, CheckStoreD checkStoreD) async {
-
-    print('Start Update');
 
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
       'Serial': checkStoreD.serial,
-      'year': financialYearCode,
+      'year': int.parse(financialYearCode),
       'lineNum': checkStoreD.lineNum,
       'itemCode': checkStoreD.itemCode,
       'unitCode': checkStoreD.unitCode,
@@ -132,7 +119,6 @@ class CheckStoreDApiService {
     };
 
     String apiUpdate =updateApi + id.toString();
-    print('Start Update apiUpdate ' + apiUpdate );
 
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data)
@@ -141,38 +127,31 @@ class CheckStoreDApiService {
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after ' );
     if (response.statusCode == 200) {
-      print('Start Update done ' );
-      //var data = jsonDecode(response.body)['data'];
+
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
     } else {
-      print('Start Update error ' );
+
       throw Exception('Failed to update a case');
     }
 
-    return 0;
   }
 
   Future<void> deleteCheckStoreD(BuildContext context ,int? id) async {  //Future<void> deleteCheckStoreD(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
-    print('url' + apiDel);
-    var data = {
-      //"id": id
-    };
 
-    print('before response');
+    var data = {
+
+    };
     var response = await http.delete(Uri.parse(apiDel),
         body: json.encode(data)
         ,headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
         });
-
-    print('after response');
 
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);

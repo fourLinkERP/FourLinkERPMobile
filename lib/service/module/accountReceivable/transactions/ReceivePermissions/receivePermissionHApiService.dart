@@ -110,7 +110,7 @@ class ReceivePermissionHApiService{
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": true,
-      "year" : financialYearCode,
+      "year" : int.parse(financialYearCode),
       'addBy': empUserId
       // "allowInstallment": true,
       // "posted": true,
@@ -180,7 +180,7 @@ class ReceivePermissionHApiService{
       'totalShippmentWeightCount': receiveH.totalShippmentWeightCount,
       'notes': receiveH.notes,
       'storeCode': receiveH.storeCode,
-      "year" : financialYearCode,
+      "year" : int.parse(financialYearCode),
       "confirmed": true,
       "isActive": true,
       "isBlocked": false,

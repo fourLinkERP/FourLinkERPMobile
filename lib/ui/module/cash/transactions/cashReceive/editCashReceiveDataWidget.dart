@@ -1035,7 +1035,6 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
         currencyCode: 1,
         currencyRate: 1,
         value:_valueController.text.toDouble(),
-        year: financialYearCode.toInt(),
         statement: _statementController.text,
         tafqitNameArabic: _tafqitNameArabicController.text,
         tafqitNameEnglish: _tafqitNameEnglishController.text

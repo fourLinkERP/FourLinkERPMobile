@@ -319,7 +319,7 @@ class _ChartsState extends State<Charts> {
             SizedBox(
               height: 300,
               child: SfCartesianChart(
-                title: ChartTitle(text: 'APL - 2024'),
+                title: ChartTitle(text: 'APL - 2025'),
                 legend: const Legend(isVisible: true),
                 trackballBehavior: _trackballBehavior,
                 series: <CandleSeries>[
@@ -654,13 +654,13 @@ class _ChartsState extends State<Charts> {
   List<ChartSampleData> getChar3tData() {
     return <ChartSampleData>[
       ChartSampleData(
-          x: DateTime(2024, 01, 11),
+          x: DateTime(2025, 01, 11),
           open: 98.97,
           high: 101.19,
           low: 95.36,
           close: 97.13),
       ChartSampleData(
-          x: DateTime(2024, 01, 18),
+          x: DateTime(2025, 01, 18),
           open: 98.41,
           high: 101.46,
           low: 93.42,

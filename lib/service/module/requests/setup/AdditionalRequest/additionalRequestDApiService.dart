@@ -100,7 +100,7 @@ class AdditionalRequestDApiService {
       "notActive": false,
       "postedToGL": false,
       "flgDelete": false,
-      "year":2024
+      "year":financialYearCode
 
     };
 

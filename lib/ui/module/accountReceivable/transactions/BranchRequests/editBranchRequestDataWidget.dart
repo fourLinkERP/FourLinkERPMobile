@@ -784,7 +784,7 @@ class _EditBranchRequestDataWidgetState extends State<EditBranchRequestDataWidge
       storeCode: selectedStoreValue.toString(),
       toStoreCode: selectedToStoreValue.toString(),
       notes: _notesController.text,
-      year: 2024,
+      year: int.parse(financialYearCode),
 
     ));
 
@@ -800,7 +800,7 @@ class _EditBranchRequestDataWidgetState extends State<EditBranchRequestDataWidge
             lineNum: _branchRequestD.lineNum,
             displayQty: _branchRequestD.displayQty,
             unitCode: _branchRequestD.unitCode,
-            year: 2024,
+            year: int.parse(financialYearCode),
             storeCode: selectedStoreValue.toString()
         ));
       }

@@ -7,18 +7,19 @@ import '../../../../../common/globals.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 
 class CheckStoreHApiService{
-  String searchApi= baseUrl.toString()  + '/api/v1/checkstorestemphheaders/search';
-  String createApi= baseUrl.toString()  + '/api/v1/checkstorestemphheaders';
-  String updateApi= baseUrl.toString()  + '/api/v1/checkstorestemphheaders/';
-  String deleteApi= baseUrl.toString()  + '/api/v1/checkstorestemphheaders/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/checkstorestemphheaders/';
+  String searchApi= '$baseUrl/api/v1/checkstorestemphheaders/search';
+  String createApi= '$baseUrl/api/v1/checkstorestemphheaders';
+  String updateApi= '$baseUrl/api/v1/checkstorestemphheaders/';
+  String deleteApi= '$baseUrl/api/v1/checkstorestemphheaders/';
+  String getByIdApi= '$baseUrl/api/v1/checkstorestemphheaders/';
 
   Future<List<CheckStoreH>?> getCheckStoreH() async {
 
     Map data = {
       'Search':{
-        'CompanyCode': companyCode,
-        'BranchCode': branchCode
+        "CompanyCode": companyCode,
+        "BranchCode": branchCode,
+        "Year": int.parse(financialYearCode)
       }
     };
 
@@ -30,21 +31,15 @@ class CheckStoreHApiService{
       },
       body: jsonEncode(data),
     );
-    print('checkStoreH ' + searchApi.toString());
-    print('checkStoreH ' + data.toString());
-    print('checkStore Before ');
+
     if (response.statusCode == 200) {
-      print('checkStore After ');
       List<dynamic> data = jsonDecode(response.body)['data'];
-      print(data);
       List<CheckStoreH> list = [];
       if (data.isNotEmpty) {
         list = data.map((item) => CheckStoreH.fromJson(item)).toList();
       }
-      print('checkStore Finish');
       return  list;
     } else {
-      print('checkStore Failure');
       throw "Failed to load checkStoreH list";
     }
   }
@@ -72,7 +67,7 @@ class CheckStoreHApiService{
   }
 
   Future<int> createCheckStoreH(BuildContext context ,CheckStoreH checkStoreH) async {
-    print('save checkStoreH 0');
+
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
@@ -94,13 +89,10 @@ class CheckStoreHApiService{
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": true,
-      "year" : financialYearCode,
+      "year" : int.parse(financialYearCode),
       "addBy": empUserId,
 
     };
-
-    print('save checkStoreH 1>>');
-    print('save Stock: ' + data.toString());
 
     final http.Response response = await http.post(
       Uri.parse(createApi),
@@ -111,27 +103,19 @@ class CheckStoreHApiService{
       body: jsonEncode(data),
     );
 
-    print('save checkStoreH 2');
-    print('createApi');
-    print(createApi);
-
     if (response.statusCode == 200) {
 
-      print('save checkStoreH 3');
       FN_showToast(context,'save_success'.tr() ,Colors.black);
 
       return  1;
 
     } else {
-      print('save checkStoreH Error');
       throw Exception('Failed to post StockH');
     }
 
   }
 
   Future<int> updateCheckStoreH(BuildContext context ,int id, CheckStoreH checkStoreH) async {
-
-    print('Start Update');
 
     Map data = {
       'id': checkStoreH.id,
@@ -152,13 +136,12 @@ class CheckStoreHApiService{
       "postedToGL": false,
       "flgDelete": false,
       "confirmed": true,
-      "year" : financialYearCode,
+      "year" : int.parse(financialYearCode),
       "editBy": empUserId,
 
     };
 
     String apiUpdate =updateApi + id.toString();
-    print('Start Update apiUpdate ' + apiUpdate );
 
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data)
@@ -167,14 +150,11 @@ class CheckStoreHApiService{
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after');
     if (response.statusCode == 200) {
-      print('Start Update done ' );
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
     } else {
-      print('Start Update error ' );
       throw Exception('Failed to update a case');
     }
 
@@ -183,20 +163,17 @@ class CheckStoreHApiService{
   Future<void> deleteCheckStoreH(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
-    print('url' + apiDel);
+
     var data = {
 
     };
 
-    print('before response');
     var response = await http.delete(Uri.parse(apiDel),
         body: json.encode(data)
         ,headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
         });
-
-    print('after response');
 
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);
