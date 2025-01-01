@@ -52,12 +52,11 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
   @override
   void initState() {
     AppCubit.get(context).CheckConnection();
-    Timer(const Duration(seconds: 30), () { // <-- Delay here
+    Timer(const Duration(seconds: 30), () {
       setState(() {
         if(_salesOrders.isEmpty){
           isLoading = false;
         }
-        // <-- Code run after delay
       });
     });
     _getData();
@@ -65,7 +64,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     super.initState();
 
     setState(() {
-      _founded = _salesOrders!;
+      _founded = _salesOrders;
     });
   }
 
@@ -78,8 +77,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     if (_salesOrders.isNotEmpty) {
       _salesOrders.sort((a, b) => int.parse(b.sellOrdersSerial!).compareTo(int.parse(a.sellOrdersSerial!)));
       setState(() {
-        _founded = _salesOrders!;
-        String search = '';
+        _founded = _salesOrders;
 
       });
     }
@@ -98,8 +96,8 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     }
 
     setState(() {
-      _salesOrders = _founded!.where((SalesOrderH) =>
-          SalesOrderH.sellOrdersSerial!.toLowerCase().contains(search)).toList();
+      _salesOrders = _founded.where((salesOrderH) =>
+          salesOrderH.sellOrdersSerial!.toLowerCase().contains(search)).toList();
     });
   }
 
@@ -108,7 +106,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
           title: SizedBox(
             height: 38,
             child: TextField(
@@ -251,7 +249,6 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     bool isAllowDelete = PermissionHelper.checkDeletePermission(menuId);
     if(isAllowDelete)
     {
-      print('lahoiiiiiiiiiiiiii');
       var res = _apiService.deleteSalesOrderH(context,id).then((value) => _getData());
     }
     else
@@ -265,10 +262,7 @@ class _SalesOrderHListPageState extends State<SalesOrderHListPage> {
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if(isAllowAdd)
     {
-      Navigator.of(context)
-          .push(MaterialPageRoute(
-        builder: (context) => AddSalesOrderHDataWidget(),
-      )).then((value) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSalesOrderHDataWidget(),)).then((value) {
         _getData();
       });
     }

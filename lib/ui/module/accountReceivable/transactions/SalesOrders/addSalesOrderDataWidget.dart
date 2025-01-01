@@ -82,17 +82,17 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   List<DropdownMenuItem<String>> menuCustomers = [ ];
   List<DropdownMenuItem<String>> menuItems = [ ];
 
-  String? selectedCustomerValue = null;
+  String? selectedCustomerValue;
   String? selectedTypeValue = "1";
-  String? selectedItemValue = null;
-  String? selectedItemName = null;
+  String? selectedItemValue;
+  String? selectedItemName;
   String? selectedUnitValue = "1";
-  String? selectedUnitName = null;
-  String? price = null;
-  String? qty = null;
-  String? vat = null;
-  String? discount = null;
-  String? total = null;
+  String? selectedUnitName;
+  String? price;
+  String? qty;
+  String? vat;
+  String? discount;
+  String? total;
 
   final SalesOrderHApiService api = SalesOrderHApiService();
 
@@ -111,7 +111,6 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   final _totalValueController = TextEditingController(); //Total Value
   final _totalDiscountController = TextEditingController(); //Total Discount
   final _totalAfterDiscountController = TextEditingController(); //Total After Discount
-  final _totalTotalBeforeTaxController = TextEditingController(); //Total Before Tax
   final _totalTaxController = TextEditingController(); //Total Tax
   final _totalBeforeTaxController = TextEditingController(); // Total Before Tax
   final _totalNetController = TextEditingController(); // Total Net
@@ -136,8 +135,6 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   final _descriptionNameArabicController = TextEditingController();
   final _descriptionNameEnglishController = TextEditingController();
 
-  static const int numItems = 0;
-
   SalesOrderType?  salesOrderTypeItem=SalesOrderType(sellOrdersTypeCode: "",sellOrdersTypeNameAra: "",sellOrdersTypeNameEng: "",id: 0);
   Item?  itemItem=Item(itemCode: "",itemNameAra: "",itemNameEng: "",id: 0);
   Unit?  unitItem=Unit(unitCode: "",unitNameAra: "",unitNameEng: "",id: 0);
@@ -145,7 +142,6 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   @override
   initState()  {
     super.initState();
-    //Reset Values
     lineNum = 1;
     productPrice = 0;
     productQuantity = 0;
@@ -164,7 +160,6 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     totalBeforeTax = 0;
     totalNet = 0;
 
-    //Sales Invoice Type
     Future<List<SalesOrderType>> futureSalesOrderType = _salesOrderTypeApiService.getSalesOrdersTypes().then((data) {
       salesOrderTypes = data;
       getSalesOrderTypeData();
@@ -174,7 +169,6 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     });
 
 
-    //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
       getCustomerData();
@@ -183,7 +177,6 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
       print(e);
     });
 
-    //Items
     Future<List<Item>> futureItems = _itemsApiService.getOfferItems().then((data) {
       items = data;
       setState(() {
@@ -194,10 +187,8 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
       print(e);
     });
 
-
   }
 
-  String arabicNameHint = 'arabicNameHint';
   String? sellOrdersSerial;
   String? sellOrdersDate;
 
@@ -257,7 +248,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
             )
           ],
         ),
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1), //<-- SEE HERE
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
       ),
 
       body: Form(
@@ -1053,32 +1044,8 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   }
 
 
-
-  // DataTable _createDataTable() {
-  //   return DataTable(columns: _createColumns(), rows: _createRows());
-  // }
-  // List<DataColumn> _createColumns() {
-  //   return [
-  //     DataColumn(label: Text('ID')),
-  //     DataColumn(label: Text('Book')),
-  //     DataColumn(label: Text('Author')),
-  //     DataColumn(label: Text('Category'))
-  //   ];
-  // }
-  // List<DataRow> _createRows() {
-  //   return _books
-  //       .map((book) => DataRow(cells: [
-  //     DataCell(Text('#' + book['id'].toString())),
-  //     DataCell(Text(book['title'])),
-  //     DataCell(Text(book['author'])),
-  //     DataCell(FlutterLogo())
-  //   ]))
-  //       .toList();
-  // }
-
-
   getCustomerData() {
-    if (customers != null) {
+    if (customers.isNotEmpty) {
       for(var i = 0; i < customers.length; i++){
         menuCustomers.add(DropdownMenuItem(value: customers[i].customerCode.toString(), child: Text(customers[i].customerNameAra.toString())));
       }
@@ -1088,19 +1055,15 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     });
   }
   getSalesOrderTypeData() {
-    if (salesOrderTypes != null) {
+    if (salesOrderTypes.isNotEmpty) {
       for(var i = 0; i < salesOrderTypes.length; i++){
         menuSalesOrderTypes.add(DropdownMenuItem(value: salesOrderTypes[i].sellOrdersTypeCode.toString(), child: Text(salesOrderTypes[i].
         sellOrdersTypeNameAra.toString())));
         if(salesOrderTypes[i].sellOrdersTypeCode == "1"){
-          // print('in amr3');
           salesOrderTypeItem = salesOrderTypes[salesOrderTypes.indexOf(salesOrderTypes[i])];
-          // print('in amr4');
-          // print(customerTypeItem );
         }
 
       }
-
       selectedTypeValue = "1";
       setNextSerial();
     }
@@ -1112,7 +1075,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
 
 
   getItemData() {
-    if (items != null) {
+    if (items.isNotEmpty) {
       for(var i = 0; i < items.length; i++){
         menuItems.add(DropdownMenuItem(value: items[i].itemCode.toString(), child: Text(items[i].itemNameAra.toString())));
       }
@@ -1135,7 +1098,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   saveInvoice(BuildContext context) async {
 
     //Items
-    if(SalesOrderDLst == null || SalesOrderDLst.length <=0){
+    if(SalesOrderDLst.isEmpty){
       FN_showToast(context,'please_Insert_One_Item_At_Least'.tr(),Colors.black);
       return;
     }
@@ -1158,12 +1121,6 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
       return;
     }
 
-    // //Currency
-    // if(currencyCodeSelectedValue == null || currencyCodeSelectedValue!.isEmpty){
-    //   FN_showToast(context,'Please Set Currency',Colors.black);
-    //   return;
-    // }
-
     await _salesOrderHApiService.createSalesOrderH(context,SalesOrderH(
 
       sellOrdersSerial: _salesOrdersSerialController.text,
@@ -1173,46 +1130,42 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
       totalQty:(_totalQtyController.text.isNotEmpty)?  _totalQtyController.text.toDouble():0 ,
       totalTax:(_totalTaxController.text.isNotEmpty)?  _totalTaxController.text.toDouble():0 ,
       totalDiscount:(_totalDiscountController.text.isNotEmpty)?  _totalDiscountController.text.toDouble():0 ,
-      rowsCount:(rowsCount != null && rowsCount >0 )? rowsCount :0 ,
+      rowsCount:(rowsCount > 0 )? rowsCount :0 ,
       totalNet:(_totalNetController.text.isNotEmpty)?  _totalNetController.text.toDouble():0 ,
       invoiceDiscountPercent:(_invoiceDiscountPercentController.text.isNotEmpty)?  _invoiceDiscountPercentController.text.toDouble():0 ,
       invoiceDiscountValue:(_invoiceDiscountValueController.text.isNotEmpty)?  _invoiceDiscountValueController.text.toDouble():0 ,
       totalValue:(_totalValueController.text.isNotEmpty)?  _totalValueController.text.toDouble():0 ,
       totalAfterDiscount:(_totalAfterDiscountController.text.isNotEmpty)?  _totalAfterDiscountController.text.toDouble():0 ,
       totalBeforeTax:(_totalBeforeTaxController.text.isNotEmpty)?  _totalBeforeTaxController.text.toDouble():0 ,
-      //salesManCode: sellOrdersSerial,
-      // currencyCode: "1",
-      // taxGroupCode: "1",
-    ));
 
-    //Save Footer For Now
+    ));
 
     for(var i = 0; i < SalesOrderDLst.length; i++){
 
-      SalesOrderD _salesOrderD=SalesOrderDLst[i];
-      if(_salesOrderD.isUpdate == false)
+      SalesOrderD salesOrderD=SalesOrderDLst[i];
+      if(salesOrderD.isUpdate == false)
       {
         //Add
         _salesOrderDApiService.createSalesOrderD(context,SalesOrderD(
 
           sellOrdersSerial: _salesOrdersSerialController.text,
           sellOrdersTypeCode: selectedTypeValue,
-          itemCode: _salesOrderD.itemCode,
-          unitCode: _salesOrderD.unitCode,
-          lineNum: _salesOrderD.lineNum,
-          price: _salesOrderD.price,
-          displayPrice: _salesOrderD.displayPrice,
-          qty: _salesOrderD.qty,
-          displayQty: _salesOrderD.displayQty,
-          total: _salesOrderD.total,
-          displayTotal: _salesOrderD.total,
-          totalTaxValue: _salesOrderD.totalTaxValue,
-          discountValue: _salesOrderD.discountValue,
-          displayDiscountValue: _salesOrderD.discountValue,
-          netAfterDiscount: _salesOrderD.netAfterDiscount,
-          displayTotalTaxValue: _salesOrderD.displayTotalTaxValue,
-          displayNetValue: _salesOrderD.displayNetValue,
-          storeCode: "1" // For Now
+          itemCode: salesOrderD.itemCode,
+          unitCode: salesOrderD.unitCode,
+          lineNum: salesOrderD.lineNum,
+          price: salesOrderD.price,
+          displayPrice: salesOrderD.displayPrice,
+          qty: salesOrderD.qty,
+          displayQty: salesOrderD.displayQty,
+          total: salesOrderD.total,
+          displayTotal: salesOrderD.total,
+          totalTaxValue: salesOrderD.totalTaxValue,
+          discountValue: salesOrderD.discountValue,
+          displayDiscountValue: salesOrderD.discountValue,
+          netAfterDiscount: salesOrderD.netAfterDiscount,
+          displayTotalTaxValue: salesOrderD.displayTotalTaxValue,
+          displayNetValue: salesOrderD.displayNetValue,
+          storeCode: "1"
         ));
 
       }
@@ -1239,40 +1192,38 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
       return;
     }
 
-    SalesOrderD _salesOrderD = SalesOrderD();
-    _salesOrderD.itemCode = selectedItemValue;
-    _salesOrderD.itemName = selectedItemName;
-    _salesOrderD.unitCode = selectedUnitValue;
-    _salesOrderD.displayQty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
-    _salesOrderD.qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
-    _salesOrderD.costPrice = (_costPriceController.text.isNotEmpty) ? double.parse(_costPriceController.text) : 0;
-    _salesOrderD.displayPrice = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
-    _salesOrderD.price = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
-    _salesOrderD.total = _salesOrderD.qty * _salesOrderD.price;
-    _salesOrderD.displayTotal = _salesOrderD.displayQty * _salesOrderD.displayPrice;
-    _salesOrderD.displayDiscountValue = (_displayDiscountController.text.isNotEmpty) ? double.parse(_displayDiscountController.text) : 0;
-    _salesOrderD.discountValue = _salesOrderD.displayDiscountValue;
-    _salesOrderD.netAfterDiscount = _salesOrderD.displayTotal - _salesOrderD.displayDiscountValue;
-    setItemTaxValue(selectedItemValue.toString(), _salesOrderD.netAfterDiscount);
-    _salesOrderD.displayTotalTaxValue = (0.15 * _salesOrderD.netAfterDiscount); //(_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
-    _salesOrderD.totalTaxValue = (_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
-    _salesOrderD.displayNetValue = _salesOrderD.netAfterDiscount + _salesOrderD.displayTotalTaxValue ;
-    _salesOrderD.netValue = _salesOrderD.netAfterDiscount + _salesOrderD.totalTaxValue;
+    SalesOrderD salesOrderD = SalesOrderD();
+    salesOrderD.itemCode = selectedItemValue;
+    salesOrderD.itemName = selectedItemName;
+    salesOrderD.unitCode = selectedUnitValue;
+    salesOrderD.displayQty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+    salesOrderD.qty = (_displayQtyController.text.isNotEmpty) ? int.parse(_displayQtyController.text) : 0;
+    salesOrderD.costPrice = (_costPriceController.text.isNotEmpty) ? double.parse(_costPriceController.text) : 0;
+    salesOrderD.displayPrice = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
+    salesOrderD.price = (_displayPriceController.text.isNotEmpty) ? double.parse(_displayPriceController.text) : 0;
+    salesOrderD.total = salesOrderD.qty * salesOrderD.price;
+    salesOrderD.displayTotal = salesOrderD.displayQty * salesOrderD.displayPrice;
+    salesOrderD.displayDiscountValue = (_displayDiscountController.text.isNotEmpty) ? double.parse(_displayDiscountController.text) : 0;
+    salesOrderD.discountValue = salesOrderD.displayDiscountValue;
+    salesOrderD.netAfterDiscount = salesOrderD.displayTotal - salesOrderD.displayDiscountValue;
+    setItemTaxValue(selectedItemValue.toString(), salesOrderD.netAfterDiscount);
+    salesOrderD.displayTotalTaxValue = (0.15 * salesOrderD.netAfterDiscount); //(_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
+    salesOrderD.totalTaxValue = (_taxController.text.isNotEmpty) ? double.parse(_taxController.text) : 0;
+    salesOrderD.displayNetValue = salesOrderD.netAfterDiscount + salesOrderD.displayTotalTaxValue ;
+    salesOrderD.netValue = salesOrderD.netAfterDiscount + salesOrderD.totalTaxValue;
 
-    print('Add Product 10');
+    salesOrderD.lineNum = lineNum;
 
-    _salesOrderD.lineNum = lineNum;
+    SalesOrderDLst.add(salesOrderD);
 
-    SalesOrderDLst.add(_salesOrderD);
-
-    totalQty += _salesOrderD.displayQty;
-    totalPrice +=  _salesOrderD.total ;
-    totalDiscount += _salesOrderD.displayDiscountValue;
+    totalQty += salesOrderD.displayQty;
+    totalPrice +=  salesOrderD.total ;
+    totalDiscount += salesOrderD.displayDiscountValue;
 
     rowsCount += 1;
     totalAfterDiscount = totalPrice - totalDiscount;
     totalBeforeTax = totalAfterDiscount;
-    totalTax += _salesOrderD.displayTotalTaxValue;
+    totalTax += salesOrderD.displayTotalTaxValue;
     totalNet = totalBeforeTax + totalTax;
 
     _totalQtyController.text = totalQty.toString();
@@ -1288,7 +1239,6 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     //
     lineNum++;
 
-    //FN_showToast(context,'login_success'.tr(),Colors.black);
     FN_showToast(context, 'add_Item_Done'.tr(), Colors.black);
 
     setState(() {
@@ -1316,24 +1266,23 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   calcTotalPriceRow()
   {
     double price=0;
-    if(!_priceController.text.isEmpty)
+    if(_priceController.text.isNotEmpty)
     {
       price=double.parse(_priceController.text);
     }
 
     double qtyVal=0;
-    if(!_displayQtyController.text.isEmpty)
+    if(_displayQtyController.text.isNotEmpty)
     {
       qtyVal=double.parse(_displayQtyController.text);
     }
 
-    print('toGetUnittotal');
     var total = qtyVal * price;
     _displayTotalController.text = total.toString();
     _totalController.text = total.toString();
 
     double discount=0;
-    if(!_displayDiscountController.text.isEmpty)
+    if(_displayDiscountController.text.isNotEmpty)
     {
       discount=double.parse(_displayDiscountController.text);
     }
@@ -1342,21 +1291,9 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
 
     _netAfterDiscountController.text = netAfterDiscount.toString();
 
-
-    print('toGetUnittotal2');
-    print( netAfterDiscount);
-    print('totalonz3');
     setItemTaxValue(selectedItemValue.toString(),netAfterDiscount);
-
-
   }
 
-//#endregion
-
-
-//#region Business Function
-
-  // Item Units - Change Item Units
   changeItemUnit(String itemCode) {
     units = [];
     Future<List<Unit>> Units = _unitsApiService.getItemUnit(itemCode).then((data) {
@@ -1376,13 +1313,10 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
   setItemTaxValue(String itemCode , double netValue  ){
     //Serial
     Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemTaxValue(itemCode, netValue).then((data) {
-      print('cccc0');
       InventoryOperation inventoryOperation = data;
 
       setState(() {
-        print('cccc');
         double tax = (inventoryOperation.itemTaxValue != null) ? inventoryOperation.itemTaxValue   : 0;
-        print(tax.toString());
         _taxController.text = tax.toString();
         double nextAfterDiscount = 0 ;
         if(!_netAfterDiscountController.text.isEmpty)
@@ -1692,8 +1626,5 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
       ],
     );
   }
-
-//#endregion
-
 
 }

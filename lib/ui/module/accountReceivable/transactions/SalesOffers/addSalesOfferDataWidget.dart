@@ -1111,7 +1111,6 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
               netAfterDiscount: salesOfferD.netAfterDiscount,
               displayTotalTaxValue: salesOfferD.displayTotalTaxValue,
               displayNetValue: salesOfferD.displayNetValue,
-              year: int.parse(financialYearCode),
               storeCode: "1"
             ));
           }

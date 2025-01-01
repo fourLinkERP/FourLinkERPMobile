@@ -56,7 +56,6 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
 
   @override
   void initState() {
-    // TODO: implement initState
     getData();
 
     super.initState();
@@ -65,8 +64,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
   void getData() async {
     try {
       List<
-          SalesInvoiceReturnH>? futureSalesInvoiceReturnH = await _apiReturnService
-          .getSalesInvoiceReturnH();
+          SalesInvoiceReturnH>? futureSalesInvoiceReturnH = await _apiReturnService.getSalesInvoiceReturnH();
       if (futureSalesInvoiceReturnH != null) {
         _salesInvoices = futureSalesInvoiceReturnH;
         _salesInvoicesSearch = List.from(_salesInvoices);
@@ -200,7 +198,7 @@ class _SalesInvoiceReturnHListPageState extends State<SalesInvoiceReturnHListPag
     bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
     if (isAllowAdd) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddSalesInvoiceReturnHWidget(),
+        builder: (context) => const AddSalesInvoiceReturnHWidget(),
       )).then((value) {
         getData();
       });

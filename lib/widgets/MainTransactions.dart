@@ -226,7 +226,7 @@ class MainTransactions extends StatelessWidget {
                           bool isAllowView = PermissionHelper.checkViewPermission(menuId);
                           if(isAllowView)
                           {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => ShippingPermissionHListPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const ShippingPermissionHListPage()));
                           }
                           else
                           {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/transactions/checkStores/checkStoreD.dart';
 import 'package:fourlinkmobileapp/service/module/accountReceivable/transactions/CheckStores/checkStoreHApiService.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/CheckStores/addCheckStoreDataWidget.dart';
 import 'package:fourlinkmobileapp/ui/module/accountreceivable/transactions/CheckStores/editCheckStoreDataWidget.dart';
@@ -10,13 +9,11 @@ import '../../../../../cubit/app_cubit.dart';
 import '../../../../../data/model/modules/module/accountreceivable/transactions/checkStores/checkStoreH.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
-import '../../../../../service/module/accountReceivable/transactions/CheckStores/checkStoreDApiService.dart';
 import '../../../../../theme/fitness_app_theme.dart';
 import '../../../../../utils/permissionHelper.dart';
 
-//APIs
+
 CheckStoreHApiService _apiService = CheckStoreHApiService();
-CheckStoreDApiService _apiDService = CheckStoreDApiService();
 
 class CheckStoreList extends StatefulWidget {
   const CheckStoreList({Key? key}) : super(key: key);
@@ -31,8 +28,6 @@ class _CheckStoreListState extends State<CheckStoreList> {
 
   List<CheckStoreH> _checkStores = [];
   List<CheckStoreH> _checkStoresSearch = [];
-  List<CheckStoreD> _checkStoresD = [];
-  List<CheckStoreH> _founded = [];
 
   @override
   void initState() {
@@ -40,9 +35,6 @@ class _CheckStoreListState extends State<CheckStoreList> {
 
     super.initState();
 
-    setState(() {
-      _founded = _checkStores;
-    });
   }
   void getData() async {
     try {
@@ -56,7 +48,6 @@ class _CheckStoreListState extends State<CheckStoreList> {
           _checkStores.sort((a, b) => b.serial!.compareTo(a.serial!));
 
           setState(() {
-            _founded = _checkStores!;
           });
         }
       }
@@ -65,19 +56,14 @@ class _CheckStoreListState extends State<CheckStoreList> {
     }
   }
 
-  void getDetailData(int? headerId) async {
-    Future<List<CheckStoreD>?> futureCheckStoreD = _apiDService.getCheckStoreD(headerId);
-    _checkStoresD = (await futureCheckStoreD)!;
-
-  }
   void onSearch(String search) {
     if (search.isEmpty) {
       setState(() {
-        _checkStores = List.from(_checkStoresSearch!);
+        _checkStores = List.from(_checkStoresSearch);
       });
     } else {
       setState(() {
-        _checkStores = List.from(_checkStoresSearch!);
+        _checkStores = List.from(_checkStoresSearch);
         _checkStores = _checkStores.where((checkStoreH) =>
             checkStoreH.storeName!.toLowerCase().contains(search)).toList();
       });
@@ -173,7 +159,6 @@ class _CheckStoreListState extends State<CheckStoreList> {
       return const Center(child: CircularProgressIndicator());
     }
     else{
-      print("_checkStores length: " + _checkStores.length.toString());
       return Container(
         color: const Color.fromRGBO(240, 242, 246,1),// Main Color
 
@@ -190,18 +175,18 @@ class _CheckStoreListState extends State<CheckStoreList> {
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/check_store.jpeg'),
-                      title: Text('serial'.tr() + " : " + _checkStores[index].serial.toString()),
+                      title: Text("${'serial'.tr()} : ${_checkStores[index].serial}"),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_checkStores[index].toDate.toString())))),
+                              child: Text("${'date'.tr()} : ${DateFormat('yyyy-MM-dd').format(DateTime.parse(_checkStores[index].toDate.toString()))}")),
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Text('store'.tr() + " : " + _checkStores[index].storeName.toString())),
+                              child: Text("${'store'.tr()} : ${_checkStores[index].storeName}")),
                           const SizedBox(width: 5),
                           SizedBox(
                               child: Row(
@@ -321,12 +306,8 @@ class _CheckStoreListState extends State<CheckStoreList> {
     bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
     if(isAllowEdit)
     {
-
-      final result = await Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => EditCheckStoreDataWidget(checkStoreH)),
-      ).then((value) => getData());
-
+       Navigator.push(context, MaterialPageRoute(builder: (context)
+        => EditCheckStoreDataWidget(checkStoreH)),).then((value) => getData());
     }
     else
     {

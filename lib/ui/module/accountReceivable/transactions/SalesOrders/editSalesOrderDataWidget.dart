@@ -27,43 +27,10 @@ import '../../../../../helpers/toast.dart';
 import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
-//APIS
-NextSerialApiService _nextSerialApiService=new NextSerialApiService();
-SalesOrdersTypeApiService _salesOrderTypeApiService=new SalesOrdersTypeApiService();
-SalesOrderHApiService _salesOrderHApiService=new SalesOrderHApiService();
-SalesOrderDApiService _salesOrderDApiService=new SalesOrderDApiService();
-CustomerApiService _customerApiService=new CustomerApiService();
-ItemApiService _itemsApiService = new ItemApiService();
-UnitApiService _unitsApiService = new UnitApiService();
-TafqeetApiService _tafqeetApiService=new TafqeetApiService();
-SalesInvoiceDApiService _salesInvoiceDApiService=new SalesInvoiceDApiService();
-InventoryOperationApiService _inventoryOperationApiService = new InventoryOperationApiService();
 
-//List Models
-List<Customer> customers=[];
-List<SalesOrderType> salesOrderTypes=[];
-List<Item> items=[];
-List<Unit> units=[];
 
-int lineNum=1;
-double productPrice = 0;
-int productQuantity = 0;
-double productTotal = 0;
-double productDiscount = 0;
-double productTotalAfterDiscount = 0;
-double productVat = 0;
-double productTotalAfterVat = 0;
-double  summeryTotal = 0;
-double  totalQty = 0;
-int  rowsCount = 0;
-double  totalDiscount = 0;
-double  totalPrice = 0;
-double  totalBeforeTax = 0;
-double  totalTax = 0;
-double  totalAfterDiscount = 0;
-double  totalNet = 0;
 class EditSalesOrderHDataWidget extends StatefulWidget {
-  EditSalesOrderHDataWidget(this.salesOrdersH);
+  const EditSalesOrderHDataWidget(this.salesOrdersH, {super.key});
 
   final SalesOrderH salesOrdersH;
 
@@ -80,31 +47,58 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
   String serial = "";
   List<SalesOrderD> salesOrderDLst = <SalesOrderD>[];
   List<SalesOrderD> selected = [];
-  List<DropdownMenuItem<String>> menuSalesOrderTypes = [ ];
-  List<DropdownMenuItem<String>> menuCustomers = [ ];
-  List<DropdownMenuItem<String>> menuItems = [ ];
+  final NextSerialApiService _nextSerialApiService= NextSerialApiService();
+  final SalesOrdersTypeApiService _salesOrderTypeApiService= SalesOrdersTypeApiService();
+  final SalesOrderHApiService _salesOrderHApiService= SalesOrderHApiService();
+  final SalesOrderDApiService _salesOrderDApiService= SalesOrderDApiService();
+  final CustomerApiService _customerApiService= CustomerApiService();
+  final ItemApiService _itemsApiService = ItemApiService();
+  final UnitApiService _unitsApiService = UnitApiService();
+  final TafqeetApiService _tafqeetApiService= TafqeetApiService();
+  final SalesInvoiceDApiService _salesInvoiceDApiService= SalesInvoiceDApiService();
+  final InventoryOperationApiService _inventoryOperationApiService = InventoryOperationApiService();
+
+  List<Customer> customers=[];
+  List<SalesOrderType> salesOrderTypes=[];
+  List<Item> items=[];
+  List<Unit> units=[];
+
+  int lineNum=1;
+  double productPrice = 0;
+  int productQuantity = 0;
+  double productTotal = 0;
+  double productDiscount = 0;
+  double productTotalAfterDiscount = 0;
+  double productVat = 0;
+  double productTotalAfterVat = 0;
+  double  summeryTotal = 0;
+  double  totalQty = 0;
+  int  rowsCount = 0;
+  double  totalDiscount = 0;
+  double  totalPrice = 0;
+  double  totalBeforeTax = 0;
+  double  totalTax = 0;
+  double  totalAfterDiscount = 0;
+  double  totalNet = 0;
 
   String? selectedCustomerValue = "";
   String? selectedTypeValue = "";
-  String? selectedItemValue = null;
-  String? selectedItemName = null;
-  String? selectedUnitValue = null;
-  String? selectedUnitName = null;
-  String? price = null;
-  String? qty = null;
-  String? vat = null;
-  String? discount = null;
-  String? total = null;
-
+  String? selectedItemValue;
+  String? selectedItemName;
+  String? selectedUnitValue;
+  String? selectedUnitName;
+  String? price;
+  String? qty;
+  String? vat;
+  String? discount;
+  String? total;
 
   final _addFormKey = GlobalKey<FormState>();
 
-  //Header
   final _dropdownTypeFormKey = GlobalKey<FormState>(); //Type
   final _salesOrdersSerialController = TextEditingController(); //Serial
   final _salesOrdersDateController = TextEditingController(); //Date
   final _dropdownCustomerFormKey = GlobalKey<FormState>(); //Customer
-  //Totals
   final _totalQtyController = TextEditingController(); //Total Qty
   final _rowsCountController = TextEditingController(); //Total Rows Count
   final _invoiceDiscountPercentController = TextEditingController(); //Invoice Discount Percent
@@ -112,7 +106,6 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
   final _totalValueController = TextEditingController(); //Total Value
   final _totalDiscountController = TextEditingController(); //Total Discount
   final _totalAfterDiscountController = TextEditingController(); //Total After Discount
-  final _totalTotalBeforeTaxController = TextEditingController(); //Total Before Tax
   final _totalTaxController = TextEditingController(); //Total Tax
   final _totalBeforeTaxController = TextEditingController(); // Total Before Tax
   final _totalNetController = TextEditingController(); // Total Net
@@ -137,10 +130,6 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
   final _netAftertaxController = TextEditingController(); //Tax Value
   final _costPriceController = TextEditingController(); //Cost Price
 
-
-  static const int numItems = 0;
-
-
   SalesOrderType?  salesOrderTypeItem=SalesOrderType(sellOrdersTypeCode: "",sellOrdersTypeNameAra: "",sellOrdersTypeNameEng: "",id: 0);
   Customer?  customerItem=Customer(customerCode: "",customerNameAra: "",customerNameEng: "",id: 0);
   Item?  itemItem=Item(itemCode: "",itemNameAra: "",itemNameEng: "",id: 0);
@@ -148,7 +137,6 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
 
   @override
   void initState() {
-    print('Ohz1');
     productPrice = 0;
     productQuantity = 0;
     productTotal = 0;
@@ -191,31 +179,30 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
     summeryTotal =(widget.salesOrdersH.totalNet != null)? double.parse(_totalNetController.text) : 0;
     setTafqeet("1" ,summeryTotal.toString());
 
-    //Sales Invoice Type
     Future<List<SalesOrderType>> futureSalesOrderType = _salesOrderTypeApiService.getSalesOrdersTypes().then((data) {
       salesOrderTypes = data;
-      print('Ohz3' + salesOrderTypes.length.toString());
       getSalesOrderTypeData();
       return salesOrderTypes;
     }, onError: (e) {
-      //print(e);
     });
 
-    //Customers
     Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
-      //print(customers.length.toString());
-      getCustomerData();
+
+      setState(() {
+      });
       return customers;
     }, onError: (e) {
       print(e);
     });
 
     //Items
-    Future<List<Item>> Items = _itemsApiService.getItems().then((data) {
+    Future<List<Item>> futureItems = _itemsApiService.getItems().then((data) {
       items = data;
-      //print(customers.length.toString());
-      getItemData();
+
+      setState(() {
+
+      });
       return items;
     }, onError: (e) {
       print(e);
@@ -1415,162 +1402,99 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
       sellOrdersTypeCode: selectedTypeValue,
       sellOrdersDate: _salesOrdersDateController.text,
       customerCode: selectedCustomerValue ,
-      totalQty:(!_totalQtyController.text.isEmpty)?  _totalQtyController.text.toDouble():0 ,
-      totalTax:(!_totalTaxController.text.isEmpty)?  _totalTaxController.text.toDouble():0 ,
-      totalDiscount:(!_totalDiscountController.text.isEmpty)?  _totalDiscountController.text.toDouble():0 ,
-      rowsCount:(rowsCount != null && rowsCount >0 )? rowsCount :0,
-      totalNet:(!_totalNetController.text.isEmpty)?  _totalNetController.text.toDouble():0 ,
-      invoiceDiscountPercent:(!_invoiceDiscountPercentController.text.isEmpty)?  _invoiceDiscountPercentController.text.toDouble():0 ,
-      invoiceDiscountValue:(!_invoiceDiscountValueController.text.isEmpty)?  _invoiceDiscountValueController.text.toDouble():0 ,
-      totalValue:(!_totalValueController.text.isEmpty)?  _totalValueController.text.toDouble():0 ,
-      totalAfterDiscount:(!_totalAfterDiscountController.text.isEmpty)?  _totalAfterDiscountController.text.toDouble():0 ,
-      totalBeforeTax:(!_totalBeforeTaxController.text.isEmpty)?  _totalBeforeTaxController.text.toDouble():0 ,
-      // currencyCode: "1",
-      // taxGroupCode: "1",
-    ));
+      totalQty:(_totalQtyController.text.isNotEmpty)?  _totalQtyController.text.toDouble():0 ,
+      totalTax:(_totalTaxController.text.isNotEmpty)?  _totalTaxController.text.toDouble():0 ,
+      totalDiscount:(_totalDiscountController.text.isNotEmpty)?  _totalDiscountController.text.toDouble():0 ,
+      rowsCount:(rowsCount >0 )? rowsCount :0,
+      totalNet:(_totalNetController.text.isNotEmpty)?  _totalNetController.text.toDouble():0 ,
+      invoiceDiscountPercent:(_invoiceDiscountPercentController.text.isNotEmpty)?  _invoiceDiscountPercentController.text.toDouble():0 ,
+      invoiceDiscountValue:(_invoiceDiscountValueController.text.isNotEmpty)?  _invoiceDiscountValueController.text.toDouble():0 ,
+      totalValue:(_totalValueController.text.isNotEmpty)?  _totalValueController.text.toDouble():0 ,
+      totalAfterDiscount:(_totalAfterDiscountController.text.isNotEmpty)?  _totalAfterDiscountController.text.toDouble():0 ,
+      totalBeforeTax:(_totalBeforeTaxController.text.isNotEmpty)?  _totalBeforeTaxController.text.toDouble():0 ,
 
-    //Save Footer For Now
+    ));
 
     for(var i = 0; i < salesOrderDLst.length; i++){
 
-      SalesOrderD _salesOrderD=salesOrderDLst[i];
-      if(_salesOrderD.isUpdate == false)
+      SalesOrderD salesOrderD=salesOrderDLst[i];
+      if(salesOrderD.isUpdate == false)
       {
-        //Add
         _salesOrderDApiService.createSalesOrderD(context,SalesOrderD(
 
           sellOrdersSerial: _salesOrdersSerialController.text,
           sellOrdersTypeCode: "1",
-          itemCode: _salesOrderD.itemCode,
-          lineNum: _salesOrderD.lineNum,
-          price: _salesOrderD.price,
-          displayPrice: _salesOrderD.price,
-          qty: _salesOrderD.qty,
-          displayQty: _salesOrderD.displayQty,
-          total: _salesOrderD.total,
-          displayTotal: _salesOrderD.total,
-          totalTaxValue: _salesOrderD.totalTaxValue,
-          discountValue: _salesOrderD.discountValue,
-          displayDiscountValue: _salesOrderD.discountValue,
-          netAfterDiscount: _salesOrderD.netAfterDiscount,
-          displayTotalTaxValue: _salesOrderD.displayTotalTaxValue,
-          displayNetValue: _salesOrderD.displayNetValue,
-          storeCode: "1" // For Now
+          itemCode: salesOrderD.itemCode,
+          lineNum: salesOrderD.lineNum,
+          price: salesOrderD.price,
+          displayPrice: salesOrderD.price,
+          qty: salesOrderD.qty,
+          displayQty: salesOrderD.displayQty,
+          total: salesOrderD.total,
+          displayTotal: salesOrderD.total,
+          totalTaxValue: salesOrderD.totalTaxValue,
+          discountValue: salesOrderD.discountValue,
+          displayDiscountValue: salesOrderD.discountValue,
+          netAfterDiscount: salesOrderD.netAfterDiscount,
+          displayTotalTaxValue: salesOrderD.displayTotalTaxValue,
+          displayNetValue: salesOrderD.displayNetValue,
+          storeCode: "1"
         ));
-
-
 
       }
     }
-
-
 
     Navigator.pop(context) ;
   }
 
 
   getSalesOrderTypeData() {
-    if (salesOrderTypes != null) {
+    if (salesOrderTypes.isNotEmpty) {
       for(var i = 0; i < salesOrderTypes.length; i++){
-        menuSalesOrderTypes.add(DropdownMenuItem(value: salesOrderTypes[i].sellOrdersTypeCode.toString(), child: Text(salesOrderTypes[i].
-        sellOrdersTypeNameAra.toString())));
-        print('in amr31');
-        print('in amr312' + selectedTypeValue.toString());
-        print('in amr313' + salesOrderTypes[i].sellOrdersTypeCode.toString());
-        if(salesOrderTypes[i].sellOrdersTypeCode.toString() == selectedTypeValue){
-          print('in amr3');
-          salesOrderTypeItem = salesOrderTypes[salesOrderTypes.indexOf(salesOrderTypes[i])];
-          //selectedTypeValue = salesOrderTypeItem!.sellOrdersTypeCode.toString();
-          print(salesOrderTypeItem);
-        }
 
+        if(salesOrderTypes[i].sellOrdersTypeCode.toString() == selectedTypeValue){
+          salesOrderTypeItem = salesOrderTypes[salesOrderTypes.indexOf(salesOrderTypes[i])];
+        }
       }
       setState(() {
 
       });
     }
-
-  }
-
-
-  getCustomerData() {
-    if (customers != null) {
-      for(var i = 0; i < customers.length; i++){
-        menuCustomers.add(DropdownMenuItem(value: customers[i].customerCode.toString(), child: Text(customers[i].customerNameAra.toString())));
-
-        if(customers[i].customerCode == selectedCustomerValue){
-          // print('in amr3');
-          customerItem = customers[customers.indexOf(customers[i])];
-          //selectedCustomerValue = salesOrderTypeItem!.sellOrdersTypeCode.toString();
-        }
-
-      }
-    }
-    setState(() {
-
-    });
   }
 
   getSalesOrderData() {
-    if (salesOrderDLst != null) {
+    if (salesOrderDLst.isNotEmpty) {
       for(var i = 0; i < salesOrderDLst.length; i++){
 
-        SalesOrderD _salesOrderD=salesOrderDLst[i];
-        _salesOrderD.isUpdate=true;
-        // menuCustomers.add(DropdownMenuItem(child: Text(customers[i].customerNameAra.toString()),
-        //     value: customers[i].customerCode.toString()));
-        //
-        // if(customers[i].customerCode == selectedCustomerValue){
-        //   // print('in amr3');
-        //   customerItem = customers[customers.indexOf(customers[i])];
-        //   //selectedCustomerValue = salesOrderTypeItem!.sellOrdersTypeCode.toString();
-        // }
-
+        SalesOrderD salesOrderD=salesOrderDLst[i];
+        salesOrderD.isUpdate=true;
       }
     }
     setState(() {
 
     });
   }
-
-  getItemData() {
-    if (items != null) {
-      for(var i = 0; i < items.length; i++){
-        menuItems.add(DropdownMenuItem(value: items[i].itemCode.toString(), child: Text(items[i].itemNameAra.
-        toString())));
-      }
-    }
-    setState(() {
-
-    });
-  }
-
-
-
-
-//#region Calc
 
   calcTotalPriceRow()
   {
     double price=0;
-    if(!_priceController.text.isEmpty)
+    if(_priceController.text.isNotEmpty)
     {
       price=double.parse(_priceController.text);
     }
 
     double qtyVal=0;
-    if(!_displayQtyController.text.isEmpty)
+    if(_displayQtyController.text.isNotEmpty)
     {
       qtyVal=double.parse(_displayQtyController.text);
     }
 
-    print('toGetUnittotal');
     var total = qtyVal * price;
     _displayTotalController.text = total.toString();
     _totalController.text = total.toString();
 
     double discount=0;
-    if(!_displayDiscountController.text.isEmpty)
+    if(_displayDiscountController.text.isNotEmpty)
     {
       discount=double.parse(_displayDiscountController.text);
     }
@@ -1579,25 +1503,13 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
 
     _netAfterDiscountController.text = netAfterDiscount.toString();
 
-
-    print('toGetUnittotal2');
-    print( netAfterDiscount);
-    print('totalonz3');
     setItemTaxValue(selectedItemValue.toString(),netAfterDiscount);
-
 
   }
 
-//#endregion
-
-
-
-  //#region Business Function
-
-  // Item Units - Change Item Units
   changeItemUnit(String itemCode) {
     units = [];
-    Future<List<Unit>> Units = _unitsApiService.getItemUnit(itemCode).then((data) {
+    Future<List<Unit>> futureUnits = _unitsApiService.getItemUnit(itemCode).then((data) {
       units = data;
       if(data.isNotEmpty){
         unitItem = data[0];
@@ -1614,26 +1526,21 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
   setItemTaxValue(String itemCode , double netValue  ){
     //Serial
     Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemTaxValue(itemCode, netValue).then((data) {
-      print('cccc0');
       InventoryOperation inventoryOperation = data;
 
       setState(() {
-        print('cccc');
         double tax = (inventoryOperation.itemTaxValue != null) ? inventoryOperation.itemTaxValue   : 0;
         print(tax.toString());
         _taxController.text = tax.toString();
         double nextAfterDiscount = 0 ;
-        if(!_netAfterDiscountController.text.isEmpty)
+        if(_netAfterDiscountController.text.isNotEmpty)
         {
           nextAfterDiscount = double.parse(_netAfterDiscountController.text);
         }
         double netTotal = nextAfterDiscount + tax;
         _netAftertaxController.text=netTotal.toString();
 
-
       });
-
-
       return inventoryOperation;
     }, onError: (e) {
       print(e);
@@ -1642,7 +1549,6 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
 
   //Item Cost
   setItemCostPrice(String itemCode , String storeCode, int MatrixSerialCode,String trxDate  ){
-    //Serial
     Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemCostPrice(itemCode, storeCode, MatrixSerialCode ,trxDate).then((data) {
 
       InventoryOperation inventoryOperation = data;
@@ -1658,9 +1564,7 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
     });
   }
 
-  //Item Quantity
   setItemQty(String itemCode , String unitCode,int qty ){
-    //Serial
     Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getItemQty(itemCode, unitCode, qty  ).then((data) {
 
       InventoryOperation inventoryOperation = data;
@@ -1678,9 +1582,7 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
     });
   }
 
-  //Item Price
   setItemPrice(String itemCode , String unitCode,String criteria, String customerCode){
-    //Serial
     Future<double>  futureSellPrice = _salesInvoiceDApiService.getItemSellPriceData(itemCode, unitCode,"View_AR_SellOrdersType",criteria, customerCode).then((data) {
 
       double sellPrice = data;
@@ -1698,9 +1600,7 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
     });
   }
 
-  //Item Price
   setMaxDiscount(double? discountValue, double totalValue ,String empCode ){
-    //Serial
     Future<InventoryOperation>  futureInventoryOperation = _inventoryOperationApiService.getUserMaxDiscountResult(discountValue, totalValue,empCode ).then((data) {
       print('In Max Discount');
       InventoryOperation inventoryOperation = data;
@@ -1709,10 +1609,8 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
 
         if(inventoryOperation.isExeedUserMaxDiscount == true)
         {
-          //Toaster
           FN_showToast(context,'current_discount_exceed_user_discount'.tr(),Colors.black);
 
-          //Reset Value
           _displayDiscountController.text = "";
           _discountController.text="";
           calcTotalPriceRow();
@@ -1720,9 +1618,7 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
         else{
           calcTotalPriceRow();
         }
-
       });
-
 
       return inventoryOperation;
     }, onError: (e) {
@@ -1730,11 +1626,7 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
     });
   }
 
-
-  //#region Tafqeet
-
   setTafqeet(String currencyCode , String currencyValue ){
-    //Serial
     Future<Tafqeet>  futureTafqeet = _tafqeetApiService.getTafqeet(currencyCode, currencyValue ).then((data) {
 
       Tafqeet tafqeet = data;
@@ -1744,38 +1636,25 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
 
       });
 
-
       return tafqeet;
     }, onError: (e) {
       print(e);
     });
   }
 
-
-  //#endregion
-
-  //#region Next Serial
   setNextSerial(){
-    //Serial
     Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("AR_SellOrdersH", "SellOrdersSerial", " And SellOrdersTypeCode='" + selectedTypeValue.toString() + "'").then((data) {
       NextSerial nextSerial = data;
 
-      //Date
       DateTime now = DateTime.now();
       _salesOrdersDateController.text =DateFormat('yyyy-MM-dd').format(now);
 
-      //print(customers.length.toString());
       _salesOrdersSerialController.text = nextSerial.nextSerial.toString();
       return nextSerial;
     }, onError: (e) {
       print(e);
     });
   }
-
-//#endregion
-
-
-//#region General Widgets - To Be Moved To General Locations
 
   Widget textFormFields({controller, hintText,onTap, onSaved, textInputType,enable=true})  {
     return TextFormField(
@@ -1807,59 +1686,9 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
             width: 2,
           ),
         ),
-        // border: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(20),
-        //   borderSide: BorderSide(
-        //     color: lColor,
-        //     width: 2,
-        //   ),
-        // ),
+
       ),
     );
   }
 
-  Widget headLines({required String number, required String title}) {
-    return Column(
-      crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              number,
-              style: TextStyle(
-
-                color: Colors.black87,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(width: 10),
-            Container(
-              height: 25,
-              width: 3,
-              color: Color.fromRGBO(144, 16, 46, 1),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              title,
-              style: TextStyle(
-                color: Colors.black87,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        const Divider(
-          thickness: 3,
-          color: Color.fromRGBO(144, 16, 46, 1),
-        )
-      ],
-    );
-  }
-
-//#endregion
 }

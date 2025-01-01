@@ -5,7 +5,7 @@ import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart
 
  class NextSerialApiService {
 
-  String serialApi= baseUrl.toString()  + '/api/v1/generals/getnextserial';
+  String serialApi= '$baseUrl/api/v1/generals/getnextserial';
 
 
   Future<NextSerial>  getNextSerial(String? tableName,String? keyName,String? criteria) async {
@@ -13,10 +13,11 @@ import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart
     Map data = {
       'TableName': tableName,
       'KeyName': keyName,
-      'Criteria': criteria
+      'Criteria': criteria,
+      'year': int.parse(financialYearCode)
     };
 
-    print(criteria);
+    print(data.toString());
     final http.Response response = await http.post(
       Uri.parse(serialApi),
       headers: <String, String>{
@@ -37,7 +38,7 @@ import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart
     }
   }
 
-  Future<NextSerial>  getTransactionNextSerial(String? tableName,String? keyName,String? criteria, int? typeCode, int? menuId) async {
+  Future<NextSerial>  getTransactionNextSerial(String? tableName,String? keyName,String? criteria, String? typeCode, int? menuId) async {
 
     Map data = {
       'TableName': tableName,
@@ -48,7 +49,7 @@ import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart
       'menuId': menuId
     };
 
-    print(criteria);
+    print(data.toString());
     final http.Response response = await http.post(
       Uri.parse(serialApi),
       headers: <String, String>{
