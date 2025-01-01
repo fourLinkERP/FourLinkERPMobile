@@ -1092,7 +1092,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
 
   setNextSerial() {
     Future<NextSerial> futureSerial = _nextSerialApiService.getTransactionNextSerial(
-        "AR_SalesInvoicesH", "SalesInvoicesSerial", " And SalesInvoicesCase=1 ", int.parse(selectedTypeValue??'1'), 6204).then((data) {
+        "AR_SalesInvoicesH", "SalesInvoicesSerial", " And SalesInvoicesCase=1 ", selectedTypeValue??'1', 6204).then((data) {
       NextSerial nextSerial = data;
 
       DateTime now = DateTime.now();

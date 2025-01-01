@@ -51,14 +51,10 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
 
   @override
   void initState() {
+    super.initState();
     _getData();
 
-    super.initState();
-    setState(() {
-    });
   }
-
-
 
   void _getData() async {
     try {
@@ -108,8 +104,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
         _salesInvoices = _salesInvoices
             .where((salesInvoice) =>
             salesInvoice.customerName!.toLowerCase().contains(search))
-            .toList()
-          ..sort((a, b) => int.parse(b.salesInvoicesSerial!).compareTo(int.parse(a.salesInvoicesSerial!)));
+            .toList()..sort((a, b) => int.parse(b.salesInvoicesSerial!).compareTo(int.parse(a.salesInvoicesSerial!)));
       });
     }
   }

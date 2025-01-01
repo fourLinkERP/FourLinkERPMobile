@@ -43,9 +43,9 @@ class _SalesOfferHListPageState extends State<SalesOfferHListPage> {
 
   @override
   void initState() {
+    super.initState();
     getData();
 
-    super.initState();
   }
   void getData() async {
     try {
