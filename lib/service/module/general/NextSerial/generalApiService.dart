@@ -14,7 +14,9 @@ import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart
       'TableName': tableName,
       'KeyName': keyName,
       'Criteria': criteria,
-      'year': int.parse(financialYearCode)
+      'year': int.parse(financialYearCode),
+      'CompanyCode': companyCode,
+      'BranchCode': branchCode
     };
 
     print(data.toString());
@@ -46,7 +48,9 @@ import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart
       'Criteria': criteria,
       'year': int.parse(financialYearCode),
       'typeCode': typeCode,
-      'menuId': menuId
+      'menuId': menuId,
+      'CompanyCode': companyCode,
+      'BranchCode': branchCode,
     };
 
     print(data.toString());
