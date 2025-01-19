@@ -948,7 +948,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
                                 ),
                               ),
                             )
-                        
+
                         ),
 
                       ],
