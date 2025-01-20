@@ -1115,9 +1115,12 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
       return;
     }
 
-    //Customer
     if(selectedCustomerValue == null || selectedCustomerValue!.isEmpty){
       FN_showToast(context,'please_Set_Customer'.tr(),Colors.black);
+      return;
+    }
+    if(int.parse(financialYearCode) == 2024 || int.parse(financialYearCode) == 2023){
+      FN_showToast(context,'invalid_year'.tr(),Colors.black);
       return;
     }
 
@@ -1541,8 +1544,6 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
     setTafqeet("2", _totalNetController.text);
   }
 
-//#region General Widgets - To Be Moved To General Locations
-
   Widget textFormFields({controller, hintText,onTap, onSaved, textInputType,enable=true})  {
     return TextFormField(
       controller: controller,
@@ -1573,57 +1574,7 @@ class _AddSalesOrderHDataWidgetState extends State<AddSalesOrderHDataWidget> {
             width: 2,
           ),
         ),
-        // border: OutlineInputBorder(
-        //   borderRadius: BorderRadius.circular(20),
-        //   borderSide: BorderSide(
-        //     color: lColor,
-        //     width: 2,
-        //   ),
-        // ),
       ),
-    );
-  }
-
-  Widget headLines({required String number, required String title}) {
-    return Column(
-      crossAxisAlignment:langId==1? CrossAxisAlignment.end:CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Text(
-              number,
-              style: TextStyle(
-
-                color: Colors.black87,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(width: 10),
-            Container(
-              height: 25,
-              width: 3,
-              color: Color.fromRGBO(144, 16, 46, 1),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              title,
-              style: TextStyle(
-                color: Colors.black87,
-                fontSize: 20,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        const Divider(
-          thickness: 3,
-          color: Color.fromRGBO(144, 16, 46, 1),
-        )
-      ],
     );
   }
 

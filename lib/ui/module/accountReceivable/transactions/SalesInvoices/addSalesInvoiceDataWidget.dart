@@ -1275,6 +1275,10 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       FN_showToast(context, 'please_Set_Customer'.tr(), Colors.black);
       return;
     }
+    if(int.parse(financialYearCode) == 2024 || int.parse(financialYearCode) == 2023){
+      FN_showToast(context,'invalid_year'.tr(),Colors.black);
+      return;
+    }
     final bytesx = await widgetImage.capture();
     var invoiceQRCode = bytesx as Uint8List;
     String base64String ='';

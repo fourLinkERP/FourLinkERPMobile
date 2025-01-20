@@ -1062,6 +1062,10 @@ class _AddSalesOfferHDataWidgetState extends State<AddSalesOfferHDataWidget> {
         FN_showToast(context,'please_set_to_date'.tr(),Colors.black);
         return;
       }
+      if(int.parse(financialYearCode) == 2024 || int.parse(financialYearCode) == 2023){
+        FN_showToast(context,'invalid_year'.tr(),Colors.black);
+        return;
+      }
 
       await _salesOfferHApiService.createSalesOfferH(context,SalesOfferH(
 

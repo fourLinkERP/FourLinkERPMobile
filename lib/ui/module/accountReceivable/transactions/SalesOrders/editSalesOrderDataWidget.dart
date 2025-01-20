@@ -1384,17 +1384,15 @@ class _EditSalesOrderHDataWidgetState extends State<EditSalesOrderHDataWidget> {
       return;
     }
 
-    //Customer
     if(selectedCustomerValue == null || selectedCustomerValue!.isEmpty){
       FN_showToast(context,'please_Set_Customer'.tr(),Colors.black);
       return;
     }
 
-    // //Currency
-    // if(currencyCodeSelectedValue == null || currencyCodeSelectedValue!.isEmpty){
-    //   FN_showToast(context,'Please Set Currency',Colors.black);
-    //   return;
-    // }
+    if(int.parse(financialYearCode) == 2024 || int.parse(financialYearCode) == 2023){
+      FN_showToast(context,'invalid_year'.tr(),Colors.black);
+      return;
+    }
 
     _salesOrderHApiService.updateSalesOrderH(context,id,SalesOrderH(
 
