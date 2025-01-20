@@ -69,7 +69,6 @@ import '../../../../data/model/modules/module/general/nextSerial/nextSerial.dart
       return NextSerial.fromJson(json.decode(response.body));
 
     } else {
-      print('NextSerials Failure');
       throw "Failed to load nextSerial list";
     }
   }

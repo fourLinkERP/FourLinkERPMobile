@@ -907,6 +907,10 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
       FN_showToast(context,'please_Set_Value'.tr(),Colors.black);
       return;
     }
+    if(int.parse(financialYearCode) == 2024 || int.parse(financialYearCode) == 2023){
+      FN_showToast(context,'invalid_year'.tr(),Colors.black);
+      return;
+    }
 
     await _cashReceiveApiService.createCashReceive(context,CashReceive(
         trxKind: 1,

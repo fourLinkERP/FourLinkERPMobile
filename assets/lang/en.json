@@ -738,6 +738,7 @@
     "add_class": "Add Education Class",
     "searchEducationSubjects": "Search Education Subjects",
     "education_subjects": "Education Subjects",
-    "user_not_active": "You don't have permission"
+    "user_not_active": "You don't have permission",
+    "invalid_year": "can't save. it is out of the financial period"
 
 }

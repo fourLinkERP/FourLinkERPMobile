@@ -1020,7 +1020,10 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
       FN_showToast(context,'please_Set_Value'.tr(),Colors.black);
       return;
     }
-
+    if(int.parse(financialYearCode) == 2024 || int.parse(financialYearCode) == 2023){
+      FN_showToast(context,'invalid_year'.tr(),Colors.black);
+      return;
+    }
     _cashReceiveApiService.updateCashReceive( context,id,CashReceive(
         trxKind: 1,
         cashTypeCode: typeCodeSelectedValue,

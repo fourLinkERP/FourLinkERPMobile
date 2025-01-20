@@ -845,7 +845,8 @@
     "add_class": "تسجيل فصل دراسي",
     "searchEducationSubjects": "بحث المواد الدراسية",
     "education_subjects": "المواد الدراسية",
-    "user_not_active": "عفواً, لا يوجد لديك صلاحية"
+    "user_not_active": "عفواً, لا يوجد لديك صلاحية",
+    "invalid_year": "عفواً لا يمكن تسجيل المستند لأنه خارج الفترة المالية"
 
 }
 
