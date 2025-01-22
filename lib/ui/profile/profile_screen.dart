@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/employees/employee.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/employees/employee.dart';
-import 'package:fourlinkmobileapp/data/model/modules/module/administration/basicInputs/employees/employee.dart';
-import 'package:fourlinkmobileapp/service/module/administration/basicInputs/employeeApiService.dart';
-
+import 'package:fourlinkmobileapp/ui/auth/reset_password/reset_password_screen.dart';
+import 'package:localize_and_translate/localize_and_translate.dart';
 import '../../common/globals.dart';
 import '../../widgets/navigationDrawer/navigationDrawer.dart';
 import '../../widgets/header_widget.dart';
 
-
-EmployeeApiService _employeeApiService = new EmployeeApiService();
-Employee? employee;
 class ProfileScreen extends StatefulWidget {
   static const String routeName = '/ProfileScreen';
 
@@ -19,49 +13,40 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  @override
-  initState()  {
-    super.initState();
- getEmploee();
-// print(employee.length);
-  }
-
-
 
   @override
   Widget build(BuildContext context) {
-
-
-
-    return new Scaffold(
+    return Scaffold(
       appBar: AppBar(
-        title: Text("My Profile"),
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
+        title: Text("my_profile".tr()),
+        centerTitle: true,
       ),
       drawer: navigationDrawer(),
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            Container(
+            const SizedBox(
               height: 100,
               child: HeaderWidget(100, false, Icons.house_rounded),
             ),
             Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.fromLTRB(25, 10, 25, 10),
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              margin: const EdgeInsets.fromLTRB(25, 10, 25, 10),
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
               child: Column(
                 children: [
                   Container(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
                       border: Border.all(width: 5, color: Colors.white),
                       color: Colors.white,
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.black12,
                           blurRadius: 100,
-                          offset: const Offset(5, 5),
+                          offset: Offset(5, 5),
                         ),
                       ],
                     ),
@@ -71,34 +56,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       color: Colors.grey.shade300,
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
+                  const SizedBox(height: 20),
                   Text(
-                    '${employee?.empNameEng}',
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    empUserId,
+                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    'student',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 20),
                   Container(
-                    padding: EdgeInsets.all(10),
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.all(10),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Container(
-                          padding:
-                              const EdgeInsets.only(left: 8.0, bottom: 4.0),
-                          alignment: Alignment.topLeft,
+                          padding: const EdgeInsets.only(left: 8.0, bottom: 4.0),
                           child: Text(
-                            "User Information",
-                            style: TextStyle(
+                            "user_information".tr(),
+                            style: const TextStyle(
                               color: Colors.indigoAccent,
                               fontWeight: FontWeight.w500,
                               fontSize: 25,
@@ -109,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Card(
                           child: Container(
                             alignment: Alignment.topLeft,
-                            padding: EdgeInsets.all(15),
+                            padding: const EdgeInsets.all(10),
                             child: Column(
                               children: <Widget>[
                                 Column(
@@ -117,29 +91,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ...ListTile.divideTiles(
                                       color: Colors.grey,
                                       tiles: [
-                                        ListTile(
-                                          contentPadding: EdgeInsets.symmetric(
-                                              horizontal: 12, vertical: 4),
+                                        const ListTile(
+                                          contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
                                           leading: Icon(Icons.my_location),
-                                          title: Text("EmployementStatus"),
-                                          subtitle: Text("student"),
+                                          title: Text("Employment Status"),
+                                          subtitle: Text("employed"),
                                         ),
                                         ListTile(
-                                          leading: Icon(Icons.email),
-                                          title: Text("${employee?.empNameEng}"),
-                                          subtitle:
-                                              Text("manushi123@gmail.com"),
+                                          leading: const Icon(Icons.email),
+                                          title: Text("email".tr()),
+                                          subtitle: Text(empEmail),
                                         ),
-                                        ListTile(
-                                          leading: Icon(Icons.phone),
-                                          title: Text("Phone"),
-                                          subtitle: Text("0000000000"),
+                                        const SizedBox(height: 10.0),
+                                        Center(
+                                          child: GestureDetector(
+                                            child: Text(
+                                              'reset_password'.tr(),
+                                              style: const TextStyle(
+                                                color: Colors.blue,
+                                                fontSize: 17.0,
+                                                decoration: TextDecoration.underline,
+                                                decorationColor: Colors.blue,
+                                              ),
+                                            ),
+                                            onTap: (){
+                                              Navigator.push(context, MaterialPageRoute(builder: (context) => const ResetPasswordScreen()));
+                                              },
+                                          ),
                                         ),
-                                        ListTile(
-                                          leading: Icon(Icons.person),
-                                          title: Text("Date of Birth"),
-                                          subtitle: Text("2001/08/28"),
-                                        ),
+                                        //const SizedBox(height: 20.0),
                                       ],
                                     ),
                                   ],
@@ -158,17 +138,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
-  }
-
-  getEmploee() {
-    Future<Employee> futureEmployee = _employeeApiService.getEmployeeById(1)
-        .then((data) {
-      employee = data;
-      // print('data${data}');
-      return employee!;
-    }, onError: (e) {
-      print("error:${e.toString()}");
-      return e;
-    });
   }
 }

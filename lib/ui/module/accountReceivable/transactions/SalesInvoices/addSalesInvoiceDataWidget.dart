@@ -175,10 +175,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
   }
 
   void fetchData() async {
-    // Simulate fetching data
     await Future.delayed(const Duration(milliseconds: 50));
-
-    // Set isLoading to false when data is retrieved
     setState(() {
       isLoading = false;
     });

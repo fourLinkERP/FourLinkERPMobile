@@ -846,7 +846,21 @@
     "searchEducationSubjects": "بحث المواد الدراسية",
     "education_subjects": "المواد الدراسية",
     "user_not_active": "عفواً, لا يوجد لديك صلاحية",
-    "invalid_year": "عفواً لا يمكن تسجيل المستند لأنه خارج الفترة المالية"
-
+    "invalid_year": "عفواً لا يمكن تسجيل المستند لأنه خارج الفترة المالية",
+    "my_profile": "الملف الشخصي",
+    "user_information": "بيانات المستخدم",
+    "change_pass": "تغيير كلمة المرور",
+    "verification_code": "رمز التحقق",
+    "enter_verify_code": "أدخل رمز التحقق",
+    "verify": "تأكيد",
+    "enter_code": "أدخل رمز التحقق المرسل الى الايميل",
+    "enter_new_pass": "أدخل كلمة المرور الجديدة",
+    "reset_password": "تغيير كلمة المرور",
+    "confirm_password": "تأكيد كلمة المرور",
+    "old_password": "أدخل كلمة المرور القديمة",
+    "enter_confirmation_password": "أدخل تأكيد كلمة المرور",
+    "Confirm_password_does_not_match": "كلمة المرور غير متطابقة",
+    "change_success": "تم تغيير كلمة المرور بنجاح",
+    "change_failed": "حدث خطأ في تغيير كلمة المرور"
 }
 

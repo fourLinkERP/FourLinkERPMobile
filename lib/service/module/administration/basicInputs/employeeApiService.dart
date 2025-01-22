@@ -83,7 +83,7 @@ import 'package:fourlinkmobileapp/helpers/toast.dart';
 
   Future<Employee> getEmployeeById(int id) async {
 
-    String getByIdApi= baseUrl.toString()  + '/api/v1/employees/';  // Add ID For Get
+    String getByIdApi= '$baseUrl/api/v1/employees/';
     var data = {
       // "id": id
     };

@@ -549,6 +549,7 @@ class _LoginScreenState extends State<LoginScreen> {
       storeCode = data.storeCode!;
       isEditPrice = data.isEditPrice;
       empNotActive = data.notActive!;
+      empEmail = data.eMail!;
       print('empNotActive: $empNotActive');
       print(empUserId);
     } catch (e) {

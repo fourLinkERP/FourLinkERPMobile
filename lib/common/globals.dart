@@ -68,6 +68,7 @@ bool? isEditPrice = false;
 String empUserCode = "A3ddsdwewewq";
 String empUserId = "";
 String empName = "";
+String empEmail = "";
 bool empNotActive = false;
 String jobCode = "";
 String jobName = "";

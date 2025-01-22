@@ -7,6 +7,7 @@ class Employee {
   String? empNameEng;
   String? userCode;
   String? userId;
+  String? eMail;
   bool? isManager;
   bool? isIt;
   bool? isEditPrice;
@@ -22,6 +23,7 @@ class Employee {
     this.userId,
     this.isManager,
     this.isIt,
+    this.eMail,
     this.isEditPrice,
     this.storeCode,
     this.notActive
@@ -40,6 +42,7 @@ class Employee {
       isIt: json['isIt'] as bool,
       isEditPrice: json['isEditPrice'] as bool,
       storeCode: (json['storeCode'] != null) ? json['storeCode'] as String : "",
+      eMail: (json['eMail'] != null) ? json['eMail'] as String : "",
       notActive: json['notActive'] as bool,
     );
   }

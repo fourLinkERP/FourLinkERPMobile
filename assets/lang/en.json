@@ -739,6 +739,21 @@
     "searchEducationSubjects": "Search Education Subjects",
     "education_subjects": "Education Subjects",
     "user_not_active": "You don't have permission",
-    "invalid_year": "can't save. it is out of the financial period"
-
+    "invalid_year": "can't save. it is out of the financial period",
+    "my_profile": "My Profile",
+    "user_information": "User Information",
+    "forgot_password": "forgot password?",
+    "change_pass": "Change Password",
+    "verification_code": "Verification Code",
+    "enter_verify_code": "Enter Verification Code",
+    "verify": "Verify",
+    "enter_code": "Enter verification code sent to your email",
+    "enter_new_pass": "Enter Your New Password",
+    "reset_password": "Reset Password",
+    "confirm_password": "Confirm Password",
+    "old_password": "Enter Old Password",
+    "enter_confirmation_password": "Please enter confirmation password",
+    "Confirm_password_does_not_match": "Confirmed password does not match",
+    "change_success": "Password changed successfully",
+    "change_failed": "Failed to change password"
 }
