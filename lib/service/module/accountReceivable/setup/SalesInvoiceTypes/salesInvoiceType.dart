@@ -1,18 +1,19 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/accountReceivable/setup/salesInvoiceTypes/salesInvoiceType.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
 
 
-
  class SalesInvoicesTypeApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/salesInvoicesTypes/searchData';
-  String searchReturnApi= baseUrl.toString()  + '/api/v1/salesInvoicesTypes/searchdata';
-  String createApi= baseUrl.toString()  + '/api/v1/salesInvoicesTypes';
-  String updateApi= baseUrl.toString()  + '/api/v1/salesInvoicesTypes/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + '/api/v1/salesInvoicesTypes/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/salesInvoicesTypes/';  // Add ID For Get
+  String searchApi= '$baseUrl/api/v1/salesInvoicesTypes/searchData';
+  String searchQuickApi= '$baseUrl/api/v1/salesinvoicestypes/searchquickdata';
+  String searchReturnApi= '$baseUrl/api/v1/salesInvoicesTypes/searchdata';
+  String createApi= '$baseUrl/api/v1/salesInvoicesTypes';
+  String updateApi= '$baseUrl/api/v1/salesInvoicesTypes/';
+  String deleteApi= '$baseUrl/api/v1/salesInvoicesTypes/';
+  String getByIdApi= '$baseUrl/api/v1/salesInvoicesTypes/';
 
   Future<List<SalesInvoiceType>>  getSalesInvoicesTypes() async {
 
@@ -46,6 +47,38 @@ import '../../../../../common/globals.dart';
       //     .toList();
     } else {
       print('SalesInvoiceType Failed');
+      throw "Failed to load SalesInvoiceType list";
+    }
+  }
+
+  Future<List<SalesInvoiceType>>  getQuickSalesInvoicesTypes() async {
+
+    Map data = {
+      'Search':{
+        'CompanyCode': companyCode
+      }
+    };
+
+    final http.Response response = await http.post(
+      Uri.parse(searchQuickApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(data),
+    );
+
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body)['data'];
+      List<SalesInvoiceType> list = [];
+      if (data.isNotEmpty) {
+        list = data.map((item) => SalesInvoiceType.fromJson(item)).toList();
+      }
+
+      return  list;
+    } else {
+      debugPrint('SalesInvoiceType Failed');
       throw "Failed to load SalesInvoiceType list";
     }
   }

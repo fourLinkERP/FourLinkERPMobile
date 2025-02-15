@@ -9,12 +9,13 @@ import 'package:intl/intl.dart';
 
  class CustomerApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/customers/searchdata';
-  String search2Api= baseUrl.toString()  + '/api/v1/customers/search';
-  String createApi= baseUrl.toString()  + '/api/v1/customers';
-  String updateApi= baseUrl.toString()  + '/api/v1/customers/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + '/api/v1/customers/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/customers/';  // Add ID For Get
+  String searchApi= '$baseUrl/api/v1/customers/searchdata';
+  String searchQuickApi= '$baseUrl/api/v1/customers/searchquickdata';
+  String search2Api= '$baseUrl/api/v1/customers/search';
+  String createApi= '$baseUrl/api/v1/customers';
+  String updateApi= '$baseUrl/api/v1/customers/';
+  String deleteApi= '$baseUrl/api/v1/customers/';
+  String getByIdApi= '$baseUrl/api/v1/customers/';
 
   Future<List<Customer>>  getCustomers() async {
 
@@ -47,6 +48,35 @@ import 'package:intl/intl.dart';
     }
   }
 
+  Future<List<Customer>>  getQuickCustomers() async {
+
+    Map data = {
+      'CompanyCode': companyCode
+    };
+
+    final http.Response response = await http.post(
+      Uri.parse(searchQuickApi),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
+      },
+      body: jsonEncode(data),
+    );
+
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body)['data'];
+      List<Customer> list = [];
+      if (data.isNotEmpty) {
+        list = data.map((item) => Customer.fromJson(item)).toList();
+      }
+      return  list;
+    } else {
+      debugPrint('Customer Failed');
+      throw "Failed to load customer list";
+    }
+  }
+
   Future<List<Customer>>  getNewCustomers() async {
 
     Map data = {
@@ -54,7 +84,6 @@ import 'package:intl/intl.dart';
       //'BranchCode': branchCode
     };
 
-    print('Customer 11');
     final http.Response response = await http.post(
       Uri.parse(search2Api),
       headers: <String, String>{

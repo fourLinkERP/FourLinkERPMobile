@@ -148,7 +148,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
     super.initState();
     fetchData();
 
-    //Reset Values
     lineNum = 1;
     productPrice = 0;
     productQuantity = 0;
@@ -180,8 +179,6 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       isLoading = false;
     });
   }
-
-  String arabicNameHint = 'arabicNameHint';
   String? salesInvoicesSerial;
   String? salesInvoicesDate;
 

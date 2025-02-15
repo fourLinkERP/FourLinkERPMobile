@@ -54,22 +54,3 @@ class Employee {
 }
 
 
-
-
-
-
-// Our demo Branchs
-
-// List<Employee> demoBranches = [
-//   Employee(
-//       id: 1,
-//       name: "Maadi - Branch",
-//       description: descriptionData
-//   ),
-//   Employee(
-//       id: 2,
-//       name: "Tahrir - Branch",
-//       description: descriptionData
-//   )
-// ];
-

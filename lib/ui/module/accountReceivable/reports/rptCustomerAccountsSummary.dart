@@ -443,46 +443,38 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
     );
   }
 
-  _fillCombos(){
+  _fillCombos() async{
 
-    Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
-      customers = data;
-
-      setState(() {
-      });
-      return customers;
-    }, onError: (e) {
-      print(e);
-    });
-
-    Future<List<Branch>> futureBranches = _branchApiService.getBranches().then((data) {
-      branches = data;
+    List<Customer> futureCustomer = await _customerApiService.getCustomers();
+    if(futureCustomer.isNotEmpty){
+      customers = futureCustomer;
 
       setState(() {
       });
-      return branches;
-    }, onError: (e) {
-      print(e);
-    });
+    }
 
-    Future<List<SalesMan>> futureSalesMen = _salesManApiService.getReportSalesMen().then((data) {
-      salesMen = data;
+    List<Branch> futureBranches = await _branchApiService.getBranches();
+    if(futureBranches.isNotEmpty){
+      branches = futureBranches;
+
+      setState(() {
+      });
+    }
+
+    List<SalesMan> futureSalesMen = await _salesManApiService.getReportSalesMen();
+    if(futureSalesMen.isNotEmpty){
+      salesMen = futureSalesMen;
       salesManSelectedValue = salesMen[0].salesManCode.toString();
       getSalesManData();
-      return salesMen;
-    }, onError: (e) {
-      print(e);
-    });
+    }
 
-    Future<List<CustomerType>> futureCustomerType = _customerTypeApiService.getCustomerTypes().then((data) {
-      customerTypes = data;
+    List<CustomerType> futureCustomerType = await _customerTypeApiService.getCustomerTypes();
+    if(futureCustomerType.isNotEmpty){
+      customerTypes = futureCustomerType;
       setState(() {
 
       });
-      return customerTypes;
-    }, onError: (e) {
-      print(e);
-    });
+    }
   }
   getSalesManData() {
     if (salesMen.isNotEmpty) {
@@ -552,11 +544,9 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
       Formulas(columnName: 'toDate',columnValue: endDateController.text)
     ];
 
-    final report = reportUtilityApiService.getReportData(
-        menuId, criteria, formulasList).then((data) async {
-      print('Data Fetched');
+    reportUtilityApiService.getReportData(menuId, criteria, formulasList).then((data) async {
 
-      const outputFilePath = 'customerAccountReport.pdf';
+      const outputFilePath = 'CustomerAccountReport.pdf';
       final dir = await getApplicationDocumentsDirectory();
       final file = File('${dir.path}/$outputFilePath');
       await file.writeAsBytes(data);
@@ -567,7 +557,6 @@ class RptCustomerAccountsSummaryState extends State<RptCustomerAccountsSummary> 
       }
       else
       {
-        print('No Data To Print');
         FN_showToast(context,'noDataToPrint'.tr() ,Colors.black);
       }
 

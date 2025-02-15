@@ -47,7 +47,6 @@ class MainReports extends StatelessWidget {
       'attendance_and_departure_statement'.tr()
     ];
 
-
     return  Scaffold(
       appBar: AppBar(
         centerTitle: true,

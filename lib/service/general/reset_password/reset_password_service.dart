@@ -26,11 +26,11 @@ class ResetPasswordApiService{
         body: jsonEncode(data),
       );
 
-      print("Request Data: $data");
+      debugPrint("Request Data: $data");
 
       if (response.statusCode == 200) {
         bool apiResponse = jsonDecode(response.body) as bool;
-        print("API Response: $apiResponse");
+        debugPrint("API Response: $apiResponse");
         return apiResponse;
       } else {
         debugPrint("Error: ${response.statusCode}, Response: ${response.body}");

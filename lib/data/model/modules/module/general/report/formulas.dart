@@ -9,7 +9,6 @@ class Formulas {
     this.columnName ,
     this.columnValue,
     this.dataType
-    //image
     });
 
   factory Formulas.fromJson(Map<String, dynamic> json) {

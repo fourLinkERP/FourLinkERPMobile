@@ -54,6 +54,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with SingleTi
       });
       isChanged = await _resetPasswordApiService.changePassword(oldPass, newPass, confirmPass);
       if(isChanged == true){
+
         FN_showToast(context, "change_success".tr(), Colors.black87);
         Navigator.pop(context);
       }
@@ -95,7 +96,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> with SingleTi
                     fontFamily: 'Cairo'
                 ),
               ),
-              const SizedBox(height: 30,),
+              const SizedBox(height: 30),
               TextFormField(
                 controller: _oldPasswordController,
                 obscureText: _isOldPassword,
