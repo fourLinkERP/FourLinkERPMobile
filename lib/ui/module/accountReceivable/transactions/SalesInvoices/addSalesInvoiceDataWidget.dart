@@ -1368,7 +1368,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
   }
   fillCombos() {
     Future<List<SalesInvoiceType>> futureSalesInvoiceType = _salesInvoiceTypeApiService
-        .getSalesInvoicesTypes().then((data) {
+        .getQuickSalesInvoicesTypes().then((data) {
       salesInvoiceTypes = data;
       getSalesInvoiceTypeData();
       return salesInvoiceTypes;
@@ -1376,7 +1376,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       print(e);
     });
 
-    Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
+    Future<List<Customer>> futureCustomer = _customerApiService.getQuickCustomers().then((data) {
       customers = data;
       setState(() {
 
