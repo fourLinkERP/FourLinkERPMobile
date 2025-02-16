@@ -21,7 +21,8 @@ import 'package:intl/intl.dart';
 
     Map data = {
       'CompanyCode': companyCode,
-      //'BranchCode': branchCode
+      'IsSalesMan': isSalesMan,
+      'EmpCode': empCode
     };
 
     final http.Response response = await http.post(
@@ -51,7 +52,9 @@ import 'package:intl/intl.dart';
   Future<List<Customer>>  getQuickCustomers() async {
 
     Map data = {
-      'CompanyCode': companyCode
+      'CompanyCode': companyCode,
+      'IsSalesMan': isSalesMan,
+      'EmpCode': empCode
     };
 
     final http.Response response = await http.post(

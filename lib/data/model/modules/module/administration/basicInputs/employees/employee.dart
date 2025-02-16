@@ -11,6 +11,7 @@ class Employee {
   bool? isManager;
   bool? isIt;
   bool? isEditPrice;
+  bool? isSalesMan;
   String? storeCode;
   bool? notActive;
 
@@ -25,6 +26,7 @@ class Employee {
     this.isIt,
     this.eMail,
     this.isEditPrice,
+    this.isSalesMan,
     this.storeCode,
     this.notActive
 
@@ -41,6 +43,7 @@ class Employee {
       isManager: json['isManager'] as bool,
       isIt: json['isIt'] as bool,
       isEditPrice: json['isEditPrice'] as bool,
+      isSalesMan: json['isSalesMan'] as bool,
       storeCode: (json['storeCode'] != null) ? json['storeCode'] as String : "",
       eMail: (json['eMail'] != null) ? json['eMail'] as String : "",
       notActive: json['notActive'] as bool,

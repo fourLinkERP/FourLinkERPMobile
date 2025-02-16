@@ -65,6 +65,7 @@ String storeCode = "";
 bool? isManager = false;
 bool? isIt = false;
 bool? isEditPrice = false;
+bool? isSalesMan = false;
 String empUserCode = "A3ddsdwewewq";
 String empUserId = "";
 String empName = "";
