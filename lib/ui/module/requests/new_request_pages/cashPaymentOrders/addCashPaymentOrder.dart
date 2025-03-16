@@ -23,12 +23,6 @@ import 'package:intl/intl.dart';
 import '../../../../../service/module/requests/basicInputs/accounts/accounts_api_service.dart';
 import '../../../../../service/module/requests/setup/cashPaymentOrders/cash_payment_order_api_service.dart';
 
-NextSerialApiService _nextSerialApiService= NextSerialApiService();
-CashTargetTypeApiService _cashTargetTypeApiService=CashTargetTypeApiService();
-CustomerApiService _customerApiService=CustomerApiService();
-CurrencyHApiService _currencyHApiService = CurrencyHApiService();
-VendorsApiService _vendorApiService = VendorsApiService();
-AccountApiService _accountApiService = AccountApiService();
 
 class AddCashPaymentOrderScreen extends StatefulWidget {
   const AddCashPaymentOrderScreen({Key? key}) : super(key: key);
@@ -40,6 +34,13 @@ class AddCashPaymentOrderScreen extends StatefulWidget {
 class _AddCashPaymentOrderScreenState extends State<AddCashPaymentOrderScreen> {
 
   final CashPaymentOrderApiService _api = CashPaymentOrderApiService();
+  final NextSerialApiService _nextSerialApiService= NextSerialApiService();
+  final CashTargetTypeApiService _cashTargetTypeApiService=CashTargetTypeApiService();
+  final CustomerApiService _customerApiService=CustomerApiService();
+  final CurrencyHApiService _currencyHApiService = CurrencyHApiService();
+  final VendorsApiService _vendorApiService = VendorsApiService();
+  final AccountApiService _accountApiService = AccountApiService();
+
   final _addFormKey = GlobalKey<FormState>();
   final _trxSerialController = TextEditingController();
   final _trxDateController = TextEditingController();

@@ -6,12 +6,14 @@ class Login {
   String? refreshTokenExpiryTime;
   String? userCode;
   String? empCode;
+  bool? isHasPermission;
 
   Login({this.token,
     this.refreshToken,
     this.refreshTokenExpiryTime,
     this.userCode,
     this.empCode,
+    this.isHasPermission
     });
 
   factory Login.fromJson(Map<String, dynamic> json) {
@@ -21,6 +23,7 @@ class Login {
       refreshTokenExpiryTime: json['refreshTokenExpiryTime'] as String,
       userCode: json['userCode'] as String,
       empCode: json['empCode'] as String,
+      isHasPermission: json['isHasPermission'] as bool,
     );
   }
 

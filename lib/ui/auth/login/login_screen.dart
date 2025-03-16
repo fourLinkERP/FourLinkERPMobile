@@ -606,10 +606,14 @@ class _LoginScreenState extends State<LoginScreen> {
       Login log = await _loginService.logApi2(
           context, _emailController.text, _passwordController.text, branchLoginCode);
 
+      if (log.isHasPermission == false) {
+        FN_showToast(context, 'user_not_have_permission'.tr(), Colors.black);
+        return;
+      }
       if (log.token!.isNotEmpty) {
         token = log.token!;
         empCode = log.empCode!;
-        print(empCode);
+        print("Has permission: ${log.isHasPermission}");
 
         if (baseUrl.toString().isEmpty) {
           baseUrl = Uri.parse("$urlString/api/");
@@ -617,7 +621,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         String url = baseUrl.toString();
         if (url.isEmpty) {
-          String urlString1 = "$urlString/api/"; // Default API
+          String urlString1 = "$urlString/api/";
           baseUrl = Uri.parse(urlString1);
         }
 
@@ -631,11 +635,11 @@ class _LoginScreenState extends State<LoginScreen> {
         setCompanyLogo();
 
         if (!empNotActive) {
-          print("Emp is Active");
+          FN_showToast(context,'login_success'.tr(),Colors.black);
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen()));
         } else {
-          print("Emp is Not Active");
           FN_showToast(context, 'user_not_active'.tr(), Colors.black);
+          return;
         }
       }
     }

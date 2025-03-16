@@ -1,16 +1,14 @@
 import 'dart:convert';
-
 import 'package:fourlinkmobileapp/data/model/modules/module/accountreceivable/basicInputs/Vendors/vendor.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
 
 class VendorsApiService{
 
-  String searchApi= baseUrl.toString()  + '/api/v1/vendors/search';
-  String createApi= baseUrl.toString()  + '/api/v1/vendors';
-  String updateApi= baseUrl.toString()  + '/api/v1/vendors/';
-  String deleteApi= baseUrl.toString()  + '/api/v1/vendors/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/vendors/';
+  String searchApi= '$baseUrl/api/v1/vendors/search';
+  String createApi= '$baseUrl/api/v1/vendors';
+  String updateApi= '$baseUrl/api/v1/vendors/';
+  String deleteApi= '$baseUrl/api/v1/vendors/';
 
   Future<List<Vendors>>  getVendors() async {
 
@@ -29,18 +27,14 @@ class VendorsApiService{
       },
       body: jsonEncode(data),
     );
-    print('Vendor 1');
     if (response.statusCode == 200) {
-      print('Vendor 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<Vendors> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => Vendors.fromJson(item)).toList();
       }
-      print('Vendor 3');
       return  list;
     } else {
-      print('Vendor Failed');
       throw "Failed to load Vendor list";
     }
   }

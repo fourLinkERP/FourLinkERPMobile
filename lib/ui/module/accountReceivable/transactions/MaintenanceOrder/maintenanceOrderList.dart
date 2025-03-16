@@ -191,18 +191,18 @@ class _MaintenanceOrderListState extends State<MaintenanceOrderList> {
                     },
                     child: ListTile(
                       leading: Image.asset('assets/fitness_app/maintenance.jpeg'),
-                      title: Text('serial'.tr() + " : " + _maintenanceOrders[index].trxSerial.toString()),
+                      title: Text("${'serial'.tr()} : ${_maintenanceOrders[index].trxSerial}"),
                       subtitle: Column(
                         crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                         children: <Widget>[
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Text('date'.tr() + " : " + DateFormat('yyyy-MM-dd').format(DateTime.parse(_maintenanceOrders[index].trxDate.toString())))),
+                              child: Text("${'date'.tr()} : ${DateFormat('yyyy-MM-dd').format(DateTime.parse(_maintenanceOrders[index].trxDate.toString()))}")),
                           Container(
                               height: 20,
                               color: Colors.white30,
-                              child: Text('complaint'.tr() + " : " + _maintenanceOrders[index].complaint.toString())),
+                              child: Text("${'complaint'.tr()} : ${_maintenanceOrders[index].complaint}")),
                           const SizedBox(width: 5),
                           SizedBox(
                               child: Row(

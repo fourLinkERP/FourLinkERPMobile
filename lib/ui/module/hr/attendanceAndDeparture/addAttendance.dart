@@ -13,7 +13,6 @@ import '../../../../data/model/modules/module/accounts/basicInputs/Employees/Emp
 import '../../../../helpers/toast.dart';
 import 'dart:math' show cos, sqrt, asin;
 import 'package:image_picker/image_picker.dart';
-import 'package:image/image.dart' as img;
 
 EmployeeApiService _employeeApiService = EmployeeApiService();
 

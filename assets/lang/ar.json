@@ -355,7 +355,7 @@
     "you_dont_have_delete_permission": "ليس لك صلاحية الحذف",
     "you_dont_have_print_permission": "ليس لك صلاحية الطباعة",
     "you_dont_have_email_permission": "ليس لك صلاحية ارسال ايميل",
-    "you_dont_have_whatsapp_permission": "ليس لك صلاحية ارسال وات اب",
+    "you_dont_have_whatsapp_permission": "ليس لك صلاحية ارسال واتس اب",
     "ml": "مل",
     "of daily goal 3.5L": "من الهدف اليومي  3.5L",
     "Last drink 8:26 AM": "اخر امتلاء 8:26 صباحا",
@@ -861,6 +861,7 @@
     "enter_confirmation_password": "أدخل تأكيد كلمة المرور",
     "Confirm_password_does_not_match": "كلمة المرور غير متطابقة",
     "change_success": "تم تغيير كلمة المرور بنجاح",
-    "change_failed": "حدث خطأ في تغيير كلمة المرور"
+    "change_failed": "حدث خطأ في تغيير كلمة المرور",
+    "user_not_have_permission": "المستخدم ليس له صلاحية على الفرع الحالي"
 }
 

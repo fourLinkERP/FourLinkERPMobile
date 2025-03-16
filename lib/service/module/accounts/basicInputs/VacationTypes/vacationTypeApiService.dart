@@ -104,11 +104,9 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/VacationTy
     } else {
       throw Exception('Failed to post vacationType');
     }
-
-    return  0;
   }
 
-  Future<int> updateCostCenter(BuildContext context ,int id, VacationType vacationType) async {
+  Future<int> updateVacationType(BuildContext context ,int id, VacationType vacationType) async {
 
     print('Start Update');
 
@@ -124,7 +122,6 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/VacationTy
     };
 
     String apiUpdate =updateApi + id.toString();
-    print('Start Update apiUpdate ' + apiUpdate );
 
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data)
@@ -133,25 +130,19 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/VacationTy
           'Authorization': 'Bearer $token'
         });
 
-    print('Start Update after ' );
     if (response.statusCode == 200) {
 
-      print('Start Update done ' );
       FN_showToast(context,'update_success'.tr() ,Colors.black);
 
       return 1;
     } else {
-      print('Start Update error ' );
       throw Exception('Failed to update a case');
     }
-
-    return 0;
   }
 
-  Future<void> deleteCostCenter(BuildContext context ,int? id) async {
+  Future<void> deleteVacationType(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
-    print('url' + apiDel);
     var data = {
       // "id": id
     };
@@ -169,7 +160,7 @@ import '../../../../../data/model/modules/module/accounts/basicInputs/VacationTy
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);
     } else {
-      throw "Failed to delete a customer.";
+      throw "Failed to delete a VacationType.";
     }
   }
 

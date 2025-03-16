@@ -30,18 +30,15 @@ class LoginService {
       },
       body: jsonEncode(data),
     );
-    print("Login data: " + data.toString());
+    debugPrint("Login data: $data");
 
-    print('B start running 3');
     if (response.statusCode == 200) {
-      print('B 4');
       final login = Login.fromJson(json.decode(response.body));
       empCode = login.empCode!;
       print('empCode: '+ empCode);
-      FN_showToast(context,'login_success'.tr(),Colors.black);
+      // FN_showToast(context,'login_success'.tr(),Colors.black);
       return login;
     } else {
-      print('B 5');
 
       if(response.statusCode == 401)
       {

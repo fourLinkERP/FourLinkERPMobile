@@ -1,17 +1,16 @@
 import 'dart:convert';
 import 'package:fourlinkmobileapp/data/model/modules/module/cash/basicInputs/cashTargetTypes/cashTargetType.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
 
 
  class CashTargetTypeApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/cashtargettypes/searchData';
-  String createApi= baseUrl.toString()  + '/api/v1/cashtargettypes';
-  String updateApi= baseUrl.toString()  + '/api/v1/cashtargettypes/';  // Add ID For Edit
-  String deleteApi= baseUrl.toString()  + '/api/v1/cashtargettypes/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/cashtargettypes/';  // Add ID For Get
+  String searchApi= '$baseUrl/api/v1/cashtargettypes/searchData';
+  String createApi= '$baseUrl/api/v1/cashtargettypes';
+  String updateApi= '$baseUrl/api/v1/cashtargettypes/';
+  String deleteApi= '$baseUrl/api/v1/cashtargettypes/';
+  String getByIdApi= '$baseUrl/api/v1/cashtargettypes/';
 
   Future<List<CashTargetType>>  getCashTargetTypes() async {
 
@@ -29,27 +28,16 @@ import '../../../../../common/globals.dart';
       body: jsonEncode(data),
     );
 
-    print('cashtargettypes');
-    print(searchApi);
-    print(data);
-
     if (response.statusCode == 200) {
-      print('cashtargettypes 2');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<CashTargetType> list = [];
-      if (data != null) {
+      if (data.isNotEmpty) {
         list = data.map((item) => CashTargetType.fromJson(item)).toList();
       }
-      print('cashtargettypes 3');
       return  list;
-      // return await json.decode(res.body)['data']
-      //     .map((data) => Customer.fromJson(data))
-      //     .toList();
     } else {
-      print('cashtargettypes Failed');
       throw "Failed to load CashType list";
     }
   }
-
 
 }
