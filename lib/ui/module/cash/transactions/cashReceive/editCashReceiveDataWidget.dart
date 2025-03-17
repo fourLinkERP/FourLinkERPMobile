@@ -145,7 +145,7 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
       print(e);
     });
 
-    Future<List<Customer>> futureCustomer = _customerApiService.getQuickCustomers().then((data) {
+    Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
       setState(() {
 

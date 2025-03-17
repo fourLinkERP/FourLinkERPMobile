@@ -36,7 +36,6 @@ import 'package:intl/intl.dart';
 
 
     if (response.statusCode == 200) {
-      print('Customer Success');
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<Customer> list = [];
       if (data.isNotEmpty) {
@@ -65,8 +64,7 @@ import 'package:intl/intl.dart';
       },
       body: jsonEncode(data),
     );
-
-
+    print("data: $data");
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body)['data'];
       List<Customer> list = [];

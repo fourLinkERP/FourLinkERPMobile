@@ -1,17 +1,16 @@
 import 'dart:convert';
 import 'package:fourlinkmobileapp/data/model/modules/module/cash/basicInputs/cashBankBranches/cashBankBranch.dart';
-import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:http/http.dart' as http;
 import '../../../../../common/globals.dart';
 
 
  class CashBankBranchApiService {
 
-  String searchApi= baseUrl.toString()  + '/api/v1/cashbankbranches/searchdata';
-  String createApi= baseUrl.toString()  + '/api/v1/cashbankbranches';
-  String updateApi= baseUrl.toString()  + '/api/v1/cashbankbranches/';
-  String deleteApi= baseUrl.toString()  + '/api/v1/cashbankbranches/';
-  String getByIdApi= baseUrl.toString()  + '/api/v1/cashbankbranches/';
+  String searchApi= '$baseUrl/api/v1/cashbankbranches/searchdata';
+  String createApi= '$baseUrl/api/v1/cashbankbranches';
+  String updateApi= '$baseUrl/api/v1/cashbankbranches/';
+  String deleteApi= '$baseUrl/api/v1/cashbankbranches/';
+  String getByIdApi= '$baseUrl/api/v1/cashbankbranches/';
 
   Future<List<CashBankBranch>>  getCashBankBranches() async {
 
