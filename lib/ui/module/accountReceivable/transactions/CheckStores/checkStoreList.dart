@@ -26,15 +26,22 @@ class _CheckStoreListState extends State<CheckStoreList> {
 
   final searchValueController = TextEditingController();
 
+  bool _isLoading = true;
   List<CheckStoreH> _checkStores = [];
   List<CheckStoreH> _checkStoresSearch = [];
 
   @override
   void initState() {
+    super.initState();
+    _simulateLoading();
     getData();
 
-    super.initState();
-
+  }
+  void _simulateLoading() async {
+    await Future.delayed(const Duration(seconds: 7));
+    setState(() {
+      _isLoading = false;
+    });
   }
   void getData() async {
     try {
@@ -75,7 +82,7 @@ class _CheckStoreListState extends State<CheckStoreList> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
+        backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
         title: SizedBox(
           child: Column(
             children: [
@@ -155,8 +162,11 @@ class _CheckStoreListState extends State<CheckStoreList> {
     );
   }
   Widget buildInventory(){
-    if(_checkStores.isEmpty){
+    if(_isLoading){
       return const Center(child: CircularProgressIndicator());
+    }
+    if(_checkStores.isEmpty){
+      return Center(child: Text("no_data_to_show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     }
     else{
       return Container(

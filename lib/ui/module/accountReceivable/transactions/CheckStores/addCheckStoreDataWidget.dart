@@ -17,20 +17,11 @@ import '../../../../../data/model/modules/module/inventory/basicInputs/items/ite
 import '../../../../../data/model/modules/module/inventory/basicInputs/units/units.dart';
 import '../../../../../helpers/hex_decimal.dart';
 import '../../../../../helpers/toast.dart';
-import '../../../../../service/module/Inventory/basicInputs/items/itemApiService.dart';
 import '../../../../../service/module/Inventory/basicInputs/units/unitApiService.dart';
 import '../../../../../service/module/accountReceivable/transactions/Stock/ItemBarcode/itemBarcodeApiService.dart';
 import '../../../../../service/module/accountReceivable/transactions/Stock/ItemByBarcode/itemByBarcodeApiService.dart';
 import '../../../../../service/module/general/NextSerial/generalApiService.dart';
 import '../../../../../theme/fitness_app_theme.dart';
-
-NextSerialApiService _nextSerialApiService = NextSerialApiService();
-CheckStoreHApiService _checkStoreHApiService = CheckStoreHApiService();
-CheckStoreDApiService _checkStoreDApiService = CheckStoreDApiService();
-StoresApiService _storesApiService = StoresApiService();
-UnitApiService _unitsApiService = UnitApiService();
-ItemBarcodeApiService _itemBarcodeApiService = ItemBarcodeApiService();
-ItemByBarcodeApiService _itemByBarcodeApiService = ItemByBarcodeApiService();
 
 class AddCheckStoreDataWidget extends StatefulWidget {
   const AddCheckStoreDataWidget({Key? key}) : super(key: key);
@@ -41,6 +32,13 @@ class AddCheckStoreDataWidget extends StatefulWidget {
 
 class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
 
+  final NextSerialApiService _nextSerialApiService = NextSerialApiService();
+  final CheckStoreHApiService _checkStoreHApiService = CheckStoreHApiService();
+  final CheckStoreDApiService _checkStoreDApiService = CheckStoreDApiService();
+  final StoresApiService _storesApiService = StoresApiService();
+  final UnitApiService _unitsApiService = UnitApiService();
+  final ItemBarcodeApiService _itemBarcodeApiService = ItemBarcodeApiService();
+  final ItemByBarcodeApiService _itemByBarcodeApiService = ItemByBarcodeApiService();
 
   final _addFormKey = GlobalKey<FormState>();
   final _dropdownStoreFormKey = GlobalKey<FormState>();
@@ -77,7 +75,6 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
   @override
   initState() {
     super.initState();
-
     fillCompos();
   }
 
@@ -366,56 +363,58 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
                                   width: 70,
                                   child: Text('${"Unit_name".tr()} :', style: const TextStyle(fontWeight: FontWeight.bold))),
                               const SizedBox(width: 10),
-                              SizedBox(
-                                width: 200,
-                                child: DropdownSearch<Unit>(
-                                  selectedItem: unitItem,
-                                  popupProps: PopupProps.menu(
-                                    itemBuilder: (context, item, isSelected) {
-                                      return Container(
-                                        margin: const EdgeInsets.symmetric(horizontal: 8),
-                                        decoration: !isSelected ? null
-                                            : BoxDecoration(
-                                          border: Border.all(color: Colors.black12),
-                                          borderRadius: BorderRadius.circular(5),
-                                          color: Colors.white,
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text((langId == 1) ? item.unitNameAra.toString() : item.unitNameEng.toString()),
-                                        ),
-                                      );
-                                    },
-                                    showSearchBox: true,
+                              Expanded(
+                                child: SizedBox(
+                                  width: 200,
+                                  child: DropdownSearch<Unit>(
+                                    selectedItem: unitItem,
+                                    popupProps: PopupProps.menu(
+                                      itemBuilder: (context, item, isSelected) {
+                                        return Container(
+                                          margin: const EdgeInsets.symmetric(horizontal: 8),
+                                          decoration: !isSelected ? null
+                                              : BoxDecoration(
+                                            border: Border.all(color: Colors.black12),
+                                            borderRadius: BorderRadius.circular(5),
+                                            color: Colors.white,
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Text((langId == 1) ? item.unitNameAra.toString() : item.unitNameEng.toString()),
+                                          ),
+                                        );
+                                      },
+                                      showSearchBox: true,
 
-                                  ),
-                                  items: units,
-                                  itemAsString: (Unit u) => (langId == 1) ? u.unitNameAra.toString() : u.unitNameEng.toString(),
-                                  onChanged: (value) {
-                                    selectedUnitValue = value!.unitCode.toString();
-                                    selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
-                                  },
-
-                                  filterFn: (instance, filter) {
-                                    if ((langId == 1)
-                                        ? instance.unitNameAra!.contains(
-                                        filter)
-                                        : instance.unitNameEng!.contains(
-                                        filter)) {
-                                      print(filter);
-                                      return true;
-                                    }
-                                    else {
-                                      return false;
-                                    }
-                                  },
-                                  dropdownDecoratorProps: DropDownDecoratorProps(
-                                    dropdownSearchDecoration: InputDecoration(
-                                      filled: true,
-                                      fillColor: Colors.red[50],
                                     ),
-                                  ),
+                                    items: units,
+                                    itemAsString: (Unit u) => (langId == 1) ? u.unitNameAra.toString() : u.unitNameEng.toString(),
+                                    onChanged: (value) {
+                                      selectedUnitValue = value!.unitCode.toString();
+                                      selectedUnitName = (langId == 1) ? value.unitNameAra.toString() : value.unitNameEng.toString();
+                                    },
 
+                                    filterFn: (instance, filter) {
+                                      if ((langId == 1)
+                                          ? instance.unitNameAra!.contains(
+                                          filter)
+                                          : instance.unitNameEng!.contains(
+                                          filter)) {
+                                        print(filter);
+                                        return true;
+                                      }
+                                      else {
+                                        return false;
+                                      }
+                                    },
+                                    dropdownDecoratorProps: DropDownDecoratorProps(
+                                      dropdownSearchDecoration: InputDecoration(
+                                        filled: true,
+                                        fillColor: Colors.red[50],
+                                      ),
+                                    ),
+
+                                  ),
                                 ),
                               ),
                             ],
@@ -427,15 +426,17 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
                               width: 70,
                               child: Text("display_qty".tr(), style: const TextStyle(fontWeight: FontWeight.bold))),
                           const SizedBox(width: 10),
-                          SizedBox(
-                            width: 200,
-                            child: TextFormField(
-                              controller: _qtyController,
-                              enabled: true,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                filled: true,
-                                fillColor: Colors.red[50],
+                          Expanded(
+                            child: SizedBox(
+                              width: 200,
+                              child: TextFormField(
+                                controller: _qtyController,
+                                enabled: true,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Colors.red[50],
+                                ),
                               ),
                             ),
                           ),
@@ -471,44 +472,43 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  Row(
-                      children: [
-                        Center(
-                          child: ElevatedButton.icon(
-                            icon: const Icon(
-                              Icons.edit,
-                              color: Color.fromRGBO(144, 16, 46, 1),
-                              size: 20.0,
-                              weight: 10,
-                            ),
-                            label: Text('add_product'.tr(),
-                                style: const TextStyle(color: Color.fromRGBO(144, 16, 46, 1))),
-                            onPressed: () {
-                              addInventoryRow();
-                            },
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                padding: const EdgeInsets.all(7),
-                                backgroundColor: Colors.white,
-                                foregroundColor: Colors.black,
-                                elevation: 0,
-                                side: const BorderSide(
-                                    width: 1,
-                                    color: Color.fromRGBO(144, 16, 46, 1)
-                                )
-                            ),
+                  Center(
+                    child: ElevatedButton.icon(
+                      icon: const Icon(
+                        Icons.edit,
+                        color: Color.fromRGBO(144, 16, 46, 1),
+                        size: 20.0,
+                        weight: 10,
+                      ),
+                      label: Text(
+                        'add_product'.tr(),
+                        style: const TextStyle(
+                             color: Color.fromRGBO(144, 16, 46, 1)
                           ),
-                        ),
-                      ]),
+                      ),
+                      onPressed: () {
+                        addInventoryRow();
+                      },
+                      style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          padding: const EdgeInsets.all(7),
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          elevation: 0,
+                          side: const BorderSide(
+                              width: 1,
+                              color: Color.fromRGBO(144, 16, 46, 1)
+                          )
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 20),
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: DataTable(
                       border: TableBorder.all(),
-
                       headingRowColor: MaterialStateProperty.all(const Color.fromRGBO(144, 16, 46, 1)),
                       columnSpacing: 20,
                       columns: [
@@ -597,7 +597,6 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
       itemBarcode = data;
 
       setState(() {
-
       });
       return itemBarcode;
     }, onError: (e) {
@@ -609,6 +608,7 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
     Future<NextSerial>  futureSerial = _nextSerialApiService.getNextSerial("TBL_CheckStoresTempH", "Serial", " And CompanyCode=$companyCode And BranchCode=$branchCode").then((data) {
       NextSerial nextSerial = data;
 
+      _checkStoreToDateController.text =DateFormat('yyyy-MM-dd').format(DateTime.now());
       _checkStoreSerialController.text = nextSerial.nextSerial.toString();
       return nextSerial;
     }, onError: (e) {
@@ -644,19 +644,12 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
     checkStoreD.unitName = selectedUnitName;
     checkStoreD.registeredBalance = (_qtyController.text.isNotEmpty) ? double.parse(_qtyController.text) : 0;
 
-    print('Add Product 10');
-
     checkStoreD.lineNum = lineNum;
-
     checkStoreDLst.add(checkStoreD);
-
     totalQty += checkStoreD.registeredBalance;
-
     rowsCount += 1;
-
     lineNum++;
 
-    //FN_showToast(context,'login_success'.tr(),Colors.black);
     FN_showToast(context, 'add_Item_Done'.tr(), Colors.black);
 
     setState(() {
@@ -690,7 +683,6 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
       int indexToRemove = checkStoreDLst.indexWhere((p) => p.lineNum == lineNum);
 
       if (indexToRemove != -1) {
-        // Remove the row
         checkStoreDLst.removeAt(indexToRemove);
         recalculateParameters();
         setState(() {});
@@ -698,7 +690,6 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
     }
   }
   void recalculateParameters() {
-    //SalesInvoiceH _salesInvoiceH = SalesInvoiceH();
     totalQty = 0;
     rowsCount = checkStoreDLst.length;
 
@@ -720,24 +711,22 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
   }
 
   saveInventory(BuildContext context) async {
-    //Items
-    if (checkStoreDLst.length <= 0) {
+
+    if (checkStoreDLst.isEmpty) {
       FN_showToast(context, 'please_Insert_One_Item_At_Least'.tr(), Colors.black);
       return;
     }
-    //Serial
+
     if (_checkStoreSerialController.text.isEmpty) {
       FN_showToast(context, 'please_Set_Invoice_Serial'.tr(), Colors.black);
       return;
     }
 
-    //Date
     if (_checkStoreToDateController.text.isEmpty) {
       FN_showToast(context, 'please_Set_Invoice_Date'.tr(), Colors.black);
       return;
     }
 
-    //Customer
     if (selectedStoreValue == null || selectedStoreValue!.isEmpty) {
       FN_showToast(context, 'please_select_store'.tr(), Colors.black);
       return;
@@ -750,18 +739,15 @@ class _AddCheckStoreDataWidgetState extends State<AddCheckStoreDataWidget> {
 
     ));
 
-    //Save Footer For Now
     for (var i = 0; i < checkStoreDLst.length; i++) {
-      CheckStoreD _checkStoreD = checkStoreDLst[i];
-      if (_checkStoreD.isUpdate == false) {
-        //Add
+      CheckStoreD checkStoreD = checkStoreDLst[i];
+      if (checkStoreD.isUpdate == false) {
         _checkStoreDApiService.createCheckStoreD(context, CheckStoreD(
-
             serial: int.parse(_checkStoreSerialController.text),
-            itemCode: _checkStoreD.itemCode,
-            lineNum: _checkStoreD.lineNum,
-            registeredBalance: _checkStoreD.registeredBalance,
-            unitCode: _checkStoreD.unitCode,
+            itemCode: checkStoreD.itemCode,
+            lineNum: checkStoreD.lineNum,
+            registeredBalance: checkStoreD.registeredBalance,
+            unitCode: checkStoreD.unitCode,
             storeCode: selectedStoreValue.toString()
         ));
       }
