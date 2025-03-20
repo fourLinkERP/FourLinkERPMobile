@@ -266,7 +266,6 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
       }
       else
       {
-        print('No Data To Print');
         FN_showToast(context,'noDataToPrint'.tr() ,Colors.black);
       }
 
