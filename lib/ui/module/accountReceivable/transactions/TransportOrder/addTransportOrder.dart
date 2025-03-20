@@ -152,7 +152,7 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
                       SizedBox(
                         width: 100,
                         child: textFormFields(
-                          enable: false,
+                          enable: true,
                           controller: _trxDateController,
                           hintText: DateFormat('yyyy-MM-dd').format(pickedDate),
                           onTap: () async {
@@ -191,49 +191,50 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
                                       itemBuilder: (context, item, isSelected) {
                                         return Container(
                                           margin: const EdgeInsets.symmetric(horizontal: 8),
-                                          decoration: !isSelected ? null
+                                          decoration: !isSelected
+                                              ? null
                                               : BoxDecoration(
-
                                             border: Border.all(color: Colors.black12),
                                             borderRadius: BorderRadius.circular(5),
                                             color: Colors.white,
                                           ),
                                           child: Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Text((langId==1)? item.customerNameAra.toString() : item.customerNameEng.toString()),
+                                            child: Text(
+                                              (langId == 1) ? item.customerNameAra.toString() : item.customerNameEng.toString(),
+                                            ),
                                           ),
                                         );
                                       },
                                       showSearchBox: true,
-
                                     ),
 
                                     items: customers,
-                                    itemAsString: (Customer u) => (langId==1)? u.customerNameAra.toString() : u.customerNameEng.toString(),
+                                    itemAsString: (Customer u) =>
+                                    "${u.customerCode} - ${(langId == 1) ? u.customerNameAra : u.customerNameEng}",
 
-                                    onChanged: (value){
+                                    onChanged: (value) {
                                       selectedCustomerValue = value!.customerCode.toString();
-                                      if(selectedCustomerValue != null && selectedFromLocationValue != null && selectedToLocationValue != null)
-                                      {
+                                      if (selectedCustomerValue != null && selectedFromLocationValue != null && selectedToLocationValue != null) {
                                         getCustomerTransportationPriceD(selectedCustomerValue, selectedFromLocationValue, selectedToLocationValue);
                                       }
                                     },
 
-                                    filterFn: (instance, filter){
-                                      if((langId==1)? instance.customerNameAra!.contains(filter) : instance.customerNameEng!.contains(filter)){
-                                        return true;
-                                      }
-                                      else{
-                                        return false;
-                                      }
+                                    filterFn: (instance, filter) {
+                                      String customerName = (langId == 1) ? instance.customerNameAra ?? "" : instance.customerNameEng ?? "";
+                                      String customerCode = instance.customerCode ?? "";
+
+                                      return customerName.toLowerCase().contains(filter.toLowerCase()) ||
+                                          customerCode.toLowerCase().contains(filter.toLowerCase());
                                     },
                                     dropdownDecoratorProps: DropDownDecoratorProps(
                                       dropdownSearchDecoration: InputDecoration(
                                         filled: true,
                                         fillColor: Colors.red[50],
-                                      ),),
-
+                                      ),
+                                    ),
                                   ),
+
                                 ),
                               ),
                             ],
@@ -251,55 +252,57 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
                                 child: SizedBox(
                                   width: 220,
                                   child: DropdownSearch<City>(
-                                    selectedItem: null,
-                                    popupProps: PopupProps.menu(
-                                      itemBuilder: (context, item, isSelected) {
-                                        return Container(
-                                          margin: const EdgeInsets.symmetric(horizontal: 8),
-                                          decoration: !isSelected ? null
-                                              : BoxDecoration(
-
-                                            border: Border.all(color: Colors.black12),
-                                            borderRadius: BorderRadius.circular(5),
-                                            color: Colors.white,
+                                  selectedItem: null,
+                                  popupProps: PopupProps.menu(
+                                    itemBuilder: (context, item, isSelected) {
+                                      return Container(
+                                        margin: const EdgeInsets.symmetric(horizontal: 8),
+                                        decoration: !isSelected
+                                            ? null
+                                            : BoxDecoration(
+                                          border: Border.all(color: Colors.black12),
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.white,
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "${item.cityCode} - ${item.cityName}", // Displays both Code & Name
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text((langId==1)? item.cityName.toString() : item.cityName.toString()),
-                                          ),
-                                        );
-                                      },
-                                      showSearchBox: true,
+                                        ),
+                                      );
+                                    },
+                                    showSearchBox: true,
+                                  ),
 
+                                  items: cities,
+
+                                  itemAsString: (City u) => "${u.cityCode} - ${u.cityName}",
+
+                                  onChanged: (value) {
+                                    selectedFromLocationValue = value!.cityCode.toString();
+                                    if (selectedCustomerValue != null && selectedFromLocationValue != null && selectedToLocationValue != null) {
+                                      getCustomerTransportationPriceD(selectedCustomerValue, selectedFromLocationValue, selectedToLocationValue);
+                                    }
+                                  },
+
+                                  filterFn: (instance, filter) {
+                                    String cityName = instance.cityName ?? "";
+                                    String cityCode = instance.cityCode.toString();
+
+                                    return cityName.toLowerCase().contains(filter.toLowerCase()) ||
+                                        cityCode.toLowerCase().contains(filter.toLowerCase());
+                                  },
+
+                                  dropdownDecoratorProps: DropDownDecoratorProps(
+                                    dropdownSearchDecoration: InputDecoration(
+                                      filled: true,
+                                      fillColor: Colors.red[50],
                                     ),
-
-                                    items: cities,
-                                    itemAsString: (City u) => (langId==1)? u.cityName.toString() : u.cityName.toString(),
-
-                                    onChanged: (value){
-                                      selectedFromLocationValue = value!.cityCode.toString();
-                                      if(selectedCustomerValue != null && selectedFromLocationValue != null && selectedToLocationValue != null)
-                                      {
-                                        getCustomerTransportationPriceD(selectedCustomerValue, selectedFromLocationValue, selectedToLocationValue);
-                                      }
-                                    },
-
-                                    filterFn: (instance, filter){
-                                      if((langId==1)? instance.cityName!.contains(filter) : instance.cityName!.contains(filter)){
-                                        return true;
-                                      }
-                                      else{
-                                        return false;
-                                      }
-                                    },
-                                    dropdownDecoratorProps: DropDownDecoratorProps(
-                                      dropdownSearchDecoration: InputDecoration(
-                                        filled: true,
-                                        fillColor: Colors.red[50],
-                                      ),),
-
                                   ),
                                 ),
+
+                              ),
                               ),
                             ],
                           )),
@@ -339,7 +342,7 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
                                     ),
 
                                     items: cities,
-                                    itemAsString: (City u) => (langId==1)? u.cityName.toString() : u.cityName.toString(),
+                                    itemAsString: (City u) => "${u.cityCode} - ${u.cityName}",
 
                                     onChanged: (value){
                                       selectedToLocationValue = value!.cityCode.toString();
@@ -349,14 +352,12 @@ class _AddTransferOrderDataWidgetState extends State<AddTransferOrderDataWidget>
                                         }
                                     },
 
-                                    filterFn: (instance, filter){
-                                      if((langId==1)? instance.cityName!.contains(filter) : instance.cityName!.contains(filter)){
-                                        print(filter);
-                                        return true;
-                                      }
-                                      else{
-                                        return false;
-                                      }
+                                    filterFn: (instance, filter) {
+                                      String cityName = instance.cityName ?? "";
+                                      String cityCode = instance.cityCode.toString();
+
+                                      return cityName.toLowerCase().contains(filter.toLowerCase()) ||
+                                          cityCode.toLowerCase().contains(filter.toLowerCase());
                                     },
                                     dropdownDecoratorProps: DropDownDecoratorProps(
                                       dropdownSearchDecoration: InputDecoration(

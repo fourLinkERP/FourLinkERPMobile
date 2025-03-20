@@ -776,7 +776,7 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
   }
 
   getCashTypeData() {
-    if (cashTypes != null) {
+    if (cashTypes.isNotEmpty) {
       for(var i = 0; i < cashTypes.length; i++){
         if(cashTypes[i].code == typeCodeSelectedValue){
           cashTypeItem = cashTypes[cashTypes.indexOf(cashTypes[i])];
@@ -792,7 +792,7 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
 
 
   getCashTargetTypeData() {
-    if (cashTargetTypes != null) {
+    if (cashTargetTypes.isNotEmpty) {
       for(var i = 0; i < cashTargetTypes.length; i++){
 
         if(cashTargetTypes[i].code == cashTargetTypeIdSelectedValue){
@@ -808,7 +808,7 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
   }
 
   getBoxTypeData() {
-    if (boxTypes != null) {
+    if (boxTypes.isNotEmpty) {
       for(var i = 0; i < boxTypes.length; i++){
         if(boxTypes[i].code == boxTypeSelectedValue){
           boxTypeItem = boxTypes[boxTypes.indexOf(boxTypes[i])];
@@ -820,7 +820,6 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
   }
 
   setTafqeet(String currencyCode , String currencyValue ){
-    //Serial
     Future<Tafqeet>  futureTafqeet = _tafqeetApiService.getTafqeet(currencyCode, currencyValue ).then((data) {
 
       Tafqeet tafqeet = data;
@@ -839,8 +838,8 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
   setBoxCode(String cashBoxType) {
     boxCodes=[];
 
-    if(cashBoxType == "1")//BankBranch
-        {
+    if(cashBoxType == "1")
+    {
       if (cashBankBranches.isNotEmpty) {
         for(var i = 0; i < cashBankBranches.length; i++){
           boxCodes.add(BoxCode(code: cashBankBranches[i].bankBranchCode,nameAra: cashBankBranches[i].bankBranchNameAra
@@ -902,7 +901,7 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
   setTargetCode(String targetType) {
     targetCodes=[];
 
-    if(targetType == "1")//Customer
+    if(targetType == "1")
       {
       if (customers.isNotEmpty) {
         for(var i = 0; i < customers.length; i++){
@@ -928,22 +927,22 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
 
   saveCashReceive(BuildContext context) {
     setTafqeet("1", _valueController.text);
-    //Serial
+
     if(_cashReceiveSerialController.text.isEmpty){
       FN_showToast(context,'please_Set_Invoice_Serial'.tr(),Colors.black);
       return;
     }
-    //Date
+
     if(_cashReceiveDateController.text.isEmpty){
       FN_showToast(context,'please_Set_Invoice_Date'.tr(),Colors.black);
       return;
     }
-    //TargetCode
+
     if(cashTargetCodeSelectedValue == null || cashTargetCodeSelectedValue!.isEmpty){
       FN_showToast(context,'please_Set_TargetCode'.tr(),Colors.black);
       return;
     }
-    //BoxCode
+
     if(boxCodeSelectedValue == null || boxCodeSelectedValue!.isEmpty){
       FN_showToast(context,'please_Set_BoxCode'.tr(),Colors.black);
       return;
@@ -969,7 +968,7 @@ class _EditCashReceiveDataWidgetState extends State<EditCashReceiveDataWidget> {
         boxCode: boxCodeSelectedValue,
         currencyCode: 1,
         currencyRate: 1,
-        value:_valueController.text.toDouble(),
+        value:double.parse(_valueController.text),
         statement: _statementController.text,
         tafqitNameArabic: _tafqitNameArabicController.text,
         tafqitNameEnglish: _tafqitNameEnglishController.text

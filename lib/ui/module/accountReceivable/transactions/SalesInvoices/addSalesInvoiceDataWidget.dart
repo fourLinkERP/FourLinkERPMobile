@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,7 +33,7 @@ import '../../../../../service/module/general/NextSerial/generalApiService.dart'
 
 
 class AddSalesInvoiceHDataWidget extends StatefulWidget {
-  AddSalesInvoiceHDataWidget();
+  const AddSalesInvoiceHDataWidget({super.key});
 
   @override
   _AddSalesInvoiceHDataWidgetState createState() => _AddSalesInvoiceHDataWidgetState();
@@ -1368,7 +1367,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
   }
   fillCombos() {
     Future<List<SalesInvoiceType>> futureSalesInvoiceType = _salesInvoiceTypeApiService
-        .getQuickSalesInvoicesTypes().then((data) {
+        .getSalesInvoicesTypes().then((data) {
       salesInvoiceTypes = data;
       getSalesInvoiceTypeData();
       return salesInvoiceTypes;
@@ -1376,7 +1375,7 @@ class _AddSalesInvoiceHDataWidgetState extends State<AddSalesInvoiceHDataWidget>
       print(e);
     });
 
-    Future<List<Customer>> futureCustomer = _customerApiService.getQuickCustomers().then((data) {
+    Future<List<Customer>> futureCustomer = _customerApiService.getCustomers().then((data) {
       customers = data;
       setState(() {
 

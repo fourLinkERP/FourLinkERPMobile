@@ -197,12 +197,11 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
   }
 
     _navigateToAddScreen(BuildContext context) async {
-      // CircularProgressIndicator();
       int menuId=6204;
       bool isAllowAdd = PermissionHelper.checkAddPermission(menuId);
       if(isAllowAdd)
       {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddSalesInvoiceHDataWidget(),
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => const AddSalesInvoiceHDataWidget(),
         )).then((value) {
           _getData();
         });
@@ -220,8 +219,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
       if(isAllowEdit)
       {
 
-        final result = await Navigator.push(
-          context,
+        await Navigator.push(context,
           MaterialPageRoute(builder: (context) => EditSalesInvoiceHDataWidget(customer)),
         ).then((value) => _getData());
 
@@ -242,15 +240,12 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
         if(isReceipt)
           {
             DateTime date = DateTime.parse(invoiceH.salesInvoicesDate.toString());
-            final dueDate = date.add(Duration(days: 7));
+            final dueDate = date.add(const Duration(days: 7));
 
-            //Get Sales Invoice Details To Create List Of Items
-            //getDetailData(invoiceH.id);
             Future<List<SalesInvoiceD>?> futureSalesInvoiceD = _apiDService.getSalesInvoicesD(invoiceH.id);
             _salesInvoicesD = (await futureSalesInvoiceD)!;
 
             List<InvoiceItem> invoiceItems=[];
-            //print('Before Sales Invoice : ${invoiceH.id}' );
             if(_salesInvoicesD.isNotEmpty)
             {
               print('_salesInvoicesD >> ${_salesInvoicesD.length}' );
@@ -284,7 +279,7 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
                 ),
                 customer: Customer(
                   customerNameAra: invoiceH.customerName,
-                  address: 'Apple Street, Cupertino, CA 95014', //ToDO
+                  address: 'Apple Street, Cupertino, CA 95014',
                 ),
                 info: InvoiceInfo(
                   date: date,
@@ -327,31 +322,15 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
             final bytesx = await imageControllers[index].capture();
             var bytesImg = bytesx as Uint8List;
 
-            final pdfFile = await pdfReceipt.generate(receipt,bytesImg);  // , _base64StringToUint8List(companyLogo)
+            final pdfFile = await pdfReceipt.generate(receipt,bytesImg);
             PdfApi.openFile(pdfFile);
        }
-       else{
-
-        }
-
       }
       else
       {
         FN_showToast(context,'you_dont_have_print_permission'.tr(),Colors.black);
       }
     }
-
-
-  Future <Uint8List> _captureAndSharePng(content, dynamic qrKey) async {
-     Uint8List pngBytes ;
-
-      RenderRepaintBoundary boundary = qrKey.currentContext.findRenderObject();
-      var image = await boundary.toImage();
-      ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
-      pngBytes = byteData!.buffer.asUint8List();
-
-    return pngBytes;
-  }
 
     _deleteItem(BuildContext context,int? id) async {
 
@@ -557,39 +536,4 @@ class _SalesInvoiceHListPageState extends State<SalesInvoiceHListPage> {
   //   return pngBytes;
   // }
 
-  static Widget buildBarCode()
-  {
-    return  ZatcaFatoora.simpleQRCode(
-      fatooraData: ZatcaFatooraDataModel(
-        businessName: "Business name",
-        vatRegistrationNumber: "323456789123453",
-        date: DateTime.now(),
-        totalAmountIncludingVat: 50.75,
-        vat: 0.15,
-      ),
-    );
-  }
-
-  Uint8List _base64StringToUint8List(String base64String) {
-    try {
-      Uint8List decodedBytes = base64Decode(base64String).buffer.asUint8List();
-      print('Decoded logoCompany length: ${decodedBytes.length}');
-      return decodedBytes;
-    } catch (e) {
-      print('Error decoding base64String: $e');
-      return Uint8List(0);
-    }
-  }
-
-  Widget _buildImageWidget(String? base64Image) {
-    if (base64Image != null && base64Image.isNotEmpty) {
-
-      Uint8List uint8List = _base64StringToUint8List(base64Image);
-
-      // Display the image using Image.memory
-      return Image.memory(uint8List, height: 120, width: 100);
-    } else {
-      return Image.asset('assets/fitness_app/galleryIcon.png', height: 120, width: 100);
-    }
-  }
 }

@@ -2,7 +2,6 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
 import 'package:fourlinkmobileapp/common/globals.dart';
-import 'package:fourlinkmobileapp/cubit/app_states.dart';
 import 'package:fourlinkmobileapp/data/model/modules/module/cash/transactions/cashReceives/cashReceive.dart';
 import 'package:fourlinkmobileapp/helpers/hex_decimal.dart';
 import 'package:fourlinkmobileapp/helpers/toast.dart';
@@ -33,7 +32,7 @@ class CashReceiveListPage extends StatefulWidget {
 class _CashReceiveListPageState extends State<CashReceiveListPage> {
 
 
-  bool isLoading=true;
+  bool _isLoading=true;
   List<CashReceive> _cashReceives = [];
   List<CashReceive> _cashReceivesSearch = [];
 
@@ -41,10 +40,17 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
   @override
   void initState() {
     super.initState();
+    _simulateLoading();
     _getData();
 
   }
 
+  void _simulateLoading() async {
+    await Future.delayed(const Duration(seconds: 10));
+    setState(() {
+      _isLoading = false;
+    });
+  }
   void _getData() async {
     try{
       List<CashReceive>? futureCashReceiveH = await _apiService.getCashReceivesH();
@@ -63,8 +69,6 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
     }
   }
 
-
-
   void onSearch(String search) {
     if (search.isEmpty) {
       setState(() {
@@ -73,7 +77,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
     } else {
       setState(() {
         _cashReceives = List.from(_cashReceivesSearch);
-        _cashReceives = _cashReceives.where((cashReceive) => cashReceive.trxSerial!.toLowerCase().contains(search)).toList();
+        _cashReceives = _cashReceives.where((cashReceive) => cashReceive.targetNameAra!.toLowerCase().contains(search)).toList();
       });
     }
   }
@@ -85,7 +89,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: const Color.fromRGBO(144, 16, 46, 1), // Main Color
+          backgroundColor: const Color.fromRGBO(144, 16, 46, 1),
           title: SizedBox(
             height: 38,
             child: TextField(
@@ -222,8 +226,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
     bool isAllowEdit = PermissionHelper.checkEditPermission(menuId);
     if(isAllowEdit)
     {
-      final result = await Navigator.push(
-        context,
+      await Navigator.push(context,
         MaterialPageRoute(builder: (context) => EditCashReceiveDataWidget(cashReceive)),
       ).then((value) => _getData());
     }
@@ -249,8 +252,7 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
       Formulas(columnName: 'printTime',columnValue:DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now()))
     ];
 
-    //report Api
-    final report = reportUtilityApiService.getReportData(menuId, criteria, formulasList).then((data) async{
+    reportUtilityApiService.getReportData(menuId, criteria, formulasList).then((data) async{
     
       const outputFilePath = 'Receipt_Voucher.pdf';
       final dir = await getApplicationDocumentsDirectory();
@@ -313,11 +315,11 @@ class _CashReceiveListPageState extends State<CashReceiveListPage> {
 
 
    Widget buildCashReceives(){
-    if(State is AppErrorState){
-      return const Center(child: Text('no data'));
+    if(_isLoading){
+      return const Center(child: CircularProgressIndicator());
     }
     if(_cashReceives.isEmpty){
-      return const Center(child: CircularProgressIndicator());
+      return Center(child: Text("no_data_to_show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     }
     else{
       return Container(

@@ -5,7 +5,6 @@ import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/Trans
 import 'package:fourlinkmobileapp/ui/module/accountReceivable/transactions/TransportOrder/editTransportOrder.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
 import 'package:intl/intl.dart';
-
 import '../../../../../common/globals.dart';
 import '../../../../../cubit/app_cubit.dart';
 import '../../../../../data/model/modules/module/general/report/formulas.dart';
@@ -19,9 +18,6 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:core';
 import 'dart:io';
 
-
-TransportOrderApiService _apiService = TransportOrderApiService();
-
 class TransportOrderList extends StatefulWidget {
   const TransportOrderList({Key? key}) : super(key: key);
 
@@ -31,15 +27,19 @@ class TransportOrderList extends StatefulWidget {
 
 class _TransportOrderListState extends State<TransportOrderList> {
 
+  final TransportOrderApiService _apiService = TransportOrderApiService();
+  bool _isLoading = true;
   List<TransportOrder> _transferOrders = [];
   List<TransportOrder> _transferOrdersSearch = [];
 
   final searchValueController = TextEditingController();
+
   @override
   void initState() {
-    getData();
-
     super.initState();
+    getData();
+    _simulateLoading();
+
   }
   void getData() async {
     try {
@@ -50,7 +50,7 @@ class _TransportOrderListState extends State<TransportOrderList> {
         _transferOrdersSearch = List.from(_transferOrders);
 
         if (_transferOrders.isNotEmpty) {
-          _transferOrders.sort((a, b) => b.trxSerial!.compareTo(a.trxSerial!));
+          _transferOrders.sort((a, b) => int.parse(b.trxSerial!).compareTo(int.parse(a.trxSerial!)));
 
           setState(() {});
         }
@@ -71,6 +71,13 @@ class _TransportOrderListState extends State<TransportOrderList> {
             maintenanceOrderH.trxSerial!.toLowerCase().contains(search)).toList();
       });
     }
+  }
+
+  void _simulateLoading() async {
+    await Future.delayed(const Duration(seconds: 10));
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -172,8 +179,11 @@ class _TransportOrderListState extends State<TransportOrderList> {
     }
   }
   Widget buildTransferOrders(){
-    if(_transferOrders.isEmpty){
+    if (_isLoading) {
       return const Center(child: CircularProgressIndicator());
+    }
+    if(_transferOrders.isEmpty){
+      return Center(child: Text("no_data_to_show".tr(), style: TextStyle(color: Colors.grey[700], fontSize: 20.0, fontWeight: FontWeight.bold),));
     }
     else{
       print("transferOrders length: ${_transferOrders.length}");
@@ -340,7 +350,6 @@ class _TransportOrderListState extends State<TransportOrderList> {
 
       if(file.lengthSync() > 0)
       {
-        print('to Print Report');
         PdfApi.openFile(file);
       }
       else
@@ -351,7 +360,5 @@ class _TransportOrderListState extends State<TransportOrderList> {
     }, onError: (e) {
       print(e);
     });
-
-
   }
 }

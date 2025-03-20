@@ -42,7 +42,6 @@ class TransportOrderApiService{
             try {
               return TransportOrder.fromJson(item);
             } catch (e) {
-              print("Error parsing item: $item");
               print("Error: $e");
               return null;
             }
@@ -61,6 +60,7 @@ class TransportOrderApiService{
     Map data = {
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
+      'TransportRequestTypeCode': "1",
       'TrxSerial': transportOrder.trxSerial,
       'TrxDate': transportOrder.trxDate,
       'CustomerCode': transportOrder.customerCode,
@@ -88,7 +88,7 @@ class TransportOrderApiService{
 
     };
 
-    print('save transportOrder: ' + data.toString());
+    print('save transportOrder: $data');
 
     final http.Response response = await http.post(
       Uri.parse(createApi),
@@ -98,7 +98,6 @@ class TransportOrderApiService{
       },
       body: jsonEncode(data),
     );
-    print('createApi $createApi');
 
     if (response.statusCode == 200) {
 
@@ -115,12 +114,11 @@ class TransportOrderApiService{
 
   Future<int> updateTransportOrder(BuildContext context ,int id, TransportOrder transportOrder) async {
 
-    print('Start Update');
-
     Map data = {
       'id': transportOrder.id,
       'CompanyCode': companyCode,
       'BranchCode': branchCode,
+      'TransportRequestTypeCode': "1",
       'TrxSerial': transportOrder.trxSerial,
       'TrxDate': transportOrder.trxDate,
       'CustomerCode': transportOrder.customerCode,
@@ -149,8 +147,6 @@ class TransportOrderApiService{
     };
 
     String apiUpdate =updateApi + id.toString();
-    print('Start Update apiUpdate ' + apiUpdate );
-    print('Update date: ' + data.toString());
     var response = await http.put(Uri.parse(apiUpdate),
         body: json.encode(data)
         ,headers: {
@@ -172,20 +168,16 @@ class TransportOrderApiService{
   Future<void> deleteTransportOrder(BuildContext context ,int? id) async {
 
     String apiDel=deleteApi + id.toString();
-    print('url' + apiDel);
     var data = {
 
     };
 
-    print('before response');
     var response = await http.delete(Uri.parse(apiDel),
         body: json.encode(data)
         ,headers: {
           'Content-Type': 'application/json; charset=UTF-8',
           'Authorization': 'Bearer $token'
         });
-
-    print('after response');
 
     if (response.statusCode == 200) {
       FN_showToast(context,'delete_success'.tr() ,Colors.black);

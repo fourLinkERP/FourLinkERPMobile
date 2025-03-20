@@ -21,7 +21,6 @@ import 'package:fourlinkmobileapp/service/module/cash/basicInputs/CashSafes/cash
 import 'package:fourlinkmobileapp/service/module/cash/basicInputs/CashTargetTypes/cashTargetTypeApiService.dart';
 import 'package:fourlinkmobileapp/service/module/cash/setup/CashTypes/cashTypeApiService.dart';
 import 'package:fourlinkmobileapp/service/module/cash/transactions/CashReceives/cashReceiveApiService.dart';
-import 'package:supercharged/supercharged.dart';
 import '../../../../../data/model/modules/module/accountReceivable/basicInputs/customers/customer.dart';
 import 'package:intl/intl.dart';
 import 'package:localize_and_translate/localize_and_translate.dart';
@@ -180,7 +179,6 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                           crossAxisAlignment: langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-
                             DropdownSearch<CashType>(
                               validator: (value) => value == null ? "select_a_Type".tr() : null,
                               selectedItem: cashTypeItem,
@@ -226,9 +224,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                   labelText: "type".tr(),
 
                                 ),),
-
                             ),
-
                           ],
                         )),
                     const SizedBox(height: 20),
@@ -282,29 +278,6 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                     ),
 
                     const SizedBox(height: 20),
-
-                    /*Container(
-                margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-                child: Column(
-                  crossAxisAlignment:langId==1? CrossAxisAlignment.start:CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Align(child: Text('ref_no'.tr()),alignment: langId==1? Alignment.bottomRight : Alignment.bottomLeft ),
-                    TextFormField(
-                      controller: _refNoController,
-                      decoration: const InputDecoration(
-                        hintText: '',
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'please_enter_ref_no'.tr();
-                        }
-                        return null;
-                      },
-                      onChanged: (value) {},
-                    ),
-                  ],
-                ),
-              ),*/
                     Row(
                       children: [
                         SizedBox(
@@ -342,11 +315,8 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                   );
                                 },
                                 showSearchBox: true,
-
-
                               ),
                               enabled: false,
-
                               items: cashTargetTypes,
                               itemAsString: (CashTargetType u) =>(langId ==1 )? u.typeNameAra.toString() : u.typeNameEng.toString(),
 
@@ -596,6 +566,10 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
                                   return null;
                                 },
                                 onChanged: (value) {
+                                  if(_valueController.text.isEmpty)
+                                    {
+                                      setTafqeet("1" , "0");
+                                    }
                                   setTafqeet("1" ,value.toString());
                                 },
                               ),
@@ -902,7 +876,7 @@ class _AddCashReceiveDataWidgetState extends State<AddCashReceiveDataWidget> {
         boxCode: boxCodeSelectedValue,
         currencyCode: 1,
         currencyRate: 1,
-        value:_valueController.text.toDouble(),
+        value: double.parse(_valueController.text),
         statement: _statementController.text,
         descriptionNameArabic: _descriptionNameArabicController.text,
         descriptionNameEnglish: _descriptionNameEnglishController.text,
